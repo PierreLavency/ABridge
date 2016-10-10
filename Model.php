@@ -1,5 +1,7 @@
 <?php
 
+/* Format date to be checked */
+
 define ('TSTP_F', "d-m-Y H:i:s");
 define ('DATE_F', "d-m-Y");
 
@@ -28,12 +30,12 @@ class Model {
 	// methods
 	
 	public function getAttrList () {
-        	return $this->attr_lst;
+        return $this->attr_lst;
     }
 
 	public function setAttrList ($attrList) {
 		$this->attr_lst = array_merge($this->attrPredefList  , $attrList) ;
-        	return  $this->attr_lst;
+        return  $this->attr_lst;
     }
 
 	public function getVal ($attr) {
@@ -52,7 +54,7 @@ class Model {
 
 	public function existsAttr ($attr) {
 		if (in_array($attr, $this->attr_lst)) {return $attr;} ;
-        	return 0;
+        return 0;
     }
 
 	private function setValNoCheck ($attr,$val) {
