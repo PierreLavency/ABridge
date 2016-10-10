@@ -1,6 +1,7 @@
 
 <?php
 
+
 class file_persist
 {
 	public  $fileName ='\Datastore\test_persisted_objects.txt';
@@ -75,6 +76,9 @@ class file_persist
 		};
 		return $result;
 	}	
-}
+};
+
+
+
 
 ?>
