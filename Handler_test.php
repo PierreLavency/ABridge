@@ -1,5 +1,4 @@
 
-
 <?php
 
 require_once("Handler.php"); 
@@ -11,7 +10,7 @@ $test = [
 	
 $x = Handler::getInstance();
 
-$y = $x-> getPersist();
+$y = $x-> getFileBase();
 $y->objects = $test; 
 
 var_dump($y);

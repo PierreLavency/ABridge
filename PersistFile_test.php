@@ -16,11 +16,11 @@ echo "<br/>";
 print_r($test);
 echo "<br/>";
 
-$x = new file_persist();
+$x = new fileBase();
 $x->objects = $test;
 $x->save();
 
-$y = new file_persist();
+$y = new fileBase();
 $y->load();
 print_r($y->objects);
 echo "<br/>";
@@ -45,7 +45,7 @@ $erc["SEVERITY"] = 0;
 $erc = $y->putObj("ERC",1,$erc);
 
 $y->save();
-$y = new file_persist();
+$y = new fileBase();
 $y->load();
 $erc = $y->getObj("ERC",1);
 print_r($erc);
@@ -81,7 +81,7 @@ echo "<br/>";
 
 $y->save();
 
-$y = new file_persist();
+$y = new fileBase();
 $y->load();
 $erc = $y->getObj("ERC",$id);
 print_r($erc);
@@ -104,7 +104,7 @@ echo "<br/>";
 
 $y->save();
 
-$y = new file_persist();
+$y = new fileBase();
 $y->load();
 $erc = $y->getObj("ERCode",$id);
 print_r($erc);

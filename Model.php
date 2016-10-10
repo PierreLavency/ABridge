@@ -24,7 +24,6 @@ class Model {
 			$this->setValNoCheck ("vnum",1);
 		};
 		$this->setValNoCheck ("utstp",date(TSTP_F));
-		
 	}
 
 	// methods
@@ -65,7 +64,15 @@ class Model {
 		}
         return $x;
 	}
-
+	public function setTyp ($attr,$typ) {
+		$x= $this->existsAttr ($attr);
+		if ($x) {
+			$this->attr_typ[$attr]=$typ;
+			$x=$typ;
+		}
+        return $x;
+	}
+	
 	public function setVal ($attr,$val) {
 		if (in_array($attr,$this->attrPredefList)) {return 0;};
 		return ($this->setValNoCheck ($attr,$val));

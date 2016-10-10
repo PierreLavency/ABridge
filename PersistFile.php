@@ -1,9 +1,7 @@
 
 <?php
 
-
-class file_persist
-{
+class fileBase{
 	public  $fileName ='\Datastore\test_persisted_objects.txt';
 	public  $objects;
 

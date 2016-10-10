@@ -1,6 +1,6 @@
 <?php
 
-require_once("Handler_test.php"); 
+require_once("Model_example.php"); 
 
 
 ?>

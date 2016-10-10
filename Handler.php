@@ -4,7 +4,7 @@
 	function getHandler ($X) {
 		$y = Handler::getInstance();
 		if ($X =="file_persist") {
-			return $y-> getPersist();
+			return $y-> getFileBase();
 		};
 		return 0;
 	}
@@ -17,7 +17,7 @@
    * @static
    */
 		private static $_instance = null;
-		private $file_persist = null;
+		private $fileBase = null;
    
  
    /**
@@ -42,11 +42,11 @@
 			}
 			return self::$_instance;
 		}
-		public function getPersist() {
-			if(is_null($this->file_persist)) {
-				$this->file_persist= new file_persist();  
+		public function getFileBase() {
+			if(is_null($this->fileBase)) {
+				$this->fileBase= new fileBase();  
 			}
-			return $this->file_persist;
+			return $this->fileBase;
 		}
 	   
 	};
