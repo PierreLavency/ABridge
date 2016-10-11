@@ -5,7 +5,7 @@ require_once("Model.php");
 
 $x=new Model();
 
-echo "Model name:  " . $x->name ."<br>";
+echo "Model name:  " . $x->getModName() ."<br>";
 
 try {
 	$x=new Model(1);
@@ -17,7 +17,7 @@ catch (Exception $e) {
 
 $x=new Model('Test');
 
-echo "Model name:  " . $x->name ."<br>";
+echo "Model name:  " . $x->getModName() ."<br>";
 
 echo $x->getVal("id") . " expected 0". "<br/>";
 $x->setAttrList(["y"]);

@@ -37,6 +37,9 @@ class Model {
 		$this->setValNoCheck ("utstp",date(TSTP_F));
 	}
 
+	public function getModName () {
+		return $this->name;
+	}
 	
 	public function getAttrList () {
         return $this->attr_lst;

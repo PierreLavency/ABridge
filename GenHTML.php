@@ -1,16 +1,29 @@
 <?php
 
-	function displayAttr($Model, $Attr, $dspec) {
-		$dspec["name"]=$Attr;
-		$default = $Model->getVal($Attr);
-		if ($default) {$dspec["default"]=$default;}
-		genHtml($dspec);
-	}; 
+	define ('NL_O', "\n");
+	define ('TAB_O', "\t");
+	
+	define ('H_TYPE', "h_type");
+	
+	
 
-	function genHtml($dspec)	 {
+	function genList($dspecL,$show=true){
+		$list_s   = '<ul>  '  ;
+		$list_e_s = '</ul>  ';
+		$element_s   = '<li>  '  ;
+		$element_e_s   = '</li>  '  ;
 
-		$nl_o 	    = "\n";
-		$tab_o 	    = "\t";
+		$result = $list_s ; 
+		foreach ($dspecL as $dspec) {
+			$result=$result . NL_O . TAB_O. $element_s. NL_O.genFormElem($dspec,false).TAB_O.$element_e_s;
+		}
+		$result = $result . NL_O. $list_e_s;
+		if ($show) {echo $result;};
+		return $result;
+	}
+
+
+	function genFormElem($dspec,$show = true)	 {
 
  		$button_s   = '<input type="submit" value="Submit">';
 		$textarea_s = '<textarea ';
@@ -25,9 +38,10 @@
 		$row_s	    = ' rows="'    ;
 		
 
-		$type;
+		$type="";
 		$default;
-		$name;
+		$name="";
+		$plain;
 		$col = 30;
 		$row = 10;
 
@@ -49,6 +63,9 @@
 				case "row":
 					$row = $v;
 					break; 
+				case "plain":
+					$plain = $v;
+					break; 
 			}; 
 		};
 
@@ -63,22 +80,22 @@
 				$result = $textarea_s . $name_s; 
 				$result = $result . $col_s . $col . '" ' ; 
 				$result = $result . $row_s . $row . '" ' . $end_s ; 
-       				if ($default) {$result = $result.$default;};
-				$result = $result . $textarea_e_s . $nl_o;
+       			if ($default) {$result = $result.$default;};
+				$result = $result . $textarea_e_s . NL_O;
 				break;
 			case "submit":
-				$result = $button_s.$nl_o; 
+				$result = $button_s.NL_O; 
 				break;
 			case "text":
 				$result = $input_s; 
 				$result = $result . $type_s;
 				$result = $result . $name_s;
 				$value_s ='';
-       				if ($default) {$value_s = 'value = "' . $default .  '" ';};
+       			if ($default) {$value_s = 'value = "' . $default .  '" ';};
 				$result = $result . $value_s;
 				$result = $result . $end_s;
-				$result = $result . $nl_o;
-        			break;
+				$result = $result . NL_O;
+        		break;
 			case "radio":
 				$result = "";
 				$values = $dspec["values"];
@@ -87,26 +104,28 @@
 					$value_s = ' value = "' . $value .  '" ';
 					$checked_s = "";
 					if ($value == $default) {$checked_s = " checked ";};
-					$result = $result . $input_s . $type_s . $name_s . $value_s . $checked_s . $end_s . $separator . $nl_o;
+					$result = $result . $input_s . $type_s . $name_s . $value_s . $checked_s . $end_s . $separator . NL_O;
 				};
-        			break;    
+        		break;    
 			case "select":
 				$result = $select_s;
-				$result = $result. $name_s . $end_s . $nl_o;
+				$result = $result. $name_s . $end_s . NL_O ;
 				$values = $dspec["values"];
 				foreach ($values as $value) {
 					$value_s = ' value = "' . $value .  '" ';
 					$selected_s = "";
 					if ($value == $default) {$selected_s = " selected ";};
-					$result = $result . $tab_o. $option_s . $value_s . $selected_s . $end_s .$value .$option_e_s. $nl_o;
+					$result = $result . TAB_O. $option_s . $value_s . $selected_s . $end_s .$value .$option_e_s. NL_O;
 				};
-				$result = $result . $select_e_s. $nl_o;
-        			break;    
-    			default:
-        			$result = 0;
+				$result = $result . $select_e_s. NL_O;
+        		break;    
+    		default:
+        		$result = $plain;
 		}
-		echo $result;
-
+		if ($show) {
+			echo $result;
+			};
+		return $result;
 	}
 
 ?>

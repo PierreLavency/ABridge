@@ -1,7 +1,7 @@
 <?php
 
 
-
+	require_once("Model.php"); 
 
 define("brk", "<br/>");
 define("spc", " ");
@@ -13,16 +13,25 @@ define("v_a_All_Attr","v_a_All_Attr");
 define("v_p_Attr" ,"v_p_Attr");
 define("v_p_Lbl"  ,"v_p_Lbl");
 define("v_p_Val"  ,"v_p_Val");
+define("v_p_Name" ,"v_p_Name");
 
 define("v_f_Dsp"  ,"v_f_Dsp");
 
+
+	function displayAttr($Model, $Attr, $dspec) {
+		$dspec["name"]=$Attr;
+		$default = $Model->getVal($Attr);
+		if ($default) {$dspec["default"]=$default;}
+		genFormElem($dspec);
+	}; 
+	
 class View
 {
 	// property
 
 	public $model;
-	public $attr_lbl = array("id"=>"object reference","vnum"=>"version number");
-	public $show_spec = array([v_c_List,v_a_All_Attr,[v_p_Attr,v_p_Lbl,v_p_Val],[v_p_Attr=>[v_f_Dsp]]]); 
+	public $attr_lbl = array("id"=>"object reference","vnum"=>"version number","ctstp"=>"creation time stamp");
+	public $show_spec = array([v_c_List,v_a_All_Attr,[v_p_Name,v_p_Lbl,v_p_Val],[v_p_Attr=>[v_f_Dsp]]]); 
 
 	// constructors
 
@@ -50,7 +59,7 @@ class View
     				case v_p_Typ:	
 	       				return $this->model->getTyp($attr);
         				break;
-    				case v_p_Attr:
+    				case v_p_Name:
         				return $attr;
         				break;
     				default:
@@ -73,7 +82,7 @@ class View
 				}    	
 	}
 
-	public function ExecCmd ($cmd,$args,$props,$formats) {
+	public function EvalSpec ($cmd,$args,$props,$formats) {
 		$Args=$this->evalArg($args);
 		switch ($cmd) {
     				case v_c_List:
@@ -95,7 +104,7 @@ class View
 		$s = count($l);
 		for($x = 0; $x < $s; $x++) {
 			$attr = $l[$x];
-			echo $attr . spc . $this->getLbl($attr) . spc . $this->model->getVal($attr) . brk ; 
+			echo $this->getLbl($attr) . spc .$attr . spc .  $this->model->getVal($attr) . brk ; 
 		}
         	return 0;
     	}

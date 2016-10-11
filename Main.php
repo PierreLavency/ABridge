@@ -1,6 +1,6 @@
 <?php
 
-require_once("Model_example.php"); 
+require_once("GenHTML_test.php"); 
 
 
 ?>
