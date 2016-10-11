@@ -6,7 +6,6 @@
 	define ('H_TYPE', "h_type");
 	
 	
-
 	function genList($dspecL,$show=true){
 		$list_s   = '<ul>  '  ;
 		$list_e_s = '</ul>  ';
