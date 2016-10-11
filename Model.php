@@ -9,6 +9,7 @@ class Model {
 	// property
  
 	public $id;
+	public $name ;
 	public $attrPredefList = array("id","vnum","ctstp","utstp");
 	public $attr_lst = array("id","vnum","ctstp","utstp");
 	public $attr_typ = array("id"=>"ref","vnum"=>"int","ctstp"=>"tstamp","utstp"=>"tstamp");
@@ -16,8 +17,18 @@ class Model {
 	
 	// constructors
 
-	function __construct($id=0) {
+	
+	function __construct($name='Model',$id=0) {
+
+		if (! ctype_alnum($name)) {
+			throw new Exception("invalid model name : $name");
+		}
+		if (ctype_digit($name)) {
+			throw new Exception("invalid model name : $name");
+		}
+	
 		$this->id=$id; 
+		$this->name=$name;
 		$this->setValNoCheck ("id",$id);
 		if ($id==0) {
 			$this->setValNoCheck ("ctstp",date(TSTP_F));
@@ -26,7 +37,6 @@ class Model {
 		$this->setValNoCheck ("utstp",date(TSTP_F));
 	}
 
-	// methods
 	
 	public function getAttrList () {
         return $this->attr_lst;

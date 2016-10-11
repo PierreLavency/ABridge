@@ -2,9 +2,12 @@
 <?php
 
 class fileBase{
-	public  $fileName ='\Datastore\test_persisted_objects.txt';
+	public  $filePath ='C:\Users\pierr\ABridge\Datastore\\';
 	public  $objects;
-
+	
+	function  __construct($id= "defaultFileName.txt" ) {
+		$this->fileName = $this->filePath . $id;
+	}
 	public function load() {
         	$file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
 		$this->objects = unserialize($file);

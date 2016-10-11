@@ -120,10 +120,6 @@ $a = $y->allAttrVal("ERC","CODE");
 print_r($a);
 echo "<br/>";
 
-// testing handler 
-
-echo "testing new model";
-echo "<br/>";
 
 
 ?>

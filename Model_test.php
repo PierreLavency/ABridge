@@ -2,7 +2,23 @@
 
 require_once("Model.php"); 
 
+
 $x=new Model();
+
+echo "Model name:  " . $x->name ."<br>";
+
+try {
+	$x=new Model(1);
+	}
+catch (Exception $e) {
+    echo 'Exception reçue : ',  $e->getMessage(), "<br>";
+}
+
+
+$x=new Model('Test');
+
+echo "Model name:  " . $x->name ."<br>";
+
 echo $x->getVal("id") . " expected 0". "<br/>";
 $x->setAttrList(["y"]);
 //var_dump($x);
