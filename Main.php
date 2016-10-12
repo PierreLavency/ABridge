@@ -1,6 +1,6 @@
 <?php
 
-require_once("Logger_test.php"); 
+require_once("TestSuite_test.php"); 
 
 
 ?>

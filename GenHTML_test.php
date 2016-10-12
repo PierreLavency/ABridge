@@ -1,4 +1,7 @@
 <?php
+require_once("UnitTest.php");
+$logName = basename(__FILE__, ".php");
+$z=new unitTest($logName);
 
 require_once("GenHTML.php"); 
 
@@ -11,31 +14,61 @@ $test6 = ["name"=>"A","default"=>"a1","type"=>"textarea","col"=>50,"row"=>10];
 $test7 = ["name"=>"A","default"=>"a1","type"=>"password"];
 $test8 = ["plain"=>"this is a text string"];
 
-echo date("d-m-Y H:i:s");
-echo NL_O."<br/>".NL_O;
-echo date("d-m-Y");
-echo NL_O."<br/>".NL_O;;
+$show = false;
 
+$r=genFormElem($test1,$show);
+										// logging result
+										$xs = "$r=genFormElem(test1,$show);";
+										$z->logLine ($xs);
+if($show) {echo "<br/>".NL_O;}
+$r=genFormElem($test2,$show);			
+										// logging result
+										$xs = "$r=genFormElem(test2,$show);";
+										$z->logLine ($xs);
 
-genFormElem($test1);
-echo "<br/>".NL_O;;
-genFormElem($test2);
-echo "<br/>".NL_O;;
-genFormElem($test3);
-echo "<br/>".NL_O;;
-genFormElem($test4);
-echo "<br/>".NL_O;;
-genFormElem($test5);
-echo "<br/>".NL_O;;
-genFormElem($test6);
-echo "<br/>".NL_O;;
-genFormElem($test7);
-echo "<br/>".NL_O;;
-genFormElem($test8);
-echo "<br/>".NL_O;;
+if($show) {echo "<br/>".NL_O;}			
+$r=genFormElem($test3,$show);
+										// logging result
+										$xs = "$r=genFormElem(test3,$show);";
+										$z->logLine ($xs);
+if($show) {echo "<br/>".NL_O;}
+$r=genFormElem($test4,$show);										
+										// logging result
+										$xs = "$r=genFormElem(test4,$show);";
+										$z->logLine ($xs);
 
-genList([$test1,$test2]);
-echo "<br/>".NL_O;;
+if($show) {echo "<br/>".NL_O;}
+$r=genFormElem($test5,$show);			
+										// logging result
+										$xs = "$r=genFormElem(test5,$show);";
+										$z->logLine ($xs);
 
+if($show) {echo "<br/>".NL_O;}
+$r=genFormElem($test6,$show);		
+										// logging result
+										$xs = "$r=genFormElem(test6,$show);";
+										$z->logLine ($xs);
 
+if($show) {echo "<br/>".NL_O;}
+$r=genFormElem($test7,$show);	
+										// logging result
+										$xs = "$r=genFormElem(test7,$show);";
+										$z->logLine ($xs);
+
+if($show) {echo "<br/>".NL_O;}
+$r=genFormElem($test8,$show);			
+										// logging result
+										$xs = "$r=genFormElem(test8,$show);";
+										$z->logLine ($xs);
+
+if($show) {echo "<br/>".NL_O;}
+
+$r = genList([$test1,$test2],$show);	
+										// logging result
+										$xs = "$r = genList([test1,test2],$show)";
+										$z->logLine ($xs);
+
+if($show) {echo "<br/>".NL_O;}
+
+$z->save();
 ?>

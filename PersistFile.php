@@ -15,7 +15,8 @@ class fileBase{
 
 	public function save() {
 		$file = serialize($this->objects);
-        file_put_contents($this->fileName,$file,FILE_USE_INCLUDE_PATH);
+        $r=file_put_contents($this->fileName,$file,FILE_USE_INCLUDE_PATH);
+		return $r;
 	}
 
 	public function newMod($Model) {

@@ -47,7 +47,7 @@ class Model {
 
 	public function setAttrList ($attrList) {
 		$this->attr_lst = array_merge($this->attrPredefList  , $attrList) ;
-        return  $this->attr_lst;
+        return  count($this->attr_lst);
     }
 
 	public function getVal ($attr) {

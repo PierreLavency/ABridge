@@ -15,7 +15,6 @@ class Logger{
 	public function logLine ($line){
 		$this->lines[] = $line;
 		$r = count($this->lines);
-		$r--;
 		return $r;
 	}
 	public function show () {

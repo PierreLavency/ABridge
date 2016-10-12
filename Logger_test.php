@@ -4,6 +4,7 @@ require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
 $z=new unitTest($logName);
 
+
 // test run 
 
 $x = new Logger("test");
@@ -19,7 +20,6 @@ $c = $r+1;
 										// logging result
 										$xs = "$r=... logLine ($s);";
 										$z->logLine ($xs);
-$x->show();
 $r=$x->save();
 										// logging result
 										$xs = "$r=...save();";
@@ -33,7 +33,6 @@ $r=$x->logLine ($s);
 										// logging result;
 										$xs = "$r=...logLine ($s);";
 										$z->logLine ($xs);
-$x->show();
 $r= $x->save();
 										// logging result;
 										$xs = "$r= ...save();";
@@ -50,7 +49,6 @@ $r = $x->logsize();
 										// logging result;
 										$xs = "$r = ...->logsize();";
 										$z->logLine ($xs);
-$x->show();
 
 
 $z->save();
