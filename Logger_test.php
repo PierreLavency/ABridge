@@ -2,20 +2,61 @@
 
 require_once("Logger.php");
 
+$logName = "Logger_test";
+$z = new Logger($logName."_run");
+
+
+$x = new Logger("test");
+
+$s = "this is my first logged line";
+$r=$x->logLine ($s);
+										// logging result
+										$xs = "$r=... logLine ($s);";
+										$z->logLine ($xs);
+$s ="this is my second logged line";
+$r=$x->logLine ($s);
+$c = $r+1;
+										// logging result
+										$xs = "$r=... logLine ($s);";
+										$z->logLine ($xs);
+$x->show();
+$r=$x->save();
+										// logging result
+										$xs = "$r=...save();";
+										$z->logLine ($xs);
+
 $x = new Logger();
 
-$x->logLine ("this is my first logged line");
 
-$r = $x->logLine ("this is my second logged line");
+$s = "$c lines logged";
+$r=$x->logLine ($s);
+										// logging result;
+										$xs = "$r=...logLine ($s);";
+										$z->logLine ($xs);
+$x->show();
+$r= $x->save();
+										// logging result;
+										$xs = "$r= ...save();";
+										$z->logLine ($xs);
 
+$x = new Logger("test");
+
+$r = $x->load();
+										// logging result;
+										$xs = "$r = ...load();";
+										$z->logLine ($xs);
 $x->show();
 
-$x = new Logger();
+$z->show();
+$z->save();
 
-$r++;
+$pz=new Logger($logName);
+$pz->load();
+$pz->show();
 
-$x->logLine ("$r lines logged");
-
-$x->show();
+$r = $pz->diff($z);
+echo "test resul  $logName :";
+if ($r) {echo "fails diff in line $r";}
+else {echo " ok";};
 
 ?>

@@ -9,13 +9,13 @@ class fileBase{
 		$this->fileName = $this->filePath . $id;
 	}
 	public function load() {
-        	$file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
+        $file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
 		$this->objects = unserialize($file);
 	}
 
 	public function save() {
 		$file = serialize($this->objects);
-        	file_put_contents($this->fileName,$file,FILE_USE_INCLUDE_PATH);
+        file_put_contents($this->fileName,$file,FILE_USE_INCLUDE_PATH);
 	}
 
 	public function newMod($Model) {
