@@ -19,7 +19,6 @@ class Logger{
 		return $r;
 	}
 	public function show () {
-		echo "log content of $this->name";
 		echo "<br>";
 		for ($i=0;$i<count($this->lines);$i++) {
 			echo $this->lines[$i];
@@ -40,7 +39,7 @@ class Logger{
 		$c = count($this->lines);
 		if (! ($c == $log->logSize())) {return $c+1;}
 		for ($i=0;$i<$c;$i++) {
-			if (! ($this->lines[$i]==$log->getLine($i))){return $i;}
+			if (! ($this->lines[$i]==$log->getLine($i))){$i++; return $i;}
 		}
 		return 0;
 	}

@@ -1,10 +1,10 @@
 <?php
 
-require_once("Logger.php");
+require_once("UnitTest.php");
+$logName = basename(__FILE__, ".php");
+$z=new unitTest($logName);
 
-$logName = "Logger_test";
-$z = new Logger($logName."_run");
-
+// test run 
 
 $x = new Logger("test");
 
@@ -45,18 +45,15 @@ $r = $x->load();
 										// logging result;
 										$xs = "$r = ...load();";
 										$z->logLine ($xs);
+
+$r = $x->logsize();
+										// logging result;
+										$xs = "$r = ...->logsize();";
+										$z->logLine ($xs);
 $x->show();
 
-$z->show();
+
 $z->save();
 
-$pz=new Logger($logName);
-$pz->load();
-$pz->show();
-
-$r = $pz->diff($z);
-echo "test resul  $logName :";
-if ($r) {echo "fails diff in line $r";}
-else {echo " ok";};
 
 ?>
