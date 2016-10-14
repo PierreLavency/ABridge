@@ -47,7 +47,6 @@
 				$r = $this->testLogger->diff($this->runLogger);
 				if ($r) {
 						$result= $result . "ko diff in line $r";
-						$this->verbatim=2;
 						$this->runLogger->save();
 				}
 				else {$result = $result . "ok";};

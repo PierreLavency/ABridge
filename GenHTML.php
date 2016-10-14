@@ -3,8 +3,23 @@
 	define ('NL_O', "\n");
 	define ('TAB_O', "\t");
 	
-	define ('H_TYPE', "h_type");
+	define  ('H_TYPE', "type");	
+	define  ('H_T_TEXTAREA',"textarea");
+	define  ('H_T_SUBMIT',"submit");
+	define  ('H_T_TEXT',"text");
+	define  ('H_T_RADIO',"radio");
+	define  ('H_T_SELECT',"select");
+	define  ('H_T_PASSWORD',"password");
+	define  ('H_T_LIST',"list");
 	
+
+	define ('H_NAME', "name");
+	define ('H_DEFAULT', "default");
+	define ('H_COL', "col");
+	define ('H_ROW', "row");
+	define ('H_PLAIN', "plain");
+	define ('H_VALUES', "values");
+	define ('H_ARG', "arg");
 	
 	function genList($dspecL,$show=true){
 		$list_s   = '<ul>  '  ;
@@ -40,6 +55,7 @@
 		$type="";
 		$default;
 		$name="";
+		$arg = [];
 		$plain;
 		$col = 30;
 		$row = 10;
@@ -47,24 +63,30 @@
 
 		foreach($dspec as $t => $v) {
 			switch ($t) {
-				case "type":
+				case H_TYPE:
 					$type = $v;
 					break; 
-				case "name":
+				case H_NAME:
 					$name = $v;
 					break; 
-				case "default":
+				case H_DEFAULT:
 					$default = $v;
 					break; 
-				case "col":
+				case H_COL:
 					$col = $v;
 					break; 
-				case "row":
+				case H_ROW:
 					$row = $v;
 					break; 
-				case "plain":
+				case H_PLAIN:
 					$plain = $v;
 					break; 
+				case H_VALUES:
+					$values = $v;
+					break;				
+				case H_ARG:
+					$arg = $v;
+					break;
 			}; 
 		};
 
@@ -73,19 +95,22 @@
 		$type_s = 'type = "' . $type .  '" ';
 
 
-		if($type == "password") {$type="text";};
+		if($type == H_T_PASSWORD) {$type="text";};
 		switch ($type) {
-			case "textarea":
+			case H_T_LIST:
+				$result = genList($arg,false);
+				break;
+			case H_T_TEXTAREA:
 				$result = $textarea_s . $name_s; 
 				$result = $result . $col_s . $col . '" ' ; 
 				$result = $result . $row_s . $row . '" ' . $end_s ; 
        			if ($default) {$result = $result.$default;};
 				$result = $result . $textarea_e_s . NL_O;
 				break;
-			case "submit":
+			case H_T_SUBMIT:
 				$result = $button_s.NL_O; 
 				break;
-			case "text":
+			case H_T_TEXT:
 				$result = $input_s; 
 				$result = $result . $type_s;
 				$result = $result . $name_s;
@@ -95,9 +120,8 @@
 				$result = $result . $end_s;
 				$result = $result . NL_O;
         		break;
-			case "radio":
+			case H_T_RADIO:
 				$result = "";
-				$values = $dspec["values"];
 				$separator = $dspec["separator"];
 				foreach ($values as $value) {
 					$value_s = ' value = "' . $value .  '" ';
@@ -106,10 +130,9 @@
 					$result = $result . $input_s . $type_s . $name_s . $value_s . $checked_s . $end_s . $separator . NL_O;
 				};
         		break;    
-			case "select":
+			case H_T_SELECT:
 				$result = $select_s;
 				$result = $result. $name_s . $end_s . NL_O ;
-				$values = $dspec["values"];
 				foreach ($values as $value) {
 					$value_s = ' value = "' . $value .  '" ';
 					$selected_s = "";
