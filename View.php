@@ -25,7 +25,11 @@ class View
 	public $model;
 	public $attr_lbl = [];
 	public $view_spec = array([V_C_LIST,V_A_ATTR,[V_P_NAME,V_P_LBL,V_P_VAL],[V_P_ATTR=>[V_F_DSP]]]); 
-
+/*
+    H_VIEW => [V_ATTR = xx; V_PROP = V_P_LBL] 
+    H_VIEW => [V_ATTR = xx; V_PROP = V_P_INP] 
+	
+*/
 	// constructors
 
 	function __construct($model) {

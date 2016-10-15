@@ -2,6 +2,7 @@
 require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
 $z=new unitTest($logName);
+$show = true;
 
 require_once("GenHTML.php"); 
 
@@ -12,7 +13,8 @@ $test4 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_SUBMIT];
 $test5 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_TEXTAREA];
 $test6 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_TEXTAREA,H_COL=>50,H_ROW=>10];
 $test7 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_PASSWORD];
-$test8 = [H_PLAIN=>"this is a text string"];$test8a = [H_PLAIN=>"this is another text string"];
+$test8 = [H_TYPE=>H_T_PLAIN,H_DEFAULT=>"this is a text string"];
+$test8a =[H_TYPE=>H_T_PLAIN,H_DEFAULT=>"this is another text string"];
 $test9 = [$test1,$test2];
 $test10 = [H_TYPE=>H_T_LIST,H_ARG=>[$test1,$test2]];
 $test11 = [H_TYPE=>H_T_LIST,H_ARG=>[[H_TYPE=>H_T_LIST,H_ARG=>[$test8,$test8]],$test8a]];

@@ -3,23 +3,8 @@
 	define ('NL_O', "\n");
 	define ('TAB_O', "\t");
 	
-	define  ('H_TYPE', "type");	
-	define  ('H_T_TEXTAREA',"textarea");
-	define  ('H_T_SUBMIT',"submit");
-	define  ('H_T_TEXT',"text");
-	define  ('H_T_RADIO',"radio");
-	define  ('H_T_SELECT',"select");
-	define  ('H_T_PASSWORD',"password");
-	define  ('H_T_LIST',"list");
+	require_once("ViewConstant.php");
 	
-
-	define ('H_NAME', "name");
-	define ('H_DEFAULT', "default");
-	define ('H_COL', "col");
-	define ('H_ROW', "row");
-	define ('H_PLAIN', "plain");
-	define ('H_VALUES', "values");
-	define ('H_ARG', "arg");
 	
 	function genList($dspecL,$show=true){
 		$list_s   = '<ul>  '  ;
@@ -35,7 +20,6 @@
 		if ($show) {echo $result;};
 		return $result;
 	}
-
 
 	function genFormElem($dspec,$show = true)	 {
 
@@ -60,7 +44,6 @@
 		$col = 30;
 		$row = 10;
 
-
 		foreach($dspec as $t => $v) {
 			switch ($t) {
 				case H_TYPE:
@@ -78,9 +61,6 @@
 				case H_ROW:
 					$row = $v;
 					break; 
-				case H_PLAIN:
-					$plain = $v;
-					break; 
 				case H_VALUES:
 					$values = $v;
 					break;				
@@ -89,7 +69,6 @@
 					break;
 			}; 
 		};
-
 
 		$name_s = 'name = "' . $name .  '" ';
 		$type_s = 'type = "' . $type .  '" ';
@@ -140,7 +119,10 @@
 					$result = $result . TAB_O. $option_s . $value_s . $selected_s . $end_s .$value .$option_e_s. NL_O;
 				};
 				$result = $result . $select_e_s. NL_O;
-        		break;    
+        		break;
+			case H_T_PLAIN:
+				$result = $default;
+				break;
     		default:
         		$result = $plain;
 		}
