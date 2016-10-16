@@ -31,6 +31,11 @@
 			return $level;
 		}
 		
+		function show() {
+			$this->runLogger->show();
+		}
+		
+		
 		function save() {
 			$result = "Test : " . $this->logName . " on : " . date("d-m-Y H:i:s") . " result :";
 			if ($this->init){

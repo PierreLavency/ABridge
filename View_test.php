@@ -1,33 +1,96 @@
 <?php
 
+require_once("UnitTest.php");
+$logName = basename(__FILE__, ".php");
+$z=new unitTest($logName);
+
 require_once("Model.php"); 
 require_once("View.php"); 
 
+$test1=[V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_LBL]];
+$test2=[V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_NAME]];
+$test3=[V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_VAL]];
+$test4=[V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_TYPE]];
+$test5=[H_TYPE=>H_T_TEXT,V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_INP]];
+$test6=[H_TYPE=>H_T_LIST,H_ARG=>[$test1,$test2,$test3,$test4,$test5]];
+
 $x=new Model();
-$x->setAttrList(['a1']);
-$x->setVal('a1',1);
+
+$x->setAttrList(['A1','A2']);
+$x->setTyp('A1','int');
+$x->setVal('A1',1);
+
+$x->setTyp('A2','int');
+$x->setVal('A2',1);
 
 $v = new View($x);
-$v->attr_lbl = array('id'=>'object reference','vnum'=>'version number','ctstp'=>'creation time stamp');
-$v->show();
 
-$r=$v->viewAttr('id',V_P_LBL,[]);
-var_dump($r);
-$er = ['plain'=>'object reference'];
-echo $er === $r;
-
-$r=$v->viewAttr('vnum',V_P_LBL);
-var_dump($r);
-$er = ['plain'=>'version number'];
-echo $er === $r;
-
-$r=$v->viewAttr('a1',V_P_ATTR,[H_TYPE=>H_T_TEXT]);
-var_dump($r);
-$er = [H_TYPE=>H_T_TEXT,H_NAME=>'a1',"default"=>1];
-echo $er === $r;
-
-$r
+$v->attr_lbl = array('id'=>'object reference','vnum'=>'version number','ctstp'=>'creation time stamp','A1' => "Attribute1");
 
 
+$show=false;
+
+$r = $v->subst($test1);
+$res = genFormElem($r,$show);
+	// logging result
+$xs = "$res = genFormElem(r,$show)";
+$z->logLine ($xs);
+	// end
+if ($show) {echo "<br>" ; };
+
+$r = $v->subst($test2);
+$res = genFormElem($r,$show);
+	// logging result
+$xs = "$res = genFormElem(r,$show)";
+$z->logLine ($xs);
+	// end
+if ($show) {echo "<br>" ; };
+
+$r = $v->subst($test3);
+$res = genFormElem($r,$show);
+	// logging result
+$xs = "$res = genFormElem(r,$show)";
+$z->logLine ($xs);
+	// end
+if ($show) {echo "<br>" ; };
+
+$r = $v->subst($test4);
+$res = genFormElem($r,$show);
+	// logging result
+$xs = "$res = genFormElem(r,$show)";
+$z->logLine ($xs);
+	// end
+if ($show) {echo "<br>" ; };
+
+$r = $v->subst($test5);
+$res = genFormElem($r,$show);
+	// logging result
+$xs = "$res = genFormElem(r,$show)";
+$z->logLine ($xs);
+	// end
+if ($show) {echo "<br>" ; };
+
+$r = $v->subst($test6);
+$res = genFormElem($r,$show);
+	// logging result
+$xs = "$res = genFormElem(r,$show)";
+$z->logLine ($xs);
+	// end
+if ($show) {echo "<br>" ; };
+
+$r=$v->setSpec($test6);
+$res = $v->show($show);
+	// logging result
+$xs = "$res = v->show($show);";
+$z->logLine ($xs);
+	// end
+if ($show) {echo "<br>" ; };
+
+$res = $v->showDefault($show);
+ // not logged since date!!
+ 
+if ($show) {echo "<br>" ; };
+
+$z->save();
 
 ?>
