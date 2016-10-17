@@ -26,14 +26,18 @@ $r=$x->getVal('id');
 										// logging result
 										$xs = "$r=..->getVal('id');";
 										$z->logLine ($xs);
-$r=$x->setAttrList(["y"]);
+$r=$x->addAttr('y');
 										// logging result
-										$xs = "$r=..->setAttrList([y]);";
+										$xs = "$r=x->addAttrList('y');";
 										$z->logLine ($xs);
 
-$r=$x->setAttrList(["a1"]);
+$r=$x->delAttr('y');
 										// logging result
-										$xs = "$r=..->setAttrList([a1]);";
+										$xs = "$r=x->delAttr('y')";
+										$z->logLine ($xs);
+$r=$x->addAttr('a1');
+										// logging result
+										$xs = "$r=x->addAttr('a1');";
 										$z->logLine ($xs);
 $r=$x->setVal("a1",1);
 										// logging result
@@ -72,9 +76,9 @@ $r=$x->setVal("a2",3);
 										// logging result
 										$xs = "$r=..->setVal(a2,3);";
 										$z->logLine ($xs);
-$r=$x->setAttrList(["a1","a2"]);
+$r=$x->addAttr('a2');
 										// logging result
-										$xs = "$r=..->setAttrList([a1,a2]);";
+										$xs = "$r=x->addAttr('a2');";
 										$z->logLine ($xs);
 $r=$x->setVal('a2',3);
 										// logging result
@@ -86,4 +90,7 @@ $r= implode (' , ',$x->getAttrList());
 										$z->logLine ($xs);
 
 $z->save();
+/*
+$z->show();
+*/
 ?>

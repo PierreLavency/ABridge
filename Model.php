@@ -5,6 +5,10 @@
 define ('TSTP_F', "d-m-Y H:i:s");
 define ('DATE_F', "d-m-Y");
 
+require_once("Logger.php");
+require_once("TypeConstant.php");
+require_once("ErrorConstant.php");
+
 class Model {
 	// property
  
@@ -12,8 +16,9 @@ class Model {
 	public $name ;
 	public $attrPredefList = array("id","vnum","ctstp","utstp");
 	public $attr_lst = array("id","vnum","ctstp","utstp");
-	public $attr_typ = array("id"=>"ref","vnum"=>"int","ctstp"=>"tstamp","utstp"=>"tstamp");
+	public $attr_typ = array("id"=>M_ID,"vnum"=>M_INT,"ctstp"=>M_TSTMP,"utstp"=>M_TSTMP);
 	public $attr_val = array("vnum"=>0);
+	public $errLog;
 	
 	// constructors
 
@@ -35,8 +40,14 @@ class Model {
 			$this->setValNoCheck ("vnum",1);
 		};
 		$this->setValNoCheck ("utstp",date(TSTP_F));
+		$logname = $name.'_ErrLog';
+		$this->errLog= new Logger($logname);
 	}
 
+	public function getErrLog () {
+		return $this->errLog;
+	}
+	
 	public function getModName () {
 		return $this->name;
 	}
@@ -45,22 +56,50 @@ class Model {
         return $this->attr_lst;
     }
 
-	public function setAttrList ($attrList) {
-		$this->attr_lst = array_merge($this->attrPredefList  , $attrList) ;
-        return  count($this->attr_lst);
-    }
+	public function addAttr ($attr,$typ=M_STRING) {
+		$x= $this->existsAttr ($attr);
+		if (! $x) {
+			$this->attr_lst[]=$attr;
+			$r=$this->setTyp ($attr,$typ);
+			if ($r){return $attr;}
+			return $r;
+		}
+		$line = E_ERC003.':'.$attr; 
+		$this->errLog->logLine($line);     	
+        return 0;
+	}
+
+	public function delAttr ($attr) {
+		$x= $this->existsAttr ($attr);
+		if ($x) {
+			if (in_array($attr,$this->attrPredefList)) {
+				$line = E_ERC001.':'.$attr; 
+				$this->errLog->logLine($line);
+				return 0;
+			}
+			unset($this->attr_lst[$attr]);
+			unset($this->attr_typ[$attr]);
+		}
+		$line = E_ERC002.':'.$attr; 
+		$this->errLog->logLine($line);     	
+        return $x;
+	}
 
 	public function getVal ($attr) {
 		foreach($this->attr_val as $x => $val) {
 			if ($x==$attr) {return $val;}
-		}        	
+		}   
+		$line = E_ERC002.':'.$attr; 
+		$this->errLog->logLine($line);     	
 		return NULL;        	
    	}
 
 	public function getTyp ($attr) {
 		foreach($this->attr_typ as $x => $typ) {
 			if ($x==$attr) {return $typ;}
-		}                	
+		}        
+		$line = E_ERC002.':'.$attr; 
+		$this->errLog->logLine($line);     			
 		return NULL;
     }
 
@@ -74,20 +113,30 @@ class Model {
 		if ($x) {
 			$this->attr_val[$attr]=$val;
 			$x=$val;
+			return $x;
 		}
-        return $x;
+		$line = E_ERC002.':'.$attr; 
+		$this->errLog->logLine($line);  
+        return 0;
 	}
+	
 	public function setTyp ($attr,$typ) {
 		$x= $this->existsAttr ($attr);
 		if ($x) {
 			$this->attr_typ[$attr]=$typ;
 			$x=$typ;
 		}
+		$line = E_ERC002.':'.$attr; 
+		$this->errLog->logLine($line);     	
         return $x;
 	}
 	
 	public function setVal ($attr,$val) {
-		if (in_array($attr,$this->attrPredefList)) {return 0;};
+		if (in_array($attr,$this->attrPredefList)) {
+			$line = E_ERC001.':'.$attr; 
+			$this->errLog->logLine($line);
+			return 0;
+		};
 		return ($this->setValNoCheck ($attr,$val));
     }
 

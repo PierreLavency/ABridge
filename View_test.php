@@ -16,11 +16,13 @@ $test6=[H_TYPE=>H_T_LIST,H_ARG=>[$test1,$test2,$test3,$test4,$test5]];
 
 $x=new Model();
 
-$x->setAttrList(['A1','A2']);
-$x->setTyp('A1','int');
+$x->addAttr('A1');
+$x->addAttr('A2');
+
+$x->setTyp('A1',M_INT);
 $x->setVal('A1',1);
 
-$x->setTyp('A2','int');
+$x->setTyp('A2',M_INT);
 $x->setVal('A2',1);
 
 $v = new View($x);

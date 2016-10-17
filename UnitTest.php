@@ -35,6 +35,9 @@
 			$this->runLogger->show();
 		}
 		
+		function includeLog($log){
+			return $this->runLogger->includeLog($log);
+		}
 		
 		function save() {
 			$result = "Test : " . $this->logName . " on : " . date("d-m-Y H:i:s") . " result :";
@@ -51,7 +54,13 @@
 				$this->testLogger->load();
 				$r = $this->testLogger->diff($this->runLogger);
 				if ($r) {
-						$result= $result . "ko diff in line $r";
+						if ($r>0) {
+							$rline = $r-1;
+							$result= $result . "ko diff in line $rline";
+						}
+						else {
+							$result= $result . "ko diff in number of line";
+						}
 						$this->runLogger->save();
 				}
 				else {$result = $result . "ok";};

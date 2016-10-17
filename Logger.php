@@ -20,27 +20,48 @@ class Logger{
 	public function show () {
 		echo "<br>";
 		for ($i=0;$i<count($this->lines);$i++) {
+			echo "LINE:".$i."<br>";
 			echo $this->lines[$i];
 			echo "<br>";
 		}
 		echo "<br>";
 	}
+
+	public function showLine($i){
+		if ($i < count($this->lines)) {
+			echo "LINE:".$j."<br>";
+			echo $this->lines[$i];
+			echo "<br>";
+			return $this->lines[$i];
+		}
+		return 0;
+	}
+
 	public function getLine($i) {
 		if ($i < count($this->lines)) {
 			return $this->lines[$i];
 		}
 		return 0;
 	}
+
 	public function logSize() {
 		return count($this->lines);
 	}
 	public function diff ($log){
 		$c = count($this->lines);
-		if (! ($c == $log->logSize())) {return $c+1;}
+		if (! ($c == $log->logSize())) {return -1;}
 		for ($i=0;$i<$c;$i++) {
-			if (! ($this->lines[$i]==$log->getLine($i))){$i++; return $i;}
+			if (! ($this->lines[$i]==$log->getLine($i))){$j=$i+1;return $j;}
 		}
 		return 0;
+	}
+	public function includeLog ($log){
+		$c = $log->logSize();
+		for ($i=0;$i<$c;$i++) {
+			if (! $this->logLine($log->getLine($i))) {return 0;} ; 
+		}
+		$r = $c +1;
+		return $r;
 	}
 	public function save() {
 		$file = serialize($this->lines);

@@ -1,9 +1,6 @@
 <?php
 
-	define('M_INT',"m_int");
-	define('M_FLOAT',"m_float");
-	define('M_BOOL',"m_bool");
-	define('M_STRING',"m_string");
+	require_once("TypeConstant.php");
 
 	function convertString($X,$type) {
 		if (is_string($X)) {
