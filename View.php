@@ -47,7 +47,7 @@ class View
 		foreach($this->attr_lbl as $x => $lbl) {
 			if ($x==$attr) {return $lbl;}
 		}        	
-		return "no lable defined";
+		return "no label defined";
     	}
 		
 	public function getProp ($attr,$prop) {

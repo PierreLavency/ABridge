@@ -8,8 +8,8 @@ require_once("PersistFile_test.php");
 require_once("Handler_test.php");
 require_once("Type_test.php");
 require_once("View_test.php");
-
 require_once("Model_test_1.php"); 
 
+require_once("Model_test_2.php"); 
 
 ?>

@@ -2,6 +2,12 @@
 
 	require_once("TypeConstant.php");
 
+	
+	function isMtype ($x) {
+		$l=[M_INT,M_FLOAT,M_BOOL,M_STRING,M_ID,M_REF,M_TMSTP,M_ALPHA,M_ALNUM, ];
+		return (in_array($x,$l));
+	}
+	
 	function convertString($X,$type) {
 		if (is_string($X)) {
 			switch($type) {
@@ -35,10 +41,27 @@
 			case M_STRING:
 				return is_string($X);
 				break; 
+			case M_ALNUM:
+				if (is_string($X)) {return ctype_alnum($X);}
+				return 0;
+				break;
+			case M_ALPHA:
+				if (is_string($X)) {return ctype_alpha($X);}
+				return 0;
+				break;
+			case M_ID:
+				if (is_int($X)) {return ($X>=0);}
+				return 0;
+				break;
+			case M_REF:
+				if (is_int($X)) {return ($X>0);}
+				return 0;
+				break;
 			default:
 				return 0;
 		}
 	}
+
 	
 	
 ?>	

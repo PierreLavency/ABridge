@@ -121,5 +121,45 @@
 									$line = "$r=checkType ($X,$type);";
 									$z->logLine($line);
 
-	$z->save();
+									
+									
+$r=checkType(-1,M_ID); 
+	$line = "$r=checkType(-1,M_ID);";
+	$z->logLine($line);
+$r=checkType(1,M_ID); 
+	$line = "$r=checkType(1,M_ID);";
+	$z->logLine($line);
+$r=checkType(1,M_REF); 
+	$line = "$r=checkType(1,M_REF);";
+	$z->logLine($line);
+$r=checkType(0,M_REF); 
+	$line = "$r=checkType(0,M_REF); ";
+	$z->logLine($line);
+$r=checkType(1,M_ALNUM); 
+	$line = "$r=checkType(1,M_ALNUM);";
+	$z->logLine($line);
+$r=checkType('1',M_ALNUM); 
+	$line = "$r=checkType('1',M_ALNUM);";
+	$z->logLine($line);
+$r=checkType('A1',M_ALNUM); 
+	$line = "$r=checkType('A1',M_ALNUM);";
+	$z->logLine($line);
+$r=checkType(1,M_ALPHA); 
+	$line = "$r=checkType(1,M_ALPHA);";
+	$z->logLine($line);
+$r=checkType('1',M_ALPHA); 
+	$line = "$r=checkType('1',M_ALPHA);";
+	$z->logLine($line);
+$r=checkType('A1',M_ALPHA); 
+	$line = "$r=checkType('A1',M_ALPHA);";
+	$z->logLine($line);
+$r=checkType('Abb',M_ALPHA); 
+	$line = "$r=checkType('Abb',M_ALPHA);";
+	$z->logLine($line);
+
+$r=isMtype(M_INT);	
+	$line = "$r=isMtype(M_INT);";
+	$z->logLine($line);
+	
+$z->save();
 ?>	

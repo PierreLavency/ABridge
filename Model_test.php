@@ -35,9 +35,9 @@ $r=$x->delAttr('y');
 										// logging result
 										$xs = "$r=x->delAttr('y')";
 										$z->logLine ($xs);
-$r=$x->addAttr('a1');
+$r=$x->addAttr('a1',M_INT);
 										// logging result
-										$xs = "$r=x->addAttr('a1');";
+										$xs = "$r=x->addAttr('a1',M_INT);";
 										$z->logLine ($xs);
 $r=$x->setVal("a1",1);
 										// logging result
@@ -76,9 +76,9 @@ $r=$x->setVal("a2",3);
 										// logging result
 										$xs = "$r=..->setVal(a2,3);";
 										$z->logLine ($xs);
-$r=$x->addAttr('a2');
+$r=$x->addAttr('a2',M_INT);
 										// logging result
-										$xs = "$r=x->addAttr('a2');";
+										$xs = "$r=x->addAttr('a2',M_INT);";
 										$z->logLine ($xs);
 $r=$x->setVal('a2',3);
 										// logging result

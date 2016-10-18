@@ -88,11 +88,13 @@ $z->logLine ($xs);
 	// end
 if ($show) {echo "<br>" ; };
 
+
 $res = $v->showDefault($show);
  // not logged since date!!
  
 if ($show) {echo "<br>" ; };
 
+//$z->setVerbatim (2);
 $z->save();
 
 ?>
