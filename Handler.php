@@ -1,6 +1,7 @@
 <?php
 	require_once("PersistFile.php"); 
 	
+	
 	function getHandler ($X) {
 		$y = Handler::getInstance();
 		if ($X =="file_persist") {
@@ -10,7 +11,6 @@
 	}
 	
 	class Handler {
- 
   /**
    * @var Singleton
    * @access private
@@ -18,8 +18,7 @@
    */
 		private static $_instance = null;
 		private $fileBase = null;
-   
- 
+		private $runBase = null;
    /**
     * Constructeur de la classe
     *
@@ -28,7 +27,6 @@
     */
 		private function __construct() {  
 		}
- 
    /**
     * Méthode qui crée l'unique instance de la classe
     * si elle n'existe pas encore puis la retourne.
@@ -47,6 +45,13 @@
 				$this->fileBase= new fileBase();  
 			}
 			return $this->fileBase;
+		}
+
+		public function runBase() {
+			if(is_null($this->runBase)) {
+				$this->runBase= new fileBase();  
+			}
+			return $this->runBase;
 		}
 	   
 	};

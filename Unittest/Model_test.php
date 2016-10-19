@@ -84,9 +84,9 @@ $r=$x->setVal('a2',3);
 										// logging result
 										$xs = "$r=..->setVal('a2',3);";
 										$z->logLine ($xs);
-$r= implode (' , ',$x->getAttrList());
+$r= implode (' , ',$x->getAllAttr());
 										// logging result
-										$xs = "$r= implode (' , ',$..->getAttrList());";
+										$xs = "$r= implode (' , ',x->getAllAttr());";
 										$z->logLine ($xs);
 
 $z->save();

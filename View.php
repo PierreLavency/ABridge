@@ -121,7 +121,7 @@ class View
 			$i=1;
 			$name = $this->model->getModName ();
 			$spec=[[H_TYPE=>H_T_PLAIN,H_DEFAULT=> "Attrinutes of $name"]];
-			foreach ($this->model->getAttrList() as $attr){
+			foreach ($this->model->getAllAttr() as $attr){
 				$spec[$i]=[H_TYPE=>H_T_LIST,H_ARG=>[
 						[V_VIEW =>[V_ATTR => $attr, V_PROP => V_P_NAME]],
 						[H_TYPE=>H_T_LIST,H_ARG=>[[V_VIEW =>[V_ATTR => $attr, V_PROP => V_P_LBL ]],
