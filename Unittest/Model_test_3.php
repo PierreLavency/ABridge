@@ -7,7 +7,9 @@ require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
 $z=new unitTest($logName);
 
-$x=new Model("Nohandler");
+$x=new Model("students");
+
+
 $r=$x->getModName() ;
 	// logging result
 	$xs = "$r=..->getModName() ;";

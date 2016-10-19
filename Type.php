@@ -29,6 +29,9 @@
 
 	function checkType ($X,$type) {
 		switch($type) {
+			case M_TMSTP:
+				return is_string($X);   // to be developed !!
+				break; 
 			case M_INT:
 				return is_int($X);
 				break; 

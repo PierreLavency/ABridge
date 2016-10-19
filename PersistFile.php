@@ -2,7 +2,7 @@
 <?php
 
 class fileBase{
-	public  $filePath ='C:\Users\pierr\ABridge\Datastore\\';
+	protected $filePath ='C:\Users\pierr\ABridge\Datastore\\';
 	protected  $objects=[];
 	
 	function  __construct($id= "defaultFileName.txt" ) {
@@ -48,9 +48,11 @@ class fileBase{
 	
 	public function newObj($Model, $Values) {
 		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
-		$id = $this->objects[$Model][0]["lastId"];
+		$meta=$id = $this->objects[$Model][0];
+		$id = $meta["lastId"];
 		$this->objects[$Model][$id] = $Values;
- 		$this->objects[$Model][0]=["lastId"=>($id+1)];
+		$meta["lastId"]=$id+1;
+ 		$this->objects[$Model][0]=$meta;
 		return $id;
 	}
 

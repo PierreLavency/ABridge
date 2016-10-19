@@ -63,7 +63,7 @@ class Model {
 
 
 	public function getAllAttrTyp () {
-		return $this->typ_lst;        	
+		return $this->attr_typ;        	
    	}
 
 	public function getAllVal () {
@@ -127,15 +127,9 @@ class Model {
     }
 
 	private function setValNoCheck ($attr,$val) {
-		$x= $this->existsAttr ($attr);
-		if ($x) {
-			$this->attr_val[$attr]=$val;
-			$x=$val;
-			return $x;
-		}
-		$line = E_ERC002.':'.$attr; 
-		$this->errLog->logLine($line);  
-        return 0;
+		if (! $this->existsAttr ($attr)) {$line = E_ERC002.':'.$attr;$this->errLog->logLine($line);return 0;}
+		$this->attr_val[$attr]=$val;
+		return $val;
 	}
 	
 	public function setTyp ($attr,$typ) {
@@ -145,8 +139,9 @@ class Model {
 	    return $typ;
 	}
 
-	public function setVal ($Attr,$Val) {
-		if (in_array($Attr,$this->attrPredefList))	{$this->errLog->logLine(E_ERC001.':'.$Attr);return 0;};
+	public function setVal ($Attr,$Val,$check=true) {
+		if (in_array($Attr,$this->attrPredefList) and $check){
+												$this->errLog->logLine(E_ERC001.':'.$Attr);return 0;};
 		$type=$this->getTyp($Attr);
 		if (! checkType($Val,$type))				{$this->errLog->logLine(E_ERC005.':'.$Val.':'.$type) ;return 0;}
 		return ($this->setValNoCheck ($Attr,$Val));
