@@ -11,5 +11,6 @@ require_once("Unittest\View_test.php");
 require_once("Unittest\Model_test_1.php"); 
 require_once("Unittest\Model_test_2.php"); 
 
-require_once("Unittest\Model_test_3.php"); 
+
+require_once("Unittest\PersistFile_test_1.php"); 
 ?>

@@ -5,7 +5,7 @@
 require_once("Model.php"); 
 require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
-$z=new unitTest($logName,1);
+$z=new unitTest($logName);
 
 $x=new Model("Nohandler");
 $r=$x->getModName() ;

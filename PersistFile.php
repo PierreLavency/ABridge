@@ -3,7 +3,7 @@
 
 class fileBase{
 	public  $filePath ='C:\Users\pierr\ABridge\Datastore\\';
-	public  $objects;
+	protected  $objects=[];
 	
 	function  __construct($id= "defaultFileName.txt" ) {
 		$this->fileName = $this->filePath . $id;
@@ -19,12 +19,33 @@ class fileBase{
 		return $r;
 	}
 
-	public function newMod($Model) {
+	public function newMod($Model,$Meta=[]) {
 		if (array_key_exists($Model,$this->objects)) {return 0;}; 
-		$this->objects[$Model][0] = ["lastId"=>1];
+		$Meta['lastId']=1;
+		$this->objects[$Model][0] = $Meta;
 		return $Model;
 	}	
-
+	public function getMod($Model) {
+		if (! array_key_exists($Model,$this->objects)) {return 0;};
+		$Meta = $this->objects[$Model][0] ;
+		unset($Meta['lastId']);
+		return $Meta;
+	}
+	
+	public function putMod($Model,$Meta) {
+		if (! array_key_exists($Model,$this->objects)) {return 0;};
+		$id = $this->objects[$Model][0]['lastId'] ;
+		$Meta['lastId']=$id;
+		$this->objects[$Model][0] = $Meta;
+		return $Meta;
+	}
+	
+	public function delMod($Model) {
+		if (! array_key_exists($Model,$this->objects)) {return 0;};
+        unset($this->objects[$Model]);
+		return true;	
+	}
+	
 	public function newObj($Model, $Values) {
 		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
 		$id = $this->objects[$Model][0]["lastId"];

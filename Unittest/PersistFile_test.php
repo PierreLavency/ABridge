@@ -12,16 +12,22 @@ $test = [
 	"ERC" => [0=>["lastId"=>3],1=>["CODE"=> "001", "SEVERITY"=> 1], 2 => ["CODE"=> "002", "SEVERITY"=> 2] ], 
 	];
 
+$test1=['CODE'=> '001', 'SEVERITY'=> 1];
+$test2=['CODE'=> '002', 'SEVERITY'=> 2];
+$test3=['CODE'=> '001', 'SEVERITY'=> 0];
+	
 // saving 
-if ($show) {print_r($test);echo"<br>";}
-
-
 $x = new fileBase();
-									$line = "x = new fileBase();";
-									$z->logLine($line);
-$x->objects = $test;
-									$line = "x->objects = test;";
-									$z->logLine($line);
+
+$res=$x->newMod('ERC');
+	$line = "$res=x->newMod('ERC')"; $z->logLine($line);
+
+$id1=$x->newObj('ERC',$test1);
+	$line = "$id1=x->newObj('ERC',test1);"; $z->logLine($line);
+
+$id2=$x->newObj('ERC',$test2);
+	$line = "$id2=x->newObj('ERC',test2);"; $z->logLine($line);
+	
 $r = $x->save();
 									$line = "$r = x->save();";
 									$z->logLine($line);
@@ -32,7 +38,7 @@ $y->load();
 									$line = "y->load();";
 									$z->logLine($line);
 
-if ($show) {print_r($y->objects);echo "<br/>";}
+
 
 
 //select
@@ -78,9 +84,6 @@ if ($show) {
 	print_r($erc);
 	echo "<br/>";
 
-	print_r($y->objects);
-	echo "<br/>";
-
 // deleting 
 
 	echo "testing delete";
@@ -102,8 +105,7 @@ $r=$y->delObj('ERC',2);
 
 
 if ($show) {								
-	print_r($y->objects);
-	echo "<br/>";
+
 
 	// creating
 
@@ -117,10 +119,6 @@ $id = $y->newObj('ERC',$erc);
 
 
 									
-if ($show) {	
-	print_r($y->objects);
-	echo "<br/>";
-}
 $r=implode(' , ',$erc = $y->getObj('ERC',$id));
 									$line = "$r=implode(' , ',erc = y->getObj('ERC',$id));";
 									$z->logLine($line);
@@ -161,10 +159,6 @@ $r=$y->newMod('ERCode');
 									$z->logLine($line);
 
 									
-if ($show){
-	print_r($y->objects);
-	echo "<br/>";
-}
 
 $id = $y->newObj('ERCode',$erc);
 									$line = "$id = y->newObj('ERCode',erc);";
@@ -201,8 +195,6 @@ if ($show){
 	echo "<br/>";
 
 
-	print_r($y->objects);
-	echo "<br/>";
 }
 
 $r=implode (' , ',$a = $y->allAttrVal('ERC','CODE'));
