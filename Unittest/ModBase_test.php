@@ -7,7 +7,10 @@ $show = 0;
 require_once("ModBase.php"); 
 
 // create save and get
-$pm = new ModBase();
+$s=getBaseHandler ('fileBase','student_test');
+	$line = "s=getBaseHandler ('fileBase','student_test');"; $z->logLine($line);
+	
+$pm = new ModBase($s);
 
 $mod = new Model('students');
 
@@ -29,6 +32,7 @@ $attr_lst = $mod->getAllAttr();
 $typ_lst = $mod->getAllAttrTyp();
 	$line = "typ_lst = mod->getAllAttr();"; $z->logLine($line);
 
+	
 $res=$pm->saveMod($mod);
 	$line = "$res=pm->saveMod(mod);"; $z->logLine($line);
 
@@ -64,7 +68,7 @@ $res3 = $ins->setVal('tel',123);
 	$line = "$res3 = ins->setVal('tel',123);"; $z->logLine($line);
 
 $id = $pm->saveObj($ins);
-	$line = "$id = pm->saveModObj(ins)"; $z->logLine($line);
+	$line = "$id = pm->saveObj(ins);"; $z->logLine($line);
 
 $r = $ins-> getErrLog ();
 $z->includeLog($r);	
@@ -73,7 +77,7 @@ $z->includeLog($r);
 $ins = new Model('students',$id);
 
 $res=$pm->restoreMod($ins);
-	$line = "$res=pm -> initMod(ins);"; $z->logLine($line);
+	$line = "$res=pm->restoreMod(ins);"; $z->logLine($line);
 	
 $res=$pm->restoreObj($ins);
 
@@ -91,13 +95,62 @@ $t = ($res2 == $re2);
 $t = ($res3 == $re3);
 	$line = "$t = (res3 == re3);;"; $z->logLine($line);
 
+$res1 = $ins->setVal('name','lavency');
+	$line = "$res1 = ins->setVal('name','lavency');"; $z->logLine($line);
+
 $r = $ins-> getErrLog ();
 $z->includeLog($r);	
 
+$id = $pm->saveObj($ins);
+	$line = "$id = pm->saveModObj(ins)"; $z->logLine($line);
 
+$ins = new Model('students',$id);
+$res=$pm->restoreMod($ins);
+	$line = "$res=pm->restoreMod(ins);"; $z->logLine($line);
+	
+$res=$pm->restoreObj($ins);
+	$line = "$res=pm->restoreObj(ins);"; $z->logLine($line);
 
+$re1  = $ins->getVal('name');
+	$line = "$re1  = ins->getVal('name');"; $z->logLine($line);
+	
+$t = ($res1 == $re1);
+	$line = "$t = ($res1 == $re1);"; $z->logLine($line);
 
+$res1 = $ins->setVal('name','Lavency');
+	$line = "$res1 = ins->setVal('name','Lavency');"; $z->logLine($line);
 
+$r = $ins-> getErrLog ();
+$z->includeLog($r);	
+
+$id = $pm->saveObj($ins);
+	$line = "$id = pm->saveModObj(ins)"; $z->logLine($line);
+
+$s->save();
+	$line = "s->save();"; $z->logLine($line);
+	
+$s->load();
+	$line = "s->load();"; $z->logLine($line);
+
+$ins = new Model('students',$id);
+$res=$pm->restoreMod($ins);
+	$line = "$res=pm->restoreMod(ins);"; $z->logLine($line);
+$res=$pm->restoreObj($ins);
+	$line = "$res=pm->restoreObj(ins);"; $z->logLine($line);
+	
+$re1  = $ins->getVal('name');
+$re2  = $ins->getVal('surname');
+$re3  = $ins->getVal('tel');
+
+$t = ($res1 == $re1);
+	$line = "$t = ($res1 == $re1);"; $z->logLine($line);
+
+$t = ($res2 == $re2);
+	$line = "$t = ($res2 == $re2);"; $z->logLine($line);
+
+$t = ($res3 == $re3);
+	$line = "$t = ($res3 == $re3);;"; $z->logLine($line);
+	
 $z->save();
 
 ?>

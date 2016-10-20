@@ -126,7 +126,7 @@ class Model {
     }
 
 	private function setValNoCheck ($attr,$val) {
-		if (! $this->existsAttr ($attr)) {$line = E_ERC002.':'.$attr;$this->errLog->logLine($line);return 0;}
+		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
 		$this->attr_val[$attr]=$val;
 		return $val;
 	}
@@ -142,7 +142,7 @@ class Model {
 		if (in_array($Attr,$this->attrPredefList) and $check){
 												$this->errLog->logLine(E_ERC001.':'.$Attr);return 0;};
 		$type=$this->getTyp($Attr);
-		if (! checkType($Val,$type))				{$this->errLog->logLine(E_ERC005.':'.$Val.':'.$type) ;return 0;}
+		if (! checkType($Val,$type))			{$this->errLog->logLine(E_ERC005.':'.$Val.':'.$type) ;return 0;}
 		return ($this->setValNoCheck ($Attr,$Val));
     }
 

@@ -6,9 +6,13 @@
 
 		private $Base;
 		
-		function __construct() {
-			$this->Base=getHandler('file_persist');
-			
+		function __construct($base=0) {
+			if ($base) {
+				$this->Base=$base;
+			}
+			else {
+				$this->Base=getBaseHandler('fileBase');
+			}
 		}
 		
 		public function saveMod($mod) {
@@ -41,17 +45,19 @@
 			if ($id == 0) {
 				return ($this->Base->newObj($name,$values)); 				
 			}
-			return ($this->Base->putObj($name,$values)); 
+			return ($this->Base->putObj($name,$id,$values)); 
 		}
 
 		public function restoreObj($mod) {
 			$name = $mod->getModName();
 			$id = $mod->getId();
+			if ($id==0) {return 0;}
 			$values = $this->Base->getObj($name, $id); 
 			if (!$values) {return 0;}
 			foreach($values as $attr=>$val) {
 				$mod->setVal($attr,$val,false);
-			}
+			};
+			return true;
 		}
 
 	}

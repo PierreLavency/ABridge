@@ -3,11 +3,13 @@
 
 class FileBase{
 	protected $filePath ='C:\Users\pierr\ABridge\Datastore\\';
-	protected  $objects=[];
+	protected $objects=[];
+	protected $fileName;
 	
-	function  __construct($id= "defaultFileName.txt" ) {
-		$this->fileName = $this->filePath . $id;
+	function  __construct($id= "defaultFileName" ) {
+		$this->fileName = $this->filePath . $id .'.txt';
 	}
+
 	public function load() {
         $file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
 		$this->objects = unserialize($file);
