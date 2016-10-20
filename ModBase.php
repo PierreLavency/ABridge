@@ -18,7 +18,7 @@
 			return ($this->Base->newMod($name,$meta));
 		}
 		
-		public function initMod($mod) {
+		public function restoreMod($mod) {
 			$name = $mod->getModName();
 			$values = $this->Base->getMod($name); 
 			if (!$values) {return 0;}
@@ -34,7 +34,7 @@
 			return true; 	
 		}
 
-		public function saveModObj($mod) {
+		public function saveObj($mod) {
 			$name = $mod->getModName();
 			$values =$mod->getAllVal();
 			$id = $mod->getId();
@@ -44,7 +44,7 @@
 			return ($this->Base->putObj($name,$values)); 
 		}
 
-		public function initModObj($mod) {
+		public function restoreObj($mod) {
 			$name = $mod->getModName();
 			$id = $mod->getId();
 			$values = $this->Base->getObj($name, $id); 

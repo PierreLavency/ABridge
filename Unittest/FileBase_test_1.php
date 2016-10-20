@@ -4,7 +4,7 @@ $logName = basename(__FILE__, ".php");
 $z=new unitTest($logName);
 $show = 0;
 
-require_once("PersistFile.php"); 
+require_once("FileBase.php"); 
 
 $test1=['CODE'=> '001', 'SEVERITY'=> 1];
 $test2=['CODE'=> '002', 'SEVERITY'=> 2];
@@ -12,7 +12,7 @@ $test3=['CODE'=> '001', 'SEVERITY'=> 0];
 
 // create save and get
 
-$x = new fileBase();
+$x = new FileBase();
 
 $res=$x->newMod('ERC');
 	$line = "$res=x->newMod('ERC')"; $z->logLine($line);
@@ -27,7 +27,7 @@ $id2=$x->newObj('ERC',$test2);
 $res=$x->save();
 	$line = "$res=x->save();"; $z->logLine($line);
 
-$y= new fileBase();
+$y= new FileBase();
 
 $y->load();
 
@@ -51,7 +51,7 @@ $res= $y->putObj('ERC',$id1,$test3);
 $res=$y->save();
 	$line = "$res=y->save();"; $z->logLine($line);
 
-$y = new fileBase();
+$y = new FileBase();
 
 $y->load();
 
@@ -70,7 +70,7 @@ $res=$y->delObj('ERC',$id2);
 $res=$y->save();
 	$line = "$res=y->save();"; $z->logLine($line);
 	
-$y = new fileBase();
+$y = new FileBase();
 
 $y->load();
 
@@ -85,7 +85,7 @@ $testm1= ['attr_lst'=>['CODE','SEVERITY'],'typ_lst'=>['CODE'=>'m_string','SEVERI
 
 // create save and get
 
-$x = new fileBase();
+$x = new FileBase();
 
 $res=$x->newMod('ERC2',$testm1);
 	$line = "$res=x->newMod('ERC2',testm1);"; $z->logLine($line);
@@ -93,7 +93,7 @@ $res=$x->newMod('ERC2',$testm1);
 $res=$x->save();
 	$line = "$res=x->save();"; $z->logLine($line);
 	
-$y = new fileBase();
+$y = new FileBase();
 
 $y->load();
 
@@ -111,7 +111,7 @@ $res=$y->delMod('ERC2');
 $res=$y->save();
 	$line = "$res=y->save();"; $z->logLine($line);
 
-$y = new fileBase();
+$y = new FileBase();
 
 $y->load();
 
@@ -128,7 +128,7 @@ $res=$y->putMod('ERC',$testm1);
 $res=$y->save();
 	$line = "$res=y->save();"; $z->logLine($line);
 	
-$y = new fileBase();
+$y = new FileBase();
 
 $y->load();
 

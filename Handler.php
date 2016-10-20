@@ -1,5 +1,5 @@
 <?php
-	require_once("PersistFile.php"); 
+	require_once("FileBase.php"); 
 	
 	
 	function getHandler ($X) {
@@ -42,14 +42,14 @@
 		}
 		public function getFileBase() {
 			if(is_null($this->fileBase)) {
-				$this->fileBase= new fileBase();  
+				$this->fileBase= new FileBase();  
 			}
 			return $this->fileBase;
 		}
 
 		public function runBase() {
 			if(is_null($this->runBase)) {
-				$this->runBase= new fileBase();  
+				$this->runBase= new FileBase();  
 			}
 			return $this->runBase;
 		}

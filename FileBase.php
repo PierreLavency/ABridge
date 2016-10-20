@@ -1,7 +1,7 @@
 
 <?php
 
-class fileBase{
+class FileBase{
 	protected $filePath ='C:\Users\pierr\ABridge\Datastore\\';
 	protected  $objects=[];
 	

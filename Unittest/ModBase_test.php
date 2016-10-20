@@ -4,7 +4,7 @@ $logName = basename(__FILE__, ".php");
 $z=new unitTest($logName);
 $show = 0;
 
-require_once("PersistMod.php"); 
+require_once("ModBase.php"); 
 
 // create save and get
 $pm = new ModBase();
@@ -38,7 +38,7 @@ $z->includeLog($r);
 	
 $ins = new Model('students');
 
-$res=$pm->initMod($ins);
+$res=$pm->restoreMod($ins);
 	$line = "$res=pm -> initMod(ins);"; $z->logLine($line);
 
 $attr_lst1 = $ins->getAllAttr();
@@ -62,7 +62,8 @@ $res = $ins->setVal('tel','lavency');
 	$line = "$res = ins->setVal('tel','lavency');"; $z->logLine($line);
 $res3 = $ins->setVal('tel',123);
 	$line = "$res3 = ins->setVal('tel',123);"; $z->logLine($line);
-$id = $pm->saveModObj($ins);
+
+$id = $pm->saveObj($ins);
 	$line = "$id = pm->saveModObj(ins)"; $z->logLine($line);
 
 $r = $ins-> getErrLog ();
@@ -71,10 +72,10 @@ $z->includeLog($r);
 
 $ins = new Model('students',$id);
 
-$res=$pm->initMod($ins);
+$res=$pm->restoreMod($ins);
 	$line = "$res=pm -> initMod(ins);"; $z->logLine($line);
 	
-$res=$pm->initModObj($ins);
+$res=$pm->restoreObj($ins);
 
 
 $re1  = $ins->getVal('name');
@@ -92,6 +93,10 @@ $t = ($res3 == $re3);
 
 $r = $ins-> getErrLog ();
 $z->includeLog($r);	
+
+
+
+
 
 $z->save();
 
