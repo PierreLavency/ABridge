@@ -1,13 +1,13 @@
 <?php
 require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
-$z=new unitTest($logName,1);
+$z=new unitTest($logName);
 $show = 0;
 
 require_once("PersistMod.php"); 
 
 // create save and get
-$pm = new PersistMod();
+$pm = new ModBase();
 
 $mod = new Model('students');
 

@@ -23,7 +23,6 @@ class Model {
 	public $stateHdlr=0;
 	
 	// constructors
-
 	
 	function __construct($name='Model',$id=0) {
 

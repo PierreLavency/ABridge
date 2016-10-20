@@ -2,7 +2,7 @@
 	require_once("Handler.php"); 
 	require_once("Model.php"); 
 	
-	class PersistMod {
+	class ModBase {
 
 		private $Base;
 		
@@ -26,8 +26,10 @@
 			$attrtype=$values['typ_lst'];
 			$predef = $mod->getPreDefAttr();
 			foreach($attrlist as $attr) {
-				$typ= $attrtype[$attr];
-				$mod->addAttr($attr,$typ,false);
+				if (! in_array ($attr,$predef)) {
+					$typ= $attrtype[$attr];
+					$mod->addAttr($attr,$typ,false);			
+				}
 			}
 			return true; 	
 		}
@@ -35,7 +37,11 @@
 		public function saveModObj($mod) {
 			$name = $mod->getModName();
 			$values =$mod->getAllVal();
-			return ($this->Base->NewObj($name,$values)); 
+			$id = $mod->getId();
+			if ($id == 0) {
+				return ($this->Base->newObj($name,$values)); 				
+			}
+			return ($this->Base->putObj($name,$values)); 
 		}
 
 		public function initModObj($mod) {
