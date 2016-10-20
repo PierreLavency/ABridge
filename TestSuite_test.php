@@ -11,6 +11,7 @@ require_once("Unittest\View_test.php");
 require_once("Unittest\Model_test_1.php"); 
 require_once("Unittest\Model_test_2.php"); 
 require_once("Unittest\FileBase_test_1.php"); 
-
 require_once("Unittest\ModBase_test.php");
+
+require_once("Unittest\Model_test_3.php"); // must be after ModBase !!
 ?>
