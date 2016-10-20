@@ -13,6 +13,7 @@ class FileBase{
 	public function load() {
         $file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
 		$this->objects = unserialize($file);
+		return true;
 	}
 
 	public function save() {

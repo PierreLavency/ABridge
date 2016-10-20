@@ -9,6 +9,7 @@ require_once("Logger.php");
 require_once("TypeConstant.php");
 require_once("ErrorConstant.php");
 require_once("Type.php");
+require_once("Handler.php");
 
 class Model {
 	// property
@@ -43,6 +44,12 @@ class Model {
 		$this->setValNoCheck ("utstp",date(TSTP_F));
 		$logname = $name.'_ErrLog';
 		$this->errLog= new Logger($logname);
+		$x=getStateHandler ($name);
+		$this->stateHdlr=$x;
+		if ($this->stateHdlr) {
+			$res= $x->restoreMod($this);
+			if ($res) {$x-> restoreObj($this);}
+		}
 	}
 
 	public function getErrLog () {
@@ -148,6 +155,8 @@ class Model {
 
 	public function save (){
 		if (! $this->stateHdlr) {$this->errLog->logLine(E_ERC006);return 0;}
+		$res=$this->stateHdlr->saveObj($this);
+		return $res;
 	}
 
 }

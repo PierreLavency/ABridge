@@ -7,8 +7,8 @@ $show = 0;
 require_once("ModBase.php"); 
 
 // create save and get
-$s=getBaseHandler ('fileBase','student_test');
-	$line = "s=getBaseHandler ('fileBase','student_test');"; $z->logLine($line);
+$s=getBaseHandler ('fileBase','students_test');
+	$line = "s=getBaseHandler ('fileBase','students_test');"; $z->logLine($line);
 	
 $pm = new ModBase($s);
 
