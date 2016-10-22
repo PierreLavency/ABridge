@@ -57,7 +57,7 @@
 			foreach($values as $attr=>$val) {
 				$mod->setVal($attr,$val,false);
 			};
-			return true;
+			return $id;
 		}
 
 	}
