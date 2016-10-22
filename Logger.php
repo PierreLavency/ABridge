@@ -4,7 +4,7 @@
 class Logger{
 
 	public $lines = [];
-	public $filePath ='C:\Users\pierr\ABridge\Datastore\\';
+	public $filePath ='C:\Users\pierr\ABridge\Logstore\\';
 	public $fileName;
 	public $name;
 	

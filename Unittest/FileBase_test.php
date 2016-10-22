@@ -17,7 +17,7 @@ $test2=['CODE'=> '002', 'SEVERITY'=> 2];
 $test3=['CODE'=> '001', 'SEVERITY'=> 0];
 	
 // saving 
-$x = new FileBase();
+$x = new FileBase($logName);
 
 $res=$x->newMod('ERC');
 	$line = "$res=x->newMod('ERC')"; $z->logLine($line);
@@ -31,8 +31,8 @@ $id2=$x->newObj('ERC',$test2);
 $r = $x->save();
 									$line = "$r = x->save();";
 									$z->logLine($line);
-$y = new FileBase();
-									$line = "y = new FileBase();";
+$y = new FileBase($logName);
+									$line = "y = new FileBase($logName);";
 									$z->logLine($line);
 $y->load();
 									$line = "y->load();";
@@ -70,8 +70,8 @@ $r=$y->save();
 									$line = "$r=y->save();";
 									$z->logLine($line);
 
-$y = new FileBase();
-									$line = "y = new FileBase();";
+$y = new FileBase($logName);
+									$line = "y = new FileBase($logName);";
 									$z->logLine($line);
 $y->load();
 									$line = "y->load();";
@@ -132,8 +132,8 @@ $r=$y->save();
 									$line = "$r=y->save();";
 									$z->logLine($line);
 
-$y = new FileBase();
-									$line = "y = new FileBase();";
+$y = new FileBase($logName);
+									$line = "y = new FileBase($logName);";
 									$z->logLine($line);
 $y->load();
 									$line = "y->load();";
@@ -177,8 +177,8 @@ $r=$y->save();
 									$line = "$r=y->save();";
 									$z->logLine($line);
 
-$y = new FileBase();									
-									$line = "y = new FileBase();";
+$y = new FileBase($logName);									
+									$line = "y = new FileBase($logName);";
 									$z->logLine($line);
 
 $y->load();

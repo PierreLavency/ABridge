@@ -1,0 +1,26 @@
+a:7:{i:0;s:28:"Attribute1 = genFormElem(r,)";i:1;s:20:"A1 = genFormElem(r,)";i:2;s:19:"1 = genFormElem(r,)";i:3;s:23:"m_int = genFormElem(r,)";i:4;s:67:"<input type = "text" name = "A1" value = "1"  > 
+ = genFormElem(r,)";i:5;s:184:"<ul>  
+	<li>  
+Attribute1	</li>  
+	<li>  
+A1	</li>  
+	<li>  
+1	</li>  
+	<li>  
+m_int	</li>  
+	<li>  
+<input type = "text" name = "A1" value = "1"  > 
+	</li>  
+</ul>   = genFormElem(r,)";i:6;s:179:"<ul>  
+	<li>  
+Attribute1	</li>  
+	<li>  
+A1	</li>  
+	<li>  
+1	</li>  
+	<li>  
+m_int	</li>  
+	<li>  
+<input type = "text" name = "A1" value = "1"  > 
+	</li>  
+</ul>   = v->show();";}

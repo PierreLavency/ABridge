@@ -1,0 +1,53 @@
+a:13:{i:0;s:142:"<input type = "radio" name = "A"  value = "a1"  checked  > <br/>
+<input type = "radio" name = "A"  value = "a2"  > <br/>
+=genFormElem(test1,);";i:1;s:70:"<input type = "text" name = "A" value = "a1"  > 
+=genFormElem(test2,);";i:2;s:143:"<select name = "A"  > 
+	<option  value = "a1"  selected  > a1</option> 
+	<option  value = "a2"  > a2</option> 
+</select> 
+=genFormElem(test3,);";i:3;s:58:"<input type="submit" value="Submit">
+=genFormElem(test4,);";i:4;s:81:"<textarea name = "A"  cols="30"  rows="10"  > a1</textarea>
+=genFormElem(test5,);";i:5;s:81:"<textarea name = "A"  cols="50"  rows="10"  > a1</textarea>
+=genFormElem(test6,);";i:6;s:74:"<input type = "password" name = "A" value = "a1"  > 
+=genFormElem(test7,);";i:7;s:42:"this is a text string=genFormElem(test8,);";i:8;s:236:"<ul>  
+	<li>  
+<input type = "radio" name = "A"  value = "a1"  checked  > <br/>
+<input type = "radio" name = "A"  value = "a2"  > <br/>
+	</li>  
+	<li>  
+<input type = "text" name = "A" value = "a1"  > 
+	</li>  
+</ul>   = genList(test9,)";i:9;s:240:"<ul>  
+	<li>  
+<input type = "radio" name = "A"  value = "a1"  checked  > <br/>
+<input type = "radio" name = "A"  value = "a2"  > <br/>
+	</li>  
+	<li>  
+<input type = "text" name = "A" value = "a1"  > 
+	</li>  
+</ul>  =genFormElem(test10,);";i:10;s:15:"1 = (r1 == r); ";i:11;s:187:"<ul>  
+	<li>  
+<ul>  
+	<li>  
+this is a text string	</li>  
+	<li>  
+this is a text string	</li>  
+</ul>  	</li>  
+	<li>  
+this is another text string	</li>  
+</ul>  =genFormElem(test11,);";i:12;s:262:"<ul>  
+	<li>  
+<ul>  
+	<li>  
+this is a text string	</li>  
+	<li>  
+this is a text string	</li>  
+</ul>  	</li>  
+	<li>  
+<ul>  
+	<li>  
+this is another text string	</li>  
+	<li>  
+this is another text string	</li>  
+</ul>  	</li>  
+</ul>  =genFormElem(test12,);";}

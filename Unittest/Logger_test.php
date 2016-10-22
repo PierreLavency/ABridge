@@ -3,11 +3,11 @@
 require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
 $z=new unitTest($logName);
-
+$logName =$logName.'_test';
 
 // test run 
 
-$x = new Logger("test");
+$x = new Logger($logName);
 
 $s = "this is my first logged line";
 $r=$x->logLine ($s);
@@ -25,7 +25,7 @@ $r=$x->save();
 										$xs = "$r=...save();";
 										$z->logLine ($xs);
 
-$x = new Logger();
+$x = new Logger($logName);
 
 
 $s = "$c lines logged";
@@ -38,7 +38,7 @@ $r= $x->save();
 										$xs = "$r= ...save();";
 										$z->logLine ($xs);
 
-$x = new Logger("test");
+$x = new Logger($logName);
 
 $r = $x->load();
 										// logging result;

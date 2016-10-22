@@ -1,0 +1,1 @@
+a:7:{i:0;s:45:"1=... logLine (this is my first logged line);";i:1;s:46:"2=... logLine (this is my second logged line);";i:2;s:13:"87=...save();";i:3;s:30:"1=...logLine (3 lines logged);";i:4;s:14:"32= ...save();";i:5;s:45:"a:1:{i:0;s:14:"3 lines logged";} = ...load();";i:6;s:19:"1 = ...->logsize();";}

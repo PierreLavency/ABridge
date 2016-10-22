@@ -7,13 +7,17 @@ require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
 $z=new unitTest($logName);
 
-$db=getBaseHandler ('fileBase','students_test');
-	$line = "db=getBaseHandler ('fileBase','students_test');"; $z->logLine($line);
+$db=getBaseHandler ('fileBase','ModBase_test');
+	$line = "db=getBaseHandler ('fileBase','ModBase_test');"; $z->logLine($line);
 $db->load();
 	$line = "db->load();"; $z->logLine($line);
 
-$s=initStateHandler ('students','fileBase','students_test');
-	$line = "s=initStateHandler ('students','fileBase','students_test');"; $z->logLine($line);
+$s=initStateHandler ('students','fileBase','ModBase_test');
+	$line = "s=initStateHandler ('students','fileBase','ModBase_test');"; $z->logLine($line);
+
+
+
+
 	
 $x=new Model('students',1);
 
@@ -68,7 +72,7 @@ $db->save();
 	
 $z->save();
 
-/*
-$z->show();
-*/
+
+ // $z->show();
+
 ?>
