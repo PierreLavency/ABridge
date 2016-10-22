@@ -161,4 +161,6 @@ $t = ($res3 == $re3);
 
 $log->saveTest();
 
+// $log->showTest();
+
 ?>

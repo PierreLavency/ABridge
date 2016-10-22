@@ -44,11 +44,16 @@ class Model {
 		$this->setValNoCheck ("utstp",date(TSTP_F));
 		$logname = $name.'_ErrLog';
 		$this->errLog= new Logger($logname);
+		$x=0;
+		$idr=0;
 		$x=getStateHandler ($name);
-		$this->stateHdlr=$x;
-		if ($this->stateHdlr) {
-			$res= $x->restoreMod($this);
-			if ($res) {$x-> restoreObj($this);}
+		if ($x) {
+			$this->stateHdlr=$x; 
+			$x->restoreMod($this);
+			$idr =$x-> restoreObj($this);
+		}
+		if ($id != $idr){
+			$this->errLog->logLine(E_ERC007.':'.$id);
 		}
 	}
 
