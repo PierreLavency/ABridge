@@ -16,7 +16,7 @@ class FileBase{
 		return true;
 	}
 
-	public function save() {
+	public function commit() {
 		$file = serialize($this->objects);
         $r=file_put_contents($this->fileName,$file,FILE_USE_INCLUDE_PATH);
 		return $r;

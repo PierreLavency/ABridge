@@ -1,8 +1,14 @@
 <?php
 require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
+
 $z=new unitTest($logName);
+
 $show = true;
+
+$log->logLine('/* standalone test */');
+	
+/**************************************/
 
 require_once("GenHTML.php"); 
 
@@ -99,5 +105,5 @@ $r=genFormElem($test12,$show);
 										// logging result
 										$xs = "$r=genFormElem(test12,$show);";
 										$z->logLine ($xs);
-$z->save();
+$z->saveTest();
 ?>

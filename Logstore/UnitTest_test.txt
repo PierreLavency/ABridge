@@ -1,1 +1,1 @@
-a:1:{i:0;s:23:"1 = ...setVerbatim (1);";}
+a:2:{i:0;s:21:"/* standalone test */";i:1;s:23:"1 = ...setVerbatim (1);";}

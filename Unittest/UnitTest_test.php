@@ -1,13 +1,24 @@
 
 <?php
 	require_once("UnitTest.php");
+	
 	$logName = basename(__FILE__, ".php");
-	$x=new unitTest($logName);
 	
-	$r = $x->setVerbatim (1);
+	$log=new unitTest($logName);
+	
+	$log->logLine('/* standalone test */');
+	
+	/**************************************/
+	
+	$r = $log->setVerbatim (1);
 									$line = "$r = ...setVerbatim (1);";
-									$x->logLine($line);
+									$log->logLine($line);
 	
-	$x->save();
+
+	/**************************************/
 	
+	$log->saveTest();
+	
+//	$log->showTest();
+
 ?>

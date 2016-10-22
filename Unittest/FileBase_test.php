@@ -2,8 +2,17 @@
 <?php
 require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
-$z=new unitTest($logName);
+
+$log=new unitTest($logName);
+
+$log->logLine('/* standalone test */');
+
+$log->logLine('/* standalone test */');
+	
+/**************************************/
+
 $show = 0;
+
 
 require_once("FileBase.php"); 
 
@@ -20,23 +29,23 @@ $test3=['CODE'=> '001', 'SEVERITY'=> 0];
 $x = new FileBase($logName);
 
 $res=$x->newMod('ERC');
-	$line = "$res=x->newMod('ERC')"; $z->logLine($line);
+	$line = "$res=x->newMod('ERC')"; $log->logLine($line);
 
 $id1=$x->newObj('ERC',$test1);
-	$line = "$id1=x->newObj('ERC',test1);"; $z->logLine($line);
+	$line = "$id1=x->newObj('ERC',test1);"; $log->logLine($line);
 
 $id2=$x->newObj('ERC',$test2);
-	$line = "$id2=x->newObj('ERC',test2);"; $z->logLine($line);
+	$line = "$id2=x->newObj('ERC',test2);"; $log->logLine($line);
 	
-$r = $x->save();
+$r = $x->commit();
 									$line = "$r = x->save();";
-									$z->logLine($line);
+									$log->logLine($line);
 $y = new FileBase($logName);
 									$line = "y = new FileBase($logName);";
-									$z->logLine($line);
+									$log->logLine($line);
 $y->load();
 									$line = "y->load();";
-									$z->logLine($line);
+									$log->logLine($line);
 
 
 
@@ -49,7 +58,7 @@ if ($show) {
 
 $r = implode (' , ',$erc= $x->getObj('ERC',1));
 									$line = "$r = implode (' , ',erc= x->getObj('ERC',1));";
-									$z->logLine($line);
+									$log->logLine($line);
 
 if ($show) {
 print_r($erc);
@@ -65,21 +74,21 @@ if ($show){
 $erc["SEVERITY"] = 0;
 $erc = $y->putObj('ERC',1,$erc);
 									$line = "$erc = y->putObj('ERC',1,erc);";
-									$z->logLine($line);
-$r=$y->save();
+									$log->logLine($line);
+$r=$y->commit();
 									$line = "$r=y->save();";
-									$z->logLine($line);
+									$log->logLine($line);
 
 $y = new FileBase($logName);
 									$line = "y = new FileBase($logName);";
-									$z->logLine($line);
+									$log->logLine($line);
 $y->load();
 									$line = "y->load();";
-									$z->logLine($line);
+									$log->logLine($line);
 
 $r = implode (' , ',$erc= $y->getObj('ERC',1));
 									$line = "$r = implode (' , ',erc= y->getObj('ERC',1))";
-									$z->logLine($line);
+									$log->logLine($line);
 if ($show) {
 	print_r($erc);
 	echo "<br/>";
@@ -92,7 +101,7 @@ if ($show) {
 
 $r=implode(' , ',$erc = $y->getObj('ERC',2));
 									$line = "$r=implode(' , ',erc = y->getObj('ERC',2));";
-									$z->logLine($line);
+									$log->logLine($line);
 
 if ($show) {	
 	print_r($erc);
@@ -101,7 +110,7 @@ if ($show) {
 
 $r=$y->delObj('ERC',2);
 									$line = "$r=y->delObj('ERC',2);";
-									$z->logLine($line);
+									$log->logLine($line);
 
 
 if ($show) {								
@@ -115,33 +124,33 @@ if ($show) {
 
 $id = $y->newObj('ERC',$erc);
 									$line = "$id = y->newObj('ERC',erc);";
-									$z->logLine($line);
+									$log->logLine($line);
 
 
 									
 $r=implode(' , ',$erc = $y->getObj('ERC',$id));
 									$line = "$r=implode(' , ',erc = y->getObj('ERC',$id));";
-									$z->logLine($line);
+									$log->logLine($line);
 
 if ($show) {
 	print_r($erc);
 	echo "<br/>";
 }
 
-$r=$y->save();
+$r=$y->commit();
 									$line = "$r=y->save();";
-									$z->logLine($line);
+									$log->logLine($line);
 
 $y = new FileBase($logName);
 									$line = "y = new FileBase($logName);";
-									$z->logLine($line);
+									$log->logLine($line);
 $y->load();
 									$line = "y->load();";
-									$z->logLine($line);
+									$log->logLine($line);
 
 $r=implode(' , ',$erc = $y->getObj('ERC',$id));
 									$line = "$r=implode(' , ',erc = y->getObj('ERC',$id));";
-									$z->logLine($line);
+									$log->logLine($line);
 
 if ($show){
 
@@ -156,37 +165,37 @@ if ($show){
 
 $r=$y->newMod('ERCode');
 									$line = "$r=y->newMod('ERCode');";
-									$z->logLine($line);
+									$log->logLine($line);
 
 									
 
 $id = $y->newObj('ERCode',$erc);
 									$line = "$id = y->newObj('ERCode',erc);";
-									$z->logLine($line);
+									$log->logLine($line);
 
 $r=implode(' , ',$erc = $y->getObj('ERCode',$id));
 									$line = "$r=implode(' , ',erc = y->getObj('ERCode',$id));";
-									$z->logLine($line);
+									$log->logLine($line);
 
 if ($show){
 	print_r($erc);
 	echo "<br/>";
 }
 
-$r=$y->save();
+$r=$y->commit();
 									$line = "$r=y->save();";
-									$z->logLine($line);
+									$log->logLine($line);
 
 $y = new FileBase($logName);									
 									$line = "y = new FileBase($logName);";
-									$z->logLine($line);
+									$log->logLine($line);
 
 $y->load();
 									$line = "y->load();";
-									$z->logLine($line);
+									$log->logLine($line);
 $r=implode(' , ',$erc = $y->getObj('ERCode',$id));
 									$line = "$r=implode(' , ',erc = y->getObj('ERCode',$id));";
-									$z->logLine($line);
+									$log->logLine($line);
 if ($show){
 	print_r($erc);
 	echo "<br/>";
@@ -199,12 +208,12 @@ if ($show){
 
 $r=implode (' , ',$a = $y->allAttrVal('ERC','CODE'));
 									$line = "$r=implode (' , ',a = y->allAttrVal('ERC','CODE'));;";
-									$z->logLine($line);
+									$log->logLine($line);
 if ($show){
 	print_r($a);
 	echo "<br/>";
 }
 
-$z->save();
+$log->saveTest();
 
 ?>

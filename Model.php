@@ -82,39 +82,29 @@ class Model {
 
 	public function addAttr ($attr,$typ=M_STRING) {
 		$x= $this->existsAttr ($attr);
-		if (! $x) {
-			$this->attr_lst[]=$attr;
-			$r=$this->setTyp ($attr,$typ);
-			if ($r){return $attr;}
-			return $r;
+		if ($x) {$this->errLog->logLine(E_ERC003.':'.$attr);return 0;}
+		$this->attr_lst[]=$attr;
+		$r=$this->setTyp ($attr,$typ);
+		if ($r){return $attr;}
+		return $r;
 		}
-		$line = E_ERC003.':'.$attr; 
-		$this->errLog->logLine($line);     	
-        return 0;
-	}
 
 	public function delAttr ($attr) {
 		$x= $this->existsAttr ($attr);
-		if ($x) {
-			if (in_array($attr,$this->attrPredefList)) {
-				$line = E_ERC001.':'.$attr; 
-				$this->errLog->logLine($line);
-				return 0;
-			}
-			unset($this->attr_lst[$attr]);
-			unset($this->attr_typ[$attr]);
-		}
-		$line = E_ERC002.':'.$attr; 
-		$this->errLog->logLine($line);     	
-        return $x;
+		if (!$x) 								{$this->errLog->logLine( E_ERC002.':'.$attr);return 0;}
+		if (in_array($attr,$this->attrPredefList)) 
+												{$this->errLog->logLine(E_ERC001.':'.$attr);return 0;}
+		unset($this->attr_lst[$attr]);
+		unset($this->attr_typ[$attr]);
+		return $attr;
 	}
 
 	public function getVal ($attr) {
+		$x= $this->existsAttr ($attr);
+		if (!$x) 								{$this->errLog->logLine( E_ERC002.':'.$attr);return 0;}
 		foreach($this->attr_val as $x => $val) {
 			if ($x==$attr) {return $val;}
-		}   
-		$line = E_ERC002.':'.$attr; 
-		$this->errLog->logLine($line);     	
+		}    	
 		return NULL;        	
    	}
 
@@ -122,8 +112,7 @@ class Model {
 		foreach($this->attr_typ as $x => $typ) {
 			if ($x==$attr) {return $typ;}
 		}        
-		$line = E_ERC002.':'.$attr; 
-		$this->errLog->logLine($line);     			
+		$this->errLog->logLine(E_ERC002.':'.$attr);     			
 		return NULL;
     }
 
@@ -146,19 +135,24 @@ class Model {
 	}
 
 	public function setVal ($Attr,$Val,$check=true) {
-		if (in_array($Attr,$this->attrPredefList) and $check){
-												$this->errLog->logLine(E_ERC001.':'.$Attr);return 0;};
+		if (in_array($Attr,$this->attrPredefList) 
+			and $check){						$this->errLog->logLine(E_ERC001.':'.$Attr);return 0;};
 		$type=$this->getTyp($Attr);
 		if (! checkType($Val,$type))			{$this->errLog->logLine(E_ERC005.':'.$Val.':'.$type) ;return 0;}
 		return ($this->setValNoCheck ($Attr,$Val));
     }
 
 	public function save (){
-		if (! $this->stateHdlr) {$this->errLog->logLine(E_ERC006);return 0;}
+		if (! $this->stateHdlr) 				{$this->errLog->logLine(E_ERC006);return 0;}
 		$res=$this->stateHdlr->saveObj($this);
 		return $res;
 	}
 
+	public function saveMod (){
+		if (! $this->stateHdlr) 				{$this->errLog->logLine(E_ERC006);return 0;}
+		$res=$this->stateHdlr->saveMod($this);
+		return $res;
+	}
 }
 
 ?>

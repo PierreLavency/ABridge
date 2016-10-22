@@ -31,7 +31,7 @@
 			return $level;
 		}
 		
-		function show() {
+		function showTest() {
 			$this->runLogger->show();
 		}
 		
@@ -39,7 +39,7 @@
 			return $this->runLogger->includeLog($log);
 		}
 		
-		function save() {
+		function saveTest() {
 			$result = "Test : " . $this->logName . " on : " . date("d-m-Y H:i:s") . " result :";
 			if ($this->init){
 				$r = $this->testLogger->save();

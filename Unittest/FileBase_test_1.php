@@ -1,8 +1,14 @@
 <?php
 require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
+
 $z=new unitTest($logName);
+
+$z->logLine('/* standalone test */');
+
 $show = 0;
+
+/**************************************/
 
 require_once("FileBase.php"); 
 
@@ -24,8 +30,8 @@ $id2=$x->newObj('ERC',$test2);
 	$line = "$id2=x->newObj('ERC',test2);"; $z->logLine($line);
 
 	
-$res=$x->save();
-	$line = "$res=x->save();"; $z->logLine($line);
+$res=$x->commit();
+	$line = "$res=x->commit();"; $z->logLine($line);
 
 $y= new FileBase($logName);
 
@@ -48,8 +54,8 @@ $t = ($res2 == $test2);
 $res= $y->putObj('ERC',$id1,$test3);
 	$line = "$res= y->putObj('ERC',$id1,test3);"; $z->logLine($line);
 
-$res=$y->save();
-	$line = "$res=y->save();"; $z->logLine($line);
+$res=$y->commit();
+	$line = "$res=y->commit();"; $z->logLine($line);
 
 $y = new FileBase($logName);
 
@@ -67,8 +73,8 @@ $t = ($res3 == $test3);
 $res=$y->delObj('ERC',$id2);
 	$line = "$res=y->delObj('ERC',$id2);"; $z->logLine($line);
 
-$res=$y->save();
-	$line = "$res=y->save();"; $z->logLine($line);
+$res=$y->commit();
+	$line = "$res=y->commit();"; $z->logLine($line);
 	
 $y = new FileBase($logName);
 
@@ -90,8 +96,8 @@ $x = new FileBase($logName);
 $res=$x->newMod('ERC2',$testm1);
 	$line = "$res=x->newMod('ERC2',testm1);"; $z->logLine($line);
 	
-$res=$x->save();
-	$line = "$res=x->save();"; $z->logLine($line);
+$res=$x->commit();
+	$line = "$res=x->commit();"; $z->logLine($line);
 	
 $y = new FileBase($logName);
 
@@ -108,8 +114,8 @@ $t=($testm1 == $res1);
 $res=$y->delMod('ERC2');
 	$line = "$res=y->delMod('ERC2');"; $z->logLine($line);
 	
-$res=$y->save();
-	$line = "$res=y->save();"; $z->logLine($line);
+$res=$y->commit();
+	$line = "$res=y->commit();"; $z->logLine($line);
 
 $y = new FileBase($logName);
 
@@ -125,8 +131,8 @@ $res=$y->newMod('ERC');
 $res=$y->putMod('ERC',$testm1);
 	$line = "res=y->putMod('ERC',testm1);"; $z->logLine($line);
 
-$res=$y->save();
-	$line = "$res=y->save();"; $z->logLine($line);
+$res=$y->commit();
+	$line = "$res=y->commit();"; $z->logLine($line);
 	
 $y = new FileBase($logName);
 
@@ -139,6 +145,6 @@ $t=($res1 == $testm1);
 	$line = "$t=(res1 == testm1); "; $z->logLine($line);
 	
 
-$z->save();
+$z->saveTest();
 
 ?>

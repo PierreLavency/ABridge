@@ -2,7 +2,12 @@
 
 require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
-$z=new unitTest($logName);
+
+$log=new unitTest($logName);
+
+$log->logLine('/* standalone test */');
+	
+/**************************************/
 
 require_once("Model.php"); 
 require_once("View.php"); 
@@ -36,7 +41,7 @@ $r = $v->subst($test1);
 $res = genFormElem($r,$show);
 	// logging result
 $xs = "$res = genFormElem(r,$show)";
-$z->logLine ($xs);
+$log->logLine ($xs);
 	// end
 if ($show) {echo "<br>" ; };
 
@@ -44,7 +49,7 @@ $r = $v->subst($test2);
 $res = genFormElem($r,$show);
 	// logging result
 $xs = "$res = genFormElem(r,$show)";
-$z->logLine ($xs);
+$log->logLine ($xs);
 	// end
 if ($show) {echo "<br>" ; };
 
@@ -52,7 +57,7 @@ $r = $v->subst($test3);
 $res = genFormElem($r,$show);
 	// logging result
 $xs = "$res = genFormElem(r,$show)";
-$z->logLine ($xs);
+$log->logLine ($xs);
 	// end
 if ($show) {echo "<br>" ; };
 
@@ -60,7 +65,7 @@ $r = $v->subst($test4);
 $res = genFormElem($r,$show);
 	// logging result
 $xs = "$res = genFormElem(r,$show)";
-$z->logLine ($xs);
+$log->logLine ($xs);
 	// end
 if ($show) {echo "<br>" ; };
 
@@ -68,7 +73,7 @@ $r = $v->subst($test5);
 $res = genFormElem($r,$show);
 	// logging result
 $xs = "$res = genFormElem(r,$show)";
-$z->logLine ($xs);
+$log->logLine ($xs);
 	// end
 if ($show) {echo "<br>" ; };
 
@@ -76,7 +81,7 @@ $r = $v->subst($test6);
 $res = genFormElem($r,$show);
 	// logging result
 $xs = "$res = genFormElem(r,$show)";
-$z->logLine ($xs);
+$log->logLine ($xs);
 	// end
 if ($show) {echo "<br>" ; };
 
@@ -84,7 +89,7 @@ $r=$v->setSpec($test6);
 $res = $v->show($show);
 	// logging result
 $xs = "$res = v->show($show);";
-$z->logLine ($xs);
+$log->logLine ($xs);
 	// end
 if ($show) {echo "<br>" ; };
 
@@ -94,7 +99,7 @@ $res = $v->showDefault($show);
  
 if ($show) {echo "<br>" ; };
 
-//$z->setVerbatim (2);
-$z->save();
+//$log->setVerbatim (2);
+$log->saveTest();
 
 ?>
