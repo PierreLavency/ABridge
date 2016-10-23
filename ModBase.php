@@ -19,6 +19,7 @@
 			$name = $mod->getModName();
 			$meta['attr_lst'] = $mod->getAllAttr();
 			$meta['typ_lst'] = $mod->getAllAttrTyp();
+			$meta['path_lst'] = $mod->getAllPath();
 			return ($this->Base->newMod($name,$meta));
 		}
 		
@@ -28,11 +29,14 @@
 			if (!$values) {return 0;}
 			$attrlist=$values['attr_lst'];
 			$attrtype=$values['typ_lst'];
+			$attrpath=$values['path_lst'];
 			$predef = $mod->getPreDefAttr();
 			foreach($attrlist as $attr) {
 				if (! in_array ($attr,$predef)) {
 					$typ= $attrtype[$attr];
-					$mod->addAttr($attr,$typ,false);			
+					$path=0;
+					if (array_key_exists ($attr,$attrpath)){$path=$attrpath[$attr];}
+					$mod->addAttr($attr,$typ,$path);
 				}
 			}
 			return true; 	

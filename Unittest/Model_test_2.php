@@ -6,7 +6,7 @@ $logName = basename(__FILE__, ".php");
 
 $log=new unitTest($logName);
 
-$log->logLine('/* integration wit type check */');
+$log->logLine('/* integration with type check */');
 	
 /**************************************/
 
@@ -22,10 +22,6 @@ $r=$x->getModName() ;
 $res=$x->addAttr('a_id'	,M_ID);
 	// logging result
 	$xs = "$res=x->addAttr('a_id'	,M_ID);";
-	$log->logLine ($xs);
-$res=$x->addAttr('a_ref'	,M_REF);
-	// logging result
-	$xs = "$res=x->addAttr('a_ref'	,M_REF);";
 	$log->logLine ($xs);
 $res=$x->addAttr('a_string'	,M_STRING);
 	// logging result
@@ -77,38 +73,6 @@ $res=$x->setVal('a_id','1A,B"');
 	$xs = "$res=x->setVal('a_id','1A,B');";
 	$log->logLine ($xs);
 	
-$res=$x->setVal('a_ref','1');
-	// logging result
-	$xs = "$res=x->setVal('a_ref','1');";
-	$log->logLine ($xs);
-$res=$x->setVal('a_ref',1);
-	// logging result
-	$xs = "$res=x->setVal('a_ref',1);";
-	$log->logLine ($xs);
-$res=$x->setVal('a_ref',-1);
-	// logging result
-	$xs = "$res=x->setVal('a_ref',-1);";
-	$log->logLine ($xs);
-$res=$x->setVal('a_ref',0);
-	// logging result
-	$xs = "$res=x->setVal('a_ref',0);";
-	$log->logLine ($xs);
-$res=$x->setVal('a_ref','AB');
-	// logging result
-	$xs = "$res=x->setVal('a_ref','AB');";
-	$log->logLine ($xs);
-$res=$x->setVal('a_ref','1AB');
-	// logging result
-	$xs = "$res=x->setVal('a_ref','1AB');";
-	$log->logLine ($xs);
-$res=$x->setVal('a_ref','1AB_');
-	// logging result
-	$xs = "$res=x->setVal('a_ref','1AB_');";
-	$log->logLine ($xs);
-$res=$x->setVal('a_ref','1A,B"');
-	// logging result
-	$xs = "$res=x->setVal('a_ref','1A,B');";
-	$log->logLine ($xs);
 	
 $res=$x->setVal('a_string','1');
 	// logging result
