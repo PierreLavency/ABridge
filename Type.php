@@ -4,7 +4,7 @@
 
 	
 	function isMtype ($x) {
-		$l=[M_INT,M_FLOAT,M_BOOL,M_STRING,M_ID,M_REF,M_TMSTP,M_ALPHA,M_ALNUM, ];
+		$l=[M_INT,M_FLOAT,M_BOOL,M_STRING,M_ID,M_REF,M_CREF,M_CODE,M_TMSTP,M_ALPHA,M_ALNUM, ];
 		return (in_array($x,$l));
 	}
 	
@@ -52,12 +52,8 @@
 				if (is_string($X)) {return ctype_alpha($X);}
 				return 0;
 				break;
-			case M_ID:
+			case M_INTP:
 				if (is_int($X)) {return ($X>=0);}
-				return 0;
-				break;
-			case M_REF:
-				if (is_int($X)) {return ($X>0);}
 				return 0;
 				break;
 			default:

@@ -13,7 +13,7 @@
 	
 	require_once('Type.php');	
 	$X = '1';
-									$line = "$X = '1';";
+									$line = "X = '1';";
 									$log->logLine($line);
 	$type = M_INT;
 									$line = "$type = M_INT;";
@@ -24,7 +24,7 @@
 
 	
 	$X=1;
-									$line = "$X=1;";
+									$line = "X=1;";
 									$log->logLine($line);
 	$r=checkType ($X,$type);
 									$line = "$r=checkType ($X,$type);";
@@ -32,7 +32,7 @@
 
 	
 	$X=1.5;
-									$line = "$X=1.5;";
+									$line = "X=1.5;";
 									$log->logLine($line);
 	$r=checkType ($X,$type);
 									$line = "$r=checkType ($X,$type);";
@@ -40,7 +40,7 @@
 
 
 	$X = '1';
-									$line = "$X = '1';";
+									$line = "X = '1';";
 									$log->logLine($line);
 	$type = M_FLOAT;
 									$line = "$type = M_FLOAT;";
@@ -51,7 +51,7 @@
 
 	
 	$X=1;
-									$line = "$X=1;";
+									$line = "X=1;";
 									$log->logLine($line);
 	$r=checkType ($X,$type);
 									$line = "$r=checkType ($X,$type);";
@@ -59,7 +59,7 @@
 
 	
 	$X=1.5;
-									$line = "$X=1.5;";
+									$line = "X=1.5;";
 									$log->logLine($line);
 	$r=checkType ($X,$type);
 									$line = "$r=checkType ($X,$type);";
@@ -67,7 +67,7 @@
 
 	
 	$X = '1';
-									$line = "$X = '1';";
+									$line = "X = '1';";
 									$log->logLine($line);
 	$type = M_STRING;
 									$line = "$type = M_STRING;";
@@ -78,7 +78,7 @@
 
 	
 	$X=1;
-									$line = "$X=1;";
+									$line = "X=1;";
 									$log->logLine($line);
 	$r=checkType ($X,$type);
 									$line = "$r=checkType ($X,$type);";
@@ -86,7 +86,7 @@
 
 	
 	$X=1.5;
-									$line = "$X=1.5;";
+									$line = "X=1.5;";
 									$log->logLine($line);
 	$r=checkType ($X,$type);
 									$line = "$r=checkType ($X,$type);";
@@ -95,7 +95,7 @@
 	
 
 	$X = 0;
-									$line = "$X = 0;";
+									$line = "X = 0;";
 									$log->logLine($line);
 	$type = M_BOOL;
 									$line = "$type = M_BOOL;";
@@ -106,21 +106,21 @@
 
 	
 	$X = 'x';
-									$line = "$X = 'x';";
+									$line = "X = 'x';";
 									$log->logLine($line);
 	$r=checkType ($X,$type);
 									$line = "$r=checkType ($X,$type);";
 									$log->logLine($line);
 
 	$X = 'false';
-									$line = "$X = 'false';";
+									$line = "X = 'false';";
 									$log->logLine($line);
 	$r=checkType ($X,$type);
 									$line = "$r=checkType ($X,$type);";
 									$log->logLine($line);
 
 	$X = 1;
-									$line = "$X = 1;";
+									$line = "X = 1;";
 									$log->logLine($line);
 	$r=checkType ($X,$type);
 									$line = "$r=checkType ($X,$type);";
@@ -128,17 +128,17 @@
 
 									
 									
-$r=checkType(-1,M_ID); 
-	$line = "$r=checkType(-1,M_ID);";
+$r=checkType(-1,M_INTP); 
+	$line = "$r=checkType(-1,M_INTP);";
 	$log->logLine($line);
-$r=checkType(1,M_ID); 
-	$line = "$r=checkType(1,M_ID);";
+$r=checkType(1,M_INTP); 
+	$line = "$r=checkType(1,M_INTP);";
 	$log->logLine($line);
-$r=checkType(1,M_REF); 
-	$line = "$r=checkType(1,M_REF);";
+$r=checkType(1,M_INTP); 
+	$line = "$r=checkType(1,M_INTP);";
 	$log->logLine($line);
-$r=checkType(0,M_REF); 
-	$line = "$r=checkType(0,M_REF); ";
+$r=checkType(0,M_INTP); 
+	$line = "$r=checkType(0,M_INTP); ";
 	$log->logLine($line);
 $r=checkType(1,M_ALNUM); 
 	$line = "$r=checkType(1,M_ALNUM);";
@@ -167,4 +167,7 @@ $r=isMtype(M_INT);
 	$log->logLine($line);
 	
 $log->saveTest();
+
+//$log->showTest();
+
 ?>	

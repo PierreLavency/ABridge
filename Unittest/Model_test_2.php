@@ -1,8 +1,6 @@
 <?php
-// test integration with type check
 
 
-require_once("Model.php"); 
 require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
 
@@ -12,6 +10,7 @@ $log->logLine('/* integration wit type check */');
 	
 /**************************************/
 
+require_once("Model.php"); 
 
 $x=new Model("Typechecking");
 
@@ -247,7 +246,7 @@ $r = $x-> getErrLog ();
 $log->includeLog($r);
 	
 $log->saveTest();
-/*
-$log->showTest();
-*/
+
+// $log->showTest();
+
 ?>

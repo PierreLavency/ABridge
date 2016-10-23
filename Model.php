@@ -143,6 +143,7 @@ class Model {
 		if (in_array($Attr,$this->attrPredefList) 
 			and $check){						$this->errLog->logLine(E_ERC001.':'.$Attr);return 0;};
 		$type=$this->getTyp($Attr);
+		if ($type==M_ID or $type == M_REF or $type == M_CREF) {$type = M_INTP;}
 		if (! checkType($Val,$type))			{$this->errLog->logLine(E_ERC005.':'.$Val.':'.$type) ;return 0;}
 		return ($this->setValNoCheck ($Attr,$Val));
     }
