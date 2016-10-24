@@ -13,13 +13,6 @@ $log->logLine('/* standalone test */');
 
 require_once("Model.php"); 
 
-$x=new Model();
-
-$r=$x->getModName() ;
-										// logging result
-										$xs = "$r=..->getModName() ;";
-										$log->logLine ($xs);
-
 try {$x=new Model(1);} catch (Exception $e) {$r= 'Exception reçue : '. $e->getMessage();}
 										// logging result
 										$xs = "try {..=new Model(1);} catch  $r";

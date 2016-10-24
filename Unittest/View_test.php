@@ -19,7 +19,7 @@ $test4=[V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_TYPE]];
 $test5=[H_TYPE=>H_T_TEXT,V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_INP]];
 $test6=[H_TYPE=>H_T_LIST,H_ARG=>[$test1,$test2,$test3,$test4,$test5]];
 
-$x=new Model();
+$x=new Model('test');
 
 $x->addAttr('A1');
 $x->addAttr('A2');
