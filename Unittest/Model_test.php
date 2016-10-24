@@ -92,6 +92,6 @@ $r= implode (' , ',$x->getAllAttr());
 
 $log->saveTest();
 
-// $log->showTest();
+//$log->showTest();
 
 ?>

@@ -26,7 +26,7 @@ class FileBase{
 		if (array_key_exists($Model,$this->objects)) {return 0;}; 
 		$Meta['lastId']=1;
 		$this->objects[$Model][0] = $Meta;
-		return $Model;
+		return true;
 	}	
 	public function getMod($Model) {
 		if (! array_key_exists($Model,$this->objects)) {return 0;};
@@ -40,7 +40,7 @@ class FileBase{
 		$id = $this->objects[$Model][0]['lastId'] ;
 		$Meta['lastId']=$id;
 		$this->objects[$Model][0] = $Meta;
-		return $Meta;
+		return true;
 	}
 	
 	public function delMod($Model) {

@@ -18,9 +18,9 @@
 		public function saveMod($mod) {
 			$name = $mod->getModName();
 			$meta['attr_lst'] = $mod->getAllAttr();
-			$meta['typ_lst'] = $mod->getAllAttrTyp();
-			$meta['path_lst'] = $mod->getAllPath();
-			return ($this->Base->newMod($name,$meta));
+			$meta['attr_typ'] = $mod->getAllAttrTyp();
+			$meta['attr_path'] = $mod->getAllPath();
+			return ($this->Base->newMod($name,$meta)); // should deal with case where it exisits already !
 		}
 		
 		public function restoreMod($mod) {
@@ -28,8 +28,8 @@
 			$values = $this->Base->getMod($name); 
 			if (!$values) {return 0;}
 			$attrlist=$values['attr_lst'];
-			$attrtype=$values['typ_lst'];
-			$attrpath=$values['path_lst'];
+			$attrtype=$values['attr_typ'];
+			$attrpath=$values['attr_path'];
 			$predef = $mod->getPreDefAttr();
 			foreach($attrlist as $attr) {
 				if (! in_array ($attr,$predef)) {

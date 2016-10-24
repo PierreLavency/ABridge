@@ -7,7 +7,6 @@ $log=new unitTest($logName);
 
 $log->logLine('/* standalone test */');
 
-$log->logLine('/* standalone test */');
 	
 /**************************************/
 
@@ -216,4 +215,5 @@ if ($show){
 
 $log->saveTest();
 
+// $log->showTest();
 ?>

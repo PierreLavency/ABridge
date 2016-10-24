@@ -26,39 +26,49 @@ class Model {
 
 	
 	// constructors
+	function __construct()
+    {
+        $a = func_get_args();
+        $i = func_num_args();
+        if (method_exists($this,$f='__construct'.$i)) {
+            call_user_func_array(array($this,$f),$a);
+        }
+    } 
 	
-	function __construct($name='Model',$id=0) {
-
-		if (! ctype_alnum($name)) {
-			throw new Exception(E_ERC010.':'.$name);
-		}
-		if (ctype_digit($name)) {
-			throw new Exception(E_ERC010.':'.$name);
-		}
-	
-		$this->id=$id; 
-		$this->name=$name;
-		$this->setValNoCheck ("id",$id);
-		if ($id==0) {
-			$this->setValNoCheck ("ctstp",date(TSTP_F));
-			$this->setValNoCheck ("vnum",1);
-		};
-		$this->setValNoCheck ("utstp",date(TSTP_F));
-		$logname = $name.'_ErrLog';
-		$this->errLog= new Logger($logname);
-		$x=0;
-		$idr=0;
-		$x=getStateHandler ($name);
+	function __construct1($name) {
+		$this->init($name,0);
+		$this->setValNoCheck ("ctstp",date(TSTP_F));
+		$this->setValNoCheck ("vnum",1);
+		$x = $this->stateHdlr;
 		if ($x) {
-			$this->stateHdlr=$x; 
 			$x->restoreMod($this);
-			$idr =$x-> restoreObj($this);
-			if ($id != $idr){
-				throw new exception(E_ERC007.':'.$id);
-			}
 		}
 	}
 
+	function __construct2($name,$id) {
+		$this->init($name,$id);
+		if ( ! $id) {throw new Exception(E_ERC012.':'.$id);}
+		$idr=0;
+		$x = $this->stateHdlr;
+		if ($x) {
+			$x->restoreMod($this);
+			$idr =$x->restoreObj($this);
+			if ($id !== $idr){throw new exception(E_ERC007.':'.$id);};
+		}
+	}
+
+	public function init($name,$id) {
+		if (! checkType($name,M_ALPHA)) {throw new Exception(E_ERC010.':'.$name.':'.M_ALPHA);}
+		if (! checkType($id,M_INTP))    {throw new Exception(E_ERC011.':'.$id.':'.M_INTP);}
+		$this->id=$id; 
+		$this->name=$name;
+		$this->setValNoCheck ("id",$id);
+		$this->setValNoCheck ("utstp",date(TSTP_F));
+		$logname = $name.'_ErrLog';
+		$this->errLog= new Logger($logname);
+		$this->stateHdlr=getStateHandler ($name);
+	}
+	
 	public function getErrLog () {
 		return $this->errLog;
 	}
@@ -74,7 +84,6 @@ class Model {
 	public function getAllAttr () {
         return $this->attr_lst;}
 
-
 	public function getAllAttrTyp () {
 		return $this->attr_typ;        	
    	}
@@ -82,9 +91,12 @@ class Model {
 	public function getAllVal () {
 		return $this->attr_val;        	
    	}
+	
 	public function getAllPath () {
 		return $this->attr_path;        	
    	}
+	
+	
 	public function getPreDefAttr () {
 		return $this->attrPredefList;
 	}
@@ -101,9 +113,9 @@ class Model {
 		if ($typ == M_REF) {
 			$r2=$this->setPath($attr,$path); // should check path ?
 		}
-		if ($r and $r2){return $attr;}
+		if ($r and $r2){return true;}
 		return 0;
-		}
+	}
 
 	public function delAttr ($attr) {
 		$x= $this->existsAttr ($attr);
@@ -112,7 +124,7 @@ class Model {
 												{$this->errLog->logLine(E_ERC001.':'.$attr);return 0;}
 		unset($this->attr_lst[$attr]);
 		unset($this->attr_typ[$attr]);
-		return $attr;
+		return true;
 	}
 
 	public function getVal ($attr) {
@@ -131,6 +143,7 @@ class Model {
 		}           			
 		return NULL;
     }
+	
 	public function getPath ($attr) {
 		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
 		foreach($this->attr_path as $x => $path) {
@@ -140,28 +153,29 @@ class Model {
     }
 	
 	public function existsAttr ($attr) {
-		if (in_array($attr, $this->attr_lst)) {return $attr;} ;
+		if (in_array($attr, $this->attr_lst)) {return true;} ;
         return 0;
     }
 
 	private function setValNoCheck ($attr,$val) {
 		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
 		$this->attr_val[$attr]=$val;
-		return $val;
+		return true;
 	}
 	
 	public function setTyp ($attr,$typ) {
 		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
 		if (!isMtype($typ)) 					{$this->errLog->logLine(E_ERC004.':'.$typ) ;return 0;}
 		$this->attr_typ[$attr]=$typ;
-	    return $typ;
+	    return true;
 	}
 	
 	public function setPath ($attr,$path) {
 		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
 		$this->attr_path[$attr]=$path;
-	    return $path;
+	    return true;
 	}
+	
 	public function setVal ($Attr,$Val,$check=true) {
 		if (in_array($Attr,$this->attrPredefList) 
 			and $check){						$this->errLog->logLine(E_ERC001.':'.$Attr);return 0;};
@@ -176,7 +190,6 @@ class Model {
 			$res = $this-> checkRef($Attr,$Val);
 			if (! $res) {return 0;}
 		}
-
 		return ($this->setValNoCheck ($Attr,$Val));
     }
 
@@ -184,9 +197,8 @@ class Model {
 		$mod = $this->getPath($Attr) ;
 		if (!$mod)								 {$this->errLog->logLine(E_ERC008.':'.$Attr);return 0;}
 		try {$res = new Model($mod,$Val);} catch (Exception $e) {$this->errLog->logLine($e->getMessage());return 0;}
-		return $Val;
+		return true;
 	}
-	
 	
 	public function save (){
 		if (! $this->stateHdlr) 				{$this->errLog->logLine(E_ERC006);return 0;}
