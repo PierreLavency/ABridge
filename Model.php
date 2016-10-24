@@ -16,10 +16,10 @@ class Model {
  
 	public $id;
 	public $name ;
-	public $attrPredefList = array("id","vnum","ctstp","utstp");
-	public $attr_lst = array("id","vnum","ctstp","utstp");
+	public $attrPredefList = array('id','vnum','ctstp','utstp');
+	public $attr_lst = array('id','vnum','ctstp','utstp');
 	public $attr_typ = array("id"=>M_ID,"vnum"=>M_INT,"ctstp"=>M_TMSTP,"utstp"=>M_TMSTP);
-	public $attr_val = array("vnum"=>0);
+	public $attr_val = array('vnum'=>0);
 	public $attr_path = [];
 	public $errLog;
 	public $stateHdlr=0;
@@ -62,8 +62,7 @@ class Model {
 		if (! checkType($id,M_INTP))    {throw new Exception(E_ERC011.':'.$id.':'.M_INTP);}
 		$this->id=$id; 
 		$this->name=$name;
-		$this->setValNoCheck ("id",$id);
-		$this->setValNoCheck ("utstp",date(TSTP_F));
+		$this->setValNoCheck ('utstp',date(TSTP_F));
 		$logname = $name.'_ErrLog';
 		$this->errLog= new Logger($logname);
 		$this->stateHdlr=getStateHandler ($name);
@@ -92,10 +91,9 @@ class Model {
 		return $this->attr_val;        	
    	}
 	
-	public function getAllPath () {
+	public function getAllPath () { // no id value 
 		return $this->attr_path;        	
    	}
-	
 	
 	public function getPreDefAttr () {
 		return $this->attrPredefList;
@@ -128,6 +126,7 @@ class Model {
 	}
 
 	public function getVal ($attr) {
+		if ($attr == 'id') {return $this->getId();}
 		$x= $this->existsAttr ($attr);
 		if (!$x) 								{$this->errLog->logLine( E_ERC002.':'.$attr);return 0;}
 		foreach($this->attr_val as $x => $val) {
@@ -203,6 +202,7 @@ class Model {
 	public function save (){
 		if (! $this->stateHdlr) 				{$this->errLog->logLine(E_ERC006);return 0;}
 		$res=$this->stateHdlr->saveObj($this);
+		$this->id=$res;
 		return $res;
 	}
 

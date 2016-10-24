@@ -83,9 +83,19 @@ $res = $sextype2->setVal('ValueOf',$id1);
 
 $id3 = $sextype2->save();
 	$line = "$id3 = sextype2->save();"; $log->logLine($line);
+
+$id_3 = $sextype2->getId();
+	$line = "$id_3 = sextype2->getId();"; $log->logLine($line);
+
+$id_3 = $sextype2->getVal('id');
+	$line = "$id_3 = sextype2->getVal('id');"; $log->logLine($line);
 	
 $log->includeLog($sextype2-> getErrLog ());
 
+// commit 
+
+$res = $db->commit();
+	$line = "$res = db->commit;"; $log->logLine($line);
 /**************************************/
 	
 $log->saveTest();
