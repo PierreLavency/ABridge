@@ -4,7 +4,7 @@ require_once("UnitTest.php");
 
 $logName = basename(__FILE__, ".php");
 
-$log=new unitTest($logName,1);
+$log=new unitTest($logName);
 
 $log->logLine('/* Handling M_REF */');
 
