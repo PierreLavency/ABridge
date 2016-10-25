@@ -10,9 +10,12 @@
 	define ('M_CREF'	,	"m_cref");
 	define ('M_CODE'	,	"m_code");
 	define ('M_TMSTP'	,	"m_tmstp");
+	define ('M_DATE'	,	"m_date");
 	define ('M_ALNUM'	,	"m_alnum");
 	define ('M_ALPHA'	,	"m_alpha");
 
-
+	define('M_FORMAT_T','d-m-Y H:i:s');
+	define('M_FORMAT_D','d-m-Y');
+	
 	
 ?>

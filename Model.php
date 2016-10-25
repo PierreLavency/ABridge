@@ -2,8 +2,6 @@
 
 /* Format date to be checked */
 
-define ('TSTP_F', "d-m-Y H:i:s");
-define ('DATE_F', "d-m-Y");
 
 require_once("Logger.php");
 require_once("TypeConstant.php");
@@ -37,7 +35,7 @@ class Model {
 	
 	function __construct1($name) {
 		$this->init($name,0);
-		$this->setValNoCheck ("ctstp",date(TSTP_F));
+		$this->setValNoCheck ("ctstp",date(M_FORMAT_T));
 		$this->setValNoCheck ("vnum",1);
 		$x = $this->stateHdlr;
 		if ($x) {
@@ -62,7 +60,7 @@ class Model {
 		if (! checkType($id,M_INTP))    {throw new Exception(E_ERC011.':'.$id.':'.M_INTP);}
 		$this->id=$id; 
 		$this->name=$name;
-		$this->setValNoCheck ('utstp',date(TSTP_F));
+		$this->setValNoCheck ('utstp',date(M_FORMAT_T));
 		$logname = $name.'_ErrLog';
 		$this->errLog= new Logger($logname);
 		$this->stateHdlr=getStateHandler ($name);
