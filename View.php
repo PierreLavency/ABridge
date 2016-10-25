@@ -55,8 +55,11 @@ class View
     		case V_P_LBL:
 				return $this->getLbl($attr);
         		break;
-     		case V_P_VAL:	
-	    		return $this->model->getVal($attr);
+     		case V_P_VAL:
+				$type = $this->model->getTyp($attr);
+				$val = $this->model->getVal($attr);
+				if ($type == M_CREF) {$val = implode(',',$val);}
+	    		return $val;
         		break;
     		case V_P_TYPE:	
 	    		return $this->model->getTyp($attr);

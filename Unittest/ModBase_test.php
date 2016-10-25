@@ -36,7 +36,7 @@ $res = $mod->addAttr('tel',M_INT);
 $attr_lst = $mod->getAllAttr();
 	$line = "attr_lst = mod->getAllAttr();"; $log->logLine($line);
 
-$typ_lst = $mod->getAllAttrTyp();
+$typ_lst = $mod->getAllTyp();
 	$line = "typ_lst = mod->getAllAttr();"; $log->logLine($line);
 
 	
@@ -55,7 +55,7 @@ $res=$pm->restoreMod($ins);
 $attr_lst1 = $ins->getAllAttr();
 	$line = "attr_lst1 = mod->getAllAttr();"; $log->logLine($line);
 
-$typ_lst1 = $ins->getAllAttrTyp();
+$typ_lst1 = $ins->getAllTyp();
 	$line = "typ_lst1 = mod->getAllAttr();"; $log->logLine($line);
 	
 $r = ($attr_lst == $attr_lst1);

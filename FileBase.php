@@ -81,7 +81,7 @@ class FileBase{
 		unset($this->objects[$Model][$id]); 
 		return 1;
 	}
-
+	
 	public function allAttrVal($Model, $Attr) {
 		$result = [];
 		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
@@ -92,20 +92,21 @@ class FileBase{
 			}
 		}
 		return $result;
-		
 	}
+
 	public function findObj($Model, $Attr, $Val) {
-		$result = [];
-		if (array_key_exists($Model,$this->objects)) {return 0;}; 
+		$result1 = [];
+		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
 		foreach ($this->objects[$Model] as $id => $List) {
-			foreach ($List as $A => $V) {
-				if ($Attr == $A and $Val == $V) {$result[]=$id;}
+			if ($id) {
+				foreach ($List as $A => $V) {
+				if ($Attr == $A and $Val == $V) {$result1[]=$id;}}
 			}; 
 		};
-		return $result;
+		return $result1;
 	}	
-};
 
+};
 
 
 

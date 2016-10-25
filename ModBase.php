@@ -18,7 +18,7 @@
 		public function saveMod($mod) {
 			$name = $mod->getModName();
 			$meta['attr_lst'] = $mod->getAllAttr();
-			$meta['attr_typ'] = $mod->getAllAttrTyp();
+			$meta['attr_typ'] = $mod->getAllTyp();
 			$meta['attr_path'] = $mod->getAllPath();
 			return ($this->Base->newMod($name,$meta)); // should deal with case where it exisits already !
 		}
@@ -30,7 +30,7 @@
 			$attrlist=$values['attr_lst'];
 			$attrtype=$values['attr_typ'];
 			$attrpath=$values['attr_path'];
-			$predef = $mod->getPreDefAttr();
+			$predef = $mod->getAllPredef();
 			foreach($attrlist as $attr) {
 				if (! in_array ($attr,$predef)) {
 					$typ= $attrtype[$attr];
@@ -64,5 +64,9 @@
 			return $id;
 		}
 
+		public function findObj($modN,$attr,$val) {
+			return ($this->Base->findObj($modN,$attr,$val));
+		}
+		
 	}
 ?>

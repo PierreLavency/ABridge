@@ -6,7 +6,7 @@ $logName = basename(__FILE__, ".php");
 
 $log=new unitTest($logName);
 
-$log->logLine('/* Handling M_REF */');
+$log->logLine('/* Handling M_REF and M_CREF */');
 
 /**************************************/
 
@@ -32,6 +32,10 @@ $res = $mod->addAttr('ValueOf',M_REF);
 $res = $mod->addAttr('ValueOf',M_REF,$ModN);
 	$line = "$res = mod->addAttr('ValueOf',M_REF,$ModN);"; $log->logLine($line);
 
+$path='/'.$ModN.'/ValueOf';
+$res = $mod->addAttr('Values',M_CREF,$path);	
+	$line = "$res = mod->addAttr('Values',M_CREF,$path);"; $log->logLine($line);
+	
 $res = $mod->saveMod();	
 	$line = "$res = mod->saveMod();"; $log->logLine($line);	
 
@@ -110,7 +114,31 @@ $id4 = $sextype3->save();
 
 $log->includeLog($sextype3-> getErrLog ());
 
+// get children
 
+$res= $sex->getVal('Values');
+	$line = "res= sex->getVal('Values');"; $log->logLine($line);
+$res = implode (',',$res);	
+	$line = "$res = implode (',';res);"; $log->logLine($line);
+	
+$res= $sextype1->getVal('Values');
+	$line = "res= sextype1->getVal('Values');"; $log->logLine($line);
+$res = implode (',',$res);	
+	$line = "$res = implode (',';res);"; $log->logLine($line);	
+
+// some errors 	
+	
+$res = $sextype1->setVal('Values',$id1);
+	$line = "$res = sextype1->setVal('Values',$id1);"; $log->logLine($line);
+
+$res = $sextype1->setVal('ValueOf',5);
+	$line = "$res = sextype1->setVal('ValueOf',5);"; $log->logLine($line);	
+
+$res= $sextype1->getVal('ValueOf');
+	$line = "$res= sextype1->getVal('ValueOf');"; $log->logLine($line);
+	
+$log->includeLog($sextype1-> getErrLog ());
+	
 // commit 
 
 $res = $db->commit();

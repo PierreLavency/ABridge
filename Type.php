@@ -3,8 +3,9 @@
 	require_once("TypeConstant.php");
 
 	
+	
 	function isMtype ($x) {
-		$l=[M_INT,M_FLOAT,M_BOOL,M_STRING,M_ID,M_REF,M_CREF,M_CODE,M_TMSTP,M_ALPHA,M_ALNUM, ];
+		$l=[M_INT,M_FLOAT,M_BOOL,M_STRING,M_ID,M_REF,M_CREF,M_CODE,M_TMSTP,M_DATE, M_ALPHA,M_ALNUM, ];
 		return (in_array($x,$l));
 	}
 	
@@ -27,11 +28,25 @@
 		return 0;
 	}
 
+	function convertTime($X) {
+		if (($timestamp=strtotime($X))==false) {return false;}
+		$t = date(M_FORMAT_T,$timestamp);
+		return $t;
+	}
+	function convertDate($X) {
+		$d=DateTime::createFromFormat(M_FORMAT_D,$X);
+		$t = date(M_FORMAT_D,$timestamp);
+		return $t;
+	}
+	
 	function checkType ($X,$type) {
 		switch($type) {
+			case M_DATE:
+				$d=DateTime::createFromFormat(M_FORMAT_D,$X);
+				return ($d && $d->format(M_FORMAT_D)==$X);
 			case M_TMSTP:
-				return is_string($X);   // to be developed !!
-				break; 
+				$d=DateTime::createFromFormat(M_FORMAT_T,$X);
+				return ($d && $d->format(M_FORMAT_T)==$X);
 			case M_INT:
 				return is_int($X);
 				break; 

@@ -14,7 +14,7 @@ class Model {
  
 	public $id;
 	public $name ;
-	public $attrPredefList = array('id','vnum','ctstp','utstp');
+	public $attr_predef = array('id','vnum','ctstp','utstp');
 	public $attr_lst = array('id','vnum','ctstp','utstp');
 	public $attr_typ = array("id"=>M_ID,"vnum"=>M_INT,"ctstp"=>M_TMSTP,"utstp"=>M_TMSTP);
 	public $attr_val = array('vnum'=>0);
@@ -81,7 +81,7 @@ class Model {
 	public function getAllAttr () {
         return $this->attr_lst;}
 
-	public function getAllAttrTyp () {
+	public function getAllTyp () {
 		return $this->attr_typ;        	
    	}
 
@@ -93,20 +93,20 @@ class Model {
 		return $this->attr_path;        	
    	}
 	
-	public function getPreDefAttr () {
-		return $this->attrPredefList;
+	public function getAllPredef () {
+		return $this->attr_predef;
 	}
 
 	public function addAttr ($attr,$typ=M_STRING,$path=0) {
 		$x= $this->existsAttr ($attr);
 		if ($x) 								{$this->errLog->logLine(E_ERC003.':'.$attr);return 0;}
-		if ($typ == M_REF){ 
+		if ($typ == M_REF or $typ == M_CREF){ 
 			if (!$path) 						{$this->errLog->logLine(E_ERC008.':'.$attr);return 0;}
 		}
 		$this->attr_lst[]=$attr;
 		$r=$this->setTyp ($attr,$typ);
 		$r2=true;
-		if ($typ == M_REF) {
+		if ($typ == M_REF or $typ == M_CREF) {
 			$r2=$this->setPath($attr,$path); // should check path ?
 		}
 		if ($r and $r2){return true;}
@@ -116,10 +116,11 @@ class Model {
 	public function delAttr ($attr) {
 		$x= $this->existsAttr ($attr);
 		if (!$x) 								{$this->errLog->logLine( E_ERC002.':'.$attr);return 0;}
-		if (in_array($attr,$this->attrPredefList)) 
+		if (in_array($attr,$this->attr_predef)) 
 												{$this->errLog->logLine(E_ERC001.':'.$attr);return 0;}
 		unset($this->attr_lst[$attr]);
 		unset($this->attr_typ[$attr]);
+		unset($this->attr_path[$attr]);
 		return true;
 	}
 
@@ -127,6 +128,13 @@ class Model {
 		if ($attr == 'id') {return $this->getId();}
 		$x= $this->existsAttr ($attr);
 		if (!$x) 								{$this->errLog->logLine( E_ERC002.':'.$attr);return 0;}
+		$type=$this->getTyp($attr);
+		if ($type == M_CREF) {
+			$path = $this->getPath($attr);
+			$patha=explode('/',$path);
+			$res=$this->stateHdlr->findObj($patha[1],$patha[2],$this->getId());
+			return $res;
+		}
 		foreach($this->attr_val as $x => $val) {
 			if ($x==$attr) {return $val;}
 		}    	
@@ -174,10 +182,11 @@ class Model {
 	}
 	
 	public function setVal ($Attr,$Val,$check=true) {
-		if (in_array($Attr,$this->attrPredefList) 
-			and $check){						$this->errLog->logLine(E_ERC001.':'.$Attr);return 0;};
+		if (in_array($Attr,$this->attr_predef) 
+			and $check)							{$this->errLog->logLine(E_ERC001.':'.$Attr);return 0;};
 		// type checking
 		$type=$this->getTyp($Attr);
+		if ($type ==M_CREF ) 					{$this->errLog->logLine(E_ERC013.':'.$Attr);return 0;}
 		$btype=$type;
 		if ($type==M_ID or $type == M_REF or $type == M_CREF) {$btype = M_INTP;}
 		$res =checkType($Val,$btype);
