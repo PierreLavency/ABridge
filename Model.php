@@ -87,11 +87,11 @@ class Model {
 		return $this->attr_typ;        	
    	}
 
-	public function getAllVal () {
+	public function getAllVal () { // all BUT id 
 		return $this->attr_val;        	
    	}
 	
-	public function getAllPath () { // no id value 
+	public function getAllPath () { 
 		return $this->attr_path;        	
    	}
 	
@@ -192,10 +192,11 @@ class Model {
 		return ($this->setValNoCheck ($Attr,$Val));
     }
 
-	public function checkRef($Attr,$Val) {
+	public function checkRef($Attr,$id) {
 		$mod = $this->getPath($Attr) ;
+		if ($id == 0) {return true;}
 		if (!$mod)								 {$this->errLog->logLine(E_ERC008.':'.$Attr);return 0;}
-		try {$res = new Model($mod,$Val);} catch (Exception $e) {$this->errLog->logLine($e->getMessage());return 0;}
+		try {$res = new Model($mod,$id);} catch (Exception $e) {$this->errLog->logLine($e->getMessage());return 0;}
 		return true;
 	}
 	

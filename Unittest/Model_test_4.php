@@ -89,13 +89,33 @@ $id_3 = $sextype2->getId();
 
 $id_3 = $sextype2->getVal('id');
 	$line = "$id_3 = sextype2->getVal('id');"; $log->logLine($line);
-	
+
 $log->includeLog($sextype2-> getErrLog ());
+
+// a null ref 
+
+$sextype3 = new Model($ModN);
+
+$res = $sextype3->setVal('Name','Bi');
+	$line = "$res = sextype3->setVal('Name','Bi');"; $log->logLine($line);	
+
+$res = $sextype3->setVal('ValueOf',$id1);
+	$line = "$res = sextype3->setVal('ValueOf',$id1);"; $log->logLine($line);
+
+$res = $sextype3->setVal('ValueOf',0);
+	$line = "$res = sextype3->setVal('ValueOf',$id1);"; $log->logLine($line);
+	
+$id4 = $sextype3->save();
+	$line = "$id4 = sextype2->save();"; $log->logLine($line);
+
+$log->includeLog($sextype3-> getErrLog ());
+
 
 // commit 
 
 $res = $db->commit();
 	$line = "$res = db->commit;"; $log->logLine($line);
+	
 /**************************************/
 	
 $log->saveTest();
