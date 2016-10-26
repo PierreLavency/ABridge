@@ -8,6 +8,7 @@ require_once("TypeConstant.php");
 require_once("ErrorConstant.php");
 require_once("Type.php");
 require_once("Handler.php");
+require_once("Path.php");
 
 class Model {
 	// property
@@ -45,13 +46,13 @@ class Model {
 
 	function __construct2($name,$id) {
 		$this->init($name,$id);
-		if ( ! $id) {throw new Exception(E_ERC012.':'.$id);}
+		if ( ! $id) {throw new Exception(E_ERC012.':'.$name.':'.$id);}
 		$idr=0;
 		$x = $this->stateHdlr;
 		if ($x) {
 			$x->restoreMod($this);
 			$idr =$x->restoreObj($this);
-			if ($id !== $idr){throw new exception(E_ERC007.':'.$id);};
+			if ($id !== $idr){throw new exception(E_ERC007.':'.$name.':'.$id);};
 		}
 	}
 
@@ -97,16 +98,51 @@ class Model {
 		return $this->attr_predef;
 	}
 
+	public function getTyp ($attr) {
+		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
+		foreach($this->attr_typ as $x => $typ) {
+			if ($x==$attr) {return $typ;}
+		}           			
+		return NULL;
+    }
+	
+	public function getPath ($attr) {
+		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
+		foreach($this->attr_path as $x => $path) {
+			if ($x==$attr) {return $path;}
+		}           			
+		return NULL;
+    }
+	
+	public function existsAttr ($attr) {
+		if (in_array($attr, $this->attr_lst)) {return true;} ;
+        return 0;
+    }
+	
+	public function setTyp ($attr,$typ) {
+		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
+		if (!isMtype($typ)) 					{$this->errLog->logLine(E_ERC004.':'.$typ) ;return 0;}
+		$this->attr_typ[$attr]=$typ;
+	    return true;
+	}
+	
+	public function setPath ($attr,$path) {
+		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
+		$this->attr_path[$attr]=$path;
+	    return true;
+	}
+	
 	public function addAttr ($attr,$typ=M_STRING,$path=0) {
 		$x= $this->existsAttr ($attr);
 		if ($x) 								{$this->errLog->logLine(E_ERC003.':'.$attr);return 0;}
-		if ($typ == M_REF or $typ == M_CREF){ 
+		if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE){ 
 			if (!$path) 						{$this->errLog->logLine(E_ERC008.':'.$attr);return 0;}
+			if(!$this->stateHdlr)				{$this->errLog->logLine(E_ERC014.':'.$attr.':'.$typ);return 0;}
 		}
 		$this->attr_lst[]=$attr;
 		$r=$this->setTyp ($attr,$typ);
 		$r2=true;
-		if ($typ == M_REF or $typ == M_CREF) {
+		if ($typ == M_REF or $typ == M_CREF or M_CODE) {
 			$r2=$this->setPath($attr,$path); // should check path ?
 		}
 		if ($r and $r2){return true;}
@@ -141,46 +177,12 @@ class Model {
 		return NULL;        	
    	}
 
-	public function getTyp ($attr) {
-		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
-		foreach($this->attr_typ as $x => $typ) {
-			if ($x==$attr) {return $typ;}
-		}           			
-		return NULL;
-    }
-	
-	public function getPath ($attr) {
-		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
-		foreach($this->attr_path as $x => $path) {
-			if ($x==$attr) {return $path;}
-		}           			
-		return NULL;
-    }
-	
-	public function existsAttr ($attr) {
-		if (in_array($attr, $this->attr_lst)) {return true;} ;
-        return 0;
-    }
-
 	private function setValNoCheck ($attr,$val) {
 		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
 		$this->attr_val[$attr]=$val;
 		return true;
 	}
-	
-	public function setTyp ($attr,$typ) {
-		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
-		if (!isMtype($typ)) 					{$this->errLog->logLine(E_ERC004.':'.$typ) ;return 0;}
-		$this->attr_typ[$attr]=$typ;
-	    return true;
-	}
-	
-	public function setPath ($attr,$path) {
-		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
-		$this->attr_path[$attr]=$path;
-	    return true;
-	}
-	
+
 	public function setVal ($Attr,$Val,$check=true) {
 		if (in_array($Attr,$this->attr_predef) 
 			and $check)							{$this->errLog->logLine(E_ERC001.':'.$Attr);return 0;};
@@ -188,7 +190,7 @@ class Model {
 		$type=$this->getTyp($Attr);
 		if ($type ==M_CREF ) 					{$this->errLog->logLine(E_ERC013.':'.$Attr);return 0;}
 		$btype=$type;
-		if ($type==M_ID or $type == M_REF or $type == M_CREF) {$btype = M_INTP;}
+		if ($type==M_ID or $type == M_REF or $type == M_CREF or $type==M_CODE) {$btype = M_INTP;}
 		$res =checkType($Val,$btype);
 		if (! $res)								{$this->errLog->logLine(E_ERC005.':'.$Val.':'.$btype) ;return 0;}
 		// ref checking
@@ -196,9 +198,33 @@ class Model {
 			$res = $this-> checkRef($Attr,$Val);
 			if (! $res) {return 0;}
 		}
+		// code values
+		if ($type == M_CODE) {
+			$res = $this-> checkCode($Attr,$Val);
+			if (! $res) {$this->errLog->logLine(E_ERC016.':'.$Attr.':'.$Val);return 0;}
+		}	
 		return ($this->setValNoCheck ($Attr,$Val));
     }
 
+	public function checkCode ($Attr,$Val) {
+		$Vals = $this->getValues($Attr);
+		if (!$Vals) {return 0;}
+		$res = in_array($Val,$Vals);
+		return $res;		
+	}
+
+	public function getValues($Attr) {
+		$r=$this->getTyp($Attr);
+		if(!$r) {return 0;}
+		if ($r != M_CODE) {$this->errLog->logLine(E_ERC015.':'.$Attr.':'.$r); return 0;}
+		$r=$this->getPath($Attr);
+		if ($r) {
+			$res=evalPathString($r);
+			return $res;
+		}
+		return $r;
+	}
+	
 	public function checkRef($Attr,$id) {
 		$mod = $this->getPath($Attr) ;
 		if ($id == 0) {return true;}
@@ -209,6 +235,10 @@ class Model {
 	
 	public function save (){
 		if (! $this->stateHdlr) 				{$this->errLog->logLine(E_ERC006);return 0;}
+		$n=$this->getVal('vnum');
+		$n++;
+		$this->setValNoCheck('vnum',$n);
+		$this->setValNoCheck ('utstp',date(M_FORMAT_T));
 		$res=$this->stateHdlr->saveObj($this);
 		$this->id=$res;
 		return $res;

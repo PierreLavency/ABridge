@@ -13,5 +13,7 @@ define ('E_ERC010',	"ERC010"); 	// invalid model name
 define ('E_ERC011',	"ERC011"); 	// invalid type for object id
 define ('E_ERC012',	"ERC012"); 	// invalid value for object id = 0
 define ('E_ERC013',	"ERC013"); 	// cannot set CREF
-
+define ('E_ERC014',	"ERC014"); 	// type requires statehdlr.
+define ('E_ERC015',	"ERC015"); 	// no possible values for this type
+define ('E_ERC016',	"ERC016"); 	// invalid value for this code -
 ?>

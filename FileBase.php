@@ -22,6 +22,12 @@ class FileBase{
 		return $r;
 	}
 
+	public function inject($id) {
+		$file = file_get_contents($this->filePath.$id.'.txt', FILE_USE_INCLUDE_PATH);
+		$objects = unserialize($file);
+		foreach ($objects as $mod=>$val) {$this->objects[$mod]=$val;}
+	}
+	
 	public function newMod($Model,$Meta=[]) {
 		if (array_key_exists($Model,$this->objects)) {return 0;}; 
 		$Meta['lastId']=1;
