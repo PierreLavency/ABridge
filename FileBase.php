@@ -27,6 +27,10 @@ class FileBase{
 		$objects = unserialize($file);
 		foreach ($objects as $mod=>$val) {$this->objects[$mod]=$val;}
 	}
+
+	public function existsMod ($Model) {
+		return(array_key_exists($Model,$this->objects));
+	}
 	
 	public function newMod($Model,$Meta=[]) {
 		if (array_key_exists($Model,$this->objects)) {return 0;}; 
@@ -85,7 +89,7 @@ class FileBase{
 		if ($id == 0) {return 0;}; 
 		if (! array_key_exists($id,$this->objects[$Model])) {return 0;}; 
 		unset($this->objects[$Model][$id]); 
-		return 1;
+		return true;
 	}
 	
 	public function allAttrVal($Model, $Attr) {

@@ -20,6 +20,11 @@
 			$meta['attr_lst'] = $mod->getAllAttr();
 			$meta['attr_typ'] = $mod->getAllTyp();
 			$meta['attr_path'] = $mod->getAllPath();
+			$meta['attr_bkey'] = $mod->getAllBkey();
+			$meta['attr_mdtr'] = $mod->getAllMdtr();
+			if($this->Base->existsMod($name)) {
+				return ($this->Base->putMod($name,$meta));
+			}
 			return ($this->Base->newMod($name,$meta)); // should deal with case where it exisits already !
 		}
 		
@@ -30,6 +35,8 @@
 			$attrlist=$values['attr_lst'];
 			$attrtype=$values['attr_typ'];
 			$attrpath=$values['attr_path'];
+			$attrbkey=$values['attr_bkey'];
+			$attrmdtr=$values['attr_mdtr'];
 			$predef = $mod->getAllPredef();
 			foreach($attrlist as $attr) {
 				if (! in_array ($attr,$predef)) {
@@ -37,7 +44,9 @@
 					$path=0;
 					if (array_key_exists ($attr,$attrpath)){$path=$attrpath[$attr];}
 					$mod->addAttr($attr,$typ,$path);
-				}
+					if (in_array($attr,$attrbkey)) {$mod->setBkey($attr,true);}
+					if (in_array($attr,$attrmdtr)) {$mod->setMdtr($attr,true);}
+					}
 			}
 			return true; 	
 		}
@@ -64,9 +73,19 @@
 			return $id;
 		}
 
+		public function eraseObj($mod) {
+			$name = $mod->getModName();
+			$id = $mod->getId();
+			if ($id==0) {return 0;}
+			return ($this->Base->delObj($name, $id));
+		}
+		
+		
 		public function findObj($modN,$attr,$val) {
 			return ($this->Base->findObj($modN,$attr,$val));
 		}
+		
+		
 		
 	}
 ?>
