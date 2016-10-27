@@ -20,10 +20,11 @@ class Model {
 	public $attr_typ = array("id"=>M_ID,"vnum"=>M_INT,"ctstp"=>M_TMSTP,"utstp"=>M_TMSTP);
 	public $attr_val = array('vnum'=>0);
 	public $attr_path = [];
+	public $attr_bkey = [];
+	public $attr_mdtr = [];
 	public $errLog;
 	public $stateHdlr=0;
 
-	
 	// constructors
 	function __construct()
     {
@@ -61,7 +62,6 @@ class Model {
 		if (! checkType($id,M_INTP))    {throw new Exception(E_ERC011.':'.$id.':'.M_INTP);}
 		$this->id=$id; 
 		$this->name=$name;
-		$this->setValNoCheck ('utstp',date(M_FORMAT_T));
 		$logname = $name.'_ErrLog';
 		$this->errLog= new Logger($logname);
 		$this->stateHdlr=getStateHandler ($name);
@@ -94,6 +94,14 @@ class Model {
 		return $this->attr_path;        	
    	}
 	
+	public function getAllBkey () { 
+		return $this->attr_bkey;        	
+   	}
+	
+	public function getAllMdtr () { 
+		return $this->attr_mdtr;        	
+   	}
+	
 	public function getAllPredef () {
 		return $this->attr_predef;
 	}
@@ -114,6 +122,16 @@ class Model {
 		return NULL;
     }
 	
+	public function isBkey ($attr) {
+		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
+		return (in_array($attr,$this->attr_bkey));
+    }
+	
+	public function isMdtr ($attr) {
+		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
+		return (in_array($attr,$this->attr_mdtr));
+    }
+	
 	public function existsAttr ($attr) {
 		if (in_array($attr, $this->attr_lst)) {return true;} ;
         return 0;
@@ -129,6 +147,29 @@ class Model {
 	public function setPath ($attr,$path) {
 		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
 		$this->attr_path[$attr]=$path;
+	    return true;
+	}
+
+	public function setBkey ($attr,$val) {
+		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
+		if(!$this->stateHdlr)					{$this->errLog->logLine(E_ERC017.':'.$attr.':'.$typ);return 0;}		
+		if ($val) {
+			if (!in_array($attr,$this->attr_bkey)) {$this->attr_bkey[]=$attr;}		
+		}
+		if ( ! $val) {
+			if (in_array($attr,$this->attr_bkey)) {unset($this->attr_bkey[$attr]);}			
+		}
+	    return true;
+	}
+	
+	public function setMdtr ($attr,$val) {
+		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
+		if ($val) {
+			if (!in_array($attr,$this->attr_mdtr)) {$this->attr_mdtr[]=$attr;}		
+		}
+		if ( ! $val) {
+			if (in_array($attr,$this->attr_mdtr)) {unset($this->attr_mdtr[$attr]);}			
+		}
 	    return true;
 	}
 	
@@ -202,10 +243,20 @@ class Model {
 		if ($type == M_CODE) {
 			$res = $this-> checkCode($Attr,$Val);
 			if (! $res) {$this->errLog->logLine(E_ERC016.':'.$Attr.':'.$Val);return 0;}
-		}	
+		}
+		// BKey
+		if ($this->isBkey($Attr)) {
+			if (! $this->checkBkey($Attr,$Val)) {$this->errLog->logLine(E_ERC018.':'.$Attr.':'.$Val) ;return 0;} 
+		}
 		return ($this->setValNoCheck ($Attr,$Val));
     }
 
+	public function checkBkey ($Attr,$Val) {
+		$res=$this->stateHdlr->findObj($this->getModName(),$Attr,$Val);
+		if ($res==[]) {return true;}
+		return false;		
+	}
+	
 	public function checkCode ($Attr,$Val) {
 		$Vals = $this->getValues($Attr);
 		if (!$Vals) {return 0;}
@@ -244,6 +295,13 @@ class Model {
 		return $res;
 	}
 
+	public function delet() {
+		if (! $this->stateHdlr) 				{$this->errLog->logLine(E_ERC006);return 0;}
+		$res=$this->stateHdlr->eraseObj($this);
+		if ($res) {$this->id=0;}
+		return $res;
+	}
+	
 	public function saveMod (){
 		if (! $this->stateHdlr) 				{$this->errLog->logLine(E_ERC006);return 0;}
 		$res=$this->stateHdlr->saveMod($this);
