@@ -18,4 +18,10 @@ define ('E_ERC015',	"ERC015"); 	// no possible values for this type
 define ('E_ERC016',	"ERC016"); 	// invalid value for this code -
 define ('E_ERC017',	"ERC017"); 	// Bkey requires state handler -
 define ('E_ERC018',	"ERC018"); 	// Bkey violation -
+define ('E_ERC019',	"ERC019"); 	// Mdtr violation -
+
+
+
+
+
 ?>

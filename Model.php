@@ -26,8 +26,7 @@ class Model {
 	public $stateHdlr=0;
 
 	// constructors
-	function __construct()
-    {
+	function __construct() {
         $a = func_get_args();
         $i = func_num_args();
         if (method_exists($this,$f='__construct'.$i)) {
@@ -284,8 +283,24 @@ class Model {
 		return true;
 	}
 	
+	public function checkMdtr($Attr) {
+		$typ= $this->getTyp($Attr);
+		if (!$typ) {return false;}
+		if (array_key_exists($Attr,$this->attr_val)) {
+			$val = $this->getVal($Attr);
+			if ($typ == M_CODE or $typ == M_REF or $typ == M_ID) {if (!$val) { return false;}}
+			if ($typ == M_STRING) {if ($val == "") {return false;}}
+			return true;
+		}
+		return false;
+	}	
+	
 	public function save (){
 		if (! $this->stateHdlr) 				{$this->errLog->logLine(E_ERC006);return 0;}
+		foreach ($this->getAllMdtr() as $Attr) {
+			$res=$this->checkMdtr($Attr);
+			if (!$res){$this->errLog->logLine(E_ERC019.':'.$Attr);return 0;}
+		}
 		$n=$this->getVal('vnum');
 		$n++;
 		$this->setValNoCheck('vnum',$n);
