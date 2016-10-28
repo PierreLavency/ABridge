@@ -102,4 +102,7 @@ if ($show) {echo "<br>" ; };
 //$log->setVerbatim (2);
 $log->saveTest();
 
+//$log->showTest();
+
+
 ?>

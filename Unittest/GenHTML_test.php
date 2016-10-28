@@ -2,7 +2,7 @@
 require_once("UnitTest.php");
 $logName = basename(__FILE__, ".php");
 
-$z=new unitTest($logName);
+$log=new unitTest($logName);
 
 $show = true;
 
@@ -27,83 +27,76 @@ $test11 = [H_TYPE=>H_T_LIST,H_ARG=>[[H_TYPE=>H_T_LIST,H_ARG=>[$test8,$test8]],$t
 $test12 = [H_TYPE=>H_T_LIST,H_ARG=>[[H_TYPE=>H_T_LIST,H_ARG=>[$test8,$test8]],[H_TYPE=>H_T_LIST,H_ARG=>[$test8a,$test8a]]]];
 
 $show = false;
+if($show) {echo "<br/>".NL_O;}
 
 $r=genFormElem($test1,$show);
-										// logging result
-										$xs = "$r=genFormElem(test1,$show);";
-										$z->logLine ($xs);
+
+	$line = "$r=genFormElem(test1,$show);";$log->logLine ($line);
+
 if($show) {echo "<br/>".NL_O;}
 $r=genFormElem($test2,$show);			
-										// logging result
-										$xs = "$r=genFormElem(test2,$show);";
-										$z->logLine ($xs);
+
+	$line = "$r=genFormElem(test2,$show);";$log->logLine ($line);
 
 if($show) {echo "<br/>".NL_O;}			
 $r=genFormElem($test3,$show);
-										// logging result
-										$xs = "$r=genFormElem(test3,$show);";
-										$z->logLine ($xs);
+
+	$line = "$r=genFormElem(test3,$show);";$log->logLine ($line);
+
 if($show) {echo "<br/>".NL_O;}
-$r=genFormElem($test4,$show);										
-										// logging result
-										$xs = "$r=genFormElem(test4,$show);";
-										$z->logLine ($xs);
+$r=genFormElem($test4,$show);				
+						
+	$line = "$r=genFormElem(test4,$show);";$log->logLine ($line);
 
 if($show) {echo "<br/>".NL_O;}
 $r=genFormElem($test5,$show);			
-										// logging result
-										$xs = "$r=genFormElem(test5,$show);";
-										$z->logLine ($xs);
+
+	$line = "$r=genFormElem(test5,$show);";$log->logLine ($line);
 
 if($show) {echo "<br/>".NL_O;}
 $r=genFormElem($test6,$show);		
-										// logging result
-										$xs = "$r=genFormElem(test6,$show);";
-										$z->logLine ($xs);
+
+	$line = "$r=genFormElem(test6,$show);";$log->logLine ($line);
 
 if($show) {echo "<br/>".NL_O;}
 $r=genFormElem($test7,$show);	
-										// logging result
-										$xs = "$r=genFormElem(test7,$show);";
-										$z->logLine ($xs);
+
+	$line = "$r=genFormElem(test7,$show);";$log->logLine ($line);
 
 if($show) {echo "<br/>".NL_O;}
 $r=genFormElem($test8,$show);			
-										// logging result
-										$xs = "$r=genFormElem(test8,$show);";
-										$z->logLine ($xs);
+
+	$line = "$r=genFormElem(test8,$show);";$log->logLine ($line);
 
 if($show) {echo "<br/>".NL_O;}
 
 
 $r1 = genList($test9,$show);
 	
-										// logging result
-										$xs = "$r1 = genList(test9,$show)";
-										$z->logLine ($xs);
+	$line = "$r1 = genList(test9,$show)";$log->logLine ($line);
 
 if($show) {echo "<br/>".NL_O;}
 
 $r=genFormElem($test10,$show);			
-										// logging result
-										$xs = "$r=genFormElem(test10,$show);";
-										$z->logLine ($xs);
+
+	$line = "$r=genFormElem(test10,$show);";$log->logLine ($line);
 
 if($show) {echo "<br/>".NL_O;}
 
 $x = ($r1 == $r); 
-										// logging result
-										$xs = "$x = (r1 == r); ";
-										$z->logLine ($xs);
-										
+
+	$line = "$x = (r1 == r); ";$log->logLine ($line);
 
 $r=genFormElem($test11,$show);
-										// logging result
-										$xs = "$r=genFormElem(test11,$show);";
-										$z->logLine ($xs);
+
+	$line = "$r=genFormElem(test11,$show);";$log->logLine ($line);
+
 $r=genFormElem($test12,$show);
-										// logging result
-										$xs = "$r=genFormElem(test12,$show);";
-										$z->logLine ($xs);
-$z->saveTest();
+
+	$line = "$r=genFormElem(test12,$show);";$log->logLine ($line);
+
+	
+$log->saveTest();
+//$log->showTest();
+
 ?>

@@ -5,23 +5,32 @@
 	
 	require_once("ViewConstant.php");
 	
-	
-	function genList($dspecL,$show=true){
+	function genList($dspec,$show=true){
+		return(genListL($dspec,$show,0));
+	}
+	function genListL($dspecL,$show,$L){
 		$list_s   = '<ul>  '  ;
 		$list_e_s = '</ul>  ';
 		$element_s   = '<li>  '  ;
 		$element_e_s   = '</li>  '  ;
-
-		$result = $list_s ; 
+		$tab = "";
+		for($i=0;$i<$L;$i++) {$tab=$tab.TAB_O;}
+		$tab2=$tab.TAB_O;
+		
+		$result = $tab.$list_s ; 
 		foreach ($dspecL as $dspec) {
-			$result=$result . NL_O . TAB_O. $element_s. NL_O.genFormElem($dspec,false).TAB_O.$element_e_s;
+			$result=$result . NL_O . $tab2. $element_s. NL_O.genFormElemL($dspec,false,$L+2).$tab2.$element_e_s;
 		}
-		$result = $result . NL_O. $list_e_s;
+		$result = $result . NL_O. $tab. $list_e_s .NL_O;
 		if ($show) {echo $result;};
 		return $result;
 	}
 
 	function genFormElem($dspec,$show = true)	 {
+		return (genFormElemL($dspec,$show,0));
+	}	
+	
+	function genFormElemL($dspec,$show,$L)	 {
 
  		$button_s   = '<input type="submit" value="Submit">';
 		$textarea_s = '<textarea ';
@@ -44,6 +53,9 @@
 		$col = 30;
 		$row = 10;
 
+		$tab = "";
+		for($i=0;$i<$L;$i++) {$tab=$tab.TAB_O;}
+		
 		foreach($dspec as $t => $v) {
 			switch ($t) {
 				case H_TYPE:
@@ -77,17 +89,17 @@
 		if($type == H_T_PASSWORD) {$type="text";};
 		switch ($type) {
 			case H_T_LIST:
-				$result = genList($arg,false);
+				$result = genListL($arg,false,$L);
 				break;
 			case H_T_TEXTAREA:
 				$result = $textarea_s . $name_s; 
 				$result = $result . $col_s . $col . '" ' ; 
 				$result = $result . $row_s . $row . '" ' . $end_s ; 
        			if ($default) {$result = $result.$default;};
-				$result = $result . $textarea_e_s . NL_O;
+				$result = $tab.$result . $textarea_e_s . NL_O;
 				break;
 			case H_T_SUBMIT:
-				$result = $button_s.NL_O; 
+				$result = $tab.$button_s.NL_O; 
 				break;
 			case H_T_TEXT:
 				$result = $input_s; 
@@ -97,7 +109,7 @@
        			if ($default) {$value_s = 'value = "' . $default .  '" ';};
 				$result = $result . $value_s;
 				$result = $result . $end_s;
-				$result = $result . NL_O;
+				$result = $tab.$result . NL_O;
         		break;
 			case H_T_RADIO:
 				$result = "";
@@ -106,22 +118,22 @@
 					$value_s = ' value = "' . $value .  '" ';
 					$checked_s = "";
 					if ($value == $default) {$checked_s = " checked ";};
-					$result = $result . $input_s . $type_s . $name_s . $value_s . $checked_s . $end_s . $separator . NL_O;
+					$result = $result.$tab . $input_s . $type_s . $name_s . $value_s . $checked_s . $end_s . $separator . NL_O;
 				};
         		break;    
 			case H_T_SELECT:
 				$result = $select_s;
-				$result = $result. $name_s . $end_s . NL_O ;
+				$result = $tab.$result. $name_s . $end_s . NL_O ;
 				foreach ($values as $value) {
 					$value_s = ' value = "' . $value .  '" ';
 					$selected_s = "";
 					if ($value == $default) {$selected_s = " selected ";};
-					$result = $result . TAB_O. $option_s . $value_s . $selected_s . $end_s .$value .$option_e_s. NL_O;
+					$result = $result.$tab . TAB_O. $option_s . $value_s . $selected_s . $end_s .$value .$option_e_s. NL_O;
 				};
-				$result = $result . $select_e_s. NL_O;
+				$result = $result . $tab.$select_e_s. NL_O;
         		break;
 			case H_T_PLAIN:
-				$result = $default;
+				$result = $tab.$default.NL_O;
 				break;
     		default:
         		$result = $plain;
