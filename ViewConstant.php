@@ -9,8 +9,10 @@
 	define  ('H_T_PASSWORD',"password");
 	define  ('H_T_LIST',"list");
 	define  ('H_T_PLAIN',"plain");
+	define  ('H_T_LINK',"link");
 	
 	define ('H_NAME', "name");
+	define ('H_LABEL', "label");
 	define ('H_DEFAULT', "default");
 	define ('H_COL', "col");
 	define ('H_ROW', "row");

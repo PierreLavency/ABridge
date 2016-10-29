@@ -40,6 +40,8 @@
 		$input_s    = '<input '   ;
 		$option_s   = '<option '  ;
 		$option_e_s = '</option> ';
+		$link_s   = '<a href='  ;
+		$link_e_s = '</a> ';
 		$end_s      = ' > '	  ;
 		$col_s	    = ' cols="'    ;
 		$row_s	    = ' rows="'    ;
@@ -52,7 +54,7 @@
 		$plain;
 		$col = 30;
 		$row = 10;
-
+		$label="";
 		$tab = "";
 		for($i=0;$i<$L;$i++) {$tab=$tab.TAB_O;}
 		
@@ -63,6 +65,9 @@
 					break; 
 				case H_NAME:
 					$name = $v;
+					break; 				
+				case H_LABEL:
+					$label = $v;
 					break; 
 				case H_DEFAULT:
 					$default = $v;
@@ -88,6 +93,9 @@
 
 		if($type == H_T_PASSWORD) {$type="text";};
 		switch ($type) {
+			case H_T_LINK:
+				$result = $tab.$link_s.$name.$end_s.$label.$link_e_s.NL_O;
+				break;
 			case H_T_LIST:
 				$result = genListL($arg,false,$L);
 				break;
