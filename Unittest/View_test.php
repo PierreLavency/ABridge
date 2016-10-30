@@ -12,12 +12,12 @@ $log->logLine('/* standalone test */');
 require_once("Model.php"); 
 require_once("View.php"); 
 
-$test1=[V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_LBL]];
-$test2=[V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_NAME]];
-$test3=[V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_VAL]];
-$test4=[V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_TYPE]];
-$test5=[H_TYPE=>H_T_TEXT,V_VIEW =>[V_ATTR => 'A1', V_PROP => V_P_INP]];
-$test6=[H_TYPE=>H_T_LIST,H_ARG=>[$test1,$test2,$test3,$test4,$test5]];
+$test1=[V_TYPE=>V_ELEM,V_ATTR => 'A1', V_PROP => V_P_LBL];
+$test2=[V_TYPE=>V_ELEM,V_ATTR => 'A1', V_PROP => V_P_NAME];
+$test3=[V_TYPE=>V_ELEM,V_ATTR => 'A1', V_PROP => V_P_VAL];
+$test4=[V_TYPE=>V_ELEM,V_ATTR => 'A1', V_PROP => V_P_TYPE];
+$test5=[H_TYPE=>H_T_TEXT,V_TYPE=>V_ELEM,V_ATTR => 'A1', V_PROP => V_P_INP];
+$test6=[V_TYPE=>V_LIST,V_ARG=>[$test1,$test2,$test3,$test4,$test5]];
 
 $x=new Model('test');
 
@@ -85,13 +85,6 @@ $log->logLine ($xs);
 	// end
 if ($show) {echo "<br>" ; };
 
-$r=$v->setSpec($test6);
-$res = $v->show($show);
-	// logging result
-$xs = "$res = v->show($show);";
-$log->logLine ($xs);
-	// end
-if ($show) {echo "<br>" ; };
 
 
 $res = $v->showDefault($show);
@@ -102,7 +95,7 @@ if ($show) {echo "<br>" ; };
 //$log->setVerbatim (2);
 $log->saveTest();
 
-//$log->showTest();
+// $log->showTest();
 
 
 ?>
