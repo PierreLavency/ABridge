@@ -143,6 +143,9 @@
 			case H_T_PLAIN:
 				$result = $tab.$default.NL_O;
 				break;
+			case H_T_NULL:
+				$result="";
+				break;
     		default:
         		$result = $plain;
 		}

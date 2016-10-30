@@ -139,6 +139,20 @@ class Model {
 		return (in_array($attr,$this->attr_mdtr));
     }
 	
+	public function isPredef ($attr) {
+		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
+		return (in_array($attr,$this->attr_predef));
+    }
+	
+	public function isOptl ($attr) {
+		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
+		if ($this->isPredef($attr) ) {return 0;}
+		if ($this->isMdtr($attr) ) {return 0;}
+		$typ = $this->getTyp($attr);
+		if ($typ == M_CREF) {return 0;}
+		return true;
+    }
+	
 	public function existsAttr ($attr) {
 		if (in_array($attr, $this->attr_lst)) {return true;} ;
         return 0;

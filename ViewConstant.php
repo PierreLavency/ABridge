@@ -10,6 +10,7 @@
 	define  ('H_T_LIST',"list");
 	define  ('H_T_PLAIN',"plain");
 	define  ('H_T_LINK',"link");
+	define  ('H_T_NULL',"null");
 	
 	define ('H_NAME', "name");
 	define ('H_LABEL', "label");

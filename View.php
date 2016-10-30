@@ -10,13 +10,11 @@
 	define('V_LIST' ,"v_list");
 	define('V_ARG' , "v_arg");
 	define('V_OBJ' , "v_Obj");
-	
 	define('V_ATTR' ,"v_attr");
-	define('V_CLASS',"v_class");
+	define('V_BTN' ,"v_btn");
 
 	define('V_PROP' ,"v_prop");
 	define('V_ID' ,"v_id");
-	define('V_MOD' ,"v_mod");
 	
 	define('V_P_INP' ,"v_p_Attr");
 	define('V_P_LBL'  ,"v_p_Lbl");
@@ -25,13 +23,15 @@
 	define('V_P_TYPE' ,"v_p_type");
 	define('V_P_REF' ,"v_p_ref");
 	
+	define('V_G_VIEW',"v_g_view");
+	define('V_G_CREA',"v_g_crea");
 	
 class View
 {
 	// property
 
 	public $model;
-	public $attr_lbl = [];
+	public $attr_lbl = ['Mother'=>'Mere'];
 	public $view_spec = []; 
 
 	// constructors
@@ -46,7 +46,6 @@ class View
 		$this->view_spec = $dspec;
 		return $dspec;
 	}
-	
 	
 	public function getLbl ($attr) {
 		foreach($this->attr_lbl as $x => $lbl) {
@@ -77,17 +76,20 @@ class View
 		}    	
 	}
 	
-	public function evale($spec) {
+	public function evale($spec,$gen) {
 		$Attr = $spec[V_ATTR];
 		$prop = $spec[V_PROP];
 		$res = [];
-		if ($prop == V_P_INP) {
-			$res[H_NAME]=$Attr;
-			$default = $this->model->getVal($Attr);
-			if ($default) {$res[H_DEFAULT]=$default;}
-			$res[H_TYPE]=$spec[H_TYPE];
-			return $res ;
-		}; 
+		$input=false;
+		if ($gen==V_G_CREA and $prop==V_P_VAL){
+			if ($this->model->isMdtr($Attr) or $this->model->isOptl($Attr)) {
+				$res[H_NAME]=$Attr;
+				$default = $this->model->getVal($Attr);
+				if ($default) {$res[H_DEFAULT]=$default;}
+				$res[H_TYPE]=H_T_TEXT;
+				return $res ;
+			}
+		}
 		if ($prop == V_P_REF) {
 			$res[H_TYPE]=H_T_LINK;
 			if (isset($spec[V_ID])){
@@ -98,39 +100,43 @@ class View
 				$id = $this->model->getVal($Attr);			
 				$res[H_LABEL]=$this->getLbl($Attr);
 			}
-			if (! $id) {$res = [H_TYPE =>H_T_PLAIN, H_DEFAULT=>""]; return $res;}
+			if (! $id) {return 0;}
 			$obj = $this->model->getPathMod($Attr);
 			$res[H_NAME]=getRootPathString($obj,$id);	
 			return $res;			
-		}
+		}	
 		$x=$this->getProp ($Attr,$prop);
 		$res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$x];
 		return $res;
 	}
 	
-	public function evalo($dspec) {
+	public function evalo($dspec,$gen) {
 		$name = $this->model->getModName();
 		$res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$name];
 		return $res;
 	}
-	public function subst ($spec){
+	public function subst ($spec,$gen){
 		$type = $spec[V_TYPE];
 		$result=[];
 		switch ($type) {
  			case V_ELEM:
-					$result= $this->evale($spec);
+					$result= $this->evale($spec,$gen);
 					break;
 			case V_OBJ:
-					$result= $this->evalo($spec);
+					$result= $this->evalo($spec,$gen);
 					break;
 			case V_LIST:
 					$result[H_TYPE]=H_T_LIST;
 					$arg=[];
 					foreach($spec[V_ARG] as $elem) {
-						$arg[]=$this->subst($elem);
+						$r=$this->subst($elem,$gen);
+						if($r) {$arg[]=$r;}
 					}
 					$result[H_ARG]=$arg;
 					break;
+			case V_BTN:
+					$result[H_TYPE]=H_T_SUBMIT;
+					break;		
 		}
 		return $result;
 	}
@@ -142,6 +148,14 @@ class View
     	}
 	
 	public function showDefault ($show = true) {
+		if ($this->model->getId()) {
+			return ($this->showDefaultG ($show,V_G_VIEW));
+		}
+		return ($this->showDefaultG ($show,V_G_CREA));
+		
+	}
+	
+	public function showDefaultG ($show,$gen) {
 			$i=1;
 			$name = $this->model->getModName ();
 			$spec=[];
@@ -156,14 +170,19 @@ class View
 				if ($this->model->getTyp($attr) == M_CREF) {
 					$view=[[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_NAME]];
 					foreach($this->model->getVal($attr) as $id) {
-						$view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_REF,V_ID=>$id]; // hard coded !!
+						$view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_REF,V_ID=>$id];
 					}
 				}
 				$spec[$i]=[V_TYPE=>V_LIST,V_ARG=>$view];
 				$i++;
 			}
-			$spec=[V_TYPE=>V_LIST,V_ARG=>[[V_TYPE=>V_OBJ],[V_TYPE=>V_LIST,V_ARG=>$spec]]];
-			$r=$this->subst($spec);
+			if ($gen == V_G_VIEW) {
+				$spec=[V_TYPE=>V_LIST,V_ARG=>[[V_TYPE=>V_OBJ],[V_TYPE=>V_LIST,V_ARG=>$spec]]];
+			}
+			if ($gen == V_G_CREA) {
+				$spec=[V_TYPE=>V_LIST,V_ARG=>[[V_TYPE=>V_OBJ],[V_TYPE=>V_LIST,V_ARG=>$spec],[V_TYPE=>V_BTN]]];
+			}
+			$r=$this->subst($spec,$gen);
 			$r=genFormElem($r,$show);
 			return $r;
 	}
