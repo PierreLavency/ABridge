@@ -12,6 +12,7 @@ function checkAbsPathString($Apath) {
 }
 
 function getModPathString ($Apath) {
+	// this assume that REF does not change this !! ok for code as it returns an attribute
 	if (! checkAbsPathString($Apath)) {return 0;}
 	$path=explode('/',$Apath);
 	return ($path[1]);
@@ -37,6 +38,7 @@ function evalPathString ($Apath,$Model=0){
 }
 
 function evalPath($path,$Model){
+	// if last elem is an attribute return its value otherwise return the model 
 	$c=count($path);
 	if ($c == 0) {return $Model;}
 	$elm=array_shift($path);

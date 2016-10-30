@@ -239,8 +239,8 @@ $p6 = new Model($ModN);
 $res=$p6->setVal('Name','Quoilin');
 	$line = "$res=p6->setVal('Name','Quoilin'');"; $log->logLine($line);
 
-$res=$p6->setVal('SurName','Madelein');
-	$line = "$res=p6->setVal('SurName','Madelein');"; $log->logLine($line);
+$res=$p6->setVal('SurName','Madeleine');
+	$line = "$res=p6->setVal('SurName','Madeleine');"; $log->logLine($line);
 
 $res=$p6->setVal('BirthDay','24-11-1926');
 	$line = "$res=p6->setVal('BirthDay',''24-11-1926');"; $log->logLine($line);
@@ -259,6 +259,31 @@ $res=$p1->setVal('Mother',$id6);
 $id1=$p1->save();
 $line = "$id1=p1->save();"; $log->logLine($line);
 
+// Marie Agnes 
+
+$p7 = new Model($ModN);
+
+$res=$p7->setVal('Name','Lavency');
+	$line = "$res=p7->setVal('Name','Lavency'');"; $log->logLine($line);
+
+$res=$p7->setVal('SurName','Marie Agnes');
+	$line = "$res=p7->setVal('SurName','Marie Agnes');"; $log->logLine($line);
+
+$res=$p7->setVal('BirthDay','18-07-1953');
+	$line = "$res=p7->setVal('BirthDay','18-07-1953');"; $log->logLine($line);
+
+$res=$p7->setVal('Sexe',3);
+	$line = "$res=p7->setVal('Sexe',3);"; $log->logLine($line);
+
+$res=$p7->setVal('Father',4);
+	$line = "$res=p2->setVal('Father',2);"; $log->logLine($line);
+
+$log->includeLog($p7-> getErrLog ());
+	
+$id7 = $p7->save();	
+	$line = "$id6 = p7->save();"; $log->logLine($line);	
+
+
 // commit 
 
 $res = $db->commit();
@@ -272,6 +297,9 @@ $res=$p6->setVal('Sexe',1000);
 $res=$p6->setVal('Mother',1000);
 	$line = "$res=p6->setVal('Mother',1000);"; $log->logLine($line);	
 
+$res=$p6->addAttr('FatherOff',M_CREF,'Person');
+	$line = "$res=p6->addAttr('FatherOf',M_CREF,'Person');"; $log->logLine($line);
+	
 $log->includeLog($p6-> getErrLog ());
 
 
@@ -279,6 +307,6 @@ $log->includeLog($p6-> getErrLog ());
 	
 $log->saveTest();
 
-// $log->showTest();
+//$log->showTest();
 
 ?>
