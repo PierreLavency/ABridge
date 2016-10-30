@@ -1,4 +1,4 @@
-a:15:{i:0;s:21:"/* standalone test */";i:1;s:142:"<input type = "radio" name = "A"  value = "a1"  checked  > <br/>
+a:16:{i:0;s:21:"/* standalone test */";i:1;s:142:"<input type = "radio" name = "A"  value = "a1"  checked  > <br/>
 <input type = "radio" name = "A"  value = "a2"  > <br/>
 =genFormElem(test1,);";i:2;s:70:"<input type = "text" name = "A" value = "a1"  > 
 =genFormElem(test2,);";i:3;s:143:"<select name = "A"  > 
@@ -66,4 +66,8 @@ a:15:{i:0;s:21:"/* standalone test */";i:1;s:142:"<input type = "radio" name = "
 	</li>  
 </ul>  
 =genFormElem(test12,);";i:14;s:66:"<a href=ABridge.php/code/1 > testSuite</a> 
-=genFormElem(test13,);";}
+=genFormElem(test13,);";i:15;s:162:"<form method="post" action=  testSuite > 
+	<input type = "text" name = "A" value = "a1"  > 
+	<input type="submit" value="Submit">
+</form>  
+=genFormElem(test14,);";}

@@ -44,9 +44,13 @@ function evalPath($path,$Model){
 	$elm=array_shift($path);
 	if ($elm == "") {
 		$ModN = array_shift($path);
-		$id = (int) array_shift($path);
-		$Model = new Model ($ModN,$id);
-		return (evalPath($path,$Model));
+		if ($c > 2) {
+			$id = (int) array_shift($path);
+			$Model = new Model ($ModN,$id);
+			return (evalPath($path,$Model));
+		}
+		$Model = new Model ($ModN);
+		return ($Model);
 	}
 	$Val=$Model->getVal($elm);
 	if ($c>1) {

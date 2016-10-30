@@ -5,9 +5,29 @@
 	
 	require_once("ViewConstant.php");
 	
+	function genForm($action,$dspec,$show=true){
+		genformL($action,$dspec,$show,0);
+	}
+	
+	function genFormL($action,$dspecL,$show,$L) {
+		$form_s   = '<form method="post" action=  '  ;
+		$form_e_s = '</form>  ';
+		$end_s    = ' > '	  ;
+		$tab = "";
+		for($i=0;$i<$L;$i++) {$tab=$tab.TAB_O;}
+		$result=$tab.$form_s.$action.$end_s.NL_O;
+		foreach ($dspecL as $dspec) {
+			$result=$result. genFormElemL($dspec,false,$L+1);
+		}
+		$result=$result.$tab.$form_e_s.NL_O;
+		if ($show) {echo $result;};
+		return $result;
+	}
+	
 	function genList($dspec,$show=true){
 		return(genListL($dspec,$show,0));
 	}
+	
 	function genListL($dspecL,$show,$L){
 		$list_s   = '<ul>  '  ;
 		$list_e_s = '</ul>  ';
@@ -46,10 +66,10 @@
 		$col_s	    = ' cols="'    ;
 		$row_s	    = ' rows="'    ;
 		
-
 		$type="";
-		$default;
+		$default="";
 		$name="";
+		$action="";
 		$arg = [];
 		$plain;
 		$col = 30;
@@ -80,7 +100,9 @@
 					break; 
 				case H_VALUES:
 					$values = $v;
-					break;				
+					break;	
+				case H_ACTION:
+					$action = $v;
 				case H_ARG:
 					$arg = $v;
 					break;
@@ -98,6 +120,9 @@
 				break;
 			case H_T_LIST:
 				$result = genListL($arg,false,$L);
+				break;
+			case H_T_FORM:
+				$result = genFormL($action,$arg,false,$L);
 				break;
 			case H_T_TEXTAREA:
 				$result = $textarea_s . $name_s; 

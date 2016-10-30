@@ -84,7 +84,7 @@ class View
 		if ($gen==V_G_CREA and $prop==V_P_VAL){
 			if ($this->model->isMdtr($Attr) or $this->model->isOptl($Attr)) {
 				$res[H_NAME]=$Attr;
-				$default = $this->model->getVal($Attr);
+				$default = $this->model->getVal($Attr); // should get from post and set !
 				if ($default) {$res[H_DEFAULT]=$default;}
 				$res[H_TYPE]=H_T_TEXT;
 				return $res ;
@@ -115,6 +115,7 @@ class View
 		$res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$name];
 		return $res;
 	}
+	
 	public function subst ($spec,$gen){
 		$type = $spec[V_TYPE];
 		$result=[];

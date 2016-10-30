@@ -25,6 +25,7 @@ $test10 = [H_TYPE=>H_T_LIST,H_ARG=>[$test1,$test2]];
 $test11 = [H_TYPE=>H_T_LIST,H_ARG=>[[H_TYPE=>H_T_LIST,H_ARG=>[$test8,$test8]],$test8a]];
 $test12 = [H_TYPE=>H_T_LIST,H_ARG=>[[H_TYPE=>H_T_LIST,H_ARG=>[$test8,$test8]],[H_TYPE=>H_T_LIST,H_ARG=>[$test8a,$test8a]]]];
 $test13 = [H_TYPE=>H_T_LINK,H_NAME=>'ABridge.php/code/1',H_LABEL=>'testSuite'];
+$test14 = [H_TYPE=>H_T_FORM,H_ACTION=>'testSuite',H_ARG=>[$test2,$test4]];
 
 $show = false;
 if($show) {echo "<br/>".NL_O;}
@@ -98,6 +99,10 @@ $r=genFormElem($test12,$show);
 $r=genFormElem($test13,$show);
 
 	$line = "$r=genFormElem(test13,$show);";$log->logLine ($line);
+	
+$r=genFormElem($test14,$show);
+
+	$line = "$r=genFormElem(test14,$show);";$log->logLine ($line);
 	
 if($show) {echo "<br/>".NL_O;}
 	

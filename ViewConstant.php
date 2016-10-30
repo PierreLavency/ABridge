@@ -11,6 +11,7 @@
 	define  ('H_T_PLAIN',"plain");
 	define  ('H_T_LINK',"link");
 	define  ('H_T_NULL',"null");
+	define  ('H_T_FORM',"form");
 	
 	define ('H_NAME', "name");
 	define ('H_LABEL', "label");
@@ -19,5 +20,6 @@
 	define ('H_ROW', "row");
 	define ('H_VALUES', "values");
 	define ('H_ARG', "arg");
+	define ('H_ACTION', "action");
 	
 ?>
