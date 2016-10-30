@@ -19,7 +19,7 @@ define ('E_ERC016',	"ERC016"); 	// invalid value for this code -
 define ('E_ERC017',	"ERC017"); 	// Bkey requires state handler -
 define ('E_ERC018',	"ERC018"); 	// Bkey violation -
 define ('E_ERC019',	"ERC019"); 	// Mdtr violation -
-
+define ('E_ERC020',	"ERC020"); 	// Invalid Path - No Model
 
 
 

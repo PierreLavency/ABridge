@@ -1,6 +1,34 @@
 
 <?php
 
+
+
+function checkAbsPathString($Apath) {
+	$path=explode('/',$Apath);
+	$root = $path[0];
+	if (($root != "" )) {return 0;}
+	if (count($path) < 2) {return 0;}
+	return true;
+}
+
+function getModPathString ($Apath) {
+	if (! checkAbsPathString($Apath)) {return 0;}
+	$path=explode('/',$Apath);
+	return ($path[1]);
+}
+
+function getPathStringMod($Mod) {
+	$path = '/'.$Mod;
+	return $path;
+}
+
+function getRootPathString($Mod,$id) {
+	$RootPath= '/ABridge.php';
+	$path = $RootPath.'/'.$Mod.'/'.$id;
+	return $path;
+}
+
+
 function evalPathString ($Apath,$Model=0){
 	$path=explode('/',$Apath);
 	$root = $path[0];
@@ -10,6 +38,7 @@ function evalPathString ($Apath,$Model=0){
 
 function evalPath($path,$Model){
 	$c=count($path);
+	if ($c == 0) {return $Model;}
 	$elm=array_shift($path);
 	if ($elm == "") {
 		$ModN = array_shift($path);

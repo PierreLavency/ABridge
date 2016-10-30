@@ -52,11 +52,12 @@ $res = $mod->addAttr('SurName');
 $res = $mod->addAttr('BirthDay',M_DATE);
 	$line = "$res = mod->addAttr('BirthDay',M_DATE);"; $log->logLine($line);	
 
-$res = $mod->addAttr('Father',M_REF,$ModN);
-	$line = "$res = mod->addAttr('Father',M_REF,$ModN);"; $log->logLine($line);	
+$ModP=getPathStringMod($ModN);	
+$res = $mod->addAttr('Father',M_REF,$ModP);
+	$line = "$res = mod->addAttr('Father',M_REF,$ModP);"; $log->logLine($line);	
 
-$res = $mod->addAttr('Mother',M_REF,$ModN);
-	$line = "$res = mod->addAttr('Father',M_REF,$ModN);"; $log->logLine($line);	
+$res = $mod->addAttr('Mother',M_REF,$ModP);
+	$line = "$res = mod->addAttr('Mother',M_REF,$ModP);"; $log->logLine($line);	
 	
 $path='/'.$ModN.'/Father';
 $res = $mod->addAttr('FatherOf',M_CREF,$path);	

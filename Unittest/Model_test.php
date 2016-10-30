@@ -29,7 +29,7 @@ $r=$x->getVal('id');
 										$log->logLine ($xs);
 $r=$x->addAttr('y');
 										// logging result
-										$xs = "$r=x->addAttrList('y');";
+										$xs = "$r=x->addAttr('y');";
 										$log->logLine ($xs);
 
 $r=$x->delAttr('y');
@@ -92,6 +92,6 @@ $r= implode (' , ',$x->getAllAttr());
 
 $log->saveTest();
 
-//$log->showTest();
+// $log->showTest();
 
 ?>

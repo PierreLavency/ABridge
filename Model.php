@@ -85,7 +85,7 @@ class Model {
 		return $this->attr_typ;        	
    	}
 
-	public function getAllVal () { // all BUT id 
+	public function getAllVal () { // all BUT Id and Mod
 		return $this->attr_val;        	
    	}
 	
@@ -121,6 +121,14 @@ class Model {
 		return NULL;
     }
 	
+	public function getPathMod ($attr) {
+		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
+		foreach($this->attr_path as $x => $path) {
+			if ($x==$attr) {return (getModPathString($path));}
+		}           			
+		return NULL;
+    }
+	
 	public function isBkey ($attr) {
 		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
 		return (in_array($attr,$this->attr_bkey));
@@ -137,14 +145,15 @@ class Model {
     }
 	
 	public function setTyp ($attr,$typ) {
-		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
+		if (! $this->existsAttr ($attr)) 	    {$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
 		if (!isMtype($typ)) 					{$this->errLog->logLine(E_ERC004.':'.$typ) ;return 0;}
 		$this->attr_typ[$attr]=$typ;
 	    return true;
 	}
 	
 	public function setPath ($attr,$path) {
-		if (! $x= $this->existsAttr ($attr)) 	{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
+		if (! $this->existsAttr ($attr)) 	    {$this->errLog->logLine(E_ERC002.':'.$attr);return 0;};
+		if (! checkAbsPathString($path) )       {$this->errLog->logLine(E_ERC020.':'.$path);return 0;};
 		$this->attr_path[$attr]=$path;
 	    return true;
 	}
@@ -182,8 +191,8 @@ class Model {
 		$this->attr_lst[]=$attr;
 		$r=$this->setTyp ($attr,$typ);
 		$r2=true;
-		if ($typ == M_REF or $typ == M_CREF or M_CODE) {
-			$r2=$this->setPath($attr,$path); // should check path ?
+		if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE) {
+			$r2=$this->setPath($attr,$path); 
 		}
 		if ($r and $r2){return true;}
 		return 0;
@@ -276,7 +285,7 @@ class Model {
 	}
 	
 	public function checkRef($Attr,$id) {
-		$mod = $this->getPath($Attr) ;
+		$mod = $this->getPathMod($Attr) ;
 		if ($id == 0) {return true;}
 		if (!$mod)								 {$this->errLog->logLine(E_ERC008.':'.$Attr);return 0;}
 		try {$res = new Model($mod,$id);} catch (Exception $e) {$this->errLog->logLine($e->getMessage());return 0;}

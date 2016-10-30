@@ -29,8 +29,9 @@ $res = $mod->addAttr('Name');
 $res = $mod->addAttr('ValueOf',M_REF);
 	$line = "$res = mod->addAttr('ValueOf',M_REF);"; $log->logLine($line);
 // corrected	
-$res = $mod->addAttr('ValueOf',M_REF,$ModN);
-	$line = "$res = mod->addAttr('ValueOf',M_REF,$ModN);"; $log->logLine($line);
+$ModP = getPathStringMod($ModN);
+$res = $mod->addAttr('ValueOf',M_REF,$ModP);
+	$line = "$res = mod->addAttr('ValueOf',M_REF,$ModP);"; $log->logLine($line);
 
 $path='/'.$ModN.'/ValueOf';
 $res = $mod->addAttr('Values',M_CREF,$path);	
@@ -148,6 +149,6 @@ $res = $db->commit();
 	
 $log->saveTest();
 
-//$log->showTest();
+// $log->showTest();
 
 ?>

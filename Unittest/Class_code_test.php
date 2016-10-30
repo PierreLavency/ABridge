@@ -26,8 +26,9 @@ $mod = new Model($ModN);
 $res = $mod->addAttr('Name');
 	$line = "$res = mod->addAttr('Name');"; $log->logLine($line);
 
-$res = $mod->addAttr('ValueOf',M_REF,$ModN);
-	$line = "$res = mod->addAttr('ValueOf',M_REF,$ModN);"; $log->logLine($line);
+$ModP=getPathStringMod($ModN);
+$res = $mod->addAttr('ValueOf',M_REF,$ModP);
+	$line = "$res = mod->addAttr('ValueOf',M_REF,$ModP);"; $log->logLine($line);
 
 $path='/'.$ModN.'/ValueOf';
 $res = $mod->addAttr('Values',M_CREF,$path);	

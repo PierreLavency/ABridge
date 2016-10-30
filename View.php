@@ -92,15 +92,15 @@ class View
 			$res[H_TYPE]=H_T_LINK;
 			if (isset($spec[V_ID])){
 				$id=$spec[V_ID];
-				$obj=$spec[V_MOD];
 				$res[H_LABEL]=$id;
 			}
 			else {
-				$id = $this->model->getVal($Attr);
-				$obj = $this->model->getPath($Attr);
+				$id = $this->model->getVal($Attr);			
 				$res[H_LABEL]=$this->getLbl($Attr);
 			}
-			$res[H_NAME]='/ABridge.php/'.$obj.'/'.$id;		
+			if (! $id) {$res = [H_TYPE =>H_T_PLAIN, H_DEFAULT=>""]; return $res;}
+			$obj = $this->model->getPathMod($Attr);
+			$res[H_NAME]=getRootPathString($obj,$id);	
 			return $res;			
 		}
 		$x=$this->getProp ($Attr,$prop);
@@ -145,7 +145,6 @@ class View
 			$i=1;
 			$name = $this->model->getModName ();
 			$spec=[];
-//			$spec=[V_TYPE=>V_OBJ];
 			foreach ($this->model->getAllAttr() as $attr){
 				$view = [[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_NAME],
 						 [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL ],
@@ -157,7 +156,7 @@ class View
 				if ($this->model->getTyp($attr) == M_CREF) {
 					$view=[[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_NAME]];
 					foreach($this->model->getVal($attr) as $id) {
-						$view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_REF,V_ID=>$id,V_MOD=>'Person' ]; // hard coded !!
+						$view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_REF,V_ID=>$id]; // hard coded !!
 					}
 				}
 				$spec[$i]=[V_TYPE=>V_LIST,V_ARG=>$view];
