@@ -61,7 +61,7 @@ class FileBase{
 	
 	public function newObj($Model, $Values) {
 		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
-		$meta=$id = $this->objects[$Model][0];
+		$meta=$this->objects[$Model][0];
 		$id = $meta["lastId"];
 		$this->objects[$Model][$id] = $Values;
 		$meta["lastId"]=$id+1;

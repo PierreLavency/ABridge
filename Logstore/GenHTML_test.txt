@@ -66,7 +66,7 @@ a:16:{i:0;s:21:"/* standalone test */";i:1;s:142:"<input type = "radio" name = "
 	</li>  
 </ul>  
 =genFormElem(test12,);";i:14;s:66:"<a href=ABridge.php/code/1 > testSuite</a> 
-=genFormElem(test13,);";i:15;s:162:"<form method="post" action=  testSuite > 
+=genFormElem(test13,);";i:15;s:158:"<form method=POST action= testSuite >
 	<input type = "text" name = "A" value = "a1"  > 
 	<input type="submit" value="Submit">
 </form>  

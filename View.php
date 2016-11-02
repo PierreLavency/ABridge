@@ -12,10 +12,15 @@
 	define('V_OBJ' , "v_Obj");
 	define('V_ATTR' ,"v_attr");
 	define('V_BTN' ,"v_btn");
-
+	define('V_FORM' ,"v_form");
+	define('V_PLAIN' ,"v_plain"); // not sure needed 
+	define('V_ERROR' ,"v_error"); 
+		
 	define('V_PROP' ,"v_prop");
 	define('V_ID' ,"v_id");
-	
+	define('V_ACTION' ,"v_action");
+	define('V_STRING' ,"v_string");
+		
 	define('V_P_INP' ,"v_p_Attr");
 	define('V_P_LBL'  ,"v_p_Lbl");
 	define('V_P_VAL'  ,"v_p_Val");
@@ -31,20 +36,23 @@ class View
 	// property
 
 	public $model;
+	public $method;
+	public $attr_list;
 	public $attr_lbl = ['Mother'=>'Mere'];
-	public $view_spec = []; 
+	public $viewName = []; 
 
 	// constructors
 
 	function __construct($model) {
 		$this->model=$model; 
+		$this->attr_list = $this->model->getAllAttr();
 	   }
 
 	// methods
-
-	public function setSpec($dspec) {
-		$this->view_spec = $dspec;
-		return $dspec;
+	
+	public function setAttrList($dspec) {
+		$this->attr_list= $dspec;
+		return true;
 	}
 	
 	public function getLbl ($attr) {
@@ -84,7 +92,8 @@ class View
 		if ($gen==V_G_CREA and $prop==V_P_VAL){
 			if ($this->model->isMdtr($Attr) or $this->model->isOptl($Attr)) {
 				$res[H_NAME]=$Attr;
-				$default = $this->model->getVal($Attr); // should get from post and set !
+				$default = $this->model->getVal($Attr); 
+				if (isset($_POST[$Attr])){$default= $_POST[$Attr];}
 				if ($default) {$res[H_DEFAULT]=$default;}
 				$res[H_TYPE]=H_T_TEXT;
 				return $res ;
@@ -135,32 +144,63 @@ class View
 					}
 					$result[H_ARG]=$arg;
 					break;
+			case V_FORM:
+					$result[H_TYPE]=H_T_FORM;
+					$path = getRootPathString($this->model->getModName(),$this->model->getId());
+					$result[H_ACTION]="POST";
+					$result[H_URL]=$path;					
+					$arg=[];
+					foreach($spec[V_ARG] as $elem) {
+						$r=$this->subst($elem,$gen);
+						if($r) {$arg[]=$r;}
+					}
+					$result[H_ARG]=$arg;
+					break;
 			case V_BTN:
-					$result[H_TYPE]=H_T_SUBMIT;
-					break;		
+					if($gen == V_G_CREA){
+						$result[H_TYPE]=H_T_SUBMIT;
+					}
+					else {
+						$result[H_TYPE]=H_T_LINK;
+						$result[H_LABEL]=$this->model->getId();
+						$result[H_NAME]=getRootPathString($this->model->getModName(),$this->model->getId()).'?form=true';
+					}
+					break;
+			case V_ERROR:
+					$result[H_TYPE]=H_T_PLAIN;
+					$result[H_DEFAULT]=$spec[V_STRING];
+					break;								
 		}
 		return $result;
 	}
 
-	public function show ($show=true) {
-			$r=$this->subst($this->view_spec);
-			$r=genFormElem($r,$show);
-			return $r;
-    	}
+	public function show ($method,$exists,$show = true) {
+		if ($method =='POST') {return ($this->showDefaultG($show,V_G_CREA));}
+		if ($method =='GET' and (!  $exists)) {return ($this->showDefaultG($show,V_G_CREA));}
+		if ($method =='GET' and (isset($_GET["form"]))) {return ($this->showDefaultG($show,V_G_CREA));}
+		return ($this->showDefaultG($show,V_G_VIEW));
+	}
 	
-	public function showDefault ($show = true) {
-		if ($this->model->getId()) {
-			return ($this->showDefaultG ($show,V_G_VIEW));
+	public function postVal(){ // maybe be not really MVC but 
+		foreach ($this->attr_list as $attr) {
+			if ($this->model->isMdtr($attr) or $this->model->isOptl($attr)) {
+				if (isset($_POST[$attr])){
+					$val= $_POST[$attr];
+					if ($val) {
+						$typ=$this->model->getTyp($attr);
+						$Val = convertString($val,$typ);
+						$this->model->setVal($attr,$Val);
+					}
+				}
+			}
 		}
-		return ($this->showDefaultG ($show,V_G_CREA));
-		
 	}
 	
 	public function showDefaultG ($show,$gen) {
 			$i=1;
 			$name = $this->model->getModName ();
 			$spec=[];
-			foreach ($this->model->getAllAttr() as $attr){
+			foreach ($this->attr_list as $attr){
 				$view = [[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_NAME],
 						 [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL ],
 						 [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_TYPE],
@@ -177,17 +217,29 @@ class View
 				$spec[$i]=[V_TYPE=>V_LIST,V_ARG=>$view];
 				$i++;
 			}
-			if ($gen == V_G_VIEW) {
-				$spec=[V_TYPE=>V_LIST,V_ARG=>[[V_TYPE=>V_OBJ],[V_TYPE=>V_LIST,V_ARG=>$spec]]];
+			$speci=[V_TYPE=>V_LIST,V_ARG=>[[V_TYPE=>V_OBJ],[V_TYPE=>V_LIST,V_ARG=>$spec],[V_TYPE=>V_BTN]]];
+			if ($this->model->isErr()){
+				$e = $this->viewErr();
+				$speci=[V_TYPE=>V_LIST,V_ARG=>[[V_TYPE=>V_OBJ],[V_TYPE=>V_LIST,V_ARG=>$spec],[V_TYPE=>V_BTN],$e]];
 			}
+			$specf = $speci;
 			if ($gen == V_G_CREA) {
-				$spec=[V_TYPE=>V_LIST,V_ARG=>[[V_TYPE=>V_OBJ],[V_TYPE=>V_LIST,V_ARG=>$spec],[V_TYPE=>V_BTN]]];
+				$specf = [V_TYPE=>V_FORM,V_ARG=>[$speci]];		// html specific !
 			}
-			$r=$this->subst($spec,$gen);
+			$r=$this->subst($specf,$gen);
 			$r=genFormElem($r,$show);
 			return $r;
 	}
 
+	public function viewErr() {
+			$log = $this->model->getErrLog();
+			$c=$log->logSize();
+			if (!$c) {return 0;}
+			$result=[];
+			for ($i=0;$i<$c;$i++){$r = $log->getLine($i);$result[$i]=[V_TYPE=>V_ERROR,V_STRING=>$r];}
+			$result = [V_TYPE =>V_LIST,V_ARG=>$result];
+			return $result;
+	}
 
 };
 

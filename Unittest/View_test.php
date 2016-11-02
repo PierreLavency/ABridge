@@ -30,7 +30,13 @@ $x->setVal('A1',1);
 $x->setTyp('A2',M_INT);
 $x->setVal('A2',2);
 
+$method = 'GET';
+
 $v = new View($x);
+
+$L=$x->getAllAttr();
+$L= array_diff($L,['vnum','ctstp','utstp']);
+$v->setAttrList($L);
 
 $v->attr_lbl = array('id'=>'object reference','vnum'=>'version number','ctstp'=>'creation time stamp','A1' => "Attribute1");
 
@@ -40,63 +46,65 @@ $show=false;
 $r = $v->subst($test1,V_G_VIEW);
 $res = genFormElem($r,$show);
 	// logging result
-$xs = "$res = genFormElem(r,$show)";
-$log->logLine ($xs);
+$line = "$res = genFormElem(r,$show)";
+$log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
 $r = $v->subst($test2,V_G_VIEW);
 $res = genFormElem($r,$show);
 	// logging result
-$xs = "$res = genFormElem(r,$show)";
-$log->logLine ($xs);
+$line = "$res = genFormElem(r,$show)";
+$log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
 $r = $v->subst($test3,V_G_VIEW);
 $res = genFormElem($r,$show);
 	// logging result
-$xs = "$res = genFormElem(r,$show)";
-$log->logLine ($xs);
+$line = "$res = genFormElem(r,$show)";
+$log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
 $r = $v->subst($test4,V_G_VIEW);
 $res = genFormElem($r,$show);
 	// logging result
-$xs = "$res = genFormElem(r,$show)";
-$log->logLine ($xs);
+$line = "$res = genFormElem(r,$show)";
+$log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
 $r = $v->subst($test5,V_G_CREA);
 $res = genFormElem($r,$show);
 	// logging result
-$xs = "$res = genFormElem(r,$show)";
-$log->logLine ($xs);
+$line = "$res = genFormElem(r,$show)";
+$log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
 $r = $v->subst($test6,V_G_VIEW);
 $res = genFormElem($r,$show);
 	// logging result
-$xs = "$res = genFormElem(r,$show)";
-$log->logLine ($xs);
+$line = "$res = genFormElem(r,$show)"; $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
 
+$res = $v->show('GET',true,$show);
+$line = "$res = v->show('GET',true,$show);"; $log->logLine ($line);
 
-$res = $v->showDefaultG($show,V_G_VIEW);
-$res = $v->showDefaultG($show,V_G_CREA);
+if ($show) {echo "<br>" ; };
+$res = $v->show('POST',true,$show);
+$line = "$res = v->show('POST',true,$show);"; $log->logLine ($line);
+
  // not logged since date!!
  
 if ($show) {echo "<br>" ; };
 
-//$log->setVerbatim (2);
 $log->saveTest();
 
-//$log->showTest();
+// $log->showTest();
 
 
 ?>

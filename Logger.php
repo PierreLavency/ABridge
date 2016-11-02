@@ -17,14 +17,23 @@ class Logger{
 		$r = count($this->lines);
 		return $r;
 	}
-	public function show () {
-		echo "<br>";
-		for ($i=0;$i<count($this->lines);$i++) {
-			echo "LINE:".$i."<br>";
-			echo $this->lines[$i];
-			echo "<br>";
-		}
-		echo "<br>";
+	
+	public function show ($show=true) {
+		$c = count($this->lines);
+		if (!$c) {
+			$result = ""; 
+			if ($show) {echo $result;}; 
+			return $result;
+			}
+		$result="<br>";
+		for ($i=0;$i<$c;$i++) {
+			$result=$result. "LINE:".$i."<br>";
+			$result=$result. $this->lines[$i];
+			$result=$result."<br>";
+			}
+		$result=$result."<br>";
+		if ($show) {echo $result;}
+		return $result;
 	}
 
 	public function showLine($i){

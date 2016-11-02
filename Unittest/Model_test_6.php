@@ -10,6 +10,8 @@ $log->logLine('/* Bkey and Mandatory,deletobjetc and  saveMod */');
 
 /**************************************/
 
+// should be reviewed with Nocheck
+
 // init Meta
 require_once("Model.php"); 
 
@@ -144,6 +146,6 @@ $res = $db->commit();
 	
 $log->saveTest();
 
-// $log->showTest();
+//$log->showTest();
 
 ?>

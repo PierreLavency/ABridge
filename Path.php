@@ -23,9 +23,13 @@ function getPathStringMod($Mod) {
 	return $path;
 }
 
-function getRootPathString($Mod,$id) {
+function getRootPathString($Mod,$id=0) {
 	$RootPath= '/ABridge.php';
-	$path = $RootPath.'/'.$Mod.'/'.$id;
+	if ($id) {
+		$path = $RootPath.'/'.$Mod.'/'.$id;
+		return $path;
+	}
+	$path = $RootPath.'/'.$Mod;
 	return $path;
 }
 

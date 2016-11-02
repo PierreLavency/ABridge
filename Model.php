@@ -128,6 +128,11 @@ class Model {
 		}           			
 		return NULL;
     }
+
+	public function isErr () {
+		$c=$this->errLog->logSize();
+		return ($c);
+    }
 	
 	public function isBkey ($attr) {
 		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return 0;}
@@ -255,7 +260,7 @@ class Model {
 		$btype=$type;
 		if ($type==M_ID or $type == M_REF or $type == M_CREF or $type==M_CODE) {$btype = M_INTP;}
 		$res =checkType($Val,$btype);
-		if (! $res)								{$this->errLog->logLine(E_ERC005.':'.$Val.':'.$btype) ;return 0;}
+		if (! $res)								{$this->errLog->logLine(E_ERC005.':'.$Attr.':'.$Val.':'.$btype) ;return 0;}
 		// ref checking
 		if ($type == M_REF) {
 			$res = $this-> checkRef($Attr,$Val);
@@ -264,7 +269,7 @@ class Model {
 		// code values
 		if ($type == M_CODE) {
 			$res = $this-> checkCode($Attr,$Val);
-			if (! $res) {$this->errLog->logLine(E_ERC016.':'.$Attr.':'.$Val);return 0;}
+			if (! $res) 						{$this->errLog->logLine(E_ERC016.':'.$Attr.':'.$Val);return 0;}
 		}
 		// BKey
 		if ($this->isBkey($Attr)) {

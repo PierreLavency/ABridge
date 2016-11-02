@@ -21,5 +21,6 @@
 	define ('H_VALUES', "values");
 	define ('H_ARG', "arg");
 	define ('H_ACTION', "action");
+	define ('H_URL', "url");
 	
 ?>

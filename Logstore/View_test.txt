@@ -1,4 +1,4 @@
-a:7:{i:0;s:21:"/* standalone test */";i:1;s:29:"Attribute1
+a:9:{i:0;s:21:"/* standalone test */";i:1;s:29:"Attribute1
  = genFormElem(r,)";i:2;s:21:"A1
  = genFormElem(r,)";i:3;s:20:"1
  = genFormElem(r,)";i:4;s:24:"m_int
@@ -20,4 +20,126 @@ a:7:{i:0;s:21:"/* standalone test */";i:1;s:29:"Attribute1
 		1
 	</li>  
 </ul>  
- = genFormElem(r,)";}
+ = genFormElem(r,)";i:7;s:730:"<ul>  
+	<li>  
+		test
+	</li>  
+	<li>  
+		<ul>  
+			<li>  
+				<ul>  
+					<li>  
+						id
+					</li>  
+					<li>  
+						object reference
+					</li>  
+					<li>  
+						m_id
+					</li>  
+					<li>  
+						0
+					</li>  
+				</ul>  
+			</li>  
+			<li>  
+				<ul>  
+					<li>  
+						A1
+					</li>  
+					<li>  
+						Attribute1
+					</li>  
+					<li>  
+						m_int
+					</li>  
+					<li>  
+						1
+					</li>  
+				</ul>  
+			</li>  
+			<li>  
+				<ul>  
+					<li>  
+						A2
+					</li>  
+					<li>  
+						A2
+					</li>  
+					<li>  
+						m_int
+					</li>  
+					<li>  
+						2
+					</li>  
+				</ul>  
+			</li>  
+		</ul>  
+	</li>  
+	<li>  
+		<a href=/ABridge.php/test?form=true > 0</a> 
+	</li>  
+</ul>  
+ = v->show('GET',true,);";i:8;s:933:"<form method=POST action= /ABridge.php/test >
+	<ul>  
+		<li>  
+			test
+		</li>  
+		<li>  
+			<ul>  
+				<li>  
+					<ul>  
+						<li>  
+							id
+						</li>  
+						<li>  
+							object reference
+						</li>  
+						<li>  
+							m_id
+						</li>  
+						<li>  
+							0
+						</li>  
+					</ul>  
+				</li>  
+				<li>  
+					<ul>  
+						<li>  
+							A1
+						</li>  
+						<li>  
+							Attribute1
+						</li>  
+						<li>  
+							m_int
+						</li>  
+						<li>  
+							<input type = "text" name = "A1" value = "1"  > 
+						</li>  
+					</ul>  
+				</li>  
+				<li>  
+					<ul>  
+						<li>  
+							A2
+						</li>  
+						<li>  
+							A2
+						</li>  
+						<li>  
+							m_int
+						</li>  
+						<li>  
+							<input type = "text" name = "A2" value = "2"  > 
+						</li>  
+					</ul>  
+				</li>  
+			</ul>  
+		</li>  
+		<li>  
+			<input type="submit" value="Submit">
+		</li>  
+	</ul>  
+</form>  
+ = v->show('POST',true,);";}

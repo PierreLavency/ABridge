@@ -5,15 +5,19 @@
 	
 	
 	function isMtype ($x) {
-		$l=[M_INT,M_FLOAT,M_BOOL,M_STRING,M_ID,M_REF,M_CREF,M_CODE,M_TMSTP,M_DATE, M_ALPHA,M_ALNUM, ];
+		$l=[M_INT,M_INTP,M_FLOAT,M_BOOL,M_STRING,M_ID,M_REF,M_CREF,M_CODE,M_TMSTP,M_DATE, M_ALPHA,M_ALNUM, ];
 		return (in_array($x,$l));
 	}
 	
-	function convertString($X,$type) {
+	function convertString($X,$Type) {
+		$type = $Type;
+		if (($type== M_INTP) or ($type == M_CODE) or ($type==M_REF)) {
+			$type=M_INT;
+		}
 		if (is_string($X)) {
 			switch($type) {
 				case M_INT:
-					if(ctype_digit($X)) {$X = (int) $X;return $X;};
+					if(ctype_digit($X)) {$X = (int) $X; return $X;};
 					break; 
 				case M_FLOAT:
 					if(is_numeric($X)) {$X = (float) $X;return $X;};
@@ -22,10 +26,10 @@
 					if($X == "false" ) {$X = false;return $X;};
 					if($X == "true"  ) {$X = true;return $X;};
 					break;
-				default: return 0;
+				default: return $X;
 			}
 		};
-		return 0;
+		return $X;
 	}
 
 	function convertTime($X) {
