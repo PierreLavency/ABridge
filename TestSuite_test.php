@@ -24,7 +24,7 @@ require_once("Unittest\Model_test_6.php");
 
 require_once("Unittest\GenHTML_test.php"); 
 
-require_once('TestShow_test.php');
+//require_once('TestShow_test.php');
 // require_once('Try_test.php');
 
 

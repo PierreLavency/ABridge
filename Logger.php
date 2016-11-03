@@ -13,8 +13,8 @@ class Logger{
 		$this->fileName = $this->filePath.$name.".txt";
 	}
 	public function logLine ($line){
-		$this->lines[] = $line;
 		$r = count($this->lines);
+		$this->lines[] = $line;
 		return $r;
 	}
 	
@@ -80,7 +80,7 @@ class Logger{
 	public function load() {
         $file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
 		$this->lines = unserialize($file);
-		return $file;
+		return true;
 	}
 	
 
