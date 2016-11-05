@@ -87,8 +87,8 @@ $res=$p7->setVal('Name','Arnould');
 $res=$p7->setVal('SurName','Dominique');
 	$line = "$res=p7->setVal('SurName','Dominique');"; $log->logLine($line);
 
-$res=$p7->setVal('BirthDay','18-05-1960');
-	$line = "$res=p7->setVal('BirthDay','18-05-1960');"; $log->logLine($line);
+$res=$p7->setVal('BirthDay','1960-05-18');
+	$line = "$res=p7->setVal('BirthDay','1960-05-18');"; $log->logLine($line);
 
 $res=$p7->setVal('Sexe',3);
 	$line = "$res=p7->setVal('Sexe',3);"; $log->logLine($line);
@@ -114,8 +114,8 @@ $res=$p1->setVal('Name','Lavency');
 $res=$p1->setVal('SurName','Pierre');
 	$line = "$res=p1->setVal('SurName','Pierre');"; $log->logLine($line);
 
-$res=$p1->setVal('BirthDay','26-05-1959');
-	$line = "$res=p1->setVal('BirthDay','26-05-1959');"; $log->logLine($line);
+$res=$p1->setVal('BirthDay','1959-05-26');
+	$line = "$res=p1->setVal('BirthDay','1959-05-26');"; $log->logLine($line);
 
 $res=$p1->setVal('Sexe',2);
 	$line = "$res=p1->setVal('Sexe',2);"; $log->logLine($line);
@@ -135,8 +135,8 @@ $res=$p2->setVal('Name','Lavency');
 $res=$p2->setVal('SurName','Renaud');
 	$line = "$res=p2->setVal('SurName','Renaud');"; $log->logLine($line);
 
-$res=$p2->setVal('BirthDay','24-04-1988');
-	$line = "$res=p2->setVal('BirthDay','24-04-1988');"; $log->logLine($line);
+$res=$p2->setVal('BirthDay','1988-04-24');
+	$line = "$res=p2->setVal('BirthDay','1988-04-24');"; $log->logLine($line);
 
 $res=$p2->setVal('Sexe',2);
 	$line = "$res=p2->setVal('Sexe',2);"; $log->logLine($line);
@@ -162,8 +162,8 @@ $res=$p3->setVal('Name','Lavency');
 $res=$p3->setVal('SurName','Marius');
 	$line = "$res=p3->setVal('SurName','Marius');"; $log->logLine($line);
 
-$res=$p3->setVal('BirthDay','19-09-1926');
-	$line = "$res=p3->setVal('BirthDay','19-09-1926');"; $log->logLine($line);
+$res=$p3->setVal('BirthDay','1926-09-19');
+	$line = "$res=p3->setVal('BirthDay','1926-09-19');"; $log->logLine($line);
 
 $res=$p3->setVal('Sexe',2);
 	$line = "$res=p3->setVal('Sexe',2);"; $log->logLine($line);
@@ -189,8 +189,8 @@ $res=$p4->setVal('Name','Lavency');
 $res=$p4->setVal('SurName','Juliette');
 	$line = "$res=p4->setVal('SurName','Juliette');"; $log->logLine($line);
 
-$res=$p4->setVal('BirthDay','22-11-1990');
-	$line = "$res=p4->setVal('BirthDay','24-04-1988');"; $log->logLine($line);
+$res=$p4->setVal('BirthDay','1988-04-24');
+	$line = "$res=p4->setVal('BirthDay','1988-04-24');"; $log->logLine($line);
 
 $res=$p4->setVal('Sexe',3);
 	$line = "$res=p4->setVal('Sexe',3);"; $log->logLine($line);
@@ -216,8 +216,8 @@ $res=$p5->setVal('Name','Lavency');
 $res=$p5->setVal('SurName','Estelle');
 	$line = "$res=p5->setVal('SurName','Estelle');"; $log->logLine($line);
 
-$res=$p5->setVal('BirthDay','20-07-1995');
-	$line = "$res=p5->setVal('BirthDay','20-07-1995');"; $log->logLine($line);
+$res=$p5->setVal('BirthDay','1995-07-20');
+	$line = "$res=p5->setVal('BirthDay','1995-07-20');"; $log->logLine($line);
 
 $res=$p5->setVal('Sexe',3);
 	$line = "$res=p5->setVal('Sexe',3);"; $log->logLine($line);
@@ -243,8 +243,8 @@ $res=$p6->setVal('Name','Quoilin');
 $res=$p6->setVal('SurName','Madeleine');
 	$line = "$res=p6->setVal('SurName','Madeleine');"; $log->logLine($line);
 
-$res=$p6->setVal('BirthDay','24-11-1926');
-	$line = "$res=p6->setVal('BirthDay',''24-11-1926');"; $log->logLine($line);
+$res=$p6->setVal('BirthDay','1926-11-24');
+	$line = "$res=p6->setVal('BirthDay',''1926-11-24');"; $log->logLine($line);
 
 $res=$p6->setVal('Sexe',3);
 	$line = "$res=p6->setVal('Sexe',3);"; $log->logLine($line);
@@ -270,8 +270,8 @@ $res=$p7->setVal('Name','Lavency');
 $res=$p7->setVal('SurName','Marie Agnes');
 	$line = "$res=p7->setVal('SurName','Marie Agnes');"; $log->logLine($line);
 
-$res=$p7->setVal('BirthDay','18-07-1953');
-	$line = "$res=p7->setVal('BirthDay','18-07-1953');"; $log->logLine($line);
+$res=$p7->setVal('BirthDay','1953-07-18');
+	$line = "$res=p7->setVal('BirthDay','1953-07-18');"; $log->logLine($line);
 
 $res=$p7->setVal('Sexe',3);
 	$line = "$res=p7->setVal('Sexe',3);"; $log->logLine($line);
