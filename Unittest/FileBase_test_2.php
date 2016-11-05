@@ -21,6 +21,7 @@ $test4=['CODE'=> '004', 'SEVERITY'=> 1];
 // create save and get
 
 $x = new FileBase($logName);
+if ($x-> existsMod ('ERC')) {$x->delMod('ERC');}
 
 $res=$x->newMod('ERC');
 	$line = "$res=x->newMod('ERC')"; $log->logLine($line);
@@ -61,7 +62,7 @@ $r = implode(',',$res);
 
 $log->saveTest();
 
-// $log->showTest();
+//$log->showTest();
 
 
 

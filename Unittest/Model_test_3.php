@@ -19,7 +19,10 @@ $s=initStateHandler ('students','fileBase',$logName);
 	$line = "s=initStateHandler ('students','fileBase',$logName);"; $log->logLine($line);
 
 /********/	
+
 $mod = new Model('students');
+$x= $mod->deleteMod();
+
 
 $res = $mod->addAttr('name');
 	$line = "$res = mod->addAttr('name');"; $log->logLine($line);
@@ -35,6 +38,9 @@ $res = $mod->addAttr('tel',M_INT);
 
 $res = $mod->saveMod();	
 	$line = "$res = mod->saveMod();"; $log->logLine($line);	
+	
+$r = $mod-> getErrLog ();
+$log->includeLog($r);	
 
 $ins = new Model('students');
 
@@ -109,6 +115,6 @@ $db->commit();
 	
 $log->saveTest();
 
-//$log->showTest();
+// $log->showTest();
 
 ?>

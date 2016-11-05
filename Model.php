@@ -15,13 +15,13 @@ class Model {
  
 	public $id;
 	public $name ;
-	public $attr_predef = array('id','vnum','ctstp','utstp');
-	public $attr_lst = array('id','vnum','ctstp','utstp');
-	public $attr_typ = array("id"=>M_ID,"vnum"=>M_INT,"ctstp"=>M_TMSTP,"utstp"=>M_TMSTP);
-	public $attr_val = array('vnum'=>0);
-	public $attr_path = [];
-	public $attr_bkey = [];
-	public $attr_mdtr = [];
+	public $attr_predef;
+	public $attr_lst;
+	public $attr_typ;
+	public $attr_val;
+	public $attr_path ;
+	public $attr_bkey;
+	public $attr_mdtr;
 	public $errLog;
 	public $stateHdlr=0;
 
@@ -55,16 +55,28 @@ class Model {
 			if ($id !== $idr){throw new exception(E_ERC007.':'.$name.':'.$id);};
 		}
 	}
-
+	
 	public function init($name,$id) {
 		if (! checkType($name,M_ALPHA)) {throw new Exception(E_ERC010.':'.$name.':'.M_ALPHA);}
 		if (! checkType($id,M_INTP))    {throw new Exception(E_ERC011.':'.$id.':'.M_INTP);}
+		$this->initattr();
 		$this->id=$id; 
 		$this->name=$name;
 		$logname = $name.'_ErrLog';
 		$this->errLog= new Logger($logname);
 		$this->stateHdlr=getStateHandler ($name);
 	}
+
+	public function initattr() {
+		$this->attr_predef = array('id','vnum','ctstp','utstp');
+		$this->attr_lst = array('id','vnum','ctstp','utstp');
+		$this->attr_typ = array("id"=>M_ID,"vnum"=>M_INT,"ctstp"=>M_TMSTP,"utstp"=>M_TMSTP);
+		$this->attr_val = array('vnum'=>0);
+		$this->attr_path = [];
+		$this->attr_bkey = [];
+		$this->attr_mdtr = [];
+	}
+
 	
 	public function getErrLog () {
 		return $this->errLog;
@@ -257,8 +269,7 @@ class Model {
 		// type checking
 		$type=$this->getTyp($Attr);
 		if ($type ==M_CREF ) 					{$this->errLog->logLine(E_ERC013.':'.$Attr);return 0;}
-		$btype=$type;
-		if ($type==M_ID or $type == M_REF or $type == M_CREF or $type==M_CODE) {$btype = M_INTP;}
+		$btype=baseType($type);
 		$res =checkType($Val,$btype);
 		if (! $res)								{$this->errLog->logLine(E_ERC005.':'.$Attr.':'.$Val.':'.$btype) ;return 0;}
 		// ref checking
@@ -342,6 +353,13 @@ class Model {
 		if (! $this->stateHdlr) 				{$this->errLog->logLine(E_ERC006);return 0;}
 		$res=$this->stateHdlr->eraseObj($this);
 		if ($res) {$this->id=0;}
+		return $res;
+	}
+	
+	public function deleteMod (){
+		if (! $this->stateHdlr) 				{$this->errLog->logLine(E_ERC006);return 0;}
+		$res=$this->stateHdlr->eraseMod($this);
+		$this->initattr();
 		return $res;
 	}
 	

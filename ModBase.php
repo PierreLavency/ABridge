@@ -15,6 +15,14 @@
 			}
 		}
 		
+		public function eraseMod($mod) {
+			$name = $mod->getModName();
+			if($this->Base->existsMod($name)) {
+				return ($this->Base->delMod($name));
+			}
+			return 0;
+		}
+		
 		public function saveMod($mod) {
 			$name = $mod->getModName();
 			$meta['attr_lst'] = $mod->getAllAttr();

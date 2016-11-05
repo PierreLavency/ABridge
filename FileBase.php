@@ -1,18 +1,24 @@
 
 <?php
 
+
 class FileBase{
 	protected $filePath ='C:\Users\pierr\ABridge\Datastore\\';
 	protected $objects=[];
 	protected $fileName;
 	
-	function  __construct($id= "defaultFileName" ) {
+	function  __construct($id) {
 		$this->fileName = $this->filePath . $id .'.txt';
+		$this->load();
 	}
 
-	public function load() {
-        $file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
-		$this->objects = unserialize($file);
+	protected function load() {
+		if (file_exists($this->fileName)) {
+			$file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
+			$this->objects = unserialize($file);
+			return true;
+		}
+		$this->objects = [];
 		return true;
 	}
 
@@ -22,6 +28,11 @@ class FileBase{
 		return $r;
 	}
 
+	public function rollback() {
+		$this->load();
+		return true;
+	}
+	
 	public function inject($id) {
 		$file = file_get_contents($this->filePath.$id.'.txt', FILE_USE_INCLUDE_PATH);
 		$objects = unserialize($file);
@@ -33,20 +44,20 @@ class FileBase{
 	}
 	
 	public function newMod($Model,$Meta=[]) {
-		if (array_key_exists($Model,$this->objects)) {return 0;}; 
+		if ($this->existsMod ($Model)) {return 0;}; 
 		$Meta['lastId']=1;
 		$this->objects[$Model][0] = $Meta;
 		return true;
 	}	
 	public function getMod($Model) {
-		if (! array_key_exists($Model,$this->objects)) {return 0;};
+		if (! $this->existsMod ($Model)) {return 0;};
 		$Meta = $this->objects[$Model][0] ;
 		unset($Meta['lastId']);
 		return $Meta;
 	}
 	
 	public function putMod($Model,$Meta) {
-		if (! array_key_exists($Model,$this->objects)) {return 0;};
+		if (! $this->existsMod ($Model)) {return 0;};
 		$id = $this->objects[$Model][0]['lastId'] ;
 		$Meta['lastId']=$id;
 		$this->objects[$Model][0] = $Meta;
@@ -54,13 +65,13 @@ class FileBase{
 	}
 	
 	public function delMod($Model) {
-		if (! array_key_exists($Model,$this->objects)) {return 0;};
+		if (! $this->existsMod ($Model)) {return 0;};
         unset($this->objects[$Model]);
 		return true;	
 	}
 	
 	public function newObj($Model, $Values) {
-		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
+		if (! $this->existsMod ($Model)) {return 0;}; 
 		$meta=$this->objects[$Model][0];
 		$id = $meta["lastId"];
 		$this->objects[$Model][$id] = $Values;
@@ -70,14 +81,14 @@ class FileBase{
 	}
 
 	public function getObj($Model, $id) {
-		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
+		if (! $this->existsMod ($Model)) {return 0;}; 
 		if ($id == 0) {return 0;}; 
 		if (! array_key_exists($id,$this->objects[$Model])) {return 0;}; 
 		return $this->objects[$Model][$id] ; 
 	}
 
 	public function putObj($Model, $id , $Values) {
-		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
+		if (! $this->existsMod ($Model)) {return 0;}; 
 		if ($id == 0) {return 0;}; 
 		if (! array_key_exists($id,$this->objects[$Model])) {return 0;}; 
 		$this->objects[$Model][$id] = $Values; 
@@ -85,7 +96,7 @@ class FileBase{
 	}
 
 	public function delObj($Model, $id) {
-		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
+		if (! $this->existsMod ($Model)) {return 0;}; 
 		if ($id == 0) {return 0;}; 
 		if (! array_key_exists($id,$this->objects[$Model])) {return 0;}; 
 		unset($this->objects[$Model][$id]); 
@@ -94,7 +105,7 @@ class FileBase{
 	
 	public function allAttrVal($Model, $Attr) {
 		$result = [];
-		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
+		if (! $this->existsMod ($Model)) {return 0;}; 
 		$i=0;
 		foreach ($this->objects[$Model] as $value) {
 			foreach ($value as $a => $v) {
@@ -106,7 +117,7 @@ class FileBase{
 
 	public function findObj($Model, $Attr, $Val) {
 		$result1 = [];
-		if (! array_key_exists($Model,$this->objects)) {return 0;}; 
+		if (! $this->existsMod ($Model)) {return 0;}; 
 		foreach ($this->objects[$Model] as $id => $List) {
 			if ($id) {
 				foreach ($List as $A => $V) {

@@ -22,6 +22,7 @@ $s=initStateHandler ($ModN,'fileBase',$logName);
 	$line = "s=initStateHandler ($ModN,'fileBase',$logName);"; $log->logLine($line);
 
 $mod = new Model($ModN);
+$mod->deleteMod();
 
 $res = $mod->addAttr('Name');
 	$line = "$res = mod->addAttr('Name');"; $log->logLine($line);

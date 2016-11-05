@@ -23,6 +23,8 @@ $s=initStateHandler ($ModN,'fileBase',$logName);
 
 $mod = new Model($ModN);
 
+$mod->deleteMod();
+
 $res = $mod->addAttr('Name');
 	$line = "$res = mod->addAttr('Name');"; $log->logLine($line);
 // an error

@@ -27,6 +27,10 @@ $test3=['CODE'=> '001', 'SEVERITY'=> 0];
 // saving 
 $x = new FileBase($logName);
 
+
+if ($x-> existsMod ('ERC')) {$x->delMod('ERC');}
+if ($x-> existsMod ('ERCode')) {$x->delMod('ERCode');}
+
 $res=$x->newMod('ERC');
 	$line = "$res=x->newMod('ERC')"; $log->logLine($line);
 
@@ -42,7 +46,7 @@ $r = $x->commit();
 $y = new FileBase($logName);
 									$line = "y = new FileBase($logName);";
 									$log->logLine($line);
-$y->load();
+// $y->load();
 									$line = "y->load();";
 									$log->logLine($line);
 
@@ -55,8 +59,8 @@ if ($show) {
 	echo "<br/>";
 }
 
-$r = implode (' , ',$erc= $x->getObj('ERC',1));
-									$line = "$r = implode (' , ',erc= x->getObj('ERC',1));";
+$r = implode (' , ',$erc= $x->getObj('ERC',$id1));
+									$line = "$r = implode (' , ',erc= x->getObj('ERC',$id1));";
 									$log->logLine($line);
 
 if ($show) {
@@ -71,8 +75,8 @@ if ($show){
 }
 
 $erc["SEVERITY"] = 0;
-$erc = $y->putObj('ERC',1,$erc);
-									$line = "$erc = y->putObj('ERC',1,erc);";
+$erc = $y->putObj('ERC',$id1,$erc);
+									$line = "$erc = y->putObj('ERC',$id1,erc);";
 									$log->logLine($line);
 $r=$y->commit();
 									$line = "$r=y->save();";
@@ -81,12 +85,12 @@ $r=$y->commit();
 $y = new FileBase($logName);
 									$line = "y = new FileBase($logName);";
 									$log->logLine($line);
-$y->load();
+//$y->load();
 									$line = "y->load();";
 									$log->logLine($line);
 
-$r = implode (' , ',$erc= $y->getObj('ERC',1));
-									$line = "$r = implode (' , ',erc= y->getObj('ERC',1))";
+$r = implode (' , ',$erc= $y->getObj('ERC',$id1));
+									$line = "$r = implode (' , ',erc= y->getObj('ERC',$id1))";
 									$log->logLine($line);
 if ($show) {
 	print_r($erc);
@@ -98,8 +102,8 @@ if ($show) {
 	echo "<br/>";
 }
 
-$r=implode(' , ',$erc = $y->getObj('ERC',2));
-									$line = "$r=implode(' , ',erc = y->getObj('ERC',2));";
+$r=implode(' , ',$erc = $y->getObj('ERC',$id2));
+									$line = "$r=implode(' , ',erc = y->getObj('ERC',$id2));";
 									$log->logLine($line);
 
 if ($show) {	
@@ -107,8 +111,8 @@ if ($show) {
 	echo "<br/>";
 }
 
-$r=$y->delObj('ERC',2);
-									$line = "$r=y->delObj('ERC',2);";
+$r=$y->delObj('ERC',$id2);
+									$line = "$r=y->delObj('ERC',$id2);";
 									$log->logLine($line);
 
 
@@ -143,7 +147,7 @@ $r=$y->commit();
 $y = new FileBase($logName);
 									$line = "y = new FileBase($logName);";
 									$log->logLine($line);
-$y->load();
+//$y->load();
 									$line = "y->load();";
 									$log->logLine($line);
 
@@ -161,6 +165,7 @@ if ($show){
 	echo "testing new model";
 	echo "<br/>";
 }
+
 
 $r=$y->newMod('ERCode');
 									$line = "$r=y->newMod('ERCode');";
@@ -189,7 +194,7 @@ $y = new FileBase($logName);
 									$line = "y = new FileBase($logName);";
 									$log->logLine($line);
 
-$y->load();
+//$y->load();
 									$line = "y->load();";
 									$log->logLine($line);
 $r=implode(' , ',$erc = $y->getObj('ERCode',$id));

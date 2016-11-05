@@ -10,14 +10,14 @@
 	/**************************************/
 	
 	require_once("Handler.php"); 
-	$show = false;
+	
 
 		
-	$y = getBaseHandler('fileBase');
+	$y = getBaseHandler('fileBase','t');
 	$r = (! $y == 0);
 		$line = "$r = (! y == 0);"; $log->logLine($line);
 
-	$s = getBaseHandler('fileBase');
+	$s = getBaseHandler('fileBase','t');
 	$r = (! $s == 0);
 		$line = "$r = (! s == 0);"; $log->logLine($line);
 
@@ -36,7 +36,7 @@
 	$r = ($y === $s);
 		$line = "$r = (y === s);"; $log->logLine($line);
 
-	$s=initStateHandler ('test','fileBase');	
+	$s=initStateHandler ('test','fileBase','t');	
 	$r = (! $s == 0);
 		$line = "$r = (! s == 0);"; $log->logLine($line);
 	
@@ -57,4 +57,5 @@
 	
 	
 	$log->saveTest();
+//	$log->showTest();
 ?>

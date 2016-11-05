@@ -13,13 +13,20 @@ $show = 0;
 
 require_once("ModBase.php"); 
 
+
+
 // create save and get
 $s=getBaseHandler ('fileBase',$logName);
 	$line = "s=getBaseHandler ('fileBase',$logName);"; $log->logLine($line);
-	
+
 $pm = new ModBase($s);
 
+
 $mod = new Model('students');
+
+$pm->eraseMod($mod);
+
+//$res=$pm->delMod($mod);
 
 $res = $mod->addAttr('name');
 	$line = "$res = mod->addAttr('name');"; $log->logLine($line);
@@ -38,6 +45,7 @@ $attr_lst = $mod->getAllAttr();
 
 $typ_lst = $mod->getAllTyp();
 	$line = "typ_lst = mod->getAllAttr();"; $log->logLine($line);
+
 
 	
 $res=$pm->saveMod($mod);
@@ -136,7 +144,7 @@ $id = $pm->saveObj($ins);
 $s->commit();
 	$line = "s->commit();"; $log->logLine($line);
 	
-$s->load();
+//$s->load();
 	$line = "s->load();"; $log->logLine($line);
 
 $ins = new Model('students',$id);
@@ -162,6 +170,6 @@ $t = ($res3 == $re3);
 
 $log->saveTest();
 
-// $log->showTest();
+//$log->showTest();
 
 ?>

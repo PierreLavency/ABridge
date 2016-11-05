@@ -2,7 +2,9 @@
 	require_once("FileBase.php"); 
 	require_once("ModBase.php"); 
 	
-	function initStateHandler ($ModName,$Base,$instance='default') {
+	//remove default and handle error !!
+	
+	function initStateHandler ($ModName,$Base,$instance) {
 		$y = Handler::getInstance();
 		return ($y->setStateHandler($ModName,$Base,$instance));
 	}
@@ -12,7 +14,7 @@
 		return ($y->getStateHandler($ModName));
 	}
 	
-	function getBaseHandler ($Base,$instance='default') {
+	function getBaseHandler ($Base,$instance) {
 		$y = Handler::getInstance();
 		return ($y->getBase($Base,$instance));	
 	}
@@ -60,12 +62,7 @@
 				}
 			};
 			$ClassN = $this->bases_classes[$Base];
-			if ($Instance=='default') {
-				$x = new $ClassN();
-			}
-			else {
-				$x = new $ClassN($Instance);
-			}
+			$x = new $ClassN($Instance);
 			$Instances[$Instance]=$x;
 			$this->bases[$Base]=$Instances;
 			return $x; 			

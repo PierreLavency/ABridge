@@ -9,6 +9,13 @@
 		return (in_array($x,$l));
 	}
 	
+	
+	function baseType($type) {
+		if ($type==M_ID or $type == M_REF or $type == M_CREF or $type==M_CODE) {return (M_INTP) ;}
+		return ($type);
+	}
+	
+	
 	function convertString($X,$Type) {
 		$type = $Type;
 		if (($type== M_INTP) or ($type == M_CODE) or ($type==M_REF)) {
