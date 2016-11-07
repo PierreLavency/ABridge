@@ -1,6 +1,7 @@
 <?php
 	require_once("FileBase.php"); 
 	require_once("ModBase.php"); 
+	require_once("SQLBase.php");
 	
 	//remove default and handle error !!
 	
@@ -27,9 +28,9 @@
    */
 		private static $_instance = null;
 		private $bases = [];
-		private $bases_classes =['fileBase'=>'FileBase'];
+		private $bases_classes =['fileBase'=>'FileBase','dataBase'=>'SQLBase'];
 		private $mod_handler= [];
-		private $mod_base =['fileBase' =>'ModBase'];
+		private $mod_base =['fileBase' =>'ModBase','dataBase'=>'ModBase'];
    /**
     * Constructeur de la classe
     *

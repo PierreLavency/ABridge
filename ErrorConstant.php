@@ -20,8 +20,8 @@ define ('E_ERC017',	"ERC017"); 	// Bkey requires state handler -
 define ('E_ERC018',	"ERC018"); 	// Bkey violation -
 define ('E_ERC019',	"ERC019"); 	// Mdtr violation -
 define ('E_ERC020',	"ERC020"); 	// Invalid Path - No Model
-
-
+define ('E_ERC021', "ERC021");  // mysqli errors
+define ('E_ERC022', "ERC022");  // Model does not exists
 
 
 ?>

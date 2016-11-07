@@ -3,7 +3,6 @@
 	require_once("TypeConstant.php");
 
 	
-	
 	function isMtype ($x) {
 		$l=[M_INT,M_INTP,M_FLOAT,M_BOOL,M_STRING,M_ID,M_REF,M_CREF,M_CODE,M_TMSTP,M_DATE, M_ALPHA,M_ALNUM, ];
 		return (in_array($x,$l));
@@ -17,10 +16,8 @@
 	
 	
 	function convertString($X,$Type) {
-		$type = $Type;
-		if (($type== M_INTP) or ($type == M_CODE) or ($type==M_REF)) {
-			$type=M_INT;
-		}
+		$type = baseType($Type);
+		if ($type== M_INTP) {$type=M_INT;}
 		if (is_string($X)) {
 			switch($type) {
 				case M_INT:
@@ -87,6 +84,30 @@
 		}
 	}
 
-	
+	function convertSqlType($Type) {
+		$type = baseType($Type);
+		switch($type) {
+			case M_DATE:
+				return 'DATE';
+			case M_TMSTP:
+				return 'TIMESTAMP';
+			case M_INT:
+				return 'INT(11)';
+			case M_FLOAT:
+				return 'FLOAT';
+			case M_BOOL:
+				return 'BOOLEAN';
+			case M_STRING:
+				return 'VARCHAR(255)';
+			case M_ALNUM:
+				return 'VARCHAR(255)';
+			case M_ALPHA:
+				return 'VARCHAR(255)';
+			case M_INTP:
+				return 'INT(11) UNSIGNED';
+			default:
+				return 0;
+		}
+	}
 	
 ?>	

@@ -24,7 +24,7 @@ $x = new FileBase($logName);
 if ($x-> existsMod ('ERC')) {$x->delMod('ERC');}
 if ($x-> existsMod ('ERC2')) {$x->delMod('ERC2');}
 
-$res=$x->newMod('ERC');
+$res=$x->newMod('ERC',[]);
 	$line = "$res=x->newMod('ERC')"; $log->logLine($line);
 
 $id1=$x->newObj('ERC',$test1);
@@ -129,7 +129,7 @@ $res1=$y->getMod('ERC2');
 	$line = "res1=y->getMod('ERC2');"; $log->logLine($line);
 
 // update save and get
-$res=$y->newMod('ERC');
+$res=$y->newMod('ERC',[]);
 	$line = "$res=y->newMod('ERC');"; $log->logLine($line);
 	
 $res=$y->putMod('ERC',$testm1);

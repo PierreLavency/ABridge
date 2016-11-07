@@ -50,9 +50,9 @@ class Model {
 		$idr=0;
 		$x = $this->stateHdlr;
 		if ($x) {
-			$x->restoreMod($this);
+			if (! $x->restoreMod($this)) {throw new exception(E_ERC022.':'.$name);}
 			$idr =$x->restoreObj($this);
-			if ($id !== $idr){throw new exception(E_ERC007.':'.$name.':'.$id);};
+			if ($id != $idr){throw new exception(E_ERC007.':'.$name.':'.$id);};
 		}
 	}
 	
@@ -76,7 +76,6 @@ class Model {
 		$this->attr_bkey = [];
 		$this->attr_mdtr = [];
 	}
-
 	
 	public function getErrLog () {
 		return $this->errLog;

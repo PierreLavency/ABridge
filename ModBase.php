@@ -30,9 +30,7 @@
 			$meta['attr_path'] = $mod->getAllPath();
 			$meta['attr_bkey'] = $mod->getAllBkey();
 			$meta['attr_mdtr'] = $mod->getAllMdtr();
-			if($this->Base->existsMod($name)) {
-				return ($this->Base->putMod($name,$meta));
-			}
+			if($this->Base->existsMod($name)) {return ($this->Base->putMod($name,$meta));}
 			return ($this->Base->newMod($name,$meta)); // should deal with case where it exisits already !
 		}
 		
@@ -55,7 +53,7 @@
 					if (in_array($attr,$attrbkey)) {$mod->setBkey($attr,true);}
 					if (in_array($attr,$attrmdtr)) {$mod->setMdtr($attr,true);}
 					}
-			}
+			} 
 			return true; 	
 		}
 
@@ -76,7 +74,9 @@
 			$values = $this->Base->getObj($name, $id); 
 			if (!$values) {return 0;}
 			foreach($values as $attr=>$val) {
-				$mod->setVal($attr,$val,false);
+				$typ=$mod->getTyp($attr);
+				$valn=convertString($val,$typ);
+				$mod->setVal($attr,$valn,false);
 			};
 			return $id;
 		}

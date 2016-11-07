@@ -31,7 +31,7 @@ $x = new FileBase($logName);
 if ($x-> existsMod ('ERC')) {$x->delMod('ERC');}
 if ($x-> existsMod ('ERCode')) {$x->delMod('ERCode');}
 
-$res=$x->newMod('ERC');
+$res=$x->newMod('ERC',[]);
 	$line = "$res=x->newMod('ERC')"; $log->logLine($line);
 
 $id1=$x->newObj('ERC',$test1);
@@ -167,7 +167,7 @@ if ($show){
 }
 
 
-$r=$y->newMod('ERCode');
+$r=$y->newMod('ERCode',[]);
 									$line = "$r=y->newMod('ERCode');";
 									$log->logLine($line);
 
@@ -208,14 +208,6 @@ if ($show){
 	echo "<br/>";
 
 
-}
-
-$r=implode (' , ',$a = $y->allAttrVal('ERC','CODE'));
-									$line = "$r=implode (' , ',a = y->allAttrVal('ERC','CODE'));;";
-									$log->logLine($line);
-if ($show){
-	print_r($a);
-	echo "<br/>";
 }
 
 $log->saveTest();
