@@ -61,7 +61,7 @@ $r = $x->logsize();
 
 $log->saveTest();
 
-//$log->showTest();
+$log->showTest();
 
 
 ?>

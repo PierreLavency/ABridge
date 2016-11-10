@@ -1,7 +1,7 @@
 <?php
 
-require_once("Unittest\UnitTest_test.php"); 
-require_once("Unittest\Logger_test.php"); 	// done
+require_once("Unittest\UnitTest_test.php"); // not ported
+//require_once("Unittest\Logger_test.php"); 	// done
 require_once("Unittest\Model_test.php"); 	// done
 require_once("Unittest\GenHTML_test.php");
 require_once("Unittest\FileBase_test.php"); //done
