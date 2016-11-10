@@ -4,7 +4,7 @@
 require_once('Logger.php');
 
 
-class LoggerTest extends PHPUnit_Framework_TestCase {
+class Logger_Test extends PHPUnit_Framework_TestCase {
 
  
 	public function testLogLine1()

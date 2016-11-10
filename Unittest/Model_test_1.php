@@ -56,6 +56,6 @@ $log->includeLog($r);
 	
 $log->saveTest();
 
-// $log->show();
+//$log->showTest();
 
 ?>

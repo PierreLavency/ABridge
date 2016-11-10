@@ -7,52 +7,64 @@ require_once ("Base.php");
 
 class SQLBase extends Base {
 
-	public $servername;
-	public $username;
-	public $password;
-	public $dbname;
-	public $mysqli =0;
+	protected $servername;
+	protected $username;
+	protected $password;
+	protected $dbname;
+	protected $mysqli =0;
 	
-	function  __construct($dbname) {//bof
+	function  __construct($dbname) 
+	{//bof
 		$this->servername = "localhost";
 		$this->username = "cl822";
 		$this->password = "cl822";
 		$this->dbname =$dbname;
-		// Create mysqliection
-		$this->mysqli = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
-		// Check connection
-		if ($this->mysqli->connect_error)      
-			{throw new Exception(E_ERC021. ':' . $this->mysqli->connect_error);}
-		if (! $this->mysqli->autocommit(false)) 
-			{throw new Exception(E_ERC021. ':' . $this->mysqli->connect_error);}
-		if (! $this->mysqli->begin_transaction())
-			{throw new Exception(E_ERC021. ':' . $this->mysqli->connect_error);}
+		$this->begintrans();
 		parent::__construct($dbname);
 	}
 
-	public function beginTrans(){
+	public function beginTrans()
+	{
+		if (!$this->mysqli) {
+			$this->mysqli = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
+			if ($this->mysqli->connect_error)       {throw new Exception(E_ERC021. ':' . $this->mysqli->connect_error);}
+			if (! $this->mysqli->autocommit(false)) {throw new Exception(E_ERC021. ':' . $this->mysqli->connect_error);}
+		}
 		if (! $this->mysqli->begin_transaction())
 			{throw new Exception(E_ERC021. ':' . $this->mysqli->connect_error);}
 		return true;
 	}
 	
-	public function commit(){
+	public function commit()
+	{
 		if (! $this->mysqli->commit())
 			{throw new Exception(E_ERC021. ':' . $this->mysqli->connect_error);}
 		return true;
 	}
 	
-	public function rollback() {
+	public function rollback() 
+	{
 		if (! $this->mysqli->rollback())
 			{throw new Exception(E_ERC021. ':' . $this->mysqli->connect_error);}
 		return true;
 	}
 	
-	public function newMod($Model,$Meta) {
+	public function close() 
+	{
+		if (! $this->mysqli->close())
+			{throw new Exception(E_ERC021. ':' . $this->mysqli->connect_error);}
+		$this->mysqli =0;
+		return true;
+	}
+	
+	public function newMod($Model,$Meta) 
+	{
 		if ($this->existsMod ($Model)) {return 0;}; 
 		$s = "\n CREATE TABLE $Model ( \n id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ";
-		$attr_lst = $Meta['attr_lst'];
-		$attr_typ = $Meta['attr_typ'];
+		$attr_lst=[];
+		$attr_typ =[];
+		if (isset($Meta['attr_lst'])) {$attr_lst = $Meta['attr_lst'];}
+		if (isset($Meta['attr_typ'])) {$attr_typ = $Meta['attr_typ'];}
 		$c = count($attr_lst);
 		for ($i=0;$i<$c; $i++) {
 			if ($attr_lst[$i] != 'id') {
@@ -67,11 +79,12 @@ class SQLBase extends Base {
 		$sql=$s. " ) \n";
 		if (! $this->mysqli->query($sql)) {echo E_ERC021.":$sql" . ":".$this->mysqli->error."<br>";return 0;};
 		$r = parent::newMod($Model,$Meta);
-		parent::commit();
+		parent::commit(); //tocheck !!
 		return $r;
 	}	
 
-	public function putMod($Model,$Meta) {// to review
+	public function putMod($Model,$Meta) 
+	{// to review
 		if (! $this->existsMod ($Model)) {return 0;};
 		$r=$this->delMod($Model,$Meta);
 		if (!$r) {return $r;}
@@ -79,16 +92,18 @@ class SQLBase extends Base {
 		return $r;
 	}
 	
-	public function delMod($Model) {//ok
+	public function delMod($Model) 
+	{//ok
 		if (! $this->existsMod ($Model)) {return 0;};
 		$sql = "\n DROP TABLE $Model \n";
-		if (! $this->mysqli->query($sql)) {echo E_ERC021.":$sql" . ":".$this->mysqli->error."<br>";return 0;};
+		if (! $this->mysqli->query($sql)) {/*echo E_ERC021.":$sql" . ":".$this->mysqli->error."<br>";*/}; // if does not exist ok !!
 		$r = parent::delMod($Model);
 		parent::commit();
 		return $r;
 	}
 	
-	public function getObj($Model, $id) {//ok
+	public function getObj($Model, $id) 
+	{//ok
 		if (! $this->existsMod ($Model)) {return 0;};
 		$sql = "SELECT * FROM $Model where id= $id";
 		$result = $this->mysqli->query($sql);
@@ -104,7 +119,8 @@ class SQLBase extends Base {
 		else {return 0;}
 	}
 	
-	public function putObj($Model, $id , $Values) {//ok
+	public function putObj($Model, $id , $Values) 
+	{//ok
 		if (! $this->existsMod ($Model)) {return 0;};
 		$L1 = '';
 		$i = 0;
@@ -123,7 +139,8 @@ class SQLBase extends Base {
 		return 0;
 	}
 	
-	public function delObj($Model, $id) {//ok
+	public function delObj($Model, $id) 
+	{//ok
 		if (! $this->existsMod ($Model)) {return 0;};
 		$sql = "\n DELETE FROM $Model WHERE id=$id \n";
 		if (! $this->mysqli->query($sql)) {echo E_ERC021.":$sql" . ":".$this->mysqli->error."<br>";return 0;};
@@ -131,7 +148,8 @@ class SQLBase extends Base {
 		return 0;
 	}
 	
-	public function newObj($Model, $Values) {//ok
+	public function newObj($Model, $Values)
+	{//ok
 		if (! $this->existsMod ($Model)) {return 0;};
 		$L1 = '(';
 		$L2 = $L1;
@@ -153,7 +171,8 @@ class SQLBase extends Base {
 		return $this->mysqli->insert_id;
 	}
 	
-	public function findObj($Model, $Attr, $Val) {//ok
+	public function findObj($Model, $Attr, $Val) 
+	{//ok
 		if (! $this->existsMod ($Model)) {return 0;}; 
 		$result1 = [];
 		$sql = "SELECT id FROM $Model where $Attr= '$Val'";
@@ -167,47 +186,4 @@ class SQLBase extends Base {
 	}	
 }
 
-/*
-$db= new SQLBase('atest');
-
-$meta= [];
-$meta['attr_lst']=['vnum','ctstp','utstp','Name','SurName','BirthDay'];
-$meta['attr_typ']=["vnum"=>M_INT,"ctstp"=>M_TMSTP,"utstp"=>M_TMSTP,'Name'=>M_STRING,'SurName'=>M_STRING,'BirthDay'=>M_DATE];
-$values = ['Name'=>'Lavency','vnum'=>5,'BirthDay'=>'1959-05-26','SurName'=>'Pierr','ctstp'=>'2016-04-11 15:09:09'];
-$valuesb = ['Surname' => 'Pierre'];
-
-$Model='Student';
-
-$r=$db->delMod($Model);
-echo 'delMod returns :' .$r."<br>";;
-$r=$db->newMod($Model,$meta);
-echo 'newMod returns :' .$r."<br>";;
-
-
-
-$id=$db->newObj($Model,$values);
-echo 'NewObj :' .$id."<br>";
-
-$r=$db->delObj($Model,2);
-echo 'delObj returns :' .$r."<br>";;
-
-$r=$db->putObj($Model, $id , $valuesb);
-echo 'putObj returns :' .$r."<br>";;
-
-$r=$db->getObj($Model,$id);
-echo "getObj found ".count($r)."<br>";
-
-$r=$db->findObj($Model,'Name','Lavency');
-echo "FindObj found ".count($r)."<br>";
-
-$r=$db->commit();
-
-
-// $r=$db->rollback();
-
-
-echo "rollback/commit ".$r."<br>";
-
-
-*/
 ?>

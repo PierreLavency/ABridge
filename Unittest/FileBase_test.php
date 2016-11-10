@@ -27,7 +27,6 @@ $test3=['CODE'=> '001', 'SEVERITY'=> 0];
 // saving 
 $x = new FileBase($logName);
 
-
 if ($x-> existsMod ('ERC')) {$x->delMod('ERC');}
 if ($x-> existsMod ('ERCode')) {$x->delMod('ERCode');}
 

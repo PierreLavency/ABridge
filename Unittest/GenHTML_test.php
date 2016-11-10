@@ -108,6 +108,6 @@ if($show) {echo "<br/>".NL_O;}
 	
 $log->saveTest();
 
-// $log->showTest();
+//$log->showTest();
 
 ?>

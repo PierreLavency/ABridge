@@ -1,9 +1,11 @@
 <?php
-	require_once("FileBase.php"); 
+
+
 	require_once("ModBase.php"); 
+	require_once("FileBase.php"); 
 	require_once("SQLBase.php");
 	
-	//remove default and handle error !!
+	//handle error issue if filename and db name are the same !!
 	
 	function initStateHandler ($ModName,$Base,$instance) {
 		$y = Handler::getInstance();
@@ -19,6 +21,13 @@
 		$y = Handler::getInstance();
 		return ($y->getBase($Base,$instance));	
 	}
+	
+	function resetHandlers () 
+	{
+		$y = Handler::getInstance();
+		$y-> resetHandlers ();
+		return true;
+	}
 		
 	class Handler {
   /**
@@ -27,7 +36,7 @@
    * @static
    */
 		private static $_instance = null;
-		private $bases = [];
+		private $bases = []; //'fileBase'=> [instances],
 		private $bases_classes =['fileBase'=>'FileBase','dataBase'=>'SQLBase'];
 		private $mod_handler= [];
 		private $mod_base =['fileBase' =>'ModBase','dataBase'=>'ModBase'];
@@ -53,6 +62,12 @@
 			return self::$_instance;
 		}
 		
+		public function resetHandlers()
+		{
+			$this->base= [];
+			$this->mod_handler=[];
+		}
+
 		public function getBase($Base,$Instance) {
 			if (! array_key_exists($Base,$this->bases_classes)) {return 0;}
 			$Instances=[];

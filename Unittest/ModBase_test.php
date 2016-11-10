@@ -26,7 +26,6 @@ $mod = new Model('students');
 
 $pm->eraseMod($mod);
 
-//$res=$pm->delMod($mod);
 
 $res = $mod->addAttr('name');
 	$line = "$res = mod->addAttr('name');"; $log->logLine($line);

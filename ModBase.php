@@ -20,7 +20,7 @@
 			if($this->Base->existsMod($name)) {
 				return ($this->Base->delMod($name));
 			}
-			return 0;
+			return true;
 		}
 		
 		public function saveMod($mod) {
@@ -37,7 +37,7 @@
 		public function restoreMod($mod) {
 			$name = $mod->getModName();
 			$values = $this->Base->getMod($name); 
-			if (!$values) {return 0;}
+			if (!$values) {return false;}
 			$attrlist=$values['attr_lst'];
 			$attrtype=$values['attr_typ'];
 			$attrpath=$values['attr_path'];
@@ -84,7 +84,7 @@
 		public function eraseObj($mod) {
 			$name = $mod->getModName();
 			$id = $mod->getId();
-			if ($id==0) {return 0;}
+			if ($id==0) {return true;}
 			return ($this->Base->delObj($name, $id));
 		}
 		

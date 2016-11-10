@@ -36,6 +36,10 @@ abstract class Base{
 		return true;
 	}
 	
+	function close() {
+		return true;
+	}
+	
 	function inject($id) {
 		$file = file_get_contents($this->filePath.$id.'.txt', FILE_USE_INCLUDE_PATH);
 		$objects = unserialize($file);
@@ -69,7 +73,7 @@ abstract class Base{
 	}
 	
 	function delMod($Model) {
-		if (! $this->existsMod ($Model)) {return 0;};
+		if (! $this->existsMod ($Model)) {return true;};
         unset($this->objects[$Model]);
 		return true;	
 	}

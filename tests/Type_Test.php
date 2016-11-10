@@ -4,7 +4,7 @@
 require_once('Type.php');
 
 
-class TypeTest extends PHPUnit_Framework_TestCase {
+class Type_Test extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider Provider1
@@ -89,6 +89,25 @@ class TypeTest extends PHPUnit_Framework_TestCase {
  		
 			];
     }	
+	
+	
+	/**
+     * @dataProvider Provider4
+     */
+	function testconvertSqlType($x,$expected) {
+		$this->assertEquals($expected,convertSqlType($x));
+	}
+	
+	public function Provider4() {
+        return [
+            [M_INT,		'INT(11)'],
+            [M_INTP, 	'INT(11) UNSIGNED'],
+            [M_STRING, 	'VARCHAR(255)'],
+            [M_FLOAT,	'FLOAT'],
+			[M_CREF, 	'INT(11) UNSIGNED'],
+			];
+    }	
+	
 }
 
 ?>	
