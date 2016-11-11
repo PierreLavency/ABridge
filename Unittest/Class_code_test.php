@@ -27,7 +27,7 @@ $mod->deleteMod();
 $res = $mod->addAttr('Name');
 	$line = "$res = mod->addAttr('Name');"; $log->logLine($line);
 
-$ModP=getPathStringMod($ModN);
+$ModP=modPath($ModN);
 $res = $mod->addAttr('ValueOf',M_REF,$ModP);
 	$line = "$res = mod->addAttr('ValueOf',M_REF,$ModP);"; $log->logLine($line);
 

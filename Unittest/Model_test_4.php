@@ -31,7 +31,7 @@ $res = $mod->addAttr('Name');
 $res = $mod->addAttr('ValueOf',M_REF);
 	$line = "$res = mod->addAttr('ValueOf',M_REF);"; $log->logLine($line);
 // corrected	
-$ModP = getPathStringMod($ModN);
+$ModP = modPath($ModN);
 $res = $mod->addAttr('ValueOf',M_REF,$ModP);
 	$line = "$res = mod->addAttr('ValueOf',M_REF,$ModP);"; $log->logLine($line);
 

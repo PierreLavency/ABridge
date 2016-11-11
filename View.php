@@ -110,8 +110,8 @@ class View
 				$res[H_LABEL]=$this->getLbl($Attr);
 			}
 			if (! $id) {return 0;}
-			$obj = $this->model->getPathMod($Attr);
-			$res[H_NAME]=getRootPathString($obj,$id);	
+			$mod = $this->model->getRefMod($Attr);
+			$res[H_NAME]=refPath($mod,$id);	
 			return $res;			
 		}	
 		$x=$this->getProp ($Attr,$prop);
@@ -146,7 +146,7 @@ class View
 					break;
 			case V_FORM:
 					$result[H_TYPE]=H_T_FORM;
-					$path = getRootPathString($this->model->getModName(),$this->model->getId());
+					$path = refPath($this->model->getModName(),$this->model->getId());
 					$result[H_ACTION]="POST";
 					$result[H_URL]=$path;					
 					$arg=[];
@@ -163,7 +163,7 @@ class View
 					else {
 						$result[H_TYPE]=H_T_LINK;
 						$result[H_LABEL]=$this->model->getId();
-						$result[H_NAME]=getRootPathString($this->model->getModName(),$this->model->getId()).'?form=true';
+						$result[H_NAME]=refPath($this->model->getModName(),$this->model->getId()).'?form=true';
 					}
 					break;
 			case V_ERROR:

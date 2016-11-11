@@ -53,7 +53,7 @@ $res = $mod->addAttr('SurName');
 $res = $mod->addAttr('BirthDay',M_DATE);
 	$line = "$res = mod->addAttr('BirthDay',M_DATE);"; $log->logLine($line);	
 
-$ModP=getPathStringMod($ModN);	
+$ModP=modPath($ModN);	
 $res = $mod->addAttr('Father',M_REF,$ModP);
 	$line = "$res = mod->addAttr('Father',M_REF,$ModP);"; $log->logLine($line);	
 
