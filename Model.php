@@ -13,17 +13,17 @@ require_once("Path.php");
 class Model {
 	// property
  
-	public $id;
-	public $name ;
-	public $attr_predef;
-	public $attr_lst;
-	public $attr_typ;
-	public $attr_val;
-	public $attr_path ;
-	public $attr_bkey;
-	public $attr_mdtr;
-	public $errLog;
-	public $stateHdlr=0;
+	protected $id;
+	protected $name ;
+	protected $attr_predef;
+	protected $attr_lst;
+	protected $attr_typ;
+	protected $attr_val;
+	protected $attr_path ;
+	protected $attr_bkey;
+	protected $attr_mdtr;
+	protected $errLog;
+	protected $stateHdlr=0;
 
 	// constructors
 	function __construct() 
@@ -59,7 +59,7 @@ class Model {
 		}
 	}
 	
-	public function init($name,$id) 
+	protected function init($name,$id) 
 	{
 		if (! checkType($name,M_ALPHA)) {throw new Exception(E_ERC010.':'.$name.':'.M_ALPHA);}
 		if (! checkType($id,M_INTP))    {throw new Exception(E_ERC011.':'.$id.':'.M_INTP);}
@@ -71,7 +71,7 @@ class Model {
 		$this->stateHdlr=getStateHandler ($name);
 	}
 
-	public function initattr() 
+	protected function initattr() 
 	{
 		$this->attr_predef = array('id','vnum','ctstp','utstp');
 		$this->attr_lst = array('id','vnum','ctstp','utstp');
@@ -140,7 +140,7 @@ class Model {
 		return NULL;
     }
 	
-	public function getPath($attr) 
+	protected function getPath($attr) 
 	{
 		if (! $this->existsAttr ($attr)) 		{$this->errLog->logLine(E_ERC002.':'.$attr);return false;}
 		foreach($this->attr_path as $x => $path) {
@@ -156,7 +156,6 @@ class Model {
 		$patha=explode('/',$path);
 		return ($patha[1]);
 	}
-	
 	
 	public function isErr() 
 	{
