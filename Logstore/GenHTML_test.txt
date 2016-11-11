@@ -1,73 +1,73 @@
-a:16:{i:0;s:21:"/* standalone test */";i:1;s:142:"<input type = "radio" name = "A"  value = "a1"  checked  > <br/>
-<input type = "radio" name = "A"  value = "a2"  > <br/>
-=genFormElem(test1,);";i:2;s:70:"<input type = "text" name = "A" value = "a1"  > 
-=genFormElem(test2,);";i:3;s:143:"<select name = "A"  > 
-	<option  value = "a1"  selected  > a1</option> 
-	<option  value = "a2"  > a2</option> 
-</select> 
+a:16:{i:0;s:21:"/* standalone test */";i:1;s:140:"<input type = "radio" name = "A"  value = "a1"  checked  ><br/>
+<input type = "radio" name = "A"  value = "a2"  ><br/>
+=genFormElem(test1,);";i:2;s:69:"<input type = "text" name = "A" value = "a1"  >
+=genFormElem(test2,);";i:3;s:137:"<select name = "A"  >
+	<option  value = "a1"  selected  >a1</option>
+	<option  value = "a2"  >a2</option>
+</select>
 =genFormElem(test3,);";i:4;s:58:"<input type="submit" value="Submit">
-=genFormElem(test4,);";i:5;s:81:"<textarea name = "A"  cols="30"  rows="10"  > a1</textarea>
-=genFormElem(test5,);";i:6;s:81:"<textarea name = "A"  cols="50"  rows="10"  > a1</textarea>
-=genFormElem(test6,);";i:7;s:74:"<input type = "password" name = "A" value = "a1"  > 
+=genFormElem(test4,);";i:5;s:80:"<textarea name = "A"  cols="30"  rows="10"  >a1</textarea>
+=genFormElem(test5,);";i:6;s:80:"<textarea name = "A"  cols="50"  rows="10"  >a1</textarea>
+=genFormElem(test6,);";i:7;s:73:"<input type = "password" name = "A" value = "a1"  >
 =genFormElem(test7,);";i:8;s:43:"this is a text string
-=genFormElem(test8,);";i:9;s:243:"<ul>  
-	<li>  
-		<input type = "radio" name = "A"  value = "a1"  checked  > <br/>
-		<input type = "radio" name = "A"  value = "a2"  > <br/>
-	</li>  
-	<li>  
-		<input type = "text" name = "A" value = "a1"  > 
-	</li>  
-</ul>  
- = genList(test9,)";i:10;s:247:"<ul>  
-	<li>  
-		<input type = "radio" name = "A"  value = "a1"  checked  > <br/>
-		<input type = "radio" name = "A"  value = "a2"  > <br/>
-	</li>  
-	<li>  
-		<input type = "text" name = "A" value = "a1"  > 
-	</li>  
-</ul>  
-=genFormElem(test10,);";i:11;s:15:"1 = (r1 == r); ";i:12;s:214:"<ul>  
-	<li>  
-		<ul>  
-			<li>  
+=genFormElem(test8,);";i:9;s:228:"<ul>
+	<li>
+		<input type = "radio" name = "A"  value = "a1"  checked  ><br/>
+		<input type = "radio" name = "A"  value = "a2"  ><br/>
+	</li>
+	<li>
+		<input type = "text" name = "A" value = "a1"  >
+	</li>
+</ul>
+ = genList(test9,)";i:10;s:232:"<ul>
+	<li>
+		<input type = "radio" name = "A"  value = "a1"  checked  ><br/>
+		<input type = "radio" name = "A"  value = "a2"  ><br/>
+	</li>
+	<li>
+		<input type = "text" name = "A" value = "a1"  >
+	</li>
+</ul>
+=genFormElem(test10,);";i:11;s:15:"1 = (r1 == r); ";i:12;s:190:"<ul>
+	<li>
+		<ul>
+			<li>
 				this is a text string
-			</li>  
-			<li>  
+			</li>
+			<li>
 				this is a text string
-			</li>  
-		</ul>  
-	</li>  
-	<li>  
+			</li>
+		</ul>
+	</li>
+	<li>
 		this is another text string
-	</li>  
-</ul>  
-=genFormElem(test11,);";i:13;s:309:"<ul>  
-	<li>  
-		<ul>  
-			<li>  
+	</li>
+</ul>
+=genFormElem(test11,);";i:13;s:273:"<ul>
+	<li>
+		<ul>
+			<li>
 				this is a text string
-			</li>  
-			<li>  
+			</li>
+			<li>
 				this is a text string
-			</li>  
-		</ul>  
-	</li>  
-	<li>  
-		<ul>  
-			<li>  
+			</li>
+		</ul>
+	</li>
+	<li>
+		<ul>
+			<li>
 				this is another text string
-			</li>  
-			<li>  
+			</li>
+			<li>
 				this is another text string
-			</li>  
-		</ul>  
-	</li>  
-</ul>  
-=genFormElem(test12,);";i:14;s:66:"<a href=ABridge.php/code/1 > testSuite</a> 
-=genFormElem(test13,);";i:15;s:158:"<form method=POST action= testSuite >
-	<input type = "text" name = "A" value = "a1"  > 
+			</li>
+		</ul>
+	</li>
+</ul>
+=genFormElem(test12,);";i:14;s:64:"<a href=ABridge.php/code/1 >testSuite</a>
+=genFormElem(test13,);";i:15;s:157:"<form method=POST action= testSuite >
+	<input type = "text" name = "A" value = "a1"  >
 	<input type="submit" value="Submit">
 </form>  
 =genFormElem(test14,);";}

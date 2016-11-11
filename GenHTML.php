@@ -29,10 +29,10 @@
 	}
 	
 	function genListL($dspecL,$show,$L){
-		$list_s   = '<ul>  '  ;
-		$list_e_s = '</ul>  ';
-		$element_s   = '<li>  '  ;
-		$element_e_s   = '</li>  '  ;
+		$list_s   = '<ul>'  ;
+		$list_e_s = '</ul>';
+		$element_s   = '<li>'  ;
+		$element_e_s   = '</li>'  ;
 		$tab = "";
 		for($i=0;$i<$L;$i++) {$tab=$tab.TAB_O;}
 		$tab2=$tab.TAB_O;
@@ -56,13 +56,13 @@
 		$textarea_s = '<textarea ';
 		$textarea_e_s = '</textarea>';
 		$select_s   = '<select '  ;
-		$select_e_s = '</select> ';
+		$select_e_s = '</select>';
 		$input_s    = '<input '   ;
 		$option_s   = '<option '  ;
-		$option_e_s = '</option> ';
+		$option_e_s = '</option>';
 		$link_s   = '<a href='  ;
-		$link_e_s = '</a> ';
-		$end_s      = ' > '	  ;
+		$link_e_s = '</a>';
+		$end_s      = ' >'	  ;
 		$col_s	    = ' cols="'    ;
 		$row_s	    = ' rows="'    ;
 		
