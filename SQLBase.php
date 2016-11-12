@@ -20,7 +20,7 @@ class SQLBase extends Base {
 		$this->password = "cl822";
 		$this->dbname =$dbname;
 		$this->begintrans();
-		parent::__construct($dbname);
+		parent::__construct('sqlBase_'.$dbname);
 	}
 
 	public function beginTrans()
@@ -94,7 +94,6 @@ class SQLBase extends Base {
 	
 	public function delMod($Model) 
 	{//ok
-		if (! $this->existsMod ($Model)) {return 0;};
 		$sql = "\n DROP TABLE $Model \n";
 		if (! $this->mysqli->query($sql)) {/*echo E_ERC021.":$sql" . ":".$this->mysqli->error."<br>";*/}; // if does not exist ok !!
 		$r = parent::delMod($Model);

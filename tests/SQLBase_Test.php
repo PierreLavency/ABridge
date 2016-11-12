@@ -15,8 +15,8 @@ class SQLBase_Test extends Base_Case {
 		self::$DBName= 'test';
         self::$db = new SQLBase(self::$DBName);
 		
-		if (self::$db->existsMod(self::$CName)) {self::$db ->delMod(self::$CName);}
-		if (self::$db ->existsMod(self::$CName2)){self::$db ->delMod(self::$CName2);}
+		self::$db ->delMod(self::$CName);
+		self::$db ->delMod(self::$CName2);
 		
 		self::$db ->commit();
 		

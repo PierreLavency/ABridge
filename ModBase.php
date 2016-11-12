@@ -12,10 +12,8 @@
 		
 		public function eraseMod($mod) {
 			$name = $mod->getModName();
-			if($this->Base->existsMod($name)) {
-				return ($this->Base->delMod($name));
-			}
-			return true;
+			return ($this->Base->delMod($name));
+
 		}
 		
 		public function saveMod($mod) {
