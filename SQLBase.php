@@ -20,7 +20,7 @@ class SQLBase extends Base {
 		$this->password = "cl822";
 		$this->dbname =$dbname;
 		$this->begintrans();
-		parent::__construct('sqlBase_'.$dbname);
+		parent::__construct('sqlBase\\'.$dbname);
 	}
 
 	public function beginTrans()

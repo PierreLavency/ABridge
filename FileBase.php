@@ -6,7 +6,7 @@ require_once ("Base.php");
 class FileBase extends Base {
 
 	function  __construct($id) {
-		parent::__construct('fileBase_'.$id);
+		parent::__construct('fileBase\\'.$id);
 	}
 
 	public function newObj($Model, $Values) {
