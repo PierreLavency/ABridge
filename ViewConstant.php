@@ -22,5 +22,6 @@
 	define ('H_ARG', "arg");
 	define ('H_ACTION', "action");
 	define ('H_URL', "url");
+	define ('H_SEPARATOR', "separator");
 	
 ?>

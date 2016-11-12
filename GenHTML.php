@@ -68,6 +68,7 @@
 		
 		$type="";
 		$default="";
+		$separator="";
 		$name="";
 		$action="";
 		$url="";
@@ -89,6 +90,9 @@
 					break; 				
 				case H_LABEL:
 					$label = $v;
+					break; 
+				case H_SEPARATOR:
+					$separator = $v;
 					break; 
 				case H_DEFAULT:
 					$default = $v;
@@ -149,7 +153,6 @@
         		break;
 			case H_T_RADIO:
 				$result = "";
-				$separator = $dspec["separator"];
 				foreach ($values as $value) {
 					$value_s = ' value = "' . $value .  '" ';
 					$checked_s = "";
