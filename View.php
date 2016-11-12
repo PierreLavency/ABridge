@@ -96,6 +96,12 @@ class View
 				if (isset($_POST[$Attr])){$default= $_POST[$Attr];}
 				if ($default) {$res[H_DEFAULT]=$default;}
 				$res[H_TYPE]=H_T_TEXT;
+				if ($this->model->getTyp($Attr)== M_CODE) {
+					$vals=$this->model->getValues($Attr);
+					$res[H_VALUES]=$vals;
+					if (count($vals)>2) {$res[H_TYPE]=H_T_SELECT;}
+					else {$res[H_TYPE]=H_T_RADIO;}		
+				}
 				return $res ;
 			}
 		}
