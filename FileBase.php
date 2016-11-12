@@ -5,6 +5,10 @@ require_once ("Base.php");
 
 class FileBase extends Base {
 
+	function  __construct($id) {
+		parent::__construct('fileBase_'.$id);
+	}
+
 	public function newObj($Model, $Values) {
 		if (! $this->existsMod ($Model)) {return 0;}; 
 		$meta=$this->objects[$Model][0];

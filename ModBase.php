@@ -6,13 +6,8 @@
 
 		private $Base;
 		
-		function __construct($base=0) {
-			if ($base) {
-				$this->Base=$base;
-			}
-			else {
-				$this->Base=getBaseHandler('fileBase');
-			}
+		function __construct($base) {
+			$this->Base=$base;
 		}
 		
 		public function eraseMod($mod) {
