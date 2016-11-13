@@ -16,7 +16,6 @@ require_once("Model.php");
 $db=getBaseHandler ('fileBase',$logName);
 	$line = "db=getBaseHandler ('fileBase',$logName);"; $log->logLine($line);
 
-	
 // load Codes
 
 $ModN= 'Code';
@@ -24,7 +23,7 @@ $ModN= 'Code';
 $s=initStateHandler ($ModN,'fileBase',$logName);
 	$line = "s=initStateHandler ($ModN,'fileBase',$logName);"; $log->logLine($line);
 
-$db->inject('Class_code_test');	
+$db->inject('fileBase\Class_code_test');	
 	$line = "db->inject('Class_code_test');	"; $log->logLine($line);
 	
 $code1=new Model($ModN,1);

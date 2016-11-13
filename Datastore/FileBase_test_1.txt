@@ -1,1 +1,0 @@
-a:1:{s:3:"ERC";a:2:{i:0;a:3:{s:8:"attr_lst";a:2:{i:0;s:4:"CODE";i:1;s:8:"SEVERITY";}s:7:"typ_lst";a:2:{s:4:"CODE";s:8:"m_string";s:8:"SEVERITY";s:4:"m_id";}s:6:"lastId";i:3;}i:1;a:2:{s:4:"CODE";s:3:"001";s:8:"SEVERITY";i:0;}}}
