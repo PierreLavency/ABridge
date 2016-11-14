@@ -115,9 +115,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$r = $code-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);			
 		
-		
 		$db->commit();
-
 	}
 
 	/**

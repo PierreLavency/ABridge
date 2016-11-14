@@ -6,7 +6,8 @@ function rootPath()
 	return ('/ABridge.php');
 }
 
-function checkPath($Apath) {
+function checkPath($Apath) 
+{
 	$path=explode('/',$Apath);
 	$root = $path[0];
 	if (($root != "" )) {return false;}
@@ -16,7 +17,11 @@ function checkPath($Apath) {
 
 function refPath($ref,$id) 
 {
+	if ($id) {
 	$path=rootPath().'/'.$ref.'/'.$id;
+	return $path;		
+	}
+	$path=rootPath().'/'.$ref;
 	return $path;
 }
 

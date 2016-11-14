@@ -55,14 +55,14 @@ class View
 		return true;
 	}
 	
-	public function getLbl ($attr) {
+	public function getLbl($attr) {
 		foreach($this->attr_lbl as $x => $lbl) {
 			if ($x==$attr) {return $lbl;}
 		}        	
 		return $attr;
     	}
 		
-	public function getProp ($attr,$prop) {
+	public function getProp($attr,$prop) {
 		switch ($prop) {
     		case V_P_LBL:
 				return $this->getLbl($attr);
@@ -131,7 +131,7 @@ class View
 		return $res;
 	}
 	
-	public function subst ($spec,$gen){
+	public function subst($spec,$gen){
 		$type = $spec[V_TYPE];
 		$result=[];
 		switch ($type) {
@@ -180,10 +180,10 @@ class View
 		return $result;
 	}
 
-	public function show ($method,$exists,$show = true) {
+	public function show($method,$exists,$show = true) {
 		if ($method =='POST') {return ($this->showDefaultG($show,V_G_CREA));}
-		if ($method =='GET' and (!  $exists)) {return ($this->showDefaultG($show,V_G_CREA));}
-		if ($method =='GET' and (isset($_GET["form"]))) {return ($this->showDefaultG($show,V_G_CREA));}
+		if ($method =='GET' and (! $exists))			{return ($this->showDefaultG($show,V_G_CREA));}
+		if ($method =='GET' and (isset($_GET["form"])))	{return ($this->showDefaultG($show,V_G_CREA));}
 		return ($this->showDefaultG($show,V_G_VIEW));
 	}
 	

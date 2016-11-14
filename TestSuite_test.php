@@ -25,10 +25,12 @@ require_once("Unittest\Model_test_6.php");  // done
 
 require_once("Unittest\Model_test_5_2.php");//done
 
-require_once('TestShow_test.php');
-// require_once('Try_test.php');
+$application= 'genealogie';
 
+//require_once("Example\\".$application.'_META.php'); !!!
 
+require_once("Example\\" .$application.'_SETUP.php');
+require_once('controler.php');
 
 
 ?>
