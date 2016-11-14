@@ -281,7 +281,7 @@ class Model {
 		$x= $this->existsAttr ($attr);
 		if (!$x) 								{$this->errLog->logLine( E_ERC002.':'.$attr);return false;}
 		$type=$this->getTyp($attr);
-		if ($type == M_CREF) {
+		if ($type == M_CREF) { //will noot work if on different Base !!
 			$path = $this->getPath($attr);
 			$patha=explode('/',$path);
 			$res=$this->stateHdlr->findObj($patha[1],$patha[2],$this->getId());
@@ -331,7 +331,8 @@ class Model {
 	public function checkBkey($Attr,$Val)
 	{
 		$res=$this->stateHdlr->findObj($this->getModName(),$Attr,$Val);
-		if ($res==[]) {return true;}
+		if ($res == []) {return true;}
+		if ($res == [$this->getId()]) {return true;}
 		return false;		
 	}
 	

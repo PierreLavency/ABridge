@@ -5,7 +5,6 @@
 	require_once("FileBase.php"); 
 	require_once("SQLBase.php");
 	
-	//handle error issue if filename and db name are the same !!
 	
 	function initStateHandler ($ModName,$Base,$instance) {
 		$y = Handler::getInstance();

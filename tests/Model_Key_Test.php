@@ -115,6 +115,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$r = $code-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);			
 		
+		
 		$db->commit();
 
 	}
@@ -148,6 +149,14 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 
 		$db->commit();
 
+		// check relaod 
+		
+		$code = new Model($this->Code,$id);
+		$this->assertNotNull($code);	
+		
+		$r = $code-> getErrLog ();
+		$this->assertEquals($r->logSize(),0);	
+		
 		//  Male
 		$codeval = new Model($this->CodeVal);
 		$this->assertNotNull($codeval);	
