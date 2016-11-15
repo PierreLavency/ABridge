@@ -6,22 +6,25 @@
 	require_once("SQLBase.php");
 	
 	
-	function initStateHandler ($ModName,$Base,$instance) {
+	function initStateHandler($ModName,$Base,$instance) 
+	{
 		$y = Handler::getInstance();
 		return ($y->setStateHandler($ModName,$Base,$instance));
 	}
 	
-	function getStateHandler ($ModName) {
+	function getStateHandler($ModName) 
+	{
 		$y = Handler::getInstance();
 		return ($y->getStateHandler($ModName));
 	}
 	
-	function getBaseHandler ($Base,$instance) {
+	function getBaseHandler($Base,$instance) 
+	{
 		$y = Handler::getInstance();
 		return ($y->getBase($Base,$instance));	
 	}
 	
-	function resetHandlers () 
+	function resetHandlers() 
 	{
 		$y = Handler::getInstance();
 		$y-> resetHandlers ();
@@ -45,7 +48,8 @@
     * @param void
     * @return void
     */
-		private function __construct() {  
+		private function __construct() 
+		{  
 		}
    /**
     * Méthode qui crée l'unique instance de la classe
@@ -54,7 +58,8 @@
     * @param void
     * @return Singleton
     */
-		public static function getInstance() {
+		public static function getInstance() 
+		{
 			if(is_null(self::$_instance)) {
 				self::$_instance = new Handler();  
 			}
@@ -67,7 +72,8 @@
 			$this->mod_handler=[];
 		}
 
-		public function getBase($Base,$Instance) {
+		public function getBase($Base,$Instance) 
+		{
 			if (! array_key_exists($Base,$this->bases_classes)) {return 0;}
 			$Instances=[];
 			if(array_key_exists($Base,$this->bases)) {
@@ -83,12 +89,14 @@
 			return $x; 			
 		}
 	   	
-		public function getStateHandler($ModName) {
-			if(array_key_exists($ModName,$this->mod_handler)) {return ($this->mod_handler[$ModName]);}
+		public function getStateHandler($ModName) 
+		{
+			if (array_key_exists($ModName,$this->mod_handler)) {return ($this->mod_handler[$ModName]);}
 			return 0;  
 		}
 
-		public function setStateHandler($ModName,$Base,$Instance) {
+		public function setStateHandler($ModName,$Base,$Instance) 
+		{
 			$x = $this->getBase($Base,$Instance);
 			$ClassN = $this->mod_base[$Base];
 			$y= new $ClassN($x);

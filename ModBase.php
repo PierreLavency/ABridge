@@ -10,6 +10,10 @@
 			$this->Base=$base;
 		}
 		
+		public function getBase() {
+			return $this->Base;
+		}
+		
 		public function eraseMod($mod) {
 			$name = $mod->getModName();
 			return ($this->Base->delMod($name));

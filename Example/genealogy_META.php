@@ -77,19 +77,26 @@ require_once("genealogy_SETUP.php");
 	$res= $person->deleteMod();
 
 	$res = $person->addAttr('Name');
-
 	$res = $person->addAttr('SurName');
-	
 	$res = $person->addAttr('BirthDay',M_DATE);
 	
 	$path='/'.$Code."/$sex_id/Values";
 	$res = $person->addAttr('Sexe',M_CODE,$path);	
 	
-	$path='/'.$Code."/$country_id /Values";
+	$path='/'.$Code."/$country_id/Values";
 	$res = $person->addAttr('Country',M_CODE,$path);	
 
-	$res = $person->saveMod();	
+	$ModP=modPath($Person);	
+	$res = $person->addAttr('Father',M_REF,$ModP);
+	$res = $person->addAttr('Mother',M_REF,$ModP);
 
+	$path='/'.$Person.'/Father';
+	$res = $person->addAttr('FatherOf',M_CREF,$path);	
+
+	$path='/'.$Person.'/Mother';
+	$res = $person->addAttr('MotherOf',M_CREF,$path);	
+
+	$res = $person->saveMod();	
 	$r = $person->getErrLog ();
 	
 	$fb->commit();	

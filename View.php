@@ -38,7 +38,7 @@ class View
 	public $model;
 	public $method;
 	public $attr_list;
-	public $attr_lbl = ['Mother'=>'Mere'];
+	public $attr_lbl = [];
 	public $viewName = []; 
 
 	// constructors
@@ -181,6 +181,7 @@ class View
 	}
 
 	public function show($method,$exists,$show = true) {
+		$this->method=$method;
 		if ($method =='POST') {return ($this->showDefaultG($show,V_G_CREA));}
 		if ($method =='GET' and (! $exists))			{return ($this->showDefaultG($show,V_G_CREA));}
 		if ($method =='GET' and (isset($_GET["form"])))	{return ($this->showDefaultG($show,V_G_CREA));}
@@ -208,8 +209,8 @@ class View
 			$spec=[];
 			foreach ($this->attr_list as $attr){
 				$view = [[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_NAME],
-						 [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL ],
-						 [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_TYPE],
+//						 [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL ],
+//						 [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_TYPE],
 						 [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_VAL ]];
 				if ($this->model->getTyp($attr) == M_REF) {
 					$view[]=[V_TYPE=>V_ELEM, V_ATTR => $attr, V_PROP => V_P_REF ];

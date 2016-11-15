@@ -24,8 +24,10 @@ $v= new View($c);
 
 if (($method =='POST')) {
 	$v->postVal();
-	if (!$c->isErr()){$id=$c->save();}
-	if(! $c->isErr()) {
+	if (!$c->isErr()){
+		$id=$c->save();
+		}
+	if (!$c->isErr()) {
 		$r1=$fb->commit();	
 		$r2=$db->commit();
 		if($r1 and $r2) {$method='GET';}
