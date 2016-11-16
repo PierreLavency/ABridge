@@ -1,0 +1,22 @@
+- check null value for Xref.
+- clean up view
+
+- Align with coding standard // Model /type 
+- view to delete objects
+- Label management 
+- hide id in views
+- Meta model changes (alter)
+- Implement inheritance
+- Authenthication
+- Authorisation
+
+- Test Coverage
+	install Xdebug.
+
+Run time depedency
+-XMA php/mariadb/appache
+
+Dev Dependency
+- Git
+- PhpUnit
+- Php code_sniffer

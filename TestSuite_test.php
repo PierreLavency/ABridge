@@ -1,5 +1,5 @@
 <?php
-
+//phpinfo();
 require_once("Unittest\UnitTest_test.php"); // not ported
 //require_once("Unittest\Logger_test.php"); // done decommisioned !!
 require_once("Unittest\Model_test.php"); 	// done

@@ -1,6 +1,15 @@
 <?php
-/* Format date to be checked */
-
+/**
+ * Model class file
+ *
+ * PHP Version 5.6
+ *
+ * @category PHP
+ * @package  ABridge
+ * @author   Pierre Lavency <pierrelavency@hotmail.com>
+ * @link     No
+ */
+ 
 require_once "Logger.php";
 require_once "TypeConstant.php";
 require_once "ErrorConstant.php";
@@ -8,10 +17,19 @@ require_once "Type.php";
 require_once "Handler.php";
 require_once "Path.php";
 
+/**
+ * Model class
+ *
+ * Models are the business entities of the applications
+ * 
+ * @category PHP
+ * @package  ABridge
+ * @author   Pierre Lavency <pierrelavency@hotmail.com>
+ * @link     No
+ */
 class Model
 {
-    // property
- 
+
     protected $id;
     protected $name ;
     protected $attr_predef;
