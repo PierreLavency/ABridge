@@ -29,17 +29,49 @@ require_once "Path.php";
  */
 class Model
 {
-
+    /** 
+     * @var integer The object's id. 
+     */
     protected $id;
+    /**
+     * @var string  The Model name. 
+     */
     protected $name ;
+    /**
+     * @var array The list of predefined attributes. 
+     */
     protected $attr_predef;
+    /**
+     * @var array The list of attributes. 
+     */
     protected $attr_lst;
+    /**
+     * @var array The list of types associated to attributes. 
+     */   
     protected $attr_typ;
+    /**
+     * @var array The list of values associated to attributes. 
+     */ 
     protected $attr_val;
+    /**
+     * @var array The list of path associated to reference attributes.  
+     */
     protected $attr_path ;
+    /**
+     * @var array The list of types business key attributes. 
+     */
     protected $attr_bkey;
+    /**
+     * @var array The list of mandatory attributes. 
+     */
     protected $attr_mdtr;
+    /**
+     * @var array The error logger. 
+     */
     protected $errLog;
+    /**
+     * @var array The state handler.
+     */
     protected $stateHdlr=0;
 
     /**
@@ -55,9 +87,9 @@ class Model
     } 
 
     /**
-     * Constructor with an id equal 0
+     * Constructor of a new object that does not exists (id is equal to 0).
      *
-     * @param string $name the model name. 
+     * @param string $name The model name. 
      * 
      * @return void
      */       
@@ -73,10 +105,10 @@ class Model
     }
     
     /**
-     * Constructor with an id different from 0
+     * Constructor of an existing object (id must be different from 0).
      *
-     * @param string $name the model name. 
-     * @param int    $id   the object id. 
+     * @param string $name The model name. 
+     * @param int    $id   The object id. 
      *
      * @return void
      */   
@@ -102,8 +134,8 @@ class Model
      /**
      * Initialise the attributes and the errologger
      *
-     * @param string $name the model name. 
-     * @param int    $id   the object id. 
+     * @param string $name The model name. 
+     * @param int    $id   The object id. 
      *
      * @return void
      */     

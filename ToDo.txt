@@ -1,7 +1,7 @@
 - check null value for Xref.
 - clean up view
 
-- Align with coding standard // Model /type 
+- Align with coding standard // Model, Logger / 
 - view to delete objects
 - Label management 
 - hide id in views
@@ -20,3 +20,4 @@ Dev Dependency
 - Git
 - PhpUnit
 - Php code_sniffer
+- Phpdocumentor <-
