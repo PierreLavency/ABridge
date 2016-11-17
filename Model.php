@@ -32,51 +32,51 @@ class Model
     /** 
      * @var integer The object's id. 
      */
-    protected $id;
+    protected $_id;
     /**
      * @var string  The Model name. 
      */
-    protected $name ;
+    protected $_name ;
     /**
      * @var array The list of predefined attributes. 
      */
-    protected $attr_predef;
+    protected $_attrPredef;
     /**
      * @var array The list of attributes. 
      */
-    protected $attr_lst;
+    protected $_attrLst;
     /**
      * @var array The list of types associated to attributes. 
      */   
-    protected $attr_typ;
+    protected $_attrTyp;
     /**
      * @var array The list of values associated to attributes. 
      */ 
-    protected $attr_val;
+    protected $_attrVal;
     /**
      * @var array The list of path associated to reference attributes.  
      */
-    protected $attr_path ;
+    protected $_attrPath ;
     /**
      * @var array The list of types business key attributes. 
      */
-    protected $attr_bkey;
+    protected $_attrBkey;
     /**
      * @var array The list of mandatory attributes. 
      */
-    protected $attr_mdtr;
-	/**
+    protected $_attrMdtr;
+    /**
      * @var array The list of attribute default values. 
      */
-    protected $attr_dflt;
+    protected $_attrDflt;
     /**
      * @var array The error logger. 
      */
-    protected $errLog;
+    protected $_errLog;
     /**
      * @var array The state handler.
      */
-    protected $stateHdlr=0;
+    protected $_stateHdlr=0;
     /**
     * Constructor
     */
@@ -100,7 +100,7 @@ class Model
         $this->init($name, 0);
         $this->setValNoCheck("ctstp", date(M_FORMAT_T));
         $this->setValNoCheck("vnum", 1);
-        $x = $this->stateHdlr;
+        $x = $this->_stateHdlr;
         if ($x) {
             $x->restoreMod($this);
         }
@@ -120,7 +120,7 @@ class Model
             throw new Exception(E_ERC012.':'.$name.':'.$id);
         }
         $idr=0;
-        $x = $this->stateHdlr;
+        $x = $this->_stateHdlr;
         if ($x) {
             if (! $x->restoreMod($this)) {
                 throw new exception(E_ERC022.':'.$name);
@@ -148,11 +148,11 @@ class Model
             throw new Exception(E_ERC011.':'.$id.':'.M_INTP);
         }
         $this->initattr();
-        $this->id=$id; 
-        $this->name=$name;
+        $this->_id=$id; 
+        $this->_name=$name;
         $logname = $name.'_ErrLog';
-        $this->errLog= new Logger($logname);
-        $this->stateHdlr=getStateHandler($name);
+        $this->_errLog= new Logger($logname);
+        $this->_stateHdlr=getStateHandler($name);
     }
     /**
      * Re/Initialise the attributes and their properties
@@ -161,19 +161,19 @@ class Model
      */ 
     protected function initattr() 
     {
-        $this->attr_predef = array('id','vnum','ctstp','utstp');
-        $this->attr_lst = array('id','vnum','ctstp','utstp');
-        $this->attr_typ = array(
+        $this->_attrPredef = array('id','vnum','ctstp','utstp');
+        $this->_attrLst = array('id','vnum','ctstp','utstp');
+        $this->_attrTyp = array(
             "id"=>M_ID,
             "vnum"=>M_INT,
             "ctstp"=>M_TMSTP,
             "utstp"=>M_TMSTP,
         );
-        $this->attr_val = array('vnum' => 0);
-        $this->attr_dflt = [];
-        $this->attr_path = [];
-        $this->attr_bkey = [];
-        $this->attr_mdtr = [];
+        $this->_attrVal = array('vnum' => 0);
+        $this->_attrDflt = [];
+        $this->_attrPath = [];
+        $this->_attrBkey = [];
+        $this->_attrMdtr = [];
     }
 
     /**
@@ -183,7 +183,7 @@ class Model
      */ 
     public function getErrLog() 
     {
-        return $this->errLog;
+        return $this->_errLog;
     }
     /**
      * Returns the Model Name.
@@ -192,7 +192,7 @@ class Model
      */
     public function getModName() 
     {
-        return $this->name;
+        return $this->_name;
     }
     /**
      * Returns the Object Id.
@@ -201,9 +201,8 @@ class Model
      */   
     public function getId()
     {
-        return $this->id;
+        return $this->_id;
     }
-    
     /**
      * Returns the list of attributes of a Model.
      *
@@ -211,7 +210,7 @@ class Model
      */
     public function getAllAttr() 
     {
-        return $this->attr_lst;
+        return $this->_attrLst;
     }  
     /**
      * Returns the list of attribute types of a Model. 
@@ -220,7 +219,7 @@ class Model
      */    
     public function getAllTyp()
     {
-        return $this->attr_typ;         
+        return $this->_attrTyp;         
     }
    /**
      * Returns the list of default values of a Model.
@@ -229,7 +228,7 @@ class Model
      */
     public function getAllDflt() 
     {
-        return $this->attr_dflt;         
+        return $this->_attrDflt;         
     }
     /**
      * Returns the list of values BUT the id value of a Model.
@@ -238,7 +237,7 @@ class Model
      */
     public function getAllVal() 
     {
-        return $this->attr_val;         
+        return $this->_attrVal;         
     }
     /**
      * Returns the list of all path of a Model.
@@ -247,7 +246,7 @@ class Model
      */ 
     public function getAllPath() 
     { 
-        return $this->attr_path;            
+        return $this->_attrPath;            
     }   
     /**
      * Returns the list of Business Key attributes of a Model.
@@ -256,7 +255,7 @@ class Model
      */  
     public function getAllBkey() 
     { 
-        return $this->attr_bkey;            
+        return $this->_attrBkey;            
     } 
     /**
      * Returns the list of mandatory attributes of a Model.
@@ -265,7 +264,7 @@ class Model
      */ 
     public function getAllMdtr()
     { 
-        return $this->attr_mdtr;            
+        return $this->_attrMdtr;            
     }  
     /**
      * Returns the list of Predefined attributes of a Model.
@@ -274,7 +273,7 @@ class Model
      */
     public function getAllPredef() 
     {
-        return $this->attr_predef;
+        return $this->_attrPredef;
     }
     /**
      * Returns the type of an attribute.
@@ -286,10 +285,10 @@ class Model
     public function getTyp($attr) 
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        foreach ($this->attr_typ as $x => $typ) {
+        foreach ($this->_attrTyp as $x => $typ) {
             if ($x==$attr) {
                 return $typ;
             }
@@ -306,10 +305,10 @@ class Model
     protected function getPath($attr) 
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        foreach ($this->attr_path as $x => $path) {
+        foreach ($this->_attrPath as $x => $path) {
             if ($x==$attr) {
                 return $path;
             }
@@ -339,7 +338,7 @@ class Model
      */    
     public function isErr()
     {
-        $c=$this->errLog->logSize();
+        $c=$this->_errLog->logSize();
         return ($c);
     }
     /**
@@ -352,9 +351,9 @@ class Model
     public function isBkey($attr) 
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);return false;
+            $this->_errLog->logLine(E_ERC002.':'.$attr);return false;
         }
-        return (in_array($attr, $this->attr_bkey));
+        return (in_array($attr, $this->_attrBkey));
     }
     /**
      * Returns true if the attribute is a Mandatory.
@@ -366,10 +365,10 @@ class Model
     public function isMdtr($attr) 
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        return (in_array($attr, $this->attr_mdtr));
+        return (in_array($attr, $this->_attrMdtr));
     }   
     /**
      * Returns true if the attribute is a Pedefined attribute.
@@ -381,10 +380,10 @@ class Model
     public function isPredef($attr) 
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        return (in_array($attr, $this->attr_predef));
+        return (in_array($attr, $this->_attrPredef));
     } 
     /**
      * Returns true if the attribute is an optional attribute.
@@ -396,7 +395,7 @@ class Model
     public function isOptl($attr) 
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
         if ($this->isPredef($attr) ) {
@@ -420,7 +419,7 @@ class Model
      */   
     public function existsAttr($attr)
     {
-        if (in_array($attr, $this->attr_lst)) {
+        if (in_array($attr, $this->_attrLst)) {
             return true;
         } ;
         return false;
@@ -436,17 +435,17 @@ class Model
     public function setTyp($attr,$typ) 
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         };
         if (!isMtype($typ)) {
-            $this->errLog->logLine(E_ERC004.':'.$typ);
+            $this->_errLog->logLine(E_ERC004.':'.$typ);
             return false;
         }
-        $this->attr_typ[$attr]=$typ;
+        $this->_attrTyp[$attr]=$typ;
         return true;
     }
-	/**
+    /**
      * Set the default value of an attribute.
      *
      * @param string $attr the attribute. 
@@ -457,10 +456,10 @@ class Model
     public function setDflt($attr,$val) 
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         };
-        $this->attr_dflt[$attr]=$val;
+        $this->_attrDflt[$attr]=$val;
         return true;
     }
     /**
@@ -474,14 +473,14 @@ class Model
     public function setPath($attr,$path) 
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         };
         if (! checkPath($path) ) {
-            $this->errLog->logLine(E_ERC020.':'.$attr.':'.$path);
+            $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$path);
             return false;
         };
-        $this->attr_path[$attr]=$path;
+        $this->_attrPath[$attr]=$path;
         return true;
     }
     /**
@@ -495,21 +494,21 @@ class Model
     public function setBkey($attr,$val) 
     {
         if (! $x= $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         };
-        if (!$this->stateHdlr) {
-            $this->errLog->logLine(E_ERC017.':'.$attr.':'.$typ);
+        if (!$this->_stateHdlr) {
+            $this->_errLog->logLine(E_ERC017.':'.$attr.':'.$typ);
             return false;
         }     
         if ($val) {
-            if (!in_array($attr, $this->attr_bkey)) {
-                $this->attr_bkey[]=$attr;
+            if (!in_array($attr, $this->_attrBkey)) {
+                $this->_attrBkey[]=$attr;
             }      
         }
         if (! $val) {
-            if (in_array($attr, $this->attr_bkey)) {
-                unset($this->attr_bkey[$attr]);
+            if (in_array($attr, $this->_attrBkey)) {
+                unset($this->_attrBkey[$attr]);
             }         
         }
         return true;
@@ -525,17 +524,17 @@ class Model
     public function setMdtr($attr,$val) 
     {
         if (! $x= $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         };
         if ($val) {
-            if (!in_array($attr, $this->attr_mdtr)) {
-                $this->attr_mdtr[]=$attr;
+            if (!in_array($attr, $this->_attrMdtr)) {
+                $this->_attrMdtr[]=$attr;
             }      
         }
         if (! $val) {
-            if (in_array($attr, $this->attr_mdtr)) {
-                unset($this->attr_mdtr[$attr]);
+            if (in_array($attr, $this->_attrMdtr)) {
+                unset($this->_attrMdtr[$attr]);
             }         
         }
         return true;
@@ -553,26 +552,26 @@ class Model
     {
         $x= $this->existsAttr($attr);
         if ($x) {
-            $this->errLog->logLine(E_ERC003.':'.$attr);
+            $this->_errLog->logLine(E_ERC003.':'.$attr);
             return false;
         }
         if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE) { 
             if (!$path) {
-                $this->errLog->logLine(E_ERC008.':'.$attr.':'.$typ);
+                $this->_errLog->logLine(E_ERC008.':'.$attr.':'.$typ);
                 return false;
             }
-            if (!$this->stateHdlr) {
-                $this->errLog->logLine(E_ERC014.':'.$attr.':'.$typ);
+            if (!$this->_stateHdlr) {
+                $this->_errLog->logLine(E_ERC014.':'.$attr.':'.$typ);
                 return false;
             }
         }
-        $this->attr_lst[]=$attr;
-        $r=$this->setTyp($attr, $typ);
-        $r2=true;
+        $this->_attrLst[]=$attr;
+        $rt=$this->setTyp($attr, $typ);
+        $rp=true;
         if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE) {
-            $r2=$this->setPath($attr, $path); 
+            $rp=$this->setPath($attr, $path); 
         }
-        if ($r and $r2) {
+        if ($rt and $rp) {
             return true;
         }
         $this->delAttr($attr);
@@ -589,37 +588,37 @@ class Model
     {
         $x= $this->existsAttr($attr);
         if (!$x) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        if (in_array($attr, $this->attr_predef)) {
-            $this->errLog->logLine(E_ERC001.':'.$attr);
+        if (in_array($attr, $this->_attrPredef)) {
+            $this->_errLog->logLine(E_ERC001.':'.$attr);
             return false;
         }
-        $key = array_search($attr, $this->attr_lst);
+        $key = array_search($attr, $this->_attrLst);
         if ($key!==false) {
-            unset($this->attr_lst[$key]);
+            unset($this->_attrLst[$key]);
         }                             
-        if (isset($this->attr_typ[$attr])) {
-            unset($this->attr_typ[$attr]);
+        if (isset($this->_attrTyp[$attr])) {
+            unset($this->_attrTyp[$attr]);
         }
-        if (isset($this->attr_path[$attr])) {
-            unset($this->attr_path[$attr]);
+        if (isset($this->_attrPath[$attr])) {
+            unset($this->_attrPath[$attr]);
         }
-        if (isset($this->attr_dflt[$attr])) {
-            unset($this->attr_dflt[$attr]);
+        if (isset($this->_attrDflt[$attr])) {
+            unset($this->_attrDflt[$attr]);
         }
-        $key = array_search($attr, $this->attr_bkey);
+        $key = array_search($attr, $this->_attrBkey);
         if ($key!==false) {
-            unset($this->attr_bkey[$key]);
+            unset($this->_attrBkey[$key]);
         }    
-        $key = array_search($attr, $this->attr_mdtr);
+        $key = array_search($attr, $this->_attrMdtr);
         if ($key!==false) {
-            unset($this->attr_mdtr[$key]);
+            unset($this->_attrMdtr[$key]);
         }    
         return true;
     }
-	 /**
+     /**
      * Get the default value of an attribute.
      *
      * @param string $attr the attribute. 
@@ -630,10 +629,10 @@ class Model
     {
         $x= $this->existsAttr($attr);
         if (!$x) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        foreach ($this->attr_dflt as $x => $val) {
+        foreach ($this->_attrDflt as $x => $val) {
             if ($x==$attr) {
                 return $val;
             }
@@ -654,17 +653,18 @@ class Model
         }
         $x= $this->existsAttr($attr);
         if (!$x) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
         $type=$this->getTyp($attr);
         if ($type == M_CREF) { //will not work if on different Base !!
             $path = $this->getPath($attr);
             $patha=explode('/', $path);
-            $res=$this->stateHdlr->findObj($patha[1], $patha[2], $this->getId());
+            $hdlr=$this->_stateHdlr;
+            $res=$hdlr->findObj($patha[1], $patha[2], $this->getId());
             return $res;
         }
-        foreach ($this->attr_val as $x => $val) {
+        foreach ($this->_attrVal as $x => $val) {
             if ($x==$attr) {
                 return $val;
             }
@@ -682,10 +682,10 @@ class Model
     protected function setValNoCheck($attr,$val)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        $this->attr_val[$attr]=$val;
+        $this->_attrVal[$attr]=$val;
         return true;
     }  
     /**
@@ -697,51 +697,51 @@ class Model
      *
      * @return boolean
      */    
-    public function setVal($Attr,$Val,$check=true)
+    public function setVal($attr,$val,$check=true)
     {
-        if (! $this->existsAttr($Attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$Attr);
+        if (! $this->existsAttr($attr)) {
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        if (in_array($Attr, $this->attr_predef) and $check) {
-            $this->errLog->logLine(E_ERC001.':'.$Attr);
+        if (in_array($attr, $this->_attrPredef) and $check) {
+            $this->_errLog->logLine(E_ERC001.':'.$attr);
             return false;
         };
         // type checking
-        $type=$this->getTyp($Attr);
+        $type=$this->getTyp($attr);
         if ($type ==M_CREF ) {
-            $this->errLog->logLine(E_ERC013.':'.$Attr);
+            $this->_errLog->logLine(E_ERC013.':'.$attr);
             return false;
         }
         $btype=baseType($type);
-        $res =checkType($Val, $btype);
+        $res =checkType($val, $btype);
         if (! $res) {
-            $this->errLog->logLine(E_ERC005.':'.$Attr.':'.$Val.':'.$btype);
+            $this->_errLog->logLine(E_ERC005.':'.$attr.':'.$val.':'.$btype);
             return false;
         }
         // ref checking
         if ($type == M_REF) {
-            $res = $this-> checkRef($Attr, $Val);
+            $res = $this-> checkRef($attr, $val);
             if (! $res) {
                 return false;
             }
         }
         // code values
         if ($type == M_CODE) {
-            $res = $this-> checkCode($Attr, $Val);
+            $res = $this-> checkCode($attr, $val);
             if (! $res) {
-                $this->errLog->logLine(E_ERC016.':'.$Attr.':'.$Val);
+                $this->_errLog->logLine(E_ERC016.':'.$attr.':'.$val);
                 return false;
             }
         }
         // BKey
-        if ($this->isBkey($Attr)) {
-            if (! $this->checkBkey($Attr, $Val)) {
-                $this->errLog->logLine(E_ERC018.':'.$Attr.':'.$Val);
+        if ($this->isBkey($attr)) {
+            if (! $this->checkBkey($attr, $val)) {
+                $this->_errLog->logLine(E_ERC018.':'.$attr.':'.$val);
                 return false;
             } 
         }
-        return ($this->setValNoCheck($Attr, $Val));
+        return ($this->setValNoCheck($attr, $val));
     }
     /**
      * Check the value of an business key attribute.
@@ -751,12 +751,12 @@ class Model
      *
      * @return boolean
      */    
-    public function checkBkey($Attr,$Val)
-    {		
-	    if (is_null($Val)) {
-			return true;
-		}
-        $res=$this->stateHdlr->findObj($this->getModName(), $Attr, $Val);
+    public function checkBkey($attr,$val)
+    {       
+        if (is_null($val)) {
+            return true;
+        }
+        $res=$this->_stateHdlr->findObj($this->getModName(), $attr, $val);
         if ($res == []) {
             return true;
         }
@@ -773,16 +773,16 @@ class Model
      *
      * @return boolean
      */
-    public function checkCode($Attr,$Val)
+    public function checkCode($attr,$val)
     {
-		if (is_null($Val)) {
-			return true;
-		}
-        $Vals = $this->getValues($Attr);
-        if (!$Vals) {
+        if (is_null($val)) {
+            return true;
+        }
+        $vals = $this->getValues($attr);
+        if (!$vals) {
             return false;
         }
-        $res = in_array($Val, $Vals);
+        $res = in_array($val, $vals);
         return $res;        
     }
     /**
@@ -792,17 +792,17 @@ class Model
      *
      * @return array
      */
-    public function getValues($Attr) 
+    public function getValues($attr) 
     {
-        $r=$this->getTyp($Attr);
+        $r=$this->getTyp($attr);
         if (!$r) {
             return false;
         }
         if ($r != M_CODE) {
-            $this->errLog->logLine(E_ERC015.':'.$Attr.':'.$r); 
+            $this->_errLog->logLine(E_ERC015.':'.$attr.':'.$r); 
             return false;
         }
-        $r=$this->getPath($Attr);
+        $r=$this->getPath($attr);
         if ($r) {
             $res=pathVal($r);
             return $res;
@@ -817,14 +817,14 @@ class Model
      *
      * @return boolean
      */   
-    public function checkRef($Attr,$id)
+    public function checkRef($attr,$id)
     {
         if (is_null($id)) {
             return true;
         }
-        $path = $this->getPath($Attr);
+        $path = $this->getPath($attr);
         if (!$path) {
-            $this-$this->errLog->logLine(E_ERC008.':'.$Attr);
+            $this-$this->_errLog->logLine(E_ERC008.':'.$attr);
             return false;
         };
         $path=$path.'/'.$id;
@@ -832,11 +832,11 @@ class Model
             $res = pathObj($path);
         } 
         catch (Exception $e) {
-            $this->errLog->logLine($e->getMessage());
+            $this->_errLog->logLine($e->getMessage());
             return false;
         }
         if (!$res) {
-            throw new Exception(E_ERC023.':'.$Attr.':'.$path);
+            throw new Exception(E_ERC023.':'.$attr.':'.$path);
         }
         return true;
     }
@@ -847,17 +847,17 @@ class Model
      *
      * @return boolean
      */    
-    public function checkMdtr($Attr)
+    public function checkMdtr($attr)
     {
-        $typ= $this->getTyp($Attr);
+        $typ= $this->getTyp($attr);
         if (!$typ) {
             return false;
         }
-        if (array_key_exists($Attr, $this->attr_val)) {
-            $val = $this->getVal($Attr);
-			if (! is_null($val)) {
-				return true;
-			}
+        if (array_key_exists($attr, $this->_attrVal)) {
+            $val = $this->getVal($attr);
+            if (! is_null($val)) {
+                return true;
+            }
         }
         return false;
     }   
@@ -868,14 +868,14 @@ class Model
      */      
     public function save()
     {
-        if (! $this->stateHdlr) {
-            $this->errLog->logLine(E_ERC006);
+        if (! $this->_stateHdlr) {
+            $this->_errLog->logLine(E_ERC006);
             return false;
         }
-        foreach ($this->getAllMdtr() as $Attr) {
-            $res=$this->checkMdtr($Attr);
+        foreach ($this->getAllMdtr() as $attr) {
+            $res=$this->checkMdtr($attr);
             if (!$res) {
-                $this->errLog->logLine(E_ERC019.':'.$Attr);
+                $this->_errLog->logLine(E_ERC019.':'.$attr);
                 return false;
             }
         }
@@ -883,8 +883,8 @@ class Model
         $n++;
         $this->setValNoCheck('vnum', $n);
         $this->setValNoCheck('utstp', date(M_FORMAT_T));
-        $res=$this->stateHdlr->saveObj($this);
-        $this->id=$res;
+        $res=$this->_stateHdlr->saveObj($this);
+        $this->_id=$res;
         return $res;
     }
     /**
@@ -894,13 +894,13 @@ class Model
      */         
     public function delet() 
     {
-        if (! $this->stateHdlr) {
-            $this->errLog->logLine(E_ERC006);
+        if (! $this->_stateHdlr) {
+            $this->_errLog->logLine(E_ERC006);
             return false;
         }
-        $res=$this->stateHdlr->eraseObj($this);
+        $res=$this->_stateHdlr->eraseObj($this);
         if ($res) {
-            $this->id=0;
+            $this->_id=0;
         }
         return $res;
     }
@@ -911,11 +911,11 @@ class Model
      */        
     public function deleteMod()
     {
-        if (! $this->stateHdlr) {
-            $this->errLog->logLine(E_ERC006);
+        if (! $this->_stateHdlr) {
+            $this->_errLog->logLine(E_ERC006);
             return false;
         }
-        $res=$this->stateHdlr->eraseMod($this);
+        $res=$this->_stateHdlr->eraseMod($this);
         $this->initattr();
         return $res;
     }
@@ -926,13 +926,13 @@ class Model
      */    
     public function saveMod()
     {
-        if (! $this->stateHdlr) {
-            $this->errLog->logLine(E_ERC006);
+        if (! $this->_stateHdlr) {
+            $this->_errLog->logLine(E_ERC006);
             return false;
         }
-        $res=$this->stateHdlr->saveMod($this);
+        $res=$this->_stateHdlr->saveMod($this);
         return $res;
     }
 }
 
-?>
+

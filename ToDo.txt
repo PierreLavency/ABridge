@@ -2,7 +2,7 @@
 - default value //
 - clean up view
 
-- Align with coding standard // Model, Logger / 
+- Align with coding standard (now Zend)// Model, Logger, Type/ 
 - view to delete objects //
 - Label management 
 - hide id in views
@@ -11,7 +11,7 @@
 - Authenthication
 - Authorisation
 
--find a way to test HTML
+- find a way to test HTML
 - Test Coverage
 	install Xdebug.
 
