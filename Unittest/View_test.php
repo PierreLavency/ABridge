@@ -44,7 +44,7 @@ $v->attr_lbl = array('id'=>'object reference','vnum'=>'version number','ctstp'=>
 
 $show=false;
 
-$r = $v->subst($test1,V_G_VIEW);
+$r = $v->subst($test1,V_G_VIEW,false);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)";
@@ -52,7 +52,7 @@ $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
-$r = $v->subst($test2,V_G_VIEW);
+$r = $v->subst($test2,V_G_VIEW,false);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)";
@@ -60,7 +60,7 @@ $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
-$r = $v->subst($test3,V_G_VIEW);
+$r = $v->subst($test3,V_G_VIEW,false);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)";
@@ -68,7 +68,7 @@ $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
-$r = $v->subst($test4,V_G_VIEW);
+$r = $v->subst($test4,V_G_VIEW,false);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)";
@@ -76,7 +76,7 @@ $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
-$r = $v->subst($test5,V_G_CREA);
+$r = $v->subst($test5,V_G_CREA,true);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)";
@@ -84,7 +84,7 @@ $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
-$r = $v->subst($test6,V_G_VIEW);
+$r = $v->subst($test6,V_G_VIEW,false);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)"; $log->logLine ($line);

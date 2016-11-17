@@ -142,7 +142,7 @@ class View
 		return $res;
 	}
 	
-	public function subst($spec,$gen){
+	public function subst($spec,$gen,$form){
 		$type = $spec[V_TYPE];
 		$result=[];
 		switch ($type) {
@@ -156,7 +156,7 @@ class View
 					$result[H_TYPE]=H_T_LIST;
 					$arg=[];
 					foreach($spec[V_ARG] as $elem) {
-						$r=$this->subst($elem,$gen);
+						$r=$this->subst($elem,$gen,$form);
 						if($r) {$arg[]=$r;}
 					}
 					$result[H_ARG]=$arg;
@@ -165,22 +165,32 @@ class View
 					$result[H_TYPE]=H_T_FORM;
 					$path = refPath($this->model->getModName(),$this->model->getId());
 					$result[H_ACTION]="POST";
+					if ($gen == V_G_VIEW) {$result[H_HIDDEN]="Del";}
+					if ($gen == V_G_CREA and $this->exists) {$result[H_HIDDEN]="Mod";}
+					if ($gen == V_G_CREA and  ! $this->exists) {$result[H_HIDDEN]="Crt";}
 					$result[H_URL]=$path;					
 					$arg=[];
 					foreach($spec[V_ARG] as $elem) {
-						$r=$this->subst($elem,$gen);
+						$r=$this->subst($elem,$gen,$form);
 						if($r) {$arg[]=$r;}
 					}
 					$result[H_ARG]=$arg;
 					break;
 			case V_BTN:
-					if($gen == V_G_CREA){
+					if($form){
 						$result[H_TYPE]=H_T_SUBMIT;
 					}
 					else {
-						$result[H_TYPE]=H_T_LINK;
-						$result[H_LABEL]=$this->model->getId();
-						$result[H_NAME]=refPath($this->model->getModName(),$this->model->getId()).'?form=true';
+						$result[H_TYPE]=H_T_LIST;
+						$res[H_TYPE]=H_T_LINK;
+						$res[H_LABEL]='Mod';
+						$res[H_NAME]="'".refPath($this->model->getModName(),$this->model->getId()).'?View=Mod'."'";
+						$arg[]=$res;
+						$res[H_TYPE]=H_T_LINK;
+						$res[H_LABEL]='Del';
+						$res[H_NAME]="'".refPath($this->model->getModName(),$this->model->getId()).'?View=Del'."'";
+						$arg[]=$res;
+						$result[H_ARG]=$arg;
 					}
 					break;
 			case V_ERROR:
@@ -194,10 +204,18 @@ class View
 	public function show($method,$exists,$show = true) {
 		$this->method=$method;
 		$this->exists=$exists;
-		if ($method =='POST')							{return ($this->showDefaultG($show,V_G_CREA));}
-		if ($method =='GET' and (! $exists))			{return ($this->showDefaultG($show,V_G_CREA));}
-		if ($method =='GET' and (isset($_GET["form"])))	{return ($this->showDefaultG($show,V_G_CREA));}
-		return ($this->showDefaultG($show,V_G_VIEW));
+		if ($method =='POST')							{return ($this->showDefaultG($show,V_G_CREA,true));}
+		if ($method =='GET' and (! $exists))			{return ($this->showDefaultG($show,V_G_CREA,true));}
+		if ($method =='GET' and (isset($_GET["View"])))	{
+			$view = $_GET["View"];
+			if ($view =='Mod' ) {
+				return ($this->showDefaultG($show,V_G_CREA,true));
+			}
+			if ($view =='Del' ) {
+				return ($this->showDefaultG($show,V_G_VIEW,true));
+			}
+		}
+		return ($this->showDefaultG($show,V_G_VIEW,false));
 	}
 	
 	public function postVal(){ // maybe be not really MVC but 
@@ -213,7 +231,7 @@ class View
 		}
 	}
 	
-	public function showDefaultG ($show,$gen) {
+	public function showDefaultG ($show,$gen,$form) {
 			$i=1;
 			$name = $this->model->getModName ();
 			$spec=[];
@@ -240,10 +258,10 @@ class View
 				$speci=[V_TYPE=>V_LIST,V_ARG=>[[V_TYPE=>V_OBJ],[V_TYPE=>V_LIST,V_ARG=>$spec],[V_TYPE=>V_BTN],$e]];
 			}
 			$specf = $speci;
-			if ($gen == V_G_CREA) {
+			if ($form) {
 				$specf = [V_TYPE=>V_FORM,V_ARG=>[$speci]];		// html specific !
 			}
-			$r=$this->subst($specf,$gen);
+			$r=$this->subst($specf,$gen,$form);
 			$r=genFormElem($r,$show);
 			return $r;
 	}

@@ -3,7 +3,7 @@
 - clean up view
 
 - Align with coding standard // Model, Logger / 
-- view to delete objects
+- view to delete objects //
 - Label management 
 - hide id in views
 - Meta model changes (alter)

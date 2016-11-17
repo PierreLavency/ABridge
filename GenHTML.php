@@ -5,12 +5,12 @@
 	
 	require_once("ViewConstant.php");
 	
-	function genForm($action,$url,$dspec,$show=true){
-		genformL($action,$dspec,$show,0);
+	function genForm($action,$url,$hidden,$dspec,$show=true){
+		genformL($action,$dspec,$hidden,$show,0);
 	}
 	
-	function genFormL($action,$url,$dspecL,$show,$L) {
-		$form_s   = '<form method='.$action.' action= '.$url. ' >' ;
+	function genFormL($action,$url,$hidden,$dspecL,$show,$L) {
+		$form_s   = '<form method='.$action.' action= '.$url. " > <input type='hidden' name='action' value='".$hidden. "' >" ;
 		$form_e_s = '</form>  ';
 		$end_s    = ' > '	  ;
 		$tab = "";
@@ -68,6 +68,7 @@
 		
 		$type="";
 		$default="";
+		$hidden="";
 		$separator="";
 		$name="";
 		$action="";
@@ -108,8 +109,13 @@
 					break;	
 				case H_ACTION:
 					$action = $v;
+					break;	
+				case H_HIDDEN:
+					$hidden = $v;
+					break;	
 				case H_URL:
 					$url = $v;
+					break;					
 				case H_ARG:
 					$arg = $v;
 					break;
@@ -129,7 +135,7 @@
 				$result = genListL($arg,false,$L);
 				break;
 			case H_T_FORM:
-				$result = genFormL($action,$url,$arg,false,$L);
+				$result = genFormL($action,$url,$hidden,$arg,false,$L);
 				break;
 			case H_T_TEXTAREA:
 				$result = $textarea_s . $name_s; 

@@ -21,12 +21,21 @@ else {
 $method = $_SERVER['REQUEST_METHOD'];
 
 $v= new View($c);
+$action = 'Get';
 
 if (($method =='POST')) {
-	$v->postVal();
+	$action = $_POST['action'];
+	if ($action == 'Mod' or $action == 'Crt') {
+		$v->postVal();
+	}
 	if (!$c->isErr()){
-		$id=$c->save();
+		if ($action == 'Del') {
+			$c->delet();
 		}
+		else {
+			$c->save();			
+		}
+	}
 	if (!$c->isErr()) {
 		$r1=$fb->commit();	
 		$r2=$db->commit();
@@ -38,6 +47,11 @@ if (($method =='POST')) {
 	}
 }
 
-$v->show($method,$c->getId(),true);
+if ($action == 'Del' and $method == 'GET') {
+	$c=new Model($Default,$Default_id);
+	$v= new View($c);
+}
+
+$v->show($method,$c->getId(),true);	
 
 ?>
