@@ -17,12 +17,15 @@ class Type_Test extends PHPUnit_Framework_TestCase {
  
     public function Provider1() {
         return [
-            ['1', 	M_INT,		0],
+			[null, 	M_INT,		1],
+			['1', 	M_INT,		0],
             [1, 	M_INT,		1],
             [1.5, 	M_INT,		0],
-            ['1', 	M_FLOAT,	0],
+            [null, 	M_FLOAT,	1],           
+			['1', 	M_FLOAT,	0],	
 	        [1, 	M_FLOAT,	0],
             [1.5, 	M_FLOAT,	1],		
+            [null, 	M_STRING,	1],
             ['1', 	M_STRING,	1],
 	        [1, 	M_STRING, 	0],
             [1.5, 	M_STRING, 	0],		
@@ -34,6 +37,7 @@ class Type_Test extends PHPUnit_Framework_TestCase {
             [1, 	M_INTP,		1],
 	        [0	,	M_INTP,		1],
             ['1', 	M_INTP, 	0],		
+			[null, 	M_ALNUM,	1],	
 			[1, 	M_ALNUM,	0],		
             ['1', 	M_ALNUM,	1],
 	        ['A1',	M_ALNUM,	1],
@@ -41,6 +45,7 @@ class Type_Test extends PHPUnit_Framework_TestCase {
             ['1', 	M_ALPHA,	0],
 	        ['A1',	M_ALPHA,	0],
 	        ['Abb',	M_ALPHA,	1],
+			[null,						M_DATE,		1],			
 			[-1,						M_DATE,		0],
 			['2016-10-25',				M_DATE,		1],
 			[' 2016-10-25 12:30:48',	M_DATE,		0],		
@@ -81,8 +86,10 @@ class Type_Test extends PHPUnit_Framework_TestCase {
 	
    public function Provider3() {
         return [
+		    ['', 		M_INT,		null],
             ['1', 		M_INT,		1],
             ['1', 		M_CODE,		1],
+            ['', 		M_CODE,		null],
             [ "true", 	M_BOOL,		true],
             ['1.5', 	M_FLOAT,	1.5],
 	        ["pp", 		M_INT,		"pp"],	

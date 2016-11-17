@@ -19,6 +19,9 @@
 		$type = baseType($Type);
 		if ($type== M_INTP) {$type=M_INT;}
 		if (is_string($X)) {
+			if ($X=='') {
+				return NULL;
+			}
 			switch($type) {
 				case M_INT:
 					if(ctype_digit($X)) {$X = (int) $X; return $X;};
@@ -48,6 +51,9 @@
 	}
 	
 	function checkType ($X,$type) {
+		if (is_null($X)) {
+			return true;
+		}
 		switch($type) {
 			case M_DATE:
 				$d=DateTime::createFromFormat(M_FORMAT_D,$X);

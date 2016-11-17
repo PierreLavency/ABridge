@@ -65,6 +65,10 @@ class Model
      * @var array The list of mandatory attributes. 
      */
     protected $attr_mdtr;
+	/**
+     * @var array The list of attribute default values. 
+     */
+    protected $attr_dflt;
     /**
      * @var array The error logger. 
      */
@@ -73,7 +77,6 @@ class Model
      * @var array The state handler.
      */
     protected $stateHdlr=0;
-
     /**
     * Constructor
     */
@@ -85,7 +88,6 @@ class Model
             call_user_func_array(array($this, $f), $a);
         }
     } 
-
     /**
      * Constructor of a new object that does not exists (id is equal to 0).
      *
@@ -102,8 +104,7 @@ class Model
         if ($x) {
             $x->restoreMod($this);
         }
-    }
-    
+    }  
     /**
      * Constructor of an existing object (id must be different from 0).
      *
@@ -130,7 +131,6 @@ class Model
             };
         }
     }
- 
      /**
      * Initialise the attributes and the errologger
      *
@@ -154,7 +154,6 @@ class Model
         $this->errLog= new Logger($logname);
         $this->stateHdlr=getStateHandler($name);
     }
- 
     /**
      * Re/Initialise the attributes and their properties
      *
@@ -170,7 +169,8 @@ class Model
             "ctstp"=>M_TMSTP,
             "utstp"=>M_TMSTP,
         );
-        $this->attr_val = array('vnum'=>0);
+        $this->attr_val = array('vnum' => 0);
+        $this->attr_dflt = [];
         $this->attr_path = [];
         $this->attr_bkey = [];
         $this->attr_mdtr = [];
@@ -185,7 +185,6 @@ class Model
     {
         return $this->errLog;
     }
-     
     /**
      * Returns the Model Name.
      *
@@ -195,7 +194,6 @@ class Model
     {
         return $this->name;
     }
-    
     /**
      * Returns the Object Id.
      *
@@ -214,8 +212,7 @@ class Model
     public function getAllAttr() 
     {
         return $this->attr_lst;
-    }
-    
+    }  
     /**
      * Returns the list of attribute types of a Model. 
      *
@@ -225,7 +222,15 @@ class Model
     {
         return $this->attr_typ;         
     }
- 
+   /**
+     * Returns the list of default values of a Model.
+     *
+     * @return array
+     */
+    public function getAllDflt() 
+    {
+        return $this->attr_dflt;         
+    }
     /**
      * Returns the list of values BUT the id value of a Model.
      *
@@ -235,7 +240,6 @@ class Model
     {
         return $this->attr_val;         
     }
-    
     /**
      * Returns the list of all path of a Model.
      *
@@ -244,8 +248,7 @@ class Model
     public function getAllPath() 
     { 
         return $this->attr_path;            
-    }
-    
+    }   
     /**
      * Returns the list of Business Key attributes of a Model.
      *
@@ -254,8 +257,7 @@ class Model
     public function getAllBkey() 
     { 
         return $this->attr_bkey;            
-    }
-    
+    } 
     /**
      * Returns the list of mandatory attributes of a Model.
      *
@@ -264,8 +266,7 @@ class Model
     public function getAllMdtr()
     { 
         return $this->attr_mdtr;            
-    }
-    
+    }  
     /**
      * Returns the list of Predefined attributes of a Model.
      *
@@ -275,7 +276,6 @@ class Model
     {
         return $this->attr_predef;
     }
-
     /**
      * Returns the type of an attribute.
      *
@@ -296,7 +296,6 @@ class Model
         }                       
         return null;
     }
-
     /**
      * Returns the 'path' of an attribute.
      *
@@ -317,7 +316,6 @@ class Model
         }                       
         return null;
     }
-
     /**
      * Returns the Model Name of a reference attribute.
      *
@@ -334,7 +332,6 @@ class Model
         $patha=explode('/', $path);
         return ($patha[1]);
     }
-
     /**
      * Returns the Logger.
      *
@@ -345,7 +342,6 @@ class Model
         $c=$this->errLog->logSize();
         return ($c);
     }
- 
     /**
      * Returns true if the attribute is a Business key.
      *
@@ -360,7 +356,6 @@ class Model
         }
         return (in_array($attr, $this->attr_bkey));
     }
-
     /**
      * Returns true if the attribute is a Mandatory.
      *
@@ -375,8 +370,7 @@ class Model
             return false;
         }
         return (in_array($attr, $this->attr_mdtr));
-    }
-    
+    }   
     /**
      * Returns true if the attribute is a Pedefined attribute.
      *
@@ -391,8 +385,7 @@ class Model
             return false;
         }
         return (in_array($attr, $this->attr_predef));
-    }
-    
+    } 
     /**
      * Returns true if the attribute is an optional attribute.
      *
@@ -418,7 +411,6 @@ class Model
         }
         return true;
     }
- 
     /**
      * Returns true if the attribute exists.
      *
@@ -433,7 +425,6 @@ class Model
         } ;
         return false;
     }
-
     /**
      * Set the type of an attribute.
      *
@@ -455,7 +446,23 @@ class Model
         $this->attr_typ[$attr]=$typ;
         return true;
     }
-
+	/**
+     * Set the default value of an attribute.
+     *
+     * @param string $attr the attribute. 
+     * @param string $val  the default value.
+     *
+     * @return boolean
+     */      
+    public function setDflt($attr,$val) 
+    {
+        if (! $this->existsAttr($attr)) {
+            $this->errLog->logLine(E_ERC002.':'.$attr);
+            return false;
+        };
+        $this->attr_dflt[$attr]=$val;
+        return true;
+    }
     /**
      * Set the path of an attribute.
      *
@@ -477,7 +484,6 @@ class Model
         $this->attr_path[$attr]=$path;
         return true;
     }
-
     /**
      * Set an attribute value of a business key .
      *
@@ -508,7 +514,6 @@ class Model
         }
         return true;
     }
-    
     /**
      * Set an attribute value of a mandatory attribute .
      *
@@ -535,7 +540,6 @@ class Model
         }
         return true;
     }
-
     /**
      * Add an attribute.
      *
@@ -574,7 +578,6 @@ class Model
         $this->delAttr($attr);
         return false;
     }
-
     /**
      * Delete an attribute.
      *
@@ -603,6 +606,9 @@ class Model
         if (isset($this->attr_path[$attr])) {
             unset($this->attr_path[$attr]);
         }
+        if (isset($this->attr_dflt[$attr])) {
+            unset($this->attr_dflt[$attr]);
+        }
         $key = array_search($attr, $this->attr_bkey);
         if ($key!==false) {
             unset($this->attr_bkey[$key]);
@@ -613,7 +619,27 @@ class Model
         }    
         return true;
     }
- 
+	 /**
+     * Get the default value of an attribute.
+     *
+     * @param string $attr the attribute. 
+     *
+     * @return string  the value
+     */      
+    public function getDflt($attr) 
+    {
+        $x= $this->existsAttr($attr);
+        if (!$x) {
+            $this->errLog->logLine(E_ERC002.':'.$attr);
+            return false;
+        }
+        foreach ($this->attr_dflt as $x => $val) {
+            if ($x==$attr) {
+                return $val;
+            }
+        }       
+        return null;            
+    }
     /**
      * Get the value of an attribute.
      *
@@ -632,7 +658,7 @@ class Model
             return false;
         }
         $type=$this->getTyp($attr);
-        if ($type == M_CREF) { //will noot work if on different Base !!
+        if ($type == M_CREF) { //will not work if on different Base !!
             $path = $this->getPath($attr);
             $patha=explode('/', $path);
             $res=$this->stateHdlr->findObj($patha[1], $patha[2], $this->getId());
@@ -645,7 +671,6 @@ class Model
         }       
         return null;            
     }
-    
     /**
      * Set the value of an attribute without any check.
      *
@@ -662,8 +687,7 @@ class Model
         }
         $this->attr_val[$attr]=$val;
         return true;
-    }
-    
+    }  
     /**
      * Set the value of an attribute.
      *
@@ -719,7 +743,6 @@ class Model
         }
         return ($this->setValNoCheck($Attr, $Val));
     }
-
     /**
      * Check the value of an business key attribute.
      *
@@ -729,7 +752,10 @@ class Model
      * @return boolean
      */    
     public function checkBkey($Attr,$Val)
-    {
+    {		
+	    if (is_null($Val)) {
+			return true;
+		}
         $res=$this->stateHdlr->findObj($this->getModName(), $Attr, $Val);
         if ($res == []) {
             return true;
@@ -738,8 +764,7 @@ class Model
             return true;
         }
         return false;       
-    }
-    
+    } 
     /**
      * Check the value of a code attribute.
      *
@@ -750,6 +775,9 @@ class Model
      */
     public function checkCode($Attr,$Val)
     {
+		if (is_null($Val)) {
+			return true;
+		}
         $Vals = $this->getValues($Attr);
         if (!$Vals) {
             return false;
@@ -757,7 +785,6 @@ class Model
         $res = in_array($Val, $Vals);
         return $res;        
     }
-
     /**
      * Get the possible values of a code attribute.
      *
@@ -781,8 +808,7 @@ class Model
             return $res;
         }
         return $r;
-    }
-    
+    }  
      /**
      * Check the value of a ref attribute.
      *
@@ -793,7 +819,7 @@ class Model
      */   
     public function checkRef($Attr,$id)
     {
-        if ($id == 0) {
+        if (is_null($id)) {
             return true;
         }
         $path = $this->getPath($Attr);
@@ -814,7 +840,6 @@ class Model
         }
         return true;
     }
-
     /**
      * Check if a mandatory attribute is set.
      *
@@ -830,21 +855,12 @@ class Model
         }
         if (array_key_exists($Attr, $this->attr_val)) {
             $val = $this->getVal($Attr);
-            if ($typ == M_CODE or $typ == M_REF or $typ == M_ID) {
-                if (!$val) {
-                    return false;
-                }
-            }
-            if ($typ == M_STRING) {
-                if ($val == "") {
-                    return false;
-                }
-            }
-            return true;
+			if (! is_null($val)) {
+				return true;
+			}
         }
         return false;
     }   
- 
     /**
      * Save an object.
      *
@@ -871,7 +887,6 @@ class Model
         $this->id=$res;
         return $res;
     }
-
     /**
      * Delete an object.
      *
@@ -889,7 +904,6 @@ class Model
         }
         return $res;
     }
- 
     /**
      * Delete the Model of the object.
      *
@@ -905,7 +919,6 @@ class Model
         $this->initattr();
         return $res;
     }
-
     /**
      * Save the Model of the object.
      *

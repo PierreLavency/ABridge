@@ -126,7 +126,13 @@ class SQLBase extends Base {
 		$c = count($Values);
 		foreach ($Values as $key=>$val) {
 			$i++;
-			$L1 = $L1 . $key. '=' . "'".$val."'" ;
+			if (is_null($val)) {
+				$v="NULL";
+				}
+			else {
+				$v="'". $val."'";
+				}
+			$L1 = $L1 . $key. '=' . $v;
 			if ($i<$c) {
 				$L1 = $L1 . ',';
 				$L2 = $L1 . ',';				
@@ -157,9 +163,15 @@ class SQLBase extends Base {
 		foreach ($Values as $key=>$val) {
 			$i++;
 			$L1 = $L1 . $key;
-			$L2 = $L2 ."'". $val."'";
+			if (is_null($val)) {
+				$v="NULL";
+				}
+			else {
+				$v="'". $val."'";
+				}
+			$L2 = $L2 .$v;
 			if ($i<$c) {
-				$L1 = $L1 . ',';
+				$L1 = $L1.',';
 				$L2 = $L2.',';
 			}
 		}

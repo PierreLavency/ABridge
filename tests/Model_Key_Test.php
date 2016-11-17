@@ -79,6 +79,12 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$res= $codeval->deleteMod();
 		$this->assertTrue($res);	
 		
+		$res = $codeval->addAttr('ValueName'); 
+		$this->assertTrue($res);	
+		
+		$res = $codeval->setDflt('ValueName','Male'); //default
+		$this->assertTrue($res);	
+				
 		$path='/'.$this->Code;
 		$res = $codeval->addAttr('ValueOf',M_REF,$path);
 		$this->assertTrue($res);	
@@ -147,7 +153,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 
 		$db->commit();
 
-		// check relaod 
+		// check reload 
 		
 		$code = new Model($this->Code,$id);
 		$this->assertNotNull($code);	
@@ -159,6 +165,18 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$codeval = new Model($this->CodeVal);
 		$this->assertNotNull($codeval);	
 		
+		// check defaut and null 
+		$res=$codeval->getVal('ValueName');
+		$this->assertNull($res);
+
+		$res=$codeval->getDflt('ValueName');
+		$this->assertEquals($res,'Male');
+
+		// check mandatory
+		
+		$res = $codeval->setVal('ValueName',$res);
+		$this->assertTrue($res);
+				
 		$res = $codeval->setVal('ValueOf',$id);
 		$this->assertTrue($res);
 		
@@ -169,6 +187,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals($r->logSize(),0);	
 
 		$db->commit();
+		
 	}
 	/**
      * @dataProvider Provider1
@@ -198,6 +217,11 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$id1= $codeval->save();
 		$this->assertEquals($id1,0);	
 
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($log->getLine(0),E_ERC019.':ValueOf');	
+		
+	    $res = $codeval->setVal('ValueOf',null);
+		$id1= $codeval->save();
 		$r = $codeval-> getErrLog ();
 		$this->assertEquals($log->getLine(0),E_ERC019.':ValueOf');	
 		

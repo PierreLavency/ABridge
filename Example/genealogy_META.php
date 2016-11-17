@@ -77,6 +77,7 @@ require_once("genealogy_SETUP.php");
 	$res= $person->deleteMod();
 
 	$res = $person->addAttr('Name');
+	$res = $person->setDflt('Name','Lavency'); // HERE
 	$res = $person->addAttr('SurName');
 	$res = $person->addAttr('BirthDay',M_DATE);
 	

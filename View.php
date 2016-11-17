@@ -36,7 +36,8 @@ class View
 	// property
 
 	public $model;
-	public $method;
+	protected $method='GET';
+	protected $exists=true;
 	public $attr_list;
 	public $attr_lbl = [];
 	public $viewName = []; 
@@ -92,8 +93,18 @@ class View
 		if ($gen==V_G_CREA and $prop==V_P_VAL){
 			if ($this->model->isMdtr($Attr) or $this->model->isOptl($Attr)) {
 				$res[H_NAME]=$Attr;
-				$default = $this->model->getVal($Attr); 
-				if (isset($_POST[$Attr])){$default= $_POST[$Attr];}
+				$default=null;
+				if ($this->method=='GET') {
+					$default = $this->model->getVal($Attr);
+					if ((! $this->exists) and is_null($default)) {
+						$default=$this->model->getDflt($Attr);
+					}
+				}
+				if ($this->method=='POST') {
+					if (isset($_POST[$Attr])){
+						$default= $_POST[$Attr];
+					}
+				}
 				if ($default) {$res[H_DEFAULT]=$default;}
 				$res[H_TYPE]=H_T_TEXT;
 				if ($this->model->getTyp($Attr)== M_CODE) {
@@ -182,7 +193,8 @@ class View
 
 	public function show($method,$exists,$show = true) {
 		$this->method=$method;
-		if ($method =='POST') {return ($this->showDefaultG($show,V_G_CREA));}
+		$this->exists=$exists;
+		if ($method =='POST')							{return ($this->showDefaultG($show,V_G_CREA));}
 		if ($method =='GET' and (! $exists))			{return ($this->showDefaultG($show,V_G_CREA));}
 		if ($method =='GET' and (isset($_GET["form"])))	{return ($this->showDefaultG($show,V_G_CREA));}
 		return ($this->showDefaultG($show,V_G_VIEW));
@@ -193,11 +205,9 @@ class View
 			if ($this->model->isMdtr($attr) or $this->model->isOptl($attr)) {
 				if (isset($_POST[$attr])){
 					$val= $_POST[$attr];
-					if ($val) {
-						$typ=$this->model->getTyp($attr);
-						$Val = convertString($val,$typ);
-						$this->model->setVal($attr,$Val);
-					}
+					$typ=$this->model->getTyp($attr);
+					$Val = convertString($val,$typ);
+					$this->model->setVal($attr,$Val);
 				}
 			}
 		}
