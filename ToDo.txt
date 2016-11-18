@@ -2,7 +2,7 @@
 - default value //
 - clean up view
 
-- Align with coding standard (now Zend)// Model, Logger, Type/ 
+- Align with coding standard (now Zend)// all but base protected variable ! 
 - view to delete objects //
 - Label management 
 - hide id in views
@@ -23,3 +23,9 @@ Dev Dependency
 - PhpUnit 3.7.21
 - Php code_sniffer 2.7.0
 - Phpdocumentor (pear install phpdoc/PhpDocumentor-2.8.1) <- graphiz 2.38
+
+cmd
+/*check code
+phpcs --standard=Zend Model.php Type.php Logger.php
+/*install phpdocumentor
+pear install phpdoc/PhpDocumentor-2.8.1
