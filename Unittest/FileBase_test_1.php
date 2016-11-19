@@ -55,7 +55,7 @@ $t = ($res2 == $test2);
 
 // update save and get
 
-$res= $y->putObj('ERC',$id1,$test3);
+$res= $y->putObj('ERC',$id1,$test3,[],[]);
 	$line = "$res= y->putObj('ERC',$id1,test3);"; $log->logLine($line);
 
 $res=$y->commit();
@@ -132,7 +132,7 @@ $res1=$y->getMod('ERC2');
 $res=$y->newMod('ERC',[]);
 	$line = "$res=y->newMod('ERC');"; $log->logLine($line);
 	
-$res=$y->putMod('ERC',$testm1);
+$res=$y->putMod('ERC',$testm1,[],[]);
 	$line = "res=y->putMod('ERC',testm1);"; $log->logLine($line);
 
 $res=$y->commit();

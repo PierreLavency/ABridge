@@ -33,7 +33,7 @@ class ModBase
         $meta['attr_bkey'] = $mod->getAllBkey();
         $meta['attr_mdtr'] = $mod->getAllMdtr();
         if ($this->_base->existsMod($name)) {
-            return ($this->_base->putMod($name, $meta));
+            return ($this->_base->putMod($name, $meta, [], []));
         }
         $values = $this->_base->getMod($name);
 /*
