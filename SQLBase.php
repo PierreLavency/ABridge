@@ -110,18 +110,82 @@ class SQLBase extends Base
         return $r;
     }   
 
-    public function putMod($model,$meta) 
+    public function putMod($model,$meta,$addList,$delList) 
     {
         if (! $this->existsMod($model)) {
             return 0;
         };
-        $r=$this->delMod($model, $meta); // to review
-        if (!$r) {
-            return $r;
+        $sql = "\n ALTER TABLE $model ";
+        $sqlAdd = $this->addAttr($model, $addList);
+        if ($sqlAdd) {
+            $sql=$sql.$sqlAdd;
         }
-        $r=$this->newMod($model, $meta);
+        $sqlDrop = $this->dropAttr($model, $delList);
+        if ($sqlDrop) {
+            $sql=$sql.$sqlDrop;
+        }
+        if ($sqlAdd or $sqlDrop) {
+            if (! $this->_mysqli->query($sql)) {
+                echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
+                return 0;
+            }
+        }
+        $r = parent::putMod($model, $meta, $addList, $delList);
+        parent::commit(); //tocheck !!
         return $r;
     }
+    
+    public function dropAttr($model,$delList)
+    {
+        $sql = "";
+        $attrLst=[];
+        if (isset($delList['attr_lst'])) {
+            $attrLst = $delList['attr_lst'];
+        }
+        $c = count($attrLst);
+        if (!$c) {
+            return false;
+        }
+        for ($i=0;$i<$c; $i++) {
+            $attr = $attrLst[$i];
+            $sql = $sql."\n DROP $attr " ;
+            if ($i+1<$c) {
+                $sql=$sql.",";
+            }
+        }
+        return $sql;
+    }
+    
+    public function addAttr($model,$addList)
+    {
+        $attrLst=[];
+        $attrTyp =[];
+        $sql = "";
+        if (isset($addList['attr_lst'])) {
+            $attrLst = $addList['attr_lst'];
+        }
+        if (isset($addList['attr_typ'])) {
+            $attrTyp = $addList['attr_typ'];
+        }
+        $c = count($attrLst);
+        if (!$c) {
+            return false;
+        }
+        for ($i=0;$i<$c; $i++) {
+            $attr = $attrLst[$i];
+            $typ=$attrTyp[$attr];
+            if ($typ!= M_CREF) {//bof
+                if ($i > 0) {
+                    $sql = $sql . ",";
+                }
+                $typ = convertSqlType($typ);
+                $sql = $sql."\n ADD $attr $typ NULL" ;
+            }
+        }
+        return $sql;
+    }
+    
+    
     
     public function delMod($model) 
     {
@@ -186,7 +250,7 @@ class SQLBase extends Base
         }
         return 0;
     }
-    
+       
     public function delObj($model, $id) 
     {
         if (! $this->existsMod($model)) {

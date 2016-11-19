@@ -35,8 +35,17 @@ class ModBase
         if ($this->_base->existsMod($name)) {
             return ($this->_base->putMod($name, $meta));
         }
-        return ($this->_base->newMod($name, $meta)); 
-        // should deal with case where it exisits already !
+        $values = $this->_base->getMod($name);
+/*
+        $addList['attr_lst'] = 
+        array_diff($meta['attr_lst'],$values['attr_lst']);
+        $addList['attr_typ'] = $meta['attr_typ'];
+        $delList['attr_lst'] = 
+        array_diff($values['attr_lst'],$meta['attr_lst']);
+        $delList['attr_lst'] = $values['attr_typ'];
+*/
+        return ($this->_base->newMod($name, $meta)); //to change
+
     }
     
     public function restoreMod($mod) 
@@ -106,9 +115,11 @@ class ModBase
             return 0;
         }
         foreach ($values as $attr=>$val) {
-            $typ=$mod->getTyp($attr);
-            $valn=convertString($val, $typ);
-            $mod->setVal($attr, $valn, false);
+            if ($mod->existsAttr($attr)) {
+                $typ=$mod->getTyp($attr);
+                $valn=convertString($val, $typ);
+                $mod->setVal($attr, $valn, false);
+            }
         };
         return $id;
     }

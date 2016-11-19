@@ -84,7 +84,7 @@ abstract class Base
         return $meta;
     }
     
-    function putMod($model,$meta) 
+    function putMod($model,$meta,$addList,$delList) 
     {
         if (! $this->existsMod($model)) {
             return 0;

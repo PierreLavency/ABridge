@@ -40,8 +40,8 @@ class Base_Case extends PHPUnit_Framework_TestCase {
 		$db->beginTrans();
 		$this->assertEquals($this->meta,$db->getMod(self::$CName));
 		$this->assertEquals([],$db->getMod(self::$CName2));
-		$this->assertTrue($db->putMod(self::$CName,[]));
-		$this->assertTrue($db->putMod(self::$CName2,$this->meta));
+		$this->assertTrue($db->putMod(self::$CName,[],[],$this->meta));
+		$this->assertTrue($db->putMod(self::$CName2,$this->meta,$this->meta,[]));
 		$db->commit();
 	}
 
@@ -65,7 +65,7 @@ class Base_Case extends PHPUnit_Framework_TestCase {
     {		
 		$db=self::$db; 	
 		$db->beginTrans();		
-		$this->assertTrue($db->putMod(self::$CName,$this->meta));	
+		$this->assertTrue($db->putMod(self::$CName,$this->meta,$this->meta,[]));	
 		$this->assertFalse($db->existsMod(self::$CName2));
 		$this->assertEquals($this->id1,self::$db->newObj(self::$CName,$this->test1));		
 		$this->assertEquals($this->id2,self::$db->newObj(self::$CName,$this->test2));

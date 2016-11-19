@@ -1,12 +1,12 @@
-- check null value for Xref.//
-- default value //
 - clean up view
+- clean up controler
+- define new type : blob and php 
+- set up tracing in Base.
 
-- Align with coding standard (now Zend)// all but base protected variable ! 
-- view to delete objects //
+- Align with coding standard (now Zend)// all but msqli ! 
 - Label management 
 - hide id in views
-- Meta model changes (alter)
+- Meta model changes (alter) / done in Base - next implement in Mod
 - Implement inheritance
 - Authenthication
 - Authorisation
@@ -29,3 +29,9 @@ cmd
 phpcs --standard=Zend Model.php Type.php Logger.php
 /*install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
+
+DONE
+
+- check null value for Xref.//
+- default value //
+- view to delete objects //
