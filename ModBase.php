@@ -32,20 +32,17 @@ class ModBase
         $meta['attr_path'] = $mod->getAllPath();
         $meta['attr_bkey'] = $mod->getAllBkey();
         $meta['attr_mdtr'] = $mod->getAllMdtr();
-        if ($this->_base->existsMod($name)) {
-            return ($this->_base->putMod($name, $meta, [], []));
+        if ( ! $this->_base->existsMod($name)) {
+            return ($this->_base->newMod($name, $meta));
         }
         $values = $this->_base->getMod($name);
-/*
-        $addList['attr_lst'] = 
-        array_diff($meta['attr_lst'],$values['attr_lst']);
+        $x = array_diff($meta['attr_lst'], $values['attr_lst']);
+        $addList['attr_lst'] = $x;
         $addList['attr_typ'] = $meta['attr_typ'];
-        $delList['attr_lst'] = 
-        array_diff($values['attr_lst'],$meta['attr_lst']);
-        $delList['attr_lst'] = $values['attr_typ'];
-*/
-        return ($this->_base->newMod($name, $meta)); //to change
-
+        $x = array_diff($values['attr_lst'], $meta['attr_lst']);
+        $delList['attr_lst'] = $x;
+        $delList['attr_typ'] = $values['attr_typ'];
+        return ($this->_base->putMod($name, $meta, $addList, $delList)); 
     }
     
     public function restoreMod($mod) 

@@ -1,19 +1,19 @@
 - clean up view
-- clean up controler
+- clean up controler and unit test
 - define new type : blob and php 
 - set up tracing in Base.
-
-- Align with coding standard (now Zend)// all but msqli ! 
 - Label management 
 - hide id in views
-- Meta model changes (alter) / done in Base - next implement in Mod
+- check mod changed in save.
 - Implement inheritance
 - Authenthication
 - Authorisation
 
 - find a way to test HTML
+- install Xdebug.
 - Test Coverage
-	install Xdebug.
+- set up a git server
+- jenkin 
 
 Run time depedency
 -XMA php/mariadb/appache
@@ -35,3 +35,5 @@ DONE
 - check null value for Xref.//
 - default value //
 - view to delete objects //
+- Align with coding standard (now Zend)// all but msqli ! 
+- Meta model changes (alter) //

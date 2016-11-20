@@ -59,7 +59,7 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
 		$res = $mod->addAttr('name');
 		$this->assertTrue($res);	
 
-		$res = $mod->addAttr('surname');
+		$res = $mod->addAttr('XXX');
 		$this->assertTrue($res);	
 
 		$res = $mod->addAttr('tel',M_INT);
@@ -80,6 +80,37 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
 	/**
     * @depends testSaveMod
     */
+	public function testSaveMod1($typ) 
+	{
+		$this->setTyp($typ);
+		$db=$this->db;
+		$db->beginTrans();
+		
+		$mod = new Model($this->Cname);
+		$this->assertNotNull($mod);	
+		
+		$this->assertTrue($mod->existsAttr('XXX'));
+		
+		$res = $mod->delAttr('XXX');
+		$this->assertTrue($res);
+	
+		$res = $mod->addAttr('surname');
+		$this->assertTrue($res);	
+	
+		$res = $mod->saveMod();	
+		$this->assertTrue($res);	
+	
+		$r = $mod-> getErrLog ();
+		$this->assertEquals($r->logSize(),0);	
+		
+		$db->commit();
+	}
+	/**
+     * @dataProvider Provider1
+     *	
+	/**
+    * @depends testSaveMod1
+    */
 	public function testNewObj($typ) 
 	{
 		$this->setTyp($typ);
@@ -89,6 +120,9 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
 		
 		$ins = new Model($this->Cname);
 		$this->assertNotNull($ins);	
+		
+		$this->assertFalse($ins->existsAttr('XXX'));
+		$this->assertTrue($ins->existsAttr('surname'));
 		
 		$res = $ins->setVal('name','Lavency');
 		$this->assertTrue($res);

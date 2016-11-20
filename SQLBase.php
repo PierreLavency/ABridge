@@ -122,6 +122,9 @@ class SQLBase extends Base
         }
         $sqlDrop = $this->dropAttr($model, $delList);
         if ($sqlDrop) {
+            if ($sqlAdd) {
+                $sql = $sql . ',';
+            }
             $sql=$sql.$sqlDrop;
         }
         if ($sqlAdd or $sqlDrop) {
@@ -146,12 +149,13 @@ class SQLBase extends Base
         if (!$c) {
             return false;
         }
-        for ($i=0;$i<$c; $i++) {
-            $attr = $attrLst[$i];
+        $i=0;
+        foreach ($attrLst as $attr) {
             $sql = $sql."\n DROP $attr " ;
             if ($i+1<$c) {
                 $sql=$sql.",";
             }
+            $i++;
         }
         return $sql;
     }
@@ -171,8 +175,8 @@ class SQLBase extends Base
         if (!$c) {
             return false;
         }
-        for ($i=0;$i<$c; $i++) {
-            $attr = $attrLst[$i];
+        $i=0;
+        foreach ($attrLst as $attr) {
             $typ=$attrTyp[$attr];
             if ($typ!= M_CREF) {//bof
                 if ($i > 0) {
@@ -180,6 +184,7 @@ class SQLBase extends Base
                 }
                 $typ = convertSqlType($typ);
                 $sql = $sql."\n ADD $attr $typ NULL" ;
+                $i++;
             }
         }
         return $sql;

@@ -42,12 +42,38 @@ class ModBase_Case extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($sh->restoreMod($mod));
 		$this->assertTrue($mod->existsAttr('Name'));
 		$this->assertTrue($mod->existsAttr('Surname'));
+		
+		$this->assertTrue($mod->delAttr('Surname'));
+		$this->assertTrue($mod->addAttr('Age'));
+		$this->assertTrue($sh->saveMod($mod));
 
 		$db->commit();
 	}
 
 	/**
     * @depends testrestoreMod
+    */
+		public function testrestoreMod1() 
+	{
+		$db=self::$db; 
+		$db->beginTrans();
+
+		$this->assertNotNull($sh=new ModBase($db));		
+		$this->assertNotNull($mod=new Model(self::$CName));
+		$this->assertTrue($sh->restoreMod($mod));
+		$this->assertTrue($mod->existsAttr('Name'));
+		$this->assertFalse($mod->existsAttr('Surname'));
+		$this->assertTrue($mod->existsAttr('Age'));
+		
+		$this->assertTrue($mod->addAttr('Surname'));
+		$this->assertTrue($mod->delAttr('Age'));
+		$this->assertTrue($sh->saveMod($mod));
+
+		$db->commit();
+	}
+	
+	/**
+    * @depends testrestoreMod1
     */
 
  	public function testSaveObj()
@@ -57,6 +83,7 @@ class ModBase_Case extends PHPUnit_Framework_TestCase {
 		$this->assertNotNull($sh=new ModBase($db));		
 		$this->assertNotNull($mod=new Model(self::$CName));
 		$this->assertTrue($sh->restoreMod($mod));
+		$this->assertFalse($mod->existsAttr('Age'));
 		$this->assertTrue($mod->setVal('Name','Lavency'));
 		$this->assertTrue($mod->setVal('Surname','Pierre'));
 		$this->assertEquals(1,$sh->saveObj($mod));
