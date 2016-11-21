@@ -120,7 +120,7 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
 		
 		$ins = new Model($this->Cname);
 		$this->assertNotNull($ins);	
-		
+
 		$this->assertFalse($ins->existsAttr('XXX'));
 		$this->assertTrue($ins->existsAttr('surname'));
 		
@@ -132,6 +132,7 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
 		
 		$res = $ins->setVal('tel',123);
 		$this->assertTrue($res);
+
 
 		$id = $ins->save();
 		$this->assertEquals($id,1);	
@@ -246,8 +247,42 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
 		$db->commit();
 	}
 
+	/**
+     * @dataProvider Provider1
+     *	
+	/**
+    * @depends testDeleteMod
+    */	
+	public function testError($typ) 
+	{
+		$this->setTyp($typ);
+		$db=$this->db;
+		$db->beginTrans();
+		
+		$mod = new Model($this->Cname);
+		$this->assertNotNull($mod);	
+		
+		$res = $mod->addAttr('name');
+		$this->assertTrue($res);	
+		
+		$res = $mod->saveMod();	
+		$this->assertTrue($res);
+		
+		$res = $mod->setVal('name','Lavency');
+		$this->assertTrue($res);
 
+		$res = $mod->addAttr('XXX');
+		$this->assertTrue($res);	
 
+		$id = $mod->save();
+		$this->assertFalse($id);
+	
+		$r = $mod-> getErrLog ();
+		$this->assertEquals($r->getLine(0),E_ERC024);	
+		
+		$db->commit();
+
+	}
 	
 }
 

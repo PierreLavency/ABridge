@@ -262,7 +262,7 @@ class View
             if ($this->_model->isMdtr($attr) or $this->_model->isOptl($attr)) {
                 if (isset($_POST[$attr])) {
                     $val= $_POST[$attr];
-                    $typ=$$this->_model->getTyp($attr);
+                    $typ= $this->_model->getTyp($attr);
                     $valC = convertString($val, $typ);
                     $this->_model->setVal($attr, $valC);
                 }

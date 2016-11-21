@@ -1,10 +1,17 @@
+- beef up test apps with relationships tables
+
 - clean up view
-- clean up controler and unit test
-- define new type : blob and php 
-- set up tracing in Base.
 - Label management 
 - hide id in views
-- check mod changed in save.
+
+- clean up controler and add unit test
+
+- define new type : blob and php 
+
+- set up tracing in Base.
+-close connection 
+
+
 - Implement inheritance
 - Authenthication
 - Authorisation
@@ -31,7 +38,7 @@ phpcs --standard=Zend Model.php Type.php Logger.php
 pear install phpdoc/PhpDocumentor-2.8.1
 
 DONE
-
+- check mod changed in save. // 2 hours 
 - check null value for Xref.//
 - default value //
 - view to delete objects //

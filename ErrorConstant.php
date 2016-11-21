@@ -23,4 +23,4 @@ define('E_ERC020', "ERC020");  // Invalid Path - No Model
 define('E_ERC021', "ERC021");  // mysqli errors
 define('E_ERC022', "ERC022");  // Model does not exists
 define('E_ERC023', "ERC023");  // Invalid Path
-
+define('E_ERC024', "ERC024");  // can'save model has changed

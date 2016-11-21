@@ -123,6 +123,7 @@ $res=$code4->save();
 
 $res=$code4->setMdtr('ValueOf',true); 
 	$line = "$res=code1->setMdtr('Name',true);"; $log->logLine($line);
+$code4->saveMod();
 	
 $res=$code4->setVal('Name','test');	
 	$line = "$res=code4->setVal('Name','test');"; $log->logLine($line);

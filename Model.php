@@ -38,6 +38,11 @@ class Model
      */
     protected $_name ;
     /**
+     * @var indicates if model has changed or not. 
+     */
+    protected $_modChgd;
+    /**
+    /**
      * @var array The list of predefined attributes. 
      */
     protected $_attrPredef;
@@ -104,6 +109,7 @@ class Model
         if ($x) {
             $x->restoreMod($this);
         }
+        $this->_modChgd=false;
     }  
     /**
      * Constructor of an existing object (id must be different from 0).
@@ -130,6 +136,7 @@ class Model
                 throw new exception(E_ERC007.':'.$name.':'.$id);
             };
         }
+        $this->_modChgd=false;
     }
      /**
      * Initialise the attributes and the errologger
@@ -161,6 +168,7 @@ class Model
      */ 
     protected function initattr() 
     {
+        $this->_modChgd=false;
         $this->_attrPredef = array('id','vnum','ctstp','utstp');
         $this->_attrLst = array('id','vnum','ctstp','utstp');
         $this->_attrTyp = array(
@@ -443,6 +451,7 @@ class Model
             return false;
         }
         $this->_attrTyp[$attr]=$typ;
+        $this->_modChgd=true;
         return true;
     }
     /**
@@ -460,6 +469,7 @@ class Model
             return false;
         };
         $this->_attrDflt[$attr]=$val;
+        $this->_modChgd=true;
         return true;
     }
     /**
@@ -481,6 +491,7 @@ class Model
             return false;
         };
         $this->_attrPath[$attr]=$path;
+        $this->_modChgd=true;
         return true;
     }
     /**
@@ -511,6 +522,7 @@ class Model
                 unset($this->_attrBkey[$attr]);
             }         
         }
+        $this->_modChgd=true;
         return true;
     }
     /**
@@ -537,6 +549,7 @@ class Model
                 unset($this->_attrMdtr[$attr]);
             }         
         }
+        $this->_modChgd=true;
         return true;
     }
     /**
@@ -572,9 +585,10 @@ class Model
             $rp=$this->setPath($attr, $path); 
         }
         if ($rt and $rp) {
+            $this->_modChgd=true;
             return true;
         }
-        $this->delAttr($attr);
+        $this->deleAttr($attr);
         return false;
     }
     /**
@@ -584,7 +598,16 @@ class Model
      *
      * @return boolean
      */      
-    public function delAttr($attr) 
+    public function delAttr($attr)
+    {
+        $res=$this->deleAttr($attr);
+        if ($res) {
+            $this->_modChgd=true;           
+        }
+        return $res;
+    }
+    
+    protected function deleAttr($attr)  
     {
         $x= $this->existsAttr($attr);
         if (!$x) {
@@ -615,7 +638,7 @@ class Model
         $key = array_search($attr, $this->_attrMdtr);
         if ($key!==false) {
             unset($this->_attrMdtr[$key]);
-        }    
+        } 
         return true;
     }
      /**
@@ -872,6 +895,10 @@ class Model
             $this->_errLog->logLine(E_ERC006);
             return false;
         }
+        if ($this->_modChgd) {
+            $this->_errLog->logLine(E_ERC024);
+            return false;
+        }
         foreach ($this->getAllMdtr() as $attr) {
             $res=$this->checkMdtr($attr);
             if (!$res) {
@@ -931,6 +958,9 @@ class Model
             return false;
         }
         $res=$this->_stateHdlr->saveMod($this);
+        if ($res) {
+            $this->_modChgd=false;
+        }
         return $res;
     }
 }
