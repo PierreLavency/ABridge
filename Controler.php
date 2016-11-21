@@ -9,6 +9,8 @@ require_once("View.php");
 $fb->beginTrans();
 $db->beginTrans();
 
+$db->setLogLevl(1);
+
 if (isset($_SERVER['PATH_INFO'])) {
     $url=$_SERVER['PATH_INFO'];
     $c = pathObj($url);
@@ -51,6 +53,11 @@ if (($method =='POST')) {
 if ($action == 'Del' and $method == 'GET') {
     $c=new Model($default, $defaultID);
     $v= new View($c);
+}
+
+$log = $db->getLog();
+if ($log) {
+    $log->show();
 }
 
 $v->show($method, $c->getId(), true);   

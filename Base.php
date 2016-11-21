@@ -1,15 +1,23 @@
 
 <?php
 
+require_once 'Logger.php';
+
 abstract class Base
 {
     protected $_filePath ='C:\Users\pierr\ABridge\Datastore\\';
     protected $_objects=[];
+    protected $_fileN;
     protected $_fileName;
-    
+    protected $_logLevl;
+    protected $_logger;
+        
     function  __construct($id) 
     {
-        $this->_fileName = $this->_filePath . $id .'.txt';
+        $this->_fileN = $this->_filePath . $id;
+        $this->_fileName = $this->_fileN.'.txt';
+        $this->_logLevl=0;
+        $this->_logger=null;
         $this->load();
     }
 
@@ -103,6 +111,37 @@ abstract class Base
         unset($this->_objects[$model]);
         return true;    
     }
+    
+    function setLogLevl ($levl) 
+    {
+        if (($levl > 0) and is_null($this->_logger)) {
+            $logname = $this->_fileN.'_ErrLog';
+            $this->_logger = new Logger($logname);
+            
+        }
+        $this->_logLevl=$levl;
+        return true;
+    }
+    
+    function logLine($levl,$line) 
+    {
+        if ($this->_logLevl <= 0) {
+            return true;
+        }
+        if ($levl <= $this->_logLevl) {
+            $this->_logger->logLine($line);
+        }
+        return true;
+    }
+    
+    function getLog() 
+    {
+        if (is_null($this->_logger)) {
+            return false;
+        }
+        return $this->_logger;
+    }
+    
     
     abstract protected function newObj($model, $values) ;
 

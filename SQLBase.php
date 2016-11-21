@@ -101,6 +101,7 @@ class SQLBase extends Base
             }
         }
         $sql=$s. " ) \n";
+        $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
             echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
             return 0;
@@ -128,6 +129,7 @@ class SQLBase extends Base
             $sql=$sql.$sqlDrop;
         }
         if ($sqlAdd or $sqlDrop) {
+            $this->logLine(1, $sql);
             if (! $this->_mysqli->query($sql)) {
                 echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
                 return 0;
@@ -190,11 +192,11 @@ class SQLBase extends Base
         return $sql;
     }
     
-    
-    
+
     public function delMod($model) 
     {
         $sql = "\n DROP TABLE $model \n";
+        $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
             /*echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";*/
         }; // if does not exist ok !!
@@ -209,6 +211,7 @@ class SQLBase extends Base
             return 0;
         };
         $sql = "SELECT * FROM $model where id= $id";
+        $this->logLine(1, $sql);
         $result = $this->_mysqli->query($sql);
         if ($result->num_rows ==1) {
             // output data of each row
@@ -246,6 +249,7 @@ class SQLBase extends Base
             }
         }
         $sql = "\n UPDATE $model SET $lv WHERE id= $id \n" ;
+        $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
             echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
             return 0;
@@ -262,6 +266,7 @@ class SQLBase extends Base
             return 0;
         };
         $sql = "\n DELETE FROM $model WHERE id=$id \n";
+        $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
             echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
             return 0;
@@ -298,6 +303,7 @@ class SQLBase extends Base
         $la = $la. ')';
         $lv = $lv. ')';
         $sql = "\n INSERT INTO $model \n $la \n VALUES \n $lv \n";
+        $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
             echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
             return 0;
@@ -312,6 +318,7 @@ class SQLBase extends Base
         }; 
         $res = [];
         $sql = "SELECT id FROM $model where $attr= '$val'";
+        $this->logLine(1, $sql);
         $result = $this->_mysqli->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
