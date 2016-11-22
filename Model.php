@@ -743,14 +743,14 @@ class Model
             return false;
         }
         // ref checking
-        if ($type == M_REF) {
+        if ($type == M_REF and $check) {
             $res = $this-> checkRef($attr, $val);
             if (! $res) {
                 return false;
             }
         }
         // code values
-        if ($type == M_CODE) {
+        if ($type == M_CODE and $check) {
             $res = $this-> checkCode($attr, $val);
             if (! $res) {
                 $this->_errLog->logLine(E_ERC016.':'.$attr.':'.$val);
@@ -758,7 +758,7 @@ class Model
             }
         }
         // BKey
-        if ($this->isBkey($attr)) {
+        if ($this->isBkey($attr) and $check) {
             if (! $this->checkBkey($attr, $val)) {
                 $this->_errLog->logLine(E_ERC018.':'.$attr.':'.$val);
                 return false;

@@ -92,11 +92,11 @@ $line = "$res = genFormElem(r,$show)"; $log->logLine ($line);
 if ($show) {echo "<br>" ; };
 
 
-$res = $v->show('GET',true,$show);
+$res = $v->show(V_G_VIEW,$show);
 $line = "$res = v->show('GET',true,$show);"; $log->logLine ($line);
 
 if ($show) {echo "<br>" ; };
-$res = $v->show('POST',true,$show);
+$res = $v->show(V_G_CREA,$show);
 $line = "$res = v->show('POST',true,$show);"; $log->logLine ($line);
 
  // not logged since date!!

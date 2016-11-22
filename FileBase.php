@@ -43,6 +43,7 @@ class FileBase extends Base
         $this->_objects[$model][$id] = $values;
         $meta["lastId"]=$id+1;
         $this->_objects[$model][0]=$meta;
+        $this->logLine(1, "newObj $model $id \n");
         return $id;
     }
 
@@ -57,6 +58,7 @@ class FileBase extends Base
         if (! array_key_exists($id, $this->_objects[$model])) {
             return 0;
         }; 
+        $this->logLine(1, "getObj $model $id \n");
         return $this->_objects[$model][$id] ; 
     }
 
@@ -71,7 +73,8 @@ class FileBase extends Base
         if (! array_key_exists($id, $this->_objects[$model])) {
             return 0;
         }; 
-        $this->_objects[$model][$id] = $values; 
+        $this->_objects[$model][$id] = $values;
+        $this->logLine(1, "putObj $model $id \n");
         return $id; // check -> true
     }
 
@@ -87,6 +90,7 @@ class FileBase extends Base
             return 0;
         }; 
         unset($this->_objects[$model][$id]); 
+        $this->logLine(1, "delObj $model $id \n");
         return true;
     }
 
@@ -106,6 +110,7 @@ class FileBase extends Base
                 }
             }; 
         };
+        $this->logLine(1, "findObj $model $attr $val  \n");
         return $result;
     }   
 

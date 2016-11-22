@@ -7,8 +7,8 @@ require_once("Handler.php");
 	$Code 		='Code';
 	$Student 	='Student';
 	$Person 	='Person';
-	$Default 	=$Code; 
-	$Default_id =1;
+	$default 	=$Code; 
+	$defaultId =1;
 	
 	$DBName = 'genealogy'; // should be changed to genealogy / genealogy_test when ok/ko !!
 	

@@ -11,7 +11,7 @@ define('V_LIST', "v_list");
 define('V_ARG', "v_arg");
 define('V_OBJ', "v_Obj");
 define('V_ATTR', "v_attr");
-define('V_BTN', "v_btn");
+define('V_NAV', "v_nav");
 define('V_FORM', "v_form");
 define('V_PLAIN', "v_plain"); // not sure needed 
 define('V_ERROR', "v_error"); 
@@ -29,15 +29,17 @@ define('V_P_TYPE', "v_p_type");
 define('V_P_REF', "v_p_ref");
 
 define('V_G_VIEW', "v_g_view");
-define('V_G_CREA', "v_g_crea");
-    
+
+define('V_G_CREA', "Create");
+define('V_G_UPDT', "Update"); 
+define('V_G_READ', "Read"); 
+define('V_G_DELT', "Delete");
+
 class View
 {
     // property
 
     protected $_model;
-    protected $_method='GET';
-    protected $_exists=true;
     protected $_attrList;
     protected $_attrLbl = [];
     protected $_viewName = []; 
@@ -93,26 +95,26 @@ class View
         }       
     }
     
-    public function evale($spec,$gen) 
+    public function evale($spec,$viewState) 
     {
         $attr = $spec[V_ATTR];
         $prop = $spec[V_PROP];
         $res = [];
         $input=false;
-        if ($gen==V_G_CREA and $prop==V_P_VAL) {
+        if (($viewState == V_G_CREA or $viewState == V_G_UPDT) 
+            and $prop==V_P_VAL) {
             if ($this->_model->isMdtr($attr) or $this->_model->isOptl($attr)) {
                 $res[H_NAME]=$attr;
                 $default=null;
-                if ($this->_method=='GET') {
-                    $default = $this->_model->getVal($attr);
-                    if ((! $this->_exists) and is_null($default)) {
+                if (isset($_POST[$attr])) {
+                    $default= $_POST[$attr];
+                } else {
+                    if ($viewState == V_G_CREA) {
                         $default=$this->_model->getDflt($attr);
-                    }
-                }
-                if ($this->_method=='POST') {
-                    if (isset($_POST[$attr])) {
-                        $default= $_POST[$attr];
-                    }
+                    }               
+                    if ($viewState == V_G_UPDT) {
+                        $default=$this->_model->getVal($attr);
+                    }       
                 }
                 if ($default) {
                     $res[H_DEFAULT]=$default;
@@ -121,7 +123,7 @@ class View
                 if ($this->_model->getTyp($attr)== M_CODE) {
                     $vals=$this->_model->getValues($attr);
                     $res[H_VALUES]=$vals;
-                    if (count($vals)>2) {
+                    if (count($vals)>2) {//bof
                         $res[H_TYPE]=H_T_SELECT;
                     } else {
                         $res[H_TYPE]=H_T_RADIO;
@@ -151,29 +153,29 @@ class View
         return $res;
     }
     
-    public function evalo($dspec,$gen) 
+    public function evalo($dspec,$viewState) 
     {
         $name = $this->_model->getModName();
         $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$name];
         return $res;
     }
     
-    public function subst($spec,$gen,$form)
+    public function subst($spec,$viewState)
     {
         $type = $spec[V_TYPE];
         $result=[];
         switch ($type) {
             case V_ELEM:
-                    $result= $this->evale($spec, $gen);
+                    $result= $this->evale($spec, $viewState);
                 break;
             case V_OBJ:
-                    $result= $this->evalo($spec, $gen);
+                    $result= $this->evalo($spec, $viewState);
                 break;
             case V_LIST:
                     $result[H_TYPE]=H_T_LIST;
                     $arg=[];
                     foreach ($spec[V_ARG] as $elem) {
-                        $r=$this->subst($elem, $gen, $form);
+                        $r=$this->subst($elem, $viewState);
                         if ($r) {
                             $arg[]=$r;
                         }
@@ -187,41 +189,35 @@ class View
                         $this->_model->getId()
                     );
                     $result[H_ACTION]="POST";
-                    if ($gen == V_G_VIEW) {
-                        $result[H_HIDDEN]="Del";
-                    }
-                    if ($gen == V_G_CREA and $this->_exists) {
-                        $result[H_HIDDEN]="Mod";
-                    }
-                    if ($gen == V_G_CREA and  ! $this->_exists) {
-                        $result[H_HIDDEN]="Crt";
-                    }
+                    $result[H_HIDDEN]=$viewState;
                     $result[H_URL]=$path;                   
                     $arg=[];
                     foreach ($spec[V_ARG] as $elem) {
-                        $r=$this->subst($elem, $gen, $form);
+                        $r=$this->subst($elem, $viewState);
                         if ($r) {
                             $arg[]=$r;
                         }
                     }
                     $result[H_ARG]=$arg;
                 break;
-            case V_BTN:
-                    if ($form) {
+            case V_NAV:
+                    if ($viewState == V_G_CREA 
+                    or $viewState == V_G_DELT 
+                    or $viewState == V_G_UPDT) {
                         $result[H_TYPE]=H_T_SUBMIT;
-                    } else {
+                    }       
+                    if ($viewState == V_G_READ) {
                         $result[H_TYPE]=H_T_LIST;
                         $res[H_TYPE]=H_T_LINK;
-                        $res[H_LABEL]='Mod';
                         $p=refPath(
                             $this->_model->getModName(), 
                             $this->_model->getId()
                         );
-                        $res[H_NAME]="'".$p.'?View=Mod'."'";
+                        $res[H_LABEL]=V_G_UPDT;
+                        $res[H_NAME]="'".$p.'?View='.V_G_UPDT."'";
                         $arg[]=$res;
-                        $res[H_TYPE]=H_T_LINK;
-                        $res[H_LABEL]='Del';
-                        $res[H_NAME]="'".$p.'?View=Del'."'";
+                        $res[H_LABEL]=V_G_DELT;
+                        $res[H_NAME]="'".$p.'?View='.V_G_DELT."'";
                         $arg[]=$res;
                         $result[H_ARG]=$arg;
                     }
@@ -234,26 +230,9 @@ class View
         return $result;
     }
 
-    public function show($method,$exists,$show = true) 
+    public function show($viewState,$show = true) 
     {
-        $this->_method=$method;
-        $this->_exists=$exists;
-        if ($method =='POST') {
-            return ($this->showDefaultG($show, V_G_CREA, true));
-        }
-        if ($method =='GET' and (! $exists)) {
-            return ($this->showDefaultG($show, V_G_CREA, true));
-        }
-        if ($method =='GET' and (isset($_GET["View"]))) {
-            $view = $_GET["View"];
-            if ($view =='Mod' ) {
-                return ($this->showDefaultG($show, V_G_CREA, true));
-            }
-            if ($view =='Del' ) {
-                return ($this->showDefaultG($show, V_G_VIEW, true));
-            }
-        }
-        return ($this->showDefaultG($show, V_G_VIEW, false));
+        return ($this->showDefault($viewState, $show));
     }
     
     public function postVal()
@@ -270,7 +249,7 @@ class View
         }
     }
     
-    public function showDefaultG ($show,$gen,$form) 
+    public function showDefault($viewState, $show) 
     {
         $i=1;
         $name = $this->_model->getModName();
@@ -297,20 +276,22 @@ class View
         $speci=[V_TYPE=>V_LIST,V_ARG=>[
                                         [V_TYPE=>V_OBJ],
                                         [V_TYPE=>V_LIST,V_ARG=>$spec],
-                                        [V_TYPE=>V_BTN]]];
+                                        [V_TYPE=>V_NAV]]];
         if ($this->_model->isErr()) {
             $e = $this->viewErr();
             $speci=[V_TYPE=>V_LIST,V_ARG=>[
                                         [V_TYPE=>V_OBJ],
                                         [V_TYPE=>V_LIST,V_ARG=>$spec],
-                                        [V_TYPE=>V_BTN],
+                                        [V_TYPE=>V_NAV],
                                         $e]];
         }
         $specf = $speci;
-        if ($form) {
-            $specf = [V_TYPE=>V_FORM,V_ARG=>[$speci]];      // html specific !
+        if ($viewState == V_G_CREA 
+        or $viewState == V_G_DELT 
+        or $viewState == V_G_UPDT) {
+            $specf = [V_TYPE=>V_FORM,V_ARG=>[$speci]];
         }
-        $r=$this->subst($specf, $gen, $form);
+        $r=$this->subst($specf, $viewState);
         $r=genFormElem($r, $show);
         return $r;
     }

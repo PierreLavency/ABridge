@@ -9,32 +9,44 @@ require_once("View.php");
 $fb->beginTrans();
 $db->beginTrans();
 
-$db->setLogLevl(1);
+$level = 1;
+$db->setLogLevl($level);
+$fb->setLogLevl($level);
 
 if (isset($_SERVER['PATH_INFO'])) {
     $url=$_SERVER['PATH_INFO'];
     $c = pathObj($url);
     if (!$c) {
-        $c=new Model($default, $defaultID);
+        $c=new Model($default, $defaultId);
     }
 } else {
-    $c=new Model($default, $defaultID);
+    $c=new Model($default, $defaultId);
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 $v= new View($c);
-$action = 'Get';
+$action = V_G_READ;
+$actionExec = false;
 
-if (($method =='POST')) {
+if ($method == 'GET') {
+    if (isset($_GET['View'])) {
+        $action = $_GET['View'];
+    }
+    if (! $c->getid()) {
+        $action = V_G_CREA;
+    }
+}
+if ($method =='POST') {
     $action = $_POST['action'];
-    if ($action == 'Mod' or $action == 'Crt') {
+    if ($action == V_G_UPDT or $action == V_G_CREA) {
         $v->postVal();
     }
     if (!$c->isErr()) {
-        if ($action == 'Del') {
+        if ($action == V_G_DELT) {
             $c->delet();
-        } else {
+        }
+        if ($action == V_G_UPDT or $action == V_G_CREA) {
             $c->save();         
         }
     }
@@ -42,7 +54,7 @@ if (($method =='POST')) {
         $rf=$fb->commit();  
         $rd=$db->commit();
         if ($rf and $rd) {
-            $method='GET';
+            $actionExec=true;
         }
     } else {
         $rf=$fb->rollback();    
@@ -50,14 +62,23 @@ if (($method =='POST')) {
     }
 }
 
-if ($action == 'Del' and $method == 'GET') {
-    $c=new Model($default, $defaultID);
-    $v= new View($c);
+if ($action == V_G_DELT and $actionExec) {
+    $c=new Model($default, $defaultId);
+    $v=new View($c);
+}
+
+if ($actionExec) {
+    $action= V_G_READ;
 }
 
 $log = $db->getLog();
 if ($log) {
     $log->show();
 }
+$log = $fb->getLog();
+if ($log) {
+    $log->show();
+}
 
-$v->show($method, $c->getId(), true);   
+
+$v->show($action, true);   
