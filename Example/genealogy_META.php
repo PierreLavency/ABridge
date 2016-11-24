@@ -49,7 +49,7 @@ require_once("genealogy_SETUP.php");
 	
 	$r = $code-> getErrLog ();
 	
-	// Sudent 
+	// Student 
 		
 	$student = new Model($Student);
 	$res= $student->deleteMod();

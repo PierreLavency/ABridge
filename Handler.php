@@ -8,26 +8,25 @@ require_once("SQLBase.php");
 
 function initStateHandler($modName,$base,$instance) 
 {
-    $y = Handler::getInstance();
-    return ($y->setStateHandler($modName, $base, $instance));
+    $y = Handler::get()->setStateHandler($modName, $base, $instance);
+    return ($y);
 }
 
 function getStateHandler($modName) 
 {
-    $y = Handler::getInstance();
-    return ($y->getStateHandler($modName));
+    $y = Handler::get()->getStateHandler($modName);
+    return ($y);
 }
 
 function getBaseHandler($base,$instance) 
 {
-    $y = Handler::getInstance();
-    return ($y->getBase($base, $instance));  
+    $y = Handler::get()->getBase($base, $instance);
+    return ($y);  
 }
 
 function resetHandlers() 
 {
-    $y = Handler::getInstance();
-    $y-> resetHandlers();
+    $y = Handler::get()-> resetHandlers();
     return true;
 }
     
@@ -59,7 +58,7 @@ class Handler
 * @param void
 * @return Singleton
 */
-    public static function getInstance() 
+    public static function get() 
     {
         if (is_null(self::$_instance)) {
             self::$_instance = new Handler();  

@@ -1,6 +1,5 @@
 <?php
 
-
 require_once("Model.php"); 
 require_once("ViewConstant.php");
 require_once("GenHTML.php");
@@ -33,8 +32,6 @@ define('V_G_UPDT', "Update");
 define('V_G_READ', "Read"); 
 define('V_G_DELT', "Delete");
 define('V_G_LABL', "Label");
-
-
 
 class View
 {
@@ -343,6 +340,7 @@ class View
         $labels = 
         [ 'Person'  => ['SurName','Name'],
           'Student' => ['SurName','Name'],
+          'Cours'   => ['Name'],
           'CodeValue'=>['Name']];
 
         if ($viewState == V_G_LABL) {
@@ -352,7 +350,7 @@ class View
             }
         }
         
-        $r = $this->showDefault($viewState);
+        $r = $this->buildView($viewState);
         $r=genFormElem($r, $show);
         return $r;
     }
@@ -371,7 +369,7 @@ class View
         }
     }
     
-    public function showDefault($viewState) 
+    public function buildView($viewState) 
     {
         $i=0;
         $name = $this->_model->getModName();

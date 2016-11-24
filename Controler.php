@@ -9,7 +9,7 @@ require_once("View.php");
 $fb->beginTrans();
 $db->beginTrans();
 
-$level = 0;
+$level = 1;
 $db->setLogLevl($level);
 $fb->setLogLevl($level);
 

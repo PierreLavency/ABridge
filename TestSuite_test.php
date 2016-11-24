@@ -28,7 +28,7 @@ require_once("Unittest\Model_test_5_2.php");//done
 $application= 'genealogy';
 
 //require_once("Example\\".$application.'_META.php');
-
+//require_once("Example\\".$application.'_META_1.php');
 //require_once("Example\\" .$application.'_LOAD.php');
 
 require_once("Example\\" .$application.'_SETUP.php');
