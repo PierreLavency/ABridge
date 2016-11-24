@@ -1,13 +1,13 @@
-- beef up test apps with relationships tables
-
-- clean up view
-- Label management 
-- hide id in views
+- clean up view // state fixed 4hours / sort out persistence
 
 - clean up controler and add unit test
 
-- non peristent attributes (CREF) should be dealt wiith in ModBase not in Base.
+- beef up test apps with relationships tables
+
+- non peristent attributes (CREF) should be dealt with in ModBase not in Base.
+- check error handling in SQL.
 - define new type : blob and php 
+- define selection attribute type.
 
 - close connection 
 
@@ -16,7 +16,6 @@
 - Authorisation
 
 - find a way to test HTML
-- install Xdebug.
 - Test Coverage
 - set up a git server
 - jenkin 
@@ -37,6 +36,9 @@ phpcs --standard=Zend Model.php Type.php Logger.php
 pear install phpdoc/PhpDocumentor-2.8.1
 
 DONE
+- Label management //  8 hours still need to fix peristences. 
+- hide id in view  // done togther not for selecting objects
+- install Xdebug. // 1hour 
 - set up tracing in Base.// 2 hours
 - check mod changed in save. // 2 hours 
 - check null value for Xref.//

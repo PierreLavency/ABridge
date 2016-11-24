@@ -337,6 +337,10 @@ class Model
             return false;
         }
         $patha=explode('/', $path);
+        if ($this->getTyp($attr)== M_CODE) {
+            $m = new Model($patha[1]);
+            return ($m->getRefMod($patha[3]));
+        }
         return ($patha[1]);
     }
     /**

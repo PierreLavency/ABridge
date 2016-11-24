@@ -7,7 +7,7 @@ class unitTest
     public $logName;
     public $runLogger;
     public $testLogger;
-    public $verbatim=1;
+    public $verbatim=0;
     public $init;
 
     function  __construct($name,$init=0) 
@@ -47,6 +47,7 @@ class unitTest
     
     function saveTest() 
     {
+        $err = false;
         $result = "Test : " . $this->logName . " on : ";
         $result=$result . date("d-m-Y H:i:s") . " result :";
         if ($this->init) {
@@ -55,6 +56,7 @@ class unitTest
                 $result = $result . " sucessfully initialized";
             } else {
                 $result = $result . " initialisation failed ";
+                $err = true;
             }
         } else {
             $this->testLogger->load();
@@ -67,11 +69,16 @@ class unitTest
                         $result= $result . "ko diff in number of line";
                     }
                     $this->runLogger->save();
+                    $err = true;
             } else {
                 $result = $result . "ok";
             };
         }
-        
+        if ($this->verbatim == 0) {
+            if ($err) {
+                echo $result. "<br><br>";
+            }
+        }           
         if ($this->verbatim > 0) {
             echo $result. "<br><br>";
         }

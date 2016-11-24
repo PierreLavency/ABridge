@@ -1,9 +1,26 @@
 <?php
 
-define('NL_O', "\n");
-define('TAB_O', "\t");
-
 require_once("ViewConstant.php");
+
+function getTab($level) 
+{
+    $tab = "";
+    if ($level >= 0) {
+        for ($i=0;$i<$level;$i++) {
+            $tab=$tab."\t";
+        }
+    }
+    return $tab;
+}
+
+function getNl($level) 
+{
+    $nl = "";
+    if ($level >= 0) {
+        $nl = "\n";
+    }
+    return $nl;
+}
 
 function genForm($action,$url,$hidden,$dspec,$show=true)
 {
@@ -17,15 +34,14 @@ function genFormL($action,$url,$hidden,$dspecL,$show,$level)
     $formS = $formS.$hidden. "' >" ;
     $formES = '</form>  ';
     $endS    = ' > '     ;
-    $tab = "";
-    for ($i=0;$i<$level;$i++) {
-        $tab=$tab.TAB_O;
-    }
-    $result=$tab.$formS.NL_O;
+    $tab = getTab($level);
+    $nl  = getNl($level);
+
+    $result=$tab.$formS.$nl;
     foreach ($dspecL as $dspec) {
         $result=$result. genFormElemL($dspec, false, $level+1);
     }
-    $result=$result.$tab.$formES.NL_O;
+    $result=$result.$tab.$formES.$nl;
     if ($show) {
         echo $result;
     };
@@ -43,18 +59,16 @@ function genListL($dspecL,$show,$level)
     $listES = '</ul>';
     $elementS   = '<li>'  ;
     $elementES   = '</li>'  ;
-    $tab = "";
-    for ($i=0;$i<$level;$i++) {
-        $tab=$tab.TAB_O;
-    }
-    $tabn=$tab.TAB_O;
+    $tab = getTab($level);
+    $nl  = getNl($level);
+    $tabn=getTab($level+1);;
     
     $result = $tab.$listS ; 
     foreach ($dspecL as $dspec) {
-        $result=$result . NL_O . $tabn. $elementS. NL_O;
+        $result=$result . $nl . $tabn. $elementS. $nl;
         $result=$result .genFormElemL($dspec, false, $level+2).$tabn.$elementES;
     }
-    $result = $result . NL_O. $tab. $listES .NL_O;
+    $result = $result.$nl.$tab.$listES.$nl;
     if ($show) {
         echo $result;
     };
@@ -69,7 +83,7 @@ function genFormElem($dspec,$show = true)
 function genFormElemL($dspec,$show,$level)   
 {
 
-    $buttonS   = '<input type="submit" value="Submit">';
+    $buttonS   = '<input type="submit" value = ';
     $textareaS = '<textarea ';
     $textareaES = '</textarea>';
     $selectS   = '<select '  ;
@@ -95,10 +109,9 @@ function genFormElemL($dspec,$show,$level)
     $col = 30;
     $row = 10;
     $label="";
-    $tab = "";
-    for ($i=0;$i<$level;$i++) {
-        $tab=$tab.TAB_O;
-    }
+    $tab = getTab($level);
+    $nl  = getNl($level);
+
     
     foreach ($dspec as $t => $v) {
         switch ($t) {
@@ -150,10 +163,22 @@ function genFormElemL($dspec,$show,$level)
     };
     switch ($type) {
         case H_T_LINK:
-            $result = $tab.$linkS.$name.$endS.$label.$linkES.NL_O;
+            $result = $tab.$linkS.$name.$endS.$label.$linkES.$nl;
             break;
         case H_T_LIST:
             $result = genListL($arg, false, $level);
+            break;
+        case H_T_CONCAT:
+            $result = $tab;
+            $c = count($arg);
+            $i = 0;
+            foreach ($arg as $elem) {
+                $result=$result.genFormElemL($elem, false, -1);
+                $i++;
+                if ($i < $c ) {
+                    $result = $result . $separator;
+                }
+            }
             break;
         case H_T_FORM:
             $result = genFormL($action, $url, $hidden, $arg, false, $level);
@@ -165,10 +190,10 @@ function genFormElemL($dspec,$show,$level)
             if ($default) {
                 $result = $result.$default;
             };
-            $result = $tab.$result . $textareaES . NL_O;
+            $result = $tab.$result . $textareaES . $nl;
             break;
         case H_T_SUBMIT:
-            $result = $tab.$buttonS.NL_O; 
+            $result = $tab.$buttonS.$label.$endS.$nl; 
             break;
         case H_T_TEXT:
             $result = $inputS; 
@@ -180,37 +205,43 @@ function genFormElemL($dspec,$show,$level)
             };
             $result = $result . $valueS;
             $result = $result . $endS;
-            $result = $tab.$result . NL_O;
+            $result = $tab.$result . $nl;
             break;
         case H_T_RADIO:
             $result = "";
-            foreach ($values as $value) {
+            foreach ($values as $valueA) {
+                $value=array_shift($valueA);
+                $valuelbl = array_shift($valueA);
                 $valueS = ' value = "' . $value .  '" ';
                 $checkedS = "";
                 if ($value == $default) {
                     $checkedS = " checked ";
                 };
                 $result = $result.$tab . $inputS . $typeS . $nameS;
-                $result = $result. $valueS . $checkedS . $endS . $separator;
-                $result = $result. NL_O;
+                $result = $result. $valueS . $checkedS . $endS;
+                $result = $result . $valuelbl. $separator;
+                $result = $result. $nl;
             };
             break;    
         case H_T_SELECT:
             $result = $selectS;
-            $result = $tab.$result. $nameS . $endS . NL_O ;
-            foreach ($values as $value) {
+            $result = $tab.$result. $nameS . $endS . $nl ;
+            foreach ($values as $valueA) {
+                $value=array_shift($valueA);
+                $valuelbl = array_shift($valueA);
                 $valueS = ' value = "' . $value .  '" ';
                 $selectedS = "";
                 if ($value == $default) {
                     $selectedS = " selected ";
                 };
                 $result = $result.$tab . TAB_O. $optionS . $valueS;
-                $result = $result . $selectedS . $endS .$value .$optionES. NL_O;
+                $result = $result . $selectedS . $endS .$valuelbl;
+                $result = $result.$optionES. $nl;
             };
-            $result = $result . $tab.$selectES. NL_O;
+            $result = $result . $tab.$selectES. $nl;
             break;
         case H_T_PLAIN:
-            $result = $tab.$default.NL_O;
+            $result = $tab.$default.$nl;
             break;
         case H_T_NULL:
             $result="";

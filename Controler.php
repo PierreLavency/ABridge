@@ -9,7 +9,7 @@ require_once("View.php");
 $fb->beginTrans();
 $db->beginTrans();
 
-$level = 1;
+$level = 0;
 $db->setLogLevl($level);
 $fb->setLogLevl($level);
 
@@ -57,6 +57,7 @@ if ($method =='POST') {
             $actionExec=true;
         }
     } else {
+        
         $rf=$fb->rollback();    
         $rd=$db->rollback();
     }
@@ -70,6 +71,7 @@ if ($action == V_G_DELT and $actionExec) {
 if ($actionExec) {
     $action= V_G_READ;
 }
+$v->show($action, true);   
 
 $log = $db->getLog();
 if ($log) {
@@ -80,5 +82,3 @@ if ($log) {
     $log->show();
 }
 
-
-$v->show($action, true);   

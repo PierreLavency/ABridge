@@ -11,10 +11,13 @@ $log->logLine('/* standalone test */');
 
 require_once("GenHTML.php"); 
 
-$test1 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_RADIO,"values"=>["a1","a2"], "separator" => "<br/>" ];
+define('NL_O', "\n");
+define('TAB_O', "\t");
+
+$test1 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_RADIO,"values"=>[['a1','a1'],['a2','a2']], "separator" => "<br/>" ];
 $test2 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_TEXT];
-$test3 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_SELECT,"values"=>["a1","a2"], "separator" => "<br/>" ];
-$test4 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_SUBMIT];
+$test3 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_SELECT,"values"=>[['a1','a1'],['a2','a2']], "separator" => "<br/>" ];
+$test4 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_SUBMIT,H_LABEL=>'Submit'];
 $test5 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_TEXTAREA];
 $test6 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_TEXTAREA,H_COL=>50,H_ROW=>10];
 $test7 = [H_NAME=>"A",H_DEFAULT=>"a1",H_TYPE=>H_T_PASSWORD];

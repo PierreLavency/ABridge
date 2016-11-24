@@ -38,13 +38,20 @@ $v = new View($x);
 $L=$x->getAllAttr();
 $L= array_diff($L,['vnum','ctstp','utstp']);
 $v->setAttrList($L);
-
-$v->attr_lbl = array('id'=>'object reference','vnum'=>'version number','ctstp'=>'creation time stamp','A1' => "Attribute1");
-
-
+$L = array('id'=>'object reference','vnum'=>'version number','ctstp'=>'creation time stamp',
+'A1' => "Attribute1",H_T_SUBMIT=>"Confirmer");
+$v->setLblList($L);
+$v->setPropList([V_P_NAME,V_P_LBL,V_P_TYPE,V_P_VAL]);
 $show=false;
 
-$r = $v->subst($test1,V_G_VIEW,false);
+$r = $v->subst($test1,V_G_READ);
+$res = genFormElem($r,$show);
+$line = "$res = genFormElem(r,$show)";
+$log->logLine ($line);
+	// end
+if ($show) {echo "<br>" ; };
+
+$r = $v->subst($test2,V_G_READ);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)";
@@ -52,7 +59,7 @@ $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
-$r = $v->subst($test2,V_G_VIEW,false);
+$r = $v->subst($test3,V_G_READ);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)";
@@ -60,7 +67,7 @@ $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
-$r = $v->subst($test3,V_G_VIEW,false);
+$r = $v->subst($test4,V_G_READ);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)";
@@ -68,7 +75,7 @@ $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
-$r = $v->subst($test4,V_G_VIEW,false);
+$r = $v->subst($test5,V_G_UPDT);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)";
@@ -76,32 +83,26 @@ $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
-$r = $v->subst($test5,V_G_CREA,true);
-$res = genFormElem($r,$show);
-	// logging result
-$line = "$res = genFormElem(r,$show)";
-$log->logLine ($line);
-	// end
-if ($show) {echo "<br>" ; };
-
-$r = $v->subst($test6,V_G_VIEW,false);
+$r = $v->subst($test6,V_G_READ);
 $res = genFormElem($r,$show);
 	// logging result
 $line = "$res = genFormElem(r,$show)"; $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
 
-
-$res = $v->show(V_G_VIEW,$show);
-$line = "$res = v->show('GET',true,$show);"; $log->logLine ($line);
+$res = $v->show(V_G_READ,$show);
+$line = "$res = v->show(V_G_READ,$show);"; $log->logLine ($line);
 
 if ($show) {echo "<br>" ; };
 $res = $v->show(V_G_CREA,$show);
-$line = "$res = v->show('POST',true,$show);"; $log->logLine ($line);
+$line = "$res = v->show(V_G_CREA,$show);es = v->show('V_G_CREA,$show);"; $log->logLine ($line);
 
- // not logged since date!!
- 
 if ($show) {echo "<br>" ; };
+
+$v->setAttrList(['A1','A2','id'],V_G_LABL);
+
+$res = $v->show(V_G_LABL,$show);
+$line = "$res = v->show(V_G_LABL,$show);"; $log->logLine ($line);
 
 $log->saveTest();
 

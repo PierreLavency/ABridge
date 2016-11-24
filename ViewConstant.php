@@ -8,6 +8,7 @@ define('H_T_RADIO', "radio");
 define('H_T_SELECT', "select");
 define('H_T_PASSWORD', "password");
 define('H_T_LIST', "list");
+define('H_T_CONCAT', "concat");
 define('H_T_PLAIN', "plain");
 define('H_T_LINK', "link");
 define('H_T_NULL', "null");

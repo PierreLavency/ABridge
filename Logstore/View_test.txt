@@ -1,4 +1,4 @@
-a:9:{i:0;s:21:"/* standalone test */";i:1;s:29:"Attribute1
+a:10:{i:0;s:21:"/* standalone test */";i:1;s:29:"Attribute1
  = genFormElem(r,)";i:2;s:21:"A1
  = genFormElem(r,)";i:3;s:20:"1
  = genFormElem(r,)";i:4;s:24:"m_int
@@ -20,7 +20,7 @@ a:9:{i:0;s:21:"/* standalone test */";i:1;s:29:"Attribute1
 		1
 	</li>
 </ul>
- = genFormElem(r,)";i:7;s:638:"<ul>
+ = genFormElem(r,)";i:7;s:750:"<ul>
 	<li>
 		test
 	</li>
@@ -77,10 +77,17 @@ a:9:{i:0;s:21:"/* standalone test */";i:1;s:29:"Attribute1
 		</ul>
 	</li>
 	<li>
-		<a href=/ABridge.php/test/0?form=true >0</a>
+		<ul>
+			<li>
+				<a href='/ABridge.php/test?View=Update' >Update</a>
+			</li>
+			<li>
+				<a href='/ABridge.php/test?View=Delete' >Delete</a>
+			</li>
+		</ul>
 	</li>
 </ul>
- = v->show('GET',true,);";i:8;s:841:"<form method=POST action= /ABridge.php/test/0 >
+ = v->show(V_G_READ,);";i:8;s:892:"<form method=POST action= /ABridge.php/test ><input type='hidden' name='action' value='Create' >
 	<ul>
 		<li>
 			test
@@ -115,7 +122,7 @@ a:9:{i:0;s:21:"/* standalone test */";i:1;s:29:"Attribute1
 							m_int
 						</li>
 						<li>
-							<input type = "text" name = "A1" value = "1"  >
+							<input type = "text" name = "A1"  >
 						</li>
 					</ul>
 				</li>
@@ -131,15 +138,15 @@ a:9:{i:0;s:21:"/* standalone test */";i:1;s:29:"Attribute1
 							m_int
 						</li>
 						<li>
-							<input type = "text" name = "A2" value = "2"  >
+							<input type = "text" name = "A2"  >
 						</li>
 					</ul>
 				</li>
 			</ul>
 		</li>
 		<li>
-			<input type="submit" value="Submit">
+			<input type="submit" value = Confirmer >
 		</li>
 	</ul>
 </form>  
- = v->show('POST',true,);";}
+ = v->show(V_G_CREA,);es = v->show('V_G_CREA,);";i:9;s:27:"1 2 0 = v->show(V_G_LABL,);";}
