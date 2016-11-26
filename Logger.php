@@ -90,15 +90,17 @@ class Logger
      *
      * @return string output string
      */     
-    public function showLine($i)
+    public function showLine($i,$show=true)
     {
+		$res="";
         if ($i < count($this->lines)) {
-            echo "LINE:".$j."<br>";
-            echo $this->lines[$i];
-            echo "<br>";
-            return $this->lines[$i];
+            $res= "LINE:".$i."<br>".$this->lines[$i]."<br>";
+			if ($show) {
+				echo $res;
+			}
+            return $res;
         }
-        return 0;
+        return false;
     }
  
     /**
@@ -113,7 +115,7 @@ class Logger
         if ($i < count($this->lines)) {
             return $this->lines[$i];
         }
-        return 0;
+        return false;
     }
 
     /**
@@ -131,7 +133,7 @@ class Logger
      *
      * @param Logger $log the logger to compare with
      *
-     * @return int 0 if bot are the same
+     * @return false if both are the same
      */  
     public function diff($log)
     {
@@ -144,7 +146,7 @@ class Logger
                 $j=$i+1;return $j;
             }
         }
-        return 0;
+        return false;
     }
 
     /**
@@ -158,9 +160,7 @@ class Logger
     {
         $c = $log->logSize();
         for ($i=0;$i<$c;$i++) {
-            if (! $this->logLine($log->getLine($i))) {
-                return 0;
-            } ; 
+            $this->logLine($log->getLine($i));
         }
         $r = $c +1;
         return $r;
