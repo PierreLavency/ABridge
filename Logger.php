@@ -92,12 +92,12 @@ class Logger
      */     
     public function showLine($i,$show=true)
     {
-		$res="";
+        $res="";
         if ($i < count($this->lines)) {
             $res= "LINE:".$i."<br>".$this->lines[$i]."<br>";
-			if ($show) {
-				echo $res;
-			}
+            if ($show) {
+                echo $res;
+            }
             return $res;
         }
         return false;
