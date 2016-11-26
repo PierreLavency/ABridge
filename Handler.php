@@ -75,7 +75,7 @@ class Handler
     public function getBase($base,$instance) 
     {
         if (! array_key_exists($base, $this->_basesClasses)) {
-            return 0;
+            return false;
         }
         $instances=[];
         if (array_key_exists($base, $this->_bases)) {

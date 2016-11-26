@@ -77,7 +77,7 @@ class SQLBase extends Base
     public function newMod($model,$meta) 
     {
         if ($this->existsMod($model)) {
-            return 0;
+            return false;
         }; 
         $s = "\n CREATE TABLE $model ( " ;
         $s = $s. "\n id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ";
@@ -104,7 +104,7 @@ class SQLBase extends Base
         $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
             echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
-            return 0;
+            return false;
         };
         $r = parent::newMod($model, $meta);
         parent::commit(); //tocheck !!
@@ -114,7 +114,7 @@ class SQLBase extends Base
     public function putMod($model,$meta,$addList,$delList) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         };
         $sql = "\n ALTER TABLE $model ";
         $sqlAdd = $this->addAttr($model, $addList);
@@ -132,10 +132,10 @@ class SQLBase extends Base
             $this->logLine(1, $sql);
             if (! $this->_mysqli->query($sql)) {
                 echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
-                return 0;
+                return false;
             }
         }
-        $r = parent::putMod($model, $meta, $addList, $delList);
+        $r = parent::putModel($model, $meta);
         parent::commit(); //tocheck !!
         return $r;
     }
@@ -208,7 +208,7 @@ class SQLBase extends Base
     public function getObj($model, $id) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         };
         $sql = "SELECT * FROM $model where id= $id";
         $this->logLine(1, $sql);
@@ -224,15 +224,18 @@ class SQLBase extends Base
             }
             return $res;
         } else {
-            return 0;
+            return false;
         }
     }
     
     public function putObj($model, $id , $values) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         };
+        if ($id == 0) {
+            return false;
+        }
         $lv = '';
         $i = 0;
         $c = count($values);
@@ -252,35 +255,35 @@ class SQLBase extends Base
         $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
             echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
-            return 0;
+            return false;
         };
         if ($this->_mysqli->affected_rows == 1) {
             return $id; /* -> true*/
         }
-        return 0;
+        return false;
     }
        
     public function delObj($model, $id) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         };
         $sql = "\n DELETE FROM $model WHERE id=$id \n";
         $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
             echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
-            return 0;
+            return false;
         };
-        if ($this->_mysqli->affected_rows == 1) {
+        if ($this->_mysqli->affected_rows <= 1) {
             return true;
         }
-        return 0;
+        return false;
     }
     
     public function newObj($model, $values)
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         };
         $la = '(';
         $lv = $la;
@@ -306,7 +309,7 @@ class SQLBase extends Base
         $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
             echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
-            return 0;
+            return false;
         };
         return $this->_mysqli->insert_id;
     }
@@ -314,7 +317,7 @@ class SQLBase extends Base
     public function findObj($model, $attr, $val) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         }; 
         $res = [];
         $sql = "SELECT id FROM $model where $attr= '$val'";

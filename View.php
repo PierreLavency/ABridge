@@ -9,17 +9,20 @@ define('V_ELEM', "v_elem");
 define('V_LIST', "v_list");
 define('V_ARG', "v_arg");
 define('V_OBJ', "v_Obj");
-define('V_ATTR', "v_attr");
 define('V_NAV', "v_nav");
-define('V_FORM', "v_form");
-define('V_PLAIN', "v_plain"); // not sure needed 
 define('V_ERROR', "v_error"); 
-    
-define('V_PROP', "v_prop");
+define('V_FORM', "v_form");
+
 define('V_ID', "v_id");
-define('V_ACTION', "v_action");
 define('V_STRING', "v_string");
+
+
+// V_ELEM
+define('V_ATTR', "v_attr");
+define('V_REP', "v_rep");  // should be set to the H_T_TYPE;
     
+
+define('V_PROP', "v_prop");   
 define('V_P_INP', "v_p_Attr");
 define('V_P_LBL', "v_p_Lbl");
 define('V_P_VAL', "v_p_Val");
@@ -27,11 +30,11 @@ define('V_P_NAME', "v_p_Name");
 define('V_P_TYPE', "v_p_type");
 define('V_P_REF', "v_p_ref");
 
-define('V_G_CREA', "Create");
-define('V_G_UPDT', "Update"); 
-define('V_G_READ', "Read"); 
-define('V_G_DELT', "Delete");
-define('V_G_LABL', "Label");
+define('V_S_CREA', "Create");
+define('V_S_UPDT', "Update"); 
+define('V_S_READ', "Read"); 
+define('V_S_DELT', "Delete");
+define('V_S_LABL', "Label");
 
 class View
 {
@@ -41,7 +44,7 @@ class View
     protected $_attrList;
     protected $_attrLbls;
     protected $_listHtml;
-    protected $_nav=[V_G_UPDT,V_G_DELT];
+    protected $_nav=[V_S_UPDT,V_S_DELT];
     protected $_attrLbl = [];
     protected $_attrProp;
     protected $_viewName = []; 
@@ -57,7 +60,7 @@ class View
     
     public function setAttrList($dspec,$viewState="") 
     {
-        if ($viewState == V_G_LABL) {
+        if ($viewState == V_S_LABL) {
             $this->_attrLbls = $dspec;
             return true;
         }
@@ -67,7 +70,7 @@ class View
 
     public function getAttrList($viewState="")
     {
-        if ($viewState == V_G_LABL) {
+        if ($viewState == V_S_LABL) {
             $dspec = $this->_attrLbls;
             if (is_null($dspec)) {
                 $dspec = ['id'];
@@ -92,7 +95,7 @@ class View
 
     public function getListHtml ($viewState)
     {
-        if ($viewState == V_G_LABL) {
+        if ($viewState == V_S_LABL) {
             $res = H_T_CONCAT;
         } else {
             $res = $this->_listHtml;
@@ -111,7 +114,7 @@ class View
 
     public function getPropList($viewState) 
     {
-        if ($viewState == V_G_LABL) {
+        if ($viewState == V_S_LABL) {
             $res = [V_P_VAL];
         } else {
             $res = $this->_attrProp;
@@ -168,10 +171,11 @@ class View
     public function evale($spec,$viewState) 
     {
         $attr = $spec[V_ATTR];
+        $typ = $this->_model->getTyp($attr);
         $prop = $spec[V_PROP];
         $res = [];
         $input=false;
-        if (($viewState == V_G_CREA or $viewState == V_G_UPDT) 
+        if (($viewState == V_S_CREA or $viewState == V_S_UPDT) 
             and $prop==V_P_VAL) {
             if ($this->_model->isMdtr($attr) or $this->_model->isOptl($attr)) {
                 $res[H_NAME]=$attr;
@@ -179,10 +183,10 @@ class View
                 if (isset($_POST[$attr])) {
                     $default= $_POST[$attr];
                 } else {
-                    if ($viewState == V_G_CREA) {
+                    if ($viewState == V_S_CREA) {
                         $default=$this->_model->getDflt($attr);
                     }               
-                    if ($viewState == V_G_UPDT) {
+                    if ($viewState == V_S_UPDT) {
                         $default=$this->_model->getVal($attr);
                     }       
                 }
@@ -190,7 +194,7 @@ class View
                     $res[H_DEFAULT]=$default;
                 }
                 $res[H_TYPE]=H_T_TEXT;
-                if ($this->_model->getTyp($attr)== M_CODE) {
+                if ($typ == M_CODE) {
                     $vals=$this->_model->getValues($attr);
                     $values=[];
                     if (count($vals)>2) {//bof
@@ -205,7 +209,7 @@ class View
                     foreach ($vals as $v) {
                         $m = new Model($mod, $v);
                         $vw = new View($m);
-                        $l = $vw->show(V_G_LABL, false);
+                        $l = $vw->show(V_S_LABL, false);
                         $r = [$v,$l];
                         $values[]=$r;
                     }
@@ -232,14 +236,13 @@ class View
             $mod = $this->_model->getRefMod($attr);
             $m = new Model($mod, $id);
             $v = new View($m);
-            $l = $v->show(V_G_LABL, false);
+            $l = $v->show(V_S_LABL, false);
             $res[H_LABEL]=$l;
             $res[H_NAME]=refPath($mod, $id); 
             return $res;            
         }   
         $x=$this->getProp($attr, $prop);
         if ($prop==V_P_VAL) {
-            $typ = $this->_model->getTyp($attr);
             if ($typ==M_REF) {
                 return [];
             }
@@ -248,7 +251,7 @@ class View
                 $id = (int) $x;
                 $m = new Model($mod, $id);
                 $v = new View($m);
-                $x = $v->show(V_G_LABL, false);
+                $x = $v->show(V_S_LABL, false);
             }
         }
         $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$x];
@@ -304,13 +307,13 @@ class View
                     $result[H_ARG]=$arg;
                 break;
             case V_NAV:
-                    if ($viewState == V_G_CREA 
-                    or  $viewState == V_G_DELT 
-                    or  $viewState == V_G_UPDT) {
+                    if ($viewState == V_S_CREA 
+                    or  $viewState == V_S_DELT 
+                    or  $viewState == V_S_UPDT) {
                         $result[H_TYPE]=H_T_SUBMIT;
                         $result[H_LABEL]=$this->getLbl(H_T_SUBMIT);
                     }       
-                    if ($viewState == V_G_READ) {
+                    if ($viewState == V_S_READ) {
                         if (count($this->_nav)) {
                             $result[H_TYPE]=H_T_LIST;
                             $res[H_TYPE]=H_T_LINK;
@@ -343,10 +346,10 @@ class View
           'Cours'   => ['Name'],
           'CodeValue'=>['Name']];
 
-        if ($viewState == V_G_LABL) {
+        if ($viewState == V_S_LABL) {
             if (isset($labels[$this->_model->getModName()])) {
                 $x = $labels[$this->_model->getModName()];
-                $this->setAttrList($x, V_G_LABL);
+                $this->setAttrList($x, V_S_LABL);
             }
         }
         
@@ -390,7 +393,7 @@ class View
                                 V_PROP => V_P_REF,V_ID=>$id];
                 }
             }
-            if ($viewState == V_G_LABL) {
+            if ($viewState == V_S_LABL) {
                 $spec = array_merge($spec, $view);
             } else {
                 $spec[$i]=[V_TYPE=>V_LIST,V_ARG=>$view];
@@ -398,7 +401,7 @@ class View
             }
 
         }
-        if ($viewState == V_G_LABL) {
+        if ($viewState == V_S_LABL) {
             $specf = [V_TYPE=>V_LIST,V_ARG=>$spec];
             $r=$this->subst($specf, $viewState);
             return $r;
@@ -413,9 +416,9 @@ class View
         }
         $speci = [V_TYPE=>V_LIST,V_ARG=>$arg];
         $specf = $speci;
-        if ($viewState == V_G_CREA 
-        or  $viewState == V_G_DELT 
-        or  $viewState == V_G_UPDT) {
+        if ($viewState == V_S_CREA 
+        or  $viewState == V_S_DELT 
+        or  $viewState == V_S_UPDT) {
             $specf = [V_TYPE=>V_FORM,V_ARG=>[$speci]];
         }
         $r=$this->subst($specf, $viewState);

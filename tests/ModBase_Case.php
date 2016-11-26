@@ -99,7 +99,10 @@ class ModBase_Case extends PHPUnit_Framework_TestCase {
     {
 		$x = self::$db;	
 		$x->beginTrans();
-		$this->assertNotNull($sh=new ModBase($x));	
+		$this->assertNotNull($sh=new ModBase($x));
+		$this->assertNotNull($mod=new Model(self::$CName));
+		$this->assertTrue($sh->restoreMod($mod));
+		$this->assertFalse($sh->restoreObj($mod));		
 		$this->assertNotNull($mod=new Model(self::$CName,1));
 		$this->assertTrue($sh->restoreMod($mod));
 		$this->assertEquals(1,$sh->restoreObj($mod));
@@ -120,6 +123,10 @@ class ModBase_Case extends PHPUnit_Framework_TestCase {
 		$x->beginTrans();
 
 		$this->assertNotNull($sh=new ModBase($x));	
+		$this->assertNotNull($mod=new Model(self::$CName));
+		$this->assertTrue($sh->restoreMod($mod));
+		$this->assertTrue($sh->eraseObj($mod));
+		
 		$this->assertNotNull($mod=new Model(self::$CName,1));
 		$this->assertTrue($sh->restoreMod($mod));
 		$this->assertEquals($sh->restoreObj($mod),0);

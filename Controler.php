@@ -26,7 +26,7 @@ if (isset($_SERVER['PATH_INFO'])) {
 $method = $_SERVER['REQUEST_METHOD'];
 
 $v= new View($c);
-$action = V_G_READ;
+$action = V_S_READ;
 $actionExec = false;
 
 if ($method == 'GET') {
@@ -34,19 +34,19 @@ if ($method == 'GET') {
         $action = $_GET['View'];
     }
     if (! $c->getid()) {
-        $action = V_G_CREA;
+        $action = V_S_CREA;
     }
 }
 if ($method =='POST') {
     $action = $_POST['action'];
-    if ($action == V_G_UPDT or $action == V_G_CREA) {
+    if ($action == V_S_UPDT or $action == V_S_CREA) {
         $v->postVal();
     }
     if (!$c->isErr()) {
-        if ($action == V_G_DELT) {
+        if ($action == V_S_DELT) {
             $c->delet();
         }
-        if ($action == V_G_UPDT or $action == V_G_CREA) {
+        if ($action == V_S_UPDT or $action == V_S_CREA) {
             $c->save();         
         }
     }
@@ -63,13 +63,13 @@ if ($method =='POST') {
     }
 }
 
-if ($action == V_G_DELT and $actionExec) {
+if ($action == V_S_DELT and $actionExec) {
     $c=new Model($default, $defaultId);
     $v=new View($c);
 }
 
 if ($actionExec) {
-    $action= V_G_READ;
+    $action= V_S_READ;
 }
 $v->show($action, true);   
 

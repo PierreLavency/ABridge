@@ -14,7 +14,7 @@ class FileBase extends Base
     public function putMod($model,$meta,$addList,$delList) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         }
         $attrLst=[];
         if (isset($delList['attr_lst'])) {
@@ -29,14 +29,14 @@ class FileBase extends Base
                 }
             }; 
         };
-        $r = parent::putMod($model, $meta, $addList, $delList);
+        $r = parent::putModel($model, $meta);
         return $r;
     }
     
     public function newObj($model, $values) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         }; 
         $meta=$this->_objects[$model][0];
         $id = $meta["lastId"];
@@ -50,13 +50,13 @@ class FileBase extends Base
     public function getObj($model, $id) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         }; 
         if ($id == 0) {
-            return 0;
+            return false;
         }; 
         if (! array_key_exists($id, $this->_objects[$model])) {
-            return 0;
+            return false;
         }; 
         $this->logLine(1, "getObj $model $id \n");
         return $this->_objects[$model][$id] ; 
@@ -65,13 +65,13 @@ class FileBase extends Base
     public function putObj($model, $id , $values) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         }; 
         if ($id == 0) {
-            return 0;
+            return false;
         }; 
         if (! array_key_exists($id, $this->_objects[$model])) {
-            return 0;
+            return false;
         }; 
         $this->_objects[$model][$id] = $values;
         $this->logLine(1, "putObj $model $id \n");
@@ -81,13 +81,13 @@ class FileBase extends Base
     public function delObj($model, $id) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         }; 
         if ($id == 0) {
-            return 0;
+            return true;
         }; 
         if (! array_key_exists($id, $this->_objects[$model])) {
-            return 0;
+            return true;
         }; 
         unset($this->_objects[$model][$id]); 
         $this->logLine(1, "delObj $model $id \n");
@@ -99,7 +99,7 @@ class FileBase extends Base
     {
         $result = [];
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         }; 
         foreach ($this->_objects[$model] as $id => $list) {
             if ($id) {

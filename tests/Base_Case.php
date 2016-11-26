@@ -137,7 +137,64 @@ class Base_Case extends PHPUnit_Framework_TestCase {
 		$x->commit();
 		
 	}
+	/**
+    * @depends  testFindObj
+    */
 	
+	public function testErr() 
+	{
+		$x = self::$db;	
+		$x->beginTrans();
+		
+		$this->assertFalse($x->newMod(self::$CName,$this->meta));
+		$this->assertFalse($x->getObj(self::$CName,0));
+		$this->assertTrue($x->delObj(self::$CName,0));
+		$this->assertTrue($x->delObj(self::$CName,10000));
+		$this->assertFalse($x->getObj(self::$CName,10000));
+		$this->assertFalse($x->putObj(self::$CName,0,$this->test2));
+		$this->assertFalse($x->putObj(self::$CName,10000,$this->test2));
+		$this->assertFalse($x->putMod('NOTEXISTS',[],[],$this->meta));
+		$this->assertFalse($x->getObj('NOTEXISTS',$this->id2));
+		$this->assertFalse($x->newObj('NOTEXISTS',$this->id2));
+		$this->assertFalse($x->delObj('NOTEXISTS',$this->id2));
+		$this->assertFalse($x->putObj('NOTEXISTS',$this->id1,$this->test2));
+		$this->assertFalse($x->findObj('NOTEXISTS','CODE','01'));
+		
+		$x->commit();
+	}
+
+	/**
+    * @depends  testErr
+    */
+	public function testLog() 
+	{
+		$x = self::$db;	
+		$x->beginTrans();
+		
+		$this->assertFalse($x->getLog());
+		$this->assertTrue($x->setLogLevl (1));
+		$this->assertEquals(1,count($x->findObj(self::$CName,'CODE','01')));
+		$this->assertNotNull($l=$x->getLog());
+		$this->assertEquals(1,$l->logSize());
+		$x->commit();
+	}	
+	
+	/**
+    * @depends  testLog
+    */
+	public function testPutMod2() 
+	{
+		$x = self::$db;	
+		$x->beginTrans();
+		
+		$this->assertTrue($x->putMod(self::$CName,[],[],$this->meta));
+		$this->assertEquals([],$x->getMod(self::$CName));
+		
+		
+		$x->commit();
+	}	
+
+
 	
 }
 

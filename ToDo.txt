@@ -11,14 +11,11 @@
 - define new type : blob and php 
 - define selection attribute type.
 
-
-
 - Implement inheritance
 - Authenthication
 - Authorisation
 
 - find a way to test HTML
-- Test Coverage
 - set up a git server
 - jenkin 
 
@@ -33,11 +30,15 @@ Dev Dependency
 
 cmd
 /*check code
-phpcs --standard=Zend Model.php Type.php Logger.php
+phpcs --standard=Zend --report=summary -l .
 /*install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
+/* run test suite with coverge
+phpunit --coverage-html testcoverage tests
+
 
 DONE
+- Test Coverage // 1 hour
 - Label management //  8 hours still need to fix peristences. 
 - hide id in view  // done togther not for selecting objects
 - install Xdebug. // 1hour 

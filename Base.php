@@ -75,7 +75,7 @@ abstract class Base
     function newMod($model,$meta) 
     {
         if ($this->existsMod($model)) {
-            return 0;
+            return false;
         }; 
         $meta['lastId']=1;
         $this->_objects[$model][0] = $meta;
@@ -85,18 +85,15 @@ abstract class Base
     function getMod($model) 
     {
         if (! $this->existsMod($model)) {
-            return 0;
+            return false;
         };
         $meta = $this->_objects[$model][0] ;
         unset($meta['lastId']);
         return $meta;
     }
     
-    function putMod($model,$meta,$addList,$delList) 
+    protected function putModel($model,$meta) 
     {
-        if (! $this->existsMod($model)) {
-            return 0;
-        };
         $id = $this->_objects[$model][0]['lastId'] ;
         $meta['lastId']=$id;
         $this->_objects[$model][0] = $meta;
@@ -142,6 +139,7 @@ abstract class Base
         return $this->_logger;
     }
     
+    abstract protected function putMod($model,$meta,$addList,$delList);
     
     abstract protected function newObj($model, $values) ;
 

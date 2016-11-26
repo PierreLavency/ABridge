@@ -10,12 +10,7 @@ class ModBase
     {
         $this->_base=$base;
     }
-    
-    public function getBase() 
-    {
-        return $this->_base;
-    }
-    
+
     public function eraseMod($mod) 
     {
         $name = $mod->getModName();
@@ -105,11 +100,11 @@ class ModBase
         $name = $mod->getModName();
         $id = $mod->getId();
         if ($id==0) {
-            return 0;
+            return false;
         }
         $values = $this->_base->getObj($name, $id); 
         if (!$values) {
-            return 0;
+            return false;
         }
         foreach ($values as $attr=>$val) {
             if ($mod->existsAttr($attr)) {

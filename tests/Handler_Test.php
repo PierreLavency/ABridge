@@ -28,6 +28,7 @@ class Handler_Test extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(resetHandlers());
 		$this->assertNotNull($db1=getBaseHandler('fileBase','test'));
 		$this->assertNotNull($db2=getBaseHandler('fileBase','test1'));
+		$this->assertFalse($db2=getBaseHandler('NOTEXISTS','NOTEXISTS'));
 		$this->assertNotEquals($db1,$db2);
     }
 	
