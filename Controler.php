@@ -81,7 +81,8 @@ $log = $fb->getLog();
 if ($log) {
     $log->show();
     
-    
+$db->close();
+$fb->close(); 
     
 
 }

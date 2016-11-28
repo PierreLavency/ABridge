@@ -18,10 +18,24 @@ class ModBase
 
     }
     
+    protected function getPeristAttr ($mod)
+    {
+        $attrLst = $mod->getAllAttr();
+        $res= [];
+        foreach ($attrLst as $attr) {
+            if ($mod->getTyp($attr) !=  M_CREF) {
+                $res[]=$attr;
+            }
+        }
+        return $res;
+    }
+    
+    
     public function saveMod($mod) 
     {
         $name = $mod->getModName();
         $meta['attr_lst'] = $mod->getAllAttr();
+        $meta['attr_plst'] = $this->getPeristAttr($mod);
         $meta['attr_typ'] = $mod->getAllTyp();
         $meta['attr_dflt'] = $mod->getAllDflt();
         $meta['attr_path'] = $mod->getAllPath();
@@ -31,11 +45,11 @@ class ModBase
             return ($this->_base->newMod($name, $meta));
         }
         $values = $this->_base->getMod($name);
-        $x = array_diff($meta['attr_lst'], $values['attr_lst']);
-        $addList['attr_lst'] = $x;
+        $x = array_diff($meta['attr_plst'], $values['attr_plst']);
+        $addList['attr_plst'] = $x;
         $addList['attr_typ'] = $meta['attr_typ'];
-        $x = array_diff($values['attr_lst'], $meta['attr_lst']);
-        $delList['attr_lst'] = $x;
+        $x = array_diff($values['attr_plst'], $meta['attr_plst']);
+        $delList['attr_plst'] = $x;
         $delList['attr_typ'] = $values['attr_typ'];
         return ($this->_base->putMod($name, $meta, $addList, $delList)); 
     }

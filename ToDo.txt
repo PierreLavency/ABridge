@@ -1,19 +1,17 @@
 - get 100% coverage // logger 2hours // base  8 hours // 
 
 - clean up view // state fixed 4hours / sort out persistence
+- move setVal from view to controller.
 - clean up controler and add unit test
-- close connection 
+
 
 - beef up test apps with relationships tables // done for file
 
-
-- non peristent attributes (CREF) should be dealt with in ModBase not in Base.
 - INTP not allowing 0
 - Bkey with more than 1 attributes
 - define new type : blob and php 
 - define selection attribute type.
 - review addattr interface.
-- move setVal from view.
 
 - Implement inheritance
 - Authenthication
@@ -42,6 +40,8 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- close connection // 5 min
+- non peristent attributes (CREF) should be dealt with in ModBase not in Base. // 4 Hours
 - fix setVal param ("No check) // 1 hour 
 - check error handling in SQL. // done with coverage 
 - Test Coverage  set up  // 1 hour

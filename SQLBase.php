@@ -100,8 +100,8 @@ class SQLBase extends Base
         $s = $s. "\n id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ";
         $attrLst=[];
         $attrTyp =[];
-        if (isset($meta['attr_lst'])) {
-            $attrLst = $meta['attr_lst'];
+        if (isset($meta['attr_plst'])) {
+            $attrLst = $meta['attr_plst'];
         }
         if (isset($meta['attr_typ'])) {
             $attrTyp = $meta['attr_typ'];
@@ -111,10 +111,8 @@ class SQLBase extends Base
             if ($attrLst[$i] != 'id') {
                 $attr = $attrLst[$i];
                 $typ=$attrTyp[$attr];
-                if ($typ!= M_CREF) {//bof
-                    $typ = convertSqlType($typ);
-                    $s = $s.", \n $attr $typ NULL";                 
-                }
+                $typ = convertSqlType($typ);
+                $s = $s.", \n $attr $typ NULL";                 
             }
         }
         $sql=$s. " ) \n";
@@ -159,8 +157,8 @@ class SQLBase extends Base
     {
         $sql = "";
         $attrLst=[];
-        if (isset($delList['attr_lst'])) {
-            $attrLst = $delList['attr_lst'];
+        if (isset($delList['attr_plst'])) {
+            $attrLst = $delList['attr_plst'];
         }
         $c = count($attrLst);
         if (!$c) {
@@ -182,8 +180,8 @@ class SQLBase extends Base
         $attrLst=[];
         $attrTyp =[];
         $sql = "";
-        if (isset($addList['attr_lst'])) {
-            $attrLst = $addList['attr_lst'];
+        if (isset($addList['attr_plst'])) {
+            $attrLst = $addList['attr_plst'];
         }
         if (isset($addList['attr_typ'])) {
             $attrTyp = $addList['attr_typ'];
@@ -195,19 +193,16 @@ class SQLBase extends Base
         $i=0;
         foreach ($attrLst as $attr) {
             $typ=$attrTyp[$attr];
-            if ($typ!= M_CREF) {//bof
-                if ($i > 0) {
-                    $sql = $sql . ",";
-                }
-                $typ = convertSqlType($typ);
-                $sql = $sql."\n ADD $attr $typ NULL" ;
-                $i++;
+            if ($i > 0) {
+                $sql = $sql . ",";
             }
+            $typ = convertSqlType($typ);
+            $sql = $sql."\n ADD $attr $typ NULL" ;
+            $i++;
         }
         return $sql;
     }
     
-
     public function delMod($model) 
     {
         $sql = "\n DROP TABLE $model \n";
