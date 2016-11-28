@@ -10,7 +10,7 @@ class ModBase_Fle_Test extends ModBase_Case
 	{		
 		self::$CName='Student';
 		self::$DBName= 'atest';
-		self::$db = new FileBase(self::$DBName);
+		self::$db = new FileBase(self::$DBName,'cl822','cl822');
 	}
 }
 

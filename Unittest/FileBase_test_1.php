@@ -19,7 +19,7 @@ $test3=['CODE'=> '001', 'SEVERITY'=> 0];
 // create save and get
 
 
-$x = new FileBase($logName);
+$x = new FileBase($logName,'cl822','cl822');
 
 if ($x-> existsMod ('ERC')) {$x->delMod('ERC');}
 if ($x-> existsMod ('ERC2')) {$x->delMod('ERC2');}
@@ -37,7 +37,7 @@ $id2=$x->newObj('ERC',$test2);
 $res=$x->commit();
 	$line = "$res=x->commit();"; $log->logLine($line);
 
-$y= new FileBase($logName);
+$y= new FileBase($logName,'cl822','cl822');
 
 //$y->load();
 
@@ -61,7 +61,7 @@ $res= $y->putObj('ERC',$id1,$test3,[],[]);
 $res=$y->commit();
 	$line = "$res=y->commit();"; $log->logLine($line);
 
-$y = new FileBase($logName);
+$y = new FileBase($logName,'cl822','cl822');
 
 //$y->load();
 
@@ -79,7 +79,7 @@ $res=$y->delObj('ERC',$id2);
 $res=$y->commit();
 	$line = "$res=y->commit();"; $log->logLine($line);
 	
-$y = new FileBase($logName);
+$y = new FileBase($logName,'cl822','cl822');
 
 //$y->load();
 
@@ -94,7 +94,7 @@ $testm1= ['attr_lst'=>['CODE','SEVERITY'],'typ_lst'=>['CODE'=>'m_string','SEVERI
 
 // create save and get
 
-$x = new FileBase($logName);
+$x = new FileBase($logName,'cl822','cl822');
 
 
 $res=$x->newMod('ERC2',$testm1);
@@ -103,7 +103,7 @@ $res=$x->newMod('ERC2',$testm1);
 $res=$x->commit();
 	$line = "$res=x->commit();"; $log->logLine($line);
 	
-$y = new FileBase($logName);
+$y = new FileBase($logName,'cl822','cl822');
 
 //$y->load();
 
@@ -121,7 +121,7 @@ $res=$y->delMod('ERC2');
 $res=$y->commit();
 	$line = "$res=y->commit();"; $log->logLine($line);
 
-$y = new FileBase($logName);
+$y = new FileBase($logName,'cl822','cl822');
 
 //$y->load();
 
@@ -138,7 +138,7 @@ $res=$y->putMod('ERC',$testm1,[],[]);
 $res=$y->commit();
 	$line = "$res=y->commit();"; $log->logLine($line);
 	
-$y = new FileBase($logName);
+$y = new FileBase($logName,'cl822','cl822');
 
 //$y->load();
 

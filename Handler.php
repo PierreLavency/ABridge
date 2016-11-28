@@ -85,7 +85,7 @@ class Handler
             }
         };
         $classN = $this->_basesClasses[$base];
-        $x = new $classN($instance);
+        $x = new $classN($instance,'cl822','cl822');
         $instances[$instance]=$x;
         $this->_bases[$base]=$instances;
         return $x;          

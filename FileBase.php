@@ -6,10 +6,10 @@ require_once("Base.php");
 class FileBase extends Base
 {
 
-    function  __construct($id) 
+    function  __construct($id,$usr,$psw) 
     {
-        parent::__construct('fileBase\\'.$id);
-    }
+        parent::__construct('fileBase\\'.$id, $usr, $psw);
+    } 
 
     public function putMod($model,$meta,$addList,$delList) 
     {

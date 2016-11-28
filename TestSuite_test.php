@@ -19,11 +19,10 @@ require_once("Unittest\Model_test_4.php"); //done
 
 require_once("Unittest\Class_code_test.php");
 
-require_once("Unittest\Model_test_5.php");  //done
-require_once("Unittest\Model_test_6.php");  // done
+// require_once("Unittest\Model_test_5.php");  //Not maintained ! (inject)
+//require_once("Unittest\Model_test_6.php");  // Not maintained ! (inject)
 
-
-require_once("Unittest\Model_test_5_2.php");//done
+// require_once("Unittest\Model_test_5_2.php");//Not maintained ! (inject)
 
 $application= 'genealogy';
 

@@ -25,7 +25,7 @@ $test2=['CODE'=> '002', 'SEVERITY'=> 2];
 $test3=['CODE'=> '001', 'SEVERITY'=> 0];
 	
 // saving 
-$x = new FileBase($logName);
+$x = new FileBase($logName,'cl822','cl822');
 
 if ($x-> existsMod ('ERC')) {$x->delMod('ERC');}
 if ($x-> existsMod ('ERCode')) {$x->delMod('ERCode');}
@@ -42,7 +42,7 @@ $id2=$x->newObj('ERC',$test2);
 $r = $x->commit();
 									$line = "$r = x->save();";
 									$log->logLine($line);
-$y = new FileBase($logName);
+$y = new FileBase($logName,'cl822','cl822');
 									$line = "y = new FileBase($logName);";
 									$log->logLine($line);
 // $y->load();
@@ -81,7 +81,7 @@ $r=$y->commit();
 									$line = "$r=y->save();";
 									$log->logLine($line);
 
-$y = new FileBase($logName);
+$y = new FileBase($logName,'cl822','cl822');
 									$line = "y = new FileBase($logName);";
 									$log->logLine($line);
 //$y->load();
@@ -143,7 +143,7 @@ $r=$y->commit();
 									$line = "$r=y->save();";
 									$log->logLine($line);
 
-$y = new FileBase($logName);
+$y = new FileBase($logName,'cl822','cl822');
 									$line = "y = new FileBase($logName);";
 									$log->logLine($line);
 //$y->load();
@@ -189,7 +189,7 @@ $r=$y->commit();
 									$line = "$r=y->save();";
 									$log->logLine($line);
 
-$y = new FileBase($logName);									
+$y = new FileBase($logName,'cl822','cl822');									
 									$line = "y = new FileBase($logName);";
 									$log->logLine($line);
 

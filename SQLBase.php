@@ -14,29 +14,31 @@ class SQLBase extends Base
     protected $_dbname;
     protected $_mysqli;
     
-    function  __construct($dbname)
+    function  __construct($dbname,$usr,$psw)
     {
         $this->_servername = "localhost"; //bof
-        $this->_username = "cl822";
-        $this->_password = "cl822";
+        $this->_username = $usr;
+        $this->_password = $psw;
         $this->_dbname =$dbname;
         $this->connect();
-        parent::__construct('sqlBase\\'.$dbname);
+        parent::__construct('sqlBase\\'.$dbname, $usr, $psw);
     }
 
     public function connect()
     {
-        $this->_mysqli = new mysqli(
-            $this->_servername, 
-            $this->_username, 
-            $this->_password, 
-            $this->_dbname
-        );
-
-        if ($this->_mysqli->connect_error) {
+        try {		
+			$this->_mysqli = new mysqli(
+				$this->_servername, 
+				$this->_username, 
+				$this->_password, 
+				$this->_dbname
+			);
+		}
+		catch (Exception $e) {
             throw 
-            new Exception(E_ERC021. ':' . $this->_mysqli->connect_error);
+            new Exception(E_ERC021. ':' . $e->getMessage());
         }
+
         $this->_mysqli->autocommit(false);
         return (parent::connect());
     }

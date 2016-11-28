@@ -13,7 +13,7 @@ class SQLBase_Test extends Base_Case {
 		self::$CName='ERC';
 		self::$CName2='ERCode';
 		self::$DBName= 'test';
-        self::$db = new SQLBase(self::$DBName);
+        self::$db = new SQLBase(self::$DBName,'cl822','cl822');
 		
 		self::$db ->delMod(self::$CName);
 		self::$db ->delMod(self::$CName2);

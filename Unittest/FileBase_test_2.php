@@ -20,7 +20,7 @@ $test4=['CODE'=> '004', 'SEVERITY'=> 1];
 
 // create save and get
 
-$x = new FileBase($logName);
+$x = new FileBase($logName,'cl822','cl822');
 if ($x-> existsMod ('ERC')) {$x->delMod('ERC');}
 
 $res=$x->newMod('ERC',[]);

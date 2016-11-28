@@ -13,7 +13,7 @@ abstract class Base
     protected $_logger;
     protected $_connected;
      
-    function  __construct($id) 
+    protected function  __construct($id,$usr,$psw) 
     {
         $this->_fileN = $this->_filePath . $id;
         $this->_fileName = $this->_fileN.'.txt';
@@ -81,19 +81,7 @@ abstract class Base
         $this->load();
         return true;
     }
-    
-    function inject($id) 
-    {
-        $file = file_get_contents(
-            $this->_filePath.$id.'.txt', 
-            FILE_USE_INCLUDE_PATH
-        );
-        $objects = unserialize($file);
-        foreach ($objects as $mod=>$val) {
-            $this->_objects[$mod]=$val;
-        }
-    }
-
+ 
     function existsMod ($model) 
     {
         if (! $this->isConnected()) {

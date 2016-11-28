@@ -248,8 +248,16 @@ class Base_Case extends PHPUnit_Framework_TestCase {
 		$r=false;
 		try {$x->findObj(self::$CName,'id', 1);} catch (Exception $e) {$r = true;}
 		$this->assertTrue($r);
-		
-		
+
+	}
+	
+	/**
+    * @depends  testclose
+    */
+	public function testSqlErr() 
+	{
+		$x = self::$db;	
+
 		if (get_class($x)=='SQLBase') {
 		
 			$this->assertTrue($x->connect());
@@ -276,13 +284,13 @@ class Base_Case extends PHPUnit_Framework_TestCase {
 
 			$r=false;
 			try {$x->delObj(self::$CName,'err');} catch (Exception $e) {$r = true;}
-			$this->assertTrue($r);		
+			$this->assertTrue($r);
+
+			$r=false;
+			try {new SQLBase(self::$DBName,'Notexist','Notexist');} catch (Exception $e) {$r = true;}
+			$this->assertTrue($r);
 		}
+
 	}
-	
 
-
-	
 }
-
-?>	
