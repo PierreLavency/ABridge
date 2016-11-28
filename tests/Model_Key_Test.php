@@ -142,6 +142,8 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$code = new Model($this->Code);
 		$this->assertNotNull($code);	
 		
+		$this->assertTrue($code->isBkey('CodeName'));
+		
 		$res = $code->setVal('CodeName','Sexe');
 		$this->assertTrue($res);
 		
@@ -176,7 +178,13 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		$res = $codeval->setVal('ValueName',$res);
 		$this->assertTrue($res);
-				
+		
+		$this->assertTrue($codeval->isOptl('ValueName'));
+		
+		$this->assertTrue($codeval->isMdtr('ValueOf'));
+		
+		$this->assertFalse($codeval->isOptl('ValueOf'));
+		
 		$res = $codeval->setVal('ValueOf',$id);
 		$this->assertTrue($res);
 		
@@ -209,6 +217,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$res = $code->setVal('CodeName','Sexe');
 		$this->assertFalse($res);
 		$this->assertEquals($log->getLine(0),E_ERC018.':CodeName:Sexe');
+		
 						
 		$codeval = new Model($this->CodeVal);
 		$this->assertNotNull($codeval);	
@@ -222,12 +231,74 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 	    $res = $codeval->setVal('ValueOf',null);
 		$id1= $codeval->save();
+
 		$r = $codeval-> getErrLog ();
-		$this->assertEquals($log->getLine(0),E_ERC019.':ValueOf');	
+		$this->assertEquals($log->getLine(1),E_ERC019.':ValueOf');
+
+		$res = $codeval->isBkey('notexists');
+
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($log->getLine(2),E_ERC002.':notexists');
+	
+		$res = $codeval->isMdtr('notexists');
+
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($log->getLine(3),E_ERC002.':notexists');
+		
+		$res = $codeval->isOptl('notexists');
+
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($log->getLine(4),E_ERC002.':notexists');
+		
+		$res = $codeval->setMdtr('notexists',false);
+
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($log->getLine(5),E_ERC002.':notexists');
+		
+		$res = $codeval->setDflt('notexists',false);
+
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($log->getLine(6),E_ERC002.':notexists');
+		
+		$res = $codeval->getDflt('notexists');
+
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($log->getLine(7),E_ERC002.':notexists');		
+
+		$res = $codeval->setBkey('notexists',false);
+
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($log->getLine(5),E_ERC002.':notexists');
+		
+		$this->assertFalse($codeval->isOptl('id'));
+		
+	$db->commit();
+	}
+	/**
+     * @dataProvider Provider1
+     *	
+	/**
+    * @depends testErrors
+    */
+	public function testDelAttr($typ) 
+	{
+		$this->setTyp($typ);
+		$db=$this->db;
+		$db->beginTrans();
+		
+		
+		$code = new Model($this->Code);
+		$this->assertTrue($code->delAttr('CodeName'));
+		
+		$this->assertFalse($code->existsAttr('CodeName'));
+		
+		$codeval = new Model($this->CodeVal);
+		$this->assertTrue($codeval->delAttr('ValueOf'));
+		
+		$this->assertFalse($codeval->existsAttr('ValueOf'));
 		
 		$db->commit();
 	}
-	
 	
 }
 

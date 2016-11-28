@@ -11,9 +11,17 @@ class Model_Test extends PHPUnit_Framework_TestCase {
 		$CName ='test';
 
 		try {$x=new Model(1);} catch (Exception $e) {$r= 'Exception reçue : '. $e->getMessage();}
-		
 		$this->assertEquals($r, 'Exception reçue : ERC010:1:m_alpha');
 		
+		try {$x=new Model('$',1);} catch (Exception $e) {$r= 'Exception reçue : '. $e->getMessage();}
+		$this->assertEquals($r, 'Exception reçue : ERC010:$:m_alpha');
+		
+		try {$x=new Model($CName,-1);} catch (Exception $e) {$r= 'Exception reçue : '. $e->getMessage();}
+		$this->assertEquals($r, 'Exception reçue : ERC011:-1:m_intp');
+
+		try {$x=new Model($CName,0);} catch (Exception $e) {$r= 'Exception reçue : '. $e->getMessage();}
+		$this->assertEquals($r, 'Exception reçue : ERC012:'.$CName.':0');		
+
 		$this->assertNotNull(($x = new Model($CName)));
 		
 		$this->assertEquals($CName, $x->getModName());
@@ -35,7 +43,9 @@ class Model_Test extends PHPUnit_Framework_TestCase {
 
 		$this->assertTrue($x->addAttr('a1'));
 
-		$this->assertTrue($x->existsAttr("id") );
+		$this->assertTrue($x->existsAttr("id"));
+		
+		$this->assertTrue($x->isPredef("id"));
 		
 		$this->assertTrue($x->existsAttr("a1"));
 

@@ -22,13 +22,12 @@ $test6=[V_TYPE=>V_LIST,V_ARG=>[$test1,$test2,$test3,$test4,$test5]];
 $x=new Model('test');
 $x->deleteMod();
 
-$x->addAttr('A1');
-$x->addAttr('A2');
+$x->addAttr('A1',M_INT);
+$x->addAttr('A2',M_INT);
 
-$x->setTyp('A1',M_INT);
+
 $x->setVal('A1',1);
 
-$x->setTyp('A2',M_INT);
 $x->setVal('A2',2);
 
 $method = 'GET';

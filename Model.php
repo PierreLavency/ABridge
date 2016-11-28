@@ -356,7 +356,10 @@ class Model
     public function isErr()
     {
         $c=$this->_errLog->logSize();
-        return ($c);
+		if ($c) {
+			return true;
+		}
+        return false;
     }
     /**
      * Returns true if the attribute is a Business key.
@@ -449,7 +452,7 @@ class Model
      *
      * @return boolean
      */      
-    public function setTyp($attr,$typ) 
+    protected function setTyp($attr,$typ) 
     {
         if (! $this->existsAttr($attr)) {
             $this->_errLog->logLine(E_ERC002.':'.$attr);
@@ -489,7 +492,7 @@ class Model
      *
      * @return boolean
      */          
-    public function setPath($attr,$path) 
+    protected function setPath($attr,$path) 
     {
         if (! $this->existsAttr($attr)) {
             $this->_errLog->logLine(E_ERC002.':'.$attr);

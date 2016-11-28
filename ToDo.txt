@@ -2,8 +2,8 @@
 
 - clean up view // state fixed 4hours / sort out persistence
 - move setVal from view to controller.
+- move getrefmod to Model;
 - clean up controler and add unit test
-
 
 - beef up test apps with relationships tables // done for file
 

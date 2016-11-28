@@ -28,10 +28,7 @@ $r = $x->getVal('notexist');
 	$xs = "$r = x->getVal('notexist');";
 	$log->logLine ($xs);	
 
-$r = $x->setTyp('notexist',M_INT);
-	// logging result
-	$xs = "$r = x->setTyp('notexist','int');";
-	$log->logLine ($xs);
+
 
 $r = $x->addAttr('id');
 	// logging result
