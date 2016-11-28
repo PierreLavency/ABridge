@@ -192,7 +192,94 @@ class Base_Case extends PHPUnit_Framework_TestCase {
 		
 		
 		$x->commit();
-	}	
+	}
+	
+	/**
+    * @depends  testPutMod2
+    */
+	public function testclose() 
+	{
+		$x = self::$db;	
+		$x->beginTrans();
+		
+		$this->assertTrue($x->close());
+
+		$r=false;	
+		try {$x->close();} catch (Exception $e) {$r =true;}
+		$this->assertTrue($r);
+		$r=false;	
+		try {$x->beginTrans();} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);		
+	    $r=false;
+		try {$x->commit();} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);
+	    $r=false;
+		try {$x->rollback();} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);
+// no error if no begin transaction 
+		
+// all fails since closed	
+	    $r=false;
+		try {$x->existsMod ('notexists');} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);		
+	    $r=false;
+		try {$x->newMod('notexists',[]);} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);	
+	    $r=false;
+		try {$x->getMod('notexists');} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);
+	    $r=false;
+		try {$x->putMod('notexists',[],[],[]);} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);
+	    $r=false;
+		try {$x->delMod('notexists');} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);
+		try {$x->newObj(self::$CName, []);} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);		
+		$r=false;
+		try {$x->getObj(self::$CName, 1);} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);	
+		$r=false;
+		try {$x->putObj(self::$CName, 1 , []);} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);	
+		$r=false;
+		try {$x->delObj(self::$CName, 1);} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);		
+		$r=false;
+		try {$x->findObj(self::$CName,'id', 1);} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);
+		
+		
+		if (get_class($x)=='SQLBase') {
+		
+			$this->assertTrue($x->connect());
+			
+			$err=['attr_lst'=>["NULL"],'attr_typ'=> ["NULL"=>M_INT]];
+			
+			$r=false;
+			try {$x->newMod('test', $err);} catch (Exception $e) {$r = true;}
+			$this->assertTrue($r);		
+			
+			$r=false;
+			try {$x->putMod(self::$CName,$this->meta,$err,[]);} catch (Exception $e) {$r = true;}
+			$this->assertTrue($r);		
+
+			$err =['CODE'=> NULL, 'notexists'=> 2];
+
+			$r=false;
+			try {$x->newObj(self::$CName,$err);} catch (Exception $e) {$r = true;}
+			$this->assertTrue($r);		
+			
+			$r=false;
+			try {$x->putObj(self::$CName,1,$err);} catch (Exception $e) {$r = true;}
+			$this->assertTrue($r);		
+
+			$r=false;
+			try {$x->delObj(self::$CName,'err');} catch (Exception $e) {$r = true;}
+			$this->assertTrue($r);		
+		}
+	}
+	
 
 
 	

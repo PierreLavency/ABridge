@@ -11,16 +11,38 @@ abstract class Base
     protected $_fileName;
     protected $_logLevl;
     protected $_logger;
-        
+    protected $_connected;
+     
     function  __construct($id) 
     {
         $this->_fileN = $this->_filePath . $id;
         $this->_fileName = $this->_fileN.'.txt';
         $this->_logLevl=0;
         $this->_logger=null;
+        $this->_connected=true;
         $this->load();
     }
 
+    function connect() 
+    {
+        $this->_connected = true;
+        return true;
+    }
+    
+    function close() 
+    {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
+        $this->_connected = false;
+        return true;
+    }
+    
+    function isConnected() 
+    {
+        return $this->_connected;
+    }
+    
     private function load() 
     {
         if (file_exists($this->_fileName)) {
@@ -31,14 +53,21 @@ abstract class Base
         $this->_objects = [];
         return true;
     }
-
+    
     function beginTrans() 
     {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
+        $this->_transOpen=true;
         return true;
     }
 
     function commit()
     {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
         $file = serialize($this->_objects);
         $r=file_put_contents($this->_fileName, $file, FILE_USE_INCLUDE_PATH);
         return $r;
@@ -46,12 +75,10 @@ abstract class Base
 
     function rollback() 
     {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
         $this->load();
-        return true;
-    }
-    
-    function close() 
-    {
         return true;
     }
     
@@ -69,6 +96,9 @@ abstract class Base
 
     function existsMod ($model) 
     {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
         return(array_key_exists($model, $this->_objects));
     }
     

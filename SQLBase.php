@@ -12,7 +12,7 @@ class SQLBase extends Base
     protected $_username;
     protected $_password;
     protected $_dbname;
-    protected $_mysqli =0;
+    protected $_mysqli;
     
     function  __construct($dbname)
     {
@@ -20,58 +20,73 @@ class SQLBase extends Base
         $this->_username = "cl822";
         $this->_password = "cl822";
         $this->_dbname =$dbname;
-        $this->begintrans();
+        $this->connect();
         parent::__construct('sqlBase\\'.$dbname);
     }
 
-    public function beginTrans()
+    public function connect()
     {
-        if (!$this->_mysqli) {
-            $this->_mysqli = new mysqli(
-                $this->_servername, 
-                $this->_username, 
-                $this->_password, 
-                $this->_dbname
-            );
-            if ($this->_mysqli->connect_error) {
-                throw 
-                new Exception(E_ERC021. ':' . $this->_mysqli->connect_error);
-            }
-            if (! $this->_mysqli->autocommit(false)) {
-                throw 
-                new Exception(E_ERC021. ':' . $this->_mysqli->connect_error);
-            }
-        }
-        if (! $this->_mysqli->begin_transaction()) {
+        $this->_mysqli = new mysqli(
+            $this->_servername, 
+            $this->_username, 
+            $this->_password, 
+            $this->_dbname
+        );
+
+        if ($this->_mysqli->connect_error) {
             throw 
             new Exception(E_ERC021. ':' . $this->_mysqli->connect_error);
         }
-        return true;
+        $this->_mysqli->autocommit(false);
+        return (parent::connect());
+    }
+    
+    public function beginTrans()
+    {
+        try {
+            $this->_mysqli->begin_transaction();
+        }
+        catch (Exception $e) {
+            throw 
+            new Exception(E_ERC021. ':' . $e->getMessage());
+        }
+        return (parent::beginTrans());
     }
     
     public function commit()
     {
-        if (! $this->_mysqli->commit()) {
-            throw new Exception(E_ERC021. ':' . $this->_mysqli->connect_error);
+        try {
+            $this->_mysqli->commit();
         }
-        return true;
+        catch (Exception $e) {
+            throw 
+            new Exception(E_ERC021. ':' . $e->getMessage());
+        } 
+        return (parent::commit());
     }
     
     public function rollback() 
     {
-        if (! $this->_mysqli->rollback()) {
-            throw new Exception(E_ERC021. ':' . $this->_mysqli->connect_error);
+        try {
+            $this->_mysqli->rollback();
         }
-        return true;
+        catch (Exception $e) {
+            throw 
+            new Exception(E_ERC021. ':' . $e->getMessage());
+        }
+        return (parent::rollback());
     }
     
     public function close() 
     {
-        if (! $this->_mysqli->close()) {
-            throw new Exception(E_ERC021. ':' . $this->_mysqli->connect_error);
+        try {
+            $this->_mysqli->close();
         }
-        $this->_mysqli =0;
-        return true;
+        catch (Exception $e) {
+            throw 
+            new Exception(E_ERC021. ':' . $e->getMessage());
+        }
+        return (parent::close());
     }
     
     public function newMod($model,$meta) 
@@ -103,11 +118,10 @@ class SQLBase extends Base
         $sql=$s. " ) \n";
         $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
-            echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
-            return false;
+            throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
         };
         $r = parent::newMod($model, $meta);
-        parent::commit(); //tocheck !!
+        parent::commit(); //DML always autocommited!!
         return $r;
     }   
 
@@ -131,12 +145,11 @@ class SQLBase extends Base
         if ($sqlAdd or $sqlDrop) {
             $this->logLine(1, $sql);
             if (! $this->_mysqli->query($sql)) {
-                echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
-                return false;
+                throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
             }
         }
         $r = parent::putModel($model, $meta);
-        parent::commit(); //tocheck !!
+        parent::commit(); 
         return $r;
     }
     
@@ -254,8 +267,7 @@ class SQLBase extends Base
         $sql = "\n UPDATE $model SET $lv WHERE id= $id \n" ;
         $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
-            echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
-            return false;
+            throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
         };
         if ($this->_mysqli->affected_rows == 1) {
             return $id; /* -> true*/
@@ -271,13 +283,10 @@ class SQLBase extends Base
         $sql = "\n DELETE FROM $model WHERE id=$id \n";
         $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
-            echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
-            return false;
+            throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
         };
-        if ($this->_mysqli->affected_rows <= 1) {
-            return true;
-        }
-        return false;
+
+        return true;
     }
     
     public function newObj($model, $values)
@@ -308,8 +317,7 @@ class SQLBase extends Base
         $sql = "\n INSERT INTO $model \n $la \n VALUES \n $lv \n";
         $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
-            echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
-            return false;
+            throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
         };
         return $this->_mysqli->insert_id;
     }

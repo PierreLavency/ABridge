@@ -35,6 +35,9 @@ class FileBase extends Base
     
     public function newObj($model, $values) 
     {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
         if (! $this->existsMod($model)) {
             return false;
         }; 
@@ -49,6 +52,9 @@ class FileBase extends Base
 
     public function getObj($model, $id) 
     {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
         if (! $this->existsMod($model)) {
             return false;
         }; 
@@ -64,6 +70,9 @@ class FileBase extends Base
 
     public function putObj($model, $id , $values) 
     {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
         if (! $this->existsMod($model)) {
             return false;
         }; 
@@ -80,6 +89,9 @@ class FileBase extends Base
 
     public function delObj($model, $id) 
     {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
         if (! $this->existsMod($model)) {
             return false;
         }; 
@@ -97,6 +109,9 @@ class FileBase extends Base
 
     public function findObj($model, $attr, $val) 
     {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
         $result = [];
         if (! $this->existsMod($model)) {
             return false;
