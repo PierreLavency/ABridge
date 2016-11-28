@@ -26,15 +26,15 @@ class SQLBase extends Base
 
     public function connect()
     {
-        try {		
-			$this->_mysqli = new mysqli(
-				$this->_servername, 
-				$this->_username, 
-				$this->_password, 
-				$this->_dbname
-			);
-		}
-		catch (Exception $e) {
+        try {       
+            $this->_mysqli = new mysqli(
+                $this->_servername, 
+                $this->_username, 
+                $this->_password, 
+                $this->_dbname
+            );
+        }
+        catch (Exception $e) {
             throw 
             new Exception(E_ERC021. ':' . $e->getMessage());
         }

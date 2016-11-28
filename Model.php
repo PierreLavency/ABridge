@@ -82,6 +82,9 @@ class Model
      * @var array The state handler.
      */
     protected $_stateHdlr=0;
+    protected $_trusted=false;
+    protected $_checkTrusted=false; // could be usefull !! 
+    
     /**
     * Constructor
     */
@@ -131,7 +134,9 @@ class Model
             if (! $x->restoreMod($this)) {
                 throw new exception(E_ERC022.':'.$name);
             }
+            $this->_trusted = true;
             $idr =$x->restoreObj($this);
+            $this->_trusted = false;
             if ($id != $idr) {
                 throw new exception(E_ERC007.':'.$name.':'.$id);
             };
@@ -724,16 +729,18 @@ class Model
      *
      * @return boolean
      */    
-    public function setVal($attr,$val,$check=true)
+    public function setVal($attr,$val)
     {
         if (! $this->existsAttr($attr)) {
             $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
+        $check=!($this->_trusted);
         if (in_array($attr, $this->_attrPredef) and $check) {
             $this->_errLog->logLine(E_ERC001.':'.$attr);
             return false;
         };
+        $check= ($check or $this->_checkTrusted);
         // type checking
         $type=$this->getTyp($attr);
         if ($type ==M_CREF ) {

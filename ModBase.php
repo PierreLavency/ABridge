@@ -110,7 +110,7 @@ class ModBase
             if ($mod->existsAttr($attr)) {
                 $typ=$mod->getTyp($attr);
                 $valn=convertString($val, $typ);
-                $mod->setVal($attr, $valn, false);
+                $mod->setVal($attr, $valn);
             }
         };
         return $id;

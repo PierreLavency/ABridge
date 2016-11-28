@@ -80,9 +80,9 @@ if ($log) {
 $log = $fb->getLog();
 if ($log) {
     $log->show();
-	
-	
-	
+    
+    
+    
 
 }
 

@@ -6,7 +6,7 @@
 
 - beef up test apps with relationships tables // done for file
 
-- Fix check param in setVal
+
 - non peristent attributes (CREF) should be dealt with in ModBase not in Base.
 - INTP not allowing 0
 - Bkey with more than 1 attributes
@@ -42,6 +42,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- fix setVal param ("No check) // 1 hour 
 - check error handling in SQL. // done with coverage 
 - Test Coverage  set up  // 1 hour
 - Label management //  8 hours still need to fix peristences. 
