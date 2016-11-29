@@ -20,7 +20,7 @@ class Model_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($r, 'Exception reçue : ERC011:-1:m_intp');
 
 		try {$x=new Model($CName,0);} catch (Exception $e) {$r= 'Exception reçue : '. $e->getMessage();}
-		$this->assertEquals($r, 'Exception reçue : ERC012:'.$CName.':0');		
+		$this->assertEquals($r, 'Exception reçue : ERC011:0:m_intp');		
 
 		$this->assertNotNull(($x = new Model($CName)));
 		

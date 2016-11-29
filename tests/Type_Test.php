@@ -35,7 +35,7 @@ class Type_Test extends PHPUnit_Framework_TestCase {
             [1, 	M_BOOL, 	0],		
 			[-1, 	M_INTP,		0],		
             [1, 	M_INTP,		1],
-	        [0	,	M_INTP,		1],
+	        [0	,	M_INTP,		0],
             ['1', 	M_INTP, 	0],		
 			[null, 	M_ALNUM,	1],	
 			[1, 	M_ALNUM,	0],		

@@ -7,7 +7,7 @@
 
 - beef up test apps with relationships tables // done for file
 
-- INTP not allowing 0
+
 - Bkey with more than 1 attributes
 - define new type : blob and php 
 - define selection attribute type.
@@ -40,6 +40,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- INTP not allowing 0 // 1 hour
 - close connection // 5 min
 - non peristent attributes (CREF) should be dealt with in ModBase not in Base. // 4 Hours
 - fix setVal param ("No check) // 1 hour 

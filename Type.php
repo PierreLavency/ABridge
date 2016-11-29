@@ -114,7 +114,7 @@
                 break;
             case M_INTP:
                 if (is_int($x)) {
-                    return ($x>=0);
+                    return ($x>0);
                 }
                 return 0;
                 break;

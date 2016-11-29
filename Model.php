@@ -124,10 +124,10 @@ class Model
      */   
     function construct2($name,$id) 
     {
-        $this->init($name, $id);
-        if (! $id) {
-            throw new Exception(E_ERC012.':'.$name.':'.$id);
+        if (! checkType($id, M_INTP)) {
+            throw new Exception(E_ERC011.':'.$id.':'.M_INTP);
         }
+        $this->init($name, $id);
         $idr=0;
         $x = $this->_stateHdlr;
         if ($x) {
@@ -155,9 +155,6 @@ class Model
     {
         if (! checkType($name, M_ALPHA)) {
             throw new Exception(E_ERC010.':'.$name.':'.M_ALPHA);
-        }
-        if (! checkType($id, M_INTP)) {
-            throw new Exception(E_ERC011.':'.$id.':'.M_INTP);
         }
         $this->initattr();
         $this->_id=$id; 
@@ -356,9 +353,9 @@ class Model
     public function isErr()
     {
         $c=$this->_errLog->logSize();
-		if ($c) {
-			return true;
-		}
+        if ($c) {
+            return true;
+        }
         return false;
     }
     /**
