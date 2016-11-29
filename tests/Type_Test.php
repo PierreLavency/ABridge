@@ -17,6 +17,7 @@ class Type_Test extends PHPUnit_Framework_TestCase {
  
     public function Provider1() {
         return [
+			['x', 	'not',		0],
 			[null, 	M_INT,		1],
 			['1', 	M_INT,		0],
             [1, 	M_INT,		1],
@@ -91,7 +92,10 @@ class Type_Test extends PHPUnit_Framework_TestCase {
             ['1', 		M_CODE,		1],
             ['', 		M_CODE,		null],
             [ "true", 	M_BOOL,		true],
+            [ "false", 	M_BOOL,		false],
             ['1.5', 	M_FLOAT,	1.5],
+            ['x', 	    M_FLOAT,	'x'],
+			['x', 	    M_BOOL,	'x'],
 	        ["pp", 		M_INT,		"pp"],	
  		
 			];
@@ -112,6 +116,11 @@ class Type_Test extends PHPUnit_Framework_TestCase {
             [M_STRING, 	'VARCHAR(255)'],
             [M_FLOAT,	'FLOAT'],
 			[M_CREF, 	'INT(11) UNSIGNED'],
+			[M_BOOL, 	'BOOLEAN'],
+			[M_ALNUM, 	'VARCHAR(255)'],
+			[M_ALPHA, 	'VARCHAR(255)'],
+			[M_DATE, 	'DATE'],
+			['notexists', 	false],
 			];
     }	
 	

@@ -91,11 +91,13 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 
 		$res=$codeval->setMdtr('ValueOf',true); // Mdtr
 		$this->assertTrue($res);
-		
+
+		$r = $codeval-> getErrLog ();
+		$r->show();		
+
 		$res = $codeval->saveMod();	
 		$this->assertTrue($res);	
 
-		$r = $codeval-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);	
 		
 		// CRef - Code

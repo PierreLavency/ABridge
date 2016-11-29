@@ -40,7 +40,16 @@ if ($method == 'GET') {
 if ($method =='POST') {
     $action = $_POST['action'];
     if ($action == V_S_UPDT or $action == V_S_CREA) {
-        $v->postVal();
+        foreach ($c->getAllAttr() as $attr) { 
+            if ($c->isMdtr($attr) or $c->isOptl($attr)) {
+                if (isset($_POST[$attr])) {
+                    $val= $_POST[$attr];
+                    $typ= $c->getTyp($attr);
+                    $valC = convertString($val, $typ);
+                    $c->setVal($attr, $valC);
+                }
+            }
+        }
     }
     if (!$c->isErr()) {
         if ($action == V_S_DELT) {

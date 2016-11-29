@@ -1,12 +1,10 @@
-- get 100% coverage // logger 2hours // base  8 hours // 
+- get 100% coverage // logger 2hours // base  8 hours // type 30 min // 92.44%
 
 - clean up view // state fixed 4hours / sort out persistence
-- move setVal from view to controller.
 - move getrefmod to Model;
 - clean up controler and add unit test
 
 - beef up test apps with relationships tables // done for file
-
 
 - Bkey with more than 1 attributes
 - define new type : blob and php 
@@ -40,6 +38,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- move setVal from view to controller. // 15 min
 - INTP not allowing 0 // 1 hour
 - close connection // 5 min
 - non peristent attributes (CREF) should be dealt with in ModBase not in Base. // 4 Hours

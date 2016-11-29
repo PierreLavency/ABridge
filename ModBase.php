@@ -30,7 +30,6 @@ class ModBase
         return $res;
     }
     
-    
     public function saveMod($mod) 
     {
         $name = $mod->getModName();
@@ -38,7 +37,7 @@ class ModBase
         $meta['attr_plst'] = $this->getPeristAttr($mod);
         $meta['attr_typ'] = $mod->getAllTyp();
         $meta['attr_dflt'] = $mod->getAllDflt();
-        $meta['attr_path'] = $mod->getAllPath();
+        $meta['attr_path'] = $mod->getAllRefParm();
         $meta['attr_bkey'] = $mod->getAllBkey();
         $meta['attr_mdtr'] = $mod->getAllMdtr();
         if ( ! $this->_base->existsMod($name)) {
@@ -69,7 +68,9 @@ class ModBase
         $attrmdtr=[];
         $attrlist=$values['attr_lst'];
         $attrtype=$values['attr_typ'];
-        $attrpath=$values['attr_path'];
+        if (isset($values['attr_path'])) {
+            $attrpath=$values['attr_path'];
+        }
         $attrbkey=$values['attr_bkey'];
         $attrmdtr=$values['attr_mdtr'];
         if (isset($values['attr_dflt'])) {

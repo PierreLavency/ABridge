@@ -61,6 +61,7 @@
         return $x;
     }
 
+    /* not used 
     function convertTime($x) 
     {
         if (($timestamp=strtotime($x))==false) {
@@ -75,7 +76,8 @@
         $t = date(M_FORMAT_D, $timestamp);
         return $t;
     }
-    
+    */    
+
     function checkType ($x,$type) 
     {
         if (is_null($x)) {
@@ -104,22 +106,22 @@
                 if (is_string($x)) {
                     return ctype_alnum($x);
                 }
-                return 0;
+                return false;
                 break;
             case M_ALPHA:
                 if (is_string($x)) {
                     return ctype_alpha($x);
                 }
-                return 0;
+                return false;
                 break;
             case M_INTP:
                 if (is_int($x)) {
                     return ($x>0);
                 }
-                return 0;
+                return false;
                 break;
             default:
-                return 0;
+                return false;
         }
     }
 
@@ -146,7 +148,7 @@
             case M_INTP:
                 return 'INT(11) UNSIGNED';
             default:
-                return 0;
+                return false;
         }
     }
     

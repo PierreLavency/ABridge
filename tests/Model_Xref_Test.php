@@ -90,6 +90,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertTrue($res);	
 
 		$r = $codeval-> getErrLog ();
+		$r->show();
 		$this->assertEquals($r->logSize(),0);	
 		
 		// CRef -Code

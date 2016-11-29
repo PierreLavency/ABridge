@@ -61,7 +61,7 @@ class Model
     /**
      * @var array The list of path associated to reference attributes.  
      */
-    protected $_attrPath ;
+    protected $_refParm ;
     /**
      * @var array The list of types business key attributes. 
      */
@@ -181,7 +181,7 @@ class Model
         );
         $this->_attrVal = array('vnum' => 0);
         $this->_attrDflt = [];
-        $this->_attrPath = [];
+        $this->_refParm = [];
         $this->_attrBkey = [];
         $this->_attrMdtr = [];
     }
@@ -212,6 +212,19 @@ class Model
     public function getId()
     {
         return $this->_id;
+    }
+     /**
+     * Returns the Object Path.
+     *
+     * @return integer
+     */   
+    public function getPath()
+    {
+        $res= refPath(
+            $this->getModName(), 
+            $this->getId()
+        );
+        return $res;
     }
     /**
      * Returns the list of attributes of a Model.
@@ -254,9 +267,9 @@ class Model
      *
      * @return array
      */ 
-    public function getAllPath() 
+    public function getAllRefParm() 
     { 
-        return $this->_attrPath;            
+        return $this->_refParm;            
     }   
     /**
      * Returns the list of Business Key attributes of a Model.
@@ -312,13 +325,13 @@ class Model
      *
      * @return string its 'path'.
      */ 
-    protected function getPath($attr) 
+    protected function getRefParm($attr) 
     {
         if (! $this->existsAttr($attr)) {
             $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        foreach ($this->_attrPath as $x => $path) {
+        foreach ($this->_refParm as $x => $path) {
             if ($x==$attr) {
                 return $path;
             }
@@ -334,7 +347,7 @@ class Model
      */
     public function getRefMod($attr) 
     {
-        $path = $this->getPath($attr);
+        $path = $this->getRefParm($attr);
         if (! $path) {
             return false;
         }
@@ -489,7 +502,7 @@ class Model
      *
      * @return boolean
      */          
-    protected function setPath($attr,$path) 
+    protected function setRefParm($attr,$path) 
     {
         if (! $this->existsAttr($attr)) {
             $this->_errLog->logLine(E_ERC002.':'.$attr);
@@ -499,7 +512,7 @@ class Model
             $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$path);
             return false;
         };
-        $this->_attrPath[$attr]=$path;
+        $this->_refParm[$attr]=$path;
         $this->_modChgd=true;
         return true;
     }
@@ -591,7 +604,7 @@ class Model
         $rt=$this->setTyp($attr, $typ);
         $rp=true;
         if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE) {
-            $rp=$this->setPath($attr, $path); 
+            $rp=$this->setRefParm($attr, $path); 
         }
         if ($rt and $rp) {
             $this->_modChgd=true;
@@ -634,8 +647,8 @@ class Model
         if (isset($this->_attrTyp[$attr])) {
             unset($this->_attrTyp[$attr]);
         }
-        if (isset($this->_attrPath[$attr])) {
-            unset($this->_attrPath[$attr]);
+        if (isset($this->_refParm[$attr])) {
+            unset($this->_refParm[$attr]);
         }
         if (isset($this->_attrDflt[$attr])) {
             unset($this->_attrDflt[$attr]);
@@ -690,7 +703,7 @@ class Model
         }
         $type=$this->getTyp($attr);
         if ($type == M_CREF) { //will not work if on different Base !!
-            $path = $this->getPath($attr);
+            $path = $this->getRefParm($attr);
             $patha=explode('/', $path);
             $hdlr=$this->_stateHdlr;
             $res=$hdlr->findObj($patha[1], $patha[2], $this->getId());
@@ -836,7 +849,7 @@ class Model
             $this->_errLog->logLine(E_ERC015.':'.$attr.':'.$r); 
             return false;
         }
-        $r=$this->getPath($attr);
+        $r=$this->getRefParm($attr);
         if ($r) {
             $res=pathVal($r);
             return $res;
@@ -856,9 +869,9 @@ class Model
         if (is_null($id)) {
             return true;
         }
-        $path = $this->getPath($attr);
+        $path = $this->getRefParm($attr);
         if (!$path) {
-            $this-$this->_errLog->logLine(E_ERC008.':'.$attr);
+            $this->_errLog->logLine(E_ERC008.':'.$attr);
             return false;
         };
         $path=$path.'/'.$id;

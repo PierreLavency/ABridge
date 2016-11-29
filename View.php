@@ -68,7 +68,7 @@ class View
         return true;
     }
 
-    public function getAttrList($viewState="")
+    public function getAttrList($viewState)
     {
         if ($viewState == V_S_LABL) {
             $dspec = $this->_attrLbls;
@@ -290,10 +290,7 @@ class View
                 break;
             case V_FORM:
                     $result[H_TYPE]=H_T_FORM;
-                    $path = refPath(
-                        $this->_model->getModName(), 
-                        $this->_model->getId()
-                    );
+                    $path = $this->_model->getPath(); 
                     $result[H_ACTION]="POST";
                     $result[H_HIDDEN]=$viewState;
                     $result[H_URL]=$path;                   
@@ -317,10 +314,7 @@ class View
                         if (count($this->_nav)) {
                             $result[H_TYPE]=H_T_LIST;
                             $res[H_TYPE]=H_T_LINK;
-                            $p=refPath(
-                                $this->_model->getModName(), 
-                                $this->_model->getId()
-                            );
+                            $p=$this->_model->getPath(); 
                             foreach ($this->_nav as $nav) {
                                 $res[H_LABEL]=$this->getLbl($nav);
                                 $res[H_NAME]="'".$p.'?View='.$nav."'";
@@ -356,20 +350,6 @@ class View
         $r = $this->buildView($viewState);
         $r=genFormElem($r, $show);
         return $r;
-    }
-    
-    public function postVal()
-    { 
-        foreach ($this->getAttrList() as $attr) { 
-            if ($this->_model->isMdtr($attr) or $this->_model->isOptl($attr)) {
-                if (isset($_POST[$attr])) {
-                    $val= $_POST[$attr];
-                    $typ= $this->_model->getTyp($attr);
-                    $valC = convertString($val, $typ);
-                    $this->_model->setVal($attr, $valC);
-                }
-            }
-        }
     }
     
     public function buildView($viewState) 
