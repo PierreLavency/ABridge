@@ -335,4 +335,36 @@ class SQLBase extends Base
         }
         return $res;
     }   
+    
+    public function findObjWhere($model, $attrList, $valList) 
+    {
+        if (! $this->existsMod($model)) {
+            return false;
+        }; 
+        $res = [];
+        $w= $this->buildWhere($attrList, $valList);
+        $sql = "SELECT id FROM $model where ". $w;
+        $this->logLine(1, $sql);
+        $result = $this->_mysqli->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $res[]= (int) $row["id"]; // not sure for int
+            }; 
+        }
+        return $res;
+    }
+    
+    public function buildWhere($attrLst,$valLst) 
+    {
+        if ($attrLst == []) {
+            return ' true ';
+        }
+        $attr= array_pop($attrLst);
+        $val = array_pop($valLst);
+        $res = $this->buildWhere($attrLst, $valLst);
+        $res = " $attr = '$val' and  " . $res;
+        return $res;
+    }
+    
+    
 }

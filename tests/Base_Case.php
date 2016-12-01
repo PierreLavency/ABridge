@@ -135,6 +135,9 @@ class Base_Case extends PHPUnit_Framework_TestCase {
         $this->assertEquals($id,($n+2));
         $this->assertEquals(($n/2),count($x->findObj(self::$CName,'SEVERITY',1)));
         $this->assertEquals(1,count($x->findObj(self::$CName,'CODE','01')));
+		
+		$this->assertEquals($n+1,count($x->findObjWhere(self::$CName,[],[])));
+		$this->assertEquals(1,count($x->findObjWhere(self::$CName,['CODE','SEVERITY'],['01',1])));
         $x->commit();
         
     }
@@ -160,7 +163,8 @@ class Base_Case extends PHPUnit_Framework_TestCase {
         $this->assertFalse($x->delObj('NOTEXISTS',$this->id2));
         $this->assertFalse($x->putObj('NOTEXISTS',$this->id1,$this->test2));
         $this->assertFalse($x->findObj('NOTEXISTS','CODE','01'));
-        
+        $this->assertFalse($x->findObjWhere('NOTEXISTS',['CODE'],['01']));
+				
         $x->commit();
     }
 

@@ -101,6 +101,7 @@ function genFormElemL($dspec,$show,$level)
     $default="";
     $hidden="";
     $separator="";
+    $desabled="";
     $name="";
     $action="";
     $url="";
@@ -126,6 +127,11 @@ function genFormElemL($dspec,$show,$level)
                 break; 
             case H_SEPARATOR:
                 $separator = $v;
+                break;
+            case H_DESABLED:
+                if ($v) {
+                    $desabled = 'desabled';
+                }
                 break; 
             case H_DEFAULT:
                 $default = $v;
@@ -184,7 +190,7 @@ function genFormElemL($dspec,$show,$level)
             $result = genFormL($action, $url, $hidden, $arg, false, $level);
             break;
         case H_T_TEXTAREA:
-            $result = $textareaS . $nameS; 
+            $result = $textareaS . $nameS . $desabled; 
             $result = $result . $colS . $col . '" ' ; 
             $result = $result . $rowS . $row . '" ' . $endS ; 
             if ($default) {

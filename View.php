@@ -96,7 +96,11 @@ class View
                     } 
                     $res = array_diff($res, $ref);       
                     foreach ($res as $attr) {
-                        if ($this->_model->getTyp($attr) != M_CREF) {
+                        $atyp=$this->_model->getTyp($attr);
+                        if ($atyp != M_CREF and 
+                            $atyp != M_TXT and 
+                            $atyp!=M_REF
+                        ) {
                             $dspec[]=$attr;
                         }
                     }
@@ -225,6 +229,9 @@ class View
                 $res[H_DEFAULT]=$default;
             }
             $res[H_TYPE]=H_T_TEXT;
+            if ($typ == M_TXT) {
+                $res[H_TYPE]=H_T_TEXTAREA;
+            }
             if ($typ == M_CODE) {
                 $vals=$this->_model->getValues($attr);
                 $values=[];
@@ -243,18 +250,13 @@ class View
                     $r = [$v,$l];
                     $values[]=$r;
                 }
-                $res[H_VALUES]=$values;
-                if (count($vals)>2) {//bof
-                    $res[H_TYPE]=H_T_SELECT;
-                } else {
-                    $res[H_TYPE]=H_T_RADIO;
-                }      
+                $res[H_VALUES]=$values;    
             }
             return $res ;
         }
         $x=$this->getProp($attr, $prop);
         if ($prop==V_P_VAL) {
-            if ($attr == 'id' and $viewState != V_S_REF) {
+            if ($attr == 'id' and $viewState == V_S_CREF) {
                 $res[H_TYPE]=H_T_LINK;
                 $res[H_LABEL]=$this->show(V_S_REF, false);
                 $res[H_NAME]=$this->_model->getPath();
@@ -285,6 +287,9 @@ class View
             }
         }
         $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$x];
+        if ($typ ==  M_TXT and $prop==V_P_VAL) {
+            $res = [H_TYPE =>H_T_TEXTAREA, H_DESABLED=>true, H_DEFAULT=>$x];
+        }
         return $res;
     }
     

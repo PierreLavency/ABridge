@@ -168,5 +168,7 @@ abstract class Base
     abstract protected function delObj($model, $id) ;
     
     abstract protected function findObj($model, $attr, $val) ;
+    
+    abstract protected function findObjWhere($model,$attrList, $valList) ;
 
 };

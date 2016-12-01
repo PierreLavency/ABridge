@@ -57,7 +57,8 @@ class Type_Test extends PHPUnit_Framework_TestCase {
 			['2016-02-29'			,	M_DATE,		1],		
 			['2016-10-25 12:30:48'	,	M_TMSTP,	1],				
 			['25-10-2016'			,	M_TMSTP,	0],				
-			['now'					,	M_TMSTP,	0],				
+			['now'					,	M_TMSTP,	0],			
+			['now          vvvvvv'	,	M_TXT,		1],						
 			];
     }
 	/**
@@ -97,7 +98,7 @@ class Type_Test extends PHPUnit_Framework_TestCase {
             ['x', 	    M_FLOAT,	'x'],
 			['x', 	    M_BOOL,	'x'],
 	        ["pp", 		M_INT,		"pp"],	
- 		
+ 			["pp", 		M_TXT,		"pp"],	
 			];
     }	
 	
@@ -120,6 +121,7 @@ class Type_Test extends PHPUnit_Framework_TestCase {
 			[M_ALNUM, 	'VARCHAR(255)'],
 			[M_ALPHA, 	'VARCHAR(255)'],
 			[M_DATE, 	'DATE'],
+			[M_TXT, 	'TEXT'],
 			['notexists', 	false],
 			];
     }	

@@ -112,10 +112,10 @@ class FileBase extends Base
         if (! $this->isConnected()) {
             throw new Exception(E_ERC025);
         }
-        $result = [];
         if (! $this->existsMod($model)) {
             return false;
         }; 
+        $result = [];
         foreach ($this->_objects[$model] as $id => $list) {
             if ($id) {
                 foreach ($list as $a => $v) {
@@ -127,7 +127,39 @@ class FileBase extends Base
         };
         $this->logLine(1, "findObj $model $attr $val  \n");
         return $result;
-    }   
+    }
+    
+    public function findObjWhere($model,$attrList, $valList) 
+    {
+        if (! $this->existsMod($model)) {
+            return false;
+        }; 
+        $res= $this->evalWhere($model, $attrList, $valList);
+        return $res;
+    }
 
-};
+    public function evalWhere($model,$attrList,$valList) 
+    {
+        if ($attrList== []) {
+            $result = [];
+            foreach ($this->_objects[$model] as $id => $list) {
+                if ($id) {
+                    $result[]=$id;
+                };
+            }
+            return $result;
+        }   
+        $attr= array_pop($attrList);
+        $val = array_pop($valList);
+        $res = $this->findObj($model, $attr, $val);
+        $result = $this->evalWhere($model, $attrList, $valList);
+        $result = array_intersect($result, $res);
+        return $result;
+    }
+    
+
+    
+    
+    
+}
 

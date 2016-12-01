@@ -6,7 +6,7 @@
     function isMtype ($x) 
     {
         $l=[
-        M_INT,M_INTP,M_FLOAT,M_BOOL,M_STRING,
+        M_INT,M_INTP,M_FLOAT,M_BOOL,M_STRING,M_TXT,
         M_ID,M_REF,M_CREF,M_CODE,M_TMSTP,M_DATE, M_ALPHA,M_ALNUM, ];
         return (in_array($x, $l));
     }
@@ -102,6 +102,9 @@
             case M_STRING:
                 return is_string($x);
                 break; 
+            case M_TXT:
+                return is_string($x);
+                break; 
             case M_ALNUM:
                 if (is_string($x)) {
                     return ctype_alnum($x);
@@ -141,6 +144,8 @@
                 return 'BOOLEAN';
             case M_STRING:
                 return 'VARCHAR(255)';
+            case M_TXT:
+                return 'TEXT';
             case M_ALNUM:
                 return 'VARCHAR(255)';
             case M_ALPHA:

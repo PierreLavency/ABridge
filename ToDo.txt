@@ -6,8 +6,8 @@
 
 - beef up test apps with relationships tables // done for file
 
-- Bkey with more than 1 attributes
-- define new type : blob and php 
+- Bkey with more than 1 attributes   // select where implemented 2 hours
+- define new type :  php 
 - define selection attribute type.
 - review addattr interface.
 
@@ -38,6 +38,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- define new type : blob // TXT 4 hours 
 - move getrefmod to Model; //4hours
 - move setVal from view to controller. // 15 min
 - INTP not allowing 0 // 1 hour

@@ -13,6 +13,7 @@ define('M_TMSTP', "m_tmstp");
 define('M_DATE', "m_date");
 define('M_ALNUM', "m_alnum");
 define('M_ALPHA', "m_alpha");
+define('M_TXT', "m_txt");
 
 define('M_FORMAT_T', 'Y-m-d H:i:s');
 define('M_FORMAT_D', 'Y-m-d');
