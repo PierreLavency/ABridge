@@ -25,5 +25,5 @@ define('H_ACTION', "action");
 define('H_URL', "url");
 define('H_HIDDEN', "hidden");
 define('H_SEPARATOR', "separator");
-define('H_DESABLED', "desabled");
+define('H_DISABLED', "disabled");
     

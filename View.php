@@ -288,7 +288,7 @@ class View
         }
         $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$x];
         if ($typ ==  M_TXT and $prop==V_P_VAL) {
-            $res = [H_TYPE =>H_T_TEXTAREA, H_DESABLED=>true, H_DEFAULT=>$x];
+            $res = [H_TYPE =>H_T_TEXTAREA, H_DISABLED=>true, H_DEFAULT=>$x];
         }
         return $res;
     }
