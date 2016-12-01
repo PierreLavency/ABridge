@@ -98,9 +98,9 @@ $line = "$res = v->show(V_S_CREA,$show);es = v->show('V_S_CREA,$show);"; $log->l
 
 if ($show) {echo "<br>" ; };
 
-$v->setAttrList(['A1','A2','id'],V_S_LABL);
+$v->setAttrList(['A1','A2','id'],V_S_REF);
 
-$res = $v->show(V_S_LABL,$show);
+$res = $v->show(V_S_REF,$show);
 $line = "$res = v->show(V_S_LABL,$show);"; $log->logLine ($line);
 
 $log->saveTest();

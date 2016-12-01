@@ -25,4 +25,8 @@ define('E_ERC022', "ERC022");  // Model does not exists
 define('E_ERC023', "ERC023");  // Invalid Path
 define('E_ERC024', "ERC024");  // can'save model has changed
 define('E_ERC025', "ERC025");  // No connection open FB
+define('E_ERC026', "ERC026");  // not a ref
+define('E_ERC027', "ERC027");  // not a cref
+define('E_ERC028', "ERC028");  // not a code
+
 

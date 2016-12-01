@@ -16,12 +16,10 @@ define('V_FORM', "v_form");
 define('V_ID', "v_id");
 define('V_STRING', "v_string");
 
-
 // V_ELEM
 define('V_ATTR', "v_attr");
 define('V_REP', "v_rep");  // should be set to the H_T_TYPE;
     
-
 define('V_PROP', "v_prop");   
 define('V_P_INP', "v_p_Attr");
 define('V_P_LBL', "v_p_Lbl");
@@ -34,7 +32,8 @@ define('V_S_CREA', "Create");
 define('V_S_UPDT', "Update"); 
 define('V_S_READ', "Read"); 
 define('V_S_DELT', "Delete");
-define('V_S_LABL', "Label");
+define('V_S_REF', "reference");
+define('V_S_CREF', "creference");
 
 class View
 {
@@ -42,7 +41,8 @@ class View
 
     protected $_model;
     protected $_attrList;
-    protected $_attrLbls;
+    protected $_attrRef;
+    protected $_attrCref;
     protected $_listHtml;
     protected $_nav=[V_S_UPDT,V_S_DELT];
     protected $_attrLbl = [];
@@ -60,8 +60,12 @@ class View
     
     public function setAttrList($dspec,$viewState="") 
     {
-        if ($viewState == V_S_LABL) {
-            $this->_attrLbls = $dspec;
+        if ($viewState == V_S_REF) {
+            $this->_attrRef = $dspec;
+            return true;
+        }
+        if ($viewState == V_S_CREF) {
+            $this->_attrCref = $dspec;
             return true;
         }
         $this->_attrList= $dspec;
@@ -70,21 +74,44 @@ class View
 
     public function getAttrList($viewState)
     {
-        if ($viewState == V_S_LABL) {
-            $dspec = $this->_attrLbls;
-            if (is_null($dspec)) {
-                $dspec = ['id'];
-            }
-        } else {
-            $dspec = $this->_attrList;
-            if (is_null($dspec)) {
-                $dspec = array_diff(
-                    $this->_model->getAllAttr(),
-                    ['vnum','ctstp','utstp']
-                );
-            }               
+        switch ($viewState) {
+            case V_S_REF :
+                $dspec = $this->_attrRef;
+                if (is_null($dspec)) {
+                    $dspec = ['id'];
+                }
+                return $dspec;
+            case V_S_CREF :
+                $dspec = $this->_attrCref;
+                if (is_null($dspec)) {
+                    $dspec = [];
+                    $res = array_diff(
+                        $this->_model->getAllAttr(),
+                        ['vnum','ctstp','utstp']
+                    );
+                    $ref = $this->getAttrList(V_S_REF);
+                    $key = array_search('id', $ref);
+                    if ($key!==false) {
+                        unset($ref[$key]);
+                    } 
+                    $res = array_diff($res, $ref);       
+                    foreach ($res as $attr) {
+                        if ($this->_model->getTyp($attr) != M_CREF) {
+                            $dspec[]=$attr;
+                        }
+                    }
+                }
+                return $dspec ;   
+            default : 
+                $dspec = $this->_attrList;
+                if (is_null($dspec)) {
+                    $dspec = array_diff(
+                        $this->_model->getAllAttr(),
+                        ['vnum','ctstp','utstp']
+                    );
+                }
+                return $dspec;
         }
-        return $dspec;
     }
     
     public function setListHtml($dspec) 
@@ -95,7 +122,7 @@ class View
 
     public function getListHtml ($viewState)
     {
-        if ($viewState == V_S_LABL) {
+        if ($viewState == V_S_REF) {
             $res = H_T_CONCAT;
         } else {
             $res = $this->_listHtml;
@@ -114,15 +141,20 @@ class View
 
     public function getPropList($viewState) 
     {
-        if ($viewState == V_S_LABL) {
-            $res = [V_P_VAL];
-        } else {
-            $res = $this->_attrProp;
-            if (is_null($res)) {
-                $res = [V_P_LBL,V_P_VAL];
-            }               
+        switch($viewState) {
+            case V_S_REF :
+                $res = [V_P_VAL];
+                return $res;
+            case V_S_CREF : 
+                $res = [V_P_VAL];
+                return $res;
+            default :
+                $res = $this->_attrProp;
+                if (is_null($res)) {
+                    $res = [V_P_LBL,V_P_VAL];
+                }
+                return $res;
         }
-        return $res;
     }
 
     public function setNav($dspec) 
@@ -174,84 +206,82 @@ class View
         $typ = $this->_model->getTyp($attr);
         $prop = $spec[V_PROP];
         $res = [];
-        $input=false;
         if (($viewState == V_S_CREA or $viewState == V_S_UPDT) 
-            and $prop==V_P_VAL) {
-            if ($this->_model->isMdtr($attr) or $this->_model->isOptl($attr)) {
-                $res[H_NAME]=$attr;
-                $default=null;
-                if (isset($_POST[$attr])) {
-                    $default= $_POST[$attr];
-                } else {
-                    if ($viewState == V_S_CREA) {
-                        $default=$this->_model->getDflt($attr);
-                    }               
-                    if ($viewState == V_S_UPDT) {
-                        $default=$this->_model->getVal($attr);
-                    }       
-                }
-                if ($default) {
-                    $res[H_DEFAULT]=$default;
-                }
-                $res[H_TYPE]=H_T_TEXT;
-                if ($typ == M_CODE) {
-                    $vals=$this->_model->getValues($attr);
-                    $values=[];
-                    if (count($vals)>2) {//bof
-                        $res[H_TYPE]=H_T_SELECT;
-                        if (!$this->_model->isMdtr($attr)) {
-                            $values[] = ["",""];
-                        }
-                    } else {
-                        $res[H_TYPE]=H_T_RADIO;
-                    }
-                    $mod = $this->_model->getRefMod($attr);
-                    foreach ($vals as $v) {
-                        $m = new Model($mod, $v);
-                        $vw = new View($m);
-                        $l = $vw->show(V_S_LABL, false);
-                        $r = [$v,$l];
-                        $values[]=$r;
-                    }
-                    $res[H_VALUES]=$values;
-                    if (count($vals)>2) {//bof
-                        $res[H_TYPE]=H_T_SELECT;
-                    } else {
-                        $res[H_TYPE]=H_T_RADIO;
-                    }      
-                }
-                return $res ;
-            }
-        }
-        if ($prop == V_P_REF) {
-            $res[H_TYPE]=H_T_LINK;
-            if (isset($spec[V_ID])) {
-                $id=$spec[V_ID];
+            and $prop==V_P_VAL and 
+            ($this->_model->isMdtr($attr) or $this->_model->isOptl($attr))) {
+            $res[H_NAME]=$attr;
+            $default=null;
+            if (isset($_POST[$attr])) {
+                $default= $_POST[$attr];
             } else {
-                $id=$this->_model->getVal($attr);
+                if ($viewState == V_S_CREA) {
+                    $default=$this->_model->getDflt($attr);
+                }               
+                if ($viewState == V_S_UPDT) {
+                    $default=$this->_model->getVal($attr);
+                }       
             }
-            if (! $id) {
-                return 0;
+            if ($default) {
+                $res[H_DEFAULT]=$default;
             }
-            $mod = $this->_model->getRefMod($attr);
-            $m = new Model($mod, $id);
-            $v = new View($m);
-            $l = $v->show(V_S_LABL, false);
-            $res[H_LABEL]=$l;
-            $res[H_NAME]=refPath($mod, $id); 
-            return $res;            
-        }   
+            $res[H_TYPE]=H_T_TEXT;
+            if ($typ == M_CODE) {
+                $vals=$this->_model->getValues($attr);
+                $values=[];
+                if (count($vals)>2) {//bof
+                    $res[H_TYPE]=H_T_SELECT;
+                    if (!$this->_model->isMdtr($attr)) {
+                        $values[] = ["",""];
+                    }
+                } else {
+                    $res[H_TYPE]=H_T_RADIO;
+                }
+                foreach ($vals as $v) {
+                    $m = $this->_model->getCode($attr, (int) $v);
+                    $vw = new View($m);
+                    $l = $vw->show(V_S_REF, false);
+                    $r = [$v,$l];
+                    $values[]=$r;
+                }
+                $res[H_VALUES]=$values;
+                if (count($vals)>2) {//bof
+                    $res[H_TYPE]=H_T_SELECT;
+                } else {
+                    $res[H_TYPE]=H_T_RADIO;
+                }      
+            }
+            return $res ;
+        }
         $x=$this->getProp($attr, $prop);
         if ($prop==V_P_VAL) {
+            if ($attr == 'id' and $viewState != V_S_REF) {
+                $res[H_TYPE]=H_T_LINK;
+                $res[H_LABEL]=$this->show(V_S_REF, false);
+                $res[H_NAME]=$this->_model->getPath();
+                return $res;
+            }
+            if ($typ==M_CREF) {     
+                $id=$spec[V_ID];
+                $m = $this->_model->getCref($attr, $id);
+                $v = new View($m);
+                $res = $v->buildView(V_S_CREF);
+                return $res; 
+            }
             if ($typ==M_REF) {
-                return [];
+                $res[H_TYPE]=H_T_LINK;
+                $m=$this->_model->getRef($attr);
+                if (is_null($m)) {
+                    return 0;
+                }
+                $v = new View($m);
+                $res[H_LABEL]=$v->show(V_S_REF, false);
+                $res[H_NAME]=$m->getPath();
+                return $res;        
             }
             if ($typ==M_CODE and (!is_null($x))) {
-                $mod = $this->_model->getRefMod($attr);
-                $id = (int) $x;
-                $m = new Model($mod, $id);
+                $m=$this->_model->getCode($attr, (int) $x);
                 $v = new View($m);
-                $x = $v->show(V_S_LABL, false);
+                $x = $v->show(V_S_REF, false);
             }
         }
         $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$x];
@@ -334,19 +364,6 @@ class View
 
     public function show($viewState,$show = true) 
     {
-        $labels = 
-        [ 'Person'  => ['SurName','Name'],
-          'Student' => ['SurName','Name'],
-          'Cours'   => ['Name'],
-          'CodeValue'=>['Name']];
-
-        if ($viewState == V_S_LABL) {
-            if (isset($labels[$this->_model->getModName()])) {
-                $x = $labels[$this->_model->getModName()];
-                $this->setAttrList($x, V_S_LABL);
-            }
-        }
-        
         $r = $this->buildView($viewState);
         $r=genFormElem($r, $show);
         return $r;
@@ -354,6 +371,17 @@ class View
     
     public function buildView($viewState) 
     {
+        $labels = 
+        [ 'Person'  => ['SurName','Name'],
+          'Student' => ['SurName','Name'],
+          'Cours'   => ['Name'],
+          'CodeValue'=>['Name']];
+
+        if (isset($labels[$this->_model->getModName()])) {
+            $x = $labels[$this->_model->getModName()];
+            $this->setAttrList($x, V_S_REF);
+        }
+        
         $i=0;
         $name = $this->_model->getModName();
         $spec=[];
@@ -362,18 +390,15 @@ class View
             foreach ($this->getPropList($viewState) as $prop) {
                 $view[] = [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => $prop];
             }
-            if ($this->_model->getTyp($attr) == M_REF) {
-                $view[]=[V_TYPE=>V_ELEM, V_ATTR => $attr, V_PROP => V_P_REF ];
-            }
             if ($this->_model->getTyp($attr) == M_CREF) {
                 $view=[[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_NAME]];
                 foreach ($this->_model->getVal($attr) as $id) {
                     $view[]=[
                                 V_TYPE=>V_ELEM,V_ATTR => $attr,
-                                V_PROP => V_P_REF,V_ID=>$id];
+                                V_PROP => V_P_VAL,V_ID=>$id];
                 }
             }
-            if ($viewState == V_S_LABL) {
+            if ($viewState == V_S_REF or $viewState == V_S_CREF) {
                 $spec = array_merge($spec, $view);
             } else {
                 $spec[$i]=[V_TYPE=>V_LIST,V_ARG=>$view];
@@ -381,7 +406,7 @@ class View
             }
 
         }
-        if ($viewState == V_S_LABL) {
+        if ($viewState == V_S_REF or $viewState == V_S_CREF) {
             $specf = [V_TYPE=>V_LIST,V_ARG=>$spec];
             $r=$this->subst($specf, $viewState);
             return $r;

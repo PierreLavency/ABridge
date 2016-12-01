@@ -338,26 +338,61 @@ class Model
         }                       
         return null;
     }
-    /**
-     * Returns the Model Name of a reference attribute.
-     *
-     * @param string $attr the attribute. 
-     *
-     * @return string its Model Name.
-     */
-    public function getRefMod($attr) 
-    {
-        $path = $this->getRefParm($attr);
-        if (! $path) {
+    
+    public function getRef($attr) 
+    {     
+        if (! $this->existsAttr($attr)) {
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        $patha=explode('/', $path);
-        if ($this->getTyp($attr)== M_CODE) {
-            $m = new Model($patha[1]);
-            return ($m->getRefMod($patha[3]));
+        if ($this->getTyp($attr)!= M_REF) {
+             $this->_errLog->logLine(E_ERC026.':'.$attr);
+            return false;
         }
-        return ($patha[1]);
+        $id = $this->getVal($attr);
+        if (is_null($id)) {
+            return null;
+        }
+        $path=$this->getRefParm($attr);
+        $path=$path.'/'.$id;
+        $res=pathObj($path);
+        return ($res);
     }
+        
+    public function getCref($attr,$id) 
+    {
+        if (! $this->existsAttr($attr)) {
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
+            return false;
+        }
+        if ($this->getTyp($attr)!= M_CREF) {
+             $this->_errLog->logLine(E_ERC027.':'.$attr);
+            return false;
+        }
+        $path=$this->getRefParm($attr);
+        $patha=explode('/', $path);
+        $path='/'.$patha[1].'/'.$id;
+        $res=pathObj($path);
+        return ($res);
+    }
+    
+    public function getCode($attr,$id) 
+    {
+        if (! $this->existsAttr($attr)) {
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
+            return false;
+        }
+        if ($this->getTyp($attr)!= M_CODE) {
+             $this->_errLog->logLine(E_ERC028.':'.$attr);
+            return false;
+        }
+        $path=$this->getRefParm($attr);
+        $patha=explode('/', $path);
+        $m = new Model($patha[1]);
+        $res=$m->getCref($patha[3], $id);
+        return ($res);
+    }
+
     /**
      * Returns the Logger.
      *
@@ -454,28 +489,7 @@ class Model
         } ;
         return false;
     }
-    /**
-     * Set the type of an attribute.
-     *
-     * @param string $attr the attribute. 
-     * @param string $typ  the type.
-     *
-     * @return boolean
-     */      
-    protected function setTyp($attr,$typ) 
-    {
-        if (! $this->existsAttr($attr)) {
-            $this->_errLog->logLine(E_ERC002.':'.$attr);
-            return false;
-        };
-        if (!isMtype($typ)) {
-            $this->_errLog->logLine(E_ERC004.':'.$typ);
-            return false;
-        }
-        $this->_attrTyp[$attr]=$typ;
-        $this->_modChgd=true;
-        return true;
-    }
+ 
     /**
      * Set the default value of an attribute.
      *
@@ -494,28 +508,7 @@ class Model
         $this->_modChgd=true;
         return true;
     }
-    /**
-     * Set the path of an attribute.
-     *
-     * @param string $attr the attribute. 
-     * @param string $path the path.
-     *
-     * @return boolean
-     */          
-    protected function setRefParm($attr,$path) 
-    {
-        if (! $this->existsAttr($attr)) {
-            $this->_errLog->logLine(E_ERC002.':'.$attr);
-            return false;
-        };
-        if (! checkPath($path) ) {
-            $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$path);
-            return false;
-        };
-        $this->_refParm[$attr]=$path;
-        $this->_modChgd=true;
-        return true;
-    }
+
     /**
      * Set an attribute value of a business key .
      *
@@ -600,18 +593,21 @@ class Model
                 return false;
             }
         }
-        $this->_attrLst[]=$attr;
-        $rt=$this->setTyp($attr, $typ);
-        $rp=true;
+        if (!isMtype($typ)) {
+            $this->_errLog->logLine(E_ERC004.':'.$typ);
+            return false;
+        }
         if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE) {
-            $rp=$this->setRefParm($attr, $path); 
+            if (! checkPath($path) ) {
+                $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$path);
+                return false;
+            };
+            $this->_refParm[$attr]=$path;
         }
-        if ($rt and $rp) {
-            $this->_modChgd=true;
-            return true;
-        }
-        $this->deleAttr($attr);
-        return false;
+        $this->_attrLst[]=$attr;
+        $this->_attrTyp[$attr]=$typ;
+        $this->_modChgd=true;
+        return true;
     }
     /**
      * Delete an attribute.
@@ -620,16 +616,8 @@ class Model
      *
      * @return boolean
      */      
-    public function delAttr($attr)
-    {
-        $res=$this->deleAttr($attr);
-        if ($res) {
-            $this->_modChgd=true;           
-        }
-        return $res;
-    }
     
-    protected function deleAttr($attr)  
+    public function delAttr($attr)  
     {
         $x= $this->existsAttr($attr);
         if (!$x) {
@@ -661,6 +649,7 @@ class Model
         if ($key!==false) {
             unset($this->_attrMdtr[$key]);
         } 
+        $this->_modChgd=true;        
         return true;
     }
      /**
@@ -726,10 +715,6 @@ class Model
      */      
     protected function setValNoCheck($attr,$val)
     {
-        if (! $this->existsAttr($attr)) {
-            $this->_errLog->logLine(E_ERC002.':'.$attr);
-            return false;
-        }
         $this->_attrVal[$attr]=$val;
         return true;
     }  
@@ -864,11 +849,12 @@ class Model
      *
      * @return boolean
      */   
-    public function checkRef($attr,$id)
+    public  function checkRef($attr,$id)
     {
         if (is_null($id)) {
             return true;
         }
+        
         $path = $this->getRefParm($attr);
         if (!$path) {
             $this->_errLog->logLine(E_ERC008.':'.$attr);

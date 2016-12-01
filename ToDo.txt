@@ -1,7 +1,7 @@
 - get 100% coverage // logger 2hours // base  8 hours // type 30 min // 92.44%
 
-- clean up view // state fixed 4hours / sort out persistence
-- move getrefmod to Model;
+- clean up view // state fixed 4hours / 8hours / sort out persistence
+
 - clean up controler and add unit test
 
 - beef up test apps with relationships tables // done for file
@@ -38,6 +38,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- move getrefmod to Model; //4hours
 - move setVal from view to controller. // 15 min
 - INTP not allowing 0 // 1 hour
 - close connection // 5 min
