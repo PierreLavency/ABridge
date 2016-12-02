@@ -9,7 +9,7 @@ require_once("View.php");
 $fb->beginTrans();
 $db->beginTrans();
 
-$level = 1;
+$level = 0;
 $db->setLogLevl($level);
 $fb->setLogLevl($level);
 
@@ -80,6 +80,12 @@ if ($action == V_S_DELT and $actionExec) {
 if ($actionExec) {
     $action= V_S_READ;
 }
+
+$log = $db->getLog();
+if ($log) {
+    $log->logLine(' **************  ');
+}
+
 $v->show($action, true);   
 
 $log = $db->getLog();

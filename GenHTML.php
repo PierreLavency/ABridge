@@ -107,7 +107,7 @@ function genFormElemL($dspec,$show,$level)
     $url="";
     $arg = [];
     $plain;
-    $col = 30;
+    $col = 50;
     $row = 10;
     $label="";
     $tab = getTab($level);

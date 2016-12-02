@@ -18,7 +18,6 @@ define('V_STRING', "v_string");
 
 // V_ELEM
 define('V_ATTR', "v_attr");
-define('V_REP', "v_rep");  // should be set to the H_T_TYPE;
     
 define('V_PROP', "v_prop");   
 define('V_P_INP', "v_p_Attr");
@@ -40,6 +39,7 @@ class View
     // property
 
     protected $_model;
+    protected $_cmodel;
     protected $_attrList;
     protected $_attrRef;
     protected $_attrCref;
@@ -54,6 +54,7 @@ class View
     function __construct($model) 
     {
         $this->_model=$model; 
+        $this->_cmodel=null;
     }
 
     // methods
@@ -98,8 +99,7 @@ class View
                     foreach ($res as $attr) {
                         $atyp=$this->_model->getTyp($attr);
                         if ($atyp != M_CREF and 
-                            $atyp != M_TXT and 
-                            $atyp!=M_REF
+                            $atyp != M_TXT
                         ) {
                             $dspec[]=$attr;
                         }
@@ -254,7 +254,19 @@ class View
             }
             return $res ;
         }
-        $x=$this->getProp($attr, $prop);
+        if ($viewState == V_S_CREF) {
+            if ($typ == M_REF) {
+                $rid = $this->_model->getVal($attr);
+                $rmod = $this->_model->getRefMod($attr);
+                if (($this->_cmodel->getId() == $rid) and 
+                ($this->_cmodel->getModName() == $rmod)) {
+                    return false;
+                }
+            }
+        }
+        if ($typ != M_CREF or $prop != V_P_VAL) {
+            $x=$this->getProp($attr, $prop);
+        }
         if ($prop==V_P_VAL) {
             if ($attr == 'id' and $viewState == V_S_CREF) {
                 $res[H_TYPE]=H_T_LINK;
@@ -266,14 +278,18 @@ class View
                 $id=$spec[V_ID];
                 $m = $this->_model->getCref($attr, $id);
                 $v = new View($m);
-                $res = $v->buildView(V_S_CREF);
+                $m = $this->_cmodel;
+                if (is_null($m)) {
+                    $m = $this->_model;
+                }
+                $res = $v->buildCView($m, V_S_CREF);
                 return $res; 
             }
             if ($typ==M_REF) {
                 $res[H_TYPE]=H_T_LINK;
                 $m=$this->_model->getRef($attr);
                 if (is_null($m)) {
-                    return 0;
+                    return false;
                 }
                 $v = new View($m);
                 $res[H_LABEL]=$v->show(V_S_REF, false);
@@ -373,6 +389,13 @@ class View
         $r=genFormElem($r, $show);
         return $r;
     }
+    
+    public function buildCView($cmodel,$viewState) 
+    {
+        $this->_cmodel = $cmodel;
+        return ($this->buildView($viewState));
+    }
+    
     
     public function buildView($viewState) 
     {

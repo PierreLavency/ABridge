@@ -339,7 +339,7 @@ class Model
         return null;
     }
     
-    public function getRef($attr) 
+    public function getRefMod($attr) 
     {     
         if (! $this->existsAttr($attr)) {
             $this->_errLog->logLine(E_ERC002.':'.$attr);
@@ -349,13 +349,22 @@ class Model
              $this->_errLog->logLine(E_ERC026.':'.$attr);
             return false;
         }
+        $path=$this->getRefParm($attr);
+        $patha=explode('/', $path);
+        return ($patha[1]);
+    }
+    
+    public function getRef($attr) 
+    {     
+        $mod = $this->getRefMod($attr);
+        if (! $mod) {
+            return null;
+        }
         $id = $this->getVal($attr);
         if (is_null($id)) {
             return null;
         }
-        $path=$this->getRefParm($attr);
-        $path=$path.'/'.$id;
-        $res=pathObj($path);
+        $res=new Model($mod, $id);
         return ($res);
     }
         
@@ -372,7 +381,7 @@ class Model
         $path=$this->getRefParm($attr);
         $patha=explode('/', $path);
         $path='/'.$patha[1].'/'.$id;
-        $res=pathObj($path);
+        $res=new Model($patha[1], $id);
         return ($res);
     }
     
