@@ -40,6 +40,7 @@ class ModBase
         $meta['attr_path'] = $mod->getAllRefParm();
         $meta['attr_bkey'] = $mod->getAllBkey();
         $meta['attr_mdtr'] = $mod->getAllMdtr();
+        $meta['attr_ckey'] = $mod->getAllCkey();
         if ( ! $this->_base->existsMod($name)) {
             return ($this->_base->newMod($name, $meta));
         }
@@ -65,11 +66,15 @@ class ModBase
         $attrdflt=[];
         $attrpath=[];
         $attrbkey=[];
+        $attrckey=[];
         $attrmdtr=[];
         $attrlist=$values['attr_lst'];
         $attrtype=$values['attr_typ'];
         if (isset($values['attr_path'])) {
             $attrpath=$values['attr_path'];
+        }
+        if (isset($values['attr_ckey'])) {
+            $attrckey=$values['attr_ckey'];
         }
         $attrbkey=$values['attr_bkey'];
         $attrmdtr=$values['attr_mdtr'];
@@ -95,7 +100,10 @@ class ModBase
                     $mod->setMdtr($attr, true);
                 }
             }
-        } 
+        }
+        foreach ($attrckey as $ckey) {
+            $mod->setCkey($ckey, true);
+        }       
         return true;    
     }
 
@@ -147,6 +155,10 @@ class ModBase
         return ($this->_base->findObj($modN, $attr, $val));
     }
     
+    public function findObjWhere($model, $attrList, $valList)
+    {
+        return ($this->_base->findObjWhere($model, $attrList, $valList));
+    }
     
     
 }

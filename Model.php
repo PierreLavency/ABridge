@@ -84,6 +84,7 @@ class Model
     protected $_stateHdlr=0;
     protected $_trusted=false;
     protected $_checkTrusted=false; // could be usefull !! 
+    protected $_attrCkey;
     
     /**
     * Constructor
@@ -184,6 +185,7 @@ class Model
         $this->_refParm = [];
         $this->_attrBkey = [];
         $this->_attrMdtr = [];
+        $this->_attrCkey = [];
     }
 
     /**
@@ -276,6 +278,10 @@ class Model
      *
      * @return array
      */  
+    public function getAllCkey() 
+    { 
+        return $this->_attrCkey;            
+    } 
     public function getAllBkey() 
     { 
         return $this->_attrBkey;            
@@ -311,12 +317,7 @@ class Model
             $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        foreach ($this->_attrTyp as $x => $typ) {
-            if ($x==$attr) {
-                return $typ;
-            }
-        }                       
-        return null;
+        return ($this->_attrTyp[$attr]);              
     }
     /**
      * Returns the 'path' of an attribute.
@@ -325,20 +326,7 @@ class Model
      *
      * @return string its 'path'.
      */ 
-    protected function getRefParm($attr) 
-    {
-        if (! $this->existsAttr($attr)) {
-            $this->_errLog->logLine(E_ERC002.':'.$attr);
-            return false;
-        }
-        foreach ($this->_refParm as $x => $path) {
-            if ($x==$attr) {
-                return $path;
-            }
-        }                       
-        return null;
-    }
-    
+
     public function getRefMod($attr) 
     {     
         if (! $this->existsAttr($attr)) {
@@ -349,7 +337,7 @@ class Model
              $this->_errLog->logLine(E_ERC026.':'.$attr);
             return false;
         }
-        $path=$this->getRefParm($attr);
+        $path=$this->_refParm[$attr];
         $patha=explode('/', $path);
         return ($patha[1]);
     }
@@ -378,7 +366,7 @@ class Model
              $this->_errLog->logLine(E_ERC027.':'.$attr);
             return false;
         }
-        $path=$this->getRefParm($attr);
+        $path=$this->_refParm[$attr];
         $patha=explode('/', $path);
         $path='/'.$patha[1].'/'.$id;
         $res=new Model($patha[1], $id);
@@ -395,7 +383,7 @@ class Model
              $this->_errLog->logLine(E_ERC028.':'.$attr);
             return false;
         }
-        $path=$this->getRefParm($attr);
+        $path=$this->_refParm[$attr];
         $patha=explode('/', $path);
         $m = new Model($patha[1]);
         $res=$m->getCref($patha[3], $id);
@@ -542,13 +530,46 @@ class Model
             }      
         }
         if (! $val) {
-            if (in_array($attr, $this->_attrBkey)) {
-                unset($this->_attrBkey[$attr]);
-            }         
+            $key = array_search($attr, $this->_attrBkey);
+            if ($key!==false) {
+                unset($this->_attrBkey[$key]);
+            }             
         }
         $this->_modChgd=true;
         return true;
     }
+    
+    public function setCkey($attrLst,$val) 
+    {
+        if (! is_array($attrLst)) {
+            $this->_errLog->logLine(E_ERC029.':'.$attrLst);
+            return false;
+        }
+        foreach ($attrLst as $attr) {
+            if (! $x= $this->existsAttr($attr)) {
+                $this->_errLog->logLine(E_ERC002.':'.$attr);
+                return false;
+            };
+        }
+        if (!$this->_stateHdlr) {
+            $this->_errLog->logLine(E_ERC017.':'.$attr.':'.$typ);
+            return false;
+        }     
+        if ($val) {
+            if (!in_array($attrLst, $this->_attrCkey)) {
+                $this->_attrCkey[]=$attrLst;
+            }      
+        }
+        if (! $val) {
+            $key = array_search($attrLst, $this->_attrCkey);
+            if ($key!==false) {
+                unset($this->_attrCkey[$key]);
+            }             
+        }
+        $this->_modChgd=true;
+        return true;
+    }
+
     /**
      * Set an attribute value of a mandatory attribute .
      *
@@ -568,10 +589,11 @@ class Model
                 $this->_attrMdtr[]=$attr;
             }      
         }
-        if (! $val) {
-            if (in_array($attr, $this->_attrMdtr)) {
-                unset($this->_attrMdtr[$attr]);
-            }         
+        if (! $val) { 
+            $key = array_search($attr, $this->_attrMdtr);
+            if ($key!==false) {
+                unset($this->_attrMdtr[$key]);
+            }            
         }
         $this->_modChgd=true;
         return true;
@@ -637,6 +659,12 @@ class Model
             $this->_errLog->logLine(E_ERC001.':'.$attr);
             return false;
         }
+        foreach ($this->_attrCkey as $attrLst) {
+            if (in_array($attr, $attrLst)) {
+                $this->_errLog->logLine(E_ERC030.':'.$attr);
+                return false;
+            }
+        }
         $key = array_search($attr, $this->_attrLst);
         if ($key!==false) {
             unset($this->_attrLst[$key]);
@@ -701,7 +729,7 @@ class Model
         }
         $type=$this->getTyp($attr);
         if ($type == M_CREF) { //will not work if on different Base !!
-            $path = $this->getRefParm($attr);
+            $path = $this->_refParm[$attr];
             $patha=explode('/', $path);
             $hdlr=$this->_stateHdlr;
             $res=$hdlr->findObj($patha[1], $patha[2], $this->getId());
@@ -805,7 +833,32 @@ class Model
             return true;
         }
         return false;       
-    } 
+    }
+    
+    public function checkCkey($attrLst)
+    {   
+        $valLst=[];
+        foreach ($attrLst as $attr) {
+            $val = $this->getVal($attr);
+            if (is_null($val)) {
+                return true;
+            }
+            $valLst[]=$val;
+        }
+        $res=$this->_stateHdlr->findObjWhere(
+            $this->getModName(), 
+            $attrLst, 
+            $valLst
+        );
+        if ($res == []) {
+            return true;
+        }
+        if ($res == [$this->getId()]) {
+            return true;
+        }
+        return false;       
+    }
+    
     /**
      * Check the value of a code attribute.
      *
@@ -843,12 +896,9 @@ class Model
             $this->_errLog->logLine(E_ERC015.':'.$attr.':'.$r); 
             return false;
         }
-        $r=$this->getRefParm($attr);
-        if ($r) {
-            $res=pathVal($r);
-            return $res;
-        }
-        return $r;
+        $r=$this->_refParm[$attr];
+        $res=pathVal($r);
+        return $res;
     }  
      /**
      * Check the value of a ref attribute.
@@ -864,7 +914,7 @@ class Model
             return true;
         }
         
-        $path = $this->getRefParm($attr);
+        $path = $this->_refParm[$attr];
         if (!$path) {
             $this->_errLog->logLine(E_ERC008.':'.$attr);
             return false;
@@ -922,6 +972,14 @@ class Model
             $res=$this->checkMdtr($attr);
             if (!$res) {
                 $this->_errLog->logLine(E_ERC019.':'.$attr);
+                return false;
+            }
+        }
+        foreach ($this->getAllCkey() as $attrLst) {
+            $res=$this->checkCkey($attrLst);
+            if (!$res) {
+                $l=implode(':', $attrLst);
+                $this->_errLog->logLine(E_ERC031.':'.$l);
                 return false;
             }
         }

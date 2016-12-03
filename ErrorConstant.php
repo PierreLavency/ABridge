@@ -28,5 +28,7 @@ define('E_ERC025', "ERC025");  // No connection open FB
 define('E_ERC026', "ERC026");  // not a ref
 define('E_ERC027', "ERC027");  // not a cref
 define('E_ERC028', "ERC028");  // not a code
-
+define('E_ERC029', "ERC029");  // Ckey must be an array
+define('E_ERC030', "ERC030");  // attr in Ckey 
+define('E_ERC031', "ERC031");  // Ckey violation
 

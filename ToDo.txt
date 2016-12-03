@@ -1,15 +1,18 @@
 - get 100% coverage // logger 2hours // base  8 hours // type 30 min // 90%
 
+- view overide default layout.
 - view sort out persistence and get rid of Label hack
 - add view unit test
 - clean up controler and add unit test
 
 - beef up test apps with relationships tables // done for file
 
-- Bkey with more than 1 attributes   // select where implemented 2 hours
+- Bkey with more than 1 attributes   // select where implemented 2 hours / improved coverage of Bkey // still to test
 - define new type :  php 
 - define selection attribute type.
 - review addattr interface.
+
+- split alter drop and add in Base.
 
 - Implement inheritance
 - Authenthication

@@ -145,7 +145,7 @@ $log->includeLog($sextype1-> getErrLog ());
 // commit 
 
 $res = $db->commit();
-	$line = "$res = db->commit;"; $log->logLine($line);
+
 	
 /**************************************/
 	

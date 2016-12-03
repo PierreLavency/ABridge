@@ -146,8 +146,17 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		$this->assertTrue($code->isBkey('CodeName'));
 		
+		$this->assertNull($code->getDflt('CodeName'));
+		
+		$this->assertTrue($code->setVal('CodeName',null));
+		
 		$res = $code->setVal('CodeName','Sexe');
 		$this->assertTrue($res);
+		
+//		$res = $code->setVal('CodeName','Sexe');
+//		$this->assertTrue($res);
+		
+		$this->assertFalse($code->isOptl('Values'));
 		
 		$id = $code->save();
 		$this->assertEquals($id,1);	
@@ -290,14 +299,25 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		
 		$code = new Model($this->Code);
+		$this->assertTrue($code->setBkey('CodeName',false));
+		$this->assertTrue($code->setBkey('CodeName',true));
+
+		
 		$this->assertTrue($code->delAttr('CodeName'));
 		
 		$this->assertFalse($code->existsAttr('CodeName'));
 		
 		$codeval = new Model($this->CodeVal);
+		
+		$this->assertTrue($codeval->setMdtr('ValueOf',false));
+		$this->assertTrue($codeval->setMdtr('ValueOf',true));
+		
 		$this->assertTrue($codeval->delAttr('ValueOf'));
 		
 		$this->assertFalse($codeval->existsAttr('ValueOf'));
+		
+		
+		$this->assertTrue($codeval->delAttr('ValueName'));
 		
 		$db->commit();
 	}

@@ -61,20 +61,28 @@ class Model_Err_Test extends PHPUnit_Framework_TestCase {
 	public function testGetSet($x)
     {
 		$log = $x->getErrLog ();
+		$n =6;
 		
+		$n++;
 		$this->assertFalse($x->getVal('y'));
-		$this->assertEquals($log->getLine(7),'ERC002:y');
+		$this->assertEquals($log->getLine($n),'ERC002:y');
 		
+		$n++;
 		$this->assertFalse($x->setVal('y',3));
-		$this->assertEquals($log->getLine(8),'ERC002:y');
+		$this->assertEquals($log->getLine($n),'ERC002:y');
 		
+		$n++;
 		$this->assertFalse($x->setVal('id',3));
-		$this->assertEquals($log->getLine(9),'ERC001:id');
+		$this->assertEquals($log->getLine($n),'ERC001:id');
 		
+		$n++;
 		$this->assertTrue($x->addAttr('y',M_INT));
 		$this->assertFalse($x->setVal('y','A'));
-		$this->assertEquals($log->getLine(10),'ERC005:y:A:m_int');
+		$this->assertEquals($log->getLine($n),'ERC005:y:A:m_int');
 		
+		$n++;
+		$this->assertFalse($x->getTyp('notexists'));
+		$this->assertEquals($log->getLine($n),'ERC002:notexists');
 		return $x;
 		
 	}/**
@@ -84,18 +92,23 @@ class Model_Err_Test extends PHPUnit_Framework_TestCase {
     public function testSave($x) 
 	{
 		$log = $x->getErrLog ();
-		
+		$n = 11;
+
+		$n++;
 		$this->assertFalse($x->save());
-		$this->assertEquals($log->getLine(11),'ERC006');
+		$this->assertEquals($log->getLine($n),'ERC006');
 		
+		$n++;
 		$this->assertFalse($x->delet());
-		$this->assertEquals($log->getLine(12),'ERC006');
+		$this->assertEquals($log->getLine($n),'ERC006');
 		
+		$n++;
 		$this->assertFalse($x->saveMod());
-		$this->assertEquals($log->getLine(13),'ERC006');
-		
+		$this->assertEquals($log->getLine($n),'ERC006');
+
+		$n++;		
 		$this->assertFalse($x->deleteMod());
-		$this->assertEquals($log->getLine(14),'ERC006');
+		$this->assertEquals($log->getLine($n),'ERC006');
 		
 	}
 }
