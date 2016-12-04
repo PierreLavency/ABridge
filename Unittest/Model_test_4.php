@@ -55,10 +55,10 @@ $id1 = $sex->save();
 	$line = "$id1 = sex->save();"; $log->logLine($line);	
 
 // an error 
-$res = $sex ->checkRef('ValueOf',2);
+//$res = $sex ->checkRef('ValueOf',2);
 	$line = "$res = sex ->checkRef('ValueOf',2);"; $log->logLine($line);
 // a good one 
-$res = $sex ->checkRef('ValueOf',1);
+//$res = $sex ->checkRef('ValueOf',1);
 	$line = "$res = sex ->checkRef('ValueOf',1);"; $log->logLine($line);
 	
 $log->includeLog($sex-> getErrLog ());

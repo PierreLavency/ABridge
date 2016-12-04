@@ -132,9 +132,7 @@ class Model
         $idr=0;
         $x = $this->_stateHdlr;
         if ($x) {
-            if (! $x->restoreMod($this)) {
-                throw new exception(E_ERC022.':'.$name);
-            }
+            $x->restoreMod($this);
             $this->_trusted = true;
             $idr =$x->restoreObj($this);
             $this->_trusted = false;
@@ -521,7 +519,7 @@ class Model
             return false;
         };
         if (!$this->_stateHdlr) {
-            $this->_errLog->logLine(E_ERC017.':'.$attr.':'.$typ);
+            $this->_errLog->logLine(E_ERC017.':'.$attr);
             return false;
         }     
         if ($val) {
@@ -542,7 +540,7 @@ class Model
     public function setCkey($attrLst,$val) 
     {
         if (! is_array($attrLst)) {
-            $this->_errLog->logLine(E_ERC029.':'.$attrLst);
+            $this->_errLog->logLine(E_ERC029);
             return false;
         }
         foreach ($attrLst as $attr) {
@@ -552,7 +550,7 @@ class Model
             };
         }
         if (!$this->_stateHdlr) {
-            $this->_errLog->logLine(E_ERC017.':'.$attr.':'.$typ);
+            $this->_errLog->logLine(E_ERC017);
             return false;
         }     
         if ($val) {
@@ -805,7 +803,8 @@ class Model
         }
         // BKey
         if ($this->isBkey($attr) and $check) {
-            if (! $this->checkBkey($attr, $val)) {
+            $res = $this->checkBkey($attr, $val);
+            if (! $res) {
                 $this->_errLog->logLine(E_ERC018.':'.$attr.':'.$val);
                 return false;
             } 
@@ -820,7 +819,7 @@ class Model
      *
      * @return boolean
      */    
-    public function checkBkey($attr,$val)
+    protected function checkBkey($attr,$val)
     {       
         if (is_null($val)) {
             return true;
@@ -829,22 +828,24 @@ class Model
         if ($res == []) {
             return true;
         }
-        if ($res == [$this->getId()]) {
+        $id=array_pop($res);
+        if ($id == $this->getId()) {
             return true;
         }
         return false;       
     }
     
-    public function checkCkey($attrLst)
+    protected function checkCkey($attrLst)
     {   
         $valLst=[];
+        $res=[];
         foreach ($attrLst as $attr) {
             $val = $this->getVal($attr);
             if (is_null($val)) {
                 return true;
             }
             $valLst[]=$val;
-        }
+        }       
         $res=$this->_stateHdlr->findObjWhere(
             $this->getModName(), 
             $attrLst, 
@@ -853,7 +854,8 @@ class Model
         if ($res == []) {
             return true;
         }
-        if ($res == [$this->getId()]) {
+        $id=array_pop($res);
+        if ($id == $this->getId()) {
             return true;
         }
         return false;       
@@ -867,7 +869,7 @@ class Model
      *
      * @return boolean
      */
-    public function checkCode($attr,$val)
+    protected function checkCode($attr,$val)
     {
         if (is_null($val)) {
             return true;
@@ -908,27 +910,19 @@ class Model
      *
      * @return boolean
      */   
-    public  function checkRef($attr,$id)
+    protected  function checkRef($attr,$id) 
     {
         if (is_null($id)) {
             return true;
         }
         
-        $path = $this->_refParm[$attr];
-        if (!$path) {
-            $this->_errLog->logLine(E_ERC008.':'.$attr);
-            return false;
-        };
-        $path=$path.'/'.$id;
+        $mod = $this->getRefMod($attr);
         try {
-            $res = pathObj($path);
+            $res = new Model($mod, $id);
         } 
         catch (Exception $e) {
             $this->_errLog->logLine($e->getMessage());
             return false;
-        }
-        if (!$res) {
-            throw new Exception(E_ERC023.':'.$attr.':'.$path);
         }
         return true;
     }
@@ -939,12 +933,9 @@ class Model
      *
      * @return boolean
      */    
-    public function checkMdtr($attr)
+    protected function checkMdtr($attr)
     {
         $typ= $this->getTyp($attr);
-        if (!$typ) {
-            return false;
-        }
         if (array_key_exists($attr, $this->_attrVal)) {
             $val = $this->getVal($attr);
             if (! is_null($val)) {

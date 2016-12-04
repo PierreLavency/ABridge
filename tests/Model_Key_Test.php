@@ -92,12 +92,10 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$res=$codeval->setMdtr('ValueOf',true); // Mdtr
 		$this->assertTrue($res);
 
-		$r = $codeval-> getErrLog ();
-		$r->show();		
-
 		$res = $codeval->saveMod();	
 		$this->assertTrue($res);	
-
+		
+		$r = $codeval-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);	
 		
 		// CRef - Code
@@ -149,18 +147,21 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$this->assertNull($code->getDflt('CodeName'));
 		
 		$this->assertTrue($code->setVal('CodeName',null));
-		
+
 		$res = $code->setVal('CodeName','Sexe');
 		$this->assertTrue($res);
-		
-//		$res = $code->setVal('CodeName','Sexe');
-//		$this->assertTrue($res);
-		
+
 		$this->assertFalse($code->isOptl('Values'));
 		
 		$id = $code->save();
 		$this->assertEquals($id,1);	
+		
+		$res = $code->setVal('CodeName','Sexe');
+		$this->assertTrue($res);
 
+		$id = $code->save();
+		$this->assertEquals($id,1);	
+		
 		$r = $code-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);	
 
@@ -214,7 +215,99 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 	/**
     * @depends testNewCode
     */
-		public function testErrors($typ) 
+	public function testCkey($typ) 
+	{
+		$this->setTyp($typ);
+		$db=$this->db;
+		$db->beginTrans();
+		
+		$codeval = new Model($this->CodeVal);
+
+		$res=$codeval->setCkey(['ValueName','ValueOf'],true);	
+		$this->assertTrue($res);
+		
+		$res=$codeval->getAllCkey();
+		$l=implode(':',$res[0]);
+		$this->assertEquals('ValueName:ValueOf',$l);	
+
+		$res=$codeval->saveMod();
+		$this->assertTrue($res);
+		
+		$res = $codeval->setVal('ValueName','Female');
+		$res = $codeval->setVal('ValueOf',1);
+
+		$id2= $codeval->save();
+		$this->assertEquals($id2,2);	
+		
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($r->logSize(),0);	
+		$db->commit();
+
+		$codeval = new Model($this->CodeVal,2);
+		$r = $codeval-> getErrLog ();
+		
+		$id2= $codeval->save();
+		$r->show();
+		$this->assertEquals($id2,2);	
+		
+		$r = $codeval-> getErrLog ();
+
+		$this->assertEquals($r->logSize(),0);	
+		$db->commit();
+		
+		$codeval = new Model($this->CodeVal);
+		
+		$res = $codeval->setVal('ValueName',null);
+		$res = $codeval->setVal('ValueOf',1);
+
+		$id3= $codeval->save();
+		$this->assertEquals($id3,3);
+		
+		//errors
+		$codeval = new Model($this->CodeVal);
+		
+		$res = $codeval->setVal('ValueName','Female');
+		$res = $codeval->setVal('ValueOf',1);
+
+		$id2= $codeval->save();
+		$this->assertFalse($id2);	
+		
+		$n = 0;
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($r->getLine($n),E_ERC031.':'.$l);	
+
+		$this->assertFalse($codeval->delAttr('ValueOf'));
+		$n++;
+		$this->assertEquals($r->getLine($n),E_ERC030.':ValueOf');	
+		
+		$res=$codeval->setCkey(['ValueName','Notexist'],true);	
+		$this->assertFalse($res);
+		$n++;
+		$this->assertEquals($r->getLine($n),E_ERC002.':Notexist');	
+		
+		$res=$codeval->setCkey('ValueName',true);	
+		$this->assertFalse($res);
+		$n++;
+		$this->assertEquals($r->getLine($n),E_ERC029);	
+		
+		$db->commit();
+		
+		$codeval = new Model($this->CodeVal);
+
+		$res=$codeval->setCkey(['ValueName','ValueOf'],false);	
+		$this->assertTrue($res);
+		
+		$res=$codeval->saveMod();
+		$this->assertTrue($res);
+	}
+	
+	/**
+     * @dataProvider Provider1
+     *	
+	/**
+    * @depends testCkey
+    */
+	public function testErrors($typ) 
 	{
 		
 		$this->setTyp($typ);
@@ -283,7 +376,21 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		$this->assertFalse($codeval->isOptl('id'));
 		
-	$db->commit();
+		$db->commit();
+		
+		$m = new Model('NoState');
+		$r = $m-> getErrLog ();
+		
+		$this->assertTrue($m->addAttr('A'));
+		
+		$res=$m->setBkey('A',true);
+		$this->assertFalse($res);
+		$this->assertEquals($r->getLine(0),E_ERC017.':A');
+		
+		$res=$m->setCkey(['A','A'],true);
+		$this->assertFalse($res);
+		$this->assertEquals($r->getLine(1),E_ERC017);
+		
 	}
 	/**
      * @dataProvider Provider1
@@ -307,19 +414,26 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		$this->assertFalse($code->existsAttr('CodeName'));
 		
+		$r = $code-> getErrLog ();
+		$this->assertEquals($r->logSize(),0);	
+		
 		$codeval = new Model($this->CodeVal);
 		
 		$this->assertTrue($codeval->setMdtr('ValueOf',false));
 		$this->assertTrue($codeval->setMdtr('ValueOf',true));
-		
+	
 		$this->assertTrue($codeval->delAttr('ValueOf'));
 		
 		$this->assertFalse($codeval->existsAttr('ValueOf'));
 		
-		
 		$this->assertTrue($codeval->delAttr('ValueName'));
 		
+		$r = $codeval-> getErrLog ();
+		$this->assertEquals($r->logSize(),0);	
+	
 		$db->commit();
+				
+		
 	}
 	
 }

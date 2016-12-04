@@ -164,7 +164,13 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals($res,[]);		
 
 		$r = $code-> getErrLog ();
-		$this->assertEquals($r->logSize(),0);	
+		$this->assertEquals($r->logSize(),0);
+
+		$student = new Model($this->Student);
+		$this->assertNotNull($student);	
+		
+		$res = $student->setVal('Sexe',2);
+		$this->assertFalse($res);
 
 		$db->commit();
 
@@ -246,6 +252,9 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res = $student->setVal('Name','Quoilin');
 		$this->assertTrue($res);
 		
+		$res = $student->setVal('Sexe',null);
+		$this->assertTrue($res);
+		
 		$res = $student->setVal('Sexe',2);
 		$this->assertTrue($res);
 		
@@ -253,10 +262,12 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$codeval = new Model($this->CodeVal,2);
 		$this->assertEquals($res,$codeval);
 		
-		
 		$id= $student->save();
 		$this->assertEquals($id,1);
 
+		$p=$student->getPath();
+		$this->assertEquals($p,rootpath().'/'.$this->Student.'/1');
+		
 		$r = $student-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);	
 
