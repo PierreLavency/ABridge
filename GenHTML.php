@@ -48,6 +48,56 @@ function genFormL($action,$url,$hidden,$dspecL,$show,$level)
     return $result;
 }
 
+function genTable($dspec,$show=true)
+{
+    return genTable($dpesc, show, 0);
+}
+
+function genTableL ($dspecL,$show,$level)
+{
+    $tableS = '<table >';
+    $tableSE = '</table>';
+    $elementS   = '<tr>'  ;
+    $elementES   = '</tr>'  ;
+    $tab = getTab($level);
+    $nl  = getNl($level);
+    $tabn=getTab($level+1);
+    
+    $result= $tab.$tableS;
+    foreach ($dspecL as $dspec) {
+        $result=$result . $nl . $tabn. $elementS. $nl;
+        $result=$result .genLineL($dspec, $level+2).$tabn.$elementES;
+    }
+    $result = $result.$nl.$tab.$tableSE.$nl;
+    if ($show) {
+        echo $result;
+    };
+    return $result;
+}
+
+function genLineL($dspecL,$level)
+{
+    $elementS   = '<td>'  ;
+    $elementES   = '</td>'  ;
+    $result = "";
+    $tab = getTab($level);
+    $nl  = getNl($level);
+
+    if (isset($dspecL[H_ARG])) {
+        $elmL = $dspecL[H_ARG];
+        foreach ($elmL as $elm) {
+            $result=$result.$tab.$elementS.$nl;
+            $result=$result.genFormElemL($elm, false, $level+1);
+            $result=$result.$tab.$elementES.$nl;
+        }
+    } else {
+        $result=$result.$tab.$elementS. $nl;
+        $result=$result.genFormElemL($dspecL, false, $level+1);
+        $result=$result.$tab.$elementES.$nl;
+    } 
+    return $result;
+}
+
 function genList($dspec,$show=true)
 {
     return(genListL($dspec, $show, 0));
@@ -108,7 +158,7 @@ function genFormElemL($dspec,$show,$level)
     $arg = [];
     $plain;
     $col = 50;
-    $row = 10;
+    $row = 5;
     $label="";
     $tab = getTab($level);
     $nl  = getNl($level);
@@ -171,8 +221,18 @@ function genFormElemL($dspec,$show,$level)
         case H_T_LINK:
             $result = $tab.$linkS.$name.$endS.$label.$linkES.$nl;
             break;
+        case H_T_LIST_BR:
+            $result = ""; 
+            foreach ($arg as $elm) {
+                $res= genFormElemL($elm, false, $level);
+                $result = $result. $res . "\n";
+            }
+            break;
         case H_T_LIST:
             $result = genListL($arg, false, $level);
+            break;
+        case H_T_TABLE:
+            $result = genTableL($arg, false, $level);
             break;
         case H_T_CONCAT:
             $result = $tab;

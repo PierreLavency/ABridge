@@ -1,14 +1,15 @@
-- get 100% coverage // logger 2hours // base  8 hours // type 30 min // 90%
+- order in list query and attr
+- add view unit test
 
 - view overide default layout.
+- add son creation
 - view sort out persistence and get rid of Label hack
-- add view unit test
+
 - clean up controler and add unit test
 
-- beef up test apps with relationships tables // done for file
+- beef up test apps with relationships tables // done for file // union + deathDate
 
-- Bkey with more than 1 attributes   // select where implemented 2 hours / improved coverage of Bkey // still to test
-- define new type :  php 
+- define new type :  php - not sure !
 - define selection attribute type.
 - review addattr interface.
 
@@ -20,7 +21,7 @@
 
 - find a way to test HTML
 - set up a git server
-- jenkin 
+- set up jenkin 
 
 Run time depedency
 -Xampp php/mariadb/appache
@@ -41,6 +42,10 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- split Cref from Object List.  // 10 hours coupled with parametrize all lists
+- implemengt table list. // see above
+- Bkey with more than 1 attributes   // select where implemented 2 hours / improved coverage of Bkey // test 4 Hours
+- get 100% coverage // logger 2hours // base  8 hours // type 30 min // model 8 hours 100%
 - clean up view // state fixed 4hours / 8hours / 8 hours // ok but label hack
 - define new type : blob // TXT 4 hours 
 - move getrefmod to Model; //4hours

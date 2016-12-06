@@ -5,10 +5,16 @@ require_once("ViewConstant.php");
 require_once("GenHTML.php");
 
 define('V_TYPE', "v_type");
+define('V_LT', "v_lt");
 define('V_ELEM', "v_elem");
 define('V_LIST', "v_list");
+define('V_ALIST', "v_alist");
+define('V_CLIST', "v_clist");
+define('V_CREF', "v_cref");
+define('V_CVAL', "v_cval");
+define('V_REF', "v_ref");
 define('V_ARG', "v_arg");
-define('V_OBJ', "v_Obj");
+define('V_OBJ', "v_obj");
 define('V_NAV', "v_nav");
 define('V_ERROR', "v_error"); 
 define('V_FORM', "v_form");
@@ -124,17 +130,41 @@ class View
         return true;
     }
 
-    public function getListHtml ($viewState)
-    {
-        if ($viewState == V_S_REF) {
-            $res = H_T_CONCAT;
-        } else {
-            $res = $this->_listHtml;
-            if (is_null($res)) {
-                $res = H_T_LIST;
-            }               
-        }
-        return $res;
+    public function getListHtml($listType)
+    {       
+        switch ($listType) {
+            case V_OBJ: 
+                $result=H_T_LIST_BR; //BR
+                break;
+            case V_NAV:
+                $result=H_T_LIST_BR;  // BR
+                break;
+            case V_ALIST:
+                $result=H_T_TABLE; // TABLE
+                break;
+            case V_ATTR:
+                $result=H_T_LIST;
+                break;          
+            case V_CLIST:
+                $result=H_T_LIST_BR; //BR
+                break;                                              
+            case V_CREF:
+                $result=H_T_LIST_BR; //BR
+                break;
+            case V_CVAL:
+                $result=H_T_TABLE; // TABLE
+                break;
+            case V_S_REF: // no choice !
+                $result=H_T_CONCAT;
+                break;
+            case V_S_CREF: // shoud get this from the calling object ? 
+                $result=H_T_LIST;  // CONCAT
+                break;
+            default:
+                $result=H_T_LIST;
+        }                       
+ 
+        return $result;
     }
      
     public function setPropList($dspec) 
@@ -328,7 +358,11 @@ class View
                     $result= $this->evalo($spec, $viewState);
                 break;
             case V_LIST:
-                    $result[H_TYPE]=$this->getListHtml($viewState);
+                    $lt = "";
+                    if (isset($spec[V_LT])) {
+                        $lt=$spec[V_LT];
+                    }
+                    $result[H_TYPE]=$this->getListHtml($lt);
                     $result[H_SEPARATOR]= ' ';
                     $arg=[];
                     foreach ($spec[V_ARG] as $elem) {
@@ -355,15 +389,19 @@ class View
                     $result[H_ARG]=$arg;
                 break;
             case V_NAV:
+                    $result[H_TYPE]=$this->getListHtml(V_NAV);;
+                    $result[H_SEPARATOR]= ' ';
+                    $arg=[];
+                    $res=[];
                     if ($viewState == V_S_CREA 
                     or  $viewState == V_S_DELT 
                     or  $viewState == V_S_UPDT) {
-                        $result[H_TYPE]=H_T_SUBMIT;
-                        $result[H_LABEL]=$this->getLbl(H_T_SUBMIT);
+                        $res[H_TYPE]=H_T_SUBMIT;
+                        $res[H_LABEL]=$this->getLbl(H_T_SUBMIT);
+                        $arg[]=$res;    
                     }       
                     if ($viewState == V_S_READ) {
                         if (count($this->_nav)) {
-                            $result[H_TYPE]=H_T_LIST;
                             $res[H_TYPE]=H_T_LINK;
                             $p=$this->_model->getPath(); 
                             foreach ($this->_nav as $nav) {
@@ -371,9 +409,10 @@ class View
                                 $res[H_NAME]="'".$p.'?View='.$nav."'";
                                 $arg[]=$res;
                             }
-                            $result[H_ARG]=$arg;
+                            
                         }
                     }
+                    $result[H_ARG]=$arg;
                 break;
             case V_ERROR:
                     $result[H_TYPE]=H_T_PLAIN;
@@ -410,51 +449,56 @@ class View
             $this->setAttrList($x, V_S_REF);
         }
         
-        $i=0;
         $name = $this->_model->getModName();
-        $spec=[];
+        $spec=[];       
+        $specL=[];                  
         foreach ($this->getAttrList($viewState) as $attr) {
             $view =[];
-            foreach ($this->getPropList($viewState) as $prop) {
-                $view[] = [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => $prop];
-            }
-            if ($this->_model->getTyp($attr) == M_CREF) {
-                $view=[[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_NAME]];
-                foreach ($this->_model->getVal($attr) as $id) {
-                    $view[]=[
-                                V_TYPE=>V_ELEM,V_ATTR => $attr,
-                                V_PROP => V_P_VAL,V_ID=>$id];
+            $typ= $this->_model->getTyp($attr);
+            if ($typ != M_CREF) {
+                foreach ($this->getPropList($viewState) as $prop) {
+                    $view[] = [V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => $prop];
+                }
+                if ($viewState == V_S_REF or $viewState == V_S_CREF) {
+                    $spec = array_merge($spec, $view);
+                } else {
+                    $spec[]=[V_TYPE=>V_LIST,V_LT=>V_ATTR,V_ARG=>$view];
                 }
             }
-            if ($viewState == V_S_REF or $viewState == V_S_CREF) {
-                $spec = array_merge($spec, $view);
-            } else {
-                $spec[$i]=[V_TYPE=>V_LIST,V_ARG=>$view];
-                $i++;
+            if ($typ == M_CREF) {
+                $view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL];
+                $viewe=[];
+                foreach ($this->_model->getVal($attr) as $id) {
+                    $viewe[]=[V_TYPE=>V_ELEM,V_ATTR => $attr,
+                             V_PROP => V_P_VAL,V_ID=>$id];
+                }
+                $view[]=[V_TYPE=>V_LIST,V_LT=>V_CVAL,V_ARG=>$viewe];
+                $specL[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
             }
-
         }
         if ($viewState == V_S_REF or $viewState == V_S_CREF) {
-            $specf = [V_TYPE=>V_LIST,V_ARG=>$spec];
+            $specf = [V_TYPE=>V_LIST,V_LT=>$viewState,V_ARG=>$spec];
             $r=$this->subst($specf, $viewState);
             return $r;
         }
         $arg = [];
         $arg[]= [V_TYPE=>V_OBJ];
-        $arg[]= [V_TYPE=>V_LIST,V_ARG=>$spec];
         $arg[]= [V_TYPE=>V_NAV];
+        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_ALIST,V_ARG=>$spec];
         if ($this->_model->isErr()) {
             $e = $this->viewErr();
             $arg[]=$e;
         }
-        $speci = [V_TYPE=>V_LIST,V_ARG=>$arg];
-        $specf = $speci;
         if ($viewState == V_S_CREA 
         or  $viewState == V_S_DELT 
         or  $viewState == V_S_UPDT) {
-            $specf = [V_TYPE=>V_FORM,V_ARG=>[$speci]];
+            $speci = [V_TYPE=>V_FORM,V_LT=>V_OBJ,V_ARG=>$arg];
+            $r=$this->subst($speci, $viewState);
+            return $r;
         }
-        $r=$this->subst($specf, $viewState);
+        $arg[] = [V_TYPE=>V_LIST,V_LT=>V_CLIST,V_ARG=>$specL];
+        $speci = [V_TYPE=>V_LIST,V_LT=>V_OBJ,V_ARG=>$arg];  
+        $r=$this->subst($speci, $viewState);
         return $r;
     }
 
@@ -470,7 +514,7 @@ class View
                 $r = $log->getLine($i);
                 $result[$i]=[V_TYPE=>V_ERROR,V_STRING=>$r];
             }
-            $result = [V_TYPE =>V_LIST,V_ARG=>$result];
+            $result = [V_TYPE =>V_LIST,V_LT=>V_ERROR,V_ARG=>$result];
             return $result;
     }
 
