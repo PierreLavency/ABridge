@@ -1,6 +1,5 @@
 - order in list query and attr
-- add view unit test
-
+- 'selection' view 
 - view overide default layout.
 - add son creation
 - view sort out persistence and get rid of Label hack
@@ -41,6 +40,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- add view unit test // 4 hours 68%
 - find a way to test HTML // 8 hours - GenHTML 100%
 - split Cref from Object List.  // 10 hours coupled with parametrize all lists
 - implemengt table list. // see above

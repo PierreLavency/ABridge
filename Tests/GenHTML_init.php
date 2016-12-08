@@ -19,12 +19,9 @@ for ($i=0;$i<count($test);$i++) {
 	if($show) {echo "<br/>\n";}
 	$case = $test[$i];
 	$r=genFormElem($case[0],$show);
-	$line = "$r";
-	$log->logLine ($line);
+	$log->logLine ($r);
 }
 	
 $log->saveTest();
 
 //$log->showTest();
-
-?>

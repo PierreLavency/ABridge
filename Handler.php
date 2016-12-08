@@ -70,6 +70,7 @@ class Handler
     {
         $this->_bases= [];
         $this->_modHandler=[];
+        self::$_instance =null;
     }
 
     public function getBase($base,$instance) 
