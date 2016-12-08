@@ -17,7 +17,7 @@ class GenHTML_Test extends PHPUnit_Framework_TestCase {
 	
 	public function testFormElmOut()
     {
-		global $test;
+		$test= GenHTLMCases();
 		$this->expectOutputString(self::$log->getLine(0));
 		$this->assertNotNull(genFormElem($test[0][0],true));
     }
@@ -33,8 +33,7 @@ class GenHTML_Test extends PHPUnit_Framework_TestCase {
     }
  
     public function Provider1() {
-		global $test;
-        return $test;
+        return GenHTLMCases();
     }
 
 }

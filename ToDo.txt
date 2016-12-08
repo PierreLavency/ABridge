@@ -19,7 +19,6 @@
 - Authenthication
 - Authorisation
 
-- find a way to test HTML
 - set up a git server
 - set up jenkin 
 
@@ -42,6 +41,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- find a way to test HTML // 8 hours - GenHTML 100%
 - split Cref from Object List.  // 10 hours coupled with parametrize all lists
 - implemengt table list. // see above
 - Bkey with more than 1 attributes   // select where implemented 2 hours / improved coverage of Bkey // test 4 Hours

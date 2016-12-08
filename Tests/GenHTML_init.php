@@ -11,6 +11,7 @@ $log=new unitTest($logName);
 /**************************************/
 
 $show = false;
+$test = GenHTLMCases();
 
 for ($i=0;$i<count($test);$i++) {
 	
