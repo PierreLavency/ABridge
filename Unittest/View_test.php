@@ -34,9 +34,7 @@ $method = 'GET';
 
 $v = new View($x);
 
-$L=$x->getAllAttr();
-$L= array_diff($L,['vnum','ctstp','utstp']);
-$v->setAttrList($L);
+
 $L = array('id'=>'object reference','vnum'=>'version number','ctstp'=>'creation time stamp',
 'A1' => "Attribute1",H_T_SUBMIT=>"Confirmer");
 $v->setLblList($L);
@@ -88,6 +86,11 @@ $res = genFormElem($r,$show);
 $line = "$res = genFormElem(r,$show)"; $log->logLine ($line);
 	// end
 if ($show) {echo "<br>" ; };
+
+/*
+ini_set('xdebug.var_display_max_depth',10);
+var_dump($res);
+*/
 
 $res = $v->show(V_S_READ,$show);
 $line = "$res = v->show(V_S_READ,$show);"; $log->logLine ($line);

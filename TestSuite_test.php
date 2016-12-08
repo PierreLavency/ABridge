@@ -3,7 +3,7 @@
 //require_once("Unittest\UnitTest_test.php"); // not ported
 //require_once("Unittest\Logger_test.php"); // done decommisioned !!
 require_once("Unittest\Model_test.php");    // done
-require_once("Unittest\GenHTML_test.php");  // KEPT
+require_once("Tests\GenHTML_init.php");  // KEPT
 require_once("Unittest\FileBase_test.php"); //done
 require_once("Unittest\Handler_test.php");  //done
 //require_once("Unittest\Type_test.php");     //Not maintained

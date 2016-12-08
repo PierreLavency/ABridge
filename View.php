@@ -33,12 +33,12 @@ define('V_P_NAME', "v_p_Name");
 define('V_P_TYPE', "v_p_type");
 define('V_P_REF', "v_p_ref");
 
-define('V_S_CREA', "Create");
+define('V_S_CREA', "Create"); // object view states
 define('V_S_UPDT', "Update"); 
 define('V_S_READ', "Read"); 
 define('V_S_DELT', "Delete");
-define('V_S_REF', "reference");
-define('V_S_CREF', "creference");
+define('V_S_REF', "reference"); // reference view
+define('V_S_CREF', "creference"); // collection view
 
 class View
 {

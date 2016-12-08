@@ -22,12 +22,7 @@ function getNl($level)
     return $nl;
 }
 
-function genForm($action,$url,$hidden,$dspec,$show=true)
-{
-    genformL($action, $dspec, $hidden, $show, 0);
-}
-
-function genFormL($action,$url,$hidden,$dspecL,$show,$level) 
+function genFormL($action,$url,$hidden,$dspecL,$level) 
 {
     $formS = '<form method='.$action.' action= '.$url. ' >';
     $formS = $formS."<input type='hidden' name='action' value='";
@@ -39,21 +34,13 @@ function genFormL($action,$url,$hidden,$dspecL,$show,$level)
 
     $result=$tab.$formS.$nl;
     foreach ($dspecL as $dspec) {
-        $result=$result. genFormElemL($dspec, false, $level+1);
+        $result=$result. genFormElemL($dspec, $level+1);
     }
     $result=$result.$tab.$formES.$nl;
-    if ($show) {
-        echo $result;
-    };
     return $result;
 }
 
-function genTable($dspec,$show=true)
-{
-    return genTable($dpesc, show, 0);
-}
-
-function genTableL ($dspecL,$show,$level)
+function genTableL ($dspecL,$level)
 {
     $tableS = '<table >';
     $tableSE = '</table>';
@@ -69,9 +56,6 @@ function genTableL ($dspecL,$show,$level)
         $result=$result .genLineL($dspec, $level+2).$tabn.$elementES;
     }
     $result = $result.$nl.$tab.$tableSE.$nl;
-    if ($show) {
-        echo $result;
-    };
     return $result;
 }
 
@@ -87,23 +71,18 @@ function genLineL($dspecL,$level)
         $elmL = $dspecL[H_ARG];
         foreach ($elmL as $elm) {
             $result=$result.$tab.$elementS.$nl;
-            $result=$result.genFormElemL($elm, false, $level+1);
+            $result=$result.genFormElemL($elm, $level+1);
             $result=$result.$tab.$elementES.$nl;
         }
     } else {
         $result=$result.$tab.$elementS. $nl;
-        $result=$result.genFormElemL($dspecL, false, $level+1);
+        $result=$result.genFormElemL($dspecL, $level+1);
         $result=$result.$tab.$elementES.$nl;
     } 
     return $result;
 }
 
-function genList($dspec,$show=true)
-{
-    return(genListL($dspec, $show, 0));
-}
-
-function genListL($dspecL,$show,$level)
+function genListL($dspecL,$level)
 {
     $listS   = '<ul>'  ;
     $listES = '</ul>';
@@ -116,36 +95,36 @@ function genListL($dspecL,$show,$level)
     $result = $tab.$listS ; 
     foreach ($dspecL as $dspec) {
         $result=$result . $nl . $tabn. $elementS. $nl;
-        $result=$result .genFormElemL($dspec, false, $level+2).$tabn.$elementES;
+        $result=$result .genFormElemL($dspec, $level+2).$tabn.$elementES;
     }
     $result = $result.$nl.$tab.$listES.$nl;
-    if ($show) {
-        echo $result;
-    };
     return $result;
 }
 
 function genFormElem($dspec,$show = true)    
 {
-    return (genFormElemL($dspec, $show, 0));
+    $res=genFormElemL($dspec, 0);
+    if ($show) {
+        echo $res;
+    }
+    return $res;
 }   
 
-function genFormElemL($dspec,$show,$level)   
+function genFormElemL($dspec,$level)   
 {
-
-    $buttonS   = '<input type="submit" value = ';
-    $textareaS = '<textarea ';
+    $buttonS    = '<input type="submit" value = ';
+    $textareaS  = '<textarea ' ;
     $textareaES = '</textarea>';
-    $selectS   = '<select '  ;
-    $selectES = '</select>';
-    $inputS    = '<input '   ;
-    $optionS   = '<option '  ;
-    $optionES = '</option>';
-    $linkS   = '<a href='  ;
-    $linkES = '</a>';
-    $endS      = ' >'    ;
-    $colS      = ' cols="'    ;
-    $rowS      = ' rows="'    ;
+    $selectS    = '<select '   ;
+    $selectES   = '</select>'  ;
+    $inputS     = '<input '    ;
+    $optionS    = '<option '   ;
+    $optionES   = '</option>'  ;
+    $linkS      = '<a href='   ;
+    $linkES     = '</a>'       ;
+    $endS       = ' >'         ;
+    $colS       = ' cols="'    ;
+    $rowS       = ' rows="'    ;
     
     $type="";
     $default="";
@@ -156,14 +135,12 @@ function genFormElemL($dspec,$show,$level)
     $action="";
     $url="";
     $arg = [];
-    $plain;
     $col = 50;
     $row = 5;
     $label="";
     $tab = getTab($level);
     $nl  = getNl($level);
 
-    
     foreach ($dspec as $t => $v) {
         switch ($t) {
             case H_TYPE:
@@ -209,10 +186,15 @@ function genFormElemL($dspec,$show,$level)
                 break;
         }; 
     };
-
-    $nameS = 'name = "' . $name .  '" ';
-    $typeS = 'type = "' . $type .  '" ';
-
+    
+    $nameS="";
+    if (! is_null($name)) {
+        $nameS = 'name = "' . $name .  '" ';
+    }
+    $typeS="";
+    if ((! is_null($type)) and is_string($type)) {
+        $typeS = 'type = "' . $type .  '" ';
+    }
 
     if ($type == H_T_PASSWORD) {
         $type="text";
@@ -229,10 +211,10 @@ function genFormElemL($dspec,$show,$level)
             }
             break;
         case H_T_LIST:
-            $result = genListL($arg, false, $level);
+            $result = genListL($arg, $level);
             break;
         case H_T_TABLE:
-            $result = genTableL($arg, false, $level);
+            $result = genTableL($arg, $level);
             break;
         case H_T_CONCAT:
             $result = $tab;
@@ -247,7 +229,7 @@ function genFormElemL($dspec,$show,$level)
             }
             break;
         case H_T_FORM:
-            $result = genFormL($action, $url, $hidden, $arg, false, $level);
+            $result = genFormL($action, $url, $hidden, $arg, $level);
             break;
         case H_T_TEXTAREA:
             $result = $textareaS . $nameS . $disabled; 
@@ -300,7 +282,7 @@ function genFormElemL($dspec,$show,$level)
                 if ($value == $default) {
                     $selectedS = " selected ";
                 };
-                $result = $result.$tab . TAB_O. $optionS . $valueS;
+                $result = $result.$tab . "\t". $optionS . $valueS;
                 $result = $result . $selectedS . $endS .$valuelbl;
                 $result = $result.$optionES. $nl;
             };
@@ -309,14 +291,8 @@ function genFormElemL($dspec,$show,$level)
         case H_T_PLAIN:
             $result = $tab.$default.$nl;
             break;
-        case H_T_NULL:
-            $result="";
-            break;
         default:
-            $result = $plain;
+            $result = ' Unknown H_TYPE ';
     }
-    if ($show) {
-        echo $result;
-    };
     return $result;
 }

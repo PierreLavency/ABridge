@@ -20,133 +20,106 @@ a:10:{i:0;s:21:"/* standalone test */";i:1;s:29:"Attribute1
 		1
 	</li>
 </ul>
- = genFormElem(r,)";i:7;s:750:"<ul>
-	<li>
-		test
-	</li>
-	<li>
-		<ul>
-			<li>
-				<ul>
-					<li>
-						id
-					</li>
-					<li>
-						object reference
-					</li>
-					<li>
-						m_id
-					</li>
-					<li>
-						0
-					</li>
-				</ul>
-			</li>
-			<li>
-				<ul>
-					<li>
-						A1
-					</li>
-					<li>
-						Attribute1
-					</li>
-					<li>
-						m_int
-					</li>
-					<li>
-						1
-					</li>
-				</ul>
-			</li>
-			<li>
-				<ul>
-					<li>
-						A2
-					</li>
-					<li>
-						A2
-					</li>
-					<li>
-						m_int
-					</li>
-					<li>
-						2
-					</li>
-				</ul>
-			</li>
-		</ul>
-	</li>
-	<li>
-		<ul>
-			<li>
-				<a href='/ABridge.php/test?View=Update' >Update</a>
-			</li>
-			<li>
-				<a href='/ABridge.php/test?View=Delete' >Delete</a>
-			</li>
-		</ul>
-	</li>
-</ul>
- = v->show(V_G_READ,);";i:8;s:892:"<form method=POST action= /ABridge.php/test ><input type='hidden' name='action' value='Create' >
-	<ul>
-		<li>
-			test
-		</li>
-		<li>
-			<ul>
-				<li>
-					<ul>
-						<li>
-							id
-						</li>
-						<li>
-							object reference
-						</li>
-						<li>
-							m_id
-						</li>
-						<li>
-							0
-						</li>
-					</ul>
-				</li>
-				<li>
-					<ul>
-						<li>
-							A1
-						</li>
-						<li>
-							Attribute1
-						</li>
-						<li>
-							m_int
-						</li>
-						<li>
-							<input type = "text" name = "A1"  >
-						</li>
-					</ul>
-				</li>
-				<li>
-					<ul>
-						<li>
-							A2
-						</li>
-						<li>
-							A2
-						</li>
-						<li>
-							m_int
-						</li>
-						<li>
-							<input type = "text" name = "A2"  >
-						</li>
-					</ul>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<input type="submit" value = Confirmer >
-		</li>
-	</ul>
+ = genFormElem(r,)";i:7;s:473:"test
+
+<a href='/ABridge.php/test?View=Update' >Update</a>
+
+<a href='/ABridge.php/test?View=Delete' >Delete</a>
+
+
+<table >
+	<tr>
+		<td>
+			id
+		</td>
+		<td>
+			object reference
+		</td>
+		<td>
+			m_id
+		</td>
+		<td>
+			0
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A1
+		</td>
+		<td>
+			Attribute1
+		</td>
+		<td>
+			m_int
+		</td>
+		<td>
+			1
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A2
+		</td>
+		<td>
+			A2
+		</td>
+		<td>
+			m_int
+		</td>
+		<td>
+			2
+		</td>
+	</tr>
+</table>
+
+
+ = v->show(V_S_READ,);";i:8;s:651:"<form method=POST action= /ABridge.php/test ><input type='hidden' name='action' value='Create' >
+	test
+	<input type="submit" value = Confirmer >
+
+	<table >
+		<tr>
+			<td>
+				id
+			</td>
+			<td>
+				object reference
+			</td>
+			<td>
+				m_id
+			</td>
+			<td>
+				0
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A1
+			</td>
+			<td>
+				Attribute1
+			</td>
+			<td>
+				m_int
+			</td>
+			<td>
+				<input type = "text" name = "A1"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A2
+			</td>
+			<td>
+				A2
+			</td>
+			<td>
+				m_int
+			</td>
+			<td>
+				<input type = "text" name = "A2"  >
+			</td>
+		</tr>
+	</table>
 </form>  
- = v->show(V_G_CREA,);es = v->show('V_G_CREA,);";i:9;s:27:"1 2 0 = v->show(V_G_LABL,);";}
+ = v->show(V_S_CREA,);es = v->show('V_S_CREA,);";i:9;s:27:"1 2 0 = v->show(V_S_LABL,);";}

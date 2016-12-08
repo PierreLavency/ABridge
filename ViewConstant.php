@@ -11,7 +11,6 @@ define('H_T_LIST', "list");
 define('H_T_CONCAT', "concat");
 define('H_T_PLAIN', "plain");
 define('H_T_LINK', "link");
-define('H_T_NULL', "null");
 define('H_T_FORM', "form");
 define('H_T_LIST_BR', "listbr");
 define('H_T_TABLE', "table");
