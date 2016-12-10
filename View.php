@@ -51,7 +51,7 @@ class View
     protected $_attrRef;
     protected $_attrCref;
     protected $_listHtml;
-    protected $_nav=[V_S_UPDT,V_S_DELT];
+    protected $_nav=[V_S_UPDT,V_S_DELT,V_S_CREA];
     protected $_attrLbl = [];
     protected $_attrProp;
     protected $_viewName = []; 
@@ -323,9 +323,10 @@ class View
                 if (is_null($m)) {
                     return false;
                 }
+
                 $v = new View($m);
                 $res[H_LABEL]=$v->show(V_S_REF, false);
-                $res[H_NAME]=$m->getPath();
+                $res[H_NAME]=$m->getPath(); // should pop
                 return $res;        
             }
             if ($typ==M_CODE and (!is_null($x))) {
@@ -377,11 +378,7 @@ class View
                 break;
             case V_FORM:
                     $result[H_TYPE]=H_T_FORM;
-                    if (isset($_SERVER['PATH_INFO'])) { // to be checked
-                        $path = rootPath().$_SERVER['PATH_INFO'];
-                    } else {
-                        $path = $this->_model->getPath(); 
-                    }
+                    $path = getPath($this->_model);
                     $result[H_ACTION]="POST";
                     $result[H_HIDDEN]=$viewState;
                     $result[H_URL]=$path;                   
@@ -396,11 +393,7 @@ class View
                 break;
             case V_NAVC:
                     $result[H_TYPE]=H_T_LINK;
-                    if (isset($_SERVER['PATH_INFO'])) { // to be checked
-                        $path = rootPath().$_SERVER['PATH_INFO'];
-                    } else {
-                        $path = $this->_model->getPath(); 
-                    }
+                    $path = getPath($this->_model);
                     $result[H_LABEL]=$this->getLbl(V_NAVC);
                     $result[H_NAME]="'".$path.'/'.$spec[V_ATTR]."'";
                 break;
@@ -418,15 +411,15 @@ class View
                     }       
                     if ($viewState == V_S_READ) {
                         if (count($this->_nav)) {
-                            $res[H_TYPE]=H_T_LINK;
-                            if (isset($_SERVER['PATH_INFO'])) { // to be checked
-                                $path = rootPath().$_SERVER['PATH_INFO'];
-                            } else {
-                                $path = $this->_model->getPath(); 
-                            }
+                            $res[H_TYPE]=H_T_LINK;      
                             foreach ($this->_nav as $nav) {
                                 $res[H_LABEL]=$this->getLbl($nav);
-                                $res[H_NAME]="'".$path.'?View='.$nav."'";
+                                if ($nav == V_S_CREA) {
+                                    $res[H_NAME]=getCreatePath($this->_model);
+                                } else {
+                                    $path = getPath($this->_model);
+                                    $res[H_NAME]="'".$path.'?View='.$nav."'";
+                                }
                                 $arg[]=$res;
                             }
                             

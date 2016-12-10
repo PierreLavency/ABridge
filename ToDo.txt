@@ -1,7 +1,13 @@
-- review CREF path
+- remove model/path dependency
+- review path management.
+- review cnav
+- add cancel
+- review CREF path in view
 - add values for ref (new type of code)
 - review error (exception) for get ref etc.
-- design doc for view
+- design doc for view 
+- improve view test coverage
+- left menu !
 
 - order in list query and attr
 - 'selection' view 
@@ -11,8 +17,7 @@
 
 - clean up controler and add unit test
 
-- beef up test apps with relationships tables // done for file // union + deathDate
-
+- beef up test apps with relationships tables // done for file // union + deathDate set Ckey
 - define new type :  php and eval attibutes
 - define selection attribute type.
 - review addattr interface.
@@ -23,6 +28,7 @@
 - Authenthication
 - Authorisation
 
+- set up bug tracking
 - set up a git server
 - set up jenkin 
 
@@ -45,6 +51,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- add new in main nav // hack it 4hours 
 - add son creation / review path notion // 8 hours
 - add view unit test // 4 hours 68%
 - find a way to test HTML // 8 hours - GenHTML 100%

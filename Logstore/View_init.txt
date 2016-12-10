@@ -45,11 +45,13 @@ a:6:{i:0;s:639:"<form method=POST action= /ABridge.php/test ><input type='hidden
 		</tr>
 	</table>
 </form>  
-";i:1;s:491:"test
+";i:1;s:530:"test
 
 <a href='/ABridge.php/test?View=Update' >Update</a>
 
 <a href='/ABridge.php/test?View=Delete' >Delete</a>
+
+<a href=/ABridge.php/test >Create</a>
 
 
 <table >
