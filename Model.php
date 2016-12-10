@@ -85,6 +85,7 @@ class Model
     protected $_trusted=false;
     protected $_checkTrusted=false; // could be usefull !! 
     protected $_attrCkey;
+    protected $_attrProtected;
     
     /**
     * Constructor
@@ -184,8 +185,8 @@ class Model
         $this->_attrBkey = [];
         $this->_attrMdtr = [];
         $this->_attrCkey = [];
+        $this->_attrProtected = [];
     }
-
     /**
      * Returns the errorlogger.
      *
@@ -324,6 +325,7 @@ class Model
      *
      * @return string its 'path'.
      */ 
+// review error handling ->exception 
 
     public function getRefMod($attr) 
     {     
@@ -353,21 +355,59 @@ class Model
         $res=new Model($mod, $id);
         return ($res);
     }
-        
-    public function getCref($attr,$id) 
+   
+    public function setRef($attr,$mod) 
+    {
+        $modA = $this->getRefMod($attr);
+        $modN = $mod->getModName();
+        if ($modA != $modN) {
+            throw new Exception(E_ERC033.':'.$modA.':'.$modN);
+        }
+        $id = $mod->getId();
+        if ($id) {
+            $this->setValNoCheck($attr, $id);
+        }
+    }
+
+    public function getCrefMod($attr) 
     {
         if (! $this->existsAttr($attr)) {
             $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
         if ($this->getTyp($attr)!= M_CREF) {
-             $this->_errLog->logLine(E_ERC027.':'.$attr);
+            $this->_errLog->logLine(E_ERC027.':'.$attr);
             return false;
         }
         $path=$this->_refParm[$attr];
         $patha=explode('/', $path);
-        $path='/'.$patha[1].'/'.$id;
+        return ($patha);
+    }
+    
+    public function newCref($attr) 
+    {
+        $patha=$this->getCrefMod($attr);
+        if (!$patha) {
+            return false; 
+        }
+        $m=new Model($patha[1]);
+        $m->setRef($patha[2], $this);
+        $m->setProtected($patha[2], true);
+        return $m;
+    }
+   
+    public function getCref($attr,$id) 
+    {
+        $patha=$this->getCrefMod($attr);
+        if (!$patha) {
+            return false; 
+        }
         $res=new Model($patha[1], $id);
+        $rid=$res->getVal($patha[2]);
+        if ($rid != $this->getId()) {
+            throw new Exception(E_ERC032.':'.$attr.':'.$id);
+        }
+        $res->setProtected($patha[2], true);
         return ($res);
     }
     
@@ -383,7 +423,7 @@ class Model
         }
         $path=$this->_refParm[$attr];
         $patha=explode('/', $path);
-        $m = new Model($patha[1]);
+        $m = new Model($patha[1], (int) $patha[2]);
         $res=$m->getCref($patha[3], $id);
         return ($res);
     }
@@ -402,6 +442,19 @@ class Model
         return false;
     }
     /**
+     * Returns true if the attribute is Protected.
+     *
+     * @param string $attr the attribute. 
+     *
+     * @return boolean
+     */        
+    public function isProtected($attr) 
+    {
+        if (! $this->existsAttr($attr)) {
+            $this->_errLog->logLine(E_ERC002.':'.$attr);return false;
+        }
+        return (in_array($attr, $this->_attrProtected));
+    }    /**
      * Returns true if the attribute is a Business key.
      *
      * @param string $attr the attribute. 
@@ -503,7 +556,34 @@ class Model
         $this->_modChgd=true;
         return true;
     }
-
+    /**
+     * Set an attribute as protected.
+     *
+     * @param string $attr the attribute. 
+     * @param string $val  the value.
+     *
+     * @return boolean
+     */     
+    public function setProtected($attr,$val) // protected ?
+    {
+        if (! $x= $this->existsAttr($attr)) {
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
+            return false;
+        };
+        if ($val) {
+            if (!in_array($attr, $this->_attrProtected)) {
+                $this->_attrProtected[]=$attr;
+            }      
+        }
+        if (! $val) {
+            $key = array_search($attr, $this->_attrProtected);
+            if ($key!==false) {
+                unset($this->_attrProtected[$key]);
+            }             
+        }
+ //       $this->_modChgd=true;
+        return true;
+    }
     /**
      * Set an attribute value of a business key .
      *
@@ -536,7 +616,6 @@ class Model
         $this->_modChgd=true;
         return true;
     }
-    
     public function setCkey($attrLst,$val) 
     {
         if (! is_array($attrLst)) {
@@ -567,7 +646,6 @@ class Model
         $this->_modChgd=true;
         return true;
     }
-
     /**
      * Set an attribute value of a mandatory attribute .
      *
@@ -644,8 +722,7 @@ class Model
      * @param string $attr the attribute. 
      *
      * @return boolean
-     */      
-    
+     */        
     public function delAttr($attr)  
     {
         $x= $this->existsAttr($attr);
@@ -683,6 +760,10 @@ class Model
         $key = array_search($attr, $this->_attrMdtr);
         if ($key!==false) {
             unset($this->_attrMdtr[$key]);
+        } 
+        $key = array_search($attr, $this->_attrProtected);
+        if ($key!==false) {
+            unset($this->_attrProtected[$key]);
         } 
         $this->_modChgd=true;        
         return true;
@@ -774,6 +855,11 @@ class Model
             return false;
         };
         $check= ($check or $this->_checkTrusted);
+        // protected
+        if ($this->isProtected($attr)) {
+            $this->_errLog->logLine(E_ERC034.':'.$attr);
+            return false;
+        }
         // type checking
         $type=$this->getTyp($attr);
         if ($type ==M_CREF ) {

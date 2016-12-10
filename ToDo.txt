@@ -1,14 +1,19 @@
+- review CREF path
+- add values for ref (new type of code)
+- review error (exception) for get ref etc.
+- design doc for view
+
 - order in list query and attr
 - 'selection' view 
 - view overide default layout.
-- add son creation
+
 - view sort out persistence and get rid of Label hack
 
 - clean up controler and add unit test
 
 - beef up test apps with relationships tables // done for file // union + deathDate
 
-- define new type :  php - not sure !
+- define new type :  php and eval attibutes
 - define selection attribute type.
 - review addattr interface.
 
@@ -40,6 +45,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- add son creation / review path notion // 8 hours
 - add view unit test // 4 hours 68%
 - find a way to test HTML // 8 hours - GenHTML 100%
 - split Cref from Object List.  // 10 hours coupled with parametrize all lists

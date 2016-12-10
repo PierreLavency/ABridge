@@ -16,6 +16,7 @@ define('V_REF', "v_ref");
 define('V_ARG', "v_arg");
 define('V_OBJ', "v_obj");
 define('V_NAV', "v_nav");
+define('V_NAVC', "new");
 define('V_ERROR', "v_error"); 
 define('V_FORM', "v_form");
 
@@ -241,19 +242,20 @@ class View
         $prop = $spec[V_PROP];
         $res = [];
         if (($viewState == V_S_CREA or $viewState == V_S_UPDT) 
-            and $prop==V_P_VAL and 
+            and $prop==V_P_VAL 
+            and (! $this->_model->isProtected($attr)) and
             ($this->_model->isMdtr($attr) or $this->_model->isOptl($attr))) {
             $res[H_NAME]=$attr;
             $default=null;
             if (isset($_POST[$attr])) {
                 $default= $_POST[$attr];
             } else {
-                if ($viewState == V_S_CREA) {
-                    $default=$this->_model->getDflt($attr);
-                }               
                 if ($viewState == V_S_UPDT) {
                     $default=$this->_model->getVal($attr);
-                }       
+                }
+                if ($viewState == V_S_CREA ) {
+                    $default=$this->_model->getDflt($attr);
+                }                  
             }
             if ($default) {
                 $res[H_DEFAULT]=$default;
@@ -375,7 +377,11 @@ class View
                 break;
             case V_FORM:
                     $result[H_TYPE]=H_T_FORM;
-                    $path = $this->_model->getPath(); 
+                    if (isset($_SERVER['PATH_INFO'])) { // to be checked
+                        $path = rootPath().$_SERVER['PATH_INFO'];
+                    } else {
+                        $path = $this->_model->getPath(); 
+                    }
                     $result[H_ACTION]="POST";
                     $result[H_HIDDEN]=$viewState;
                     $result[H_URL]=$path;                   
@@ -387,6 +393,16 @@ class View
                         }
                     }
                     $result[H_ARG]=$arg;
+                break;
+            case V_NAVC:
+                    $result[H_TYPE]=H_T_LINK;
+                    if (isset($_SERVER['PATH_INFO'])) { // to be checked
+                        $path = rootPath().$_SERVER['PATH_INFO'];
+                    } else {
+                        $path = $this->_model->getPath(); 
+                    }
+                    $result[H_LABEL]=$this->getLbl(V_NAVC);
+                    $result[H_NAME]="'".$path.'/'.$spec[V_ATTR]."'";
                 break;
             case V_NAV:
                     $result[H_TYPE]=$this->getListHtml(V_NAV);;
@@ -403,10 +419,14 @@ class View
                     if ($viewState == V_S_READ) {
                         if (count($this->_nav)) {
                             $res[H_TYPE]=H_T_LINK;
-                            $p=$this->_model->getPath(); 
+                            if (isset($_SERVER['PATH_INFO'])) { // to be checked
+                                $path = rootPath().$_SERVER['PATH_INFO'];
+                            } else {
+                                $path = $this->_model->getPath(); 
+                            }
                             foreach ($this->_nav as $nav) {
                                 $res[H_LABEL]=$this->getLbl($nav);
-                                $res[H_NAME]="'".$p.'?View='.$nav."'";
+                                $res[H_NAME]="'".$path.'?View='.$nav."'";
                                 $arg[]=$res;
                             }
                             
@@ -467,6 +487,7 @@ class View
             }
             if ($typ == M_CREF) {
                 $view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL];
+                $view[]=[V_TYPE=>V_NAVC,V_ATTR => $attr];
                 $viewe=[];
                 foreach ($this->_model->getVal($attr) as $id) {
                     $viewe[]=[V_TYPE=>V_ELEM,V_ATTR => $attr,

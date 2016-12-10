@@ -61,7 +61,7 @@ function pathObj($path)
 function apathObj($apath)
 {
     $c = count($apath);
-    if ($c > 3) {
+    if ($c > 5) {
         return false;
     }
     if ($c < 2 ) {
@@ -72,6 +72,16 @@ function apathObj($apath)
     }
     if ($apath[1] == "" ) {
         return false;
+    }
+    if ($c == 5) {
+        $id = (int) $apath[2];
+        $mod = new Model($apath[1], $id);
+        $mod = $mod->getCref($apath[3], (int) $apath[4]);
+    } 
+    if ($c == 4) {
+        $id = (int) $apath[2];
+        $mod = new Model($apath[1], $id);
+        $mod = $mod->newCref($apath[3]);
     }
     if ($c == 3) {
         $id = (int) $apath[2];

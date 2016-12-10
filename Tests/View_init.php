@@ -13,7 +13,7 @@ require_once("View.php");
 
 $show = false;
 $test = viewCases();
-
+unset($_SERVER['PATH_INFO']);
 for ($i=0;$i<count($test);$i++) {
 if ($show) {echo "<br>" ; };
 $v = $test[$i][0];

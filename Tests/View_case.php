@@ -45,11 +45,11 @@ function viewCases()
 	
 	$test = [];
 	$n=0;
+	$test[$n]=[$v,V_S_CREA,$n];	
+	$n++;
 	$test[$n]=[$v,V_S_READ,$n];	
 	$n++;
 	$test[$n]=[$v,V_S_UPDT,$n];	
-	$n++;
-	$test[$n]=[$v,V_S_CREA,$n];	
 	$n++;
 	$test[$n]=[$v,V_S_DELT,$n];	
 	$n++;

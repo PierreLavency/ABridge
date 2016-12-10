@@ -259,8 +259,12 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertTrue($res);
 		
 		$res = $student->getCode('Sexe',2);
+		$res->setProtected('ValueOf',false);
+		
 		$codeval = new Model($this->CodeVal,2);
-		$this->assertEquals($res,$codeval);
+		
+		$this->assertEquals($codeval,$res);
+
 		
 		$id= $student->save();
 		$this->assertEquals($id,1);

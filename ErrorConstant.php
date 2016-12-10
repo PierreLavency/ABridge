@@ -31,4 +31,7 @@ define('E_ERC028', "ERC028");  // not a code
 define('E_ERC029', "ERC029");  // Ckey must be an array
 define('E_ERC030', "ERC030");  // attr in Ckey 
 define('E_ERC031', "ERC031");  // Ckey violation
+define('E_ERC032', "ERC032");  // id not in CREF
+define('E_ERC033', "ERC033");  // REF type missmatch
+define('E_ERC034', "ERC034");  // protected attribute
 
