@@ -34,4 +34,7 @@ define('E_ERC031', "ERC031");  // Ckey violation
 define('E_ERC032', "ERC032");  // id not in CREF
 define('E_ERC033', "ERC033");  // REF type missmatch
 define('E_ERC034', "ERC034");  // protected attribute
+define('E_ERC035', "ERC035");  // not allowed on create path
+define('E_ERC036', "ERC036");  // url not correctly formated
+define('E_ERC037', "ERC037");  // not allowed on existing object path
 

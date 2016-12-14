@@ -1,6 +1,6 @@
 <?php
 
-
+require_once("Path.php"); 
 require_once("Model.php"); 
 require_once("View.php"); 
 
@@ -40,22 +40,24 @@ function viewCases()
 	}
 	
 	$v = new View($x);
+	
+	$path = new Path('/test/1');
 
 	$v->setAttrList(['A1','A2'],V_S_REF);
 	
 	$test = [];
 	$n=0;
-	$test[$n]=[$v,V_S_CREA,$n];	
+	$test[$n]=[$v,$path,V_S_CREA,$n];	
 	$n++;
-	$test[$n]=[$v,V_S_READ,$n];	
+	$test[$n]=[$v,$path,V_S_READ,$n];	
 	$n++;
-	$test[$n]=[$v,V_S_UPDT,$n];	
+	$test[$n]=[$v,$path,V_S_UPDT,$n];	
 	$n++;
-	$test[$n]=[$v,V_S_DELT,$n];	
+	$test[$n]=[$v,$path,V_S_DELT,$n];	
 	$n++;
-	$test[$n]=[$v,V_S_REF,$n];
+	$test[$n]=[$v,$path,V_S_REF,$n];
 	$n++;
-	$test[$n]=[$v,V_S_CREF,$n];
+	$test[$n]=[$v,$path,V_S_CREF,$n];
 	
 	return $test;
 }

@@ -48,6 +48,7 @@ class View
     protected $_model;
     protected $_cmodel;
     protected $_attrList;
+    protected $_path;
     protected $_attrRef;
     protected $_attrCref;
     protected $_listHtml;
@@ -278,7 +279,7 @@ class View
                 foreach ($vals as $v) {
                     $m = $this->_model->getCode($attr, (int) $v);
                     $vw = new View($m);
-                    $l = $vw->show(V_S_REF, false);
+                    $l = $vw->show($this->_path, V_S_REF, false);
                     $r = [$v,$l];
                     $values[]=$r;
                 }
@@ -302,8 +303,8 @@ class View
         if ($prop==V_P_VAL) {
             if ($attr == 'id' and $viewState == V_S_CREF) {
                 $res[H_TYPE]=H_T_LINK;
-                $res[H_LABEL]=$this->show(V_S_REF, false);
-                $res[H_NAME]=$this->_model->getPath();
+                $res[H_LABEL]=$this->show($this->_path, V_S_REF, false);
+                $res[H_NAME]=$this->_path->getPath();
                 return $res;
             }
             if ($typ==M_CREF) {     
@@ -314,7 +315,10 @@ class View
                 if (is_null($m)) {
                     $m = $this->_model;
                 }
+                $this->_path->push($attr, $id);
+                $v->_path=$this->_path;
                 $res = $v->buildCView($m, V_S_CREF);
+                $this->_path->pop();
                 return $res; 
             }
             if ($typ==M_REF) {
@@ -323,16 +327,15 @@ class View
                 if (is_null($m)) {
                     return false;
                 }
-
                 $v = new View($m);
-                $res[H_LABEL]=$v->show(V_S_REF, false);
-                $res[H_NAME]=$m->getPath(); // should pop
+                $res[H_LABEL]=$v->show($this->_path, V_S_REF, false);
+                $res[H_NAME]=$this->_path->getRefPath($m); 
                 return $res;        
             }
             if ($typ==M_CODE and (!is_null($x))) {
                 $m=$this->_model->getCode($attr, (int) $x);
                 $v = new View($m);
-                $x = $v->show(V_S_REF, false);
+                $x = $v->show($this->_path, V_S_REF, false);
             }
         }
         $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$x];
@@ -378,7 +381,7 @@ class View
                 break;
             case V_FORM:
                     $result[H_TYPE]=H_T_FORM;
-                    $path = getPath($this->_model);
+                    $path = $this->_path->getPath();
                     $result[H_ACTION]="POST";
                     $result[H_HIDDEN]=$viewState;
                     $result[H_URL]=$path;                   
@@ -393,9 +396,9 @@ class View
                 break;
             case V_NAVC:
                     $result[H_TYPE]=H_T_LINK;
-                    $path = getPath($this->_model);
                     $result[H_LABEL]=$this->getLbl(V_NAVC);
-                    $result[H_NAME]="'".$path.'/'.$spec[V_ATTR]."'";
+                    $path = $this->_path->getPath();
+                    $result[H_NAME]="'".$path.'/'.$spec[V_ATTR]."'";// here
                 break;
             case V_NAV:
                     $result[H_TYPE]=$this->getListHtml(V_NAV);;
@@ -415,9 +418,10 @@ class View
                             foreach ($this->_nav as $nav) {
                                 $res[H_LABEL]=$this->getLbl($nav);
                                 if ($nav == V_S_CREA) {
-                                    $res[H_NAME]=getCreatePath($this->_model);
+                                    $path = $this->_path->getCreaPath();
+                                    $res[H_NAME]=$path; 
                                 } else {
-                                    $path = getPath($this->_model);
+                                    $path = $this->_path->getPath(); 
                                     $res[H_NAME]="'".$path.'?View='.$nav."'";
                                 }
                                 $arg[]=$res;
@@ -435,8 +439,9 @@ class View
         return $result;
     }
 
-    public function show($viewState,$show = true) 
+    public function show($path,$viewState,$show = true) 
     {
+        $this->_path=$path;
         $r = $this->buildView($viewState);
         $r=genFormElem($r, $show);
         return $r;

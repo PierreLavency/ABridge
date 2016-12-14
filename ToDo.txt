@@ -1,14 +1,16 @@
 - remove model/path dependency
+- remove possibility to unprotect !
+- review error (exception) for get ref etc.
+
 - review path management.
 - review cnav
 - add cancel
 - review CREF path in view
 - add values for ref (new type of code)
-- review error (exception) for get ref etc.
 - design doc for view 
 - improve view test coverage
-- left menu !
 
+- left menu !
 - order in list query and attr
 - 'selection' view 
 - view overide default layout.
@@ -27,6 +29,7 @@
 - Implement inheritance
 - Authenthication
 - Authorisation
+- Performance
 
 - set up bug tracking
 - set up a git server
@@ -40,8 +43,7 @@ Dev Dependency
 - PhpUnit 3.7.21
 - Php code_sniffer 2.7.0
 - Phpdocumentor (pear install phpdoc/PhpDocumentor-2.8.1) <- graphiz 2.38
-
-cmd
+CMD
 /*check code
 phpcs --standard=Zend --report=summary -l .
 /*install phpdocumentor

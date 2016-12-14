@@ -13,19 +13,11 @@ $level = 0;
 $db->setLogLevl($level);
 $fb->setLogLevl($level);
 
-if (isset($_SERVER['PATH_INFO'])) {
-    $url=$_SERVER['PATH_INFO'];
-    $c = pathObj($url);
-    if (!$c) {
-        $c=new Model($default, $defaultId);
-    }
-} else {
-    $c=new Model($default, $defaultId);
-}
-
 $method = $_SERVER['REQUEST_METHOD'];
 
-$v= new View($c);
+$path = new Path();
+$c = $path->getObj();
+
 $action = V_S_READ;
 $actionExec = false;
 
@@ -72,12 +64,14 @@ if ($method =='POST') {
     }
 }
 
-if ($action == V_S_DELT and $actionExec) {
-    $c=new Model($default, $defaultId);
-    $v=new View($c);
-}
-
 if ($actionExec) {
+    if ($action == V_S_DELT) {
+        $path->pop();
+        $c= $path->getObj();
+    }
+    if ($action == V_S_CREA) {
+        $path->pushId($c->getId());
+    }
     $action= V_S_READ;
 }
 
@@ -86,7 +80,8 @@ if ($log) {
     $log->logLine(' **************  ');
 }
 
-$v->show($action, true);   
+$v=new View($c);
+$v->show($path, $action, true);   
 
 $log = $db->getLog();
 if ($log) {
