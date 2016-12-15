@@ -413,7 +413,7 @@ class Model
         }
         $m=new Model($patha[1]);
         $m->setRef($patha[2], $this);
-        $m->setProtected($patha[2], true);
+        $m->protect($patha[2]);
         return $m;
     }
    
@@ -428,7 +428,7 @@ class Model
         if ($rid != $this->getId()) {
             throw new Exception(E_ERC032.':'.$attr.':'.$id);
         }
-        $res->setProtected($patha[2], true);
+        $res->protect($patha[2]);
         return ($res);
     }
     
@@ -584,25 +584,16 @@ class Model
      * @param string $val  the value.
      *
      * @return boolean
-     */     
-    public function setProtected($attr,$val) // protected ?
+     */
+    public function protect($attr)
     {
         if (! $x= $this->existsAttr($attr)) {
             $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         };
-        if ($val) {
-            if (!in_array($attr, $this->_attrProtected)) {
-                $this->_attrProtected[]=$attr;
-            }      
-        }
-        if (! $val) {
-            $key = array_search($attr, $this->_attrProtected);
-            if ($key!==false) {
-                unset($this->_attrProtected[$key]);
-            }             
-        }
- //       $this->_modChgd=true;
+        if (!in_array($attr, $this->_attrProtected)) {
+            $this->_attrProtected[]=$attr;
+        }      
         return true;
     }
     /**

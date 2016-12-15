@@ -1,5 +1,3 @@
-- set unit test for path. //
-- remove possibility to unprotect !
 - review error (exception) for get ref etc.
 
 - review cnav
@@ -52,6 +50,8 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- remove possibility to unprotect !  // 1 hour
+- set unit test for path. // 4 hours 
 - remove model/path dependency // 2 hours
 - review path management // 16 hours. 
 - review CREF path in view // see above
