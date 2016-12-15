@@ -52,85 +52,180 @@ class Path_Test extends PHPUnit_Framework_TestCase
      * @dataProvider Provider1
      */
 
-	public function testSaveMod($typ) 
-	{
-		$this->setTyp($typ);
-		$db=$this->db;
-		$db->beginTrans();
-	
-
-		// a 
-		$mod = new Model($this->CName);
-		$this->assertNotNull($mod);	
-	
-		$res= $mod->deleteMod();
-		$this->assertTrue($res);	
-		
-		$res = $mod->addAttr('Name');
-		$this->assertTrue($res);	
-		
-		$res = $mod->saveMod();	
-		$this->assertTrue($res);	
-
-		$res=$mod->setVal('Name','Lavency');
-		$this->assertTrue($res);	
-		
-		$res = $mod->save();	
-		$this->assertEquals($res,1);	
-		
-		$r = $mod-> getErrLog ();
-		$this->assertEquals($r->logSize(),0);			
-		
-		$db->commit();
-
-	}
-	/**
-     * @dataProvider Provider1
-     *	
-	/**
-    * @depends testSaveMod
-    */
 	public function testPath($typ) 
 	{
-		
 		$this->setTyp($typ);
 		$db=$this->db;
 		$db->beginTrans();
+	
+		$mod = new Model($this->CName);	
+		$res= $mod->deleteMod();
+
+		$res = $mod->addAttr('Name');
+		$res = $mod->addAttr('Ref',M_REF,'/'.$this->CName);
+		$res = $mod->addAttr('CRef',M_CREF,'/'.$this->CName.'/Ref');
+		
+		$res = $mod->saveMod();	
+
+		$res=$mod->setVal('Name','Lavency');			
+
+		$id = $mod->save();	
+		$r = $mod-> getErrLog ();
+		$this->assertEquals($r->logSize(),0);
+
+		$mod = new Model($this->CName);	
+		$res=$mod->setVal('Name','Quoilin');
+		$res=$mod->setVal('Ref',$id);
+
+		$id1 = $mod->save();	
+		$r = $mod-> getErrLog ();
+		$this->assertEquals($r->logSize(),0);
+	
+		$mod = new Model($this->CName);	
+		$res=$mod->setVal('Name','Lories');
+		$res=$mod->setVal('Ref',$id1);
+
+		$id2 = $mod->save();	
+		$r = $mod-> getErrLog ();
+		$this->assertEquals($r->logSize(),0);
+
+		$mod = new Model($this->CName);	
+		$res=$mod->setVal('Name','Arnould');
+		$res=$mod->setVal('Ref',$id2);
+
+		$id3 = $mod->save();	
+		$r = $mod-> getErrLog ();
+		$this->assertEquals($r->logSize(),0);
+		$db->commit();
+
+		// constructors 
+		$p = new Path();
+		$this->assertNotNull($p);
+		$this->assertEquals($p->getPath(),$p->RootPath().$p->getDefaultPath());
+
+		$_SERVER['PATH_INFO']=$p->getDefaultPath();
+		
+		$p = new Path();
+		$this->assertEquals($p->getPath(),$p->RootPath().$p->getDefaultPath());
+		
+		// creat path 
 		
 		$path='/'.$this->CName;
-		$mod = pathObj($path);
+		
+		$p1 = new Path($path);
+		$this->assertNotNull($p1);		
+		
+		$mod = $p1->getObj();
 		$this->assertNotNull($mod);
 		$this->assertEquals($mod->getModName(),$this->CName);
 		
-		$pathr=objPath($mod);
-		$this->assertEquals($pathr,$path);
+		$this->assertTrue($p1->isCreatPath());
+		$this->assertEquals($p1->getCreaPath(),$p1->getPath());		
+		
+		$pathr=$p1->getPath();
+		$this->assertEquals($pathr,$p1->RootPath().$path);
+		
+		// obj path
 		
 		$path=$path.'/1';
-		$mod = pathObj($path);
+		$p2 = new Path($path);
+		$this->assertNotNull($p2);
+		
+		$mod = $p2->getObj();
 		$this->assertNotNull($mod);
 		$this->assertEquals($mod->getModName(),$this->CName);
 		$this->assertEquals($mod->getId(),1);
+			
+		$this->assertFalse($p2->isCreatPath());	
 		
-		$pathr=objPath($mod);
-		$this->assertEquals($pathr,$path);
+		$pathr=$p2->getPath();
+		$this->assertEquals($pathr,$p2->RootPath().$path);
+		
+		$this->assertEquals($p2->getCreaPath(),$p1->getPath());
+		
+		// push pop 
+		$this->assertTrue($p1->pushId('1'));
+		
+		$this->assertEquals($p2->getPath(),$p1->getPath());
 
-		$pathr=objAbsPath($mod);
-		$this->assertEquals($pathr,rootPath().$path);
+		$this->assertTrue($p1->push($this->CName,'1'));		
+		$this->assertTrue($p1->pop());
 		
-		$path=$path.'/Name';
-		$val = pathVal($path);
-		$this->assertNotNull($val);
-		$this->assertEquals($val,'Lavency');
+		$this->assertEquals($p2->getPath(),$p1->getPath());
 		
-		$path='/';
-		$mod = pathObj($path);
-		$this->assertFalse($mod);
+		$this->assertTrue($p1->pop());
+		$this->assertEquals($p1->getPath(),$p1->RootPath().$p1->getDefaultPath());
 		
-		$path='/'.$this->CName.'/1/Name';
-		$mod = pathObj($path);
-		$this->assertFalse($mod);
+		// refpath
+		
+		$rpath='/'.$this->CName.'/'.$id.'/CRef/'.$id1;
+		$p3 = new Path($rpath);
+		$this->assertNotNull($p3);
+		$obj = $p3->getObj();
+		
+		$path = $rpath.'/CRef/'.$id2.'/CRef/'.$id3;
+		$p4 = new Path($path);
+		$this->assertNotNull($p4);
+		$opath = $p4->getRefPath($obj);
+		$this->assertEquals($p4->rootPath().$rpath,$opath);
+		
+		$p5 = new Path();
+		$opath = $p5->getRefPath($obj);
+		$this->assertEquals($p5->rootPath().'/'.$obj->getModName().'/'.$obj->getId(),$opath);
+		
+		// get obj
+		$rpath='/'.$this->CName.'/'.$id.'/CRef';
+		$p6 = new Path($rpath);
+		$this->assertNotNull($p6);
+		$obj=$p6->getObj();
+		$this->assertEquals($obj->getId(),0);
 		
 	}
-}
+	/**
+     * @dataProvider Provider1
+     */
+		public function testPathErr($typ) 
+	{
+		$this->setTyp($typ);
+		$db=$this->db;
+		$db->beginTrans();
 
-?>	
+		$pathStrg=1;
+		try {$x=new Path($pathStrg);} catch (Exception $e) {$r= $e->getMessage();}
+		$this->assertEquals($r, E_ERC036.':'.$pathStrg);
+		
+		$pathStrg='/';
+		try {$x=new Path($pathStrg);} catch (Exception $e) {$r= $e->getMessage();}
+		$this->assertEquals($r, E_ERC036.':'.$pathStrg);
+		
+		$pathStrg='/$/1';
+		try {$x=new Path($pathStrg);} catch (Exception $e) {$r= $e->getMessage();}
+		$this->assertEquals($r, E_ERC036.':'.$pathStrg.':0');
+
+		$pathStrg='/a/$';
+		try {$x=new Path($pathStrg);} catch (Exception $e) {$r= $e->getMessage();}
+		$this->assertEquals($r, E_ERC036.':'.$pathStrg.':1');
+
+		$pathStrg='/a/1/$';
+		try {$x=new Path($pathStrg);} catch (Exception $e) {$r= $e->getMessage();}
+		$this->assertEquals($r, E_ERC036.':'.$pathStrg.':2');
+		
+		$path='/'.$this->CName;
+		$p1 = new Path($path);
+		$this->assertNotNull($p1);
+		
+		try {$x=$p1->push($this->CName,1);} catch (Exception $e) {$r= $e->getMessage();}
+		$this->assertEquals($r, E_ERC035);
+		
+		try {$x=$p1->pop();} catch (Exception $e) {$r= $e->getMessage();}
+		$this->assertEquals($r, E_ERC035);
+		
+		$path='/'.$this->CName.'/1';
+		$p1 = new Path($path);
+		$this->assertNotNull($p1);
+		
+		try {$x=$p1->pushId(1);} catch (Exception $e) {$r= $e->getMessage();}
+		$this->assertEquals($r, E_ERC037);
+	}
+		
+}

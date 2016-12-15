@@ -269,9 +269,6 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$id= $student->save();
 		$this->assertEquals($id,1);
 
-		$p=$student->getPath();
-		$this->assertEquals($p,rootpath().'/'.$this->Student.'/1');
-		
 		$r = $student-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);	
 

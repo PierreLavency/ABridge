@@ -4,8 +4,8 @@
 Class Path
 {
     protected $_pathStrg;
-    protected $_parthArr;
-    protected $_parthNrmArr;
+    protected $_pathArr;
+    protected $_pathNrmArr;
     protected $_pathCreat;
     protected $_pathPrefix='Bridge.php';
     protected $_default='/Code/1';
@@ -52,16 +52,17 @@ Class Path
             if (! ctype_alnum($pathArr[$i])) {
                 throw new Exception(E_ERC036.':'.$pathStrg.':'.$i);
             }
-            $mod = $pathArr[$i];
             if (! ctype_digit($pathArr[$i+1])) {
-                throw new Exception(E_ERC036.':'.$pathStrg.':'.$i+1);
+                $j=$i+1;
+                throw new Exception(E_ERC036.':'.$pathStrg.':'.$j);
             }
             $this->_pathArr[]=$pathArr[$i];;
             $this->_pathArr[]=(int) $pathArr[$i+1];;
         }
         if ($this->_pathCreat) {
             if (! ctype_alnum($pathArr[$c-1])) {
-                throw new Exception(E_ERC036.':'.$pathStrg.':'.$c-1);
+                $j = $c-1;
+                throw new Exception(E_ERC036.':'.$pathStrg.':'.$j);
             }
             $this->_pathArr[$c-1]=$pathArr[$c-1];
         }
@@ -73,6 +74,11 @@ Class Path
             return true;
         }
         return false; 
+    }
+    
+    public function getDefaultPath() 
+    {
+        return $this->_default; 
     }
     
     public function pushId($id) 
@@ -112,7 +118,7 @@ Class Path
         return true;
     }
     
-    protected function rootPath()
+    public function rootPath()
     {
         return ('/ABridge.php');
     }
@@ -154,7 +160,7 @@ Class Path
     public function getCreaPath() 
     {
         if ($this->isCreatPath()) {
-            return $this->_pathStrg;
+            return $this->rootPath().$this->_pathStrg;
         }
         $res = $this->_pathArr;
         array_pop($res);
@@ -190,155 +196,4 @@ Class Path
         $path=$this->rootPath().'/'.$mod.'/'.$id;
         return $path;
     }
-
 }
-
-// should cut here 
-
-function rootPath()
-{
-    return ('/ABridge.php');
-}
-
-function checkPath($apath) 
-{
-    $path=explode('/', $apath);
-    $root = $path[0];
-    if (($root != "" )) {
-        return false;
-    }
-    if (count($path) < 2) {
-        return false;
-    }
-    return true;
-}
-
-function getPath($model) 
-{
-    if (isset($_SERVER['PATH_INFO'])) { // to be checked
-        $apath= explode('/', $_SERVER['PATH_INFO']);
-        if (! $model->getId()) {
-            return rootPath().$_SERVER['PATH_INFO'];
-        }
-        $id = (int) array_pop($apath);
-        if ($id == $model->getId()) {
-            $path = rootPath().$_SERVER['PATH_INFO'];
-            return $path;
-        }       
-        $path = rootPath().$_SERVER['PATH_INFO'].'/'.$model->getId();
-    } else {
-        $path = refPath($model->getModName(), $model->getId()); 
-    }
-    return $path;
-}
-
-function getCreatePath($model) 
-{
-    if (isset($_SERVER['PATH_INFO'])) { // to be checked
-        $apath= explode('/', $_SERVER['PATH_INFO']);
-        $id= array_pop($apath);
-        if ($id ==$model->getId()) {
-            
-            $path=implode('/', $apath);
-            $path = rootPath().$path;
-            return $path;
-        }
-        return rootPath().$_SERVER['PATH_INFO'];
-    } else {
-        $path = refPath($model->getModName(), 0); 
-    }
-    return $path;
-}
-
-function refPath($ref,$id) 
-{
-    if ($id) {
-    $path=rootPath().'/'.$ref.'/'.$id;
-    return $path;       
-    }
-    $path=rootPath().'/'.$ref;
-    return $path;
-}
-
-function modPath($mod) 
-{
-    $path='/'.$mod;
-    return $path;
-}
-
-function objAbsPath($model) 
-{
-    $rootPath= rootPath();
-    $path = objPath($model);
-    $path = $rootPath.$path;
-    return $path;
-}
-
-function objPath ($model)
-{
-    $path = '/'.$model->getModName();
-    if ($model->getId()) {
-        $path=$path.'/'.$model->getId();
-    }
-    return $path;
-}
-
-function pathObj($path)
-{
-    $apath=explode('/', $path);
-    return (apathObj($apath));
-}
-
-function apathObj($apath)
-{
-    $c = count($apath);
-    if ($c > 5) {
-        return false;
-    }
-    if ($c < 2 ) {
-        return false;
-    }
-    if ($apath[0] != "" ) {
-        return false;
-    }
-    if ($apath[1] == "" ) {
-        return false;
-    }
-    if ($c == 5) {
-        $id = (int) $apath[2];
-        $mod = new Model($apath[1], $id);
-        $mod = $mod->getCref($apath[3], (int) $apath[4]);
-    } 
-    if ($c == 4) {
-        $id = (int) $apath[2];
-        $mod = new Model($apath[1], $id);
-        $mod = $mod->newCref($apath[3]);
-    }
-    if ($c == 3) {
-        $id = (int) $apath[2];
-        $mod = new Model($apath[1], $id);
-    }
-    if ($c == 2) {
-        $mod = new Model($apath[1]);
-    }
-    return $mod;
-}
-
-function pathVal($path)
-{
-    $apath=explode('/', $path);
-    if (count($apath) > 4) {
-        return false;
-    }
-    if (count($apath) < 4 ) {
-        return false;
-    }
-    $attr=array_pop($apath);
-    $mod = apathObj($apath);
-    if (!$mod) {
-        return false;
-    }
-    $val = $mod->getVal($attr);
-    return $val;
-}
-

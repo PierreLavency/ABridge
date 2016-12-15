@@ -1,11 +1,10 @@
-- remove model/path dependency
+- set unit test for path. //
 - remove possibility to unprotect !
 - review error (exception) for get ref etc.
 
-- review path management.
 - review cnav
 - add cancel
-- review CREF path in view
+
 - add values for ref (new type of code)
 - design doc for view 
 - improve view test coverage
@@ -53,6 +52,9 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- remove model/path dependency // 2 hours
+- review path management // 16 hours. 
+- review CREF path in view // see above
 - add new in main nav // hack it 4hours 
 - add son creation / review path notion // 8 hours
 - add view unit test // 4 hours 68%

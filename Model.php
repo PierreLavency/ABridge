@@ -15,7 +15,6 @@ require_once "TypeConstant.php";
 require_once "ErrorConstant.php";
 require_once "Type.php";
 require_once "Handler.php";
-require_once "Path.php";
 
 /**
  * Model class
@@ -214,19 +213,7 @@ class Model
     {
         return $this->_id;
     }
-     /**
-     * Returns the Object Path.
-     *
-     * @return integer
-     */   
-    public function getPath()
-    {
-        $res= refPath(
-            $this->getModName(), 
-            $this->getId()
-        );
-        return $res;
-    }
+
     /**
      * Returns the list of attributes of a Model.
      *
@@ -327,6 +314,40 @@ class Model
      */ 
 // review error handling ->exception 
 
+    protected function getParm($attr)
+    {
+        return $this->_refParm[$attr];
+    }
+
+    protected function checkParm($typ,$parm) 
+    {
+        $path=explode('/', $parm);
+        $root = $path[0];
+        if (($root != "" )) {
+            return false;
+        }
+        $c = count($path)-1;
+
+        switch ($typ) {
+            case M_REF:
+                if ($c==1) {
+                    return true;
+                }
+                break;
+            case M_CREF:
+                if ($c==2) {
+                    return true;
+                }
+                break;
+            case M_CODE:
+                if ($c==3) {
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+    
     public function getRefMod($attr) 
     {     
         if (! $this->existsAttr($attr)) {
@@ -337,7 +358,7 @@ class Model
              $this->_errLog->logLine(E_ERC026.':'.$attr);
             return false;
         }
-        $path=$this->_refParm[$attr];
+        $path=$this->getParm($attr);
         $patha=explode('/', $path);
         return ($patha[1]);
     }
@@ -379,7 +400,7 @@ class Model
             $this->_errLog->logLine(E_ERC027.':'.$attr);
             return false;
         }
-        $path=$this->_refParm[$attr];
+        $path=$this->getParm($attr);
         $patha=explode('/', $path);
         return ($patha);
     }
@@ -421,7 +442,7 @@ class Model
              $this->_errLog->logLine(E_ERC028.':'.$attr);
             return false;
         }
-        $path=$this->_refParm[$attr];
+        $path=$this->getParm($attr);
         $patha=explode('/', $path);
         $m = new Model($patha[1], (int) $patha[2]);
         $res=$m->getCref($patha[3], $id);
@@ -705,7 +726,7 @@ class Model
             return false;
         }
         if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE) {
-            if (! checkPath($path) ) {
+            if (! $this->checkParm($typ, $path) ) {
                 $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$path);
                 return false;
             };
@@ -808,7 +829,7 @@ class Model
         }
         $type=$this->getTyp($attr);
         if ($type == M_CREF) { //will not work if on different Base !!
-            $path = $this->_refParm[$attr];
+            $path = $this->getParm($attr);
             $patha=explode('/', $path);
             $hdlr=$this->_stateHdlr;
             $res=$hdlr->findObj($patha[1], $patha[2], $this->getId());
@@ -984,10 +1005,16 @@ class Model
             $this->_errLog->logLine(E_ERC015.':'.$attr.':'.$r); 
             return false;
         }
-        $r=$this->_refParm[$attr];
-        $res=pathVal($r);
-        return $res;
-    }  
+        $r=$this->getParm($attr);
+        $apath = explode('/', $r);
+        $rattr = array_pop($apath);
+        $rid   = (int) array_pop($apath);
+        $rmod  = array_pop($apath);
+        $mod = new Model($rmod, $rid);
+        $val = $mod->getVal($rattr);
+        return $val;
+    }
+
      /**
      * Check the value of a ref attribute.
      *
