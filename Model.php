@@ -992,17 +992,21 @@ class Model
         if (!$r) {
             return false;
         }
-        if ($r != M_CODE) {
+        if ($r != M_CODE and $r != M_REF) {
             $this->_errLog->logLine(E_ERC015.':'.$attr.':'.$r); 
             return false;
         }
-        $r=$this->getParm($attr);
-        $apath = explode('/', $r);
-        $rattr = array_pop($apath);
-        $rid   = (int) array_pop($apath);
-        $rmod  = array_pop($apath);
-        $mod = new Model($rmod, $rid);
-        $val = $mod->getVal($rattr);
+        if ($r == M_CODE) {
+            $r=$this->getParm($attr);
+            $apath = explode('/', $r);
+            $mod = new Model($apath[1], (int) $apath[2]);
+            $val = $mod->getVal($apath[3]);
+        }
+        if ($r == M_REF) {
+            $mod = $this->getRefMod($attr);
+            $obj= new Model($mod);
+            $val=$obj->_stateHdlr->findObjWhere($mod, [], []);
+        }
         return $val;
     }
 

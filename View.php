@@ -51,8 +51,9 @@ class View
 
     protected $_model;
     protected $_cmodel;
-    protected $_attrList;
     protected $_path;
+    protected $_attrList;
+    protected $_attrHtml=['Sexe'=>H_T_RADIO,'A'=>H_T_SELECT,'De'=>H_T_SELECT];
     protected $_attrRef;
     protected $_attrCref;
     protected $_listHtml;
@@ -240,6 +241,22 @@ class View
         }       
     }
     
+    public function getAttrHtml($attr) 
+    {
+        if (isset($this->_attrHtml[$attr])) {
+            return $this->_attrHtml[$attr];
+        }
+        $typ = $this->_model->getTyp($attr);
+        $res=H_T_TEXT;
+        if ($typ == M_TXT) {
+            $res=H_T_TEXTAREA;
+        }
+        if ($typ == M_CODE) {
+            $res=H_T_SELECT;
+        }
+        return $res;
+    }
+    
     public function evale($spec,$viewState) 
     {
         $attr = $spec[V_ATTR];
@@ -248,7 +265,8 @@ class View
         $res = [];
         if (($viewState == V_S_CREA or $viewState == V_S_UPDT) 
             and $prop==V_P_VAL 
-            and (! $this->_model->isProtected($attr)) and
+            and (! $this->_model->isProtected($attr)) 
+            and
             ($this->_model->isMdtr($attr) or $this->_model->isOptl($attr))) {
             $res[H_NAME]=$attr;
             $default=null;
@@ -265,23 +283,23 @@ class View
             if ($default) {
                 $res[H_DEFAULT]=$default;
             }
-            $res[H_TYPE]=H_T_TEXT;
-            if ($typ == M_TXT) {
-                $res[H_TYPE]=H_T_TEXTAREA;
-            }
-            if ($typ == M_CODE) {
+            $htyp = $this->getAttrHtml($attr);
+            $res[H_TYPE]=$htyp;
+            if ($htyp == H_T_SELECT or $htyp == H_T_RADIO) {
                 $vals=$this->_model->getValues($attr);
                 $values=[];
-                if (count($vals)>2) {//bof
-                    $res[H_TYPE]=H_T_SELECT;
-                    if (!$this->_model->isMdtr($attr)) {
-                        $values[] = ["",""];
-                    }
-                } else {
-                    $res[H_TYPE]=H_T_RADIO;
+                if ($htyp == H_T_SELECT 
+                and (!$this->_model->isMdtr($attr))) {
+                    $values[] = ["",""];
                 }
                 foreach ($vals as $v) {
-                    $m = $this->_model->getCode($attr, (int) $v);
+                    if ($typ == M_CODE) {
+                        $m = $this->_model->getCode($attr, (int) $v);
+                    }
+                    if ($typ == M_REF) {
+                        $rmod = $this->_model->getRefMod($attr);
+                        $m = new Model($rmod, (int) $v);
+                    }
                     $vw = new View($m);
                     $l = $vw->show($this->_path, V_S_REF, false);
                     $r = [$v,$l];

@@ -1,14 +1,8 @@
 - review error (exception) for get ref etc.
 
-- review cnav (?)
-
-
-- add values for ref (new type of code)
-- design doc for view 
+- design doc for view and review
 - improve view test coverage - need to separate view show and build 
-
-
-- left menu !
+- left menu 
 - order in list query and attr
 - 'selection' view 
 - view overide default layout.
@@ -19,7 +13,6 @@
 
 - beef up test apps with relationships tables // done for file // union + deathDate set Ckey
 - define new type :  php and eval attibutes
-- define selection attribute type.
 - review addattr interface.
 
 - split alter drop and add in Base.
@@ -28,7 +21,7 @@
 - Authenthication
 - Authorisation
 - Performance
-- set release/installation
+- Release/installation
 
 - set up bug tracking
 - set up a git server
@@ -52,6 +45,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- add values for ref (new type of code) // 4 hours
 - add cancel // 2 Hours
 - remove possibility to unprotect !  // 1 hour
 - set unit test for path. // 4 hours 
