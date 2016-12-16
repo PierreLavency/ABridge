@@ -377,7 +377,7 @@ class Model
         return ($res);
     }
    
-    public function setRef($attr,$mod) 
+    protected function setRef($attr,$mod) 
     {
         $modA = $this->getRefMod($attr);
         $modN = $mod->getModName();
@@ -390,7 +390,7 @@ class Model
         }
     }
 
-    public function getCrefMod($attr) 
+    protected function getCrefMod($attr) 
     {
         if (! $this->existsAttr($attr)) {
             $this->_errLog->logLine(E_ERC002.':'.$attr);

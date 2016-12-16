@@ -1,6 +1,8 @@
-a:6:{i:0;s:641:"<form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='action' value='Create' >
+a:6:{i:0;s:684:"<form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='action' value='Create' >
 	test
-<input type="submit" value = submit >
+<input type="submit" value = Submit >
+
+<a href='/ABridge.php/test/1' >Cancel</a>
 
 	<table >
 		<tr>
@@ -98,9 +100,11 @@ a:6:{i:0;s:641:"<form method=POST action= /ABridge.php/test/1 ><input type='hidd
 </table>
 
 
-";i:2;s:704:"<form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='action' value='Update' >
+";i:2;s:747:"<form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='action' value='Update' >
 	test
-<input type="submit" value = submit >
+<input type="submit" value = Submit >
+
+<a href='/ABridge.php/test/1' >Cancel</a>
 
 	<table >
 		<tr>
@@ -145,9 +149,11 @@ a:6:{i:0;s:641:"<form method=POST action= /ABridge.php/test/1 ><input type='hidd
 		</tr>
 	</table>
 </form>  
-";i:3;s:572:"<form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='action' value='Delete' >
+";i:3;s:615:"<form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='action' value='Delete' >
 	test
-<input type="submit" value = submit >
+<input type="submit" value = Submit >
+
+<a href='/ABridge.php/test/1' >Cancel</a>
 
 	<table >
 		<tr>

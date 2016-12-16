@@ -1,11 +1,12 @@
 - review error (exception) for get ref etc.
 
-- review cnav
-- add cancel
+- review cnav (?)
+
 
 - add values for ref (new type of code)
 - design doc for view 
-- improve view test coverage
+- improve view test coverage - need to separate view show and build 
+
 
 - left menu !
 - order in list query and attr
@@ -27,6 +28,7 @@
 - Authenthication
 - Authorisation
 - Performance
+- set release/installation
 
 - set up bug tracking
 - set up a git server
@@ -50,6 +52,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- add cancel // 2 Hours
 - remove possibility to unprotect !  // 1 hour
 - set unit test for path. // 4 hours 
 - remove model/path dependency // 2 hours

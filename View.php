@@ -40,6 +40,10 @@ define('V_S_READ', "Read");
 define('V_S_DELT', "Delete");
 define('V_S_REF', "reference"); // reference view
 define('V_S_CREF', "creference"); // collection view
+define('V_B_SUBM', "Submit"); // buttons
+define('V_B_CANC', "Cancel");
+
+
 
 class View
 {
@@ -409,8 +413,19 @@ class View
                     or  $viewState == V_S_DELT 
                     or  $viewState == V_S_UPDT) {
                         $res[H_TYPE]=H_T_SUBMIT;
-                        $res[H_LABEL]=$this->getLbl(H_T_SUBMIT);
-                        $arg[]=$res;    
+                        $res[H_LABEL]=$this->getLbl(V_B_SUBM);
+                        $arg[]=$res;
+                        $res=[];
+                        $res[H_TYPE]=H_T_LINK;
+                        $lbl=$this->getLbl(V_B_CANC);  
+                        $res[H_LABEL]=$lbl;                   
+                        if ($viewState == V_S_CREA) {
+                            $path = $this->_path->getObjPath();
+                        } else {
+                            $path = $this->_path->getPath();
+                        }
+                        $res[H_NAME]="'".$path."'";
+                        $arg[]=$res;
                     }       
                     if ($viewState == V_S_READ) {
                         if (count($this->_nav)) {

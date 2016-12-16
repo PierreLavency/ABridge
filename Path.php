@@ -157,6 +157,20 @@ Class Path
         return $path;
     }
     
+    public function getObjPath() 
+    {
+        if (! $this->isCreatPath()) {
+            return $this->rootPath().$this->_pathStrg;
+        }
+        $res = $this->_pathArr;
+        array_pop($res);
+        if (count($res)==0) {
+            return $this->rootPath().$this->getDefaultPath();
+        }
+        $path = $this->rootPath().'/'.implode('/', $res);
+        return $path;
+    }
+    
     public function getCreaPath() 
     {
         if ($this->isCreatPath()) {
