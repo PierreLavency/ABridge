@@ -36,6 +36,7 @@ class Handler_Test extends PHPUnit_Framework_TestCase {
     {
         $this->assertTrue(resetHandlers());
         $this->assertNotNull($db=initStateHandler('CLass','fileBase','test'));
+		$this->assertNotNull($db=initStateHandler('CLass','fileBase','test'));
         $this->assertNotNull($c1=getStateHandler('CLass'));
         $this->assertNotNull($c2=getStateHandler('CLass'));
         $this->assertEquals($c1,$c2);

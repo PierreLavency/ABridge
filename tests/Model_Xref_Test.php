@@ -181,6 +181,9 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res = $codeval->setVal('Label','Male');
 		$this->assertTrue($res);
 		
+		$res = $codeval->getValues('ValueOf');
+		$this->assertEquals($res,[$id]);
+		
 		$res = $codeval->setVal('ValueOf',$id);
 		$this->assertTrue($res);
 
@@ -292,21 +295,29 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertNotNull($student);	
 		$log = $student->getErrLog ();
 		
+		$this->assertFalse($student->getErrLine());
+
 		$res = $student->addAttr('xxx',M_CODE);
 		$this->assertFalse($res);	
-		$this->assertEquals($log->getLine(0),E_ERC008.':xxx:'.M_CODE);
+		$this->assertEquals($student->getErrLine(),E_ERC008.':xxx:'.M_CODE);
+
+		
+		$res = $student->addAttr('xxx',M_CODE,'/a/1/b/2');
+		$this->assertFalse($res);	
+		$this->assertEquals($student->getErrLine(),E_ERC020.':xxx:/a/1/b/2');
 		
 		$bb = new Model('bb');
 		$this->assertNotNull($bb);	
 		$logbb = $bb->getErrLog ();
 		
+
 		$res = $bb->addAttr('xxx',M_CODE,'xxx');
 		$this->assertFalse($res);	
 		$this->assertEquals($logbb->getLine(0),E_ERC014.':xxx:'.M_CODE);
 		
 		$res = $student->addAttr('xxx',M_CODE,'xx');
 		$this->assertFalse($res);	
-		$this->assertEquals($log->getLine(1),E_ERC020.':xxx:xx');
+		$this->assertEquals($student->getErrLine(),E_ERC020.':xxx:xx');
 		
 
 		$code = new Model($this->Code);
@@ -324,58 +335,61 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res = $codeval->setVal('ValueOf',1000);
 		$this->assertFalse($res);
 		$this->assertEquals($log->getLine(0),E_ERC007.':'.$this->Code.':1000');
-		
+
+	
 		$log = $student->getErrLog ();
 		$res = $student->setVal('Sexe',1000);
 		$this->assertFalse($res);
-		$this->assertEquals($log->getLine(2),E_ERC016.':Sexe:1000');
+		$this->assertEquals($student->getErrLine(),E_ERC016.':Sexe:1000');
 		
-		$n = 2;
 		
-		$n++;
 		$res = $student->getRefMod('notexists');
 		$this->assertFalse($res);
-		$this->assertEquals($log->getLine($n),E_ERC002.':notexists');
+		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
 
-		$n++;
+		$res = $student->protect('notexists');
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
+
+		$res = $student->isProtected('notexists');
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
+		
 		$res = $student->getRefMod('Sexe');
 		$this->assertFalse($res);
-		$this->assertEquals($log->getLine($n),E_ERC026.':Sexe');		
+		$this->assertEquals($student->getErrLine(),E_ERC026.':Sexe');		
 
-		$n++;
-		$res = $student->getRef('notexists');
-		$this->assertNull($res);
-		$this->assertEquals($log->getLine($n),E_ERC002.':notexists');
+		try {$res = $student->getRef('notexists'); } catch (Exception $e) {$res=$e->getMessage();}
+		$this->assertEquals($res,E_ERC002.':notexists');
+		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
 
-		$n++;
+		try {$res = $student->newCref('notexists'); } catch (Exception $e) {$res=$e->getMessage();}
+		$this->assertEquals($res,E_ERC002.':notexists');
+		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
+		
 		$res = $student->getValues('notexists');
 		$this->assertFalse($res);
-		$this->assertEquals($log->getLine($n),E_ERC002.':notexists');
+		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
 
-		$n++;
 		$res = $student->getValues('Name');
 		$this->assertFalse($res);
-		$this->assertEquals($log->getLine($n),E_ERC015.':Name:'.M_STRING);			
+		$this->assertEquals($student->getErrLine(),E_ERC015.':Name:'.M_STRING);			
 	
-		$n++;
-		$res = $student->getCref('notexists',1);
-		$this->assertFalse($res);
-		$this->assertEquals($log->getLine($n),E_ERC002.':notexists');
+		try {$res = $student->getCref('notexists',1);} catch (Exception $e) {$res=$e->getMessage();}
+		$this->assertEquals($res,E_ERC002.':notexists');
+		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
 
-		$n++;
-		$res = $student->getCref('Sexe',1);
-		$this->assertFalse($res);
-		$this->assertEquals($log->getLine($n),E_ERC027.':Sexe');		
+		try {$res = $student->getCref('Sexe',1);} catch (Exception $e) {$res=$e->getMessage();}
+		$this->assertEquals($res,E_ERC027.':Sexe');
+		$this->assertEquals($student->getErrLine(),E_ERC027.':Sexe');		
 	
-		$n++;
 		$res = $student->getCode('notexists',1);
 		$this->assertFalse($res);
-		$this->assertEquals($log->getLine($n),E_ERC002.':notexists');
+		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
 
-		$n++;
 		$res = $student->getCode('Name',1);
 		$this->assertFalse($res);
-		$this->assertEquals($log->getLine($n),E_ERC028.':Name');
+		$this->assertEquals($student->getErrLine(),E_ERC028.':Name');
 		
 		$db->commit();
 	}

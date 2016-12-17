@@ -194,6 +194,15 @@ class Model
     public function getErrLog() 
     {
         return $this->_errLog;
+    }    
+    public function getErrLine() 
+    {
+        $c = $this->_errLog->logSize();
+        if ($c) {
+            $l = $this->_errLog->getLine($c-1);
+            return $l;
+        }
+        return false;
     }
     /**
      * Returns the Model Name.
@@ -333,17 +342,14 @@ class Model
                 if ($c==1) {
                     return true;
                 }
-                break;
             case M_CREF:
                 if ($c==2) {
                     return true;
                 }
-                break;
             case M_CODE:
                 if ($c==3) {
                     return true;
                 }
-                break;
         }
         return false;
     }
@@ -367,7 +373,7 @@ class Model
     {     
         $mod = $this->getRefMod($attr);
         if (! $mod) {
-            return null;
+            throw new Exception($this->getErrLine());
         }
         $id = $this->getVal($attr);
         if (is_null($id)) {
@@ -409,7 +415,7 @@ class Model
     {
         $patha=$this->getCrefMod($attr);
         if (!$patha) {
-            return false; 
+            throw new Exception($this->getErrLine());
         }
         $m=new Model($patha[1]);
         $m->setRef($patha[2], $this);
@@ -421,7 +427,7 @@ class Model
     {
         $patha=$this->getCrefMod($attr);
         if (!$patha) {
-            return false; 
+            throw new Exception($this->getErrLine()); 
         }
         $res=new Model($patha[1], $id);
         $rid=$res->getVal($patha[2]);
@@ -475,7 +481,8 @@ class Model
             $this->_errLog->logLine(E_ERC002.':'.$attr);return false;
         }
         return (in_array($attr, $this->_attrProtected));
-    }    /**
+    }    
+    /**
      * Returns true if the attribute is a Business key.
      *
      * @param string $attr the attribute. 
@@ -581,7 +588,6 @@ class Model
      * Set an attribute as protected.
      *
      * @param string $attr the attribute. 
-     * @param string $val  the value.
      *
      * @return boolean
      */

@@ -53,7 +53,7 @@ class View
     protected $_cmodel;
     protected $_path;
     protected $_attrList;
-    protected $_attrHtml=['Sexe'=>H_T_RADIO,'A'=>H_T_SELECT,'De'=>H_T_SELECT];
+    protected $_attrHtml=['Sexe'=>H_T_RADIO,'A'=>H_T_SELECT,'De'=>H_T_SELECT]; //bof
     protected $_attrRef;
     protected $_attrCref;
     protected $_listHtml;

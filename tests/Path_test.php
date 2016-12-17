@@ -125,6 +125,10 @@ class Path_Test extends PHPUnit_Framework_TestCase
 		$pathr=$p1->getPath();
 		$this->assertEquals($pathr,$p1->RootPath().$path);
 		
+		$pathr=$p1->getObjPath();
+		$this->assertEquals($pathr,$p1->RootPath().$p1->getDefaultPath());
+		
+		
 		// obj path
 		
 		$path=$path.'/1';
@@ -139,6 +143,9 @@ class Path_Test extends PHPUnit_Framework_TestCase
 		$this->assertFalse($p2->isCreatPath());	
 		
 		$pathr=$p2->getPath();
+		$this->assertEquals($pathr,$p2->RootPath().$path);
+		
+		$pathr=$p2->getObjPath();
 		$this->assertEquals($pathr,$p2->RootPath().$path);
 		
 		$this->assertEquals($p2->getCreaPath(),$p1->getPath());
@@ -162,7 +169,7 @@ class Path_Test extends PHPUnit_Framework_TestCase
 		$p3 = new Path($rpath);
 		$this->assertNotNull($p3);
 		$obj = $p3->getObj();
-		
+			
 		$path = $rpath.'/CRef/'.$id2.'/CRef/'.$id3;
 		$p4 = new Path($path);
 		$this->assertNotNull($p4);
@@ -179,6 +186,9 @@ class Path_Test extends PHPUnit_Framework_TestCase
 		$this->assertNotNull($p6);
 		$obj=$p6->getObj();
 		$this->assertEquals($obj->getId(),0);
+		
+		$res = $p6->getObjPath();
+		$this->assertEquals($res,$p6->rootPath().'/'.$this->CName.'/'.$id);
 		
 	}
 	/**

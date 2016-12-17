@@ -1,6 +1,5 @@
 <?php
 	
-require_once("Model.php"); 
 require_once("Handler.php"); 
 
 	$CodeVal 	='CodeValue';
@@ -9,8 +8,8 @@ require_once("Handler.php");
 	$Cours	 	='Cours';
 	$Inscription='Inscription';	
 	$Person 	='Person';
-	$default 	=$Code; 
-	$defaultId =1;
+//	$default 	=$Code; 
+//	$defaultId =1;
 	
 	
 	

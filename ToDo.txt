@@ -1,7 +1,7 @@
-- review error (exception) for get ref etc.
 
 - design doc for view and review
 - improve view test coverage - need to separate view show and build 
+
 - left menu 
 - order in list query and attr
 - 'selection' view 
@@ -13,8 +13,8 @@
 
 - beef up test apps with relationships tables // done for file // union + deathDate set Ckey
 - define new type :  php and eval attibutes
-- review addattr interface.
 
+- review addattr interface.
 - split alter drop and add in Base.
 
 - Implement inheritance
@@ -45,6 +45,8 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+
+- review error (exception) for get ref etc. get back to 100% // 98% 4 hours 
 - add values for ref (new type of code) // 4 hours
 - add cancel // 2 Hours
 - remove possibility to unprotect !  // 1 hour

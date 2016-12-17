@@ -38,7 +38,7 @@ class Handler
 * @static
 */
     private static $_instance = null;
-    private $_bases = []; //'fileBase'=> [instances],
+    private $_bases = []; //'fileBase'=> [name => class],
     private $_basesClasses =['fileBase'=>'FileBase','dataBase'=>'SQLBase'];
     private $_modHandler= [];
     private $_modBase =['fileBase' =>'ModBase','dataBase'=>'ModBase'];
@@ -97,11 +97,15 @@ class Handler
         if (array_key_exists($modName, $this->_modHandler)) {
             return ($this->_modHandler[$modName]);
         }
-        return 0;  
+        return false;  
     }
 
     public function setStateHandler($modName,$base,$instance) 
     {
+        $y= $this-> getStateHandler($modName);
+        if ($y) {
+            return $y;
+        }
         $x = $this->getBase($base, $instance);
         $classN = $this->_modBase[$base];
         $y= new $classN($x);
