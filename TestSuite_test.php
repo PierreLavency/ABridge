@@ -35,4 +35,8 @@ require_once("Example\\" .$application.'_SETUP.php');
 
 require_once('controler.php');
 
+$ctrl = new Controler($config);
+$ctrl->run(true, 0);
+
+
 

@@ -7,32 +7,101 @@ require_once("Model.php");
 require_once("View.php"); 
 require_once("Path.php"); 
 
-$fb->beginTrans();
-$db->beginTrans();
-
-$level = 0;
-$db->setLogLevl($level);
-$fb->setLogLevl($level);
-
-$method = $_SERVER['REQUEST_METHOD'];
-
-$path = new Path();
-$c = $path->getObj();
-
-$action = V_S_READ;
-$actionExec = false;
-
-if ($method == 'GET') {
-    if (isset($_GET['View'])) {
-        $action = $_GET['View'];
+class Controler
+{
+    protected $_bases=[];
+    protected $_obj = null;
+    protected $_logLevel = 0;
+    
+    function __construct($config) 
+    {
+        $bases = [];
+        $handlers = [];
+        resetHandlers();
+        foreach ($config as $classN => $handler) {
+            if (! in_array($handler, $handlers)) {
+                $handlers[] = $handler;
+                $x = getBaseHandler($handler[0], $handler[1]);
+                $bases[]=$x;
+            }
+            initStateHandler($classN, $handler[0], $handler[1]);
+        }
+        $this->_bases = $bases;
     }
-    if (! $c->getid()) {
-        $action = V_S_CREA;
+
+    protected function beginTrans() 
+    {
+        foreach ($this->_bases as $base) {
+            $base-> beginTrans();
+        }
     }
-}
-if ($method =='POST') {
-    $action = $_POST['action'];
-    if ($action == V_S_UPDT or $action == V_S_CREA) {
+    
+    protected function setLogLevl($level) 
+    {
+        if (!$level) {
+            return true;
+        }
+        foreach ($this->_bases as $base) {
+            $base-> setLogLevl($level);
+        }
+        $this->_logLevel=$level;
+    }
+    
+    protected function logStartView() 
+    {
+        if (!$this->_logLevel) {
+            return true;
+        }
+        foreach ($this->_bases as $base) {
+            $log = $base-> getLog();
+            $log->logLine(' **************  ');
+        }
+    }
+    
+    protected function showLog() 
+    {
+        if (!$this->_logLevel) {
+            return true;
+        }
+        foreach ($this->_bases as $base) {
+            $log = $base-> getLog();
+            $log->show();
+        }
+    }
+    
+    protected function commit()
+    {
+        $res = true;
+        foreach ($this->_bases as $base) {
+            $r =$base->commit();
+            $res = ($res and $r);
+        }
+        return $res;
+    }
+    
+    protected function close()
+    {
+        $res = true;
+        foreach ($this->_bases as $base) {
+            $r =$base->close();
+            $res = ($res and $r);
+        }
+        return $res;
+    }
+    
+    protected function rollback()
+    {
+        $res = true;
+        foreach ($this->_bases as $base) {
+            $r =$base->rollback();
+            $res = ($res and $r);
+        }
+        return $res;
+    }
+    
+    protected function setVal() 
+    {
+        $c= $this->_obj;
         foreach ($c->getAllAttr() as $attr) { 
             if ($c->isMdtr($attr) or $c->isOptl($attr)) {
                 if (isset($_POST[$attr])) {
@@ -43,58 +112,73 @@ if ($method =='POST') {
                 }
             }
         }
+        return (!$c->isErr());
     }
-    if (!$c->isErr()) {
-        if ($action == V_S_DELT) {
-            $c->delet();
-        }
-        if ($action == V_S_UPDT or $action == V_S_CREA) {
-            $c->save();         
-        }
-    }
-    if (!$c->isErr()) {
-        $rf=$fb->commit();  
-        $rd=$db->commit();
-        if ($rf and $rd) {
-            $actionExec=true;
-        }
-    } else {
-        
-        $rf=$fb->rollback();    
-        $rd=$db->rollback();
-    }
-}
-
-if ($actionExec) {
-    if ($action == V_S_DELT) {
-        $path->pop();
-        $c= $path->getObj();
-    }
-    if ($action == V_S_CREA) {
-        $path->pushId($c->getId());
-    }
-    $action= V_S_READ;
-}
-
-$log = $db->getLog();
-if ($log) {
-    $log->logLine(' **************  ');
-}
-
-$v=new View($c);
-$v->show($path, $action, true);   
-
-$log = $db->getLog();
-if ($log) {
-    $log->show();
-}
-$log = $fb->getLog();
-if ($log) {
-    $log->show();
     
-$db->close();
-$fb->close(); 
+    protected function getAction($method) 
+    {
+        $action = V_S_READ;
+        if ($method == 'GET') {
+            if (isset($_GET['View'])) {
+                $action = $_GET['View'];
+            }
+            if (! $this->_obj->getid()) {
+                $action = V_S_CREA;
+            }
+        }
+        if ($method =='POST') {
+            $action = $_POST['action'];
+        }
+        return $action; 
+    }
     
-
+    function run($show,$logLevel)
+    {
+        $method = $_SERVER['REQUEST_METHOD'];   
+        $this->beginTrans();
+        $this->setLogLevl($logLevel);   
+        $path = new Path();
+        $this->_obj = $path->getObj();
+        $action = $this->getAction($method);
+        $actionExec = false;
+        if ($method =='POST') {
+            if ($action == V_S_UPDT or $action == V_S_CREA) {
+                $res = $this->setVal();
+            }
+            if (!$this->_obj->isErr()) {
+                if ($action == V_S_DELT) {
+                    $this->_obj->delet();
+                }
+                if ($action == V_S_UPDT or $action == V_S_CREA) {
+                    $this->_obj->save();         
+                }
+            }
+            if (!$this->_obj->isErr()) {
+                $res=$this->commit();
+                if ($res) {
+                    $actionExec=true;
+                }
+            } else {
+                $this->rollback(); 
+            }
+        }
+        if ($actionExec) {
+            if ($action == V_S_DELT) {
+                $path->pop();
+                $this->_obj= $path->getObj();
+            }
+            if ($action == V_S_CREA) {
+                $path->pushId($this->_obj->getId());
+            }
+            $action= V_S_READ;
+        }
+        $this->logStartView();
+        $v=new View($this->_obj);
+        $v->show($path, $action, $show);
+        $this->close();
+        $this->showLog();
+        return $path->getPath();
+    }
 }
+
 

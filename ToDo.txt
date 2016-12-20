@@ -1,15 +1,11 @@
-
-- design doc for view and review
 - improve view test coverage - need to separate view show and build 
-
+- design doc for view
 - left menu 
 - order in list query and attr
 - 'selection' view 
 - view overide default layout.
 
 - view sort out persistence and get rid of Label hack
-
-- clean up controler and add unit test
 
 - beef up test apps with relationships tables // done for file // union + deathDate set Ckey
 - define new type :  php and eval attibutes
@@ -45,7 +41,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
-
+- clean up controler and add unit test //4 hoours
 - review error (exception) for get ref etc. get back to 100% // 98% 4 hours 
 - add values for ref (new type of code) // 4 hours
 - add cancel // 2 Hours
