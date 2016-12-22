@@ -85,6 +85,7 @@ class Model
     protected $_checkTrusted=false; // could be usefull !! 
     protected $_attrCkey;
     protected $_attrProtected;
+    protected $_asCriteria;
     
     /**
     * Constructor
@@ -185,6 +186,7 @@ class Model
         $this->_attrMdtr = [];
         $this->_attrCkey = [];
         $this->_attrProtected = [];
+        $this->_asCriteria = [];
     }
     /**
      * Returns the errorlogger.
@@ -692,6 +694,26 @@ class Model
         $this->_modChgd=true;
         return true;
     }
+    
+    /**
+     * Set the critera to select objects .
+     *
+     * @param string $attr attribute list. 
+     * @param string $val  value lits .
+     *
+     * @return boolean
+     */         
+    public function setCriteria($attrL,$valL) 
+    {
+        foreach ($attrL as $attr) {
+            if (! $x= $this->existsAttr($attr)) {
+                $this->_errLog->logLine(E_ERC002.':'.$attr);
+                return false;
+            };
+        }
+        $this->_asCriteria=[$attrL,$valL];
+        return true;
+    }
     /**
      * Add an attribute.
      *
@@ -807,6 +829,19 @@ class Model
         }       
         return null;            
     }
+    
+    public function select() 
+    {
+        $result = [];
+        $res = $this->_asCriteria;
+        if ($res == []) {
+            return $result;
+        }
+        $mod=$this->getModName();
+        $result = $this->_stateHdlr->findObjWhere($mod, $res[0], $res[1]);
+        return $result;
+    }
+    
     /**
      * Get the value of an attribute.
      *

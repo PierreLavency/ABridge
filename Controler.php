@@ -11,6 +11,8 @@ class Controler
 {
     protected $_bases=[];
     protected $_obj = null;
+    protected $_attrL = [];
+    protected $_valL = [];
     protected $_logLevel = 0;
     
     function __construct($config) 
@@ -109,6 +111,10 @@ class Controler
                     $typ= $c->getTyp($attr);
                     $valC = convertString($val, $typ);
                     $c->setVal($attr, $valC);
+                    if (!is_null($valC)) {
+                        $this->_attrL[]=$attr;
+                        $this->_valL[]=$valC;
+                    }
                 }
             }
         }
@@ -121,6 +127,7 @@ class Controler
         if ($method == 'GET') {
             if (isset($_GET['View'])) {
                 $action = $_GET['View'];
+                return $action; 
             }
             if (! $this->_obj->getid()) {
                 $action = V_S_CREA;
@@ -142,7 +149,9 @@ class Controler
         $action = $this->getAction($method);
         $actionExec = false;
         if ($method =='POST') {
-            if ($action == V_S_UPDT or $action == V_S_CREA) {
+            if ($action == V_S_UPDT 
+            or $action == V_S_CREA 
+            or $action==V_S_SLCT) {
                 $res = $this->setVal();
             }
             if (!$this->_obj->isErr()) {
@@ -151,6 +160,11 @@ class Controler
                 }
                 if ($action == V_S_UPDT or $action == V_S_CREA) {
                     $this->_obj->save();         
+                }
+                if ($action == V_S_SLCT) {
+                    $valL=$this->_valL;
+                    $attrL=$this->_attrL;
+                    $res = $this->_obj->setCriteria($attrL, $valL);
                 }
             }
             if (!$this->_obj->isErr()) {
@@ -170,7 +184,9 @@ class Controler
             if ($action == V_S_CREA) {
                 $path->pushId($this->_obj->getId());
             }
-            $action= V_S_READ;
+            if ($action != V_S_SLCT) {
+                $action= V_S_READ;
+            }
         }
         $this->logStartView();
         $v=new View($this->_obj);

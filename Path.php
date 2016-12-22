@@ -91,6 +91,18 @@ Class Path
         throw new Exception(E_ERC037);
     }
     
+    public function popId() 
+    {
+        if ($this->isCreatPath()) {
+            throw new Exception(E_ERC035);
+        }
+        $res = $this->_pathArr;
+        array_pop($res);
+        $path = '/'.implode('/', $res);
+        $this->construct1($path);
+        return true;
+    }
+    
     public function push($mod,$id) 
     {
         if ($this->isCreatPath()) {
@@ -160,7 +172,7 @@ Class Path
     public function getObjPath() 
     {
         if (! $this->isCreatPath()) {
-            return $this->rootPath().$this->_pathStrg;
+            return $this->getPath();
         }
         $res = $this->_pathArr;
         array_pop($res);
@@ -181,6 +193,14 @@ Class Path
         $path = $this->rootPath().'/'.implode('/', $res);
         return $path;
     }
+    
+    public function getSelPath($mod) 
+    {
+        $path=$this->rootPath().'/'.$mod;
+        return $path;
+    }
+    
+    
     
     public function getRefPath($obj)
     {

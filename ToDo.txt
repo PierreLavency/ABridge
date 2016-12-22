@@ -1,13 +1,14 @@
 - improve view test coverage - need to separate view show and build 
-- design doc for view
 - left menu 
 - order in list query and attr
-- 'selection' view 
+- implete like where clause.
+- implement selection for Ref.
 - view overide default layout.
 
 - view sort out persistence and get rid of Label hack
 
 - beef up test apps with relationships tables // done for file // union + deathDate set Ckey
+- clean up old test suite
 - define new type :  php and eval attibutes
 
 - review addattr interface.
@@ -31,6 +32,7 @@ Dev Dependency
 - PhpUnit 3.7.21
 - Php code_sniffer 2.7.0
 - Phpdocumentor (pear install phpdoc/PhpDocumentor-2.8.1) <- graphiz 2.38
+
 CMD
 /*check code
 phpcs --standard=Zend --report=summary -l .
@@ -41,7 +43,9 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
-- clean up controler and add unit test //4 hoours
+- 'selection' view  // 2 days 
+- design doc for view
+- clean up controler and add unit test //4 hours
 - review error (exception) for get ref etc. get back to 100% // 98% 4 hours 
 - add values for ref (new type of code) // 4 hours
 - add cancel // 2 Hours

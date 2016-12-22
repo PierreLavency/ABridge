@@ -38,11 +38,12 @@ define('V_S_CREA', "Create"); // object view states
 define('V_S_UPDT', "Update"); 
 define('V_S_READ', "Read"); 
 define('V_S_DELT', "Delete");
+define('V_S_SLCT', "Select");
 define('V_S_REF', "reference"); // reference view
 define('V_S_CREF', "creference"); // collection view
 define('V_B_SUBM', "Submit"); // buttons
 define('V_B_CANC', "Cancel");
-
+define('V_B_RFCH', "Refresh");
 
 
 class View
@@ -56,8 +57,9 @@ class View
     protected $_attrHtml=['Sexe'=>H_T_RADIO,'A'=>H_T_SELECT,'De'=>H_T_SELECT]; //bof
     protected $_attrRef;
     protected $_attrCref;
+    protected $_attrSref;
     protected $_listHtml;
-    protected $_nav=[V_S_UPDT,V_S_DELT,V_S_CREA];
+    protected $_nav=[];
     protected $_attrLbl = [];
     protected $_attrProp;
     protected $_viewName = []; 
@@ -95,6 +97,22 @@ class View
                     $dspec = ['id'];
                 }
                 return $dspec;
+            case V_S_SLCT :
+                $dspec = $this->_attrSref;
+                if (is_null($dspec)) {
+                    $dspec = [];
+                    $res = array_diff(
+                        $this->_model->getAllAttr(),
+                        ['vnum','ctstp','utstp']
+                    );
+                    foreach ($res as $attr) {
+                        $atyp=$this->_model->getTyp($attr);
+                        if ($atyp != M_CREF and $atyp != M_TXT) {
+                            $dspec[]=$attr;
+                        }
+                    }
+                }
+                return $dspec ;   
             case V_S_CREF :
                 $dspec = $this->_attrCref;
                 if (is_null($dspec)) {
@@ -111,9 +129,7 @@ class View
                     $res = array_diff($res, $ref);       
                     foreach ($res as $attr) {
                         $atyp=$this->_model->getTyp($attr);
-                        if ($atyp != M_CREF and 
-                            $atyp != M_TXT
-                        ) {
+                        if ($atyp != M_CREF and $atyp != M_TXT) {
                             $dspec[]=$attr;
                         }
                     }
@@ -198,10 +214,29 @@ class View
         }
     }
 
-    public function setNav($dspec) 
+    public function setNav($dspec,$viewState) 
     {
-        $this->_nav= $dspec;
+        $this->_nav[$viewState]= $dspec;
         return true;
+    }
+    
+    public function getNav($viewState) 
+    {
+        if (isset($this->_nav[$viewState])) {
+            return $this->_nav[$viewState];
+        }
+        if ($viewState==V_S_READ) {
+            return [
+                [V_TYPE=>V_NAV,V_P_VAL=>V_S_UPDT],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_S_DELT],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_S_CREA],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_S_SLCT],
+                ];
+        }
+        return [
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
+                ];
     }
  
     public function setLblList($dspec) 
@@ -260,10 +295,15 @@ class View
     public function evale($spec,$viewState) 
     {
         $attr = $spec[V_ATTR];
-        $typ = $this->_model->getTyp($attr);
+        if ($attr == V_S_SLCT) { //bof
+            $typ = M_CREF;
+        } else {
+            $typ = $this->_model->getTyp($attr);
+        }
         $prop = $spec[V_PROP];
         $res = [];
-        if (($viewState == V_S_CREA or $viewState == V_S_UPDT) 
+        if (($viewState == V_S_CREA or $viewState == V_S_UPDT
+            or $viewState == V_S_SLCT) 
             and $prop==V_P_VAL 
             and (! $this->_model->isProtected($attr)) 
             and
@@ -329,7 +369,7 @@ class View
                 $res[H_NAME]=$this->_path->getPath();
                 return $res;
             }
-            if ($typ==M_CREF) {     
+            if ($typ==M_CREF and $attr != V_S_SLCT ) {     
                 $id=$spec[V_ID];
                 $m = $this->_model->getCref($attr, $id);
                 $v = new View($m);
@@ -341,6 +381,20 @@ class View
                 $v->_path=$this->_path;
                 $res = $v->buildCView($m, V_S_CREF);
                 $this->_path->pop();
+                return $res; 
+            }
+            if ($typ==M_CREF and $attr == V_S_SLCT ) {     
+                $id=$spec[V_ID];
+                $m = new Model($this->_model->getModName(), $id);
+                $v = new View($m);
+                $m = $this->_cmodel;
+                if (is_null($m)) {
+                    $m = $this->_model;
+                }
+                $this->_path->pushid($id);
+                $v->_path=$this->_path;
+                $res = $v->buildCView($m, V_S_CREF);
+                $this->_path->popid();
                 return $res; 
             }
             if ($typ==M_REF) {
@@ -374,6 +428,40 @@ class View
         return $res;
     }
     
+    public function evaln($nav,$viewState) 
+    {
+        $res=[];
+        $nav=$nav[V_P_VAL];
+        $res[H_TYPE]=H_T_LINK;
+        $res[H_LABEL]=$this->getLbl($nav);
+        if ($nav == V_S_CREA) {
+            $path = $this->_path->getCreaPath();
+        }
+        if ($nav == V_S_SLCT) {
+            $mod=$this->_model->getModName();
+            $path="'".$this->_path->getSelPath($mod).'?View='.$nav."'";
+//          $path = "'".$this->_path->getCreaPath().'?View='.$nav."'";
+        }
+        if ($nav == V_S_UPDT OR $nav == V_S_DELT) {
+            $path = $this->_path->getPath(); 
+            $path = "'".$path.'?View='.$nav."'";
+        }
+        if ($nav == V_B_CANC) {
+            $path = $this->_path->getObjPath();
+            if ($viewState == V_S_SLCT) {
+                $res[H_LABEL]=$this->getLbl(V_B_RFCH);
+                $mod=$this->_model->getModName();
+                $path="'".$this->_path->getSelPath($mod).'?View='.V_S_SLCT."'";
+            }
+        }
+        if ($nav == V_B_SUBM) {
+            $res[H_TYPE]=H_T_SUBMIT;
+        } else {
+            $res[H_NAME]=$path; 
+        }
+        return $res;
+    }
+    
     public function subst($spec,$viewState)
     {
         $type = $spec[V_TYPE];
@@ -381,6 +469,9 @@ class View
         switch ($type) {
             case V_ELEM:
                     $result= $this->evale($spec, $viewState);
+                break;
+            case V_NAV:
+                    $result= $this->evaln($spec, $viewState);
                 break;
             case V_OBJ:
                     $result= $this->evalo($spec, $viewState);
@@ -422,48 +513,6 @@ class View
                     $path = $this->_path->getPath();
                     $result[H_NAME]="'".$path.'/'.$spec[V_ATTR]."'";// here
                 break;
-            case V_NAV:
-                    $result[H_TYPE]=$this->getListHtml(V_NAV);;
-                    $result[H_SEPARATOR]= ' ';
-                    $arg=[];
-                    $res=[];
-                    if ($viewState == V_S_CREA 
-                    or  $viewState == V_S_DELT 
-                    or  $viewState == V_S_UPDT) {
-                        $res[H_TYPE]=H_T_SUBMIT;
-                        $res[H_LABEL]=$this->getLbl(V_B_SUBM);
-                        $arg[]=$res;
-                        $res=[];
-                        $res[H_TYPE]=H_T_LINK;
-                        $lbl=$this->getLbl(V_B_CANC);  
-                        $res[H_LABEL]=$lbl;                   
-                        if ($viewState == V_S_CREA) {
-                            $path = $this->_path->getObjPath();
-                        } else {
-                            $path = $this->_path->getPath();
-                        }
-                        $res[H_NAME]="'".$path."'";
-                        $arg[]=$res;
-                    }       
-                    if ($viewState == V_S_READ) {
-                        if (count($this->_nav)) {
-                            $res[H_TYPE]=H_T_LINK;      
-                            foreach ($this->_nav as $nav) {
-                                $res[H_LABEL]=$this->getLbl($nav);
-                                if ($nav == V_S_CREA) {
-                                    $path = $this->_path->getCreaPath();
-                                    $res[H_NAME]=$path; 
-                                } else {
-                                    $path = $this->_path->getPath(); 
-                                    $res[H_NAME]="'".$path.'?View='.$nav."'";
-                                }
-                                $arg[]=$res;
-                            }
-                            
-                        }
-                    }
-                    $result[H_ARG]=$arg;
-                break;
             case V_ERROR:
                     $result[H_TYPE]=H_T_PLAIN;
                     $result[H_DEFAULT]=$spec[V_STRING];
@@ -502,7 +551,8 @@ class View
         
         $name = $this->_model->getModName();
         $spec=[];       
-        $specL=[];                  
+        $specL=[];  
+        $specS=[];              
         foreach ($this->getAttrList($viewState) as $attr) {
             $view =[];
             $typ= $this->_model->getTyp($attr);
@@ -535,15 +585,29 @@ class View
         }
         $arg = [];
         $arg[]= [V_TYPE=>V_OBJ];
-        $arg[]= [V_TYPE=>V_NAV];
+        $navs = $this->getNav($viewState);
+        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_NAV,V_ARG=>$navs];
         $arg[]= [V_TYPE=>V_LIST,V_LT=>V_ALIST,V_ARG=>$spec];
+        if ($viewState == V_S_SLCT ) {
+            $view=[];
+            $view[]=[V_TYPE=>V_ELEM,V_ATTR => V_S_SLCT, V_PROP => V_P_LBL];
+            $viewe=[];
+            foreach ($this->_model->select() as $id) {
+                $viewe[]=[V_TYPE=>V_ELEM,V_ATTR => V_S_SLCT,
+                          V_PROP => V_P_VAL,V_ID=>$id];
+            }
+            $view[]=[V_TYPE=>V_LIST,V_LT=>V_CVAL,V_ARG=>$viewe];
+            $specS[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
+            $arg[] = [V_TYPE=>V_LIST,V_LT=>V_CLIST,V_ARG=>$specS];
+        }
         if ($this->_model->isErr()) {
             $e = $this->viewErr();
             $arg[]=$e;
         }
         if ($viewState == V_S_CREA 
         or  $viewState == V_S_DELT 
-        or  $viewState == V_S_UPDT) {
+        or  $viewState == V_S_UPDT
+        or  $viewState == V_S_SLCT) {
             $speci = [V_TYPE=>V_FORM,V_LT=>V_OBJ,V_ARG=>$arg];
             $r=$this->subst($speci, $viewState);
             return $r;
