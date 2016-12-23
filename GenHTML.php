@@ -121,6 +121,20 @@ function genListL($dspecL,$level)
     return $result;
 }
 
+function genHTML($dspec,$show = true)
+{
+    $htmlS="<!DOCTYPE html>\n<html>\n<head>\n<title>ABridge</title>";
+    $htmlS= $htmlS."\n</head>\n<body> \n ";
+    $htmlSE="\n </body> \n </html>";    
+    $res=genFormElemL($dspec, 0);
+    $result = $htmlS.$res.$htmlSE;
+    if ($show) {
+        echo $result;
+    }
+    return $result;
+}
+
+
 function genFormElem($dspec,$show = true)    
 {
     $res=genFormElemL($dspec, 0);

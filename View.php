@@ -5,11 +5,8 @@ require_once("ViewConstant.php");
 require_once("GenHTML.php");
 
 define('V_TYPE', "v_type");
-define('V_LT', "v_lt");
 define('V_ELEM', "v_elem");
 define('V_LIST', "v_list");
-define('V_ALIST', "v_alist");
-define('V_CLIST', "v_clist");
 define('V_CREF', "v_cref");
 define('V_CVAL', "v_cval");
 define('V_REF', "v_ref");
@@ -20,6 +17,11 @@ define('V_NAVC', "new");
 define('V_CNAV', "v_cnav");
 define('V_ERROR', "v_error"); 
 define('V_FORM', "v_form");
+
+
+define('V_LT', "v_lt"); // list type
+define('V_ALIST', "v_alist");
+define('V_CLIST', "v_clist");
 
 define('V_ID', "v_id");
 define('V_STRING', "v_string");
@@ -35,7 +37,7 @@ define('V_P_NAME', "v_p_Name");
 define('V_P_TYPE', "v_p_type");
 define('V_P_REF', "v_p_ref");
 
-define('V_S_CREA', "Create"); // object view states
+define('V_S_CREA', "Create"); // object view types
 define('V_S_UPDT', "Update"); 
 define('V_S_READ', "Read"); 
 define('V_S_DELT', "Delete");
@@ -573,7 +575,11 @@ class View
     {
         $this->_path=$path;
         $r = $this->buildView($viewState);
-        $r=genFormElem($r, $show);
+        if ($viewState != V_S_REF and $viewState != V_S_CREF) {
+            $r=genHTML($r, $show);
+        } else {
+            $r=genFormElem($r, $show);
+        }
         return $r;
     }
     

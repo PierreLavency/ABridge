@@ -31,6 +31,7 @@ $application= 'genealogy';
 //require_once("Example\\".$application.'_META_2.php');
 //require_once("Example\\" .$application.'_LOAD.php');
 
+
 require_once("Example\\" .$application.'_SETUP.php');
 
 require_once('controler.php');

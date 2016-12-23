@@ -1,14 +1,19 @@
+- set default property in View rather than in method
+
+- control display of url
+- implement home
+- get rid of Label hack
+- view overide default layout.
 - improve view test coverage - need to separate view show and build 
 - order in list query and attr
 - like where clause.
 - selection for Ref.
-- view overide default layout.
 - multiple views
 - view sort out persistence
-- get rid of Label hack
 - multi language 
 - push back blob text
 - pictures
+- handle error messages
 
 - beef up test apps with relationships tables 
 	- mega application
@@ -49,6 +54,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- fixe HTML banner doc type body etc. // 1hour
 - "left" menu  // 1day
 - 'selection' view  // 2 days 
 - design doc for view
