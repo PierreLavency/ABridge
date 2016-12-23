@@ -56,13 +56,52 @@ class View
     protected $_model;
     protected $_cmodel;
     protected $_path;
-    protected $_attrList;
+
     protected $_attrHtml=['Sexe'=>H_T_RADIO,'A'=>H_T_SELECT,'De'=>H_T_SELECT]; //bof
-    protected $_attrRef;
-    protected $_attrCref;
-    protected $_attrSref;
-    protected $_listHtml;
-    protected $_nav=[];
+
+    protected $_attrList;
+    
+    protected $_listHtml = [
+                V_OBJ   => H_T_LIST_BR,
+                V_CNAV  => H_T_1TABLE,
+                V_NAV   => H_T_1TABLE,
+                V_ALIST => H_T_TABLE,
+                V_ATTR  => H_T_LIST,
+                V_CLIST => H_T_LIST_BR,
+                V_CREF  => H_T_LIST_BR,
+                V_CVAL  => H_T_TABLE,
+                V_S_REF => H_T_CONCAT, // do not change
+                V_S_CREF=> H_T_LIST, // caller or callee ?
+                V_ERROR => H_T_LIST,
+                ];
+
+    protected $_nav=[
+              V_S_READ =>[
+                [V_TYPE=>V_NAV,V_P_VAL=>V_S_UPDT],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_S_DELT],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_S_CREA],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_S_SLCT],
+                ],
+              V_S_SLCT =>[
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_RFCH],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_S_CREA],
+                ],
+              V_S_CREA =>[
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
+                ],
+              V_S_UPDT =>[
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
+                ],
+              V_S_DELT =>[
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
+                ],              
+              ];
+
     protected $_navClass=[
               [V_TYPE=>V_CNAV,V_OBJ=>'Student',V_P_VAL=>V_S_SLCT],
               [V_TYPE=>V_CNAV,V_OBJ=>'Cours',V_P_VAL=>V_S_SLCT],
@@ -70,9 +109,18 @@ class View
               [V_TYPE=>V_CNAV,V_OBJ=>'Code' ,V_P_VAL=>V_S_SLCT],
               [V_TYPE=>V_CNAV,V_OBJ=>'CodeValue' ,V_P_VAL=>V_S_SLCT],
               ];
+
+    protected $_attrProp=[
+              V_S_READ =>[V_P_LBL,V_P_VAL],
+              V_S_SLCT =>[V_P_LBL,V_P_VAL],
+              V_S_CREA =>[V_P_LBL,V_P_VAL],
+              V_S_UPDT =>[V_P_LBL,V_P_VAL],
+              V_S_DELT =>[V_P_LBL,V_P_VAL],
+              V_S_REF  =>[V_P_VAL],
+              V_S_CREF =>[V_P_VAL],
+              ];
+              
     protected $_attrLbl = [];
-    protected $_attrProp;
-    protected $_viewName = []; 
 
     // constructors
 
@@ -84,75 +132,57 @@ class View
 
     // methods
     
-    public function setAttrList($dspec,$viewState="") 
+    public function setAttrList($dspec,$viewState) 
     {
-        if ($viewState == V_S_REF) {
-            $this->_attrRef = $dspec;
-            return true;
-        }
-        if ($viewState == V_S_CREF) {
-            $this->_attrCref = $dspec;
-            return true;
-        }
-        $this->_attrList= $dspec;
+        $this->_attrList[$viewState]= $dspec;
         return true;
     }
 
     public function getAttrList($viewState)
     {
+        if (isset($this->_attrList[$viewState])) {
+            return $this->_attrList[$viewState];
+        }
+        $dspec = [];
         switch ($viewState) {
             case V_S_REF :
-                $dspec = $this->_attrRef;
-                if (is_null($dspec)) {
-                    $dspec = ['id'];
-                }
+                $dspec = ['id']; 
                 return $dspec;
             case V_S_SLCT :
-                $dspec = $this->_attrSref;
-                if (is_null($dspec)) {
-                    $dspec = [];
-                    $res = array_diff(
-                        $this->_model->getAllAttr(),
-                        ['vnum','ctstp','utstp']
-                    );
-                    foreach ($res as $attr) {
-                        $atyp=$this->_model->getTyp($attr);
-                        if ($atyp != M_CREF and $atyp != M_TXT) {
-                            $dspec[]=$attr;
-                        }
+                $res = array_diff(
+                    $this->_model->getAllAttr(),
+                    ['vnum','ctstp','utstp']
+                );
+                foreach ($res as $attr) {
+                    $atyp=$this->_model->getTyp($attr);
+                    if ($atyp != M_CREF and $atyp != M_TXT) {
+                        $dspec[]=$attr;
                     }
                 }
                 return $dspec ;   
             case V_S_CREF :
-                $dspec = $this->_attrCref;
-                if (is_null($dspec)) {
-                    $dspec = [];
-                    $res = array_diff(
-                        $this->_model->getAllAttr(),
-                        ['vnum','ctstp','utstp']
-                    );
-                    $ref = $this->getAttrList(V_S_REF);
-                    $key = array_search('id', $ref);
-                    if ($key!==false) {
-                        unset($ref[$key]);
-                    } 
-                    $res = array_diff($res, $ref);       
-                    foreach ($res as $attr) {
-                        $atyp=$this->_model->getTyp($attr);
-                        if ($atyp != M_CREF and $atyp != M_TXT) {
-                            $dspec[]=$attr;
-                        }
+                $res = array_diff(
+                    $this->_model->getAllAttr(),
+                    ['vnum','ctstp','utstp']
+                );
+                $ref = $this->getAttrList(V_S_REF);
+                $key = array_search('id', $ref);
+                if ($key!==false) {
+                    unset($ref[$key]);
+                } 
+                $res = array_diff($res, $ref);       
+                foreach ($res as $attr) {
+                    $atyp=$this->_model->getTyp($attr);
+                    if ($atyp != M_CREF and $atyp != M_TXT) {
+                        $dspec[]=$attr;
                     }
                 }
                 return $dspec ;   
             default : 
-                $dspec = $this->_attrList;
-                if (is_null($dspec)) {
-                    $dspec = array_diff(
-                        $this->_model->getAllAttr(),
-                        ['vnum','ctstp','utstp']
-                    );
-                }
+                $dspec = array_diff(
+                    $this->_model->getAllAttr(),
+                    ['vnum','ctstp','utstp']
+                );
                 return $dspec;
         }
     }
@@ -165,66 +195,25 @@ class View
 
     public function getListHtml($listType)
     {       
-        switch ($listType) {
-            case V_OBJ: 
-                $result=H_T_LIST_BR; //BR
-                break;
-            case V_CNAV:
-                $result=H_T_1TABLE;  // BR
-                break;
-            case V_NAV:
-                $result=H_T_1TABLE;  // BR
-                break;
-            case V_ALIST:
-                $result=H_T_TABLE; // TABLE
-                break;
-            case V_ATTR:
-                $result=H_T_LIST;
-                break;          
-            case V_CLIST:
-                $result=H_T_LIST_BR; //BR
-                break;                                              
-            case V_CREF:
-                $result=H_T_LIST_BR; //BR
-                break;
-            case V_CVAL:
-                $result=H_T_TABLE; // TABLE
-                break;
-            case V_S_REF: // no choice !
-                $result=H_T_CONCAT;
-                break;
-            case V_S_CREF: // shoud get this from the calling object ? 
-                $result=H_T_LIST;  // CONCAT
-                break;
-            default:
-                $result=H_T_LIST;
-        }                       
- 
-        return $result;
+        if (isset($this->_listHtml[$listType])) {
+            return $this->_listHtml[$listType];
+        }
+        return H_T_LIST;
     }
      
-    public function setPropList($dspec) 
+    public function setPropList($dspec,$viewState) 
     {
-        $this->_attrProp= $dspec;
+        $this->_attrProp[$viewState]= $dspec;
         return true;
     }
 
     public function getPropList($viewState) 
     {
-        switch($viewState) {
-            case V_S_REF :
-                $res = [V_P_VAL];
-                return $res;
-            case V_S_CREF : 
-                $res = [V_P_VAL];
-                return $res;
-            default :
-                $res = $this->_attrProp;
-                if (is_null($res)) {
-                    $res = [V_P_LBL,V_P_VAL];
-                }
-                return $res;
+        if (isset($this->_attrProp[$viewState])) {
+            return $this->_attrProp[$viewState];
         }
+        $res = [V_P_LBL,V_P_VAL];
+        return $res;
     }
 
     public function setNavClass($dspec)
@@ -253,26 +242,7 @@ class View
         if (isset($this->_nav[$viewState])) {
             return $this->_nav[$viewState];
         }
-        if ($viewState==V_S_READ) {
-            return [
-                [V_TYPE=>V_NAV,V_P_VAL=>V_S_UPDT],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_S_DELT],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_S_CREA],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_S_SLCT],
-                ];
-        }
-        if ($viewState==V_S_SLCT) {
-            return [
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_RFCH],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_S_CREA],
-                ];
-        }
-        return [
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
-                ];
+        return [];
     }
  
     public function setLblList($dspec) 
@@ -310,6 +280,12 @@ class View
             default:
                 return 0;
         }       
+    }
+    
+    public function setAttrListHtml($dspec) 
+    {
+        $this->_attrHtml= $dspec;
+        return true;
     }
     
     public function getAttrHtml($attr) 
