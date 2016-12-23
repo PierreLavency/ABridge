@@ -40,6 +40,26 @@ function genFormL($action,$url,$hidden,$dspecL,$level)
     return $result;
 }
 
+
+function gen1TableL ($dspecL,$level)
+{
+    $tableS = '<table > <tr>';
+    $tableSE = '</tr> </table>';
+    $elementS   = '<td>'  ;
+    $elementES   = '</td>'  ;
+    $tab = getTab($level);
+    $nl  = getNl($level);
+    $tabn=getTab($level+1);
+    
+    $result= $tab.$tableS;
+    foreach ($dspecL as $dspec) {
+        $result=$result . $nl . $tabn. $elementS. $nl;
+        $result=$result .genFormElemL($dspec, $level+2).$tabn.$elementES;
+    }
+    $result = $result.$nl.$tab.$tableSE.$nl;
+    return $result;
+}
+
 function genTableL ($dspecL,$level)
 {
     $tableS = '<table >';
@@ -215,6 +235,9 @@ function genFormElemL($dspec,$level)
             break;
         case H_T_TABLE:
             $result = genTableL($arg, $level);
+            break;
+        case H_T_1TABLE:
+            $result = gen1TableL($arg, $level);
             break;
         case H_T_CONCAT:
             $result = $tab;

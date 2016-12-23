@@ -116,6 +116,10 @@ class Controler
                         $this->_valL[]=$valC;
                     }
                 }
+                if ($c->isProtected($attr)) {
+                    $this->_attrL[]=$attr;
+                    $this->_valL[]=$c->getVal($attr);
+                }
             }
         }
         return (!$c->isErr());

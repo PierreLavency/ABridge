@@ -14,7 +14,7 @@ define('H_T_LINK', "link");
 define('H_T_FORM', "form");
 define('H_T_LIST_BR', "listbr");
 define('H_T_TABLE', "table");
-
+define('H_T_1TABLE', "1table");
 
 define('H_NAME', "name");
 define('H_LABEL', "label");

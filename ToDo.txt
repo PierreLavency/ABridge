@@ -1,13 +1,19 @@
 - improve view test coverage - need to separate view show and build 
-- left menu 
 - order in list query and attr
-- implete like where clause.
-- implement selection for Ref.
+- like where clause.
+- selection for Ref.
 - view overide default layout.
+- multiple views
+- view sort out persistence
+- get rid of Label hack
+- multi language 
+- push back blob text
+- pictures
 
-- view sort out persistence and get rid of Label hack
-
-- beef up test apps with relationships tables // done for file // union + deathDate set Ckey
+- beef up test apps with relationships tables 
+	- mega application
+	- union + deathDate set Ckey + multi surname + frere et soeur
+	- code postal 
 - clean up old test suite
 - define new type :  php and eval attibutes
 
@@ -43,6 +49,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- "left" menu  // 1day
 - 'selection' view  // 2 days 
 - design doc for view
 - clean up controler and add unit test //4 hours

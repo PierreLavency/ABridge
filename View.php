@@ -17,6 +17,7 @@ define('V_ARG', "v_arg");
 define('V_OBJ', "v_obj");
 define('V_NAV', "v_nav");
 define('V_NAVC', "new");
+define('V_CNAV', "v_cnav");
 define('V_ERROR', "v_error"); 
 define('V_FORM', "v_form");
 
@@ -60,6 +61,13 @@ class View
     protected $_attrSref;
     protected $_listHtml;
     protected $_nav=[];
+    protected $_navClass=[
+              [V_TYPE=>V_CNAV,V_OBJ=>'Student',V_P_VAL=>V_S_SLCT],
+              [V_TYPE=>V_CNAV,V_OBJ=>'Cours',V_P_VAL=>V_S_SLCT],
+              [V_TYPE=>V_CNAV,V_OBJ=>'Person' ,V_P_VAL=>V_S_SLCT],
+              [V_TYPE=>V_CNAV,V_OBJ=>'Code' ,V_P_VAL=>V_S_SLCT],
+              [V_TYPE=>V_CNAV,V_OBJ=>'CodeValue' ,V_P_VAL=>V_S_SLCT],
+              ];
     protected $_attrLbl = [];
     protected $_attrProp;
     protected $_viewName = []; 
@@ -159,8 +167,11 @@ class View
             case V_OBJ: 
                 $result=H_T_LIST_BR; //BR
                 break;
+            case V_CNAV:
+                $result=H_T_1TABLE;  // BR
+                break;
             case V_NAV:
-                $result=H_T_LIST_BR;  // BR
+                $result=H_T_1TABLE;  // BR
                 break;
             case V_ALIST:
                 $result=H_T_TABLE; // TABLE
@@ -214,6 +225,21 @@ class View
         }
     }
 
+    public function setNavClass($dspec)
+    {
+        $this->_navClass= $dspec;
+        return true;
+    }
+
+    public function getNavClass($viewState)
+    {
+        if (isset($this->_navClass)) {
+            return $this->_navClass;
+        }
+ 
+        return [];
+    }
+    
     public function setNav($dspec,$viewState) 
     {
         $this->_nav[$viewState]= $dspec;
@@ -231,6 +257,14 @@ class View
                 [V_TYPE=>V_NAV,V_P_VAL=>V_S_DELT],
                 [V_TYPE=>V_NAV,V_P_VAL=>V_S_CREA],
                 [V_TYPE=>V_NAV,V_P_VAL=>V_S_SLCT],
+                ];
+        }
+        if ($viewState==V_S_SLCT) {
+            return [
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_RFCH],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
+                [V_TYPE=>V_NAV,V_P_VAL=>V_S_CREA],
                 ];
         }
         return [
@@ -438,9 +472,7 @@ class View
             $path = $this->_path->getCreaPath();
         }
         if ($nav == V_S_SLCT) {
-            $mod=$this->_model->getModName();
-            $path="'".$this->_path->getSelPath($mod).'?View='.$nav."'";
-//          $path = "'".$this->_path->getCreaPath().'?View='.$nav."'";
+            $path = "'".$this->_path->getCreaPath().'?View='.$nav."'";
         }
         if ($nav == V_S_UPDT OR $nav == V_S_DELT) {
             $path = $this->_path->getPath(); 
@@ -448,19 +480,32 @@ class View
         }
         if ($nav == V_B_CANC) {
             $path = $this->_path->getObjPath();
-            if ($viewState == V_S_SLCT) {
-                $res[H_LABEL]=$this->getLbl(V_B_RFCH);
-                $mod=$this->_model->getModName();
-                $path="'".$this->_path->getSelPath($mod).'?View='.V_S_SLCT."'";
-            }
         }
+        if ($nav == V_B_RFCH) {
+            $path = "'".$this->_path->getCreaPath().'?View='.V_S_SLCT."'";
+        }
+        
         if ($nav == V_B_SUBM) {
             $res[H_TYPE]=H_T_SUBMIT;
+            $res[H_LABEL]=$this->getLbl($viewState);
         } else {
             $res[H_NAME]=$path; 
         }
         return $res;
     }
+    
+    public function evalc($spec, $viewState)
+    {
+        $res=[];
+        $nav=$spec[V_P_VAL];
+        $mod=$spec[V_OBJ];
+        $res[H_TYPE]=H_T_LINK;
+        $res[H_LABEL]=$this->getLbl($mod);
+        $path = "'".$this->_path->getClassPath($mod).'?View='.$nav."'";
+        $res[H_NAME]=$path; 
+        return $res;
+    }
+    
     
     public function subst($spec,$viewState)
     {
@@ -472,6 +517,9 @@ class View
                 break;
             case V_NAV:
                     $result= $this->evaln($spec, $viewState);
+                break;
+            case V_CNAV:
+                    $result= $this->evalc($spec, $viewState);
                 break;
             case V_OBJ:
                     $result= $this->evalo($spec, $viewState);
@@ -584,6 +632,8 @@ class View
             return $r;
         }
         $arg = [];
+        $navClass= $this->getNavClass($viewState);
+        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_CNAV,V_ARG=>$navClass]; 
         $arg[]= [V_TYPE=>V_OBJ];
         $navs = $this->getNav($viewState);
         $arg[]= [V_TYPE=>V_LIST,V_LT=>V_NAV,V_ARG=>$navs];

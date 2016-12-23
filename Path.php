@@ -194,7 +194,7 @@ Class Path
         return $path;
     }
     
-    public function getSelPath($mod) 
+    public function getClassPath($mod) 
     {
         $path=$this->rootPath().'/'.$mod;
         return $path;

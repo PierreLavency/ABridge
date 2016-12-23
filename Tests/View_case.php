@@ -20,26 +20,16 @@ function viewCases()
 	$x->addAttr('A4',M_TXT);
 
 	$x->setVal('A1',5);
-	if ($x->isErr()) {
-		$x->getErrLog()->show();
-	}
 
 	$x->setVal('A2','aa');
-	if ($x->isErr()) {
-		$x->getErrLog()->show();
-	}
 
 	$x->setVal('A3','2016-12-08');
-	if ($x->isErr()) {
-		$x->getErrLog()->show();
-	}
 
 	$x->setVal('A4','ceci est un texte');
-	if ($x->isErr()) {
-		$x->getErrLog()->show();
-	}
-	
+
 	$v = new View($x);
+	
+	$v->setNavClass([[V_TYPE=>V_CNAV,V_OBJ=>'test',V_P_VAL=>V_S_SLCT]]);
 	
 	$path = new Path('/test/1');
 
