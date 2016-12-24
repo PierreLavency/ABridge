@@ -37,4 +37,5 @@ define('E_ERC034', "ERC034");  // protected attribute
 define('E_ERC035', "ERC035");  // not allowed on create path
 define('E_ERC036', "ERC036");  // url not correctly formated
 define('E_ERC037', "ERC037");  // not allowed on existing object path
+define('E_ERC038', "ERC038");  // not allowed on root path
 

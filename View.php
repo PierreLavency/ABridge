@@ -102,13 +102,7 @@ class View
                 ],              
               ];
 
-    protected $_navClass=[
-              [V_TYPE=>V_CNAV,V_OBJ=>'Student',V_P_VAL=>V_S_SLCT],
-              [V_TYPE=>V_CNAV,V_OBJ=>'Cours',V_P_VAL=>V_S_SLCT],
-              [V_TYPE=>V_CNAV,V_OBJ=>'Person' ,V_P_VAL=>V_S_SLCT],
-              [V_TYPE=>V_CNAV,V_OBJ=>'Code' ,V_P_VAL=>V_S_SLCT],
-              [V_TYPE=>V_CNAV,V_OBJ=>'CodeValue' ,V_P_VAL=>V_S_SLCT],
-              ];
+    protected $_navClass=[];
 
     protected $_attrProp=[
               V_S_READ =>[V_P_LBL,V_P_VAL],
@@ -218,7 +212,11 @@ class View
 
     public function setNavClass($dspec)
     {
-        $this->_navClass= $dspec;
+        $this->_navClass=[];
+        foreach ($dspec as $classN) {
+            $this->_navClass[]= 
+            [V_TYPE=>V_CNAV,V_OBJ=>$classN,V_P_VAL=>V_S_SLCT];
+        }
         return true;
     }
 
@@ -568,21 +566,31 @@ class View
     
     public function buildView($viewState) 
     {
+        $spec=[];       
+        $specL=[];  
+        $specS=[];
+        $arg = [];
+        
         $labels = 
         [ 'Person'  => ['SurName','Name'],
           'Student' => ['SurName','Name'],
           'Cours'   => ['Name'],
           'CodeValue'=>['Name']];
 
-        if (isset($labels[$this->_model->getModName()])) {
+        if (is_null($this->_model)) {
+            $navClass= $this->getNavClass($viewState);
+            $arg[]= [V_TYPE=>V_LIST,V_LT=>V_CNAV,V_ARG=>$navClass];
+            $speci = [V_TYPE=>V_LIST,V_LT=>V_OBJ,V_ARG=>$arg];  
+            $r=$this->subst($speci, $viewState);
+            return $r;          
+        }  
+                  
+        if (isset($labels[$this->_model->getModName()])) { // bof
             $x = $labels[$this->_model->getModName()];
             $this->setAttrList($x, V_S_REF);
         }
         
-        $name = $this->_model->getModName();
-        $spec=[];       
-        $specL=[];  
-        $specS=[];              
+        
         foreach ($this->getAttrList($viewState) as $attr) {
             $view =[];
             $typ= $this->_model->getTyp($attr);

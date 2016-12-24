@@ -206,7 +206,7 @@ class Path_Test extends PHPUnit_Framework_TestCase
 		
 		$pathStrg='/';
 		try {$x=new Path($pathStrg);} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC036.':'.$pathStrg);
+		$this->assertEquals($x->getPath(),$x->prfxPath($pathStrg));
 		
 		$pathStrg='/$/1';
 		try {$x=new Path($pathStrg);} catch (Exception $e) {$r= $e->getMessage();}

@@ -32,7 +32,7 @@ $application= 'genealogy';
 //require_once("Example\\" .$application.'_LOAD.php');
 
 
-require_once("Example\\" .$application.'_SETUP.php');
+require_once("Example\\" .$application.'_SETUP.php'); // defining config
 
 require_once('controler.php');
 

@@ -29,7 +29,7 @@ function viewCases()
 
 	$v = new View($x);
 	
-	$v->setNavClass([[V_TYPE=>V_CNAV,V_OBJ=>'test',V_P_VAL=>V_S_SLCT]]);
+	$v->setNavClass(['test']);
 	
 	$path = new Path('/test/1');
 

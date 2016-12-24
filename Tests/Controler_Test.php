@@ -7,7 +7,10 @@ require_once("Controler.php");
 class Controler_Test extends PHPUnit_Framework_TestCase  
 {
     
-    protected $config =  ['tclass'=>['dataBase','test'],];
+    protected $config =  [
+	'Handlers' => ['tclass'=>['dataBase','test'],],
+	'Home'=>['tclass']
+	];
     protected $show = false;
 	protected $path;
     

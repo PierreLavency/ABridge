@@ -1,10 +1,9 @@
-
 - control display of url
-- implement home
 - get rid of Label hack
 - view overide default layout.
 - improve view test coverage - need to separate view show and build 
 - order in list query and attr
+- set up paging
 - like where clause.
 - selection for Ref.
 - multiple views
@@ -34,7 +33,6 @@
 - set up a git server
 - set up jenkin 
 
-
 CMD
 /*check code
 phpcs --standard=Zend --report=summary -l .
@@ -53,6 +51,7 @@ Dev Dependency
 - Phpdocumentor (pear install phpdoc/PhpDocumentor-2.8.1) <- graphiz 2.38
 
 DONE
+- implement home // 4 hours
 - set default property in View property rather than in method // 2 hours
 - fixe HTML banner doc type body etc. // 1hour
 - "left" menu  // 1day

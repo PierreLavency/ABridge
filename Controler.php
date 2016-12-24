@@ -11,15 +11,18 @@ class Controler
 {
     protected $_bases=[];
     protected $_obj = null;
+    protected $_spec = [];
     protected $_attrL = [];
     protected $_valL = [];
     protected $_logLevel = 0;
     
-    function __construct($config) 
+    function __construct($spec) 
     {
+        $this->_spec=$spec;
         $bases = [];
         $handlers = [];
         resetHandlers();
+        $config=$spec['Handlers'];
         foreach ($config as $classN => $handler) {
             if (! in_array($handler, $handlers)) {
                 $handlers[] = $handler;
@@ -143,13 +146,28 @@ class Controler
         return $action; 
     }
     
+    protected function showView($path,$action,$show) 
+    {
+        $this->logStartView();
+        $v=new View($this->_obj);
+        $home=$this->_spec['Home'];
+        $v->setNavClass($home);
+        $v->show($path, $action, $show);
+    }
+    
     function run($show,$logLevel)
     {
         $method = $_SERVER['REQUEST_METHOD'];   
         $this->beginTrans();
         $this->setLogLevl($logLevel);   
         $path = new Path();
-        $this->_obj = $path->getObj();
+        $this->_obj  = $path->getObj();
+        if (is_null($this->_obj)) {
+            $this->showView($path, null, $show);
+            $this->close();
+            $this->showLog();
+            return $path->getPath();
+        }
         $action = $this->getAction($method);
         $actionExec = false;
         if ($method =='POST') {
@@ -192,9 +210,7 @@ class Controler
                 $action= V_S_READ;
             }
         }
-        $this->logStartView();
-        $v=new View($this->_obj);
-        $v->show($path, $action, $show);
+        $this->showView($path, $action, $show);
         $this->close();
         $this->showLog();
         return $path->getPath();

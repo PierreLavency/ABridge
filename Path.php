@@ -7,9 +7,10 @@ Class Path
     protected $_pathArr;
     protected $_pathNrmArr;
     protected $_pathCreat;
-    protected $_pathPrefix='Bridge.php';
-    protected $_default='/Code/1';
+    protected $_pathPrefix='/ABridge.php';
+    protected $_default='/'; // or an object path: /mod/id
     protected $_objN;
+    protected $_isRoot;
     protected $_length;
     
     public function __construct() 
@@ -33,17 +34,19 @@ Class Path
     protected function construct1($pathStrg)
     {
         $pathArr = explode('/', $pathStrg);
+        $this->_pathStrg=$pathStrg;
         if ($pathArr[0] != "") { // not starting with / 
             throw new Exception(E_ERC036.':'.$pathStrg);
         }
         array_shift($pathArr);
         if ($pathArr[0] == "") { // '/' alones ?
-            throw new Exception(E_ERC036.':'.$pathStrg);
+            $this->_isRoot=true;
+            return;
         }
+        $this->_isRoot=false;
         $c = count($pathArr);
         $r = $c%2;
         $obj = null;
-        $this->_pathStrg=$pathStrg;
         $this->_pathArr=[];
         $this->_length=$c;
         $this->_pathCreat = $r;
@@ -70,6 +73,9 @@ Class Path
     
     public function isCreatPath() 
     {
+        if ($this->_isRoot) {
+            return false;
+        }
         if ($this->_pathCreat) {
             return true;
         }
@@ -83,6 +89,9 @@ Class Path
     
     public function pushId($id) 
     {
+        if ($this->_isRoot) {
+            throw new Exception(E_ERC038);
+        }
         if ($this->isCreatPath()) {
             $path = $this->_pathStrg.'/'.$id;
             $this->construct1($path);
@@ -93,6 +102,9 @@ Class Path
     
     public function popId() 
     {
+        if ($this->_isRoot) {
+            throw new Exception(E_ERC038);
+        }
         if ($this->isCreatPath()) {
             throw new Exception(E_ERC035);
         }
@@ -109,16 +121,22 @@ Class Path
             throw new Exception(E_ERC035);
         }
         $path = $this->_pathStrg.'/'.$mod.'/'.$id;
+        if ($this->_isRoot) {
+            $path = '/'.$mod.'/'.$id;
+        }
         $this->construct1($path);
         return true; 
     }
     
     public function pop()
     {
+        if ($this->_isRoot) {
+            return true;
+        }
         if ($this->isCreatPath()) {
             throw new Exception(E_ERC035);
         }
-        if ($this->_length <= 2) {
+        if ($this->_length <= 2 ) {
             $this->construct1($this->_default);
             return true;
         }
@@ -132,12 +150,20 @@ Class Path
     
     public function rootPath()
     {
-        return ('/ABridge.php');
+        return $this->_pathPrefix;
+    }
+    
+    public function prfxPath($path)
+    {
+        return $this->_pathPrefix.$path;
     }
     
     public function getObj()
     {
         $obj = null;
+        if ($this->_isRoot) {
+            return $obj;
+        }
         $this->pathNrmArr=[];
         for ($i=0; $i<$this->_objN; $i=$i+2) {
             $mod = $this->_pathArr[$i];
@@ -165,50 +191,58 @@ Class Path
     
     public function getPath() 
     {
-        $path = $this->rootPath().$this->_pathStrg;
+        $path = $this->prfxPath($this->_pathStrg);
         return $path;
     }
     
     public function getObjPath() 
     {
+        if ($this->_isRoot) {
+            throw new Exception(E_ERC038);
+        }       
         if (! $this->isCreatPath()) {
             return $this->getPath();
         }
         $res = $this->_pathArr;
         array_pop($res);
         if (count($res)==0) {
-            return $this->rootPath().$this->getDefaultPath();
+            return $this->prfxPath($this->_default);
         }
-        $path = $this->rootPath().'/'.implode('/', $res);
+        $path = $this->prfxPath('/'.implode('/', $res));
         return $path;
     }
     
     public function getCreaPath() 
     {
+        if ($this->_isRoot) {
+            throw new Exception(E_ERC038);
+        }
         if ($this->isCreatPath()) {
-            return $this->rootPath().$this->_pathStrg;
+            return $this->prfxPath($this->_pathStrg);
         }
         $res = $this->_pathArr;
         array_pop($res);
-        $path = $this->rootPath().'/'.implode('/', $res);
+        $path = $this->prfxPath('/'.implode('/', $res));
         return $path;
     }
     
     public function getClassPath($mod) 
     {
-        $path=$this->rootPath().'/'.$mod;
+        $path=$this->prfxPath('/'.$mod);
         return $path;
     }
     
-    
-    
     public function getRefPath($obj)
     {
+        $mod = $obj->getModName();
+        $id = $obj->getId();
+        $path=$this->prfxPath('/'.$mod.'/'.$id);    
+        if ($this->_isRoot) {
+            return $path;
+        }
         if (is_null($this->_pathNrmArr)) {
             $this->getObj();
         }       
-        $mod = $obj->getModName();
-        $id = $obj->getId();
         $c = $this->_length;
         $resN = $this->_pathNrmArr;
         $res  = $this->_pathArr;
@@ -224,10 +258,9 @@ Class Path
             }
         }
         if ($found) {
-            $path=$this->rootPath().'/'.implode('/', $res);
+            $path=$this->prfxPath('/'.implode('/', $res));
             return $path;
         }
-        $path=$this->rootPath().'/'.$mod.'/'.$id;
         return $path;
     }
 }
