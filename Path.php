@@ -231,6 +231,12 @@ Class Path
         $path=$this->prfxPath('/'.$mod);
         return $path;
     }
+
+    public function getHomePath() 
+    {
+        $path=$this->prfxPath($this->_default);
+        return $path;
+    }
     
     public function getRefPath($obj)
     {

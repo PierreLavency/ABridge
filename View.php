@@ -477,7 +477,11 @@ class View
         $mod=$spec[V_OBJ];
         $res[H_TYPE]=H_T_LINK;
         $res[H_LABEL]=$this->getLbl($mod);
-        $path = "'".$this->_path->getClassPath($mod).'?View='.$nav."'";
+        if ($mod == 'Home') {
+             $path = "'".$this->_path->getHomePath()."'";
+        } else {
+             $path = "'".$this->_path->getClassPath($mod).'?View='.$nav."'";
+        } 
         $res[H_NAME]=$path; 
         return $res;
     }

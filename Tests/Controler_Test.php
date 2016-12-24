@@ -132,7 +132,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_POST['Name']='a';
 
         $ctrl = new Controler($this->config);
-        $res = $ctrl->run($this->show,1);
+        $res = $ctrl->run($this->show,2);
         $this->expectOutputString(
 "<br>LINE:0<br>SELECT * FROM tclass where id= 1<br>LINE:1<br> **************  <br>LINE:2<br>SELECT id FROM tclass where Ref= '1'<br><br>"   
         );

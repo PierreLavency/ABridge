@@ -43,18 +43,29 @@ class Controler
     
     protected function setLogLevl($level) 
     {
+        $this->_logLevel=$level;
         if (!$level) {
             return true;
+        }
+        if ($level == 1) {
+            if (isset($_SERVER['PATH_INFO'])) {
+                $url=$_SERVER['PATH_INFO'];
+                echo 'url is '.$url. '<br>';
+            } else {
+                echo 'url is null'. '<br>';
+            }
+            $method = $_SERVER['REQUEST_METHOD'];
+            echo 'method is '.$method. '<br>';
         }
         foreach ($this->_bases as $base) {
             $base-> setLogLevl($level);
         }
-        $this->_logLevel=$level;
+
     }
     
     protected function logStartView() 
     {
-        if (!$this->_logLevel) {
+        if ($this->_logLevel <=1) {
             return true;
         }
         foreach ($this->_bases as $base) {
@@ -65,7 +76,7 @@ class Controler
     
     protected function showLog() 
     {
-        if (!$this->_logLevel) {
+        if ($this->_logLevel<=1) {
             return true;
         }
         foreach ($this->_bases as $base) {

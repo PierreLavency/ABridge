@@ -10,7 +10,7 @@
 		'Person'	 => ['dataBase','genealogy',],
 		],
 	'Home' =>
-		['Student','Cours','Person','Code','CodeValue'],
+		['Student','Cours','Person','Code','CodeValue','Home'],
 		
 	];
 
