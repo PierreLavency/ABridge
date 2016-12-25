@@ -57,8 +57,8 @@ class View
     protected $_cmodel;
     protected $_path;
 
-    protected $_attrHtml=['Sexe'=>H_T_RADIO,'A'=>H_T_SELECT,'De'=>H_T_SELECT]; //bof
-
+    protected $_attrHtml= [];
+                
     protected $_attrList;
     
     protected $_listHtml = [
@@ -122,26 +122,9 @@ class View
     {
         $this->_model=$model; 
         $this->_cmodel=null;
-        $this->initView($model);     
     }
 
-    public function initView($model)
-    {   
-        if (is_null($model)) {
-            return true;
-        }
-        $modName = $model->getModName();
-        $spec = Handler::get()->getViewHandler($modName);
-        if (is_null($spec)) {
-                return true;
-        }
-        if (isset($spec['attrList'])) {
-            $specma=$spec['attrList'];
-            foreach ($specma as $viewState => $dspec) {
-                $this->setAttrList($dspec, $viewState);
-            }
-        }           
-    }
+
     
     // methods
     
@@ -299,16 +282,19 @@ class View
         }       
     }
     
-    public function setAttrListHtml($dspec) 
+    public function setAttrListHtml($dspec,$viewState) 
     {
-        $this->_attrHtml= $dspec;
+        $this->_attrHtml[$viewState]= $dspec;
         return true;
     }
     
-    public function getAttrHtml($attr) 
+    public function getAttrHtml($attr,$viewState) 
     {
-        if (isset($this->_attrHtml[$attr])) {
-            return $this->_attrHtml[$attr];
+        if (isset($this->_attrHtml[$viewState])) {
+            $list = $this->_attrHtml[$viewState];
+            if (isset($list[$attr])) {
+                return $list[$attr];
+            }
         }
         $typ = $this->_model->getTyp($attr);
         $res=H_T_TEXT;
@@ -352,7 +338,7 @@ class View
             if ($default) {
                 $res[H_DEFAULT]=$default;
             }
-            $htyp = $this->getAttrHtml($attr);
+            $htyp = $this->getAttrHtml($attr, $viewState);
             $res[H_TYPE]=$htyp;
             if ($htyp == H_T_SELECT or $htyp == H_T_RADIO) {
                 $vals=$this->_model->getValues($attr);
@@ -586,13 +572,38 @@ class View
         return ($this->buildView($viewState));
     }
     
-    
+    public function initView($model,$viewState)
+    {   
+        if (is_null($model)) {
+            return true;
+        }
+        $modName = $model->getModName();
+        $spec = Handler::get()->getViewHandler($modName);
+        if (is_null($spec)) {
+                return true;
+        }
+        if (isset($spec['attrList'])) {
+            $specma=$spec['attrList'];
+            if (isset($specma[$viewState])) {
+                $this->setAttrList($specma[$viewState], $viewState);
+            }
+        }
+        if (isset($spec['attrHtml'])) {
+            $specma=$spec['attrHtml'];
+            if (isset($specma[$viewState])) {
+                $this->setAttrListHtml($specma[$viewState], $viewState);
+            }
+        }
+        
+    }
     public function buildView($viewState) 
     {
         $spec=[];       
         $specL=[];  
         $specS=[];
         $arg = [];
+        
+        $this->initView($this->_model, $viewState);
 
         if (is_null($this->_model)) {
             $navClass= $this->getNavClass($viewState);

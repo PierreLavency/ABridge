@@ -1,5 +1,3 @@
-
-- view overide default layout.
 - improve view test coverage - need to separate view show and build 
 - order in list query and attr
 - set up paging
@@ -50,6 +48,7 @@ Dev Dependency
 - Phpdocumentor (pear install phpdoc/PhpDocumentor-2.8.1) <- graphiz 2.38
 
 DONE
+- view overide default layout. // 2 hours 
 - get rid of Label hack // 4hours 
 - control display of url// 1 Hour
 - implement home // 4 hours

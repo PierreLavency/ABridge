@@ -12,35 +12,32 @@
 	'Home' =>
 		['Student','Cours','Person','Code','CodeValue','Home'],
 	'Views' => [
-		'Person' =>
-			[
-			'attrList' => 
-				[
-				V_S_SLCT 	=> ['id','Name','SurName'],
+		'Person' => [
+			'attrHtml' => [
+				V_S_CREA => ['Sexe'=>H_T_RADIO,'A'=>H_T_SELECT,'De'=>H_T_SELECT],
+				V_S_UPDT => ['Sexe'=>H_T_RADIO,'A'=>H_T_SELECT,'De'=>H_T_SELECT],
+				V_S_SLCT => ['Sexe'=>H_T_RADIO,'A'=>H_T_SELECT,'De'=>H_T_SELECT],
+			],
+			'attrList' => [
+				V_S_SLCT 	=> ['id','Name','SurName','Sexe','Country','BirthDay'],
 				V_S_REF		=> ['SurName','Name'],
-				]
-			],
-		'Student' =>
-			[
-			'attrList' => 
-				[
+			]
+		],
+		'Student' => [
+			'attrList' => [
 				V_S_REF		=> ['SurName','Name'],
-				]
-			],
-		'Code' =>
-			[
-			'attrList' => 
-				[
+			]
+		],
+		'Code' => [
+			'attrList' => [
 				V_S_REF		=> ['Name'],
-				]
-			],
-		'CodeValue' =>
-			[
-			'attrList' => 
-				[
+			]
+		],
+		'CodeValue' =>[
+			'attrList' => [
 				V_S_REF		=> ['Name'],
-				]
-			],
+			]
+		],
 	]
 	];
 
