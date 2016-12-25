@@ -42,6 +42,8 @@ class Handler
     private $_basesClasses =['fileBase'=>'FileBase','dataBase'=>'SQLBase'];
     private $_modHandler= [];
     private $_modBase =['fileBase' =>'ModBase','dataBase'=>'ModBase'];
+    private $_viewHandler=[]; // mod => spec
+    
 /**
 * Constructeur de la classe
 *
@@ -70,6 +72,7 @@ class Handler
     {
         $this->_bases= [];
         $this->_modHandler=[];
+        $this->_viewHandler=[];
         self::$_instance =null;
     }
 
@@ -90,6 +93,20 @@ class Handler
         $instances[$instance]=$x;
         $this->_bases[$base]=$instances;
         return $x;          
+    }
+
+    public function getViewHandler($modName) 
+    {
+        if (isset($this->_viewHandler[$modName])) {
+            return ($this->_viewHandler[$modName]);
+        }
+        return null;  
+    }
+    
+    public function setViewHandler($modName,$spec) 
+    {
+        $this->_viewHandler[$modName]=$spec;
+        return true;
     }
     
     public function getStateHandler($modName) 

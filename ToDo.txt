@@ -1,5 +1,4 @@
-- control display of url
-- get rid of Label hack
+
 - view overide default layout.
 - improve view test coverage - need to separate view show and build 
 - order in list query and attr
@@ -51,6 +50,8 @@ Dev Dependency
 - Phpdocumentor (pear install phpdoc/PhpDocumentor-2.8.1) <- graphiz 2.38
 
 DONE
+- get rid of Label hack // 4hours 
+- control display of url// 1 Hour
 - implement home // 4 hours
 - set default property in View property rather than in method // 2 hours
 - fixe HTML banner doc type body etc. // 1hour

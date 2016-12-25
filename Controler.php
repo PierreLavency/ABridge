@@ -160,9 +160,20 @@ class Controler
     protected function showView($path,$action,$show) 
     {
         $this->logStartView();
+        $spec = $this->_spec;
+        if (isset($spec['Views'])) {
+            $specv = $spec['Views'];
+            foreach ($specv as $mod=>$specm) {
+                Handler::get()->setViewHandler($mod, $specm);
+            }
+        }       
         $v=new View($this->_obj);
-        $home=$this->_spec['Home'];
+        $home=$spec['Home'];
         $v->setNavClass($home);
+        if (is_null($this->_obj)) {
+            $v->show($path, $action, $show);
+            return;
+        }
         $v->show($path, $action, $show);
     }
     

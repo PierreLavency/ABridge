@@ -122,8 +122,27 @@ class View
     {
         $this->_model=$model; 
         $this->_cmodel=null;
+        $this->initView($model);     
     }
 
+    public function initView($model)
+    {   
+        if (is_null($model)) {
+            return true;
+        }
+        $modName = $model->getModName();
+        $spec = Handler::get()->getViewHandler($modName);
+        if (is_null($spec)) {
+                return true;
+        }
+        if (isset($spec['attrList'])) {
+            $specma=$spec['attrList'];
+            foreach ($specma as $viewState => $dspec) {
+                $this->setAttrList($dspec, $viewState);
+            }
+        }           
+    }
+    
     // methods
     
     public function setAttrList($dspec,$viewState) 
@@ -574,12 +593,6 @@ class View
         $specL=[];  
         $specS=[];
         $arg = [];
-        
-        $labels = 
-        [ 'Person'  => ['SurName','Name'],
-          'Student' => ['SurName','Name'],
-          'Cours'   => ['Name'],
-          'CodeValue'=>['Name']];
 
         if (is_null($this->_model)) {
             $navClass= $this->getNavClass($viewState);
@@ -588,13 +601,7 @@ class View
             $r=$this->subst($speci, $viewState);
             return $r;          
         }  
-                  
-        if (isset($labels[$this->_model->getModName()])) { // bof
-            $x = $labels[$this->_model->getModName()];
-            $this->setAttrList($x, V_S_REF);
-        }
-        
-        
+             
         foreach ($this->getAttrList($viewState) as $attr) {
             $view =[];
             $typ= $this->_model->getTyp($attr);
