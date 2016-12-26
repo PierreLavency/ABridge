@@ -83,7 +83,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res = $codeval->addAttr('ValueOf',M_REF,$path);
 		$this->assertTrue($res);	
 
-		$res = $codeval->addAttr('Label');
+		$res = $codeval->addAttr('Label',M_STRING);
 		$this->assertTrue($res);	
 		
 		$res = $codeval->saveMod();	
@@ -100,7 +100,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res= $code->deleteMod();
 		$this->assertTrue($res);	
 		
-		$res = $code->addAttr('CodeName');
+		$res = $code->addAttr('CodeName',M_STRING);
 		$this->assertTrue($res);	
 
 		$path='/'.$this->CodeVal.'/ValueOf';
@@ -120,7 +120,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res= $student->deleteMod();
 		$this->assertTrue($res);
 		
-		$res = $student->addAttr('Name');
+		$res = $student->addAttr('Name',M_STRING);
 		$this->assertTrue($res);			
 
 		$path='/'.$this->Code.'/1/Values';

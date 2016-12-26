@@ -79,7 +79,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$res= $codeval->deleteMod();
 		$this->assertTrue($res);	
 		
-		$res = $codeval->addAttr('ValueName'); 
+		$res = $codeval->addAttr('ValueName',M_STRING); 
 		$this->assertTrue($res);	
 		
 		$res = $codeval->setDflt('ValueName','Male'); //default
@@ -105,7 +105,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$res= $code->deleteMod();
 		$this->assertTrue($res);	
 		
-		$res = $code->addAttr('CodeName'); 
+		$res = $code->addAttr('CodeName',M_STRING); 
 		$this->assertTrue($res);	
 		
 		$res=$code->setBkey('CodeName',true);// unique
@@ -381,7 +381,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$m = new Model('NoState');
 		$r = $m-> getErrLog ();
 		
-		$this->assertTrue($m->addAttr('A'));
+		$this->assertTrue($m->addAttr('A',M_STRING));
 		
 		$res=$m->setBkey('A',true);
 		$this->assertFalse($res);

@@ -61,7 +61,7 @@ class Path_Test extends PHPUnit_Framework_TestCase
 		$mod = new Model($this->CName);	
 		$res= $mod->deleteMod();
 
-		$res = $mod->addAttr('Name');
+		$res = $mod->addAttr('Name',M_STRING);
 		$res = $mod->addAttr('Ref',M_REF,'/'.$this->CName);
 		$res = $mod->addAttr('CRef',M_CREF,'/'.$this->CName.'/Ref');
 		

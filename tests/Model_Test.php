@@ -37,11 +37,11 @@ class Model_Test extends PHPUnit_Framework_TestCase {
 
 	public function testAddDel($x)
     {
-		$this->assertTrue($x->addAttr('y'));
+		$this->assertTrue($x->addAttr('y',M_STRING));
 		
 		$this->assertTrue($x->delAttr('y'));
 
-		$this->assertTrue($x->addAttr('a1'));
+		$this->assertTrue($x->addAttr('a1',M_STRING));
 
 		$this->assertTrue($x->existsAttr("id"));
 		
@@ -74,7 +74,7 @@ class Model_Test extends PHPUnit_Framework_TestCase {
 
 		$this->assertFalse($x->setVal("a2",'A'));
 
-		$this->assertTrue($x->addAttr('a2'));
+		$this->assertTrue($x->addAttr('a2',M_STRING));
 		
 		$this->assertTrue($x->setVal("a2",'A2'));
 		
@@ -84,4 +84,3 @@ class Model_Test extends PHPUnit_Framework_TestCase {
     
 }
 
-?>	

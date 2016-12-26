@@ -38,7 +38,7 @@ class Model_Err_Test extends PHPUnit_Framework_TestCase {
 		$this->assertFalse($x->delAttr('x'));
 		$this->assertEquals($log->getLine(1),'ERC002:x');
 		
-		$this->assertFalse($x->addAttr('id'));
+		$this->assertFalse($x->addAttr('id',M_STRING));
 		$this->assertEquals($log->getLine(2),'ERC003:id');
 		
 		$this->assertFalse($x->addAttr('x','notexists'));

@@ -16,6 +16,10 @@ require_once "ErrorConstant.php";
 require_once "Type.php";
 require_once "Handler.php";
 
+
+define('M_P_EVAL', "M_P_EVAL");
+
+
 /**
  * Model class
  *
@@ -86,6 +90,8 @@ class Model
     protected $_attrCkey;
     protected $_attrProtected;
     protected $_asCriteria;
+    protected $_attrEval;
+    protected $_obj; // custom class object
     
     /**
     * Constructor
@@ -115,6 +121,7 @@ class Model
             $x->restoreMod($this);
         }
         $this->_modChgd=false;
+        $this->initObj($name);
     }  
     /**
      * Constructor of an existing object (id must be different from 0).
@@ -142,6 +149,17 @@ class Model
             };
         }
         $this->_modChgd=false;
+        $this->initObj($name);
+    }
+    
+    protected function initObj($name) 
+    {
+        if (! class_exists($name)) {
+            $this->_obj= null;
+            return null;
+        }
+        $this->_obj = new $name($this);
+        return $this->_obj;
     }
      /**
      * Initialise the attributes and the errologger
@@ -161,6 +179,7 @@ class Model
         $this->_name=$name;
         $logname = $name.'_ErrLog';
         $this->_errLog= new Logger($logname);
+        $this->_obj=null;
         $this->_stateHdlr=getStateHandler($name);
     }
     /**
@@ -187,6 +206,7 @@ class Model
         $this->_attrCkey = [];
         $this->_attrProtected = [];
         $this->_asCriteria = [];
+        $this->_attrEval=[];
     }
     /**
      * Returns the errorlogger.
@@ -301,6 +321,7 @@ class Model
     {
         return $this->_attrPredef;
     }
+
     /**
      * Returns the type of an attribute.
      *
@@ -323,18 +344,32 @@ class Model
      *
      * @return string its 'path'.
      */ 
-// review error handling ->exception 
 
     protected function getParm($attr)
     {
         return $this->_refParm[$attr];
     }
-
-    protected function checkParm($typ,$parm) 
+    
+    protected function checkParm($attr,$typ,$parm) 
     {
+        if ($parm === M_P_EVAL) {
+            if (! class_exists($this->getModName())) {
+                $this->_errLog->logLine(E_ERC040.':'.$attr.':'.$typ);
+                return false;
+            }
+            return true;
+        }
+        if ($typ != M_REF and $typ != M_CREF and $typ != M_CODE) {
+            if ($parm) {
+                $this->_errLog->logLine(E_ERC041.':'.$attr.':'.$typ.':'.$parm);
+                return false;
+            }
+            return true;
+        }
         $path=explode('/', $parm);
         $root = $path[0];
         if (($root != "" )) {
+            $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
             return false;
         }
         $c = count($path)-1;
@@ -353,6 +388,7 @@ class Model
                     return true;
                 }
         }
+        $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
         return false;
     }
     
@@ -544,6 +580,9 @@ class Model
         if ($this->isPredef($attr) ) {
             return false;
         }
+        if ($this->isEval($attr) ) {
+            return false;
+        }
         if ($this->isMdtr($attr) ) {
             return false;
         }
@@ -553,6 +592,12 @@ class Model
         }
         return true;
     }
+    
+    public function isEval($attr)
+    {
+        return (in_array($attr, $this->_attrEval));
+    }
+    
     /**
      * Returns true if the attribute exists.
      *
@@ -723,7 +768,7 @@ class Model
      *
      * @return boolean
      */      
-    public function addAttr($attr,$typ=M_STRING,$path=0) 
+    public function addAttr($attr,$typ,$path=0) 
     {
         $x= $this->existsAttr($attr);
         if ($x) {
@@ -744,15 +789,19 @@ class Model
             $this->_errLog->logLine(E_ERC004.':'.$typ);
             return false;
         }
+        if (! $this->checkParm($attr, $typ, $path)) {
+            return false;
+        }
         if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE) {
-            if (! $this->checkParm($typ, $path) ) {
-                $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$path);
-                return false;
-            };
             $this->_refParm[$attr]=$path;
+        }
+        if ($path === M_P_EVAL) {
+            $this->_refParm[$attr]=$path;
+            $this->_attrEval[]=$attr;
         }
         $this->_attrLst[]=$attr;
         $this->_attrTyp[$attr]=$typ;
+
         $this->_modChgd=true;
         return true;
     }
@@ -804,7 +853,11 @@ class Model
         $key = array_search($attr, $this->_attrProtected);
         if ($key!==false) {
             unset($this->_attrProtected[$key]);
-        } 
+        }
+        $key = array_search($attr, $this->_attrEval);
+        if ($key!==false) {
+            unset($this->_attrEval[$key]);
+        }       
         $this->_modChgd=true;        
         return true;
     }
@@ -859,6 +912,9 @@ class Model
             $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
+        if ($this->isEval($attr)) {
+            return $this->_obj->getVal($attr);
+        }
         $type=$this->getTyp($attr);
         if ($type == M_CREF) { //will not work if on different Base !!
             $path = $this->getParm($attr);
@@ -908,6 +964,11 @@ class Model
             return false;
         };
         $check= ($check or $this->_checkTrusted);
+        // Eval
+        if ($this->isEval($attr)) {
+            $this->_errLog->logLine(E_ERC039.':'.$attr);
+            return false;
+        }
         // protected
         if ($this->isProtected($attr)) {
             $this->_errLog->logLine(E_ERC034.':'.$attr);

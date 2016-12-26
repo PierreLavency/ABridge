@@ -38,4 +38,6 @@ define('E_ERC035', "ERC035");  // not allowed on create path
 define('E_ERC036', "ERC036");  // url not correctly formated
 define('E_ERC037', "ERC037");  // not allowed on existing object path
 define('E_ERC038', "ERC038");  // not allowed on root path
-
+define('E_ERC039', "ERC039");  // set not allowed on eval attribute
+define('E_ERC040', "ERC040");  // eval attr without custom class
+define('E_ERC041', "ERC041");  // no param for this type allowed

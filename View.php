@@ -368,8 +368,10 @@ class View
             if ($typ == M_REF) {
                 $rid = $this->_model->getVal($attr);
                 $rmod = $this->_model->getRefMod($attr);
-                if (($this->_cmodel->getId() == $rid) and 
-                ($this->_cmodel->getModName() == $rmod)) {
+                if (
+                ($this->_cmodel->getId() == $rid) and 
+                ($this->_cmodel->getModName() == $rmod) and 
+                 $rid!= 0) {
                     return false;
                 }
             }
@@ -413,11 +415,11 @@ class View
                 return $res; 
             }
             if ($typ==M_REF) {
-                $res[H_TYPE]=H_T_LINK;
                 $m=$this->_model->getRef($attr);
                 if (is_null($m)) {
-                    return false;
+                    return [H_TYPE =>H_T_PLAIN, H_DEFAULT=>""];
                 }
+                $res[H_TYPE]=H_T_LINK;
                 $v = new View($m);
                 $res[H_LABEL]=$v->show($this->_path, V_S_REF, false);
                 $res[H_NAME]=$this->_path->getRefPath($m); 
