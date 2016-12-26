@@ -1,5 +1,5 @@
 - improve view test coverage - need to separate view show and build 
-- set up unit for unit test
+- set up unit test for unittest
 
 - review split between View and Path
 - order in list query and attr
@@ -8,15 +8,16 @@
 - selection for Ref.
 - multiple views
 - view sort out persistence
-- multi language 
 - push back blob text
 - pictures
+- multi language 
 - handle error messages
 
 - beef up test apps with relationships tables 
 	- mega application
 	- union Ckey + multi surname + frere et soeur
 	- code postal 
+	- album
 
 - split alter drop and add in Base.
 

@@ -1,4 +1,6 @@
 <?php
+require_once("ViewConstant.php");
+
 	$config = [
 	'Handlers' =>
 		[
@@ -26,7 +28,18 @@
 		'Student' => [
 			'attrList' => [
 				V_S_REF		=> ['SurName','Name'],
-			]
+			],
+			'attrHtml' => [
+				V_S_CREA => ['Sexe'=>H_T_RADIO],
+				V_S_UPDT => ['Sexe'=>H_T_RADIO],
+				V_S_SLCT => ['Sexe'=>H_T_RADIO],
+			],
+			'lblList' => [
+				'id'		=> 'Noma',
+				'Name' 		=> 'Nom',
+				'SurName' 	=> 'Prenom',
+				'BirthDay'	=>'Date de naissance',
+			],
 		],
 		'Cours' => [
 			'attrList' => [
@@ -60,6 +73,7 @@ class Person {
 	function __construct($mod) 
 	{
 		$this->_mod=$mod;
+		
 	}
 	
 	public function getVal($attr) 
@@ -80,10 +94,26 @@ class Person {
 			return $res;
 
 		}
-	}
-	
+	}	
 }
 	
+class Student {
+
+	private $_mod;
+
+	function __construct($mod) 
+	{
+		$this->_mod=$mod;
+		
+	}
 	
-	
+	public function getVal($attr) 
+	{
+		if ($attr == 'CreditNumber') {
+			$a = $this->_mod->getVal('InscritA');
+			$res = count($a);
+			return $res;
+		}
+	}	
+}	
 	

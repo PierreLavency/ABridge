@@ -350,63 +350,6 @@ class Model
         return $this->_refParm[$attr];
     }
     
-    protected function checkParm($attr,$typ,$parm) 
-    {
-        if ($parm === M_P_EVAL) {
-            if (! class_exists($this->getModName())) {
-                $this->_errLog->logLine(E_ERC040.':'.$attr.':'.$typ);
-                return false;
-            }
-            return true;
-        }
-        if ($typ != M_REF and $typ != M_CREF and $typ != M_CODE) {
-            if ($parm) {
-                $this->_errLog->logLine(E_ERC041.':'.$attr.':'.$typ.':'.$parm);
-                return false;
-            }
-            return true;
-        }
-        $path=explode('/', $parm);
-        $root = $path[0];
-        if (($root != "" )) {
-            $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
-            return false;
-        }
-        $c = count($path)-1;
-
-        switch ($typ) {
-            case M_REF:
-                if ($c==1) {
-                    return true;
-                }
-            case M_CREF:
-                if ($c==2) {
-                    return true;
-                }
-            case M_CODE:
-                if ($c==3) {
-                    return true;
-                }
-        }
-        $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
-        return false;
-    }
-    
-    public function getRefMod($attr) 
-    {     
-        if (! $this->existsAttr($attr)) {
-            $this->_errLog->logLine(E_ERC002.':'.$attr);
-            return false;
-        }
-        if ($this->getTyp($attr)!= M_REF) {
-             $this->_errLog->logLine(E_ERC026.':'.$attr);
-            return false;
-        }
-        $path=$this->getParm($attr);
-        $patha=explode('/', $path);
-        return ($patha[1]);
-    }
-    
     public function getRef($attr) 
     {     
         $mod = $this->getRefMod($attr);
@@ -1081,7 +1024,64 @@ class Model
         $res = in_array($val, $vals);
         return $res;        
     }
-    /**
+
+    protected function checkParm($attr,$typ,$parm) 
+    {
+        if ($parm === M_P_EVAL) {
+            if (! class_exists($this->getModName())) {
+                $this->_errLog->logLine(E_ERC040.':'.$attr.':'.$typ);
+                return false;
+            }
+            return true;
+        }
+        if ($typ != M_REF and $typ != M_CREF and $typ != M_CODE) {
+            if ($parm) {
+                $this->_errLog->logLine(E_ERC041.':'.$attr.':'.$typ.':'.$parm);
+                return false;
+            }
+            return true;
+        }
+        $path=explode('/', $parm);
+        $root = $path[0];
+        if (($root != "" )) {
+            $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+            return false;
+        }
+        $c = count($path)-1;
+
+        switch ($typ) {
+            case M_REF:
+                if ($c==1) {
+                    return true;
+                }
+            case M_CREF:
+                if ($c==2) {
+                    return true;
+                }
+            case M_CODE:
+                if ($c==3) {
+                    return true;
+                }
+        }
+        $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+        return false;
+    }
+    
+    public function getRefMod($attr) 
+    {     
+        if (! $this->existsAttr($attr)) {
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
+            return false;
+        }
+        if ($this->getTyp($attr)!= M_REF) {
+             $this->_errLog->logLine(E_ERC026.':'.$attr);
+            return false;
+        }
+        $path=$this->getParm($attr);
+        $patha=explode('/', $path);
+        return ($patha[1]);
+    }
+       /**
      * Get the possible values of a code attribute.
      *
      * @param string $Attr the attribute. 

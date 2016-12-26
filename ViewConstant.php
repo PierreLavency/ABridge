@@ -1,5 +1,51 @@
 <?php
+
+
+define('V_TYPE', "v_type");
+define('V_ELEM', "v_elem");
+define('V_LIST', "v_list");
+define('V_CREF', "v_cref");
+define('V_CVAL', "v_cval");
+define('V_REF', "v_ref");
+define('V_ARG', "v_arg");
+define('V_OBJ', "v_obj");
+define('V_NAV', "v_nav");
+define('V_NAVC', "new");
+define('V_CNAV', "v_cnav");
+define('V_ERROR', "v_error"); 
+define('V_FORM', "v_form");
+
+
+define('V_LT', "v_lt"); // list type
+define('V_ALIST', "v_alist");
+define('V_CLIST', "v_clist");
+
+define('V_ID', "v_id");
+define('V_STRING', "v_string");
+
+// V_ELEM
+define('V_ATTR', "v_attr");
     
+define('V_PROP', "v_prop");   
+define('V_P_INP', "v_p_Attr");
+define('V_P_LBL', "v_p_Lbl");
+define('V_P_VAL', "v_p_Val");
+define('V_P_NAME', "v_p_Name");
+define('V_P_TYPE', "v_p_type");
+define('V_P_REF', "v_p_ref");
+
+define('V_S_CREA', "Create"); // object view types
+define('V_S_UPDT', "Update"); 
+define('V_S_READ', "Read"); 
+define('V_S_DELT', "Delete");
+define('V_S_SLCT', "Select");
+define('V_S_REF', "reference"); // reference view
+define('V_S_CREF', "creference"); // collection view
+define('V_B_SUBM', "Submit"); // buttons
+define('V_B_CANC', "Cancel");
+define('V_B_RFCH', "Refresh");
+
+
 define('H_TYPE', "type");   
 define('H_T_TEXTAREA', "textarea");
 define('H_T_SUBMIT', "submit");
