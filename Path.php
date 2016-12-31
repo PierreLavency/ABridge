@@ -8,7 +8,7 @@ Class Path
     protected $_pathNrmArr;
     protected $_pathCreat;
     protected $_pathPrefix='/ABridge.php';
-    protected $_default='/'; // or an object path: /mod/id
+    protected $_home='/'; // or an object path: /mod/id
     protected $_objN;
     protected $_isRoot;
     protected $_length;
@@ -28,14 +28,14 @@ Class Path
             $this->construct1($_SERVER['PATH_INFO']);
             return;
         }
-        $this->construct1($this->_default);
+        $this->construct1($this->_home);
     }
     
     protected function construct1($pathStrg)
     {
         $pathArr = explode('/', $pathStrg);
         $this->_pathStrg=$pathStrg;
-        if ($pathArr[0] != "") { // not starting with / 
+        if ($pathArr[0] != "") { // not starting with /  ?
             throw new Exception(E_ERC036.':'.$pathStrg);
         }
         array_shift($pathArr);
@@ -84,7 +84,7 @@ Class Path
     
     public function getDefaultPath() 
     {
-        return $this->_default; 
+        return $this->_home; 
     }
     
     public function pushId($id) 
@@ -137,7 +137,7 @@ Class Path
             throw new Exception(E_ERC035);
         }
         if ($this->_length <= 2 ) {
-            $this->construct1($this->_default);
+            $this->construct1($this->_home);
             return true;
         }
         $res = $this->_pathArr;
@@ -195,18 +195,47 @@ Class Path
         return $path;
     }
     
+    public function getActionPath($action) 
+    {
+        if ($this->_isRoot) {
+            throw new Exception(E_ERC038);
+        }
+        if ($action == V_S_UPDT or $action == V_S_DELT) {
+            if ($this->isCreatPath()) {
+                throw new Exception(E_ERC037.':'.$action);
+            }
+            $path = $this->getPath();
+            $path = "'".$path.'?View='.$action."'";
+            return $path;
+        }
+        if ($action == V_B_CANC) {
+            $path = $this->getObjPath();
+            return $path;
+        }
+        $path = $this->getCreaPath();
+        if ($action ==V_S_CREA) {
+            return $path;
+        }
+        if ($action==V_S_SLCT or $action ==V_B_RFCH) {
+             $path = "'".$path.'?View='.V_S_SLCT."'";
+             return $path;
+        }
+        
+    }
+    
     public function getObjPath() 
     {
         if ($this->_isRoot) {
             throw new Exception(E_ERC038);
         }       
         if (! $this->isCreatPath()) {
-            return $this->getPath();
+            $path = $this->getPath();
+            return $path;
         }
         $res = $this->_pathArr;
         array_pop($res);
         if (count($res)==0) {
-            return $this->prfxPath($this->_default);
+            return $this->prfxPath($this->_home);
         }
         $path = $this->prfxPath('/'.implode('/', $res));
         return $path;
@@ -222,21 +251,33 @@ Class Path
         }
         $res = $this->_pathArr;
         array_pop($res);
+        if (count($res)==0) {
+            throw new Exception(E_ERC035);
+        }
         $path = $this->prfxPath('/'.implode('/', $res));
         return $path;
     }
     
-    public function getClassPath($mod) 
+    public function getClassPath($mod,$action) 
     {
-        $path=$this->prfxPath('/'.$mod);
+        $path="'".$this->prfxPath('/'.$mod).'?View='.$action."'";
         return $path;
     }
 
     public function getHomePath() 
     {
-        $path=$this->prfxPath($this->_default);
+        $path=$this->prfxPath($this->_home);
         return $path;
     }
+    
+    public function getCrefPath($attr,$action)
+    {
+        // $action = V_S_CREA
+        $path = $this->getPath();
+        $path= "'".$path.'/'.$attr."'";
+        return $path;
+    }
+    
     
     public function getRefPath($obj)
     {

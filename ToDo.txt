@@ -1,9 +1,9 @@
 - improve view test coverage - need to separate view show and build 
 - set up unit test for unittest
 
-- review split between View and Path
+- review split between View and Path // partially done
 - order in list query and attr
-- set up paging
+- set up paging // done for selection 
 - like where clause.
 - selection for Ref.
 - multiple views
@@ -19,6 +19,7 @@
 	- code postal 
 	- album
 
+- add persisted eval attr
 - split alter drop and add in Base.
 
 - Implement inheritance
@@ -41,6 +42,7 @@ phpunit --coverage-html testcoverage tests
 
 Run time depedency
 -Xampp php/mariadb/apache
+- HTML 5
 
 Dev Dependency
 - Git

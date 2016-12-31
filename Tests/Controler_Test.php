@@ -32,7 +32,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $_SERVER['REQUEST_METHOD']='GET';   
         $_SERVER['PATH_INFO']=$this->path;
-        $_GET['View']=V_S_READ;
+        $_GET['View']=V_S_CREA;
         
         $ctrl = new Controler($this->config);
         $resc = $ctrl->run($this->show,0);

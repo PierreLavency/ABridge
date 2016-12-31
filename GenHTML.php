@@ -147,6 +147,7 @@ function genFormElem($dspec,$show = true)
 function genFormElemL($dspec,$level)   
 {
     $buttonS    = '<input type="submit" value = ';
+    $buttonES   = '</button>';
     $textareaS  = '<textarea ' ;
     $textareaES = '</textarea>';
     $selectS    = '<select '   ;
@@ -214,6 +215,9 @@ function genFormElemL($dspec,$level)
                 break;  
             case H_URL:
                 $url = $v;
+                break; 
+            case H_BACTION:
+                $baction = $v;
                 break;                  
             case H_ARG:
                 $arg = $v;
@@ -231,7 +235,7 @@ function genFormElemL($dspec,$level)
     }
 
     if ($type == H_T_PASSWORD) {
-        $type="text";
+        $type=H_T_TEXT;
     };
     switch ($type) {
         case H_T_LINK:
@@ -278,7 +282,11 @@ function genFormElemL($dspec,$level)
             $result = $tab.$result . $textareaES . $nl;
             break;
         case H_T_SUBMIT:
-            $result = $tab.$buttonS.$label.$endS.$nl; 
+            $result = $tab.$buttonS.$label;
+            if (isset($baction)) {
+                $result = $result.' formaction='.$baction;
+            }
+            $result = $result.$endS.$nl;
             break;
         case H_T_TEXT:
             $result = $inputS; 

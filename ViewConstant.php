@@ -13,6 +13,7 @@ define('V_NAV', "v_nav");
 define('V_NAVC', "new");
 define('V_CNAV', "v_cnav");
 define('V_ERROR', "v_error"); 
+define('V_PLAIN', "v_plain"); 
 define('V_FORM', "v_form");
 
 
@@ -41,10 +42,12 @@ define('V_S_DELT', "Delete");
 define('V_S_SLCT', "Select");
 define('V_S_REF', "reference"); // reference view
 define('V_S_CREF', "creference"); // collection view
-define('V_B_SUBM', "Submit"); // buttons
+define('V_B_SUBM', "Submit"); // "buttons"
 define('V_B_CANC', "Cancel");
 define('V_B_RFCH', "Refresh");
-
+define('V_B_NXT', "Next");
+define('V_B_PRV', "Previous");
+define('V_B_NEW', "New");
 
 define('H_TYPE', "type");   
 define('H_T_TEXTAREA', "textarea");
@@ -63,6 +66,7 @@ define('H_T_TABLE', "table");
 define('H_T_1TABLE', "1table");
 
 define('H_NAME', "name");
+define('H_BACTION', "baction");
 define('H_LABEL', "label");
 define('H_DEFAULT', "default");
 define('H_COL', "col");
@@ -72,6 +76,7 @@ define('H_ARG', "arg");
 define('H_ACTION', "action");
 define('H_URL', "url");
 define('H_HIDDEN', "hidden");
+define('H_HIDDEN2', "hidden2");
 define('H_SEPARATOR', "separator");
 define('H_DISABLED', "disabled");
     
