@@ -379,7 +379,9 @@ class View
                 $res[H_TYPE]=H_T_LINK;
                 $v = new View($m);
                 $res[H_LABEL]=$v->show($this->_path, V_S_REF, false);
-                $res[H_NAME]=$this->_path->getRefPath($m); 
+                $mod= $m->getModName();
+                $id = $m->getId();
+                $res[H_NAME]=$this->_path->getRefPath($mod, $id); 
                 return $res;        
             }
             if ($typ==M_CODE and (!is_null($x))) {
@@ -434,6 +436,30 @@ class View
         return $res;
     }
     
+    public function evalcn($spec,$viewState)
+    {
+        $result=[];
+        $nav=$spec[V_P_VAL];
+        $result[H_LABEL]=$this->getLbl($nav);
+        $attr=$spec[V_ATTR];
+        if ($nav==V_B_NEW) {
+            $result[H_TYPE]=H_T_LINK;
+            $path=$this->_path->getCrefPath($attr, V_S_CREA);
+            $result[H_NAME]=$path;
+        } else {
+            $pos = $spec[V_ID];
+            $path=$this->_path->getPath().'?'.$attr.'='.$pos;
+            if ($viewState == V_S_SLCT) {
+                $result[H_TYPE]=H_T_SUBMIT;
+                $result[H_BACTION]=$path;   
+            }
+            if ($viewState == V_S_READ) {
+                $result[H_TYPE]=H_T_LINK;;
+                $result[H_NAME]=$path;  
+            }
+        }
+        return $result;
+    }
     
     public function subst($spec,$viewState)
     {
@@ -484,19 +510,7 @@ class View
                     $result[H_ARG]=$arg;
                 break;
             case V_NAVC:
-                    $nav=$spec[V_P_VAL];
-                    $result[H_LABEL]=$this->getLbl($nav);
-                    $attr=$spec[V_ATTR];
-                    if ($nav==V_B_NEW) {
-                        $result[H_TYPE]=H_T_LINK;
-                        $path=$this->_path->getCrefPath($attr, V_S_CREA);
-                        $result[H_NAME]=$path;
-                    } else {
-                        $result[H_TYPE]=H_T_SUBMIT;
-                        $pos = $spec[V_ID];
-                        $path=$this->_path->getPath().'?Position='.$pos;
-                        $result[H_BACTION]=$path;
-                    }
+                    $result= $this->evalcn($spec, $viewState);
                 break;
             case V_PLAIN:
             case V_ERROR:
@@ -586,12 +600,8 @@ class View
             if ($typ == M_CREF) {
                 $view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL];
                 $view[]=[V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_NEW];
-                $viewe=[];
-                foreach ($this->_model->getVal($attr) as $id) {
-                    $viewe[]=[V_TYPE=>V_ELEM,V_ATTR => $attr,
-                             V_PROP => V_P_VAL,V_ID=>$id];
-                }
-                $view[]=[V_TYPE=>V_LIST,V_LT=>V_CVAL,V_ARG=>$viewe];
+                $list = $this->_model->getVal($attr);
+                $view = $this->getSlice($attr, $list, $view);
                 $specL[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
             }
         }
@@ -610,48 +620,8 @@ class View
         if ($viewState == V_S_SLCT ) {
             $view=[];
             $view[]=[V_TYPE=>V_ELEM,V_ATTR => V_S_SLCT, V_PROP => V_P_LBL];
-            $viewe=[];
             $list=$this->_model->select();
-            $c=count($list);
-            $pos=0;
-            $slice = 10;
-            if (isset($_GET['Position'])) {
-                $pos=(int) $_GET['Position'];
-                if ($pos<0) {
-                    $pos=-$pos-$slice;
-                    if ($pos<0) {
-                        $pos=0;
-                    }
-                }
-                if ($pos > $c) {
-                    $pos=$c-$slice;
-                }               
-            }
-            if ($c > $slice) {
-                $list= array_slice($list, $pos, $slice);
-            }
-            foreach ($list as $id) {
-                $viewe[]=[V_TYPE=>V_ELEM,V_ATTR => V_S_SLCT,
-                          V_PROP => V_P_VAL,V_ID=>$id];
-
-            }
-            $ind = $c;
-            if ($c > $slice) {
-                $nc=count($list)+$pos;
-                $ind=$c.' : '.$pos.'-'.$nc;
-            }
-            $view[]=[V_TYPE=>V_PLAIN,V_STRING=>$ind];
-            if ($c > $slice) {
-                $npos= $pos+$slice;
-                if ($npos>=$c) {
-                    $npos=$pos;
-                }
-                $view[]=
-                [V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_NXT,V_ID=>$npos];
-                $view[]=
-                [V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_PRV,V_ID=>-$pos];
-            }
-            $view[]=[V_TYPE=>V_LIST,V_LT=>V_CVAL,V_ARG=>$viewe];
+            $view = $this->getSlice(V_S_SLCT, $list, $view);
             $specS[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
             $arg[] = [V_TYPE=>V_LIST,V_LT=>V_CLIST,V_ARG=>$specS];
         }
@@ -673,6 +643,60 @@ class View
         return $r;
     }
 
+    
+    protected function getSlice($attr,$list,$viewL) 
+    {
+        $view[]=$viewL[0];
+        $c=count($list);
+        $pos=0;
+        $slice = 15;
+        if (isset($_GET[$attr])) {
+            $pos=(int) $_GET[$attr];
+            if ($pos<0) {
+                $pos=-$pos-$slice;
+                if ($pos<0) {
+                    $pos=0;
+                }
+            }
+            if ($pos > $c) {
+                $pos=$c-$slice;
+            }               
+        }
+        if ($c > $slice) {
+                $list= array_slice($list, $pos, $slice);
+        }
+        $viewe=[];
+        foreach ($list as $id) {
+            $viewe[]=[V_TYPE=>V_ELEM,V_ATTR => $attr,
+                      V_PROP => V_P_VAL,V_ID=>$id];
+        }
+        $ind = $c;
+        if ($c > $slice) {
+            $nc=count($list)+$pos;
+            $ind=$c.' : '.$pos.'-'.$nc;
+        }
+        $view[]=[V_TYPE=>V_PLAIN,V_STRING=>$ind];
+        if ($c > $slice) {
+            $npos= $pos+$slice;
+            if ($npos>=$c) {
+                $npos=$pos;
+            }
+            $view[]=
+            [V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_NXT,V_ID=>$npos];
+            $view[]=
+            [V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_PRV,V_ID=>-$pos];
+        }
+        $first = true;
+        foreach ($viewL as $elm) {
+            if (! $first) {
+                $view[] = $elm;
+            }
+            $first = false;
+        }
+        $view[]=[V_TYPE=>V_LIST,V_LT=>V_CVAL,V_ARG=>$viewe];
+        return $view;
+    }
+    
     public function viewErr() 
     {
             $log = $this->_model->getErrLog();

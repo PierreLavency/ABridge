@@ -3,7 +3,6 @@
 
 - review split between View and Path // partially done
 - order in list query and attr
-- set up paging // done for selection 
 - like where clause.
 - selection for Ref.
 - multiple views
@@ -51,6 +50,7 @@ Dev Dependency
 - Phpdocumentor (pear install phpdoc/PhpDocumentor-2.8.1) <- graphiz 2.38
 
 DONE
+- set up paging // 2 days - dependency on HTML 5
 - clean up old test suite // 15 min 
 - define new type :  php and eval attibutes // 8hours 
 - improve genealogy death date  +  age 

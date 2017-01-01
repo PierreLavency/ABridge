@@ -160,6 +160,7 @@ Class Path
     
     public function getObj()
     {
+        // dependency on model !!
         $obj = null;
         if ($this->_isRoot) {
             return $obj;
@@ -194,6 +195,26 @@ Class Path
         $path = $this->prfxPath($this->_pathStrg);
         return $path;
     }
+    
+    public function getAction() 
+    {
+        $method = $_SERVER['REQUEST_METHOD'];  
+        $action = V_S_READ;
+        if ($method == 'GET') {
+            if (isset($_GET['View'])) {
+                $action = $_GET['View'];
+                return $action; 
+            }
+            if ($this->isCreatPath()) {
+                $action = V_S_CREA;
+            }
+        }
+        if ($method =='POST') {
+            $action = $_POST['action'];
+        }
+        return $action; 
+    }
+    
     
     public function getActionPath($action) 
     {
@@ -278,17 +299,14 @@ Class Path
         return $path;
     }
     
-    
-    public function getRefPath($obj)
+    public function getRefPath($mod,$id)
     {
-        $mod = $obj->getModName();
-        $id = $obj->getId();
         $path=$this->prfxPath('/'.$mod.'/'.$id);    
         if ($this->_isRoot) {
             return $path;
         }
         if (is_null($this->_pathNrmArr)) {
-            $this->getObj();
+            $this->getObj(); // should be error
         }       
         $c = $this->_length;
         $resN = $this->_pathNrmArr;

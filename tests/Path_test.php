@@ -173,11 +173,11 @@ class Path_Test extends PHPUnit_Framework_TestCase
 		$path = $rpath.'/CRef/'.$id2.'/CRef/'.$id3;
 		$p4 = new Path($path);
 		$this->assertNotNull($p4);
-		$opath = $p4->getRefPath($obj);
+		$opath = $p4->getRefPath($obj->getModName(),$obj->getId());
 		$this->assertEquals($p4->rootPath().$rpath,$opath);
 		
 		$p5 = new Path();
-		$opath = $p5->getRefPath($obj);
+		$opath = $p5->getRefPath($obj->getModName(),$obj->getId());
 		$this->assertEquals($p5->rootPath().'/'.$obj->getModName().'/'.$obj->getId(),$opath);
 		
 		// get obj

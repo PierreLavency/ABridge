@@ -138,25 +138,7 @@ class Controler
         }
         return (!$c->isErr());
     }
-    
-    protected function getAction($method) 
-    {
-        $action = V_S_READ;
-        if ($method == 'GET') {
-            if (isset($_GET['View'])) {
-                $action = $_GET['View'];
-                return $action; 
-            }
-            if (! $this->_obj->getid()) {
-                $action = V_S_CREA;
-            }
-        }
-        if ($method =='POST') {
-            $action = $_POST['action'];
-        }
-        return $action; 
-    }
-    
+        
     protected function showView($path,$action,$show) 
     {
         $this->logStartView();
@@ -190,7 +172,7 @@ class Controler
             $this->showLog();
             return $path->getPath();
         }
-        $action = $this->getAction($method);
+        $action = $path->getAction();
         $actionExec = false;
         if ($method =='POST') {
             if ($action == V_S_UPDT 
