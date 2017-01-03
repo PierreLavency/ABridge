@@ -5,10 +5,13 @@ require_once("Model.php");
 
 class testeval {
 	private $_mod;
-	function __construct($mod) {
+	function __construct($mod) 
+	{
 		$this->_mod=$mod;
 	}
-	public function getVal($attr) {
+	
+	public function getVal($attr) 
+	{
 		if ($attr == 'aplusb') {
 			$a = $this->_mod->getVal('a');
 			$b = $this->_mod->getVal('b');
@@ -16,6 +19,25 @@ class testeval {
 		}
 	}
 	
+	public function save()
+	{
+		return true;
+	}
+
+	public function afterSave()
+	{
+		return true;
+	}
+	
+	public function delet()
+	{
+		return true;
+	}
+	
+	public function afterDelet() 
+	{
+		return true;
+	}
 }
 
 class Model_Evl_Test extends PHPUnit_Framework_TestCase {
@@ -47,6 +69,8 @@ class Model_Evl_Test extends PHPUnit_Framework_TestCase {
 
 		$this->assertTrue($x->setVal('a',2));
 		$this->assertEquals(3,$x->getVal('aplusb'));
+		
+		$this->assertFalse($x->isOptl('aplusb'));
 		
 		return $x;
 	}

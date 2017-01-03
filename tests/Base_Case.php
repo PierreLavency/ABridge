@@ -135,6 +135,7 @@ class Base_Case extends PHPUnit_Framework_TestCase {
         $this->assertEquals($id,($n+2));
         $this->assertEquals(($n/2),count($x->findObj(self::$CName,'SEVERITY',1)));
         $this->assertEquals(1,count($x->findObj(self::$CName,'CODE','01')));
+		$this->assertEquals(1,count($x->findObj(self::$CName,'id',1)));
 		
 		$this->assertEquals($n+1,count($x->findObjWhere(self::$CName,[],[])));
 		$this->assertEquals(1,count($x->findObjWhere(self::$CName,['CODE','SEVERITY'],['01',1])));

@@ -123,6 +123,9 @@ class FileBase extends Base
                         $result[]=$id;
                     }
                 }
+                if ($attr == 'id' and $id==$val) {
+                    $result[]=$id;          
+                }
             }; 
         };
         $this->logLine(1, "findObj $model $attr $val  \n");

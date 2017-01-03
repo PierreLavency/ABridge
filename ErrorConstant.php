@@ -41,3 +41,5 @@ define('E_ERC038', "ERC038");  // not allowed on root path
 define('E_ERC039', "ERC039");  // set not allowed on eval attribute
 define('E_ERC040', "ERC040");  // eval attr without custom class
 define('E_ERC041', "ERC041");  // no param for this type allowed
+define('E_ERC042', "ERC042");  // set not allowed on evalP attribute
+

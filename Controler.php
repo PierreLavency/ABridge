@@ -115,26 +115,33 @@ class Controler
         return $res;
     }
     
-    protected function setVal() 
+    protected function setVal($action) 
     {
         $c= $this->_obj;
-        foreach ($c->getAllAttr() as $attr) { 
-            if ($c->isMdtr($attr) or $c->isOptl($attr)) {
-                if (isset($_POST[$attr])) {
-                    $val= $_POST[$attr];
-                    $typ= $c->getTyp($attr);
-                    $valC = convertString($val, $typ);
+        foreach ($c->getAllAttr() as $attr) {
+            $cond = false;
+            if ($action == V_S_SLCT) {
+                $cond = $c->isSelect($attr);
+            } else {
+                $cond = $c->isModif($attr);
+            }
+            $typ= $c->getTyp($attr);
+            if (isset($_POST[$attr])) {
+                $val= $_POST[$attr];
+                $valC = convertString($val, $typ);
+                if ($c->isModif($attr)) {
                     $c->setVal($attr, $valC);
-                    if (!is_null($valC)) {
-                        $this->_attrL[]=$attr;
-                        $this->_valL[]=$valC;
-                    }
                 }
-                if ($c->isProtected($attr)) {
+                if (!is_null($valC) and $c->isSelect($attr)) {
                     $this->_attrL[]=$attr;
-                    $this->_valL[]=$c->getVal($attr);
+                    $this->_valL[]=$valC;
                 }
             }
+            if ($c->isProtected($attr)) {
+                $this->_attrL[]=$attr;
+                $this->_valL[]=$c->getVal($attr);
+            }
+            
         }
         return (!$c->isErr());
     }
@@ -178,7 +185,7 @@ class Controler
             if ($action == V_S_UPDT 
             or $action == V_S_CREA 
             or $action==V_S_SLCT) {
-                $res = $this->setVal();
+                $res = $this->setVal($action);
             }
             if (!$this->_obj->isErr()) {
                 if ($action == V_S_DELT) {

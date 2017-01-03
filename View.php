@@ -274,12 +274,12 @@ class View
         }
         $prop = $spec[V_PROP];
         $res = [];
-        if (($viewState == V_S_CREA or $viewState == V_S_UPDT
-            or $viewState == V_S_SLCT) 
-            and $prop==V_P_VAL 
-            and (! $this->_model->isProtected($attr)) 
-            and
-            ($this->_model->isMdtr($attr) or $this->_model->isOptl($attr))) {
+        if ($prop==V_P_VAL and 
+            ((($viewState == V_S_CREA or $viewState == V_S_UPDT)
+             and $this->_model->isModif($attr))
+            or 
+            ($viewState == V_S_SLCT 
+             and $this->_model->isSelect($attr)))) {
             $res[H_NAME]=$attr;
             $default=null;
             if (isset($_POST[$attr])) {
@@ -301,7 +301,8 @@ class View
                 $vals=$this->_model->getValues($attr);
                 $values=[];
                 if ($htyp == H_T_SELECT 
-                and (!$this->_model->isMdtr($attr))) {
+                and ((!$this->_model->isMdtr($attr)) 
+                or $viewState == V_S_SLCT)) {
                     $values[] = ["",""];
                 }
                 foreach ($vals as $v) {
@@ -649,7 +650,7 @@ class View
         $view[]=$viewL[0];
         $c=count($list);
         $pos=0;
-        $slice = 15;
+        $slice = 10;
         if (isset($_GET[$attr])) {
             $pos=(int) $_GET[$attr];
             if ($pos<0) {

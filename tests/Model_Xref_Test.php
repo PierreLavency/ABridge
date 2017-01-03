@@ -393,6 +393,34 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		
 		$db->commit();
 	}
+	
+	/**
+     * @dataProvider Provider1
+     *	
+	/**
+    * @depends testErrors
+    */
+		public function testDel($typ) 
+	{
+		$this->setTyp($typ);
+		$db=$this->db;
+		$db->beginTrans();
+
+		$student = new Model($this->Student);
+		$res = $student->protect('Sexe');
+		$this->assertTrue($res);
+		
+		$res = $student->setVal('Sexe',1);
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC034.':Sexe');
+
+		$res=$student->delAttr('Sexe');
+		$this->assertTrue($res);
+		$db->commit();
+	}	
+	
+	
+	
 }
 
 ?>	

@@ -18,6 +18,7 @@ require_once "Handler.php";
 
 
 define('M_P_EVAL', "M_P_EVAL");
+define('M_P_EVALP', "M_P_EVALP");
 
 
 /**
@@ -86,11 +87,13 @@ class Model
      */
     protected $_stateHdlr=0;
     protected $_trusted=false;
-    protected $_checkTrusted=false; // could be usefull !! 
+    protected $_checkTrusted=false; // could be usefull !!
+    protected $_custom=false;
     protected $_attrCkey;
     protected $_attrProtected;
     protected $_asCriteria;
     protected $_attrEval;
+    protected $_attrEvalP;  
     protected $_obj; // custom class object
     
     /**
@@ -158,7 +161,9 @@ class Model
             $this->_obj= null;
             return null;
         }
+        $this->_custom=true;
         $this->_obj = new $name($this);
+        $this->_custom=false;
         return $this->_obj;
     }
      /**
@@ -207,6 +212,7 @@ class Model
         $this->_attrProtected = [];
         $this->_asCriteria = [];
         $this->_attrEval=[];
+        $this->_attrEvalP=[];
     }
     /**
      * Returns the errorlogger.
@@ -526,6 +532,9 @@ class Model
         if ($this->isEval($attr) ) {
             return false;
         }
+        if ($this->isEvalP($attr) ) {
+            return false;
+        }
         if ($this->isMdtr($attr) ) {
             return false;
         }
@@ -534,6 +543,43 @@ class Model
             return false;
         }
         return true;
+    }
+    
+    public function isModif($attr)
+    {
+        if (! $this->existsAttr($attr)) {
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
+            return false;
+        }
+        $res = false;
+        if ( $this->isMdtr($attr) or $this->isOptl($attr) ) {
+            $res= true;
+        }
+        if ($this->isProtected($attr)) {
+            $res = false;
+        }
+        return $res;
+    }
+    
+    public function isSelect($attr)
+    {
+        if (! $this->existsAttr($attr)) {
+            $this->_errLog->logLine(E_ERC002.':'.$attr);
+            return false;
+        }
+        if ($attr == 'id') {
+            return true;
+        }
+        if ($this->isEvalP($attr)) {
+            return true;
+        }
+        return $this->isModif($attr);
+    }
+    
+    
+    public function isEvalP($attr)
+    {
+        return (in_array($attr, $this->_attrEvalP));
     }
     
     public function isEval($attr)
@@ -742,6 +788,10 @@ class Model
             $this->_refParm[$attr]=$path;
             $this->_attrEval[]=$attr;
         }
+        if ($path === M_P_EVALP) {
+            $this->_refParm[$attr]=$path;
+            $this->_attrEvalP[]=$attr;
+        }
         $this->_attrLst[]=$attr;
         $this->_attrTyp[$attr]=$typ;
 
@@ -800,7 +850,11 @@ class Model
         $key = array_search($attr, $this->_attrEval);
         if ($key!==false) {
             unset($this->_attrEval[$key]);
-        }       
+        }
+        $key = array_search($attr, $this->_attrEvalP);
+        if ($key!==false) {
+            unset($this->_attrEvalP[$key]);
+        }           
         $this->_modChgd=true;        
         return true;
     }
@@ -912,6 +966,13 @@ class Model
             $this->_errLog->logLine(E_ERC039.':'.$attr);
             return false;
         }
+        // EvalP
+        if ($this->isEvalP($attr) 
+            and (! $this->_custom) 
+            and !($this->_trusted)) {
+            $this->_errLog->logLine(E_ERC042.':'.$attr);
+            return false;
+        }   
         // protected
         if ($this->isProtected($attr)) {
             $this->_errLog->logLine(E_ERC034.':'.$attr);
@@ -1027,7 +1088,7 @@ class Model
 
     protected function checkParm($attr,$typ,$parm) 
     {
-        if ($parm === M_P_EVAL) {
+        if ($parm === M_P_EVAL or $parm === M_P_EVALP) {
             if (! class_exists($this->getModName())) {
                 $this->_errLog->logLine(E_ERC040.':'.$attr.':'.$typ);
                 return false;
@@ -1188,9 +1249,25 @@ class Model
         $n++;
         $this->setValNoCheck('vnum', $n);
         $this->setValNoCheck('utstp', date(M_FORMAT_T));
+        if (! is_null($this->_obj)) {
+            $this->_custom=true;
+            $res = $this->_obj->save();
+            $this->_custom=false;
+            if (!$res) {
+                return false;
+            }
+        }   
         $res=$this->_stateHdlr->saveObj($this);
         $this->_id=$res;
-        return $res;
+        if (! is_null($this->_obj)) {
+            $this->_custom=true;
+            $res=$this->_obj->afterSave();
+            $this->_custom=false;
+            if (!$res) {
+                return false;
+            }
+        }
+        return $this->_id;
     }
     /**
      * Delete an object.
@@ -1203,10 +1280,27 @@ class Model
             $this->_errLog->logLine(E_ERC006);
             return false;
         }
+        if (! is_null($this->_obj)) {
+            $this->_custom=true;
+            $res = $this->_obj->delet();
+            $this->_custom=false;
+            if (!$res) {
+                return false;
+            }
+        }   
         $res=$this->_stateHdlr->eraseObj($this);
         if ($res) {
             $this->_id=0;
         }
+
+        if (! is_null($this->_obj)) {
+            $this->_custom=true;
+            $res = $this->_obj->afterDelet();
+            $this->_custom=false;
+            if (!$res) {
+                return false;
+            }
+        }   
         return $res;
     }
     /**
