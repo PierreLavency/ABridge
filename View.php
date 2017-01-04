@@ -283,7 +283,7 @@ class View
             $res[H_NAME]=$attr;
             $default=null;
             if (isset($_POST[$attr])) {
-                $default= $_POST[$attr];
+                $default= $_POST[$attr]; // only dep on method !!
             } else {
                 if ($viewState == V_S_UPDT) {
                     $default=$this->_model->getVal($attr);
@@ -327,6 +327,7 @@ class View
                 $rid = $this->_model->getVal($attr);
                 $rmod = $this->_model->getRefMod($attr);
                 if (
+				(!is_null($this->_cmodel)) and 
                 ($this->_cmodel->getId() == $rid) and 
                 ($this->_cmodel->getModName() == $rmod) and 
                  $rid!= 0) {

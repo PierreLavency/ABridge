@@ -159,11 +159,8 @@ class Controler
         $v=new View($this->_obj);
         $home=$spec['Home'];
         $v->setNavClass($home);
-        if (is_null($this->_obj)) {
-            $v->show($path, $action, $show);
-            return;
-        }
         $v->show($path, $action, $show);
+		return true;
     }
     
     function run($show,$logLevel)

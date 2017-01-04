@@ -1,7 +1,7 @@
 <?php
 require_once('Path.php');
 require_once("UnitTest.php");
-require_once('View_case.php');
+require_once('View_case_Xref.php');
 
 $logName = basename(__FILE__, ".php");
 
@@ -13,7 +13,7 @@ require_once("Model.php");
 require_once("View.php"); 
 
 $show = false;
-$test = viewCases();
+$test = viewCasesXref();
 for ($i=0;$i<count($test);$i++) {
 if ($show) {echo "<br>" ; };
 $v = $test[$i][0];
@@ -28,4 +28,3 @@ $log->saveTest();
 $log->showTest();
 
 
-?>

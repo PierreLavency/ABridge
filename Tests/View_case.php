@@ -26,17 +26,20 @@ function viewCases()
 	$x->setVal('A3','2016-12-08');
 
 	$x->setVal('A4','ceci est un texte');
-
-	$v = new View($x);
+	$path = new Path('/test/1');
 	
+	$v = new View(null);
 	$v->setNavClass(['test']);
 	
-	$path = new Path('/test/1');
+	$test = [];	
+	$test[0]=[$v,$path,V_S_CREA,0];		
+	
+	$v = new View($x);	
+	$v->setNavClass(['test']);	
 
 	$v->setAttrList(['A1','A2'],V_S_REF);
 	
-	$test = [];
-	$n=0;
+	$n=1;
 	$test[$n]=[$v,$path,V_S_CREA,$n];	
 	$n++;
 	$test[$n]=[$v,$path,V_S_READ,$n];	
@@ -44,6 +47,8 @@ function viewCases()
 	$test[$n]=[$v,$path,V_S_UPDT,$n];	
 	$n++;
 	$test[$n]=[$v,$path,V_S_DELT,$n];	
+	$n++;
+	$test[$n]=[$v,$path,V_S_SLCT,$n];	
 	$n++;
 	$test[$n]=[$v,$path,V_S_REF,$n];
 	$n++;
