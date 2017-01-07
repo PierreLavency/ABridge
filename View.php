@@ -327,7 +327,7 @@ class View
                 $rid = $this->_model->getVal($attr);
                 $rmod = $this->_model->getRefMod($attr);
                 if (
-				(!is_null($this->_cmodel)) and 
+                (!is_null($this->_cmodel)) and 
                 ($this->_cmodel->getId() == $rid) and 
                 ($this->_cmodel->getModName() == $rmod) and 
                  $rid!= 0) {

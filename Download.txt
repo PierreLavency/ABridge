@@ -1,0 +1,34 @@
+465NKZ2L76JMJZA
+
+Download
+
+Notepad ++
+
+npp7.3
+
+Git
+
+http://git-scm.com/download/win 
+You are downloading the latest (2.11.0) 64-bit version of Git for Windows. 
+
+Xamp
+
+5.6.28 / PHP 5.6.28
+add to path C:\xampp\php
+
+Phpunit
+
+phpunit-5.7.5.phar
+in C:\bin 
+add to path C:\bin
+
+Xdebug
+
+php_xdebug-2.5.0-5.6-vc11.dll
+add in php .ini
+;HERE FOR XDEBUG
+zend_extension = C:\xampp\php\ext\php_xdebug-2.5.0-5.6-vc11.dll
+
+Code Snifer
+
+pear install PHP_CodeSniffer-2.7.1

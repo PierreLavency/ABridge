@@ -16,6 +16,8 @@ $application= 'genealogy';
 //require_once("Example\\".$application.'_META_5.php');
 //require_once("Example\\" .$application.'_LOAD.php');
 
+//require_once("Example\\".'Person_META.php');
+
 require_once("Example\\" .$application.'_SETUP.php'); // defining config
 
 require_once('controler.php');
