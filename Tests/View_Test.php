@@ -19,7 +19,8 @@ class View_Test extends PHPUnit_Framework_TestCase {
 		$test= viewCases();
 		$v = $test[0][0];
 		$p = $test[0][1];
-		$s = $test[0][2];		
+		$s = $test[0][2];
+		$e = self::$log->getLine(0);
 		$this->expectOutputString(self::$log->getLine(0));
 		$this->assertNotNull($v->show($p,$s,true));
     }

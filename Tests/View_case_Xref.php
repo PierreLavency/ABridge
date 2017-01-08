@@ -47,15 +47,10 @@ function viewCasesXref()
 	
 	$db->Commit();
 
-	$y =  new Model('dir',2);
+	$v = 2;	
+	$path = '/dir/'.$v;
 	
-	$paths = '/dir/'.$y->getId();
-	$path = new Path($paths);
-
-	$v = new View($y);	
-	$v->setNavClass(['dir']);	
-	$v->setAttrList(['Name'],V_S_REF);
-	
+	$test=[];
 	$n=0;
 	$test[$n]=[$v,$path,V_S_CREA,$n];	
 	$n++;
@@ -70,6 +65,7 @@ function viewCasesXref()
 	$test[$n]=[$v,$path,V_S_REF,$n];
 	$n++;
 	$test[$n]=[$v,$path,V_S_CREF,$n];
+	
 
 	return $test;
 }

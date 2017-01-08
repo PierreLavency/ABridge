@@ -3,7 +3,7 @@
 
 //require_once("Tests\GenHTML_init.php");  
 //require_once("Tests\View_init.php");     
-//require_once("Tests\View_init_Xref.php");    
+require_once("Tests\View_init_Xref.php");    
 
 $application= 'genealogy';
 

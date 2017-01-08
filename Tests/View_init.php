@@ -5,7 +5,7 @@ require_once('View_case.php');
 
 $logName = basename(__FILE__, ".php");
 
-$log=new unitTest($logName);
+$log=new unitTest($logName,1);
 
 /**************************************/
 

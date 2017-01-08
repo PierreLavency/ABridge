@@ -1,4 +1,4 @@
-- improve view test coverage - need to separate view show and build 
+- improve view test coverage - need to separate view show and build // some progress
 - set up unit test for unittest
 - set up unit test for select
 
@@ -7,11 +7,11 @@
 - like where clause.
 - selection for Ref.
 - multiple views
-- view sort out persistence
+- view sort out persistence/2
 - push back blob text
-- pictures
-- multi language 
-- handle error messages
+- pictures/2
+- multi language /2
+- handle error messages/2
 
 - beef up test apps with relationships tables 
 	- mega application / until inheritance 
