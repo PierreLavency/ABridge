@@ -38,6 +38,8 @@ function viewCases()
 	$v->setNavClass(['test']);	
 
 	$v->setAttrList(['A1','A2'],V_S_REF);
+	$v->setLblList(['A1'=>'A1','A2'=>'A2']);
+	
 	
 	$n=1;
 	$test[$n]=[$v,$path,V_S_CREA,$n];	

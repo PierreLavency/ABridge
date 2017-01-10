@@ -300,7 +300,6 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res = $student->addAttr('xxx',M_CODE);
 		$this->assertFalse($res);	
 		$this->assertEquals($student->getErrLine(),E_ERC008.':xxx:'.M_CODE);
-
 		
 		$res = $student->addAttr('xxx',M_CODE,'/a/1/b/2');
 		$this->assertFalse($res);	
@@ -310,7 +309,6 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertNotNull($bb);	
 		$logbb = $bb->getErrLog ();
 		
-
 		$res = $bb->addAttr('xxx',M_CODE,'xxx');
 		$this->assertFalse($res);	
 		$this->assertEquals($logbb->getLine(0),E_ERC014.':xxx:'.M_CODE);

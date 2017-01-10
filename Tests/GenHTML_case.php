@@ -15,6 +15,8 @@ function GenHTLMCases()
 	$n++;
 	$test[$n] = [[H_TYPE=>H_T_SUBMIT              ,H_LABEL=>'Submit'],$n];
 	$n++;
+	$test[$n] = [[H_TYPE=>H_T_SUBMIT              ,H_LABEL=>'Submit',H_BACTION=>'ABridge.php/code/1'],$n];
+	$n++;
 	$test[$n] = [[H_TYPE=>H_T_TEXTAREA,H_NAME=>'A',H_DEFAULT=>"a1"],$n];
 	$n++;
 	$test[$n] = [[H_TYPE=>H_T_TEXTAREA,H_NAME=>'A',H_DEFAULT=>"a1",H_COL=>50,H_ROW=>10,H_DISABLED=>true],$n];

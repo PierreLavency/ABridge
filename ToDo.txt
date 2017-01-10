@@ -1,14 +1,12 @@
 - improve view test coverage - need to separate view show and build // some progress
 - set up unit test for unittest
-- set up unit test for select
 
 - review split between View and Path // partially done / again 
 - order in list query and attr
-- like where clause.
 - selection for Ref.
-- multiple views
+- multiple views /2
 - view sort out persistence/2
-- push back blob text
+- push back blob text/2
 - pictures/2
 - multi language /2
 - handle error messages/2
@@ -29,7 +27,8 @@
 
 - set up bug tracking
 - set up a git server
-- set up jenkin 
+- set up jenkin
+- back up db and system !!!
 
 CMD
 /*check code
@@ -41,6 +40,8 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- like where clause. // 2 days with inproved coverage
+- set up unit test for select  // 2 hours 
 - add persisted eval attr // 1 day - needs to set up example 
 - beef up test apps with relationships tables  / 1 day
 union Ckey + multi surname +  eval and custum attributes

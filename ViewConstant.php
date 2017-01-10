@@ -34,6 +34,7 @@ define('V_P_VAL', "v_p_Val");
 define('V_P_NAME', "v_p_Name");
 define('V_P_TYPE', "v_p_type");
 define('V_P_REF', "v_p_ref");
+define('V_P_OP', "v_p_op");
 
 define('V_S_CREA', "Create"); // object view types
 define('V_S_UPDT', "Update"); 

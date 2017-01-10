@@ -17,7 +17,8 @@ function viewCasesXref()
 	$x->addAttr('Name',M_STRING);
 	$x->addAttr('Father',M_REF,'/dir');
 	$x->addAttr('FatherOf',M_CREF,'/dir/Father');
-
+	$x->addAttr('Mother',M_REF,'/dir');
+	$x->addAttr('MotherOf',M_CREF,'/dir/Mother');
 	$x->saveMod();
 
 	$x=new Model('dir');
@@ -29,17 +30,19 @@ function viewCasesXref()
 		$name = 'Name_'.$i;
 		$y->setVal('Name',$name);
 		$y->setVal('Father',1);
+		$y->setVal('Mother',1);
 		$y->save();
 	}
 
 	
 	for ($i=2;$i<3;$i++) {
-		for ($j=1;$j<5;$j++) {
+		for ($j=1;$j<12;$j++) {
 			$z= new Model('dir');
 			$n = (10*$i)+$j;
 			$name = 'Name_'.$n;
 			$z->setVal('Name',$name);
 			$z->setVal('Father',$i);
+			$z->setVal('Mother',$i);
 			$z->save();
 		}
 	}

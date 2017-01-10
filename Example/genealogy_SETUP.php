@@ -26,6 +26,9 @@ require_once("ViewConstant.php");
 			'attrList' => [
 				V_S_CREF 	=> ['id','Sexe','BirthDay','DeathDate','Age','DeathAge','Father','Mother'],
 				V_S_REF		=> ['SurName','Name'],
+			],
+			'attrProp' => [
+				V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
 			]
 		],
 		'Student' => [
@@ -37,6 +40,9 @@ require_once("ViewConstant.php");
 				V_S_UPDT => ['Sexe'=>H_T_RADIO],
 				V_S_SLCT => ['Sexe'=>H_T_RADIO],
 			],
+			'attrProp' => [
+				V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
+			],			
 			'lblList' => [
 				'id'		=> 'Noma',
 				'Name' 		=> 'Nom',

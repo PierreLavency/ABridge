@@ -14,5 +14,3 @@ class ModBase_Fle_Test extends ModBase_Case
 	}
 }
 
-
-?>	

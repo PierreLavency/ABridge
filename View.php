@@ -234,6 +234,9 @@ class View
             case V_P_NAME:
                 return $attr;
                 break;
+            case V_P_OP:
+                return ':';
+                break;              
             default:
                 return 0;
         }       
@@ -274,6 +277,26 @@ class View
         }
         $prop = $spec[V_PROP];
         $res = [];
+        
+        if ($prop == V_P_OP and $viewState == V_S_SLCT) {
+            $res[H_TYPE]=H_T_SELECT;
+            $name=$attr.'_OP';
+            $res[H_NAME]=$name;
+            $res[H_VALUES]=[['=','='],['>','>'],['<','<']];
+            if ($typ == M_CODE) {
+                $res[H_VALUES]=[['=','=']];
+            }
+            if ($typ == M_STRING) {
+                $res[H_VALUES]=[['::','::'],['=','='],['>','>'],['<','<']];
+            }
+            $default='=';
+            if (isset($_POST[$name])) {
+                $default= $_POST[$name]; // only dep on method !!
+            }
+            $res[H_DEFAULT]=$default;
+            return $res;
+        }
+        
         if ($prop==V_P_VAL and 
             ((($viewState == V_S_CREA or $viewState == V_S_UPDT)
              and $this->_model->isModif($attr))
@@ -561,6 +584,12 @@ class View
             $specma=$spec['attrHtml'];
             if (isset($specma[$viewState])) {
                 $this->setAttrListHtml($specma[$viewState], $viewState);
+            }
+        }
+        if (isset($spec['attrProp'])) {
+            $specma=$spec['attrProp'];
+            if (isset($specma[$viewState])) {
+                $this->setPropList($specma[$viewState], $viewState);
             }
         }
         if (isset($spec['lblList'])) {

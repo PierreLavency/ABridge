@@ -156,10 +156,12 @@ class ModBase
     {
         return ($this->_base->findObj($modN, $attr, $val));
     }
-    
-    public function findObjWhere($model, $attrList, $valList)
+
+    public function findObjWheOp($model,$attrList,$opList,$valList)
     {
-        return ($this->_base->findObjWhere($model, $attrList, $valList));
+        return (
+            $this->_base->findObjWheOp($model, $attrList, $opList, $valList)
+        );
     }
     
     

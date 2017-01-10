@@ -151,6 +151,6 @@ class ModBase_Case extends PHPUnit_Framework_TestCase {
 		$x->commit();
 	}
 
+	
+	
 }
-
-?>	

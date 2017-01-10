@@ -131,17 +131,17 @@ class FileBase extends Base
         $this->logLine(1, "findObj $model $attr $val  \n");
         return $result;
     }
-    
-    public function findObjWhere($model,$attrList, $valList) 
+
+    public function findObjWheOp($model,$attrList,$opList,$valList)
     {
         if (! $this->existsMod($model)) {
             return false;
         }; 
-        $res= $this->evalWhere($model, $attrList, $valList);
+        $res= $this->evalWheOp($model, $attrList, $opList, $valList);
         return $res;
     }
-
-    public function evalWhere($model,$attrList,$valList) 
+    
+    private function evalWheOp($model,$attrList,$opList,$valList) 
     {
         if ($attrList== []) {
             $result = [];
@@ -154,13 +154,61 @@ class FileBase extends Base
         }   
         $attr= array_pop($attrList);
         $val = array_pop($valList);
-        $res = $this->findObj($model, $attr, $val);
-        $result = $this->evalWhere($model, $attrList, $valList);
+        $op = '=';
+        if (isset($opList[$attr])) {
+            $op = $opList[$attr];
+        }
+        $res = $this->findObjOp($model, $attr, $op, $val);
+        $result = $this->evalWheOp($model, $attrList, $opList, $valList);
         $result = array_intersect($result, $res);
         return $result;
     }
     
-
+    private function findObjOp($model, $attr, $op, $val) 
+    {
+        $result = [];
+        foreach ($this->_objects[$model] as $id => $list) {
+            if ($id) {
+                foreach ($list as $a => $v) {
+                    if ($attr == $a and $this->evalOp($v, $op, $val)) {
+                        $result[]=$id;
+                    }
+                }
+                if ($attr == 'id' and $this->evalOp($id, $op, $val)) {
+                    $result[]=$id;          
+                }
+            }; 
+        };
+        $this->logLine(1, "findObjOp $model $attr $op $val  \n");
+        return $result;
+    }
+    
+    private function evalOp($attrVal,$op,$val)
+    {
+        switch ($op) {
+            case '=' :
+                if ($attrVal == $val) {
+                    return true ;
+                }
+                break;
+            case '>' : 
+                if ($attrVal > $val) {
+                    return true ;
+                }
+                break;
+            case '<' : 
+                if ($attrVal < $val) {
+                    return true ;
+                }
+                break;
+            case '::' :
+                if (strpos($attrVal, $val) !== false) {
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
     
     
     

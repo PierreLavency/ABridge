@@ -137,8 +137,19 @@ class Base_Case extends PHPUnit_Framework_TestCase {
         $this->assertEquals(1,count($x->findObj(self::$CName,'CODE','01')));
 		$this->assertEquals(1,count($x->findObj(self::$CName,'id',1)));
 		
-		$this->assertEquals($n+1,count($x->findObjWhere(self::$CName,[],[])));
-		$this->assertEquals(1,count($x->findObjWhere(self::$CName,['CODE','SEVERITY'],['01',1])));
+		$this->assertEquals($n+1,count($x->findObjWheOp(self::$CName,[],[],[])));
+		$this->assertEquals(1,count($x->findObjWheOp(self::$CName,['CODE','SEVERITY'],[],['01',1])));
+		
+		$this->assertEquals(1,count($x->findObjWheOp(self::$CName,['CODE','SEVERITY'],[],['01',1])));
+		$this->assertEquals($n+1,count($x->findObjWheOp(self::$CName,['SEVERITY'],['SEVERITY'=>'>'],[0])));	
+		$this->assertEquals(0,count($x->findObjWheOp(self::$CName,['SEVERITY'],['SEVERITY'=>'<'],[0])));	
+		$this->assertEquals(0,count($x->findObjWheOp(self::$CName,['SEVERITY'],['SEVERITY'=>'<'],[1])));	
+		$this->assertEquals(1,count($x->findObjWheOp(self::$CName,['id'],['id'=>'='],[1])));	
+		$this->assertEquals(1,count($x->findObjWheOp(self::$CName,['id'],['id'=>'<'],[2])));	
+		$this->assertEquals(0,count($x->findObjWheOp(self::$CName,['id'],['id'=>'>'],[1000])));		
+		$this->assertEquals($n+1,count($x->findObjWheOp(self::$CName,['CODE'],['CODE'=>'::'],['0'])));		
+		$this->assertEquals(0,count($x->findObjWheOp(self::$CName,['CODE'],['CODE'=>'::'],['x'])));	
+		
         $x->commit();
         
     }
@@ -164,8 +175,8 @@ class Base_Case extends PHPUnit_Framework_TestCase {
         $this->assertFalse($x->delObj('NOTEXISTS',$this->id2));
         $this->assertFalse($x->putObj('NOTEXISTS',$this->id1,$this->test2));
         $this->assertFalse($x->findObj('NOTEXISTS','CODE','01'));
-        $this->assertFalse($x->findObjWhere('NOTEXISTS',['CODE'],['01']));
-				
+        $this->assertFalse($x->findObjWheOp('NOTEXISTS',['CODE'],[],['01']));
+	    $this->assertFalse($x->findObjWheOp('NOTEXISTS',['CODE'],['='],['01']));	
         $x->commit();
     }
 

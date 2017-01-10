@@ -335,14 +335,34 @@ class SQLBase extends Base
         }
         return $res;
     }   
-    
-    public function findObjWhere($model, $attrList, $valList) 
+
+    private function buildWheOp($attrLst,$opLst,$valLst) 
+    {
+        if ($attrLst == []) {
+            return ' true ';
+        }
+        $attr= array_pop($attrLst);
+        $val = array_pop($valLst);
+        $op = '=';
+        if (isset($opLst[$attr])) {
+            $op = $opLst[$attr];
+        }
+        $res = $this->buildWheOp($attrLst, $opLst, $valLst);
+        if ($op == '::') {
+            $res = " $attr LIKE '%$val%' and  " . $res;
+        } else {
+            $res = " $attr $op '$val' and  " . $res;
+        }
+        return $res;
+    }
+        
+    public function findObjWheOp($model,$attrList,$opList,$valList)
     {
         if (! $this->existsMod($model)) {
             return false;
         }; 
         $res = [];
-        $w= $this->buildWhere($attrList, $valList);
+        $w= $this->buildWheOp($attrList,$opList, $valList);
         $sql = "SELECT id FROM $model where ". $w;
         $this->logLine(1, $sql);
         $result = $this->_mysqli->query($sql);
@@ -353,18 +373,4 @@ class SQLBase extends Base
         }
         return $res;
     }
-    
-    public function buildWhere($attrLst,$valLst) 
-    {
-        if ($attrLst == []) {
-            return ' true ';
-        }
-        $attr= array_pop($attrLst);
-        $val = array_pop($valLst);
-        $res = $this->buildWhere($attrLst, $valLst);
-        $res = " $attr = '$val' and  " . $res;
-        return $res;
-    }
-    
-    
 }

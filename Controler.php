@@ -14,6 +14,7 @@ class Controler
     protected $_spec = [];
     protected $_attrL = [];
     protected $_valL = [];
+    protected $_opL = [];
     protected $_logLevel = 0;
     
     function __construct($spec) 
@@ -137,11 +138,14 @@ class Controler
                     $this->_valL[]=$valC;
                 }
             }
+            $name=$attr.'_OP';
+            if (isset($_POST[$name])) {
+                $this->_opL[$attr]=$_POST[$name];
+            }
             if ($c->isProtected($attr)) {
                 $this->_attrL[]=$attr;
                 $this->_valL[]=$c->getVal($attr);
-            }
-            
+            }      
         }
         return (!$c->isErr());
     }
@@ -194,7 +198,8 @@ class Controler
                 if ($action == V_S_SLCT) {
                     $valL=$this->_valL;
                     $attrL=$this->_attrL;
-                    $res = $this->_obj->setCriteria($attrL, $valL);
+                    $opL=$this->_opL;
+                    $res = $this->_obj->setCriteria($attrL, $opL, $valL);
                 }
             }
             if (!$this->_obj->isErr()) {

@@ -6,6 +6,9 @@ require_once("Handler.php");
 class testevalP 
 {
 	private $_mod;
+	private $_fsave = true;
+	protected $_fdel  = true;
+	
 	function __construct($mod) 
 	{
 		$this->_mod=$mod;
@@ -17,8 +20,9 @@ class testevalP
 		$a = $this->_mod->getVal('a');
 		$b = $this->_mod->getVal('b');
 		$this->_mod->setVal('aplusb',$a+$b);
-		if (!$a and $this->_mod->getId()) {
+		if (!$a and $this->_mod->getId() and $this->_fsave) {
 			$this->_mod->getErrLog()->logLine('wrong');
+			$this->_fsave = false;
 			return false;
 		}
 		return true;
@@ -26,27 +30,37 @@ class testevalP
 	
 	public function afterDelet() 
 	{
-		return true;
+		if(!$this->_fdel) {
+			$this->_mod->getErrLog()->logLine('DDwrong');
+		}
+		return 	$this->_fdel;
 	}	
 
 	public function delet()
 	{
 		$a = $this->_mod->getVal('a');
-		if (!$a and $this->_mod->getId()) {
-			$this->_mod->getErrLog()->logLine('wrong');
+		if (!$a and $this->_mod->getId() and $this->_fdel) {
+			$this->_mod->getErrLog()->logLine('Dwrong');
+			$this->_fdel = false;
 			return false;
 		}
 		return true;
 	}
 	public function afterSave()
 	{
-		return true;
+		if (!$this->_fsave) {
+			$this->_mod->getErrLog()->logLine('Awrong');
+		}
+		return $this->_fsave;
 	}
 }
 class testevalPF 
 {
 	private $_mod;
 	private $_x;
+	private $_fsave = true;
+	private $_fdel  = true;
+	
 	function __construct($mod) 
 	{
 		$this->_mod=$mod;
@@ -58,8 +72,9 @@ class testevalPF
 		$a = $this->_mod->getVal('a');
 		$b = $this->_mod->getVal('b');
 		$this->_mod->setVal('aplusb',$a+$b);
-		if (!$a and $this->_mod->getId()) {
+		if (!$a and $this->_mod->getId()and $this->_fsave) {
 			$this->_mod->getErrLog()->logLine('wrong');
+			$this->_fsave = false;
 			return false;
 		}
 		return true;
@@ -68,19 +83,26 @@ class testevalPF
 	public function delet()
 	{
 		$a = $this->_mod->getVal('a');
-		if (!$a and $this->_mod->getId()) {
-			$this->_mod->getErrLog()->logLine('wrong');
+		if (!$a and $this->_mod->getId()and $this->_fdel) {
+			$this->_mod->getErrLog()->logLine('Dwrong');
+			$this->_fdel = false;
 			return false;
 		}
 		return true;
 	}
 	public function afterSave()
 	{
-		return true;
+		if (!$this->_fsave) {
+			$this->_mod->getErrLog()->logLine('Awrong');
+		}		
+		return $this->_fsave;		
 	}
 	public function afterDelet() 
 	{
-		return true;
+		if(!$this->_fdel) {
+			$this->_mod->getErrLog()->logLine('DDwrong');
+		}
+		return $this->_fdel;
 	}
 }
 class Model_Evp_Test extends PHPUnit_Framework_TestCase  
@@ -175,6 +197,15 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
 		
 		$res=$x->save();
 		$this->assertEquals(1,$res);
+		
+		$this->assertNotNull($x = new Model($this->Student));
+		$res= $x->setVal('a',1);
+		$this->assertTrue($res);
+		$this->assertTrue($x->setVal('b',1));
+		
+		$res=$x->save();
+		$this->assertEquals(2,$res);	
+		
 		$db->commit();
 	}
 	/**
@@ -197,6 +228,9 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
 		
 		$res=$x->isOptl('aplusb');
 		$this->assertFalse($res);
+
+		$res=$x->isSelect('aplusb');
+		$this->assertTrue($res);
 		
 		$db->commit();
 	}
@@ -220,7 +254,15 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
 		$this->assertTrue($res);
 		
 		$this->assertEquals($x->getErrLine(),E_ERC042.':'.'aplusb');
+		
+		$res=$x->isSelect('xx');
+		$this->assertFalse($res);		
+		$this->assertEquals($x->getErrLine(),E_ERC002.':'.'xx');
 
+		$res=$x->isModif('xx');
+		$this->assertFalse($res);		
+		$this->assertEquals($x->getErrLine(),E_ERC002.':'.'xx');		
+		
 		$res= $x->setVal('a',0);
 		$this->assertTrue($res);
 		
@@ -228,9 +270,24 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
 		$this->assertFalse($res);
 		$this->assertEquals($x->getErrLine(),'wrong');
 
+		$res = $x->save();
+		$this->assertFalse($res);
+		$this->assertEquals($x->getErrLine(),'Awrong');
+
+
+		$this->assertNotNull($x = new Model($this->Student,2));
+
+		$res= $x->setVal('a',0);
+		$this->assertTrue($res);
+		
 		$res = $x->delet();
 		$this->assertFalse($res);
-		$this->assertEquals($x->getErrLine(),'wrong');
+		$this->assertEquals($x->getErrLine(),'Dwrong');
+
+				
+		$res = $x->delet();
+		$this->assertFalse($res);
+		$this->assertEquals($x->getErrLine(),'DDwrong');
 		
 		$db->commit();
 	}
@@ -248,6 +305,9 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
 		$db=$this->db;
 		$db->beginTrans();
 		$this->assertNotNull($x = new Model($this->Student,1));
+
+		$res= $x->setVal('a',1);
+		$this->assertTrue($res);
 		
 		$res= $x->delAttr('aplusb');
 		$this->assertTrue($res);

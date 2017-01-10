@@ -1,4 +1,4 @@
-a:7:{i:0;s:729:"<!DOCTYPE html>
+a:7:{i:0;s:1703:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -44,11 +44,61 @@ a:7:{i:0;s:729:"<!DOCTYPE html>
 				<input type = "text" name = "Father"  >
 			</td>
 		</tr>
+		<tr>
+			<td>
+				Mother
+			</td>
+			<td>
+				<select name = "Mother"  >
+					<option  value = ""  selected  ></option>
+					<option  value = "1"  >1
+</option>
+					<option  value = "2"  >2
+</option>
+					<option  value = "3"  >3
+</option>
+					<option  value = "4"  >4
+</option>
+					<option  value = "5"  >5
+</option>
+					<option  value = "6"  >6
+</option>
+					<option  value = "7"  >7
+</option>
+					<option  value = "8"  >8
+</option>
+					<option  value = "9"  >9
+</option>
+					<option  value = "10"  >10
+</option>
+					<option  value = "11"  >11
+</option>
+					<option  value = "12"  >12
+</option>
+					<option  value = "13"  >13
+</option>
+					<option  value = "14"  >14
+</option>
+					<option  value = "15"  >15
+</option>
+					<option  value = "16"  >16
+</option>
+					<option  value = "17"  >17
+</option>
+					<option  value = "18"  >18
+</option>
+					<option  value = "19"  >19
+</option>
+					<option  value = "20"  >20
+</option>
+				</select>
+			</td>
+		</tr>
 	</table>
 </form>  
 
  </body> 
- </html>";i:1;s:1198:"<!DOCTYPE html>
+ </html>";i:1;s:3272:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -103,11 +153,24 @@ dir
 </a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			Mother
+		</td>
+		<td>
+			<a href=/ABridge.php/dir/1 >1
+</a>
+		</td>
+	</tr>
 </table>
 
 FatherOf
 
-4
+11 : 0-10
+
+<a href=/ABridge.php/dir/2?FatherOf=10 >Next</a>
+
+<a href=/ABridge.php/dir/2?FatherOf=0 >Previous</a>
 
 <a href='/ABridge.php/dir/2/FatherOf' >New</a>
 
@@ -148,13 +211,171 @@ FatherOf
 			Name_24
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/FatherOf/14 >14
+</a>
+		</td>
+		<td>
+			Name_25
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/FatherOf/15 >15
+</a>
+		</td>
+		<td>
+			Name_26
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/FatherOf/16 >16
+</a>
+		</td>
+		<td>
+			Name_27
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/FatherOf/17 >17
+</a>
+		</td>
+		<td>
+			Name_28
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/FatherOf/18 >18
+</a>
+		</td>
+		<td>
+			Name_29
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/FatherOf/19 >19
+</a>
+		</td>
+		<td>
+			Name_30
+		</td>
+	</tr>
+</table>
+
+
+MotherOf
+
+11 : 0-10
+
+<a href=/ABridge.php/dir/2?MotherOf=10 >Next</a>
+
+<a href=/ABridge.php/dir/2?MotherOf=0 >Previous</a>
+
+<a href='/ABridge.php/dir/2/MotherOf' >New</a>
+
+<table >
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/MotherOf/10 >10
+</a>
+		</td>
+		<td>
+			Name_21
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/MotherOf/11 >11
+</a>
+		</td>
+		<td>
+			Name_22
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/MotherOf/12 >12
+</a>
+		</td>
+		<td>
+			Name_23
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/MotherOf/13 >13
+</a>
+		</td>
+		<td>
+			Name_24
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/MotherOf/14 >14
+</a>
+		</td>
+		<td>
+			Name_25
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/MotherOf/15 >15
+</a>
+		</td>
+		<td>
+			Name_26
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/MotherOf/16 >16
+</a>
+		</td>
+		<td>
+			Name_27
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/MotherOf/17 >17
+</a>
+		</td>
+		<td>
+			Name_28
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/MotherOf/18 >18
+</a>
+		</td>
+		<td>
+			Name_29
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href=/ABridge.php/dir/2/MotherOf/19 >19
+</a>
+		</td>
+		<td>
+			Name_30
+		</td>
+	</tr>
 </table>
 
 
 
 
  </body> 
- </html>";i:2;s:758:"<!DOCTYPE html>
+ </html>";i:2;s:874:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -200,11 +421,19 @@ FatherOf
 				<input type = "text" name = "Father" value = "1"  >
 			</td>
 		</tr>
+		<tr>
+			<td>
+				Mother
+			</td>
+			<td>
+				<input type = "text" name = "Mother" value = "1"  >
+			</td>
+		</tr>
 	</table>
 </form>  
 
  </body> 
- </html>";i:3;s:693:"<!DOCTYPE html>
+ </html>";i:3;s:792:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -251,11 +480,20 @@ FatherOf
 </a>
 			</td>
 		</tr>
+		<tr>
+			<td>
+				Mother
+			</td>
+			<td>
+				<a href=/ABridge.php/dir/1 >1
+</a>
+			</td>
+		</tr>
 	</table>
 </form>  
 
  </body> 
- </html>";i:4;s:919:"<!DOCTYPE html>
+ </html>";i:4;s:1023:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -307,6 +545,14 @@ FatherOf
 				<input type = "text" name = "Father"  >
 			</td>
 		</tr>
+		<tr>
+			<td>
+				Mother
+			</td>
+			<td>
+				<input type = "text" name = "Mother"  >
+			</td>
+		</tr>
 	</table>
 Select
 
@@ -320,9 +566,13 @@ Select
 
  </body> 
  </html>";i:5;s:7:"Name_2
-";i:6;s:116:"<ul>
+";i:6;s:166:"<ul>
 	<li>
 		<a href=/ABridge.php/dir/2 >Name_2
+</a>
+	</li>
+	<li>
+		<a href=/ABridge.php/dir/1 >1
 </a>
 	</li>
 	<li>

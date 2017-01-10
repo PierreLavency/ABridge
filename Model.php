@@ -737,7 +737,7 @@ class Model
      *
      * @return boolean
      */         
-    public function setCriteria($attrL,$valL) 
+    public function setCriteria($attrL,$opL,$valL) 
     {
         foreach ($attrL as $attr) {
             if (! $x= $this->existsAttr($attr)) {
@@ -745,7 +745,7 @@ class Model
                 return false;
             };
         }
-        $this->_asCriteria=[$attrL,$valL];
+        $this->_asCriteria=[$attrL,$opL,$valL];
         return true;
     }
     /**
@@ -888,7 +888,12 @@ class Model
             return $result;
         }
         $mod=$this->getModName();
-        $result = $this->_stateHdlr->findObjWhere($mod, $res[0], $res[1]);
+        $result=$this->_stateHdlr->findObjWheOp(
+            $mod, 
+            $res[0], 
+            $res[1], 
+            $res[2]
+        );
         return $result;
     }
     
@@ -1050,9 +1055,10 @@ class Model
             }
             $valLst[]=$val;
         }       
-        $res=$this->_stateHdlr->findObjWhere(
+        $res=$this->_stateHdlr->findObjWheOp(
             $this->getModName(), 
-            $attrLst, 
+            $attrLst,
+            [],         
             $valLst
         );
         if ($res == []) {
@@ -1168,7 +1174,7 @@ class Model
         if ($r == M_REF) {
             $mod = $this->getRefMod($attr);
             $obj= new Model($mod);
-            $val=$obj->_stateHdlr->findObjWhere($mod, [], []);
+            $val=$obj->_stateHdlr->findObjWheOp($mod, [], [], []);
         }
         return $val;
     }

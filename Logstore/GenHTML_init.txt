@@ -1,4 +1,4 @@
-a:19:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br/>
+a:20:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br/>
 <input type = "radio" name = "A"  value = "a2"  >a2<br/>
 ";i:1;s:48:"<input type = "text" name = "A" value = "a1"  >
 ";i:2;s:116:"<select name = "A"  >
@@ -6,13 +6,14 @@ a:19:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br
 	<option  value = "a2"  >a2</option>
 </select>
 ";i:3;s:38:"<input type="submit" value = Submit >
-";i:4;s:58:"<textarea name = "A"  cols="50"  rows="5"  >a1</textarea>
-";i:5;s:67:"<textarea name = "A" disabled cols="50"  rows="10"  >a1</textarea>
-";i:6;s:52:"<input type = "password" name = "A" value = "a1"  >
-";i:7;s:22:"this is a text string
-";i:8;s:28:"this is another text string
-";i:9;s:42:"<a href=ABridge.php/code/1 >testSuite</a>
-";i:10;s:254:"<table >
+";i:4;s:68:"<input type="submit" value = Submit formaction=ABridge.php/code/1 >
+";i:5;s:58:"<textarea name = "A"  cols="50"  rows="5"  >a1</textarea>
+";i:6;s:67:"<textarea name = "A" disabled cols="50"  rows="10"  >a1</textarea>
+";i:7;s:52:"<input type = "password" name = "A" value = "a1"  >
+";i:8;s:22:"this is a text string
+";i:9;s:28:"this is another text string
+";i:10;s:42:"<a href=ABridge.php/code/1 >testSuite</a>
+";i:11;s:254:"<table >
 	<tr>
 		<td>
 			<input type = "radio" name = "A"  value = "a1"  checked  >a1<br/>
@@ -25,7 +26,7 @@ a:19:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br
 		</td>
 	</tr>
 </table>
-";i:11;s:214:"<ul>
+";i:12;s:214:"<ul>
 	<li>
 		<input type = "radio" name = "A"  value = "a1"  checked  >a1<br/>
 		<input type = "radio" name = "A"  value = "a2"  >a2<br/>
@@ -34,62 +35,62 @@ a:19:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br
 		<input type = "text" name = "A" value = "a1"  >
 	</li>
 </ul>
-";i:12;s:173:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br/>
+";i:13;s:173:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br/>
 <input type = "radio" name = "A"  value = "a2"  >a2<br/>
 
 <input type = "text" name = "A" value = "a1"  >
 
-";i:13;s:96:"<input type = "text" name = "A" value = "a1"  >
+";i:14;s:96:"<input type = "text" name = "A" value = "a1"  >
 <input type = "text" name = "A" value = "a1"  >
-";i:14;s:131:"<ul>
+";i:15;s:155:"<ul>
 	<li>
 		<ul>
 			<li>
-				this is a text string
+				<input type = "password" name = "A" value = "a1"  >
 			</li>
 			<li>
-				this is another text string
+				this is a text string
 			</li>
 		</ul>
 	</li>
 </ul>
-";i:15;s:117:"<table >
+";i:16;s:141:"<table >
 	<tr>
+		<td>
+			<input type = "password" name = "A" value = "a1"  >
+		</td>
 		<td>
 			this is a text string
 		</td>
-		<td>
-			this is another text string
-		</td>
 	</tr>
 </table>
-";i:16;s:251:"<ul>
+";i:17;s:299:"<ul>
 	<li>
 		<ul>
 			<li>
-				this is a text string
+				<input type = "password" name = "A" value = "a1"  >
 			</li>
 			<li>
-				this is a text string
+				<input type = "password" name = "A" value = "a1"  >
 			</li>
 		</ul>
 	</li>
 	<li>
 		<ul>
 			<li>
-				this is another text string
+				this is a text string
 			</li>
 			<li>
-				this is another text string
+				this is a text string
 			</li>
 		</ul>
 	</li>
 </ul>
-";i:17;s:256:"<form method=POST action= testSuite ><input type='hidden' name='action' value='toto' >
+";i:18;s:256:"<form method=POST action= testSuite ><input type='hidden' name='action' value='toto' >
 	<select name = "A"  >
 		<option  value = "a1"  selected  >a1</option>
 		<option  value = "a2"  >a2</option>
 	</select>
 	<input type="submit" value = Submit >
 </form>  
-";i:18;s:16:" Unknown H_TYPE ";}
+";i:19;s:16:" Unknown H_TYPE ";}
