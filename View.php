@@ -62,7 +62,7 @@ class View
 
     protected $_attrProp=[
               V_S_READ =>[V_P_LBL,V_P_VAL],
-              V_S_SLCT =>[V_P_LBL,V_P_VAL],
+              V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
               V_S_CREA =>[V_P_LBL,V_P_VAL],
               V_S_UPDT =>[V_P_LBL,V_P_VAL],
               V_S_DELT =>[V_P_LBL,V_P_VAL],

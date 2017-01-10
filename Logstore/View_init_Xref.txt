@@ -493,7 +493,7 @@ MotherOf
 </form>  
 
  </body> 
- </html>";i:4;s:1023:"<!DOCTYPE html>
+ </html>";i:4;s:1826:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -526,12 +526,27 @@ MotherOf
 				id
 			</td>
 			<td>
+				<select name = "id_OP"  >
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
+			</td>
+			<td>
 				<input type = "text" name = "id"  >
 			</td>
 		</tr>
 		<tr>
 			<td>
 				Name
+			</td>
+			<td>
+				<select name = "Name_OP"  >
+					<option  value = "::"  >::</option>
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
 			</td>
 			<td>
 				<input type = "text" name = "Name"  >
@@ -542,12 +557,26 @@ MotherOf
 				Father
 			</td>
 			<td>
+				<select name = "Father_OP"  >
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
+			</td>
+			<td>
 				<input type = "text" name = "Father"  >
 			</td>
 		</tr>
 		<tr>
 			<td>
 				Mother
+			</td>
+			<td>
+				<select name = "Mother_OP"  >
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
 			</td>
 			<td>
 				<input type = "text" name = "Mother"  >

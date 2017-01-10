@@ -285,7 +285,7 @@ test
 </form>  
 
  </body> 
- </html>";i:5;s:1010:"<!DOCTYPE html>
+ </html>";i:5;s:1803:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -318,12 +318,26 @@ test
 				id
 			</td>
 			<td>
+				<select name = "id_OP"  >
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
+			</td>
+			<td>
 				<input type = "text" name = "id"  >
 			</td>
 		</tr>
 		<tr>
 			<td>
 				A1
+			</td>
+			<td>
+				<select name = "A1_OP"  >
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
 			</td>
 			<td>
 				<input type = "text" name = "A1"  >
@@ -334,12 +348,27 @@ test
 				A2
 			</td>
 			<td>
+				<select name = "A2_OP"  >
+					<option  value = "::"  >::</option>
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
+			</td>
+			<td>
 				<input type = "text" name = "A2"  >
 			</td>
 		</tr>
 		<tr>
 			<td>
 				A3
+			</td>
+			<td>
+				<select name = "A3_OP"  >
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
 			</td>
 			<td>
 				<input type = "text" name = "A3"  >
