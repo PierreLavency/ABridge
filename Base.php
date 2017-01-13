@@ -89,13 +89,21 @@ abstract class Base
         }
         return(array_key_exists($model, $this->_objects));
     }
-    
+ 
     function newMod($model,$meta) 
+    {
+		return $this->newModId($model,$meta,true);
+	}
+	
+    function newModId($model,$meta,$idF) 
     {
         if ($this->existsMod($model)) {
             return false;
         }; 
         $meta['lastId']=1;
+		if (!$idF) {
+			$meta['lastId']=0;
+		}
         $this->_objects[$model][0] = $meta;
         return true;
     }   
@@ -160,6 +168,8 @@ abstract class Base
     abstract protected function putMod($model,$meta,$addList,$delList);
     
     abstract protected function newObj($model, $values) ;
+	
+	abstract protected function newObjId($model, $values, $id) ;
 
     abstract protected function getObj($model, $id) ;
 

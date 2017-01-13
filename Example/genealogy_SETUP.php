@@ -13,10 +13,28 @@ require_once("ViewConstant.php");
 		'Prof'		 => ['fileBase','genealogy',],
 		'Charge'	 => ['fileBase','genealogy',],
 		'Person'	 => ['dataBase','genealogy',],
+		'ABB'		 => ['dataBase','abb',],
+		'Interface'	 => ['dataBase','abb',],
+		'Exchange'	 => ['dataBase','abb',],
 		],
 	'Home' =>
-		['Student','Cours','Inscription','Prof','Charge','Person','Code','CodeValue','Home'],
+		['Student','Cours','Inscription','Prof','Charge','Person','Code','CodeValue','ABB','Interface','Exchange','Home'],
 	'Views' => [
+		'ABB'=> [
+				'attrList' => [
+				V_S_REF		=> ['Name'],
+			]
+		],
+		'Interface'=> [
+				'attrList' => [
+				V_S_REF		=> ['Name'],
+			]
+		],
+		'Exchange'=> [
+				'attrList' => [
+				V_S_REF		=> ['Name'],
+			]
+		],		
 		'Person' => [
 			'attrHtml' => [
 				V_S_CREA => ['Sexe'=>H_T_RADIO],

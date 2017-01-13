@@ -171,6 +171,7 @@ class Controler
     {
         $method = $_SERVER['REQUEST_METHOD'];   
         $this->beginTrans();
+
         $this->setLogLevl($logLevel);   
         $path = new Path();
         $this->_obj  = $path->getObj();

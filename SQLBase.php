@@ -90,15 +90,25 @@ class SQLBase extends Base
         }
         return (parent::close());
     }
-    
+ 
     public function newMod($model,$meta) 
+    {
+		return $this->newModId($model,$meta,true);
+	}
+ 
+    public function newModId($model,$meta,$idF) 
     {
         if ($this->existsMod($model)) {
             return false;
         }; 
         $s = "\n CREATE TABLE $model ( " ;
-        $s = $s. "\n id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ";
-        $attrLst=[];
+		if ($idF) {
+			$s = $s. "\n id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ";
+		}
+		else {
+			$s = $s. "\n id INT(11) UNSIGNED NOT NULL PRIMARY KEY ";
+		}
+		$attrLst=[];
         $attrTyp =[];
         if (isset($meta['attr_plst'])) {
             $attrLst = $meta['attr_plst'];
@@ -120,7 +130,7 @@ class SQLBase extends Base
         if (! $this->_mysqli->query($sql)) {
             throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
         };
-        $r = parent::newMod($model, $meta);
+        $r = parent::newModId($model, $meta,$idF);
         parent::commit(); //DML always autocommited!!
         return $r;
     }   
@@ -286,15 +296,29 @@ class SQLBase extends Base
         return true;
     }
     
-    public function newObj($model, $values)
+	
+	public function newObj($model, $values)
+	{
+		return $this->newObjId($model, $values, 0);
+	}	
+	
+    public function newObjId($model, $values, $id)
     {
         if (! $this->existsMod($model)) {
             return false;
         };
         $la = '(';
         $lv = $la;
+		$c = count($values);		
+		if($id) {
+			$la='(id';
+			$lv="($id";
+			if ($c) {
+				$la=$la.',';
+				$lv=$lv.',';
+			}
+		}
         $i = 0;
-        $c = count($values);
         foreach ($values as $key=>$val) {
             $i++;
             $la = $la . $key;
@@ -316,7 +340,14 @@ class SQLBase extends Base
         if (! $this->_mysqli->query($sql)) {
             throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
         };
-        return $this->_mysqli->insert_id;
+		if ($id) {
+			return $id;
+		}
+		$id = $this->_mysqli->insert_id;
+		if (!$id) {
+			throw new Exception(E_ERC043.':'.$id);
+		}
+        return $id;
     }
     
     public function findObj($model, $attr, $val) 

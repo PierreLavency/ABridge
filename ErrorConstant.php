@@ -42,4 +42,6 @@ define('E_ERC039', "ERC039");  // set not allowed on eval attribute
 define('E_ERC040', "ERC040");  // eval attr without custom class
 define('E_ERC041', "ERC041");  // no param for this type allowed
 define('E_ERC042', "ERC042");  // set not allowed on evalP attribute
-
+define('E_ERC043', "ERC043");  // invalid id
+define('E_ERC044', "ERC044");  // cannot instanciate abstract class
+define('E_ERC045', "ERC045");  // cannot set attr on abstract class 

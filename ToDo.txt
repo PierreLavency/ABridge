@@ -12,14 +12,14 @@
 - handle error messages/2
 
 - beef up test apps with relationships tables 
-	- mega application / until inheritance 
+	- mega application / until inheritance //  started
 	- union Ckey + multi surname + frere et soeur
-	- code postal 
-	- album
+	- code postal / 3
+	- album / 3
 
 - split alter drop and add in Base.
 
-- Implement inheritance
+- Porpagate changes from abstract classe to concrete ?
 - Authenthication
 - Authorisation
 - Performance
@@ -40,6 +40,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- Implement inheritance // 4 days 
 - like where clause. // 2 days with inproved coverage
 - set up unit test for select  // 2 hours 
 - add persisted eval attr // 1 day - needs to set up example 

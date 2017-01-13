@@ -68,8 +68,20 @@ class Base_Case extends PHPUnit_Framework_TestCase {
         $db->beginTrans();      
         $this->assertTrue($db->putMod(self::$CName,$this->meta,$this->meta,[]));    
         $this->assertFalse($db->existsMod(self::$CName2));
+		$this->assertTrue($db->newModId(self::$CName2,[],false));
+	    $this->assertTrue($db->putMod(self::$CName2,$this->meta,$this->meta,[]));   	
         $this->assertEquals($this->id1,self::$db->newObj(self::$CName,$this->test1));       
         $this->assertEquals($this->id2,self::$db->newObj(self::$CName,$this->test2));
+        $this->assertEquals($this->id1,self::$db->newObjId(self::$CName2,$this->test1,$this->id1));       
+        $this->assertEquals($this->id2,self::$db->newObjId(self::$CName2,$this->test2,$this->id2));	
+
+		$r=false;
+        try {$db->newObj(self::$CName2, $this->test1);} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);
+		$r=false;
+        try {$db->newObjId(self::$CName2, $this->test1,$this->id2);} catch (Exception $e) {$r = true;}
+		$this->assertTrue($r);
+		
         self::$db->commit();
     }       
     
@@ -176,7 +188,10 @@ class Base_Case extends PHPUnit_Framework_TestCase {
         $this->assertFalse($x->putObj('NOTEXISTS',$this->id1,$this->test2));
         $this->assertFalse($x->findObj('NOTEXISTS','CODE','01'));
         $this->assertFalse($x->findObjWheOp('NOTEXISTS',['CODE'],[],['01']));
-	    $this->assertFalse($x->findObjWheOp('NOTEXISTS',['CODE'],['='],['01']));	
+	    $this->assertFalse($x->findObjWheOp('NOTEXISTS',['CODE'],['='],['01']));
+
+
+		
         $x->commit();
     }
 
@@ -265,6 +280,7 @@ class Base_Case extends PHPUnit_Framework_TestCase {
         $r=false;
         try {$x->findObj(self::$CName,'id', 1);} catch (Exception $e) {$r = true;}
         $this->assertTrue($r);
+ 
 
     }
     

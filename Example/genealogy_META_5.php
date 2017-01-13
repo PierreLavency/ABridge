@@ -10,8 +10,6 @@ require_once("genealogy_SETUP.php");
 	$db->beginTrans();
 
 	
-	// Inscription - add combined key 
-	
 	$x = new Model('Person');
 	$x->addAttr('DeathAge',M_INT,M_P_EVALP);	
 	$x->saveMod();	
@@ -20,5 +18,3 @@ require_once("genealogy_SETUP.php");
 
 	$db->commit();
 	
-
-?>	

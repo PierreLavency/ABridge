@@ -32,8 +32,13 @@ class FileBase extends Base
         $r = parent::putModel($model, $meta);
         return $r;
     }
-    
+ 
     public function newObj($model, $values) 
+    {
+		return $this->newObjId($model, $values, 0);
+	}
+
+    public function newObjId($model, $values, $id) 
     {
         if (! $this->isConnected()) {
             throw new Exception(E_ERC025);
@@ -42,9 +47,19 @@ class FileBase extends Base
             return false;
         }; 
         $meta=$this->_objects[$model][0];
-        $id = $meta["lastId"];
+		if (!$id) {
+			$id = $meta["lastId"];
+			if (!$id) {
+				throw new Exception(E_ERC043.':'.$id);
+			}
+		}
+		if (isset($this->_objects[$model][$id])) {
+			throw new Exception(E_ERC043.':'.$id);
+		}
         $this->_objects[$model][$id] = $values;
-        $meta["lastId"]=$id+1;
+		if ($meta["lastId"]) {
+			$meta["lastId"]=$id+1;
+		}
         $this->_objects[$model][0]=$meta;
         $this->logLine(1, "newObj $model $id \n");
         return $id;
