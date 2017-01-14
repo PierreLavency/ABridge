@@ -14,27 +14,46 @@ require_once("ViewConstant.php");
 		'Charge'	 => ['fileBase','genealogy',],
 		'Person'	 => ['dataBase','genealogy',],
 		'ABB'		 => ['dataBase','abb',],
+		'Application'=> ['dataBase','abb',],
+		'Component'	 => ['dataBase','abb',],
 		'Interface'	 => ['dataBase','abb',],
 		'Exchange'	 => ['dataBase','abb',],
+		'CType'	 	 => ['dataBase','abb',],
+		'ACode'	 	 => ['dataBase','abb',],
 		],
 	'Home' =>
-		['Student','Cours','Inscription','Prof','Charge','Person','Code','CodeValue','ABB','Interface','Exchange','Home'],
+		['Student','Cours','Inscription','Prof','Charge','Person','Code','CodeValue','Application','Component','Interface','Exchange','Home'],
 	'Views' => [
-		'ABB'=> [
-				'attrList' => [
+		'Application'=> [
+			'attrList' => [
 				V_S_REF		=> ['Name'],
 			]
+		],			
+		'Component'=> [
+			'attrList' => [
+				V_S_REF		=> ['Name'],
+			],
+			'attrHtml' => [
+				V_S_CREA => ['Type'=>H_T_SELECT],
+				V_S_UPDT => ['Type'=>H_T_SELECT],
+				V_S_SLCT => ['Type'=>H_T_SELECT],
+			],
 		],
 		'Interface'=> [
-				'attrList' => [
+			'attrList' => [
 				V_S_REF		=> ['Name'],
 			]
 		],
 		'Exchange'=> [
-				'attrList' => [
-				V_S_REF		=> ['Name'],
+			'attrList' => [
+//				V_S_REF		=> ['Name'],
 			]
-		],		
+		],
+		'CType'=> [
+			'attrList' => [
+				V_S_REF		=> ['Value'],
+			]
+		],	
 		'Person' => [
 			'attrHtml' => [
 				V_S_CREA => ['Sexe'=>H_T_RADIO],

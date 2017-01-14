@@ -285,8 +285,20 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
 		$eid = $x[0];	
 		$exch = $obj->getCref('Outt',$eid);
 		$pobj = $exch->getRef('Outt');
-		$this->assertEquals($obj,$pobj);		
+		$this->assertEquals($obj,$pobj);
 
+		$this->assertEquals($obj->getAbstrNme(),$this->ABB);
+		
+		$abstr = $obj->getInhObj();
+
+		$this->assertNull($abstr->getAbstrNme());
+		$a = count($obj->getAllAttr());
+		$b = count($obj->getAttrList());
+		$c = count($abstr->getAllAttr());
+		$d = count($obj->getAllPredef());
+		
+		$this->assertEquals($b,$a+$c-$d);
+		
 		$end = false; 
 		$na =1;
 		$nc =0;

@@ -7,6 +7,8 @@ require_once("Handler.php");
 
 	$db = getBaseHandler('dataBase','abb');
 	initStateHandler('ABB', 'dataBase','abb');
+	initStateHandler('Application', 'dataBase','abb');
+	initStateHandler('Component', 'dataBase','abb');
 	initStateHandler('Interface', 'dataBase','abb');
 	initStateHandler('Exchange', 'dataBase','abb');
 	
@@ -20,11 +22,47 @@ require_once("Handler.php");
 	$res = $obj->addAttr('Name',M_STRING);
 	$res = $obj->addAttr('In',M_CREF,'/Interface/Of');
 	$res = $obj->addAttr('Out',M_CREF,'/Exchange/OutOf');
-	
+	$res = $obj->addAttr('ShortDesc',M_STRING);	
+	$res = $obj->addAttr('LongDesc',M_TXT);	
+	$res = $obj->setAbstr();
+ 	
 	$res = $obj->saveMod();	
 	$r = $obj->getErrLog ();
 	$r->show();
 
+	
+	// Application
+	
+	$obj = new Model('Application');
+	$res= $obj->deleteMod();
+
+	$res = $obj->addAttr('Owner',M_STRING);		
+	$res = $obj->addAttr('BuiltFrom',M_CREF,'/Component/Of'); 
+	
+	$res = $obj->setInhNme('ABB');	
+
+	$res = $obj->saveMod();			
+	$r = $obj->getErrLog ();
+	$r->show();
+	
+	// Component 
+	
+	$obj = new Model('Component');	
+	$res= $obj->deleteMod();
+	
+	$res = $obj->addAttr('Type',M_REF,'/CType'); 	
+	$res = $obj->addAttr('Of',M_REF,'/Application'); 
+
+	$res = $obj->addAttr('Url',M_STRING);
+	$res = $obj->addAttr('Queue',M_STRING);
+	$res = $obj->addAttr('BatchNme',M_STRING);
+	
+	$res = $obj->setInhNme('ABB');
+
+	$res = $obj->saveMod();	
+	$r = $obj->getErrLog ();
+	$r->show();	
+	
 	// Interface
 
 	$obj = new Model('Interface');

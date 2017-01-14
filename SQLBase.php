@@ -93,8 +93,8 @@ class SQLBase extends Base
  
     public function newMod($model,$meta) 
     {
-		return $this->newModId($model,$meta,true);
-	}
+        return $this->newModId($model, $meta, true);
+    }
  
     public function newModId($model,$meta,$idF) 
     {
@@ -102,13 +102,13 @@ class SQLBase extends Base
             return false;
         }; 
         $s = "\n CREATE TABLE $model ( " ;
-		if ($idF) {
-			$s = $s. "\n id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ";
-		}
-		else {
-			$s = $s. "\n id INT(11) UNSIGNED NOT NULL PRIMARY KEY ";
-		}
-		$attrLst=[];
+        if ($idF) {
+            $s=$s. "\n id INT(11) UNSIGNED NOT NULL";
+            $s=$s." AUTO_INCREMENT PRIMARY KEY ";
+        } else {
+            $s = $s. "\n id INT(11) UNSIGNED NOT NULL PRIMARY KEY ";
+        }
+        $attrLst=[];
         $attrTyp =[];
         if (isset($meta['attr_plst'])) {
             $attrLst = $meta['attr_plst'];
@@ -130,7 +130,7 @@ class SQLBase extends Base
         if (! $this->_mysqli->query($sql)) {
             throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
         };
-        $r = parent::newModId($model, $meta,$idF);
+        $r = parent::newModId($model, $meta, $idF);
         parent::commit(); //DML always autocommited!!
         return $r;
     }   
@@ -296,12 +296,12 @@ class SQLBase extends Base
         return true;
     }
     
-	
-	public function newObj($model, $values)
-	{
-		return $this->newObjId($model, $values, 0);
-	}	
-	
+    
+    public function newObj($model, $values)
+    {
+        return $this->newObjId($model, $values, 0);
+    }   
+    
     public function newObjId($model, $values, $id)
     {
         if (! $this->existsMod($model)) {
@@ -309,15 +309,15 @@ class SQLBase extends Base
         };
         $la = '(';
         $lv = $la;
-		$c = count($values);		
-		if($id) {
-			$la='(id';
-			$lv="($id";
-			if ($c) {
-				$la=$la.',';
-				$lv=$lv.',';
-			}
-		}
+        $c = count($values);        
+        if ($id) {
+            $la='(id';
+            $lv="($id";
+            if ($c) {
+                $la=$la.',';
+                $lv=$lv.',';
+            }
+        }
         $i = 0;
         foreach ($values as $key=>$val) {
             $i++;
@@ -340,13 +340,13 @@ class SQLBase extends Base
         if (! $this->_mysqli->query($sql)) {
             throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
         };
-		if ($id) {
-			return $id;
-		}
-		$id = $this->_mysqli->insert_id;
-		if (!$id) {
-			throw new Exception(E_ERC043.':'.$id);
-		}
+        if ($id) {
+            return $id;
+        }
+        $id = $this->_mysqli->insert_id;
+        if (!$id) {
+            throw new Exception(E_ERC043.':'.$id);
+        }
         return $id;
     }
     
@@ -393,7 +393,7 @@ class SQLBase extends Base
             return false;
         }; 
         $res = [];
-        $w= $this->buildWheOp($attrList,$opList, $valList);
+        $w= $this->buildWheOp($attrList, $opList, $valList);
         $sql = "SELECT id FROM $model where ". $w;
         $this->logLine(1, $sql);
         $result = $this->_mysqli->query($sql);

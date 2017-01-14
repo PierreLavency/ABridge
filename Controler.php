@@ -119,7 +119,7 @@ class Controler
     protected function setVal($action) 
     {
         $c= $this->_obj;
-        foreach ($c->getAllAttr() as $attr) {
+        foreach ($c->getAttrList() as $attr) {
             $cond = false;
             if ($action == V_S_SLCT) {
                 $cond = $c->isSelect($attr);

@@ -18,6 +18,7 @@ $application= 'genealogy';
 
 //require_once("Example\\".'Person_META.php');
 //require_once("Example\\".'ABB_META.php');
+//require_once("Example\\".'Acode_META.php');
 
 require_once("Example\\" .$application.'_SETUP.php'); // defining config
 

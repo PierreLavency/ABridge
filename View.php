@@ -102,7 +102,7 @@ class View
                 return $dspec;
             case V_S_SLCT :
                 $res = array_diff(
-                    $this->_model->getAllAttr(),
+                    $this->_model->getAttrList(),
                     ['vnum','ctstp','utstp']
                 );
                 foreach ($res as $attr) {
@@ -115,7 +115,7 @@ class View
                 return $dspec ;   
             case V_S_CREF :
                 $res = array_diff(
-                    $this->_model->getAllAttr(),
+                    $this->_model->getAttrList(),
                     ['vnum','ctstp','utstp']
                 );
                 $ref = $this->getAttrList(V_S_REF);
@@ -123,7 +123,7 @@ class View
                 if ($key!==false) {
                     unset($ref[$key]);
                 } 
-                $res = array_diff($res, $ref);       
+                $res = array_diff($res, $ref);  
                 foreach ($res as $attr) {
                     $atyp=$this->_model->getTyp($attr);
                     if ($atyp != M_CREF and $atyp != M_TXT) {
@@ -133,7 +133,7 @@ class View
                 return $dspec ;   
             default : 
                 $dspec = array_diff(
-                    $this->_model->getAllAttr(),
+                    $this->_model->getAttrList(),
                     ['vnum','ctstp','utstp']
                 );
                 return $dspec;
@@ -349,12 +349,16 @@ class View
             if ($typ == M_REF) {
                 $rid = $this->_model->getVal($attr);
                 $rmod = $this->_model->getRefMod($attr);
-                if (
-                (!is_null($this->_cmodel)) and 
-                ($this->_cmodel->getId() == $rid) and 
-                ($this->_cmodel->getModName() == $rmod) and 
-                 $rid!= 0) {
-                    return false;
+                if (!is_null($this->_cmodel)) {
+                    $cid = $this->_cmodel->getId();
+                    $cmod = $this->_cmodel->getModName();
+                    if ($cid == $rid and $cmod == $rmod and $rid!= 0) {
+                        return false;
+                    }
+                    $cmod = $this->_cmodel->getAbstrNme();
+                    if ($cid == $rid and $cmod == $rmod and $rid!= 0) {
+                        return false;
+                    }
                 }
             }
         }
@@ -595,6 +599,9 @@ class View
         if (isset($spec['lblList'])) {
             $specma=$spec['lblList'];
             $this->setLblList($specma);
+        }
+        if ($viewState == V_S_CREF) {
+            $this->initView($model, V_S_REF);
         }
         
     }

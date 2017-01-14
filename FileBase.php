@@ -35,8 +35,8 @@ class FileBase extends Base
  
     public function newObj($model, $values) 
     {
-		return $this->newObjId($model, $values, 0);
-	}
+        return $this->newObjId($model, $values, 0);
+    }
 
     public function newObjId($model, $values, $id) 
     {
@@ -47,19 +47,19 @@ class FileBase extends Base
             return false;
         }; 
         $meta=$this->_objects[$model][0];
-		if (!$id) {
-			$id = $meta["lastId"];
-			if (!$id) {
-				throw new Exception(E_ERC043.':'.$id);
-			}
-		}
-		if (isset($this->_objects[$model][$id])) {
-			throw new Exception(E_ERC043.':'.$id);
-		}
+        if (!$id) {
+            $id = $meta["lastId"];
+            if (!$id) {
+                throw new Exception(E_ERC043.':'.$id);
+            }
+        }
+        if (isset($this->_objects[$model][$id])) {
+            throw new Exception(E_ERC043.':'.$id);
+        }
         $this->_objects[$model][$id] = $values;
-		if ($meta["lastId"]) {
-			$meta["lastId"]=$id+1;
-		}
+        if ($meta["lastId"]) {
+            $meta["lastId"]=$id+1;
+        }
         $this->_objects[$model][0]=$meta;
         $this->logLine(1, "newObj $model $id \n");
         return $id;
