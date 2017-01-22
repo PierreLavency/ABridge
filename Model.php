@@ -414,6 +414,8 @@ class Model
         $abstr = $this->getInhObj();
         return $abstr->getTyp($attr);           
     }
+
+
     /**
      * Returns the 'path' of an attribute.
      *

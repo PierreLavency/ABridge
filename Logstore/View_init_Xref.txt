@@ -168,9 +168,9 @@ FatherOf
 
 11 : 0-10
 
-<a href=/ABridge.php/dir/2?FatherOf=10 >Next</a>
-
 <a href=/ABridge.php/dir/2?FatherOf=0 >Previous</a>
+
+<a href=/ABridge.php/dir/2?FatherOf=10 >Next</a>
 
 <a href='/ABridge.php/dir/2/FatherOf' >New</a>
 
@@ -272,9 +272,9 @@ MotherOf
 
 11 : 0-10
 
-<a href=/ABridge.php/dir/2?MotherOf=10 >Next</a>
-
 <a href=/ABridge.php/dir/2?MotherOf=0 >Previous</a>
+
+<a href=/ABridge.php/dir/2?MotherOf=10 >Next</a>
 
 <a href='/ABridge.php/dir/2/MotherOf' >New</a>
 

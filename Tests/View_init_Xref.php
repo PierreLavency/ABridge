@@ -5,7 +5,7 @@ require_once('View_case_Xref.php');
 
 $logName = basename(__FILE__, ".php");
 
-$log=new unitTest($logName,1);
+$log=new unitTest($logName);
 
 /**************************************/
 

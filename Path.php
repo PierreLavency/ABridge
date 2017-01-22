@@ -4,15 +4,44 @@
 Class Path
 {
     protected $_pathStrg;
+    protected $_rpathStrg;
     protected $_pathArr;
     protected $_pathNrmArr;
     protected $_pathCreat;
     protected $_pathPrefix='/ABridge.php';
-    protected $_home='/'; // or an object path: /mod/id
+    protected $_home='/'; 
+    protected $_homeMod=null;
+    protected $_homeId=null;
+    protected $_homeIsRoot=false;
+    protected $_homeObj=null;
     protected $_objN;
-    protected $_isRoot;
+    protected $_isHome;
+    protected $_isRel=false;
     protected $_length;
-    
+    protected $_obj=null;
+
+    public function setHome($path) 
+    {
+        $this->_home = $path; 
+        $this->initHome();
+        return true;        
+    }
+
+    private function initHome() 
+    {
+        $home = $this->_home; 
+        if ($home == '/') {
+            $this->_homeIsRoot = true;
+            return true;
+        }
+        $apath = explode('/', $home);
+        $this->_homeIsRoot = false;
+        $this->_homeMod = $apath[1];
+        $this->_homeId = (int) $apath[2];
+        $this->_homeObj = new Model($this->_homeMod, $this->_homeId);
+        return true;
+    }
+  
     public function __construct() 
     {
         $a = func_get_args();
@@ -21,7 +50,7 @@ Class Path
         call_user_func_array(array($this, $f), $a);
         }
     }
-    
+ 
     protected function construct0() 
     {
         if (isset($_SERVER['PATH_INFO'])) { 
@@ -33,6 +62,7 @@ Class Path
     
     protected function construct1($pathStrg)
     {
+        $this->initHome();
         $pathArr = explode('/', $pathStrg);
         $this->_pathStrg=$pathStrg;
         if ($pathArr[0] != "") { // not starting with /  ?
@@ -40,10 +70,10 @@ Class Path
         }
         array_shift($pathArr);
         if ($pathArr[0] == "") { // '/' alones ?
-            $this->_isRoot=true;
+            $this->_isHome=true;
             return;
         }
-        $this->_isRoot=false;
+        $this->_isHome=false;
         $c = count($pathArr);
         $r = $c%2;
         $obj = null;
@@ -70,26 +100,80 @@ Class Path
             $this->_pathArr[$c-1]=$pathArr[$c-1];
         }
     }
-    
+ 
+    private function arrToPath ($parr)
+    {
+        $path = '/'.implode('/', $parr);
+        return $path;
+    }
+
+    private function homeIsRoot() 
+    {
+        return $this->_homeIsRoot;
+    }
+
+    private function homeObj() 
+    {
+        return $this->_homeObj;
+    }
+
+    private function pathObj() 
+    {
+        return $this->_obj;
+    }       
+
+    public function homeMod() 
+    {
+        return $this->_homeMod;
+    }
+
+    private function homeId() 
+    {
+        return $this->_homeId;
+    }   
+
+    public  function getHomePath() 
+    {
+        $path=$this->prfxPath('/');
+        return $path;
+    }   
+     
+    public function prfxPath($path)
+    {
+        return $this->_pathPrefix.$path;
+    }
+
+    public function getPath() 
+    {
+        $path = $this->prfxPath($this->_pathStrg);
+        return $path;
+    }
+        
     public function isCreatPath() 
     {
-        if ($this->_isRoot) {
+        if ($this->_isHome) {
             return false;
         }
         if ($this->_pathCreat) {
             return true;
         }
         return false; 
-    }
-    
-    public function getDefaultPath() 
+    }   
+ 
+    public function isObjPath() 
     {
-        return $this->_home; 
-    }
-    
+        if ($this->_isHome) {
+            return false;
+        }
+        if ($this->_pathCreat) {
+            return false;
+        }
+        return true; 
+    }   
+
     public function pushId($id) 
     {
-        if ($this->_isRoot) {
+        if ($this->_isHome) {
             throw new Exception(E_ERC038);
         }
         if ($this->isCreatPath()) {
@@ -102,7 +186,7 @@ Class Path
     
     public function popId() 
     {
-        if ($this->_isRoot) {
+        if ($this->_isHome) {
             throw new Exception(E_ERC038);
         }
         if ($this->isCreatPath()) {
@@ -110,7 +194,7 @@ Class Path
         }
         $res = $this->_pathArr;
         array_pop($res);
-        $path = '/'.implode('/', $res);
+        $path = $this->arrToPath($res);
         $this->construct1($path);
         return true;
     }
@@ -121,7 +205,7 @@ Class Path
             throw new Exception(E_ERC035);
         }
         $path = $this->_pathStrg.'/'.$mod.'/'.$id;
-        if ($this->_isRoot) {
+        if ($this->_isHome) {
             $path = '/'.$mod.'/'.$id;
         }
         $this->construct1($path);
@@ -130,72 +214,24 @@ Class Path
     
     public function pop()
     {
-        if ($this->_isRoot) {
+        if ($this->_isHome) {
             return true;
         }
         if ($this->isCreatPath()) {
             throw new Exception(E_ERC035);
         }
         if ($this->_length <= 2 ) {
-            $this->construct1($this->_home);
+            $this->construct1('/');
             return true;
         }
         $res = $this->_pathArr;
         array_pop($res);
         array_pop($res);
-        $path = '/'.implode('/', $res);
+        $path = $this->arrToPath($res);
         $this->construct1($path);
         return true;
     }
-    
-    public function rootPath()
-    {
-        return $this->_pathPrefix;
-    }
-    
-    public function prfxPath($path)
-    {
-        return $this->_pathPrefix.$path;
-    }
-    
-    public function getObj()
-    {
-        // dependency on model !!
-        $obj = null;
-        if ($this->_isRoot) {
-            return $obj;
-        }
-        $this->pathNrmArr=[];
-        for ($i=0; $i<$this->_objN; $i=$i+2) {
-            $mod = $this->_pathArr[$i];
-            $id  = $this->_pathArr[$i+1];
-            if ($i == 0) {
-                $obj = new Model($mod, $id);
-            } else {
-                $obj = $obj->getCref($mod, $id);
-            }
-            $this->_pathNrmArr[]=$obj->getModName();
-            $this->_pathNrmArr[]=$obj->getId();
-        }
-        if ($this->_pathCreat) {
-            $c = $this->_length;
-            $mod =  $this->_pathArr[$c-1];
-            if ($c == 1) {
-                $obj = new Model($mod);
-            } else {
-                $obj = $obj->newCref($mod);
-            }
-            $this->_pathNrmArr[]=$obj->getModName();
-        }
-        return $obj;
-    }
-    
-    public function getPath() 
-    {
-        $path = $this->prfxPath($this->_pathStrg);
-        return $path;
-    }
-    
+ 
     public function getAction() 
     {
         $method = $_SERVER['REQUEST_METHOD'];  
@@ -214,16 +250,18 @@ Class Path
         }
         return $action; 
     }
-    
-    
+        
     public function getActionPath($action) 
     {
-        if ($this->_isRoot) {
-            throw new Exception(E_ERC038);
+        if ($this->_isHome) {
+            return null;
         }
         if ($action == V_S_UPDT or $action == V_S_DELT) {
             if ($this->isCreatPath()) {
                 throw new Exception(E_ERC037.':'.$action);
+            }
+            if (!$this->linkToHome($this->pathObj())) {
+                return null;
             }
             $path = $this->getPath();
             $path = "'".$path.'?View='.$action."'";
@@ -234,19 +272,21 @@ Class Path
             return $path;
         }
         $path = $this->getCreaPath();
+        if (! $this->mlinkToHome($this->pathObj())) {
+            return null;
+        }
         if ($action ==V_S_CREA) {
             return $path;
         }
         if ($action==V_S_SLCT or $action ==V_B_RFCH) {
              $path = "'".$path.'?View='.V_S_SLCT."'";
              return $path;
-        }
-        
+        }       
     }
     
     public function getObjPath() 
     {
-        if ($this->_isRoot) {
+        if ($this->_isHome) {
             throw new Exception(E_ERC038);
         }       
         if (! $this->isCreatPath()) {
@@ -256,15 +296,16 @@ Class Path
         $res = $this->_pathArr;
         array_pop($res);
         if (count($res)==0) {
-            return $this->prfxPath($this->_home);
+            return $this->prfxPath('/');
         }
-        $path = $this->prfxPath('/'.implode('/', $res));
+        $path = $this->arrToPath($res); 
+        $path = $this->prfxPath($path);     
         return $path;
     }
     
     public function getCreaPath() 
     {
-        if ($this->_isRoot) {
+        if ($this->_isHome) {
             throw new Exception(E_ERC038);
         }
         if ($this->isCreatPath()) {
@@ -272,39 +313,140 @@ Class Path
         }
         $res = $this->_pathArr;
         array_pop($res);
-        if (count($res)==0) {
-            throw new Exception(E_ERC035);
-        }
-        $path = $this->prfxPath('/'.implode('/', $res));
+        $path = $this->arrToPath($res); 
+        $path = $this->prfxPath($path);
         return $path;
     }
     
     public function getClassPath($mod,$action) 
     {
+        
+        $x = new Model($mod);
+        $res = $this->mlinkToHome($x);
+        if (!$res) {
+            return null;
+        }
         $path="'".$this->prfxPath('/'.$mod).'?View='.$action."'";
         return $path;
     }
-
-    public function getHomePath() 
-    {
-        $path=$this->prfxPath($this->_home);
-        return $path;
-    }
-    
+   
     public function getCrefPath($attr,$action)
     {
-        // $action = V_S_CREA
+        // $action = V_S_CREA   
+        $obj = $this->pathObj();
+        if (! $this->linkToHome($this->pathObj())) {
+            return null;
+        }   
         $path = $this->getPath();
         $path= "'".$path.'/'.$attr."'";
         return $path;
     }
-    
-    public function getRefPath($mod,$id)
+     
+    public function getObj()
     {
-        $path=$this->prfxPath('/'.$mod.'/'.$id);    
-        if ($this->_isRoot) {
-            return $path;
+        // dependency on model !!
+        $obj = null;
+        $fobj = null;
+ 
+        if ($this->_isHome) {
+            return $this->homeObj();
         }
+
+        $this->pathNrmArr=[];
+        for ($i=0; $i<$this->_objN; $i=$i+2) {
+            $mod = $this->_pathArr[$i];
+            $id  = $this->_pathArr[$i+1];
+            if (is_null($obj)) {
+                $obj = new Model($mod, $id);
+                $fobj = $obj;
+            } else {
+                $obj = $obj->getCref($mod, $id);
+            }
+            $this->_pathNrmArr[]=$obj->getModName();
+            $this->_pathNrmArr[]=$obj->getId();
+        }
+        if ($this->isCreatPath()) {
+            $c = $this->_length;
+            $mod =  $this->_pathArr[$c-1];
+            if ($c == 1) {
+                $obj = new Model($mod);
+            } else {
+                $obj = $obj->newCref($mod);
+            }
+            $this->_pathNrmArr[]=$obj->getModName();
+        }
+
+        if ($this->homeIsRoot()) {
+            $this->_obj =$obj;
+            return $obj;
+        }
+
+        if (! $this->linkToHome($fobj) and $this->isObjPath()) {
+            return null;
+        }
+        
+        $attr = $this->homeMod();
+
+        if ($obj->existsAttr($attr)) {
+            if ($obj->isProtected($attr)) {
+                $this->_obj =$obj;
+                return $obj;
+            }
+            if ($this->isCreatPath()) {
+                $obj->setVal($attr, $this->homeId());
+            }
+            $obj->protect($attr);
+        }
+        $this->_obj =$obj;
+        return $obj;
+    }
+
+    private function linkToHome($obj) 
+    {
+        if ($this->homeisRoot()) {
+            return true;
+        }
+        if (is_null($obj)) {
+            return false;
+        }
+        $attr = $this->homeMod();
+        if ($obj->existsAttr($attr)) {
+            $id = $obj->getVal($attr);
+            if ($id == $this->homeId()) {
+                return true;
+            }
+        }
+        return false; 
+    }
+
+    private function mlinkToHome($obj) 
+    {
+        if ($this->homeisRoot()) {
+            return true;
+        }
+        if (is_null($obj)) {
+            return false;
+        }
+        $attr = $this->homeMod();
+        if ($obj->existsAttr($attr)) {
+            return true;
+        }
+        return false; 
+    }
+
+    
+    public function getRefPath($obj)
+    {
+        if (is_null($obj)) {
+            return null;
+        }
+        $mod= $obj->getModName();
+        $id = $obj->getId();
+
+        $path=$this->prfxPath('/'.$mod.'/'.$id);    
+        if ($this->_isHome) {
+            return $path;
+        } 
         if (is_null($this->_pathNrmArr)) {
             $this->getObj(); // should be error
         }       
@@ -323,9 +465,29 @@ Class Path
             }
         }
         if ($found) {
-            $path=$this->prfxPath('/'.implode('/', $res));
+            $path = $this->arrToPath($res);
+            $path=$this->prfxPath($path);
             return $path;
         }
-        return $path;
+
+        if ($this->homeIsRoot()) {
+            return $path;
+        }
+
+        $hmod = $this->homeMod();
+        $hid = $this->homeId();
+        
+        if ($obj->existsAttr($hmod) and $obj->getTyp($hmod) == M_REF) {
+            $oid = $obj->getVal($hmod);
+            $omod =  $obj->getRefMod($hmod);
+            if ($oid==$hid and $hmod == $omod) {
+                $path = '/'.$mod.'/'.$id;
+                $path=$this->prfxPath($path);
+                return $path;
+            }
+        }   
+        
+        return null; 
+
     }
 }

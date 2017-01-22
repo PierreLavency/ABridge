@@ -45,3 +45,5 @@ define('E_ERC042', "ERC042");  // set not allowed on evalP attribute
 define('E_ERC043', "ERC043");  // invalid id
 define('E_ERC044', "ERC044");  // cannot instanciate abstract class
 define('E_ERC045', "ERC045");  // cannot set attr on abstract class 
+define('E_ERC046', "ERC046");  // type chnage not supported
+define('E_ERC047', "ERC047");  // not supported at inherited level

@@ -13,47 +13,17 @@ require_once("ViewConstant.php");
 		'Prof'		 => ['fileBase','genealogy',],
 		'Charge'	 => ['fileBase','genealogy',],
 		'Person'	 => ['dataBase','genealogy',],
-		'ABB'		 => ['dataBase','abb',],
-		'Application'=> ['dataBase','abb',],
-		'Component'	 => ['dataBase','abb',],
-		'Interface'	 => ['dataBase','abb',],
-		'Exchange'	 => ['dataBase','abb',],
-		'CType'	 	 => ['dataBase','abb',],
-		'ACode'	 	 => ['dataBase','abb',],
+		'User'	 	 => ['dataBase','genealogy',],
 		],
 	'Home' =>
-		['Student','Cours','Inscription','Prof','Charge','Person','Code','CodeValue','Application','Component','Interface','Exchange','Home'],
+		['User','Student','Cours','Inscription','Prof','Charge','Person','Code','CodeValue','Home'],
+		
 	'Views' => [
-		'Application'=> [
+		'User' =>[
 			'attrList' => [
-				V_S_REF		=> ['Name'],
-			]
-		],			
-		'Component'=> [
-			'attrList' => [
-				V_S_REF		=> ['Name'],
+				V_S_REF		=> ['SurName','Name'],
+				]
 			],
-			'attrHtml' => [
-				V_S_CREA => ['Type'=>H_T_SELECT],
-				V_S_UPDT => ['Type'=>H_T_SELECT],
-				V_S_SLCT => ['Type'=>H_T_SELECT],
-			],
-		],
-		'Interface'=> [
-			'attrList' => [
-				V_S_REF		=> ['Name'],
-			]
-		],
-		'Exchange'=> [
-			'attrList' => [
-//				V_S_REF		=> ['Name'],
-			]
-		],
-		'CType'=> [
-			'attrList' => [
-				V_S_REF		=> ['Value'],
-			]
-		],	
 		'Person' => [
 			'attrHtml' => [
 				V_S_CREA => ['Sexe'=>H_T_RADIO],

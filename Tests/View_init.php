@@ -25,7 +25,7 @@ $log->logLine ($res);
 
 $log->saveTest();
 
-//$log->showTest();
+$log->showTest();
 
 
 ?>

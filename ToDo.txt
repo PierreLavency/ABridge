@@ -11,19 +11,22 @@
 - multi language /2
 - handle error messages/2
 
+- set up rest services
+
+- clean up genealogy / student 
 - beef up test apps with relationships tables 
-	- mega application / until inheritance //  started
 	- union Ckey + multi surname + frere et soeur
 	- code postal / 3
 	- album / 3
 
 - split alter drop and add in Base.
+- Propagate changes from abstract classe to concrete ?
 
-- Porpagate changes from abstract classe to concrete ?
+- implement Home
 - Authenthication
 - Authorisation
-- Performance
 - Release/installation
+- Performance
 
 - set up bug tracking
 - set up a git server
@@ -31,6 +34,9 @@
 - back up db and system !!!
 
 CMD
+/* replace tab
+phpcs --tab-width=4 .
+
 /*check code
 phpcs --standard=Zend --report=summary -l .
 /*install phpdocumentor
@@ -40,6 +46,9 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- some progress on authorisation // 3 days !! 
+- data migration appl/com/interface/exchange // 2 days 
+- mega application // 4 hours
 - Implement inheritance // 4 days 
 - like where clause. // 2 days with inproved coverage
 - set up unit test for select  // 2 hours 

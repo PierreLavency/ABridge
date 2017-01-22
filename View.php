@@ -247,7 +247,8 @@ class View
         $this->_attrHtml[$viewState]= $dspec;
         return true;
     }
-    
+ 
+
     public function getAttrHtml($attr,$viewState) 
     {
         if (isset($this->_attrHtml[$viewState])) {
@@ -255,6 +256,15 @@ class View
             if (isset($list[$attr])) {
                 return $list[$attr];
             }
+        }
+        return null;
+    }
+    
+    public function getUpAttrHtml($attr,$viewState) 
+    {
+        $res = $this->getAttrHtml($attr, $viewState);
+        if (! is_null($res)) { 
+            return $res;
         }
         $typ = $this->_model->getTyp($attr);
         $res=H_T_TEXT;
@@ -318,7 +328,7 @@ class View
             if ($default) {
                 $res[H_DEFAULT]=$default;
             }
-            $htyp = $this->getAttrHtml($attr, $viewState);
+            $htyp = $this->getUpAttrHtml($attr, $viewState);
             $res[H_TYPE]=$htyp;
             if ($htyp == H_T_SELECT or $htyp == H_T_RADIO) {
                 $vals=$this->_model->getValues($attr);
@@ -405,12 +415,21 @@ class View
                 if (is_null($m)) {
                     return [H_TYPE =>H_T_PLAIN, H_DEFAULT=>""];
                 }
-                $res[H_TYPE]=H_T_LINK;
+                $dtyp = $this->getAttrHtml($attr, $viewState);
+                if (is_null($dtyp)) {
+                    $dtyp = H_T_LINK;
+                }
+                $res[H_TYPE]= $dtyp;
                 $v = new View($m);
                 $res[H_LABEL]=$v->show($this->_path, V_S_REF, false);
+                $res[H_DEFAULT]=$res[H_LABEL];
                 $mod= $m->getModName();
                 $id = $m->getId();
-                $res[H_NAME]=$this->_path->getRefPath($mod, $id); 
+                $refpath = $this->_path->getRefPath($m);
+                if (is_null($refpath)) {
+                    $res[H_TYPE]= H_T_PLAIN;
+                }
+                $res[H_NAME]=$refpath; 
                 return $res;        
             }
             if ($typ==M_CODE and (!is_null($x))) {
@@ -444,6 +463,9 @@ class View
             $res[H_TYPE]=H_T_LINK;
             $res[H_LABEL]=$this->getLbl($nav);
             $path = $this->_path->getActionPath($nav);
+            if (is_null($path)) {
+                return false;
+            }
             $res[H_NAME]=$path; 
         }
         return $res;
@@ -460,6 +482,9 @@ class View
              $path = "'".$this->_path->getHomePath()."'";
         } else {
              $path = $this->_path->getClassPath($mod, $nav);
+             if (is_null($path)) {
+                 return false;
+             }
         } 
         $res[H_NAME]=$path; 
         return $res;
@@ -474,6 +499,9 @@ class View
         if ($nav==V_B_NEW) {
             $result[H_TYPE]=H_T_LINK;
             $path=$this->_path->getCrefPath($attr, V_S_CREA);
+            if (is_null($path)) {
+                return false;
+            }
             $result[H_NAME]=$path;
         } else {
             $pos = $spec[V_ID];
@@ -681,7 +709,6 @@ class View
         return $r;
     }
 
-    
     protected function getSlice($attr,$list,$viewL) 
     {
         $view[]=$viewL[0];
@@ -720,9 +747,9 @@ class View
                 $npos=$pos;
             }
             $view[]=
-            [V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_NXT,V_ID=>$npos];
-            $view[]=
             [V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_PRV,V_ID=>-$pos];
+            $view[]=
+            [V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_NXT,V_ID=>$npos];
         }
         $first = true;
         foreach ($viewL as $elm) {
