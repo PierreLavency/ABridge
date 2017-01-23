@@ -1,23 +1,16 @@
 <?php
 	
-require_once("Model.php"); 
-require_once("Handler.php"); 
+require_once('controler.php');
+require_once("ABB_SETUP.php");
 
 // when running this data will be lost !!
 
-$dbn='abbtest';
+	$ctrl = new Controler($config);
+	$ctrl->beginTrans();
 
-	$db = getBaseHandler('dataBase',$dbn);
-	initStateHandler('ABB', 'dataBase',$dbn);
-	initStateHandler('Application', 'dataBase',$dbn);
-	initStateHandler('Component', 'dataBase',$dbn);
-	initStateHandler('Interface', 'dataBase',$dbn);
-	initStateHandler('Exchange', 'dataBase',$dbn);
-	
-	$db->beginTrans();
 	
 	// Architecture building block 
-/*	
+	
 	$obj = new Model('ABB');
 	$res= $obj->deleteMod();
 
@@ -34,10 +27,10 @@ $dbn='abbtest';
 	$res = $obj->saveMod();	
 	$r = $obj->getErrLog ();
 	$r->show();
-*/
+
 	
 	// Application
-/*	
+
 	$obj = new Model('Application');
 	$res= $obj->deleteMod();
 
@@ -54,7 +47,7 @@ $dbn='abbtest';
 	$res = $obj->saveMod();			
 	$r = $obj->getErrLog ();
 	$r->show();
-*/	
+	
 	// Component 
 	
 	$obj = new Model('Component');	
@@ -76,7 +69,7 @@ $dbn='abbtest';
 	$r->show();	
 	
 	// Interface
-/*
+
 	$obj = new Model('Interface');
 	$res= $obj->deleteMod();
 
@@ -108,6 +101,6 @@ $dbn='abbtest';
 	$res = $obj->saveMod();	
 	$r = $obj->getErrLog ();
 	$r->show();	
-*/	
-	$db->commit();
+	
+	$ctrl->commit();
 	

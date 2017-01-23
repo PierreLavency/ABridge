@@ -1,35 +1,26 @@
 <?php
-require_once("Model.php"); 
-require_once("Handler.php"); 
+require_once('controler.php');
 require_once("genealogy_SETUP.php");
 
-$bb = getStateHandler ($CodeVal);
-$xb=$bb->getBase() ;
 
-$xb->beginTrans();
-$sextype1 = new Model($CodeVal);
-$res = $sextype1->setVal('Name','Male');
-$res = $sextype1->setVal('ValueOf',1);
-$s1 = $sextype1->save();
+	$ctrl = new Controler($config);
+	$ctrl->beginTrans();
 
-$sextype1 = new Model($CodeVal);
-$res = $sextype1->setVal('Name','Female');
-$res = $sextype1->setVal('ValueOf',1);
-$s2 = $sextype1->save();
-
-$res = $xb->commit();
+	$Code = 'Code';	
+	$CodeVal= 'CodeValue';
+	$ModN = 'Student';
 	
-for($i=1;$i<3;$i++)
-{
-	if ($i==1) {
-		$ModN=$Person;
-		$xb=$db;
-	}
-	if ($i==2) {
-		$xb=$fb;
-		$ModN=$Student;
-	}
-	$xb->beginTrans();
+	$sextype1 = new Model($CodeVal);
+	$res = $sextype1->setVal('Name','Male');
+	$res = $sextype1->setVal('ValueOf',1);
+	$s1 = $sextype1->save();
+
+	$sextype1 = new Model($CodeVal);
+	$res = $sextype1->setVal('Name','Female');
+	$res = $sextype1->setVal('ValueOf',1);
+	$s2 = $sextype1->save();
+	
+
 	// Do 
 	$p7 = new Model($ModN);
 	$res=$p7->setVal('Name','Arnould');
@@ -96,8 +87,4 @@ for($i=1;$i<3;$i++)
 	$res=$p7->setVal('Father',$id3);	
 	$id7 = $p7->save();	
 
-	// commit 
-$res = $xb->commit();
-}
-
-?>
+	$ctrl->commit();	

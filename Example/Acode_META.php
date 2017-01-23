@@ -1,24 +1,13 @@
 <?php
 	
-require_once("Model.php"); 
-require_once("Handler.php"); 
+require_once('controler.php');
+require_once("ABB_SETUP.php");
 
 // when running this data will be lost !!
 
-$dbn ='abbtest';
-$dbt ='dataBase';
-	$db = getBaseHandler($dbt,$dbn);
-	initStateHandler('ACode', $dbt,$dbn);
-	initStateHandler('CType', $dbt,$dbn);
-	initStateHandler('SLevel', $dbt,$dbn);
-	initStateHandler('AStyle', $dbt,$dbn);
-	initStateHandler('SControl', $dbt,$dbn);
-	initStateHandler('IType', $dbt,$dbn);
-	initStateHandler('IUse', $dbt,$dbn);	
-	
-	
-	$db->beginTrans();
-	
+	$ctrl = new Controler($config);
+	$ctrl->beginTrans();
+		
 	// Abstract 
 	
 	$obj = new Model('ACode');
@@ -178,5 +167,5 @@ $dbt ='dataBase';
 	$obj->save();
 
 	
-	$db->commit();
+	$ctrl->commit();
 	

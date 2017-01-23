@@ -4,16 +4,12 @@ require_once("Model.php");
 require_once("Handler.php"); 
 require_once("genealogy_SETUP.php");
 
+
 // when running this data will be lost !!
 
-	$db = getBaseHandler('fileBase','genealogy');
-	initStateHandler('Inscription', 'fileBase','genealogy');
-	initStateHandler('Student', 'fileBase','genealogy');
-	initStateHandler('Cours', 'fileBase','genealogy');
-	initStateHandler('Prof', 'fileBase','genealogy');
-	initStateHandler('Charge', 'fileBase','genealogy');
+	$ctrl = new Controler($config);
+	$ctrl->beginTrans();
 
-	$db->beginTrans();
 /*	
 	// Inscription - add combined key 
 	
@@ -72,7 +68,7 @@ require_once("genealogy_SETUP.php");
 	$r = $x-> getErrLog ();
 	$r->show();
 */	
-	$db->commit();
+	$ctrl->commit();
 	
 
 ?>	

@@ -2,16 +2,14 @@
 	
 require_once("Model.php"); 
 require_once("Handler.php"); 
+require_once("genealogy_SETUP.php");
+
 
 // when running this data will be lost !!
 
-	$db = getBaseHandler('dataBase','genealogy');
-	initStateHandler('User', 'dataBase','genealogy');
-
+	$ctrl = new Controler($config);
+	$ctrl->beginTrans();
 	
-	$db->beginTrans();
-	
-	// Abstract 
 	
 	$obj = new Model('User');
 	$res= $obj->deleteMod();
@@ -24,5 +22,5 @@ require_once("Handler.php");
 	$r->show();
 
 
-	$db->commit();
+	$ctrl->commit();
 	

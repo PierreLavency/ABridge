@@ -13,7 +13,7 @@
 
 - set up rest services
 
-- clean up genealogy / student 
+
 - beef up test apps with relationships tables 
 	- union Ckey + multi surname + frere et soeur
 	- code postal / 3
@@ -22,8 +22,7 @@
 - split alter drop and add in Base.
 - Propagate changes from abstract classe to concrete ?
 
-- implement Home
-- Authenthication
+- Authenthication should allow access not linked to home
 - Authorisation
 - Release/installation
 - Performance
@@ -46,7 +45,8 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
-- some progress on authorisation // 3 days !! 
+- clean up genealogy / kept genealogy name !/ 1 day
+- some progress on authorisation and implement home // 3 days !! 
 - data migration appl/com/interface/exchange // 2 days 
 - mega application // 4 hours
 - Implement inheritance // 4 days 

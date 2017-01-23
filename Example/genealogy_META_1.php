@@ -6,11 +6,19 @@ require_once("genealogy_SETUP.php");
 
 // when running this data will be lost !!
 
-	$fb->beginTrans();
-	$db->beginTrans();
+	$ctrl = new Controler($config);
+	$ctrl->beginTrans();
+
+	$Code = 'Code';	
+	$CodeVal= 'CodeValue';
+	$Student = 'Student';
+	$Cours= 'Cours';
+	$Inscription='Inscription';
+
 	
 	// Cours 
 
+	
 	$cours = new Model($Cours);
 	$res= $cours->deleteMod();
 
@@ -46,8 +54,6 @@ require_once("genealogy_SETUP.php");
 	$res = $cours->addAttr('SuivitPar',M_CREF,$path);
 	$res = $cours->saveMod();
 	
-	$fb->commit();	
-	$db->commit();
-	
+	$ctrl->commit();	
 
-?>	
+	

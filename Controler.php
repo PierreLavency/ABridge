@@ -35,7 +35,7 @@ class Controler
         $this->_bases = $bases;
     }
 
-    protected function beginTrans() 
+    function beginTrans() 
     {
         foreach ($this->_bases as $base) {
             $base-> beginTrans();
@@ -86,7 +86,7 @@ class Controler
         }
     }
     
-    protected function commit()
+    function commit()
     {
         $res = true;
         foreach ($this->_bases as $base) {
@@ -106,7 +106,7 @@ class Controler
         return $res;
     }
     
-    protected function rollback()
+    function rollback()
     {
         $res = true;
         foreach ($this->_bases as $base) {

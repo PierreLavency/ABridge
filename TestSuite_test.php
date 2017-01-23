@@ -5,16 +5,17 @@
 //require_once("Tests\View_init.php");     
 //require_once("Tests\View_init_Xref.php");    
 
-$application= 'genealogy';
+$application= 'GEN';
 
 //require_once("Example\\".'ABB_META.php');
 //require_once("Example\\".'Acode_META.php');
 //require_once("Example\\".'User_META.php');
 
-//require_once("Example\\" .$application.'_META_7.php');
+//require_once("Example\\" .$application.'_META.php');
+//require_once("Example\\" .$application.'_LOAD.php');
+
 
 require_once("Example\\" .$application.'_SETUP.php'); // defining config
-
 require_once('controler.php');
 
 $ctrl = new Controler($config);
