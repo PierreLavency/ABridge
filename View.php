@@ -384,13 +384,13 @@ class View
             }
             if ($typ==M_CREF and $attr != V_S_SLCT ) {     
                 $id=$spec[V_ID];
-                $m = $this->_model->getCref($attr, $id);
+                $this->_path->push($attr, $id);
+                $m=$this->_path->getObj();
                 $v = new View($m);
                 $m = $this->_cmodel;
                 if (is_null($m)) {
                     $m = $this->_model;
                 }
-                $this->_path->push($attr, $id);
                 $v->_path=$this->_path;
                 $res = $v->buildCView($m, V_S_CREF);
                 $this->_path->pop();
@@ -398,13 +398,13 @@ class View
             }
             if ($typ==M_CREF and $attr == V_S_SLCT ) {     
                 $id=$spec[V_ID];
-                $m = new Model($this->_model->getModName(), $id);
+                $this->_path->pushid($id);
+                $m=$this->_path->getObj();              
                 $v = new View($m);
                 $m = $this->_cmodel;
                 if (is_null($m)) {
                     $m = $this->_model;
                 }
-                $this->_path->pushid($id);
                 $v->_path=$this->_path;
                 $res = $v->buildCView($m, V_S_CREF);
                 $this->_path->popid();
@@ -415,6 +415,7 @@ class View
                 if (is_null($m)) {
                     return [H_TYPE =>H_T_PLAIN, H_DEFAULT=>""];
                 }
+                $refpath = $this->_path->getRefPath($m);                
                 $dtyp = $this->getAttrHtml($attr, $viewState);
                 if (is_null($dtyp)) {
                     $dtyp = H_T_LINK;
@@ -423,9 +424,6 @@ class View
                 $v = new View($m);
                 $res[H_LABEL]=$v->show($this->_path, V_S_REF, false);
                 $res[H_DEFAULT]=$res[H_LABEL];
-                $mod= $m->getModName();
-                $id = $m->getId();
-                $refpath = $this->_path->getRefPath($m);
                 if (is_null($refpath)) {
                     $res[H_TYPE]= H_T_PLAIN;
                 }

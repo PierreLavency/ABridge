@@ -177,7 +177,7 @@ class Path_Test extends PHPUnit_Framework_TestCase
 		$this->assertTrue($p1->pushId('1'));		
 		$this->assertEquals($p2->getPath(),$p1->getPath());
 
-		$this->assertTrue($p1->push($this->CName,'1'));		
+		$this->assertTrue($p1->push('CRef','2'));		
 		$this->assertTrue($p1->pop());		
 		$this->assertEquals($p2->getPath(),$p1->getPath());
 		
@@ -313,8 +313,8 @@ class Path_Test extends PHPUnit_Framework_TestCase
 		try {$x=$p->getactionPath(V_S_DELT);} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC038);
 		
-		$this->assertTrue($p->push('X',1));
-		$this->assertEquals($p->prfxPath('/X/1'),$p->getPath());
+//		$this->assertTrue($p->push('X',1));
+//		$this->assertEquals($p->prfxPath('/X/1'),$p->getPath());
 				
 	}
 	

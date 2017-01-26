@@ -214,7 +214,7 @@ class Controler
         }
         if ($actionExec) {
             if ($action == V_S_DELT) {
-                $path->pop();
+                $path->popDel();
                 $this->_obj= $path->getObj();
             }
             if ($action == V_S_CREA) {

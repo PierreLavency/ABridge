@@ -11,8 +11,9 @@
 - multi language /2
 - handle error messages/2
 
-- set up rest services
+- delete all in class 
 
+- set up rest services
 
 - beef up test apps with relationships tables 
 	- union Ckey + multi surname + frere et soeur
@@ -22,8 +23,8 @@
 - split alter drop and add in Base.
 - Propagate changes from abstract classe to concrete ?
 
-- Authenthication should allow access not linked to home
-- Authorisation
+- Authenthication 
+- Authorisation should allow access not linked to home
 - Release/installation
 - Performance
 
