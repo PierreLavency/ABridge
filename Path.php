@@ -204,7 +204,7 @@ Class Path
         $path = $this->arrToPath($res);
         $opath = array_pop($this->_pathA);
         $this->_obj=array_pop($this->_objA);        
-        $this->initPath($path);
+        $this->initPath($opath);
         return true;
     }
     
@@ -243,7 +243,7 @@ Class Path
         $path = $this->arrToPath($res);
         $opath = array_pop($this->_pathA);
         $this->_obj=array_pop($this->_objA);
-        $this->initPath($path);
+        $this->initPath($opath);
         return true;
     }
 

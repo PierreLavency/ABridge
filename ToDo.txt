@@ -1,19 +1,23 @@
 - improve view test coverage - need to separate view show and build // some progress
 - set up unit test for unittest
 
+- clean up view constant.
 - review split between View and Path // partially done / again 
 - order in list query and attr
 - selection for Ref.
-- multiple views /2
+- multiple views /1
 - view sort out persistence/2
 - push back blob text/2
-- pictures/2
+- pictures/1
 - multi language /2
 - handle error messages/2
+- review default get on crea = select 
 
-- delete all in class 
+- delete all object in class 
 
 - set up rest services
+- develop Jason view
+- include svg bit in view.
 
 - beef up test apps with relationships tables 
 	- union Ckey + multi surname + frere et soeur
@@ -21,6 +25,8 @@
 	- album / 3
 
 - split alter drop and add in Base.
+- implement foreign keys
+- changed DB model indenently of class model.
 - Propagate changes from abstract classe to concrete ?
 
 - Authenthication 
@@ -46,6 +52,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- redesign Handle/request/Home 5 days
 - clean up genealogy / kept genealogy name !/ 1 day
 - some progress on authorisation and implement home // 3 days !! 
 - data migration appl/com/interface/exchange // 2 days 

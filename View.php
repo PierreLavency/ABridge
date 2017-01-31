@@ -355,20 +355,18 @@ class View
             }
             return $res ;
         }
-        if ($viewState == V_S_CREF) {
-            if ($typ == M_REF) {
-                $rid = $this->_model->getVal($attr);
-                $rmod = $this->_model->getRefMod($attr);
-                if (!is_null($this->_cmodel)) {
-                    $cid = $this->_cmodel->getId();
-                    $cmod = $this->_cmodel->getModName();
-                    if ($cid == $rid and $cmod == $rmod and $rid!= 0) {
-                        return false;
-                    }
-                    $cmod = $this->_cmodel->getAbstrNme();
-                    if ($cid == $rid and $cmod == $rmod and $rid!= 0) {
-                        return false;
-                    }
+        if ($viewState == V_S_CREF and $typ == M_REF) {
+            $rid = $this->_model->getVal($attr);
+            $rmod = $this->_model->getRefMod($attr);
+            if (!is_null($this->_cmodel)) {
+                $cid = $this->_cmodel->getId();
+                $cmod = $this->_cmodel->getModName();
+                if ($cid == $rid and $cmod == $rmod and $rid!= 0) {
+                    return false;
+                }
+                $cmod = $this->_cmodel->getAbstrNme();
+                if ($cid == $rid and $cmod == $rmod and $rid!= 0) {
+                    return false;
                 }
             }
         }
