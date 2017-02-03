@@ -115,12 +115,12 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 			$res = $r->getCrefPath('X',V_S_CREA);
 			$this->assertEquals($res,$r->prfxPath('/X/1/X/1/X?View='.V_S_CREA));
 			
-			$p = $r->pop();
+			$p = $r->popObj();
 			$this->assertEquals('/X/1',$p);
 			
 			$r=new Request('/X/1',V_S_READ);
 			$this->assertnotNull($r);
-			$p = $r->pop();
+			$p = $r->popObj();
 			$this->assertEquals('/',$p);
 			
 			

@@ -280,7 +280,7 @@ Class Path
                 return $action; 
             }
             if ($this->isCreatPath()) {
-                $action = V_S_CREA;
+                $action = V_S_SLCT;
             }
         }
         if ($method =='POST') {
@@ -314,7 +314,7 @@ Class Path
             return null;
         }
         if ($action ==V_S_CREA) {
-            return $path;
+            return $path.'?View='.V_S_CREA;
         }
         if ($action==V_S_SLCT or $action ==V_B_RFCH) {
              $path = "'".$path.'?View='.V_S_SLCT."'";

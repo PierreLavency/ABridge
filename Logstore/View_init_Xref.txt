@@ -98,7 +98,7 @@ a:7:{i:0;s:1703:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:1;s:3272:"<!DOCTYPE html>
+ </html>";i:1;s:3284:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -120,7 +120,7 @@ dir
 		<a href='/ABridge.php/dir/2?View=Delete' >Delete</a>
 	</td>
 	<td>
-		<a href=/ABridge.php/dir >Create</a>
+		<a href=/ABridge.php/dir?View=Create >Create</a>
 	</td>
 	<td>
 		<a href='/ABridge.php/dir?View=Select' >Select</a>
@@ -493,7 +493,7 @@ MotherOf
 </form>  
 
  </body> 
- </html>";i:4;s:1826:"<!DOCTYPE html>
+ </html>";i:4;s:1838:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -517,7 +517,7 @@ MotherOf
 			<a href=/ABridge.php/dir/2 >Cancel</a>
 		</td>
 		<td>
-			<a href=/ABridge.php/dir >Create</a>
+			<a href=/ABridge.php/dir?View=Create >Create</a>
 		</td>
 	</tr> </table>
 	<table >

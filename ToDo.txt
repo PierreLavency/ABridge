@@ -11,7 +11,7 @@
 - pictures/1
 - multi language /2
 - handle error messages/2
-- review default get on crea = select 
+
 
 - delete all object in class 
 
@@ -52,6 +52,8 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- improve handle test coverage and get read to migrate controllers and view / 2 days
+- review default get on crea = select / 1 hours
 - redesign Handle/request/Home 5 days
 - clean up genealogy / kept genealogy name !/ 1 day
 - some progress on authorisation and implement home // 3 days !! 

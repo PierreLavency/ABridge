@@ -11,7 +11,8 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 
 	protected $CName='Example';
 	protected $CUser='User';
-
+    protected $CCode='Code';
+	
 	protected $db;
 	
 	
@@ -23,18 +24,23 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$typ='dataBase';
 		$CName='Example';
 		$CUser='User';
+		$CCode='Code';		
 		$name = 'test';
 		self::$db1=getBaseHandler ($typ, $name);
 		initStateHandler ($CName	,$typ, $name);
 		initStateHandler ($CUser	,$typ, $name);
+        initStateHandler ($CCode    ,$typ, $name); 
 		
 		$typ='fileBase';
 		$name=$name.'_f';
 		$CName='Examplef';
 		$CUser='Userf';
+		$CCode='Codef';
+		
 		self::$db2=getBaseHandler ($typ, $name);
 		initStateHandler ($CName	,$typ, $name);
 		initStateHandler ($CUser	,$typ, $name);
+        initStateHandler ($CCode    ,$typ, $name);
 		
 	}
 	
@@ -44,11 +50,13 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 			$this->db=self::$db1;
 			$this->CName='Example';
 			$this->CUser='User';
+			$this->CCode='Code';			
 			} 
 		else {
 			$this->db=self::$db2;
 			$this->CName='Examplef';
 			$this->CUser='Userf';
+			$this->CCode='Codef';			
 			}
 
 	}
@@ -67,54 +75,91 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$db=$this->db;
 		$db->beginTrans();
 
-		$mod = new Model($this->CUser);	
-		$res = $mod->deleteMod();
-		$res = $mod->addAttr($this->CName,M_CREF,'/'.$this->CName.'/'.$this->CUser);			
-		$res = $mod->saveMod();
-
-		$u1  = $mod->save();			
-		$r = $mod-> getErrLog ();
-		$this->assertEquals($r->logSize(),0);
+        $mod = new Model($this->CCode); 
+        $res = $mod->deleteMod();		
+		$res = $mod->addAttr('Ref', M_REF, '/'.$this->CCode);
+        $res = $mod->addAttr('CRef', M_CREF, '/'.$this->CCode.'/Ref');
+        $res = $mod->saveMod();
+        $r = $mod-> getErrLog ();
+        $this->assertEquals($r->logSize(),0);
 		
-		$mod = new Model($this->CUser);	
-
-		$u2  = $mod->save();		
+		$c1 = $mod->save();
 		$r = $mod-> getErrLog ();
-		$this->assertEquals($r->logSize(),0);
+        $this->assertEquals($r->logSize(),0);
 		
-		$mod = new Model($this->CName);	
-		$res= $mod->deleteMod();
-		$res = $mod->addAttr('Ref',M_REF,'/'.$this->CName);
-		$res = $mod->addAttr('CRef',M_CREF,'/'.$this->CName.'/Ref');
-		$res = $mod->addAttr($this->CUser,M_REF,'/'.$this->CUser);
-		$res = $mod->saveMod();
-
-		$res=$mod->setVal($this->CUser,$u1);	
-		$id1 = $mod->save();
-		$obj1 = $mod;		
+		$mod = new Model($this->CCode); 
+        $res=$mod->setVal('Ref',$c1);        
+		$c2 = $mod->save();
 		$r = $mod-> getErrLog ();
-		$this->assertEquals($r->logSize(),0);
+        $this->assertEquals($r->logSize(),0);
 		
-		$mod = new Model($this->CName);
-		$res=$mod->setVal($this->CUser,$u2);		
-		$res=$mod->setVal('Ref',$id1);	
-		$id2 = $mod->save();	
-		$r = $mod-> getErrLog ();
-		$this->assertEquals($r->logSize(),0);
+		$mod = new Model($this->CCode); 
+        $res=$mod->setVal('Ref',$c1);        
+		$c3 = $mod->save();
+        $r = $mod-> getErrLog ();
+        $this->assertEquals($r->logSize(),0);
 
-		$mod = new Model($this->CName);
-		$res=$mod->setVal($this->CUser,$u1);		
-		$res=$mod->setVal('Ref',$id2);	
-		$id3 = $mod->save();	
-		$r = $mod-> getErrLog ();
-		$this->assertEquals($r->logSize(),0);
+		
+        $mod = new Model($this->CUser); 
+        $res = $mod->deleteMod();
+        $res = $mod->addAttr($this->CName,M_CREF,'/'.$this->CName.'/'.$this->CUser);		
+        $res = $mod->saveMod();
 
-		$mod = new Model($this->CName);
-		$res=$mod->setVal($this->CUser,$u1);		
-		$res=$mod->setVal('Ref',$id3);	
-		$id4 = $mod->save();	
-		$r = $mod-> getErrLog ();
-		$this->assertEquals($r->logSize(),0);		
+        $u1  = $mod->save();            
+        $r = $mod-> getErrLog ();
+        $this->assertEquals($r->logSize(),0);
+        
+        $mod = new Model($this->CUser); 
+
+        $u2  = $mod->save();        
+        $r = $mod-> getErrLog ();
+        $this->assertEquals($r->logSize(),0);
+        
+        $mod = new Model($this->CName); 
+        $res= $mod->deleteMod();
+        $res = $mod->addAttr('Ref',M_REF,'/'.$this->CName);
+        $res = $mod->addAttr('CRef',M_CREF,'/'.$this->CName.'/Ref');
+		$res = $mod->addAttr('Code',M_CODE,'/'.$this->CCode.'/'.$c1.'/CRef');
+        $res = $mod->addAttr($this->CUser,M_REF,'/'.$this->CUser);
+        $res = $mod->setDflt($this->CUser,1);
+        
+        $res = $mod->saveMod();
+
+        $res=$mod->setVal('Code',$c2);             
+        $res=$mod->setVal($this->CUser,$u1); 
+		
+        $id1 = $mod->save();
+        $obj1 = $mod;       
+        $r = $mod-> getErrLog ();
+        $r->show();
+        $this->assertEquals($r->logSize(),0);
+        
+        $mod = new Model($this->CName);
+        $res=$mod->setVal($this->CUser,$u2);
+        $res=$mod->setVal('Code',$c2);              
+        $res=$mod->setVal('Ref',$id1);  
+        $id2 = $mod->save();    
+        $r = $mod-> getErrLog ();
+        $this->assertEquals($r->logSize(),0);
+
+        $mod = new Model($this->CName);
+        $res=$mod->setVal($this->CUser,$u1); 
+        $res=$mod->setVal('Code',$c2);             		
+        $res=$mod->setVal('Ref',$id2);  
+        $id3 = $mod->save();    
+        $r = $mod-> getErrLog ();
+        $this->assertEquals($r->logSize(),0);
+
+        $mod = new Model($this->CName);
+        $res=$mod->setVal($this->CUser,$u1); 
+        $res=$mod->setVal('Code',$c2);             		
+        $res=$mod->setVal('Ref',$id3);  
+        $id4 = $mod->save();    
+        $r = $mod-> getErrLog ();
+        $this->assertEquals($r->logSize(),0);    
+		
+		
+		
 		
 		$path1 = '/'.$this->CName.'/1';
 		$r = new Request($path1,V_S_READ);
@@ -138,6 +183,9 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$act_path = $h1->getCrefPath('CRef',V_S_CREA);
 		$e_path = $r->prfxPath($path1.'/CRef').'?View='.V_S_CREA;
 		$this->assertEquals($e_path,  $act_path);
+ 
+		$this->assertEquals(2,$h1->getCode('Code',2)->getId());		
+		$this->assertEquals('/'.$this->CCode.'/2',$h1->getCode('Code',2)->getRPath());
 		
 		$h2 = $h1->getCref('CRef',$id2);
 		
@@ -212,6 +260,9 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$act_path = $h1->getClassPath($this->CName,V_S_CREA);
 		$e_path = $r->prfxPath('/'.$this->CName).'?View='.V_S_CREA;
 		$this->assertEquals($e_path,  $act_path);
+		
+        $this->assertEquals(2,$h1->getCode('Code',2)->getId());		
+		$this->assertNull($h1->getCode('Code',2)->getPath());
 		
 		$h2 = $h1->getCref('CRef',2);		
 		$path2=$path1.'/CRef/2';

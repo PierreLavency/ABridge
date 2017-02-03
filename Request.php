@@ -177,7 +177,7 @@ Class Request
         return $path;
     }
         
-    public function pop()
+    public function popObj()
     {
         if ($this->isClassPath()) {
             throw new Exception(E_ERC035);
@@ -193,6 +193,15 @@ Class Request
         return $path; 
     }
 
+    public function pushId()
+    {
+        if (! $this->isClassPath()) {
+            throw new Exception(E_ERC037);
+        }
+        return $this->_path.'/'.$id; 
+    }   
+        
+    
 // Action   
     
     protected function initAction() 

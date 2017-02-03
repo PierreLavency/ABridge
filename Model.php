@@ -463,7 +463,16 @@ class Model
         }
     }
 
-    protected function getCrefMod($attr) 
+    public function getModCref($attr) 
+    {
+        $res = $this->getCrefMod($attr);
+        if (!$res) {
+            return false;
+        }
+        return $res[1];
+    }
+    
+    private function getCrefMod($attr) 
     {
         if (! $this->existsAttr($attr)) {
             $this->_errLog->logLine(E_ERC002.':'.$attr);

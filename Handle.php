@@ -89,6 +89,11 @@ Class Handle
         $this->_obj =$obj;
     }
 
+    public function nullObj() 
+    {
+        return (is_null($this->_obj));
+    }
+    
     protected function isMain()
     {
         return (is_null($this->_mainObj));
@@ -162,9 +167,6 @@ Class Handle
     public function getCode($attr,$id)
     {
         $obj = $this->_obj->getCode($attr, $id);
-        if (is_null($obj)) {
-            return null;
-        }
         $path = $this->getRefPath($obj);
         if (is_null($path)) {
             $req=null;
@@ -307,6 +309,11 @@ Class Handle
     {
         return $this->_obj->getValues($attr);
     }   
+ 
+    public function getModCref($attr)
+    {
+        return $this->_obj->getModCref($attr);
+    }   
     
     public function isMdtr($attr)
     {
@@ -345,7 +352,11 @@ Class Handle
     
     public function delet()
     {
-        return $this->_obj->delet();
+        $res = $this->_obj->delet();
+        if ($res) {
+            $this->_obj=null;
+        }
+        return $res;
     }
     
     public function isErr()

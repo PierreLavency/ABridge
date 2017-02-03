@@ -36,7 +36,7 @@ define('E_ERC033', "ERC033");  // REF type missmatch
 define('E_ERC034', "ERC034");  // protected attribute
 define('E_ERC035', "ERC035");  // not allowed on create path
 define('E_ERC036', "ERC036");  // url not correctly formated
-define('E_ERC037', "ERC037");  // not allowed on existing object path
+define('E_ERC037', "ERC037");  // not allowed on object path
 define('E_ERC038', "ERC038");  // not allowed on root path
 define('E_ERC039', "ERC039");  // set not allowed on eval attribute
 define('E_ERC040', "ERC040");  // eval attr without custom class
@@ -47,6 +47,6 @@ define('E_ERC044', "ERC044");  // cannot instanciate abstract class
 define('E_ERC045', "ERC045");  // cannot set attr on abstract class 
 define('E_ERC046', "ERC046");  // type change not supported
 define('E_ERC047', "ERC047");  // not supported at inherited level
-define('E_ERC048', "ERC048");  // illegat action on path type
-define('E_ERC049', "ERC049");  // illegat action on obj
-define('E_ERC050', "ERC050");  // illegat action root
+define('E_ERC048', "ERC048");  // illegal action on path type
+define('E_ERC049', "ERC049");  // illegal action on obj
+define('E_ERC050', "ERC050");  // illegal action root

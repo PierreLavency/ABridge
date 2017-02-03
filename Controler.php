@@ -4,7 +4,11 @@
 // must clean up interface with set up !!
 
 require_once("Model.php"); 
-require_once("View.php"); 
+require_once("View.php");
+require_once("Request.php");
+require_once("Home.php");
+require_once("Handle.php");
+
 require_once("Path.php"); 
 
 class Controler
