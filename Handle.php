@@ -1,7 +1,9 @@
 
 <?php
+
 require_once('Request.php');
 require_once('Home.php');
+require_once('Model.php');
 
 Class Handle
 {
@@ -99,6 +101,16 @@ Class Handle
         return (is_null($this->_mainObj));
     }
 
+    protected function getMain()
+    {
+        $res = $this->_mainObj;
+        if (is_null($res)) {
+            return $this;
+        } else {
+            return $res->getMain();
+        }
+    }
+    
     protected function checkActionObj($action)
     {
         if (! $this->isMain()) {
@@ -124,7 +136,25 @@ Class Handle
         }
         return false;
     }
-
+    
+    public function isMainRef($attr)
+    {
+        $rid =  $this->getVal($attr);
+        $rmod = $this->getModRef($attr);
+        $main = $this->getMain();
+        $cid =  $main->getId();
+        $cmod = $main->getModName();
+        if ($cid == $rid and $cmod == $rmod and $rid!= 0) {
+            return true;
+        }
+        $cmod = $main->getAbstrNme();
+        if ($cid == $rid and $cmod == $rmod and $rid!= 0) {
+            return true;
+        }
+        return false;
+    }   
+    
+// from req
     public function getPath()
     {
         if (is_null($this->_request)) {
@@ -141,6 +171,22 @@ Class Handle
         return $this->_request->getRPath();
     }
  
+    public function getAction()
+    {
+        if (is_null($this->_request)) {
+            return null;
+        }
+        return $this->_request->getAction();
+    }
+    
+    public function setAction($action)
+    {
+        if (is_null($this->_request)) {
+            return null;
+        }
+        return $this->_request->setAction($action);
+    }
+        
 // handle
  
     public function getObjId($id) 
@@ -233,7 +279,6 @@ Class Handle
     
 // get Path
     
-
     public function getActionPath($action) 
     {
 
@@ -273,7 +318,7 @@ Class Handle
         return $this->_request->getCrefPath($attr, $action);
     }
      
-// obj  
+// obj  : access should be controlled here 
     
     public function getAttrList() 
     {
@@ -314,7 +359,22 @@ Class Handle
     {
         return $this->_obj->getModCref($attr);
     }   
+   
+    public function getAbstrNme()
+    {
+        return $this->_obj->getAbstrNme();
+    }   
+   
+    public function getModRef($attr)
+    {
+        return $this->_obj->getModRef($attr);
+    }   
     
+    public function isProtected($attr)
+    {
+        return $this->_obj->isProtected($attr);
+    }
+      
     public function isMdtr($attr)
     {
         return $this->_obj->isMdtr($attr);
@@ -335,6 +395,11 @@ Class Handle
         return $this->_obj->isSelect($attr);
     }
 
+    public function setVal($attr,$val)
+    {
+        return $this->_obj->setVal($attr, $val);
+    }
+
     public function save()
     {
         return $this->_obj->save();
@@ -353,9 +418,6 @@ Class Handle
     public function delet()
     {
         $res = $this->_obj->delet();
-        if ($res) {
-            $this->_obj=null;
-        }
         return $res;
     }
     

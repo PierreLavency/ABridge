@@ -78,7 +78,7 @@ a:8:{i:0;s:184:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:2;s:868:"<!DOCTYPE html>
+ </html>";i:2;s:870:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -100,7 +100,7 @@ test
 		<a href='/ABridge.php/test/1?View=Delete' >Delete</a>
 	</td>
 	<td>
-		<a href=/ABridge.php/test?View=Create >Create</a>
+		<a href='/ABridge.php/test?View=Create' >Create</a>
 	</td>
 	<td>
 		<a href='/ABridge.php/test?View=Select' >Select</a>
@@ -285,7 +285,7 @@ test
 </form>  
 
  </body> 
- </html>";i:5;s:1815:"<!DOCTYPE html>
+ </html>";i:5;s:1817:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -309,7 +309,7 @@ test
 			<a href=/ABridge.php/test/1 >Cancel</a>
 		</td>
 		<td>
-			<a href=/ABridge.php/test?View=Create >Create</a>
+			<a href='/ABridge.php/test?View=Create' >Create</a>
 		</td>
 	</tr> </table>
 	<table >

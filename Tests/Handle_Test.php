@@ -160,7 +160,6 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		
 		
 		
-		
 		$path1 = '/'.$this->CName.'/1';
 		$r = new Request($path1,V_S_READ);
 		$apath1 = $r-> prfxPath($path1);
@@ -172,16 +171,18 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals($apath1, $h1->getPath());
 		$this->assertEquals($path1,  $h1->getRPath());
 		
+		$this->AssertTrue($h1->isMainRef('id'));
+		
 		$act_path = $h1->getActionPath(V_S_UPDT);
-		$e_path = $r->prfxPath($path1).'?View='.V_S_UPDT;
+		$e_path = "'".$r->prfxPath($path1).'?View='.V_S_UPDT."'";
 		$this->assertEquals($e_path,  $act_path);	
 
 		$act_path = $h1->getClassPath($this->CName,V_S_CREA);
-		$e_path = $r->prfxPath('/'.$this->CName).'?View='.V_S_CREA;
+		$e_path = "'".$r->prfxPath('/'.$this->CName).'?View='.V_S_CREA."'";
 		$this->assertEquals($e_path,  $act_path);	
 
 		$act_path = $h1->getCrefPath('CRef',V_S_CREA);
-		$e_path = $r->prfxPath($path1.'/CRef').'?View='.V_S_CREA;
+		$e_path = "'".$r->prfxPath($path1.'/CRef').'?View='.V_S_CREA."'";
 		$this->assertEquals($e_path,  $act_path);
  
 		$this->assertEquals(2,$h1->getCode('Code',2)->getId());		
@@ -254,11 +255,11 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->assertNull($act_path);
 			
 		$act_path = $h1->getActionPath(V_S_UPDT);
-		$e_path = $r->prfxPath($path1).'?View='.V_S_UPDT;
+		$e_path = "'".$r->prfxPath($path1).'?View='.V_S_UPDT."'";
 		$this->assertEquals($e_path,  $act_path);			
 
 		$act_path = $h1->getClassPath($this->CName,V_S_CREA);
-		$e_path = $r->prfxPath('/'.$this->CName).'?View='.V_S_CREA;
+		$e_path = "'".$r->prfxPath('/'.$this->CName).'?View='.V_S_CREA."'";
 		$this->assertEquals($e_path,  $act_path);
 		
         $this->assertEquals(2,$h1->getCode('Code',2)->getId());		
@@ -355,6 +356,11 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$act_path = $h1->getActionPath(V_S_READ);
 
 		$this->assertNull($act_path);			
+
+		$h1 = new Handle(null,$ho,null,null);
+
+		$this->assertNull($h1->getAction());
+		$this->assertNull($h1->setAction(V_S_READ));
 		
 		$db->commit();
 	}		

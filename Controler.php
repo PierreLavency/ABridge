@@ -9,12 +9,16 @@ require_once("Request.php");
 require_once("Home.php");
 require_once("Handle.php");
 
-require_once("Path.php"); 
 
 class Controler
 {
     protected $_bases=[];
-    protected $_obj = null;
+
+    protected $_handle=null;
+    protected $_request= null;
+    protected $_home= null; 
+    
+    protected $_obj = null; // to delete
     protected $_spec = [];
     protected $_attrL = [];
     protected $_valL = [];
@@ -122,7 +126,7 @@ class Controler
     
     protected function setVal($action) 
     {
-        $c= $this->_obj;
+        $c= $this->_handle;
         foreach ($c->getAttrList() as $attr) {
             $cond = false;
             if ($action == V_S_SLCT) {
@@ -154,7 +158,7 @@ class Controler
         return (!$c->isErr());
     }
         
-    protected function showView($path,$action,$show) 
+    protected function showView($show) 
     {
         $this->logStartView();
         $spec = $this->_spec;
@@ -164,10 +168,11 @@ class Controler
                 Handler::get()->setViewHandler($mod, $specm);
             }
         }       
-        $v=new View($this->_obj);
+        $v=new View($this->_handle);
         $home=$spec['Home'];
         $v->setNavClass($home);
-        $v->show($path, $action, $show);
+        $action = $this->_handle->getAction();
+        $v->show($action, $show);
         return true;
     }
     
@@ -175,17 +180,17 @@ class Controler
     {
         $method = $_SERVER['REQUEST_METHOD'];   
         $this->beginTrans();
-
-        $this->setLogLevl($logLevel);   
-        $path = new Path();
-        $this->_obj  = $path->getObj();
-        if (is_null($this->_obj)) {
-            $this->showView($path, null, $show);
+        $this->setLogLevl($logLevel);
+        $this->_home= new Home('/');
+        $this->_request = new Request();
+        $this->_handle = new Handle($this->_request, $this->_home);
+        if ($this->_handle->nullobj()) {
+            $this->showView($show);
             $this->close();
             $this->showLog();
-            return $path->getPath();
+            return $this->_handle->getPath();
         }
-        $action = $path->getAction();
+        $action = $this->_handle->getAction();
         $actionExec = false;
         if ($method =='POST') {
             if ($action == V_S_UPDT 
@@ -193,21 +198,21 @@ class Controler
             or $action==V_S_SLCT) {
                 $res = $this->setVal($action);
             }
-            if (!$this->_obj->isErr()) {
+            if (!$this->_handle->isErr()) {
                 if ($action == V_S_DELT) {
-                    $this->_obj->delet();
+                    $this->_handle->delet();
                 }
                 if ($action == V_S_UPDT or $action == V_S_CREA) {
-                    $this->_obj->save();         
+                    $this->_handle->save();         
                 }
                 if ($action == V_S_SLCT) {
                     $valL=$this->_valL;
                     $attrL=$this->_attrL;
                     $opL=$this->_opL;
-                    $res = $this->_obj->setCriteria($attrL, $opL, $valL);
+                    $res = $this->_handle->setCriteria($attrL, $opL, $valL);
                 }
             }
-            if (!$this->_obj->isErr()) {
+            if (!$this->_handle->isErr()) {
                 $res=$this->commit();
                 if ($res) {
                     $actionExec=true;
@@ -218,20 +223,23 @@ class Controler
         }
         if ($actionExec) {
             if ($action == V_S_DELT) {
-                $path->popDel();
-                $this->_obj= $path->getObj();
+                $npath = $this->_request->popObj();
+                $this->_request= new Request($npath, V_S_READ);
+                $this->_handle = new Handle($this->_request, $this->_home);
             }
             if ($action == V_S_CREA) {
-                $path->pushId($this->_obj->getId());
+                $npath = $this->_request->pushId($this->_handle->getId());
+                $this->_request= new Request($npath, V_S_READ);
+                $this->_handle = new Handle($this->_request, $this->_home);
             }
             if ($action != V_S_SLCT) {
-                $action= V_S_READ;
+                $this->_handle->setAction(V_S_READ);
             }
         }
-        $this->showView($path, $action, $show);
+        $this->showView($show);
         $this->close();
         $this->showLog();
-        return $path->getPath();
+        return $this->_handle->getPath();
     }
 }
 

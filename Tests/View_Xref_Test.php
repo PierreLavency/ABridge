@@ -23,15 +23,16 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase {
 		$p = $test[0][1];
 		$s = $test[0][2];	
 		self::$db->beginTrans();
-		$y =  new Model('dir',$id);
-		$path = new Path($p);
-		$v = new View($y);
+		$home= new Home('/');
+		$request = new Request($p,V_S_READ);
+		$handle = new Handle($request, $home);	
+		$v = new View($handle);	
 		$v->setNavClass(['dir']);	
 		$v->setAttrList(['Name'],V_S_REF);	
 		$v->setAttrListHtml(['Mother'=>H_T_SELECT], V_S_CREA);		
 		
 		$this->expectOutputString(self::$log->getLine(0));
-		$this->assertNotNull($v->show($path,$s,true));
+		$this->assertNotNull($v->show($s,true));
 		self::$db->commit();
     }
 	
@@ -44,14 +45,17 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase {
     {
 
 	self::$db->beginTrans();
-	$y =  new Model('dir',$id);
-	$path = new Path($p);
-	$v = new View($y);
+	
+	$home= new Home('/');
+	$request = new Request($p,V_S_READ);
+	$handle = new Handle($request, $home);	
+	$v = new View($handle);	
+	
 	$v->setNavClass(['dir']);	
 	$v->setAttrList(['Name'],V_S_REF);	
 	$v->setAttrListHtml(['Mother'=>H_T_SELECT], V_S_CREA);
 	
-    $this->assertEquals(self::$log->getLine($expected),$v->show($path,$s,false));
+    $this->assertEquals(self::$log->getLine($expected),$v->show($s,false));
 	self::$db->commit();
     }
  

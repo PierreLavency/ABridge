@@ -520,15 +520,19 @@ class Model
             $this->_errLog->logLine(E_ERC002.':'.$attr);
             return false;
         }
-        if ($this->getTyp($attr)!= M_CODE) {
-             $this->_errLog->logLine(E_ERC028.':'.$attr);
+        $typ = $this->getTyp($attr);
+        if ($typ != M_CODE and $typ != M_REF) {
+            $this->_errLog->logLine(E_ERC028.':'.$attr);
             return false;
         }
         $path=$this->getParm($attr);
         $patha=explode('/', $path);
-        $m = new Model($patha[1], (int) $patha[2]);
-        $res=$m->getCref($patha[3], $id);
-        return ($res);
+        if ($typ == M_CODE) {       
+            $m = new Model($patha[1], (int) $patha[2]);
+            $res=$m->getCref($patha[3], $id);
+            return ($res);
+        }
+        return new Model($this->getRefMod($attr), $id);
     }
 
     /**
@@ -1277,7 +1281,12 @@ class Model
         $this->_errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
         return false;
     }
-    
+  
+    public function getModRef($attr) 
+    {
+        return $this->getRefMod($attr);
+    }
+    // should be private
     public function getRefMod($attr) 
     {     
         if (! $this->existsAttr($attr)) {

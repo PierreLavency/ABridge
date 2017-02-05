@@ -2,7 +2,7 @@
 - set up unit test for unittest
 
 - clean up view constant.
-- review split between View and Path // partially done / again 
+- GUI to change user/home.
 - order in list query and attr
 - selection for Ref.
 - multiple views /1
@@ -11,7 +11,6 @@
 - pictures/1
 - multi language /2
 - handle error messages/2
-
 
 - delete all object in class 
 
@@ -26,8 +25,8 @@
 
 - split alter drop and add in Base.
 - implement foreign keys
-- changed DB model indenently of class model.
-- Propagate changes from abstract classe to concrete ?
+- changed DB model independently of class model.
+- Propagate changes from abstract classe to concrete
 
 - Authenthication 
 - Authorisation should allow access not linked to home
@@ -52,6 +51,7 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- review split between View and Path // partially done / again / integrated 2 days
 - improve handle test coverage and get read to migrate controllers and view / 2 days
 - review default get on crea = select / 1 hours
 - redesign Handle/request/Home 5 days

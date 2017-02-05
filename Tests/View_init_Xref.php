@@ -25,14 +25,17 @@ for ($i=0;$i<count($test);$i++) {
 if ($show) {echo "<br>" ; };
 $id = $test[$i][0];
 $p = $test[$i][1];
-$s = $test[$i][2];
-$y =  new Model('dir',$id);
-$path = new Path($p);
-$v = new View($y);
+$s = $test[$i][2];	
+
+$home= new Home('/');
+$request = new Request($p,V_S_READ);
+$handle = new Handle($request, $home);	
+$v = new View($handle);	
+
 $v->setNavClass(['dir']);
 $v->setAttrListHtml(['Mother'=>H_T_SELECT], V_S_CREA);
 $v->setAttrList(['Name'],V_S_REF);	
-$res = $v->show($path,$s,$show); 
+$res = $v->show($s,$show); 
 $log->logLine($res);
 }
 

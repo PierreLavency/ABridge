@@ -22,7 +22,7 @@ class View_Test extends PHPUnit_Framework_TestCase {
 		$s = $test[0][2];
 		$e = self::$log->getLine(0);
 		$this->expectOutputString(self::$log->getLine(0));
-		$this->assertNotNull($v->show($p,$s,true));
+		$this->assertNotNull($v->show($s,true));
     }
 	
 	
@@ -33,7 +33,7 @@ class View_Test extends PHPUnit_Framework_TestCase {
 	public function testView($v,$p,$s,$expected)
     {
 		
-        $this->assertEquals(self::$log->getLine($expected),$v->show($p,$s,false));
+        $this->assertEquals(self::$log->getLine($expected),$v->show($s,false));
     }
  
     public function Provider1() {

@@ -1,6 +1,8 @@
 <?php
 
-require_once("Path.php"); 
+require_once("Request.php");
+require_once("Home.php");
+require_once("Handle.php");
 require_once("Model.php"); 
 require_once("View.php"); 
 
@@ -26,15 +28,25 @@ function viewCases()
 	$x->setVal('A3','2016-12-08');
 
 	$x->setVal('A4','ceci est un texte');
-	$path = new Path('/test/1');
 	
-	$v = new View(null);
+
+	$home= new Home('/');
+	$request = new Request('/',V_S_READ);
+	$handle = new Handle($request, $home);
+	$v = new View($handle);
+
 	$v->setNavClass(['test']);
+
+	$path = '/';
 	
 	$test = [];	
 	$test[0]=[$v,$path,V_S_CREA,0];		
+
+	$path = '/test/1';
+	$request = new Request('/test/1',V_S_READ);
+	$handle = new Handle($request, $home,$x,null);
+	$v = new View($handle);	
 	
-	$v = new View($x);	
 	$v->setNavClass(['test']);	
 
 	$v->setAttrList(['A1','A2'],V_S_REF);

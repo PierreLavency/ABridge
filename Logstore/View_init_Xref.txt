@@ -98,7 +98,7 @@ a:7:{i:0;s:1703:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:1;s:3284:"<!DOCTYPE html>
+ </html>";i:1;s:3318:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -120,7 +120,7 @@ dir
 		<a href='/ABridge.php/dir/2?View=Delete' >Delete</a>
 	</td>
 	<td>
-		<a href=/ABridge.php/dir?View=Create >Create</a>
+		<a href='/ABridge.php/dir?View=Create' >Create</a>
 	</td>
 	<td>
 		<a href='/ABridge.php/dir?View=Select' >Select</a>
@@ -168,11 +168,11 @@ FatherOf
 
 11 : 0-10
 
-<a href=/ABridge.php/dir/2?FatherOf=0 >Previous</a>
+<a href='/ABridge.php/dir/2?FatherOf=0' >Previous</a>
 
-<a href=/ABridge.php/dir/2?FatherOf=10 >Next</a>
+<a href='/ABridge.php/dir/2?FatherOf=10' >Next</a>
 
-<a href='/ABridge.php/dir/2/FatherOf' >New</a>
+<a href='/ABridge.php/dir/2/FatherOf?View=Create' >New</a>
 
 <table >
 	<tr>
@@ -272,11 +272,11 @@ MotherOf
 
 11 : 0-10
 
-<a href=/ABridge.php/dir/2?MotherOf=0 >Previous</a>
+<a href='/ABridge.php/dir/2?MotherOf=0' >Previous</a>
 
-<a href=/ABridge.php/dir/2?MotherOf=10 >Next</a>
+<a href='/ABridge.php/dir/2?MotherOf=10' >Next</a>
 
-<a href='/ABridge.php/dir/2/MotherOf' >New</a>
+<a href='/ABridge.php/dir/2/MotherOf?View=Create' >New</a>
 
 <table >
 	<tr>
@@ -493,7 +493,7 @@ MotherOf
 </form>  
 
  </body> 
- </html>";i:4;s:1838:"<!DOCTYPE html>
+ </html>";i:4;s:1840:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -517,7 +517,7 @@ MotherOf
 			<a href=/ABridge.php/dir/2 >Cancel</a>
 		</td>
 		<td>
-			<a href=/ABridge.php/dir?View=Create >Create</a>
+			<a href='/ABridge.php/dir?View=Create' >Create</a>
 		</td>
 	</tr> </table>
 	<table >

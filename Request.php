@@ -20,7 +20,7 @@ Class Request
         $a = func_get_args();
         $i = func_num_args();
         if (method_exists($this, $f = 'construct'.$i)) {
-        call_user_func_array(array($this, $f), $a);
+            call_user_func_array(array($this, $f), $a);
         }
     }
  
@@ -143,7 +143,7 @@ Class Request
         return $path;
     }
  
-    protected function objPath() 
+    public function objPath() 
     {
         if ($this->isHomePath()) {
             throw new Exception(E_ERC038);
@@ -162,7 +162,7 @@ Class Request
         return $path;
     }
     
-    protected function classPath() 
+    public function classPath() 
     {
         if ($this->isHomePath()) {
             throw new Exception(E_ERC038);
@@ -193,7 +193,7 @@ Class Request
         return $path; 
     }
 
-    public function pushId()
+    public function pushId($id)
     {
         if (! $this->isClassPath()) {
             throw new Exception(E_ERC037);
@@ -237,6 +237,13 @@ Class Request
         return $this->_action;
     }
 
+    public function setAction($action)
+    {
+        $this->checkActionPath($action);
+        $this->_action=$action;
+        return true;
+    }       
+    
     public function checkActionPath($action) 
     {
         if ($this->isClassPath()) {
@@ -266,7 +273,7 @@ Class Request
                 return $this->getPath();
             }
             if ($action == V_S_UPDT) {
-                $path = $this->getPath().'?View='.$action;
+                $path = "'".$this->getPath().'?View='.$action."'";
                 return $path;
             }
         }
@@ -275,11 +282,11 @@ Class Request
                 return $this->getPath();
             }
             if ($action == V_S_UPDT or $action == V_S_DELT) {
-                $path = $this->getPath().'?View='.$action;
+                $path = "'".$this->getPath().'?View='.$action."'";
                 return $path;
             }
             if ($action == V_S_SLCT or $action == V_S_CREA) {
-                $path = $this->classPath().'?View='.$action;
+                $path = "'".$this->classPath().'?View='.$action."'";
                 return $path;
             }
         }
@@ -288,7 +295,7 @@ Class Request
                 return $this->objPath();
             }
             if ($action == V_S_SLCT or $action == V_S_CREA) {
-                $path = $this->getPath().'?View='.$action;
+                $path = "'".$this->getPath().'?View='.$action."'";
                 return $path;
             }
         }
@@ -297,14 +304,14 @@ Class Request
     
     public function getClassPath($mod,$action) 
     {    
-        $path=$this->prfxPath('/'.$mod).'?View='.$action;
+        $path="'".$this->prfxPath('/'.$mod).'?View='.$action."'";
         return $path;
     }
    
     public function getCrefPath($attr,$action)
     {
         $path = $this->getPath();
-        $path= $path.'/'.$attr.'?View='.$action;
+        $path= "'".$path.'/'.$attr.'?View='.$action."'";
         return $path;
     }
 

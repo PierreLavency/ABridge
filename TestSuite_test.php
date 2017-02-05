@@ -5,7 +5,7 @@
 //require_once("Tests\View_init.php");     
 //require_once("Tests\View_init_Xref.php");    
 
-$application= 'ABB';
+$application= 'GEN';
 
 //require_once("Example\\".'ABB_META.php');
 //require_once("Example\\".'Acode_META.php');

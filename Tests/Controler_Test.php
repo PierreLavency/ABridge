@@ -53,6 +53,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $this->path = $x;
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$this->path;
+		unset($_GET['View']);
         
         $reso = $ctrl->run($this->show,0);
         
