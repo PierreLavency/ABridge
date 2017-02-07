@@ -48,7 +48,7 @@ function GenHTLMCases()
 					[H_TYPE=>H_T_LIST,H_ARG=>[$test[8][0],$test[8][0]]]]],$n];
 
 	$n++;
-	$test[$n] = [[H_TYPE=>H_T_FORM ,H_ACTION=>'POST',H_HIDDEN=>'toto',H_URL=>'testSuite',H_ARG=>[$test[2][0],$test[3][0]]],$n];
+	$test[$n] = [[H_TYPE=>H_T_FORM ,H_ACTION=>'POST',H_HIDDEN=>['Action'=>'toto'],H_URL=>'testSuite',H_ARG=>[$test[2][0],$test[3][0]]],$n];
 
 	$n++;
 	$test[$n] = [[H_NAME=>'A',H_DEFAULT=>"a1"],$n];

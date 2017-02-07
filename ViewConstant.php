@@ -9,6 +9,7 @@ define('V_CVAL', "v_cval");
 define('V_REF', "v_ref");
 define('V_ARG', "v_arg");
 define('V_OBJ', "v_obj");
+define('V_VNAV', "v_vnav");
 define('V_NAV', "v_nav");
 define('V_NAVC', "new");
 define('V_CNAV', "v_cnav");
@@ -20,6 +21,7 @@ define('V_FORM', "v_form");
 define('V_LT', "v_lt"); // list type
 define('V_ALIST', "v_alist");
 define('V_CLIST', "v_clist");
+define('V_VLIST', "v_vlist");
 
 define('V_ID', "v_id");
 define('V_STRING', "v_string");

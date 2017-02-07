@@ -159,7 +159,7 @@ class Handle_obj_Test extends PHPUnit_Framework_TestCase
 
         $id=2;      
         $path1 = '/'.$this->CName.'/'.$id;
-        $r = new Request($path1,V_S_READ);
+        $r = new Request('/ABridge.php',$path1,V_S_READ);
         $ho = new Home('/'); 
         
         $h = new Handle($r,$ho);
@@ -218,7 +218,7 @@ class Handle_obj_Test extends PHPUnit_Framework_TestCase
         $db->beginTrans();
         $id=4;      
         $path1 = '/'.$this->CName.'/'.$id;
-        $r = new Request($path1,V_S_READ);
+        $r = new Request('/ABridge.php',$path1,V_S_READ);
         $ho = new Home('/'); 
         
         $h = new Handle($r,$ho);

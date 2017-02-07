@@ -18,65 +18,96 @@ require_once("ViewConstant.php");
 		
 	'Views' => [
 		'User' =>[
-			'attrList' => [
-				V_S_REF		=> ['SurName','Name'],
+		
+				'attrList' => [
+					V_S_REF		=> ['SurName','Name'],
 				]
-			],
+
+		],
 		'Student' => [
-			'attrList' => [
-				V_S_REF		=> ['SurName','Name'],
-			],
-			'attrHtml' => [
-				V_S_CREA => ['Sexe'=>H_T_RADIO],
-				V_S_UPDT => ['Sexe'=>H_T_RADIO],
-				V_S_SLCT => ['Sexe'=>H_T_RADIO],
-			],
-			'attrProp' => [
-				V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
-			],			
-			'lblList' => [
-				'id'		=> 'Noma',
-				'Name' 		=> 'Nom',
-				'SurName' 	=> 'Prenom',
-				'BirthDay'	=>'Date de naissance',
-			],
+		
+				'attrList' => [
+					V_S_REF		=> ['SurName','Name'],
+				],
+				'attrHtml' => [
+					V_S_CREA => ['Sexe'=>H_T_RADIO],
+					V_S_UPDT => ['Sexe'=>H_T_RADIO],
+					V_S_SLCT => ['Sexe'=>H_T_RADIO],
+				],
+				'attrProp' => [
+					V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
+				],			
+				'lblList' => [
+					'id'		=> 'Noma',
+					'Name' 		=> 'Nom',
+					'SurName' 	=> 'Prenom',
+					'BirthDay'	=>'Date de naissance',
+				],
+				'viewList' => [
+					'Resume'  => [
+						'attrList' => [
+							V_S_READ=> ['id','SurName','Name'],
+							V_S_UPDT=> ['SurName','Name'],
+							V_S_CREA=> ['SurName','Name'],
+							V_S_DELT=> ['SurName','Name'],							
+						],
+					],
+					'Detail'  => [
+						'navList' => [V_S_READ => [V_S_UPDT],
+						],				
+					],						
+				],
+				
 		],
 		'Cours' => [
-			'attrList' => [
-				V_S_REF		=> ['SurName','Name'],
-				V_S_CREF	=> ['id','Credits'],
-			]
+
+				'attrList' => [
+					V_S_REF		=> ['SurName','Name'],
+					V_S_CREF	=> ['id','Credits'],
+				]
+				
 		],
 		'Prof' => [
-			'attrList' => [
-				V_S_REF		=> ['SurName','Name'],
-				V_S_CREF	=> ['id'],
-			]
+		
+				'attrList' => [
+					V_S_REF		=> ['SurName','Name'],
+					V_S_CREF	=> ['id'],
+				]
+				
 		],
 		'Code' => [
-			'attrList' => [
-				V_S_REF		=> ['Name'],
-			]
+		
+				'attrList' => [
+					V_S_REF		=> ['Name'],
+				]
+				
 		],
 		'CodeValue' =>[
-			'attrList' => [
-				V_S_REF		=> ['Name'],
-			]
+		
+				'attrList' => [
+					V_S_REF		=> ['Name'],
+				]
+
 		],
 		'Inscription' =>[
-			'attrHtml' => [
-				V_S_CREA => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
-				V_S_UPDT => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
-				V_S_SLCT => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
-			],
+		
+				'attrHtml' => [
+					V_S_CREA => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
+					V_S_UPDT => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
+					V_S_SLCT => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
+				],
+
 		],
 		'Charge' =>[
-			'attrHtml' => [
-				V_S_CREA => ['Par'=>H_T_SELECT,'De'=>H_T_SELECT],
-				V_S_UPDT => ['Par'=>H_T_SELECT,'De'=>H_T_SELECT],
-				V_S_SLCT => ['Par'=>H_T_SELECT,'De'=>H_T_SELECT],
-			],
+		
+				'attrHtml' => [
+					V_S_CREA => ['Par'=>H_T_SELECT,'De'=>H_T_SELECT],
+					V_S_UPDT => ['Par'=>H_T_SELECT,'De'=>H_T_SELECT],
+					V_S_SLCT => ['Par'=>H_T_SELECT,'De'=>H_T_SELECT],
+				],
+				
 		],
+
 	]
 	];
 

@@ -1,5 +1,5 @@
 <?php
-require_once('Path.php');
+
 require_once("UnitTest.php");
 require_once('View_case_Xref.php');
 
@@ -28,7 +28,7 @@ $p = $test[$i][1];
 $s = $test[$i][2];	
 
 $home= new Home('/');
-$request = new Request($p,V_S_READ);
+$request = new Request('/ABridge.php',$p,V_S_READ);
 $handle = new Handle($request, $home);	
 $v = new View($handle);	
 

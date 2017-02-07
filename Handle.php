@@ -16,6 +16,8 @@ Class Handle
     protected $_pathNrmArr;
     protected $_startHome=false;
 
+    protected $_urlRoot='/ABridge.php';
+    
     public function __construct() 
     {
         $a = func_get_args();
@@ -28,6 +30,7 @@ Class Handle
     protected function construct2($request,$home) 
     {
         $this->_request = $request; 
+        $this->_urlRoot=$request->getDocRoot();
         $this->_home = $home;
         $this->initObj();
         $action=$this->_request->getAction();
@@ -152,9 +155,11 @@ Class Handle
             return true;
         }
         return false;
-    }   
+    }
     
+   
 // from req
+
     public function getPath()
     {
         if (is_null($this->_request)) {
@@ -162,6 +167,7 @@ Class Handle
         }
         return $this->_request->getPath();
     }
+    
 
     public function getRPath()
     {
@@ -187,13 +193,13 @@ Class Handle
         return $this->_request->setAction($action);
     }
         
-// handle
+// Handle
  
     public function getObjId($id) 
     {
         $obj = new Model($this->_obj->getModName(), (int) $id);
         $path = $this->getRPath().'/'.$id;
-        $req = new Request($path, V_S_READ); 
+        $req = new Request($this->_urlRoot, $path, V_S_READ); 
         $h= new Handle($req, $this->_home, $obj, $this);
         return $h; 
     }
@@ -205,7 +211,7 @@ Class Handle
         if ($this->_request->isHomePath()) {
             $path = '/'.$attr.'/'.$id;
         }
-        $req = new Request($path, V_S_READ); 
+        $req = new Request($this->_urlRoot, $path, V_S_READ);
         $h= new Handle($req, $this->_home, $obj, $this);
         return $h; 
     }
@@ -217,7 +223,7 @@ Class Handle
         if (is_null($path)) {
             $req=null;
         } else {
-            $req= new Request($path, V_S_READ);
+            $req= new Request($this->_urlRoot, $path, V_S_READ);
         }       
         $h= new Handle($req, $this->_home, $obj, $this);
         return $h; 
@@ -233,12 +239,12 @@ Class Handle
         if (is_null($path)) {
             $req=null;
         } else {
-            $req= new Request($path, V_S_READ);
+            $req= new Request($this->_urlRoot, $path, V_S_READ);
         }       
         $h= new Handle($req, $this->_home, $obj, $this);
         return $h; 
     }
-        
+    
     protected function getRefPath($obj)
     {
         if (!is_null($this->_mainObj)) {
@@ -274,8 +280,6 @@ Class Handle
         }
         return null; 
     }   
-    
-
     
 // get Path
     

@@ -158,10 +158,10 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $r = $mod-> getErrLog ();
         $this->assertEquals($r->logSize(),0);    
 		
-		
+// starting here 		
 		
 		$path1 = '/'.$this->CName.'/1';
-		$r = new Request($path1,V_S_READ);
+		$r = new Request('/ABridge.php',$path1,V_S_READ);
 		$apath1 = $r-> prfxPath($path1);
 
 		$ho = new Home('/'); 
@@ -174,15 +174,15 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->AssertTrue($h1->isMainRef('id'));
 		
 		$act_path = $h1->getActionPath(V_S_UPDT);
-		$e_path = "'".$r->prfxPath($path1).'?View='.V_S_UPDT."'";
+		$e_path = $r->formPrfx($path1,V_S_UPDT);
 		$this->assertEquals($e_path,  $act_path);	
 
 		$act_path = $h1->getClassPath($this->CName,V_S_CREA);
-		$e_path = "'".$r->prfxPath('/'.$this->CName).'?View='.V_S_CREA."'";
+		$e_path = $r->formPrfx('/'.$this->CName,V_S_CREA);
 		$this->assertEquals($e_path,  $act_path);	
 
 		$act_path = $h1->getCrefPath('CRef',V_S_CREA);
-		$e_path = "'".$r->prfxPath($path1.'/CRef').'?View='.V_S_CREA."'";
+		$e_path = $r->formPrfx($path1.'/CRef',V_S_CREA);
 		$this->assertEquals($e_path,  $act_path);
  
 		$this->assertEquals(2,$h1->getCode('Code',2)->getId());		
@@ -207,14 +207,14 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$e_path = '/'.$this->CName.'/2';
 		$this->assertEquals($e_path,  $h4->getRPath());
 
-		$r = new Request($path2,V_S_READ);
+		$r = new Request('/ABridge.php',$path2,V_S_READ);
 		$h2 = new Handle($r,$ho);
 		$h3 = $h2->getCref('CRef',$id3);
 		$h4 = $h3->getRef('Ref');
 		$this->assertEquals($path2,  $h4->getRPath());
 
 		$path3 = '/'.$this->CName;
-		$r = new Request($path3,V_S_SLCT);		
+		$r = new Request('/ABridge.php',$path3,V_S_SLCT);		
 		$h5 = new Handle($r,$ho);
 
 		$act_path = $h5->getCrefPath('CRef',V_S_CREA);
@@ -240,7 +240,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$db->beginTrans();
 		
 		$path1 = '/'.$this->CName.'/1';
-		$r = new Request($path1,V_S_READ);
+		$r = new Request('/ABridge.php',$path1,V_S_READ);
 
 		$ho = new Home('/'.$this->CUser.'/1'); 
 
@@ -255,11 +255,11 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->assertNull($act_path);
 			
 		$act_path = $h1->getActionPath(V_S_UPDT);
-		$e_path = "'".$r->prfxPath($path1).'?View='.V_S_UPDT."'";
+		$e_path = $r->formPrfx($path1,V_S_UPDT);
 		$this->assertEquals($e_path,  $act_path);			
 
 		$act_path = $h1->getClassPath($this->CName,V_S_CREA);
-		$e_path = "'".$r->prfxPath('/'.$this->CName).'?View='.V_S_CREA."'";
+		$e_path = $r->formPrfx('/'.$this->CName,V_S_CREA);
 		$this->assertEquals($e_path,  $act_path);
 		
         $this->assertEquals(2,$h1->getCode('Code',2)->getId());		
@@ -276,7 +276,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$h4 = $h3->getRef('Ref');
 		$this->assertNull($h4->getRPath());
 
-		$r = new Request($path2,V_S_READ);
+		$r = new Request('/ABridge.php',$path2,V_S_READ);
 		$h2 = new Handle($r,$ho);
 		
 		$act_path = $h2->getCrefPath('CRef',V_S_CREA);
@@ -286,20 +286,20 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->assertNull($act_path);	
 
 		$path3 = $path2.'/CRef/3/CRef';
-		$r = new Request($path3,V_S_CREA);		
+		$r = new Request('/ABridge.php',$path3,V_S_CREA);		
 		$h5 = new Handle($r,$ho);
 		$act_path=$h5->getRPath();
 		$this->assertEquals($path3,  $act_path);
 
 		$path4 = '/'.$this->CName.'/4';
-		$r = new Request($path4,V_S_READ);		
+		$r = new Request('/ABridge.php',$path4,V_S_READ);		
 		$h6 = new Handle($r,$ho);
 
 		$h7 = $h6->getRef('Ref');
 		$this->assertEquals('/'.$this->CName.'/3',  $h7->getRPath());
 
 		$path5 = '/'.$this->CName.'/3';
-		$r = new Request($path5,V_S_READ);		
+		$r = new Request('/ABridge.php',$path5,V_S_READ);		
 		$h8 = new Handle($r,$ho);
 		$h9 = $h8->getRef('Ref');
 		$this->assertNull($h9->getPath());
@@ -321,7 +321,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$db->beginTrans();
 
 		$path1 = '/';
-		$r = new Request($path1,V_S_READ);
+		$r = new Request('/ABridge.php',$path1,V_S_READ);
 
 		$ho = new Home('/'.$this->CUser.'/1'); 
 
@@ -333,21 +333,21 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals($path2,  $h2->getRPath());
 
 		$path3 = '/'.$this->CName;
-		$r = new Request($path3,V_S_CREA);
+		$r = new Request('/ABridge.php',$path3,V_S_CREA);
 		$ho = new Home('/'.$this->CUser.'/1'); 
 
 		$h3 = new Handle($r,$ho);
 		$this->assertEquals($path3,  $h3->getRPath());		
 
 		$path4 = '/'.$this->CUser;
-		$r = new Request($path4,V_S_CREA);
+		$r = new Request('/ABridge.php',$path4,V_S_CREA);
 		$ho = new Home('/'.$this->CUser.'/1'); 
 
 		try {$h4 = new Handle($r,$ho);} catch (Exception $e) {$res=$e->getMessage();}
 		$this->assertEquals($res,E_ERC049.':'.V_S_CREA);
 
 		$path1 = '/';
-		$r = new Request($path1,V_S_READ);
+		$r = new Request('/ABridge.php',$path1,V_S_READ);
 		$ho = new Home('/');
 
 		$h1 = new Handle($r,$ho);

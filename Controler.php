@@ -3,12 +3,11 @@
 
 // must clean up interface with set up !!
 
-require_once("Model.php"); 
 require_once("View.php");
 require_once("Request.php");
 require_once("Home.php");
 require_once("Handle.php");
-
+require_once("GenJASON.php");
 
 class Controler
 {
@@ -17,7 +16,8 @@ class Controler
     protected $_handle=null;
     protected $_request= null;
     protected $_home= null; 
-    
+    protected $_typ= 'HTML'; 
+     
     protected $_obj = null; // to delete
     protected $_spec = [];
     protected $_attrL = [];
@@ -184,6 +184,14 @@ class Controler
         $this->_home= new Home('/');
         $this->_request = new Request();
         $this->_handle = new Handle($this->_request, $this->_home);
+
+        if ($this->_request->getDocRoot() == '/API.php') { 
+            genJASON($this->_handle);
+            $this->close();
+            $this->showLog();
+            return $this->_handle->getPath();
+        }
+
         if ($this->_handle->nullobj()) {
             $this->showView($show);
             $this->close();
@@ -222,14 +230,15 @@ class Controler
             }
         }
         if ($actionExec) {
+            $rdoc =$this->_request->getDocRoot();
             if ($action == V_S_DELT) {
                 $npath = $this->_request->popObj();
-                $this->_request= new Request($npath, V_S_READ);
+                $this->_request= new Request($rdoc, $npath, V_S_READ);
                 $this->_handle = new Handle($this->_request, $this->_home);
             }
             if ($action == V_S_CREA) {
                 $npath = $this->_request->pushId($this->_handle->getId());
-                $this->_request= new Request($npath, V_S_READ);
+                $this->_request= new Request($rdoc, $npath, V_S_READ);
                 $this->_handle = new Handle($this->_request, $this->_home);
             }
             if ($action != V_S_SLCT) {

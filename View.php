@@ -10,12 +10,15 @@ class View
     // property
 
     protected $_handle;
+    
+    protected $_name;
 
     protected $_attrHtml= [];
                 
     protected $_attrList;
     
     protected $_listHtml = [
+                V_VLIST => H_T_1TABLE,
                 V_OBJ   => H_T_LIST_BR,
                 V_CNAV  => H_T_1TABLE,
                 V_NAV   => H_T_1TABLE,
@@ -57,7 +60,8 @@ class View
               ];
 
     protected $_navClass=[];
-
+    protected $_navView=[];
+    
     protected $_attrProp=[
               V_S_READ =>[V_P_LBL,V_P_VAL],
               V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
@@ -77,8 +81,6 @@ class View
         $this->_handle=$handle; 
     }
 
-
-    
     // methods
     
     public function setAttrList($dspec,$viewState) 
@@ -166,6 +168,25 @@ class View
         return $res;
     }
 
+    
+    public function setNavView($dspec,$viewState)
+    {
+        $this->_navView=[];
+        foreach ($dspec as $viewN) {
+            $this->_navView[]= 
+            [V_TYPE=>V_VNAV,V_P_VAL=>$viewN];
+        }
+        return true;
+    }
+    
+    public function getNavView($viewState)
+    {
+        if (isset($this->_navView)) {
+            return $this->_navView;
+        }
+        return [];
+    }
+    
     public function setNavClass($dspec)
     {
         $this->_navClass=[];
@@ -181,13 +202,16 @@ class View
         if (isset($this->_navClass)) {
             return $this->_navClass;
         }
- 
         return [];
     }
     
     public function setNav($dspec,$viewState) 
     {
-        $this->_nav[$viewState]= $dspec;
+        $navList=[];
+        foreach ($dspec as $navE) {
+            $navList[]= [V_TYPE=>V_NAV,V_P_VAL=>$navE];
+        }
+        $this->_nav[$viewState]= $navList;
         return true;
     }
     
@@ -402,13 +426,31 @@ class View
         return $res;
     }
     
+    public function evalv($spec,$viewState) 
+    {
+        $viewn=$spec[V_P_VAL];
+        $res= [];
+        if ($viewState != V_S_READ) {
+            return false;
+        }       
+        if ($viewn != $this->_name) {
+            $res[H_LABEL]=$this->getLbl($viewn);
+            $res[H_NAME]="'".$this->_handle->getPath().'?View='.$viewn."'";
+            $res[H_TYPE]=H_T_LINK;
+        } else {
+            $res[H_TYPE]=H_T_PLAIN;
+            $res[H_DEFAULT]=$this->getLbl($viewn);
+        }
+        return $res;
+    }
+    
     public function evalo($dspec,$viewState) 
     {
         $name = $this->_handle->getModName();
         $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$name];
         return $res;
-    }
-    
+    }   
+
     public function evaln($nav,$viewState) 
     {
         $res=[];
@@ -417,10 +459,12 @@ class View
             $res[H_TYPE]=H_T_SUBMIT;
             $res[H_LABEL]=$this->getLbl($viewState);
         } else {
+            $con='&';
             $res[H_TYPE]=H_T_LINK;
             $res[H_LABEL]=$this->getLbl($nav);
             if ($nav==V_B_CANC) {
                 $nav=V_S_READ;
+                $con='?';
             }
             if ($nav==V_B_RFCH) {
                 $nav=V_S_SLCT;
@@ -429,7 +473,10 @@ class View
             if (is_null($path)) {
                 return false;
             }
-            $res[H_NAME]=$path; 
+            if (!is_null($this->_name)) {
+                $path = $path.$con.'View='.$this->_name;
+            }
+            $res[H_NAME]="'".$path."'"; 
         }
         return $res;
     }
@@ -442,14 +489,14 @@ class View
         $res[H_TYPE]=H_T_LINK;
         $res[H_LABEL]=$this->getLbl($mod);
         if ($mod == 'Home') {
-             $path = "'/ABridge.php/'";
+             $path = '/ABridge.php/';
         } else {
              $path = $this->_handle->getClassPath($mod, $nav);
              if (is_null($path)) {
                  return false;
              }
         } 
-        $res[H_NAME]=$path; 
+        $res[H_NAME]="'".$path."'";
         return $res;
     }
     
@@ -489,6 +536,9 @@ class View
             case V_ELEM:
                     $result= $this->evale($spec, $viewState);
                 break;
+            case V_VNAV:
+                    $result= $this->evalv($spec, $viewState);
+                break;
             case V_NAV:
                     $result= $this->evaln($spec, $viewState);
                 break;
@@ -518,8 +568,13 @@ class View
                     $result[H_TYPE]=H_T_FORM;
                     $path = $this->_handle->getPath();
                     $result[H_ACTION]="POST";
-                    $result[H_HIDDEN]=$viewState;
-                    $result[H_URL]=$path;                   
+                    $hid = [];
+                    $hid['Action']=$viewState;
+                    if (!is_null($this->_name)) {
+                        $hid['View']=$this->_name;
+                    }   
+                    $result[H_HIDDEN]=$hid;
+                    $result[H_URL]=$path;
                     $arg=[];
                     foreach ($spec[V_ARG] as $elem) {
                         $r=$this->subst($elem, $viewState);
@@ -551,17 +606,34 @@ class View
         }
         return $r;
     }
-    
+ 
     public function initView($handle,$viewState)
-    {   
+    {
         if ($handle->nullObj()) {
             return true;
         }
+        $this->_name=null;
+        if (isset($_GET['View'])) {
+            $this->_name=$_GET['View'];
+        }
+        if (isset($_POST['View'])) {
+            $this->_name=$_POST['View'];
+        }       
         $modName = $handle->getModName();
         $spec = Handler::get()->getViewHandler($modName);
         if (is_null($spec)) {
                 return true;
         }
+        $this->setView($spec, $viewState);
+        
+        if ($viewState == V_S_CREF) {
+            $this->initView($handle, V_S_REF);
+        }
+        
+    }
+ 
+    public function setView($spec,$viewState)
+    {       
         if (isset($spec['attrList'])) {
             $specma=$spec['attrList'];
             if (isset($specma[$viewState])) {
@@ -580,12 +652,33 @@ class View
                 $this->setPropList($specma[$viewState], $viewState);
             }
         }
+        if (isset($spec['navList'])) {
+            $specma=$spec['navList'];
+            if (isset($specma[$viewState])) {
+                $this->setNav($specma[$viewState], $viewState);
+            }
+        }
         if (isset($spec['lblList'])) {
             $specma=$spec['lblList'];
             $this->setLblList($specma);
         }
-        if ($viewState == V_S_CREF) {
-            $this->initView($handle, V_S_REF);
+        if ($viewState !=  V_S_REF and $viewState !=  V_S_REF) {     
+            if (isset($spec['viewList'])) {
+                $specma=$spec['viewList'];
+                $viewL=[];
+                $first = true;
+                foreach ($specma as $viewN=>$vspec) {
+                    $viewL[]=$viewN;
+                    if (is_null($this->_name) and $first) {
+                        $this->_name=$viewN;
+                    }
+                    if ($this->_name==$viewN) {
+                        $this->setView($vspec, $viewState);
+                    }
+                    $first=false;
+                }
+                $this->setNavView($viewL, $viewState);
+            }
         }
     }
     
@@ -635,8 +728,10 @@ class View
         }
         $arg = [];
         $navClass= $this->getNavClass($viewState);
-        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_CNAV,V_ARG=>$navClass]; 
-        $arg[]= [V_TYPE=>V_OBJ];
+        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_CNAV,V_ARG=>$navClass];
+        $navView[]=[V_TYPE=>V_OBJ];
+        $navView = array_merge($navView, $this->getNavView($viewState));
+        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_VLIST,V_ARG=>$navView];
         $navs = $this->getNav($viewState);
         $arg[]= [V_TYPE=>V_LIST,V_LT=>V_NAV,V_ARG=>$navs];
         $arg[]= [V_TYPE=>V_LIST,V_LT=>V_ALIST,V_ARG=>$spec];

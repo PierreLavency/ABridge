@@ -14,33 +14,41 @@ require_once("ViewConstant.php");
 		
 	'Views' => [
 		'User' =>[
-			'attrList' => [
-				V_S_REF		=> ['SurName','Name'],
-				]
+		
+				'attrList' => [
+					V_S_REF		=> ['SurName','Name'],
+					]
+					
 			],
 		'Person' => [
-			'attrHtml' => [
-				V_S_CREA => ['Sexe'=>H_T_RADIO],
-				V_S_UPDT => ['Sexe'=>H_T_RADIO],
-				V_S_SLCT => ['Sexe'=>H_T_RADIO],
-			],
-			'attrList' => [
-				V_S_CREF 	=> ['id','Sexe','BirthDay','DeathDate','Age','DeathAge','Father','Mother'],
-				V_S_REF		=> ['SurName','Name'],
-			],
-			'attrProp' => [
-				V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
-			]
+		
+				'attrHtml' => [
+					V_S_CREA => ['Sexe'=>H_T_RADIO],
+					V_S_UPDT => ['Sexe'=>H_T_RADIO],
+					V_S_SLCT => ['Sexe'=>H_T_RADIO],
+				],
+				'attrList' => [
+					V_S_CREF 	=> ['id','Sexe','BirthDay','DeathDate','Age','DeathAge','Father','Mother'],
+					V_S_REF		=> ['SurName','Name'],
+				],
+				'attrProp' => [
+					V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
+				]
+				
 		],
 		'Code' => [
-			'attrList' => [
-				V_S_REF		=> ['Name'],
-			]
+		
+				'attrList' => [
+					V_S_REF		=> ['Name'],
+				]
+				
 		],
 		'CodeValue' =>[
-			'attrList' => [
-				V_S_REF		=> ['Name'],
-			]
+		
+				'attrList' => [
+					V_S_REF		=> ['Name'],
+				]
+				
 		],
 	]
 	];

@@ -86,7 +86,7 @@ a:20:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br
 		</ul>
 	</li>
 </ul>
-";i:18;s:256:"<form method=POST action= testSuite ><input type='hidden' name='action' value='toto' >
+";i:18;s:256:"<form method=POST action= testSuite ><input type='hidden' name='Action' value='toto' >
 	<select name = "A"  >
 		<option  value = "a1"  selected  >a1</option>
 		<option  value = "a2"  >a2</option>

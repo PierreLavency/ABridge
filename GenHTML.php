@@ -25,8 +25,11 @@ function getNl($level)
 function genFormL($action,$url,$hidden,$dspecL,$level) 
 {
     $formS = '<form method='.$action.' action= '.$url. ' >';
-    $formS = $formS."<input type='hidden' name='action' value='";
-    $formS = $formS.$hidden. "' >" ;
+    foreach ($hidden as $name=>$val) {
+        $formS=$formS."<input type='hidden' name='";
+        $formS=$formS.$name."' value='".$val."' >" ;
+    }
+    
     $formES = '</form>  ';
     $endS    = ' > '     ;
     $tab = getTab($level);

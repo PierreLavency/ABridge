@@ -1,4 +1,4 @@
-a:8:{i:0;s:184:"<!DOCTYPE html>
+a:8:{i:0;s:186:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -6,31 +6,35 @@ a:8:{i:0;s:184:"<!DOCTYPE html>
 <body> 
  <table > <tr>
 	<td>
-		<a href='/ABridge.php/test?View=Select' >test</a>
+		<a href='/ABridge.php/test?Action=Select' >test</a>
 	</td>
 </tr> </table>
 
 
  </body> 
- </html>";i:1;s:935:"<!DOCTYPE html>
+ </html>";i:1;s:987:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='action' value='Create' >
+ <form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='Action' value='Create' >
 	<table > <tr>
 		<td>
-			<a href='/ABridge.php/test?View=Select' >test</a>
+			<a href='/ABridge.php/test?Action=Select' >test</a>
 		</td>
 	</tr> </table>
-	test
+	<table > <tr>
+		<td>
+			test
+		</td>
+	</tr> </table>
 	<table > <tr>
 		<td>
 			<input type="submit" value = Create >
 		</td>
 		<td>
-			<a href=/ABridge.php/test/1 >Cancel</a>
+			<a href='/ABridge.php/test/1' >Cancel</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -78,7 +82,7 @@ a:8:{i:0;s:184:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:2;s:870:"<!DOCTYPE html>
+ </html>";i:2;s:924:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -86,24 +90,28 @@ a:8:{i:0;s:184:"<!DOCTYPE html>
 <body> 
  <table > <tr>
 	<td>
-		<a href='/ABridge.php/test?View=Select' >test</a>
+		<a href='/ABridge.php/test?Action=Select' >test</a>
 	</td>
 </tr> </table>
 
-test
+<table > <tr>
+	<td>
+		test
+	</td>
+</tr> </table>
 
 <table > <tr>
 	<td>
-		<a href='/ABridge.php/test/1?View=Update' >Update</a>
+		<a href='/ABridge.php/test/1?Action=Update' >Update</a>
 	</td>
 	<td>
-		<a href='/ABridge.php/test/1?View=Delete' >Delete</a>
+		<a href='/ABridge.php/test/1?Action=Delete' >Delete</a>
 	</td>
 	<td>
-		<a href='/ABridge.php/test?View=Create' >Create</a>
+		<a href='/ABridge.php/test?Action=Create' >Create</a>
 	</td>
 	<td>
-		<a href='/ABridge.php/test?View=Select' >Select</a>
+		<a href='/ABridge.php/test?Action=Select' >Select</a>
 	</td>
 </tr> </table>
 
@@ -153,25 +161,29 @@ test
 
 
  </body> 
- </html>";i:3;s:998:"<!DOCTYPE html>
+ </html>";i:3;s:1050:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='action' value='Update' >
+ <form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='Action' value='Update' >
 	<table > <tr>
 		<td>
-			<a href='/ABridge.php/test?View=Select' >test</a>
+			<a href='/ABridge.php/test?Action=Select' >test</a>
 		</td>
 	</tr> </table>
-	test
+	<table > <tr>
+		<td>
+			test
+		</td>
+	</tr> </table>
 	<table > <tr>
 		<td>
 			<input type="submit" value = Update >
 		</td>
 		<td>
-			<a href=/ABridge.php/test/1 >Cancel</a>
+			<a href='/ABridge.php/test/1' >Cancel</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -219,25 +231,29 @@ test
 </form>  
 
  </body> 
- </html>";i:4;s:866:"<!DOCTYPE html>
+ </html>";i:4;s:918:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='action' value='Delete' >
+ <form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='Action' value='Delete' >
 	<table > <tr>
 		<td>
-			<a href='/ABridge.php/test?View=Select' >test</a>
+			<a href='/ABridge.php/test?Action=Select' >test</a>
 		</td>
 	</tr> </table>
-	test
+	<table > <tr>
+		<td>
+			test
+		</td>
+	</tr> </table>
 	<table > <tr>
 		<td>
 			<input type="submit" value = Delete >
 		</td>
 		<td>
-			<a href=/ABridge.php/test/1 >Cancel</a>
+			<a href='/ABridge.php/test/1' >Cancel</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -285,31 +301,35 @@ test
 </form>  
 
  </body> 
- </html>";i:5;s:1817:"<!DOCTYPE html>
+ </html>";i:5;s:1873:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='action' value='Select' >
+ <form method=POST action= /ABridge.php/test/1 ><input type='hidden' name='Action' value='Select' >
 	<table > <tr>
 		<td>
-			<a href='/ABridge.php/test?View=Select' >test</a>
+			<a href='/ABridge.php/test?Action=Select' >test</a>
 		</td>
 	</tr> </table>
-	test
+	<table > <tr>
+		<td>
+			test
+		</td>
+	</tr> </table>
 	<table > <tr>
 		<td>
 			<input type="submit" value = Select >
 		</td>
 		<td>
-			<a href='/ABridge.php/test?View=Select' >Refresh</a>
+			<a href='/ABridge.php/test?Action=Select' >Refresh</a>
 		</td>
 		<td>
-			<a href=/ABridge.php/test/1 >Cancel</a>
+			<a href='/ABridge.php/test/1' >Cancel</a>
 		</td>
 		<td>
-			<a href='/ABridge.php/test?View=Create' >Create</a>
+			<a href='/ABridge.php/test?Action=Create' >Create</a>
 		</td>
 	</tr> </table>
 	<table >

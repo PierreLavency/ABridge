@@ -15,11 +15,11 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 		$_SERVER['PATH_INFO']=$a;
 		$_SERVER['REQUEST_METHOD']=$b;
 		if (is_null($c)) {		
-			unset($_GET['View']);
-			unset($_POST['action']);
+			unset($_GET['Action']);
+			unset($_POST['Action']);
 		} else {
-			$_GET['View']=$c;
-			$_POST['action']=$c;
+			$_GET['Action']=$c;
+			$_POST['Action']=$c;
 		}
 		
 		$r=new Request();
@@ -64,11 +64,11 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 		$_SERVER['PATH_INFO']=$a;
 		$_SERVER['REQUEST_METHOD']=$b;
 		if (is_null($c)) {		
-			unset($_GET['View']);
-			unset($_POST['action']);
+			unset($_GET['Action']);
+			unset($_POST['Action']);
 		} else {
-			$_GET['View']=$c;
-			$_POST['action']=$c;
+			$_GET['Action']=$c;
+			$_POST['Action']=$c;
 		}
 		
 		$r=new Request();
@@ -77,7 +77,7 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 			if ($d == V_S_READ) {
 				$e= $r->prfxPath($e1);
 			} else {
-			$e= "'".$r->prfxPath($e1)."'";
+			$e= $r->prfxPath($e1);
 			}
 		} else {
 			$e=null;
@@ -88,60 +88,69 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 	public function Provider2() {
         return [
 			['/', 	    'GET',null,		V_S_READ,'/'],
-			['/', 	    'GET',null,		V_S_UPDT,'/?View='.V_S_UPDT],
-			['/X', 	    'GET',null,		V_S_SLCT,'/X?View='.V_S_SLCT],
+			['/', 	    'GET',null,		V_S_UPDT,'/?Action='.V_S_UPDT],
+			['/X', 	    'GET',null,		V_S_SLCT,'/X?Action='.V_S_SLCT],
 			['/X', 	    'GET',null,		V_S_READ,'/'],			
 			['/X/1', 	'GET',null,		V_S_READ,'/X/1'],
-			['/X/1', 	'GET',null,		V_S_SLCT,'/X?View='.V_S_SLCT],
-            ['/X/1/X', 	'GET',null,		V_S_CREA,'/X/1/X?View='.V_S_CREA],
+			['/X/1', 	'GET',null,		V_S_SLCT,'/X?Action='.V_S_SLCT],
+            ['/X/1/X', 	'GET',null,		V_S_CREA,'/X/1/X?Action='.V_S_CREA],
 	        ['/X/1/X', 	'GET',null,		V_S_READ,'/X/1'],
 	        ['/X/1/X', 	'GET',null,		V_S_UPDT,null],
 		    ['/', 		'GET',null,		V_S_DELT,null],		
 			['/X/1', 	'GET',null,		'X',null],			
-            ['/X/1/X/1','GET',null,		V_S_DELT,'/X/1/X/1?View='.V_S_DELT],
+            ['/X/1/X/1','GET',null,		V_S_DELT,'/X/1/X/1?Action='.V_S_DELT],
  			];
     }
 	
 	public function testMethods() 
 	{
-			$r=new Request('/X/1/X',V_S_CREA);
+			$r=new Request('/ABridge.php','/X/1/X',V_S_CREA);
 			$this->assertnotNull($r);
 			$this->assertEquals($r->prfxPath('/X/1/X'),$r->classPath());
 			
 			$this->assertEquals($r->objN(),2);
 			$this->assertEquals(count($r->pathArr()),3);
 			$res = $r->getClassPath('X',V_S_CREA);
-			$this->assertEquals($res,"'".$r->prfxPath('/X?View='.V_S_CREA."'"));
+			$this->assertEquals($res,$r->prfxPath('/X?Action='.V_S_CREA));
 
 			
-			$r=new Request('/X/1/X/1',V_S_READ);
+			$r=new Request('/ABridge.php','/X/1/X/1',V_S_READ);
 			$this->assertnotNull($r);
 			
 			$res = $r->getCrefPath('X',V_S_CREA);
-			$this->assertEquals($res,"'".$r->prfxPath('/X/1/X/1/X?View='.V_S_CREA."'"));
+			$this->assertEquals($res,$r->prfxPath('/X/1/X/1/X?Action='.V_S_CREA));
 			
 			$p = $r->popObj();
 			$this->assertEquals('/X/1',$p);
 			
-			$r=new Request('/X/1',V_S_READ);
+			$r=new Request('/ABridge.php','/X/1',V_S_READ);
 			$this->assertnotNull($r);
 			$p = $r->popObj();
 			$this->assertEquals('/',$p);
 			
 			$this->assertEquals($r->prfxPath('/X/1'),$r->objPath());
+			
+			$_SERVER['PATH_INFO']='/X/1';
+			$_SERVER['REQUEST_METHOD']='GET';
+			$_SERVER['PHP_SELF']='/API.php/X/1';
 
+			$r=new Request();
+			$this->assertnotNull($r);
+			$this->assertEquals('/API.php',$r->getDocRoot());
 			
 	}
 	
 	public function testPathErr() 
 	{
+
+
 		$_SERVER['PATH_INFO']='/X/1';
 		$_SERVER['REQUEST_METHOD']='POST';
+
 		try {$x=new Request();} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC048);
-		
-		
-		$r=new Request('/',V_S_READ);
+				
+		$r=new Request('/ABridge.php','/',V_S_READ);
 		$this->assertnotNull($r);
 
 		try {$r->objPath();} catch (Exception $e) {$x= $e->getMessage();}
@@ -151,45 +160,45 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($x, E_ERC038);
 		
 		$pathStrg=1;
-		try {$x=new Request($pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
+		try {$x=new Request('/ABridge.php',$pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC036.':'.$pathStrg);
 				
 		$pathStrg='/$/1';
-		try {$x=new Request($pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
+		try {$x=new Request('/ABridge.php',$pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC036.':'.$pathStrg.':0');
 
 		$pathStrg='/a/$';
-		try {$x=new Request($pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
+		try {$x=new Request('/ABridge.php',$pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC036.':'.$pathStrg.':1');
 
 		$pathStrg='/a/1/$';
-		try {$x=new Request($pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
+		try {$x=new Request('/ABridge.php',$pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC036.':'.$pathStrg.':2');
 		
 		$path='/X';
 		
-		try {$x=new Request($path,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
+		try {$x=new Request('/ABridge.php',$path,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC048.':'.V_S_READ);
 		
 		
-		$p1 = new Request($path,V_S_CREA);
+		$p1 = new Request('/ABridge.php',$path,V_S_CREA);
 		$this->assertNotNull($p1);
 		
 		try {$x=$p1->popObj();} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC035);
 
 		$path='/X/1';
-		try {$x=new Request($path,V_S_SLCT);} catch (Exception $e) {$r= $e->getMessage();}
+		try {$x=new Request('/ABridge.php',$path,V_S_SLCT);} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC048.':'.V_S_SLCT);	
 		
-		$p1 = new Request($path,V_S_READ);
+		$p1 = new Request('/ABridge.php',$path,V_S_READ);
 		$this->assertNotNull($p1);	
 		
 		try {$x=$p1->pushId(1);} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC037);
 		
 		$path='/';
-		try {$x=new Request($path,V_S_SLCT);} catch (Exception $e) {$r= $e->getMessage();}
+		try {$x=new Request('/ABridge.php',$path,V_S_SLCT);} catch (Exception $e) {$r= $e->getMessage();}
 		$this->assertEquals($r, E_ERC048.':'.V_S_SLCT);	
 	
 	

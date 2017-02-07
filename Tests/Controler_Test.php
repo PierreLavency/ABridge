@@ -32,14 +32,14 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $_SERVER['REQUEST_METHOD']='GET';   
         $_SERVER['PATH_INFO']=$this->path;
-        $_GET['View']=V_S_CREA;
+        $_GET['Action']=V_S_CREA;
         
         $ctrl = new Controler($this->config);
         $resc = $ctrl->run($this->show,0);
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$this->path;
-        $_POST['action']=V_S_CREA;
+        $_POST['Action']=V_S_CREA;
         $_POST['Name']=1;
         
         $ctrl = new Controler($this->config);
@@ -53,7 +53,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $this->path = $x;
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$this->path;
-		unset($_GET['View']);
+		unset($_GET['Action']);
         
         $reso = $ctrl->run($this->show,0);
         
@@ -70,7 +70,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$fpath;
-        $_POST['action']=V_S_CREA;
+        $_POST['Action']=V_S_CREA;
         $_POST['Name']=1;
         
         $ctrl = new Controler($this->config);
@@ -84,7 +84,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$fpath;
-        $_GET['View']=V_S_UPDT;
+        $_GET['Action']=V_S_UPDT;
         
         $ctrl = new Controler($this->config);
         $res = $ctrl->run($this->show,0);
@@ -94,7 +94,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$fpath;
-        $_POST['action']=V_S_UPDT;
+        $_POST['Action']=V_S_UPDT;
         $_POST['Name']=2;
         
         $ctrl = new Controler($this->config);
@@ -106,21 +106,21 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$fpath;
-        $_GET['View']=V_S_READ;
+        $_GET['Action']=V_S_READ;
         
         $ctrl = new Controler($this->config);
         $res = $ctrl->run($this->show,0);
             
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$fpath;
-        $_GET['View']=V_S_DELT;
+        $_GET['Action']=V_S_DELT;
         
         $ctrl = new Controler($this->config);
         $res = $ctrl->run($this->show,0);
 
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$fpath;
-        $_POST['action']=V_S_DELT;
+        $_POST['Action']=V_S_DELT;
         
         $ctrl = new Controler($this->config);
         $res = $ctrl->run($this->show,0);
@@ -129,7 +129,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$this->path;
-        $_POST['action']=V_S_UPDT;
+        $_POST['Action']=V_S_UPDT;
         $_POST['Name']='a';
 
         $ctrl = new Controler($this->config);

@@ -1,5 +1,5 @@
 <?php
-require_once('Path.php');
+
 require_once("UnitTest.php");
 require_once('View_case.php');
 

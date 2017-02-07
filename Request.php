@@ -5,7 +5,7 @@ require_once('ErrorConstant.php');
 
 Class Request
 {
-    protected $_pathPrefix='/ABridge.php';
+    protected $_docRoot='/ABridge.php';
     protected $_path=null;
     protected $_pathArr;
     protected $_objN;
@@ -26,6 +26,12 @@ Class Request
  
     protected function construct0() 
     {
+        if (isset($_SERVER['PHP_SELF'])) { 
+            $uri = explode('/', $_SERVER['PHP_SELF']);
+            if (count($uri) > 1) {
+                $this->_docRoot='/'.$uri[1];
+            }
+        }
         if (isset($_SERVER['PATH_INFO'])) { 
             $path = $_SERVER['PATH_INFO'];
         }
@@ -34,13 +40,14 @@ Class Request
         $this->checkActionPath($this->getAction());
     }
  
-    protected function construct2($path,$action) 
+    protected function construct3($docRoot,$path,$action) 
     {
+        $this->_docRoot=$docRoot;
         $this->initPath($path);
         $this->_action=$action;
-        $this->checkActionPath($this->getAction());     
+        $this->checkActionPath($this->getAction());   
     }
-    
+
 // Path
      
     protected function initPath($pathStrg)
@@ -83,11 +90,28 @@ Class Request
         }
     }
 
+    public function getDocRoot() 
+    {
+        return $this->_docRoot;
+    }
+    
     public function prfxPath($path)
     {
-        return $this->_pathPrefix.$path;
+        
+        return $this->_docRoot.$path;
     }
 
+    public function formPath($path,$action)
+    {
+        return $path.'?Action='.$action;
+    }
+
+    public function formPrfx($path,$action)
+    {
+        $path = $this->prfxPath($path);
+        return $this->formPath($path, $action);
+    }
+    
     public function getPath() 
     {
         $path = $this->prfxPath($this->_path);
@@ -209,8 +233,8 @@ Class Request
         $method = $_SERVER['REQUEST_METHOD'];  
         if ($method == 'GET') {
             $this->_action = V_S_READ;
-            if (isset($_GET['View'])) {
-                $this->_action = $_GET['View'];
+            if (isset($_GET['Action'])) {
+                $this->_action = $_GET['Action'];
                 return $this->_action; 
             }
             if ($this->isClassPath()) {
@@ -220,8 +244,8 @@ Class Request
             return $this->_action;
         }
         if ($method =='POST') {
-            if (isset($_POST['action'])) {
-                $this->_action = $_POST['action'];
+            if (isset($_POST['Action'])) {
+                $this->_action = $_POST['Action'];
                 return $this->_action; 
             }
             if ($this->isClassPath()) {
@@ -273,7 +297,7 @@ Class Request
                 return $this->getPath();
             }
             if ($action == V_S_UPDT) {
-                $path = "'".$this->getPath().'?View='.$action."'";
+                $path = $this->formPath($this->getPath(), $action);
                 return $path;
             }
         }
@@ -282,11 +306,11 @@ Class Request
                 return $this->getPath();
             }
             if ($action == V_S_UPDT or $action == V_S_DELT) {
-                $path = "'".$this->getPath().'?View='.$action."'";
+                $path = $this->formPath($this->getPath(), $action);
                 return $path;
             }
             if ($action == V_S_SLCT or $action == V_S_CREA) {
-                $path = "'".$this->classPath().'?View='.$action."'";
+                $path = $this->formPath($this->classPath(), $action);
                 return $path;
             }
         }
@@ -295,7 +319,7 @@ Class Request
                 return $this->objPath();
             }
             if ($action == V_S_SLCT or $action == V_S_CREA) {
-                $path = "'".$this->getPath().'?View='.$action."'";
+                $path = $this->formPath($this->getPath(), $action);
                 return $path;
             }
         }
@@ -304,14 +328,14 @@ Class Request
     
     public function getClassPath($mod,$action) 
     {    
-        $path="'".$this->prfxPath('/'.$mod).'?View='.$action."'";
+        $path=$this->formPath($this->prfxPath('/'.$mod), $action);
         return $path;
     }
    
     public function getCrefPath($attr,$action)
     {
-        $path = $this->getPath();
-        $path= "'".$path.'/'.$attr.'?View='.$action."'";
+        $path = $this->getPath().'/'.$attr;
+        $path= $this->formPath($path, $action);
         return $path;
     }
 

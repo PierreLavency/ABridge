@@ -24,7 +24,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase {
 		$s = $test[0][2];	
 		self::$db->beginTrans();
 		$home= new Home('/');
-		$request = new Request($p,V_S_READ);
+		$request = new Request('/ABridge.php',$p,V_S_READ);
 		$handle = new Handle($request, $home);	
 		$v = new View($handle);	
 		$v->setNavClass(['dir']);	
@@ -47,7 +47,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase {
 	self::$db->beginTrans();
 	
 	$home= new Home('/');
-	$request = new Request($p,V_S_READ);
+	$request = new Request('/ABridge.php',$p,V_S_READ);
 	$handle = new Handle($request, $home);	
 	$v = new View($handle);	
 	
