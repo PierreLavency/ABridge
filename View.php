@@ -10,6 +10,7 @@ class View
     // property
 
     protected $_handle;
+    protected $_req;
     
     protected $_name;
 
@@ -78,7 +79,8 @@ class View
 
     function __construct($handle) 
     {
-        $this->_handle=$handle; 
+        $this->_handle=$handle;
+        $this->_req=$handle->getReq();
     }
 
     // methods
@@ -320,9 +322,9 @@ class View
             if ($typ == M_STRING) {
                 $res[H_VALUES]=[['::','::'],['=','='],['>','>'],['<','<']];
             }
-            $default='=';
-            if (isset($_POST[$name])) {
-                $default= $_POST[$name]; // only dep on method !!
+            $default=$this->_req->getPrm($name);
+            if (is_null($default)) {
+                $default= '=';
             }
             $res[H_DEFAULT]=$default;
             return $res;
@@ -335,20 +337,16 @@ class View
             ($viewState == V_S_SLCT 
              and $this->_handle->isSelect($attr)))) {
             $res[H_NAME]=$attr;
-            $default=null;
-            if (isset($_POST[$attr])) {
-                $default= $_POST[$attr]; // only dep on method !!
-            } else {
-                if ($viewState == V_S_UPDT) {
-                    $default=$this->_handle->getVal($attr);
-                }
-                if ($viewState == V_S_CREA ) {
-                    $default=$this->_handle->getDflt($attr);
-                }                  
+            $default=$this->_req->getPrm($attr);
+            if (is_null($default)) {
+                    if ($viewState == V_S_UPDT) {
+                        $default=$this->_handle->getVal($attr);
+                    }
+                    if ($viewState == V_S_CREA ) {
+                        $default=$this->_handle->getDflt($attr);
+                    }                  
             }
-            if ($default) {
-                $res[H_DEFAULT]=$default;
-            }
+            $res[H_DEFAULT]=$default;   
             $htyp = $this->getUpAttrHtml($attr, $viewState);
             $res[H_TYPE]=$htyp;
             if ($htyp == H_T_SELECT or $htyp == H_T_RADIO) {
@@ -469,10 +467,10 @@ class View
             if ($nav==V_B_RFCH) {
                 $nav=V_S_SLCT;
             }
-            $path = $this->_handle->getActionPath($nav);
-            if (is_null($path)) {
+            if (!$this->_handle->isAllowed($nav)) {
                 return false;
             }
+            $path = $this->_req->getActionPath($nav);
             if (!is_null($this->_name)) {
                 $path = $path.$con.'View='.$this->_name;
             }
@@ -489,12 +487,12 @@ class View
         $res[H_TYPE]=H_T_LINK;
         $res[H_LABEL]=$this->getLbl($mod);
         if ($mod == 'Home') {
-             $path = '/ABridge.php/';
+            $path = $this->_req->getHomePath();
         } else {
-             $path = $this->_handle->getClassPath($mod, $nav);
-             if (is_null($path)) {
-                 return false;
-             }
+            if (!$this->_handle->isAllowedMod($mod, $nav)) {
+                return false;
+            }
+            $path = $this->_req->getClassPath($mod, $nav);
         } 
         $res[H_NAME]="'".$path."'";
         return $res;
@@ -508,10 +506,10 @@ class View
         $attr=$spec[V_ATTR];
         if ($nav==V_B_NEW) {
             $result[H_TYPE]=H_T_LINK;
-            $path=$this->_handle->getCrefPath($attr, V_S_CREA);
-            if (is_null($path)) {
+            if (!$this->_handle->isAllowedCref($attr, V_S_CREA)) {
                 return false;
-            }
+            }           
+            $path=$this->_req->getCrefPath($attr, V_S_CREA);
             $result[H_NAME]=$path;
         } else {
             $pos = $spec[V_ID];
@@ -612,20 +610,13 @@ class View
         if ($handle->nullObj()) {
             return true;
         }
-        $this->_name=null;
-        if (isset($_GET['View'])) {
-            $this->_name=$_GET['View'];
-        }
-        if (isset($_POST['View'])) {
-            $this->_name=$_POST['View'];
-        }       
+        $this->_name=$this->_req->getPrm('View');;
         $modName = $handle->getModName();
         $spec = Handler::get()->getViewHandler($modName);
         if (is_null($spec)) {
                 return true;
         }
-        $this->setView($spec, $viewState);
-        
+        $this->setView($spec, $viewState);       
         if ($viewState == V_S_CREF) {
             $this->initView($handle, V_S_REF);
         }
@@ -767,8 +758,9 @@ class View
         $c=count($list);
         $pos=0;
         $slice = 10;
-        if (isset($_GET[$attr])) {
-            $pos=(int) $_GET[$attr];
+        $npos = $this->_req->getPrm($attr); //not work
+        if (!is_null($npos)) {
+            $pos=(int) $npos;
             if ($pos<0) {
                 $pos=-$pos-$slice;
                 if ($pos<0) {

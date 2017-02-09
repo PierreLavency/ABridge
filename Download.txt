@@ -11,6 +11,10 @@ Git
 http://git-scm.com/download/win 
 You are downloading the latest (2.11.0) 64-bit version of Git for Windows. 
 
+Rest API - in GitRepo
+git clone https://github.com/tcdent/php-restclient.git
+git remote -v show  // to see if it is up to date
+
 Xamp
 
 5.6.28 / PHP 5.6.28

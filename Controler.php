@@ -16,9 +16,6 @@ class Controler
     protected $_handle=null;
     protected $_request= null;
     protected $_home= null; 
-    protected $_typ= 'HTML'; 
-     
-    protected $_obj = null; // to delete
     protected $_spec = [];
     protected $_attrL = [];
     protected $_valL = [];
@@ -57,19 +54,16 @@ class Controler
             return true;
         }
         if ($level == 1) {
-            if (isset($_SERVER['PATH_INFO'])) {
-                $url=$_SERVER['PATH_INFO'];
-                echo 'url is '.$url. '<br>';
-            } else {
-                echo 'url is null'. '<br>';
-            }
-            $method = $_SERVER['REQUEST_METHOD'];
+            $urli = $this->_request->getDocRoot();
+            echo 'uri is '.$urli. '<br>';
+            $urlp = $this->_request->getRpath();
+            echo 'path is '.$urlp. '<br>';
+            $method = $this->_request->getMethod();
             echo 'method is '.$method. '<br>';
         }
         foreach ($this->_bases as $base) {
             $base-> setLogLevl($level);
         }
-
     }
     
     protected function logStartView() 
@@ -134,9 +128,9 @@ class Controler
             } else {
                 $cond = $c->isModif($attr);
             }
-            $typ= $c->getTyp($attr);
-            if (isset($_POST[$attr])) {
-                $val= $_POST[$attr];
+            $typ= $c->getTyp($attr);            
+            $val=$this->_request->getPrm($attr);
+            if (!is_null($val)) {
                 $valC = convertString($val, $typ);
                 if ($c->isModif($attr)) {
                     $c->setVal($attr, $valC);
@@ -147,8 +141,9 @@ class Controler
                 }
             }
             $name=$attr.'_OP';
-            if (isset($_POST[$name])) {
-                $this->_opL[$attr]=$_POST[$name];
+            $val=$this->_request->getPrm($name);
+            if (!is_null($val)) {
+                $this->_opL[$attr]=$val;
             }
             if ($c->isProtected($attr)) {
                 $this->_attrL[]=$attr;
@@ -171,39 +166,38 @@ class Controler
         $v=new View($this->_handle);
         $home=$spec['Home'];
         $v->setNavClass($home);
-        $action = $this->_handle->getAction();
+        $action = $this->_request->getAction();
         $v->show($action, $show);
         return true;
     }
     
     function run($show,$logLevel)
     {
-        $method = $_SERVER['REQUEST_METHOD'];   
         $this->beginTrans();
+        $this->_request = new Request();
         $this->setLogLevl($logLevel);
         $this->_home= new Home('/');
-        $this->_request = new Request();
         $this->_handle = new Handle($this->_request, $this->_home);
-
+        $method=$this->_request->getMethod();
+        
         if ($this->_request->getDocRoot() == '/API.php') { 
             genJASON($this->_handle);
             $this->close();
             $this->showLog();
             return $this->_handle->getPath();
         }
-
         if ($this->_handle->nullobj()) {
             $this->showView($show);
             $this->close();
             $this->showLog();
             return $this->_handle->getPath();
         }
-        $action = $this->_handle->getAction();
+        $action = $this->_request->getAction();
         $actionExec = false;
         if ($method =='POST') {
             if ($action == V_S_UPDT 
-            or $action == V_S_CREA 
-            or $action==V_S_SLCT) {
+            or  $action == V_S_CREA 
+            or  $action==V_S_SLCT) {
                 $res = $this->setVal($action);
             }
             if (!$this->_handle->isErr()) {
@@ -242,7 +236,7 @@ class Controler
                 $this->_handle = new Handle($this->_request, $this->_home);
             }
             if ($action != V_S_SLCT) {
-                $this->_handle->setAction(V_S_READ);
+                $this->_request->setAction(V_S_READ);
             }
         }
         $this->showView($show);

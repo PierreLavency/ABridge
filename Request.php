@@ -14,7 +14,10 @@ Class Request
     protected $_isObjPath=false;
     protected $_isHomePath=false;   
     protected $_action=null;
-
+    protected $_method=null;
+    protected $_getp=null;
+    protected $_postp=null;
+    
     public function __construct() 
     {
         $a = func_get_args();
@@ -33,8 +36,11 @@ Class Request
             }
         }
         if (isset($_SERVER['PATH_INFO'])) { 
-            $path = $_SERVER['PATH_INFO'];
+            $path = trim($_SERVER['PATH_INFO']);
         }
+        $this->_getp   = $this->cleanInputs($_GET);
+        $this->_postp  = $this->cleanInputs($_POST);
+        $this->_method = $_SERVER['REQUEST_METHOD'];  
         $this->initPath($path);
         $this->initAction();
         $this->checkActionPath($this->getAction());
@@ -90,6 +96,11 @@ Class Request
         }
     }
 
+    public function getMethod() 
+    {
+        return $this->_method;
+    }
+    
     public function getDocRoot() 
     {
         return $this->_docRoot;
@@ -105,11 +116,11 @@ Class Request
     {
         return $path.'?Action='.$action;
     }
-
-    public function formPrfx($path,$action)
+    
+    public function getHomePath() 
     {
-        $path = $this->prfxPath($path);
-        return $this->formPath($path, $action);
+        $path = $this->prfxPath('/');
+        return $path;
     }
     
     public function getPath() 
@@ -223,18 +234,16 @@ Class Request
             throw new Exception(E_ERC037);
         }
         return $this->_path.'/'.$id; 
-    }   
-        
+    }          
     
 // Action   
-    
+
     protected function initAction() 
     {
-        $method = $_SERVER['REQUEST_METHOD'];  
-        if ($method == 'GET') {
+        if ($this->_method == 'GET') {
             $this->_action = V_S_READ;
-            if (isset($_GET['Action'])) {
-                $this->_action = $_GET['Action'];
+            if (isset($this->_getp['Action'])) {
+                $this->_action =$this->_getp['Action'];
                 return $this->_action; 
             }
             if ($this->isClassPath()) {
@@ -243,9 +252,9 @@ Class Request
             }
             return $this->_action;
         }
-        if ($method =='POST') {
-            if (isset($_POST['Action'])) {
-                $this->_action = $_POST['Action'];
+        if ($this->_method =='POST') {  
+            if (isset($this->_postp['Action'])) {
+                $this->_action = $this->_postp['Action'];
                 return $this->_action; 
             }
             if ($this->isClassPath()) {
@@ -254,6 +263,30 @@ Class Request
             }
         }
         throw new Exception(E_ERC048);
+    }
+    
+    private function cleanInputs($data) 
+    {
+        $cleanInput = Array();
+        if (is_array($data)) {
+            foreach ($data as $k => $v) {
+                $cleanInput[$k] = $this->cleanInputs($v);
+            }
+        } else {
+            $cleanInput = trim(strip_tags($data));
+        }
+        return $cleanInput;
+    }   
+    
+    public function getPrm($attr)
+    {
+        if (isset($this->_getp[$attr])) {
+            return $this->_getp[$attr];
+        }
+        if (isset($this->_postp[$attr])) {
+            return $this->_postp[$attr];
+        }
+        return null;
     }
     
     public function getAction() 

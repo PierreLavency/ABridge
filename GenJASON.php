@@ -16,22 +16,12 @@ function genJASON($h)
         $val = $h->getVal($attr);
         switch ($typ) {
             case M_CREF :
-                $res=$res. "\t\t".'"'.$attr .'" : {'."\n" ;
+                $res=$res. "\t\t".'"'.$attr .'"'.' : {'."\n" ;
                 $res=$res. "\t\t\t".'"'.$h->getModCref($attr);
-                $res=$res. '" : ['."\n" ;              
-                $cc = count($val);
-                foreach ($val as $id) {
-                    $cc--;
-                    $hc = $h->getCref($attr, $id);
-                    $res=$res.  "\t\t\t\t".'{ "id" : "'.$id;
-                    $res=$res.', "path" : "'.$path;
-                    $res=$res.'/'.$attr.'/'.$id.'" }';                     
-                    if ($cc) {
-                        $res=$res. ',';
-                    }
-                    $res=$res. "\n";
-                }
-                $res=$res. "\t\t\t ] \n" ;        
+                $res=$res. '" : [' ;
+                $valS=implode(',', $val);
+                $res=$res.$valS;
+                $res=$res. " ] \n" ;        
                 $res=$res. "\t\t }" ;
                 break;
             case M_REF :
@@ -41,9 +31,8 @@ function genJASON($h)
                 } else {
                     $res=$res. "\t\t".'"'.$attr .'" : {'."\n" ;
                     $res=$res. "\t\t\t".'"'.$hc->getModName().'" : {"id" : ';
-                    $res=$res. $hc->getId().', "path" : "';
-                    $res=$res. $hc->getPath().'" }'."\n";
-                    $res=$res. "\t\t}" ;                        
+                    $res=$res. $hc->getId();
+                    $res=$res. " }" ;                        
                 }
                 break;
             case M_CODE :
@@ -53,9 +42,8 @@ function genJASON($h)
                 } else {
                     $res=$res. "\t\t".'"'.$attr .'" : {'."\n" ;
                     $res=$res. "\t\t\t".'"'.$hc->getModName().'" : {"id" : "';
-                    $res=$res. $hc->getId().', "path" : "';
-                    $res=$res. $hc->getPath().'" }'."\n";
-                    $res=$res. "\t\t}" ;                        
+                    $res=$res. $hc->getId();
+                    $res=$res. " }" ;                        
                 }
                 break;              
             default :

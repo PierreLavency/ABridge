@@ -133,11 +133,13 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 			$_SERVER['PATH_INFO']='/X/1';
 			$_SERVER['REQUEST_METHOD']='GET';
 			$_SERVER['PHP_SELF']='/API.php/X/1';
-
+			$_GET['Name']='X';
+			
 			$r=new Request();
 			$this->assertnotNull($r);
 			$this->assertEquals('/API.php',$r->getDocRoot());
-			
+			$this->assertEquals('/API.php/',$r->getHomePath());
+			$this->assertEquals('X',$r->getPrm('Name'));
 	}
 	
 	public function testPathErr() 

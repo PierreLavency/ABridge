@@ -93,27 +93,7 @@ Class Handle
         $this->_home->hlink($obj);
         $this->_obj =$obj;
     }
-
-    public function nullObj() 
-    {
-        return (is_null($this->_obj));
-    }
-    
-    protected function isMain()
-    {
-        return (is_null($this->_mainObj));
-    }
-
-    protected function getMain()
-    {
-        $res = $this->_mainObj;
-        if (is_null($res)) {
-            return $this;
-        } else {
-            return $res->getMain();
-        }
-    }
-    
+ 
     protected function checkActionObj($action)
     {
         if (! $this->isMain()) {
@@ -139,6 +119,26 @@ Class Handle
         }
         return false;
     }
+
+    public function nullObj() 
+    {
+        return (is_null($this->_obj));
+    }
+    
+    protected function isMain()
+    {
+        return (is_null($this->_mainObj));
+    }
+
+    protected function getMain()
+    {
+        $res = $this->_mainObj;
+        if (is_null($res)) {
+            return $this;
+        } else {
+            return $res->getMain();
+        }
+    }
     
     public function isMainRef($attr)
     {
@@ -156,9 +156,50 @@ Class Handle
         }
         return false;
     }
-    
+
+// Autorize Actions
+
+    public function isAllowed($action) 
+    {
+        if (! $this->checkActionObj($action)) {
+            return false;
+        }
+        if ($this->_home->isRoot() and $this->_request->isHomePath()) {
+            return false;
+        }
+        return true;   
+    }
+
+    public function isAllowedMod($mod,$action) 
+    {
+        if (! $this->isMain()) {
+            return false;
+        }
+        $x = new Model($mod);
+        return $this->_home->canLink($x);
+    }
+        
+
+    public function isAllowedCref($attr,$action)
+    {
+        if (! $this->isMain()) {
+            return false;
+        }
+        if ($this->_request->getAction() != V_S_READ) {
+            return false;
+        }
+        if (! $this->checkActionObj(V_S_UPDT)) {
+            return false;
+        }
+        return true;
+    }   
    
 // from req
+
+    public function getReq()
+    {
+        return $this->getMain()->_request;
+    }
 
     public function getPath()
     {
@@ -168,7 +209,6 @@ Class Handle
         return $this->_request->getPath();
     }
     
-
     public function getRPath()
     {
         if (is_null($this->_request)) {
@@ -176,23 +216,7 @@ Class Handle
         }
         return $this->_request->getRPath();
     }
- 
-    public function getAction()
-    {
-        if (is_null($this->_request)) {
-            return null;
-        }
-        return $this->_request->getAction();
-    }
-    
-    public function setAction($action)
-    {
-        if (is_null($this->_request)) {
-            return null;
-        }
-        return $this->_request->setAction($action);
-    }
-        
+
 // Handle
  
     public function getObjId($id) 
@@ -281,46 +305,6 @@ Class Handle
         return null; 
     }   
     
-// get Path
-    
-    public function getActionPath($action) 
-    {
-
-        if (! $this->checkActionObj($action)) {
-            return null;
-        }
-        if ($this->_home->isRoot() and $this->_request->isHomePath()) {
-            return null;
-        }
-        return ($this->_request->getActionPath($action));   
-    }
-    
-    public function getClassPath($mod,$action) 
-    {    
-        if (! $this->isMain()) {
-            return null;
-        }
-        $x = new Model($mod);
-        if ($this->_home->canLink($x)) {
-            return $this->_request->getClassPath($mod, $action);
-        }
-        return null;
-    }
-   
-    public function getCrefPath($attr,$action)
-    {
-        // $action = V_S_CREA
-        if (! $this->isMain()) {
-            return null;
-        }
-        if ($this->_request->getAction() != V_S_READ) {
-            return null;
-        }
-        if (! $this->checkActionObj(V_S_UPDT)) {
-            return null;
-        }
-        return $this->_request->getCrefPath($attr, $action);
-    }
      
 // obj  : access should be controlled here 
     

@@ -41,20 +41,31 @@ require_once("ViewConstant.php");
 					'id'		=> 'Noma',
 					'Name' 		=> 'Nom',
 					'SurName' 	=> 'Prenom',
-					'BirthDay'	=>'Date de naissance',
+					'BirthDay'	=> 'Date de naissance',
 				],
 				'viewList' => [
 					'Resume'  => [
 						'attrList' => [
-							V_S_READ=> ['id','SurName','Name'],
+							V_S_READ=> ['id','SurName','Name','NbrCours','NbrCredits'],
 							V_S_UPDT=> ['SurName','Name'],
 							V_S_CREA=> ['SurName','Name'],
 							V_S_DELT=> ['SurName','Name'],							
 						],
 					],
 					'Detail'  => [
+						'attrList' => [
+							V_S_READ=> ['SurName','Name','BirthDay','Sexe','Country'],
+							V_S_UPDT=> ['SurName','Name','BirthDay','Sexe','Country'],
+						],
 						'navList' => [V_S_READ => [V_S_UPDT],
-						],				
+						],
+					],
+					'Inscription' =>[
+						'attrList' => [
+							V_S_READ=> ['SurName','Name','InscritA'],
+						],
+						'navList' => [
+						],	
 					],						
 				],
 				
