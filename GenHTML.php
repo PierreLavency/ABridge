@@ -1,26 +1,7 @@
 <?php
 
 require_once("ViewConstant.php");
-
-function getTab($level) 
-{
-    $tab = "";
-    if ($level >= 0) {
-        for ($i=0;$i<$level;$i++) {
-            $tab=$tab."\t";
-        }
-    }
-    return $tab;
-}
-
-function getNl($level) 
-{
-    $nl = "";
-    if ($level >= 0) {
-        $nl = "\n";
-    }
-    return $nl;
-}
+require_once("FormatLib.php");
 
 function genFormL($action,$url,$hidden,$dspecL,$level) 
 {
@@ -173,8 +154,8 @@ function genFormElemL($dspec,$level)
     $action="";
     $url="";
     $arg = [];
-    $col = 50;
-    $row = 5;
+    $col = 90;
+    $row = 20;
     $label="";
     $tab = getTab($level);
     $nl  = getNl($level);

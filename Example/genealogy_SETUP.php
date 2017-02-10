@@ -54,7 +54,7 @@ require_once("ViewConstant.php");
 					],
 					'Detail'  => [
 						'attrList' => [
-							V_S_READ=> ['SurName','Name','BirthDay','Sexe','Country'],
+							V_S_READ=> ['SurName','Name','BirthDay','Sexe','Country',],
 							V_S_UPDT=> ['SurName','Name','BirthDay','Sexe','Country'],
 						],
 						'navList' => [V_S_READ => [V_S_UPDT],
@@ -66,7 +66,21 @@ require_once("ViewConstant.php");
 						],
 						'navList' => [
 						],	
+					],
+					'Jason' =>[
+						'attrList' => [
+							V_S_READ=> ['Jason'],
+						],
+						'navList' => [V_S_READ => []
+						],	
 					],						
+					'Trace' =>[
+						'attrList' => [
+							V_S_READ=> ['id','vnum','ctstp','utstp'],
+						],
+						'navList' => [V_S_READ => []
+						],	
+					],					
 				],
 				
 		],
@@ -177,6 +191,10 @@ class Student {
 		if ($attr == 'NbrCours') {
 			$a = $this->_mod->getVal('InscritA');
 			$res = count($a);
+			return $res;
+		}
+		if ($attr == 'Jason') {
+			$res = genJASON($this->_mod,false);
 			return $res;
 		}
 	}

@@ -5,7 +5,7 @@
 //require_once("Tests\View_init.php");     
 //require_once("Tests\View_init_Xref.php");    
 
-$application= 'GEN';
+$application= 'genealogy';
 
 //require_once("Example\\".'ABB_META.php');
 //require_once("Example\\".'Acode_META.php');
@@ -14,9 +14,10 @@ $application= 'GEN';
 //require_once("Example\\" .$application.'_META.php');
 //require_once("Example\\" .$application.'_LOAD.php');
 
+require_once('controler.php');
 
 require_once("Example\\" .$application.'_SETUP.php'); // defining config
-require_once('controler.php');
+
 
 //require_once("testAPI.php");
 

@@ -7,7 +7,7 @@ a:20:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br
 </select>
 ";i:3;s:38:"<input type="submit" value = Submit >
 ";i:4;s:68:"<input type="submit" value = Submit formaction=ABridge.php/code/1 >
-";i:5;s:58:"<textarea name = "A"  cols="50"  rows="5"  >a1</textarea>
+";i:5;s:59:"<textarea name = "A"  cols="90"  rows="20"  >a1</textarea>
 ";i:6;s:67:"<textarea name = "A" disabled cols="50"  rows="10"  >a1</textarea>
 ";i:7;s:52:"<input type = "password" name = "A" value = "a1"  >
 ";i:8;s:22:"this is a text string

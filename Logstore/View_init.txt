@@ -12,7 +12,7 @@ a:8:{i:0;s:186:"<!DOCTYPE html>
 
 
  </body> 
- </html>";i:1;s:987:"<!DOCTYPE html>
+ </html>";i:1;s:988:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -75,14 +75,14 @@ a:8:{i:0;s:186:"<!DOCTYPE html>
 				A4
 			</td>
 			<td>
-				<textarea name = "A4"  cols="50"  rows="5"  ></textarea>
+				<textarea name = "A4"  cols="90"  rows="20"  ></textarea>
 			</td>
 		</tr>
 	</table>
 </form>  
 
  </body> 
- </html>";i:2;s:924:"<!DOCTYPE html>
+ </html>";i:2;s:925:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -153,7 +153,7 @@ a:8:{i:0;s:186:"<!DOCTYPE html>
 			A4
 		</td>
 		<td>
-			<textarea name = "" disabled cols="50"  rows="5"  >ceci est un texte</textarea>
+			<textarea name = "" disabled cols="90"  rows="20"  >ceci est un texte</textarea>
 		</td>
 	</tr>
 </table>
@@ -161,7 +161,7 @@ a:8:{i:0;s:186:"<!DOCTYPE html>
 
 
  </body> 
- </html>";i:3;s:1050:"<!DOCTYPE html>
+ </html>";i:3;s:1051:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -224,14 +224,14 @@ a:8:{i:0;s:186:"<!DOCTYPE html>
 				A4
 			</td>
 			<td>
-				<textarea name = "A4"  cols="50"  rows="5"  >ceci est un texte</textarea>
+				<textarea name = "A4"  cols="90"  rows="20"  >ceci est un texte</textarea>
 			</td>
 		</tr>
 	</table>
 </form>  
 
  </body> 
- </html>";i:4;s:918:"<!DOCTYPE html>
+ </html>";i:4;s:919:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -294,7 +294,7 @@ a:8:{i:0;s:186:"<!DOCTYPE html>
 				A4
 			</td>
 			<td>
-				<textarea name = "" disabled cols="50"  rows="5"  >ceci est un texte</textarea>
+				<textarea name = "" disabled cols="90"  rows="20"  >ceci est un texte</textarea>
 			</td>
 		</tr>
 	</table>

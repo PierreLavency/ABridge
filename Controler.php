@@ -181,7 +181,7 @@ class Controler
         $method=$this->_request->getMethod();
         
         if ($this->_request->getDocRoot() == '/API.php') { 
-            genJASON($this->_handle);
+            genJASON($this->_handle, true);
             $this->close();
             $this->showLog();
             return $this->_handle->getPath();

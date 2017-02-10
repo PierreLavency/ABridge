@@ -1,23 +1,22 @@
-- improve view test coverage - need to separate view show and build // some progress
-- set up unit test for unittest
-
+- Release/installation
+- back up db and system !!!
 - clean up view constant.
-- clean up data form browser (security)
+
 - GUI to change user/home.
+- handle session/cookies and user preference
 - order in list query and attr
 - selection for Ref.
 
+- view 1/1 objects
+- graphics : include svg bit in view.
 - view sort out persistence/2
-- push back blob text/2
 - pictures
 - multi language /2
 - handle error messages /2
 
 - delete all object in class 
-
 - set up rest services
 - develop Jason view / on going 
-- include svg bit in view.
 
 - beef up test apps with relationships tables 
 	- union Ckey + multi surname + frere et soeur
@@ -31,13 +30,17 @@
 
 - Authenthication 
 - Authorisation should allow access not linked to home
-- Release/installation
-- Performance
 
+- Performance
+- improve view test coverage - need to separate view show and build // some progress
+- set up unit test for unittest
+
+- integrate MongoDB
+- intgerate Redhiss
 - set up bug tracking
 - set up a git server
 - set up jenkin
-- back up db and system !!!
+
 
 CMD
 /* replace tab
@@ -52,6 +55,9 @@ phpunit --coverage-html testcoverage tests
 
 
 DONE
+- develop Jason view / 2 days
+- all web variabe handle in Request + split of resp reviewed // 1 day 
+- clean up data form browser (security) // 2 hours 
 - multiple views // 2 days
 - review split between View and Path // partially done / again / integrated 2 days
 - improve handle test coverage and get read to migrate controllers and view / 2 days

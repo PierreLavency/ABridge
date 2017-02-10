@@ -173,17 +173,12 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		
 		$this->AssertTrue($h1->isMainRef('id'));
 		
-		$act_path = $h1->getActionPath(V_S_UPDT);
-		$e_path = $r->formPrfx($path1,V_S_UPDT);
-		$this->assertEquals($e_path,  $act_path);	
 
-		$act_path = $h1->getClassPath($this->CName,V_S_CREA);
-		$e_path = $r->formPrfx('/'.$this->CName,V_S_CREA);
-		$this->assertEquals($e_path,  $act_path);	
+		$act_path = $h1->isAllowedMod($this->CName,V_S_CREA);
+		$this->assertTrue($act_path);	
 
-		$act_path = $h1->getCrefPath('CRef',V_S_CREA);
-		$e_path = $r->formPrfx($path1.'/CRef',V_S_CREA);
-		$this->assertEquals($e_path,  $act_path);
+		$act_path = $h1->isAllowedCref('CRef',V_S_CREA);
+		$this->assertTrue($act_path);
  
 		$this->assertEquals(2,$h1->getCode('Code',2)->getId());		
 		$this->assertEquals('/'.$this->CCode.'/2',$h1->getCode('Code',2)->getRPath());
@@ -193,14 +188,14 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$path2=$path1.'/CRef/2';
 		$this->assertEquals($path2,  $h2->getRPath());
 
-		$act_path = $h2->getCrefPath('CRef',V_S_CREA);
-		$this->assertNull($act_path);
+		$act_path = $h2->isAllowedCref('CRef',V_S_CREA);
+		$this->assertFalse($act_path);
 		
-		$act_path = $h2->getClassPath($this->CName,V_S_CREA);
-		$this->assertNull($act_path);
+		$act_path = $h2->isAllowedMod($this->CName,V_S_CREA);
+		$this->assertFalse($act_path);
 		
-		$act_path = $h2->getActionPath(V_S_UPDT);
-		$this->assertNull($act_path);			
+		$act_path = $h2->isAllowed(V_S_UPDT);
+		$this->assertFalse($act_path);			
 		
 		$h3 = $h2->getCref('CRef',$id3);
 		$h4 = $h3->getRef('Ref');
@@ -217,8 +212,8 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$r = new Request('/ABridge.php',$path3,V_S_SLCT);		
 		$h5 = new Handle($r,$ho);
 
-		$act_path = $h5->getCrefPath('CRef',V_S_CREA);
-		$this->assertNull($act_path);
+		$act_path = $h5->isAllowedCref('CRef',V_S_CREA);
+		$this->assertFalse($act_path);
 		
 		$h6 = $h5->getObjId(1);
 		$act_path = $h6->getRPath();
@@ -251,16 +246,14 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$res = $h1->getRef('Ref');
 		$this->assertNull($res);
 		
-		$act_path = $h1->getActionPath('x');
-		$this->assertNull($act_path);
+		$act_path = $h1->isAllowed('x');
+		$this->assertFalse($act_path);
 			
-		$act_path = $h1->getActionPath(V_S_UPDT);
-		$e_path = $r->formPrfx($path1,V_S_UPDT);
-		$this->assertEquals($e_path,  $act_path);			
+		$act_path = $h1->isAllowed(V_S_UPDT);
+		$this->assertTrue($act_path);			
 
-		$act_path = $h1->getClassPath($this->CName,V_S_CREA);
-		$e_path = $r->formPrfx('/'.$this->CName,V_S_CREA);
-		$this->assertEquals($e_path,  $act_path);
+		$act_path = $h1->isAllowedMod($this->CName,V_S_CREA);
+		$this->assertTrue($act_path);
 		
         $this->assertEquals(2,$h1->getCode('Code',2)->getId());		
 		$this->assertNull($h1->getCode('Code',2)->getPath());
@@ -269,8 +262,8 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$path2=$path1.'/CRef/2';
 		$this->assertEquals($path2,  $h2->getRPath());
 
-		$act_path = $h2->getCrefPath('CRef',V_S_CREA);
-		$this->assertNull($act_path);
+		$act_path = $h2->isAllowedCref('CRef',V_S_CREA);
+		$this->assertFalse($act_path);
 		
 		$h3 = $h2->getCref('CRef',3);
 		$h4 = $h3->getRef('Ref');
@@ -279,11 +272,11 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$r = new Request('/ABridge.php',$path2,V_S_READ);
 		$h2 = new Handle($r,$ho);
 		
-		$act_path = $h2->getCrefPath('CRef',V_S_CREA);
-		$this->assertNull($act_path);	
+		$act_path = $h2->isAllowedCref('CRef',V_S_CREA);
+		$this->assertFalse($act_path);	
 		
-		$act_path = $h2->getClassPath($this->CUser,V_S_CREA);
-		$this->assertNull($act_path);	
+		$act_path = $h2->isAllowedMod($this->CUser,V_S_CREA);
+		$this->assertFalse($act_path);	
 
 		$path3 = $path2.'/CRef/3/CRef';
 		$r = new Request('/ABridge.php',$path3,V_S_CREA);		
@@ -353,14 +346,10 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$h1 = new Handle($r,$ho);
 		$this->assertNotNull($h1);	
 		
-		$act_path = $h1->getActionPath(V_S_READ);
+		$act_path = $h1->isAllowed(V_S_READ);
 
-		$this->assertNull($act_path);			
+		$this->assertFalse($act_path);			
 
-		$h1 = new Handle(null,$ho,null,null);
-
-		$this->assertNull($h1->getAction());
-		$this->assertNull($h1->setAction(V_S_READ));
 		
 		$db->commit();
 	}		
