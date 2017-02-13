@@ -132,6 +132,7 @@ function genFormElemL($dspec,$level)
 {
     $buttonS    = '<input type="submit" value = ';
     $buttonES   = '</button>';
+    $altS       = ' alt="';
     $textareaS  = '<textarea ' ;
     $textareaES = '</textarea>';
     $selectS    = '<select '   ;
@@ -139,11 +140,14 @@ function genFormElemL($dspec,$level)
     $inputS     = '<input '    ;
     $optionS    = '<option '   ;
     $optionES   = '</option>'  ;
+    $imgS       = '<img src="' ;
     $linkS      = '<a href='   ;
     $linkES     = '</a>'       ;
     $endS       = ' >'         ;
     $colS       = ' cols="'    ;
     $rowS       = ' rows="'    ;
+    $widthS     = ' width="'    ;
+    $heightS    = ' height="'    ;
     
     $type="";
     $default="";
@@ -156,6 +160,8 @@ function genFormElemL($dspec,$level)
     $arg = [];
     $col = 90;
     $row = 20;
+    $colp = 70;
+    $rowp = 70;
     $label="";
     $tab = getTab($level);
     $nl  = getNl($level);
@@ -187,7 +193,13 @@ function genFormElemL($dspec,$level)
                 break; 
             case H_ROW:
                 $row = $v;
+                break;
+            case H_COLP:
+                $colp = $v;
                 break; 
+            case H_ROWP:
+                $rowp = $v;
+                break;              
             case H_VALUES:
                 $values = $v;
                 break;  
@@ -223,6 +235,9 @@ function genFormElemL($dspec,$level)
     };
     switch ($type) {
         case H_T_LINK:
+            if (is_array($label)) {
+                $label = genFormElemL($label, $level);
+            }
             $result = $tab.$linkS.$name.$endS.$label.$linkES.$nl;
             break;
         case H_T_LIST_BR:
@@ -316,6 +331,9 @@ function genFormElemL($dspec,$level)
                 $result = $result.$optionES. $nl;
             };
             $result = $result . $tab.$selectES. $nl;
+            break;
+        case H_T_IMG:
+            $result = $imgS.$default.'"'.$altS.$default.'"'.$widthS.$colp.'"'.$heightS.$rowp.'"'.$endS; 
             break;
         case H_T_PLAIN:
             $result = $tab.$default.$nl;

@@ -4,19 +4,17 @@
 
 - GUI to change user/home.
 - handle session/cookies and user preference
-- order in list query and attr
+
+- order in list query and attr.
 - selection for Ref.
 
-- view 1/1 objects
 - graphics : include svg bit in view.
 - view sort out persistence/2
-- pictures
 - multi language /2
 - handle error messages /2
 
 - delete all object in class 
-- set up rest services
-- develop Jason view / on going 
+- set up rest services 
 
 - beef up test apps with relationships tables 
 	- union Ckey + multi surname + frere et soeur
@@ -36,11 +34,10 @@
 - set up unit test for unittest
 
 - integrate MongoDB
-- intgerate Redhiss
+- integrate Redhiss
 - set up bug tracking
 - set up a git server
 - set up jenkin
-
 
 CMD
 /* replace tab
@@ -53,8 +50,9 @@ pear install phpdoc/PhpDocumentor-2.8.1
 /* run test suite with coverge
 phpunit --coverage-html testcoverage tests
 
-
 DONE
+- pictures // 2 days 
+- view 1/1 objects  /done
 - develop Jason view / 2 days
 - all web variabe handle in Request + split of resp reviewed // 1 day 
 - clean up data form browser (security) // 2 hours 

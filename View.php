@@ -280,14 +280,23 @@ class View
                 return $list[$attr];
             }
         }
-        return null;
+        $typ = $this->_handle->getTyp($attr);
+        if ($typ == M_REF) {
+            return V_S_REF;
+        }
+        if ($typ==M_TXT) {
+           return H_T_TEXTAREA;
+        }
+        return H_T_PLAIN;
     }
     
     public function getUpAttrHtml($attr,$viewState) 
     {
-        $res = $this->getAttrHtml($attr, $viewState);
-        if (! is_null($res)) { 
-            return $res;
+        if (isset($this->_attrHtml[$viewState])) {
+            $list = $this->_attrHtml[$viewState];
+            if (isset($list[$attr])) {
+                return $list[$attr];
+            }
         }
         $typ = $this->_handle->getTyp($attr);
         $res=H_T_TEXT;
@@ -392,7 +401,7 @@ class View
                     $nh=$this->_handle->getObjId($id);
                 }
                 $v = new View($nh);
-                $res = $v->buildView(V_S_CREF);
+                $res = $v->buildView(V_S_CREF, true);
                 return $res; 
             }
             if ($typ==M_REF) {
@@ -400,15 +409,20 @@ class View
                 if (is_null($nh)) {
                     return [H_TYPE =>H_T_PLAIN, H_DEFAULT=>""];
                 }
-                $refpath = $nh->getPath();                
-                $res[H_TYPE]= H_T_LINK;
-                if (is_null($refpath)) {
+                $rep= $this->getAttrHtml($attr, $viewState);
+                if ($rep==V_S_REF) {
+                    $refpath = $nh->getPath();                
+                    $res[H_TYPE]= H_T_LINK;
+                    $res[H_NAME]=$refpath; 
+                    if (is_null($refpath)) {
+                        $res[H_TYPE]= H_T_PLAIN;
+                    }
+                } else {
                     $res[H_TYPE]= H_T_PLAIN;
                 }
                 $v = new View($nh);
-                $res[H_LABEL]=$v->show(V_S_REF, false);
+                $res[H_LABEL]=$v->showRec($rep);
                 $res[H_DEFAULT]=$res[H_LABEL];
-                $res[H_NAME]=$refpath; 
                 return $res;        
             }
             if ($typ==M_CODE and (!is_null($x))) {
@@ -417,10 +431,22 @@ class View
                 $x = $v->show(V_S_REF, false);
             }
         }
-        $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$x];
-        if ($typ ==  M_TXT and $prop==V_P_VAL) {
-            $res = [H_TYPE =>H_T_TEXTAREA, H_DISABLED=>true, H_DEFAULT=>$x];
+        if ($prop==V_P_VAL) {
+            $htyp = $this->getAttrHtml($attr, $viewState);
+            $res[H_TYPE] = $htyp;
+            if ($htyp==H_T_LINK) {
+                $res[H_NAME]=$x;
+                $res[H_LABEL]=$x;
+            } else {
+                $res[H_DEFAULT]=$x;
+                $res[H_DISABLED]=true;
+            }
+            if ($htyp==H_T_IMG) {
+                $res=[H_TYPE=>H_T_LINK,H_NAME=>$x,H_LABEL=>$res];
+            }
+            return $res;
         }
+        $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$x];
         return $res;
     }
     
@@ -596,7 +622,7 @@ class View
 
     public function show($viewState,$show = true) 
     {
-        $r = $this->buildView($viewState);
+        $r = $this->buildView($viewState, false);
         if ($viewState != V_S_REF and $viewState != V_S_CREF) {
             $r=genHTML($r, $show);
         } else {
@@ -604,13 +630,28 @@ class View
         }
         return $r;
     }
- 
-    public function initView($handle,$viewState)
+  
+    protected function showRec($name) 
+    {
+        if ($name != V_S_REF and $name != V_S_CREF) {
+            $this->_name=$name;
+            $viewState=V_S_READ;
+        } else {
+            $viewState=$name;
+        }
+        $r = $this->buildView($viewState, true);
+        $r=genFormElem($r, false);
+        return $r;
+    }
+  
+    public function initView($handle,$viewState,$rec)
     {
         if ($handle->nullObj()) {
             return true;
         }
-        $this->_name=$this->_req->getPrm('View');;
+        if (!$rec) {
+            $this->_name=$this->_req->getPrm('View');
+        }
         $modName = $handle->getModName();
         $spec = Handler::get()->getViewHandler($modName);
         if (is_null($spec)) {
@@ -618,9 +659,8 @@ class View
         }
         $this->setView($spec, $viewState);       
         if ($viewState == V_S_CREF) {
-            $this->initView($handle, V_S_REF);
+            $this->initView($handle, V_S_REF, true);
         }
-        
     }
  
     public function setView($spec,$viewState)
@@ -653,7 +693,7 @@ class View
             $specma=$spec['lblList'];
             $this->setLblList($specma);
         }
-        if ($viewState !=  V_S_REF and $viewState !=  V_S_REF) {     
+        if ($viewState !=  V_S_REF and $viewState !=  V_S_CREF) {     
             if (isset($spec['viewList'])) {
                 $specma=$spec['viewList'];
                 $viewL=[];
@@ -673,7 +713,7 @@ class View
         }
     }
     
-    public function buildView($viewState) 
+    public function buildView($viewState,$rec) 
     {
         $spec=[];       
         $specL=[];  
@@ -681,7 +721,7 @@ class View
         $arg = [];
         
         if (!is_null($this->_handle)) {
-            $this->initView($this->_handle, $viewState);
+            $this->initView($this->_handle, $viewState, $rec);
         }
         if (is_null($this->_handle) or $this->_handle->nullObj()) {
             $navClass= $this->getNavClass($viewState);
@@ -689,8 +729,7 @@ class View
             $speci = [V_TYPE=>V_LIST,V_LT=>V_OBJ,V_ARG=>$arg];  
             $r=$this->subst($speci, $viewState);
             return $r;          
-        }  
-             
+        }               
         foreach ($this->getAttrList($viewState) as $attr) {
             $view =[];
             $typ= $this->_handle->getTyp($attr);
@@ -714,6 +753,11 @@ class View
         }
         if ($viewState == V_S_REF or $viewState == V_S_CREF) {
             $specf = [V_TYPE=>V_LIST,V_LT=>$viewState,V_ARG=>$spec];
+            $r=$this->subst($specf, $viewState);
+            return $r;
+        }
+        if ($rec) {
+            $specf = [V_TYPE=>V_LIST,V_LT=>V_ALIST,V_ARG=>$spec];
             $r=$this->subst($specf, $viewState);
             return $r;
         }

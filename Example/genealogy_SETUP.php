@@ -67,7 +67,24 @@ require_once("ViewConstant.php");
 						'navList' => [
 						],	
 					],
+					'Image' =>[
+						'attrProp' => [
+							V_S_READ =>[V_P_VAL],
+						],				
+						'attrList' => [
+							V_S_READ=> ['Image'],
+							V_S_UPDT=> ['Image'],
+						],
+						'attrHtml' => [
+							V_S_READ => ['Image'=>H_T_IMG],
+						],						
+						'navList' => [V_S_READ => [V_S_UPDT]
+						],	
+					],						
 					'Jason' =>[
+						'attrProp' => [
+							V_S_READ =>[V_P_VAL],
+						],	
 						'attrList' => [
 							V_S_READ=> ['Jason'],
 						],
@@ -118,6 +135,7 @@ require_once("ViewConstant.php");
 		
 				'attrHtml' => [
 					V_S_CREA => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
+					V_S_READ => ['De'=>'Resume'],
 					V_S_UPDT => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
 					V_S_SLCT => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
 				],

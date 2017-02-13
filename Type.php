@@ -103,7 +103,7 @@
                 return is_string($x);
                 break; 
             case M_TXT:
-                return is_string($x);
+                return true;
                 break; 
             case M_ALNUM:
                 if (is_string($x)) {

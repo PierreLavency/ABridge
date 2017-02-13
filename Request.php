@@ -37,6 +37,8 @@ Class Request
         }
         if (isset($_SERVER['PATH_INFO'])) { 
             $path = trim($_SERVER['PATH_INFO']);
+        } else {
+            $path='/';
         }
         $this->_getp   = $this->cleanInputs($_GET);
         $this->_postp  = $this->cleanInputs($_POST);

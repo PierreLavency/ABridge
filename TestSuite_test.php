@@ -11,11 +11,11 @@ $application= 'genealogy';
 //require_once("Example\\".'Acode_META.php');
 //require_once("Example\\".'User_META.php');
 
-//require_once("Example\\" .$application.'_META.php');
 //require_once("Example\\" .$application.'_LOAD.php');
 
 require_once('controler.php');
 
+//require_once("Example\\" .$application.'_META_8.php');
 require_once("Example\\" .$application.'_SETUP.php'); // defining config
 
 
