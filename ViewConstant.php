@@ -1,5 +1,6 @@
 <?php
 
+require_once('ModeConstant.php');
 
 define('V_TYPE', "v_type");
 define('V_ELEM', "v_elem");
@@ -38,11 +39,7 @@ define('V_P_TYPE', "v_p_type");
 define('V_P_REF', "v_p_ref");
 define('V_P_OP', "v_p_op");
 
-define('V_S_CREA', "Create"); // object view types
-define('V_S_UPDT', "Update"); 
-define('V_S_READ', "Read"); 
-define('V_S_DELT', "Delete");
-define('V_S_SLCT', "Select");
+
 define('V_S_REF', "reference"); // reference view
 define('V_S_CREF', "creference"); // collection view
 define('V_B_SUBM', "Submit"); // "buttons"

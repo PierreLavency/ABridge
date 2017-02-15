@@ -2,6 +2,7 @@
 <?php
 
 require_once('ErrorConstant.php');
+require_once('ModeConstant.php');
 
 Class Request
 {

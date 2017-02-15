@@ -2,7 +2,7 @@
 
 require_once("Handler.php"); 
 require_once("Handle.php"); 
-require_once("ViewConstant.php");
+require_once("ModeConstant.php");
 
 class Handle_Test extends PHPUnit_Framework_TestCase  
 {

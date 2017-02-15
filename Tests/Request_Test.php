@@ -2,7 +2,7 @@
 	
 
 require_once('Request.php');
-require_once("ViewConstant.php");
+require_once("ModeConstant.php");
 
 class Request_Test extends PHPUnit_Framework_TestCase {
 

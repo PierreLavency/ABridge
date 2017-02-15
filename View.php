@@ -410,6 +410,7 @@ class View
                     return [H_TYPE =>H_T_PLAIN, H_DEFAULT=>""];
                 }
                 $rep= $this->getAttrHtml($attr, $viewState);
+                $res[H_TYPE]= $rep;
                 if ($rep==V_S_REF) {
                     $refpath = $nh->getPath();                
                     $res[H_TYPE]= H_T_LINK;
@@ -417,8 +418,9 @@ class View
                     if (is_null($refpath)) {
                         $res[H_TYPE]= H_T_PLAIN;
                     }
-                } else {
-                    $res[H_TYPE]= H_T_PLAIN;
+                }
+                if ($rep == H_T_PLAIN) {
+                    $rep=V_S_REF;
                 }
                 $v = new View($nh);
                 $res[H_LABEL]=$v->showRec($rep);
@@ -535,11 +537,15 @@ class View
             if (!$this->_handle->isAllowedCref($attr, V_S_CREA)) {
                 return false;
             }           
-            $path=$this->_req->getCrefPath($attr, V_S_CREA);
+            $path="'".$this->_req->getCrefPath($attr, V_S_CREA)."'";
             $result[H_NAME]=$path;
         } else {
             $pos = $spec[V_ID];
-            $path="'".$this->_handle->getPath().'?'.$attr.'='.$pos."'";
+            $viewn="";
+            if (!is_null($this->_name)) {
+                $viewn='&View='.$this->_name;
+            }
+            $path="'".$this->_handle->getPath().'?'.$attr.'='.$pos.$viewn."'";
             if ($viewState == V_S_SLCT) {
                 $result[H_TYPE]=H_T_SUBMIT;
                 $result[H_BACTION]=$path;   

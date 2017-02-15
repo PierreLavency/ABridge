@@ -31,12 +31,58 @@ require_once("ViewConstant.php");
 					V_S_CREA => ['Authenticity'=>H_T_SELECT,'Confidentiality'=>H_T_SELECT,'Availability'=>H_T_SELECT,'Integrity'=>H_T_SELECT,'Style'=>H_T_SELECT,],
 					V_S_UPDT => ['Authenticity'=>H_T_SELECT,'Confidentiality'=>H_T_SELECT,'Availability'=>H_T_SELECT,'Integrity'=>H_T_SELECT,'Style'=>H_T_SELECT,],
 					V_S_SLCT => ['Authenticity'=>H_T_SELECT,'Confidentiality'=>H_T_SELECT,'Availability'=>H_T_SELECT,'Integrity'=>H_T_SELECT,'Style'=>H_T_SELECT,],
-					V_S_READ => ['Authenticity'=>H_T_PLAIN,'Confidentiality'=>H_T_PLAIN,'Availability'=>H_T_PLAIN,'Integrity'=>H_T_PLAIN,'Style'=>H_T_PLAIN,],
-					V_S_CREF => ['Authenticity'=>H_T_PLAIN,'Confidentiality'=>H_T_PLAIN,'Availability'=>H_T_PLAIN,'Integrity'=>H_T_PLAIN,'Style'=>H_T_PLAIN,],
+					V_S_READ => ['Authenticity'=>H_T_PLAIN,'Confidentiality'=>H_T_PLAIN,'Availability'=>H_T_PLAIN,'Integrity'=>H_T_PLAIN,'Style'=>H_T_PLAIN,],					V_S_CREF => ['Authenticity'=>H_T_PLAIN,'Confidentiality'=>H_T_PLAIN,'Availability'=>H_T_PLAIN,'Integrity'=>H_T_PLAIN,'Style'=>H_T_PLAIN,],
 				],
 				'lblList'  => [
 					'In' => 'Interfaces', 'Out' => 'Exchanges', 'BuiltFrom' => 'Components',
 				],
+				'viewList' => [
+					'Resume'  => [
+						'attrList' => [
+							V_S_READ=> ['id','Name','CodeNm','Owner','Alias','Style'],
+							V_S_UPDT=> ['id','Name','CodeNm','Owner','Alias','Style',],
+							V_S_CREA=> ['id','Name','CodeNm','Owner','Alias','Style',],
+							V_S_DELT=> ['id','Name','CodeNm','Owner','Alias','Style',],							
+						],
+					],
+					'Decription'  => [
+						'attrList' => [
+							V_S_READ=> ['id','Name','CodeNm','ShortDesc','LongDesc'],
+							V_S_UPDT=> ['id','ShortDesc','LongDesc'],							
+						],
+						'navList' => [V_S_READ => [V_S_UPDT],
+						],
+					],
+					'Components' => [
+						'attrList' => [
+							V_S_READ=> ['id','Name','CodeNm','BuiltFrom'],							
+						],
+						'navList' => [V_S_READ => []
+						],
+					],
+					'Interface' => [
+						'attrList' => [
+							V_S_READ=> ['id','Name','CodeNm','In'],							
+						],
+						'navList' => [V_S_READ => []
+						],
+					],
+					'Exchanges' => [
+						'attrList' => [
+							V_S_READ=> ['id','Name','CodeNm','Out'],							
+						],
+						'navList' => [V_S_READ => []
+						],
+					],
+					'Security'  => [
+						'attrList' => [
+							V_S_READ=> ['id','Name','CodeNm','Authenticity','Availability','Confidentiality','Integrity'],
+							V_S_UPDT=> ['id','Authenticity','Availability','Confidentiality','Integrity'],							
+						],
+					    'navList' => [V_S_READ => [V_S_UPDT],
+						],
+					],					
+				]
 				
 		],			
 		'Component'=> [
@@ -54,8 +100,31 @@ require_once("ViewConstant.php");
 				'lblList'  => [
 					'CType' => 'Type', 'Of' => 'Application ', 'In' => 'Interfaces', 'Out' => 'Exchanges',
 				],	
-				
-		],
+				'viewList' => [
+					'Resume'  => [
+						'attrList' => [
+							V_S_READ=> ['id','Of','Name','CodeNm','Owner','Alias','CType','SourceControl','Url','Queue','OutQueue','BatchNme','Frequency'],
+							V_S_UPDT=> ['id','Of','Name','CodeNm','Owner','Alias','CType','SourceControl','Url','Queue','OutQueue','BatchNme','Frequency'],
+							V_S_CREA=> ['id','Of','Name','CodeNm','Owner','Alias','CType','SourceControl','Url','Queue','OutQueue','BatchNme','Frequency'],
+							V_S_DELT=> ['id','Of','Name','CodeNm','Owner','Alias','CType','SourceControl','Url','Queue','OutQueue','BatchNme','Frequency'],							
+						],	1
+					],						
+					'Interface' => [
+						'attrList' => [
+							V_S_READ=> ['id','Name','CodeNm','In'],							
+						],
+						'navList' => [V_S_READ => []
+						],
+					],
+					'Exchanges' => [
+						'attrList' => [
+							V_S_READ=> ['id','Name','CodeNm','Out'],							
+						],
+						'navList' => [V_S_READ => []
+						],
+					],				
+				],
+			],	
 		'Interface'=> [
 		
 				'attrList' => [

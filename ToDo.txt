@@ -1,13 +1,15 @@
+- externalize config set up
+- clean up main structure
 - Release/installation
+
 - back up db and system !!!
-- clean up view constant.
 
 - GUI to change user/home.
 - handle session/cookies and user preference
 
 - order in list query and attr.
 - selection for Ref.
-
+- set up slice size and other hard coded varable (rows/cols)
 - graphics : include svg bit in view.
 - view sort out persistence/2
 - multi language /2
@@ -51,6 +53,7 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html testcoverage tests
 
 DONE
+- clean up view constant. // 1 hour
 - pictures // 2 days 
 - view 1/1 objects  /done
 - develop Jason view / 2 days
