@@ -5,7 +5,9 @@
 //require_once("Tests\View_init.php");     
 //require_once("Tests\View_init_Xref.php");    
 
-$application= 'ABB';
+$config = parse_ini_file("config.ini");
+
+$application= $config['name'];
 
 //require_once("Example\\".'ABB_META.php');
 //require_once("Example\\".'Acode_META.php');
