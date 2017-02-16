@@ -1,7 +1,7 @@
 <?php
 	
 
-require_once('Type.php');
+require_once('Src\Type.php');
 
 
 class Type_Test extends PHPUnit_Framework_TestCase {

@@ -2,7 +2,7 @@
     
 /* */
 
-require_once("SQLBase.php"); 
+require_once("Src\SQLBase.php"); 
 
 class Base_Case extends PHPUnit_Framework_TestCase {
 

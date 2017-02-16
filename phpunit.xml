@@ -1,0 +1,8 @@
+
+<phpunit bootstrap="Src/index_cli.php">
+  <testsuites>
+    <testsuite name="ABridge">
+      <directory>Tests</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

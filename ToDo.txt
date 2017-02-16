@@ -46,11 +46,11 @@ CMD
 phpcs --tab-width=4 .
 
 /*check code
-phpcs --standard=Zend --report=summary -l .
+phpcs --standard=Zend --report=summary -l Src
 /*install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
 /* run test suite with coverge
-phpunit --coverage-html testcoverage tests
+phpunit --coverage-html testcoverage Tests
 
 DONE
 - clean up view constant. // 1 hour

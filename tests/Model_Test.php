@@ -1,7 +1,7 @@
 <?php
 	
 
-require_once("Model.php"); 
+require_once("Src\Model.php"); 
 
 
 class Model_Test extends PHPUnit_Framework_TestCase {

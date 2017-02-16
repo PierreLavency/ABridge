@@ -2,7 +2,7 @@
 	
 /* */
 
-require_once("SQLBase.php");
+require_once("Src\SQLBase.php");
 require_once("Base_Case.php");
 
 class SQLBase_Test extends Base_Case {

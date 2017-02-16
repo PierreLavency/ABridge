@@ -1,7 +1,7 @@
 <?php
 	
-require_once("Model.php"); 
-require_once("Handler.php"); 
+require_once("Src\Model.php"); 
+require_once("Src\Handler.php"); 
 
 class Model_Bse_Test extends PHPUnit_Framework_TestCase  
 {

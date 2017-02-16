@@ -1,7 +1,7 @@
 <?php
     
 
-require_once('Handler.php');
+require_once('Src\Handler.php');
 
 
 class Handler_Test extends PHPUnit_Framework_TestCase {
