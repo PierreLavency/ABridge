@@ -1,10 +1,8 @@
 <?php
 
-
 require_once("ModBase.php"); 
 require_once("FileBase.php"); 
 require_once("SQLBase.php");
-
 
 function initStateHandler($modName,$base,$instance) 
 {
@@ -23,6 +21,7 @@ function getBaseHandler($base,$instance)
     $y = Handler::get()->getBase($base, $instance);
     return ($y);  
 }
+
 
 function resetHandlers() 
 {
@@ -78,6 +77,12 @@ class Handler
 
     public function getBase($base,$instance) 
     {
+
+        return $this->getBaseNm($base, $instance, $instance);          
+    }
+
+    public function getBaseNm($base,$instance,$name) 
+    {
         if (! array_key_exists($base, $this->_basesClasses)) {
             return false;
         }
@@ -89,12 +94,13 @@ class Handler
             }
         };
         $classN = $this->_basesClasses[$base];
-        $x = new $classN($instance,'cl822','cl822');
+        $x = new $classN($name,'cl822','cl822');
         $instances[$instance]=$x;
         $this->_bases[$base]=$instances;
         return $x;          
     }
-
+    
+    
     public function getViewHandler($modName) 
     {
         if (isset($this->_viewHandler[$modName])) {

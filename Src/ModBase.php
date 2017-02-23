@@ -254,6 +254,21 @@ class ModBase
             $this->_base->findObjWheOp($model, $attrList, $opList, $valList)
         );
     }
+    /*
+    public function copyMod($mod,$base) {
+        $meta = $this->_base->getMod($mod);
+        $inh = false;
+        if (isset($meta['inhnme'])) {
+            $inh = $meta['inhnme']; 
+        }
+        if ($inh) {
+            $base->newModId($mod, $meta, false);
+        } else {
+            $base->newMod($mod, $meta);
+        }
+        
+    }
     
+    */
     
 }

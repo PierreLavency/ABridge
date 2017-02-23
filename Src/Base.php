@@ -5,7 +5,7 @@ require_once 'Logger.php';
 
 abstract class Base
 {
-    protected $_filePath ='C:\Users\pierr\ABridge\Datastore\\';
+    protected static $_filePath ='C:\Users\pierr\ABridge\Datastore\\';
     protected $_objects=[];
     protected $_fileN;
     protected $_fileName;
@@ -15,7 +15,7 @@ abstract class Base
      
     protected function  __construct($id,$usr,$psw) 
     {
-        $this->_fileN = $this->_filePath . $id;
+        $this->_fileN = self::$_filePath . $id;
         $this->_fileName = $this->_fileN.'.txt';
         $this->_logLevl=0;
         $this->_logger=null;
@@ -23,6 +23,21 @@ abstract class Base
         $this->load();
     }
 
+    protected function erase() 
+    {
+        if (file_exists($this->_fileName)) {
+            unlink($this->_fileName);
+        }
+        $this->_objects = [];
+        return true;
+    }       
+    
+    protected static function _exists($id) 
+    {
+        $f = self::$_filePath . $id.'.txt';
+        return file_exists($f);
+    }
+    
     function connect() 
     {
         $this->_connected = true;
@@ -108,6 +123,15 @@ abstract class Base
         return true;
     }   
 
+    function getAllMod () 
+    {
+        if (! $this->isConnected()) {
+            throw new Exception(E_ERC025);
+        }
+        return array_keys($this->_objects);
+    }
+    
+    
     function getMod($model) 
     {
         if (! $this->existsMod($model)) {
@@ -165,6 +189,10 @@ abstract class Base
         return $this->_logger;
     }
     
+    abstract protected function remove() ; 
+
+    abstract protected static function exists($name) ;  
+
     abstract protected function putMod($model,$meta,$addList,$delList);
     
     abstract protected function newObj($model, $values) ;

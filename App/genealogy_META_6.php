@@ -21,6 +21,16 @@ require_once("genealogy_SETUP.php");
 	$r = $obj->getErrLog ();
 	$r->show();
 
+	$obj = new Model('Session');
+	$res= $obj->deleteMod();
+
+	$res = $obj->addAttr('User',M_REF,'/User');
+ 	$res = $obj->addAttr('Comment',M_STRING);
+		
+	$res = $obj->saveMod();	
+	$r = $obj->getErrLog ();
+	$r->show();
+	
 
 	$ctrl->commit();
 	

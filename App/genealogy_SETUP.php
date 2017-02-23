@@ -4,6 +4,7 @@ require_once("ViewConstant.php");
 	$config = [
 	'Handlers' =>
 		[
+		'Session'  	 => ['fileBase','sid','Session'],
 		'CodeValue'  => ['fileBase','genealogy',],
 		'Code' 		 => ['fileBase','genealogy',],
 		'Student'	 => ['fileBase','genealogy',],
@@ -14,9 +15,24 @@ require_once("ViewConstant.php");
 		'User'	 	 => ['dataBase','genealogy',],
 		],
 	'Home' =>
-		['User','Student','Cours','Inscription','Prof','Charge','Code','CodeValue','Home'],
+		['Session','User','Student','Cours','Inscription','Prof','Charge','Code','CodeValue','Home'],
 		
 	'Views' => [
+	
+		'Session' =>[
+			'attrList' => [
+							V_S_READ=> ['id','User','Comment','vnum','ctstp','utstp'],
+							V_S_UPDT=> ['id','User','Comment'],					
+						],
+			'attrHtml' => [
+						V_S_UPDT => ['User'=>H_T_SELECT],
+						V_S_SLCT => ['User'=>H_T_SELECT],
+						V_S_READ => ['User'=>H_T_PLAIN],					
+					],		
+			'navList' => [V_S_READ => [V_S_UPDT,V_S_SLCT],
+						],
+
+		],
 		'User' =>[
 		
 				'attrList' => [
@@ -154,6 +170,32 @@ require_once("ViewConstant.php");
 	]
 	];
 
+
+class SessionHdl
+{
+	
+	function initMod($mod) 
+	{
+		$obj = new Model('Session');
+		$res= $obj->deleteMod();
+
+		$res = $obj->addAttr('User',M_REF,'/User');
+		$res = $obj->addAttr('Comment',M_STRING);
+		$res = $obj->saveMod();
+		
+		$obj = new Model('Session');
+		$obj->setVal('Comment','Initial');
+		$obj->save();
+		
+	}
+	
+	function getCtstp($mod) 
+	{
+		$obj= new Model('Session',1);
+		return $obj->getVal('ctstp');
+	}
+	
+}
 	
 class Cours {
 

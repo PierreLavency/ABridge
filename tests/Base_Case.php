@@ -39,6 +39,8 @@ class Base_Case extends PHPUnit_Framework_TestCase {
     {
         $db=self::$db; 
         $db->beginTrans();
+		$modL=$db->getAllMod();
+		$this->assertTrue(in_array(self::$CName,$modL));
         $this->assertEquals($this->meta,$db->getMod(self::$CName));
         $this->assertEquals([],$db->getMod(self::$CName2));
         $this->assertTrue($db->putMod(self::$CName,[],[],$this->meta));
@@ -250,7 +252,10 @@ class Base_Case extends PHPUnit_Framework_TestCase {
         $this->assertTrue($r);
 // no error if no begin transaction 
         
-// all fails since closed   
+// all fails since closed 
+        $r=false;
+        try {$x->getAllMod ();} catch (Exception $e) {$r = true;}
+        $this->assertTrue($r);       
         $r=false;
         try {$x->existsMod ('notexists');} catch (Exception $e) {$r = true;}
         $this->assertTrue($r);      

@@ -3,11 +3,13 @@
 
 // must clean up interface with set up !!
 
-require_once("View.php");
-require_once("Request.php");
-require_once("Home.php");
-require_once("Handle.php");
-require_once("GenJASON.php");
+require_once "View.php";
+require_once "Request.php";
+require_once "Home.php";
+require_once "Handle.php";
+require_once "SessionMgr.php";
+require_once "GenJASON.php";
+require_once "ErrorConstant.php";
 
 class Controler
 {
@@ -21,6 +23,8 @@ class Controler
     protected $_valL = [];
     protected $_opL = [];
     protected $_logLevel = 0;
+    protected $_sessionMgr ;
+
     
     function __construct($spec) 
     {
@@ -29,17 +33,30 @@ class Controler
         $handlers = [];
         resetHandlers();
         $config=$spec['Handlers'];
+        $sesMgr = new SessionMgr();
+        $this->_sessionMgr=$sesMgr;
         foreach ($config as $classN => $handler) {
             if (! in_array($handler, $handlers)) {
                 $handlers[] = $handler;
-                $x = getBaseHandler($handler[0], $handler[1]);
+                if (count($handler)==3) {
+                    if ($handler[2] == 'Session') {
+                        $id=$sesMgr->initSession($handler);
+                    }
+                    $x= Handler::get()->getBaseNm(  
+                        $handler[0], 
+                        $handler[1], 
+                        $id
+                    );
+                } else {
+                    $x = Handler::get()->getBase($handler[0], $handler[1]);
+                }
                 $bases[]=$x;
             }
             initStateHandler($classN, $handler[0], $handler[1]);
         }
         $this->_bases = $bases;
     }
-
+    
     function beginTrans() 
     {
         foreach ($this->_bases as $base) {
@@ -174,6 +191,7 @@ class Controler
     function run($show,$logLevel)
     {
         $this->beginTrans();
+        $this->_sessionMgr->startSessions();
         $this->_request = new Request();
         $this->setLogLevl($logLevel);
         $this->_home= new Home('/');
@@ -188,6 +206,7 @@ class Controler
         }
         if ($this->_handle->nullobj()) {
             $this->showView($show);
+            $this->commit();
             $this->close();
             $this->showLog();
             return $this->_handle->getPath();

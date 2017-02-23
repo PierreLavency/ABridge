@@ -1,3 +1,4 @@
+
 <?php
 
 require_once("Handle.php"); 
@@ -421,6 +422,9 @@ class View
                 }
                 if ($rep == H_T_PLAIN) {
                     $rep=V_S_REF;
+                }
+                if ($rep != V_S_REF and $rep != H_T_PLAIN) {
+                    $res[H_TYPE] = H_T_PLAIN;
                 }
                 $v = new View($nh);
                 $res[H_LABEL]=$v->showRec($rep);

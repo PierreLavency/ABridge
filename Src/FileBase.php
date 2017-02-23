@@ -10,7 +10,18 @@ class FileBase extends Base
     {
         parent::__construct('fileBase\\'.$id, $usr, $psw);
     } 
-
+    
+    public function remove() 
+    {
+        parent::erase();
+        return $this->close();
+    }
+    
+    public static function exists($id)
+    {
+        return parent::_exists('fileBase\\'.$id);
+    }
+    
     public function putMod($model,$meta,$addList,$delList) 
     {
         if (! $this->existsMod($model)) {

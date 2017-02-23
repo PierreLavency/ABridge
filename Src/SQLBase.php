@@ -30,17 +30,34 @@ class SQLBase extends Base
             $this->_mysqli = new mysqli(
                 $this->_servername, 
                 $this->_username, 
-                $this->_password, 
-                $this->_dbname
+                $this->_password
             );
         }
         catch (Exception $e) {
             throw 
             new Exception(E_ERC021. ':' . $e->getMessage());
         }
-
         $this->_mysqli->autocommit(false);
+        if (! $this->_mysqli->select_db($this->_dbname)) {
+            $sql = "CREATE DATABASE $this->_dbname";
+            if (! $this->_mysqli->query($sql)) {
+                throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
+            };
+        }
         return (parent::connect());
+    }
+
+    public function remove() 
+    {
+        $sql = "DROP DATABASE $this->_dbname";
+        $this->_mysqli->query($sql);
+        parent::erase();
+        return $this->close();
+    }
+
+    public static function exists($id)
+    {
+        return parent::_exists('sqlBase\\'.$id);
     }
     
     public function beginTrans()

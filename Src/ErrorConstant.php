@@ -50,3 +50,4 @@ define('E_ERC047', "ERC047");  // not supported at inherited level
 define('E_ERC048', "ERC048");  // illegal action on path type
 define('E_ERC049', "ERC049");  // illegal action on obj
 define('E_ERC050', "ERC050");  // illegal action root
+define('E_ERC051', "ERC051");  // no sessionMg found 

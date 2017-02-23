@@ -1,8 +1,10 @@
 - Release/installation  / ok but DB
-- bkup system !!!
+- backup system !!!
+- review include 
 
-- GUI to change user/home.
-- handle session/cookies and user preference
+- GUI to change home.
+- handle user preference
+- tests cookies.
 
 - order in list query and attr.
 - selection for Ref / Java script 
@@ -14,6 +16,7 @@
 
 - delete all object in class 
 - set up rest services 
+- set up modif logging 
 
 - beef up test apps with relationships tables 
 	- union Ckey + multi surname + frere et soeur
@@ -50,6 +53,9 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- GUI to change user  // 3 days
+- handle session/cookies // see below
+- delete/create file/DB // see below
 - back up db // 15 min
 - packaging // 2 days
 - externalize config set up
