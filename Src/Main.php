@@ -1,21 +1,21 @@
 <?php
-$home = "C:\Users\pierr\ABridge";
+$home = "C:/Users/pierr/ABridge";
 
-$path = $home.'\Src'. PATH_SEPARATOR .$home;
+$path = $home.'/Src'. PATH_SEPARATOR .$home;
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 //phpinfo();
 
-//require_once("Tests\GenHTML_init.php");  
-//require_once("Tests\View_init.php");     
-//require_once("Tests\View_init_Xref.php");    
+//require_once("Tests/GenHTML_init.php");  
+//require_once("Tests/View_init.php");     
+//require_once("Tests/View_init_Xref.php");    
 
 $config = parse_ini_file("config.ini");
 $application= $config['name'];
 
 require_once('controler.php');
-require_once("App\\" .$application.'_SETUP.php'); // defining config
-//require_once("App\\" .$application.'_META_6.php');
+require_once("App/" .$application.'_SETUP.php'); // defining config
+//require_once("App/" .$application.'_META_9.php');
 
 //require_once("testAPI.php");
 

@@ -109,10 +109,14 @@ require_once("ViewConstant.php");
 					],						
 					'Trace' =>[
 						'attrList' => [
-							V_S_READ=> ['id','vnum','ctstp','utstp'],
+							V_S_READ=> ['id','vnum','ctstp','utstp','User'],
+							V_S_UPDT=> ['User'],
 						],
-						'navList' => [V_S_READ => []
-						],	
+						'navList' => [V_S_READ => [V_S_UPDT]
+						],
+						'attrHtml' => [
+							V_S_UPDT => ['User'=>H_T_SELECT],
+						]
 					],					
 				],
 				
@@ -121,9 +125,11 @@ require_once("ViewConstant.php");
 
 				'attrList' => [
 					V_S_REF		=> ['SurName','Name'],
-					V_S_CREF	=> ['id','Credits'],
-				]
-				
+					V_S_CREF	=> ['id','Credits','User'],
+				],
+				'attrHtml' => [
+							V_S_UPDT => ['User'=>H_T_SELECT],
+				]				
 		],
 		'Prof' => [
 		
@@ -184,15 +190,16 @@ class SessionHdl
 		$res = $obj->saveMod();
 		
 		$obj = new Model('Session');
-		$obj->setVal('Comment','Initial');
+		$obj->setVal('Comment','/');
 		$obj->save();
+		return $obj;
 		
 	}
 	
-	function getCtstp($mod) 
+	function getObj($mod) 
 	{
 		$obj= new Model('Session',1);
-		return $obj->getVal('ctstp');
+		return $obj;
 	}
 	
 }

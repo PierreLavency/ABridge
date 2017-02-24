@@ -10,11 +10,12 @@ class SessionMgr
     protected $_pTyp=[];
     protected $_pId=[];
     protected $_time=3600; // 1 heure
-    protected $_ptime=86400; // 1 jour 
+    protected $_ptime=86400; // 1 jour
+    protected $_session = null;
     
     function __construct() 
     {
-        $cookie = 'sidc';
+        $cookie = 'sidn';
         $pcookie=$this->pvs($cookie);
         if (isset($_COOKIE[$cookie])) {
             unset($_COOKIE[$cookie]);
@@ -76,7 +77,9 @@ class SessionMgr
                 $x->remove();
             }           
             foreach ($this->_sessionId as $name => $id) {
-                $age = $hdl->getCtstp($name);
+                $obj = $hdl->getObj($name);
+                $this->_session = $obj;
+                $age = $obj->getVal('ctstp');
                 $d = new DateTime($age);
                 $tst= time()-$d->getTimestamp();
                 echo 'Age :'.$tst;
@@ -88,5 +91,17 @@ class SessionMgr
         }
     }
     
-    
+    public function getHome() 
+    {
+        $home = '/'; 
+        if (! is_null($this->_session)) {
+            $usrn= $this->_session->getVal('User');
+            if (! is_null($usrn)) {
+                $home = '/User/'.$usrn;
+            }
+            $this->_session->setVal('Comment', $home);
+            $this->_session->save();
+        }
+        return $home;
+    }
 }

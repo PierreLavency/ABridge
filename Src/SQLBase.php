@@ -21,7 +21,7 @@ class SQLBase extends Base
         $this->_password = $psw;
         $this->_dbname =$dbname;
         $this->connect();
-        parent::__construct('sqlBase\\'.$dbname, $usr, $psw);
+        parent::__construct('sqlBase/'.$dbname, $usr, $psw);
     }
 
     public function connect()

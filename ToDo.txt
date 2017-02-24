@@ -1,14 +1,16 @@
 - Release/installation  / ok but DB
 - backup system !!!
 - review include 
+- review constant
+- selection on protected
 
-- GUI to change home.
+
 - handle user preference
 - tests cookies.
 
 - order in list query and attr.
 - selection for Ref / Java script 
-- set up slice size and other hard coded varable (rows/cols)
+- set up slice size and other hard coded variable (rows/cols)
 - graphics : include svg bit in view.
 - view sort out persistence/2
 - multi language /2
@@ -53,6 +55,7 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- GUI to change home.
 - GUI to change user  // 3 days
 - handle session/cookies // see below
 - delete/create file/DB // see below

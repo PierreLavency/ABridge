@@ -5,7 +5,7 @@ require_once 'Logger.php';
 
 abstract class Base
 {
-    protected static $_filePath ='C:\Users\pierr\ABridge\Datastore\\';
+    protected static $_filePath ='C:/Users/pierr/ABridge/Datastore/';
     protected $_objects=[];
     protected $_fileN;
     protected $_fileName;

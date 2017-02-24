@@ -8,7 +8,7 @@ class FileBase extends Base
 
     function  __construct($id,$usr,$psw) 
     {
-        parent::__construct('fileBase\\'.$id, $usr, $psw);
+        parent::__construct('fileBase/'.$id, $usr, $psw);
     } 
     
     public function remove() 
@@ -19,7 +19,7 @@ class FileBase extends Base
     
     public static function exists($id)
     {
-        return parent::_exists('fileBase\\'.$id);
+        return parent::_exists('fileBase/'.$id);
     }
     
     public function putMod($model,$meta,$addList,$delList) 

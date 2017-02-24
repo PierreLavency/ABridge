@@ -24,7 +24,7 @@
 class Logger
 {
     public $lines = [];
-    public $filePath ='C:\Users\pierr\ABridge\Logstore\\';
+    public $filePath ='C:/Users/pierr/ABridge/Datastore/Logstore/';
     public $fileName;
     public $name;
 

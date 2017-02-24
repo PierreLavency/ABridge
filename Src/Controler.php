@@ -194,7 +194,8 @@ class Controler
         $this->_sessionMgr->startSessions();
         $this->_request = new Request();
         $this->setLogLevl($logLevel);
-        $this->_home= new Home('/');
+        $h= $this->_sessionMgr->getHome();
+        $this->_home= new Home($h);
         $this->_handle = new Handle($this->_request, $this->_home);
         $method=$this->_request->getMethod();
         
