@@ -1,7 +1,7 @@
 <?php
 	
 
-require_once('Src\Logger.php');
+require_once('Logger.php');
 
 
 class Logger_Test extends PHPUnit_Framework_TestCase {

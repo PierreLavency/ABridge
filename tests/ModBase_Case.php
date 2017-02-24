@@ -1,8 +1,8 @@
 <?php
 	
 /* */
-require_once("Src\Model.php"); 
-require_once("Src\ModBase.php"); 
+require_once("Model.php"); 
+require_once("ModBase.php"); 
 
 class ModBase_Case extends PHPUnit_Framework_TestCase {
 

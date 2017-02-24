@@ -1,6 +1,6 @@
 <?php
 
-require_once("Src\SQLBase.php"); 
+require_once("SQLBase.php"); 
 require_once("ModBase_Case.php"); 
 
 class ModBase_Sql_Test extends ModBase_Case  

@@ -1,7 +1,7 @@
 <?php
 	
-require_once("Src\Model.php"); 
-require_once("Src\Handler.php"); 
+require_once("Model.php"); 
+require_once("Handler.php"); 
 
 class Model_Key_Test extends PHPUnit_Framework_TestCase  
 {

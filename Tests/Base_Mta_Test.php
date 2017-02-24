@@ -2,8 +2,8 @@
     
 /* */
 
-require_once("Src\FileBase.php"); 
-require_once("Src\SqlBase.php"); 
+require_once("FileBase.php"); 
+require_once("SqlBase.php"); 
 
 class FileBase_Mta_Test extends PHPUnit_Framework_TestCase {
 
