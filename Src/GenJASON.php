@@ -4,12 +4,14 @@ require_once("Handle.php");
 require_once("FormatLib.php");
 
 
-function genJASON($h,$show)
+function genJASON($h,$show,$depth=-1)
 {
-    return genJasLvl($h, 0, $show);
+    $mod= $h->getModName();
+    $id = $h->getId();
+    return genJasLvl($h, $depth, 0, $show, $mod, $id);
 }
 
-function genJasLvl($h,$level,$show)
+function genJasLvl($h,$depth,$level,$show,$tmod,$tid)
 {
     $nl=getNl($level);
     $tbs=getTab($level);
@@ -23,18 +25,20 @@ function genJasLvl($h,$level,$show)
     }   
     $aList = $h->getAttrList();
     $first = true;
+    $skip = false;
     $c= count($aList);
     foreach ($aList as $attr) {
         $typ = $h->getTyp($attr);
-        if (! $h->isEval($attr)) {
-            if ($first) {
-                $first = false;
-            } else {
+        if ((! $h->isEval($attr)) and (!($typ==M_CREF and $depth==0))) {
+            if (!$first and !$skip) {
                 $res=$res. ','.$nl;
             }
+            if ($skip) {
+                $skip=false;
+            } 
             $val = $h->getVal($attr);
             switch ($typ) {
-                case M_CREF :
+                case M_CREF :               
                     $res=$res. $tbss.'"'.$attr .'"'.' : {'.$nl ;
                     $res=$res. $tbsss.'"'.$h->getModCref($attr);
                     $res=$res. '" : ['.$nl ;
@@ -46,7 +50,9 @@ function genJasLvl($h,$level,$show)
                             $res=$res. ',' . $nl;
                         }
                         $nh= $h->getCref($attr, $id);
-                        $res = $res.genJasLvl($nh, $level+3, false);
+                        $res = $res.genJasLvl(
+                            $nh, $depth-1, $level+3, false, $tmod, $tid
+                        );
                     }
                     $res=$res.$nl.$tbsss. " ] ".$nl ;        
                     $res=$res. $tbss. "}" ;
@@ -56,10 +62,17 @@ function genJasLvl($h,$level,$show)
                     if (is_null($hc)) {
                         $res=$res. $tbss.'"'.$attr .'" : {}' ;
                     } else {
-                        $res=$res. $tbss.'"'.$attr .'" : {' ;
-                        $res=$res. '"'.$hc->getModName().'" : {"id" : ';
-                        $res=$res. $hc->getId();
-                        $res=$res. " }}" ;                        
+                        $rmod = $hc->getModName();
+                        $rid = $hc->getId();
+                        if ($rmod != $tmod or $tid != $rid) {
+                            echo ' '.$rmod.$rid.$tmod.$tid.' ';
+                            $res=$res. $tbss.'"'.$attr .'" : {' ;
+                            $res=$res. '"'.$rmod.'" : {"id" : ';
+                            $res=$res. $rid;
+                            $res=$res. " }}" ; 
+                        } else {
+                            $skip = true;
+                        }
                     }
                     break;
                 case M_CODE :
@@ -75,6 +88,9 @@ function genJasLvl($h,$level,$show)
                     break;              
                 default :
                     $res=$res. $tbss.'"'.$attr .'"'.' : "'. $val.'"';
+            }
+            if ($first and !$skip) {
+                $first = false;
             }
         }
     }

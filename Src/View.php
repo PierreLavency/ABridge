@@ -281,12 +281,20 @@ class View
                 return $list[$attr];
             }
         }
-        $typ = $this->_handle->getTyp($attr);
+        
+        if ($attr == V_S_SLCT) { //bof
+            $typ = M_CREF;
+        } else {
+            $typ = $this->_handle->getTyp($attr);
+        }
         if ($typ == M_REF) {
             return V_S_REF;
         }
         if ($typ==M_TXT) {
            return H_T_TEXTAREA;
+        }
+        if ($typ == M_CREF) {
+            return [H_SLICE=>10,];
         }
         return H_T_PLAIN;
     }
@@ -411,7 +419,11 @@ class View
                     return [H_TYPE =>H_T_PLAIN, H_DEFAULT=>""];
                 }
                 $rep= $this->getAttrHtml($attr, $viewState);
-                $res[H_TYPE]= $rep;
+                if (is_array($rep)) {
+                    $res=$rep;
+                } else {
+                    $res[H_TYPE]= $rep;
+                }
                 if ($rep==V_S_REF) {
                     $refpath = $nh->getPath();                
                     $res[H_TYPE]= H_T_LINK;
@@ -439,16 +451,24 @@ class View
         }
         if ($prop==V_P_VAL) {
             $htyp = $this->getAttrHtml($attr, $viewState);
-            $res[H_TYPE] = $htyp;
-            if ($htyp==H_T_LINK) {
+            if (is_array($htyp)) {
+                $res= $htyp;
+            } else {
+                $res[H_TYPE] = $htyp;
+            }
+            if ($res[H_TYPE]==H_T_LINK) {
                 $res[H_NAME]=$x;
                 $res[H_LABEL]=$x;
             } else {
                 $res[H_DEFAULT]=$x;
                 $res[H_DISABLED]=true;
             }
-            if ($htyp==H_T_IMG) {
-                $res=[H_TYPE=>H_T_LINK,H_NAME=>$x,H_LABEL=>$res];
+            if ($res[H_TYPE]==H_T_IMG) {
+                $tres=$res;
+                $res=[];
+                $res[H_TYPE]=H_T_LINK;
+                $res[H_NAME]=$x;
+                $res[H_LABEL]=$tres;
             }
             return $res;
         }
@@ -757,7 +777,7 @@ class View
                 $view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL];
                 $view[]=[V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_NEW];
                 $list = $this->_handle->getVal($attr);
-                $view = $this->getSlice($attr, $list, $view);
+                $view = $this->getSlice($attr, $list, $view, $viewState);
                 $specL[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
             }
         }
@@ -784,7 +804,7 @@ class View
             $view=[];
             $view[]=[V_TYPE=>V_ELEM,V_ATTR => V_S_SLCT, V_PROP => V_P_LBL];
             $list=$this->_handle->select();
-            $view = $this->getSlice(V_S_SLCT, $list, $view);
+            $view = $this->getSlice(V_S_SLCT, $list, $view, $viewState);
             $specS[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
             $arg[] = [V_TYPE=>V_LIST,V_LT=>V_CLIST,V_ARG=>$specS];
         }
@@ -806,12 +826,13 @@ class View
         return $r;
     }
 
-    protected function getSlice($attr,$list,$viewL) 
+    protected function getSlice($attr,$list,$viewL,$viewState) 
     {
         $view[]=$viewL[0];
         $c=count($list);
         $pos=0;
-        $slice = 10;
+        $prm = $this->getAttrHtml($attr, $viewState);
+        $slice = $prm[H_SLICE];
         $npos = $this->_req->getPrm($attr); //not work
         if (!is_null($npos)) {
             $pos=(int) $npos;

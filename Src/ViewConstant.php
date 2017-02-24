@@ -82,4 +82,5 @@ define('H_HIDDEN', "hidden");
 define('H_HIDDEN2', "hidden2");
 define('H_SEPARATOR', "separator");
 define('H_DISABLED', "disabled");
+define('H_SLICE', "slice");
     

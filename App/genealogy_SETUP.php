@@ -92,7 +92,7 @@ require_once("ViewConstant.php");
 							V_S_UPDT=> ['Image'],
 						],
 						'attrHtml' => [
-							V_S_READ => ['Image'=>H_T_IMG],
+							V_S_READ => ['Image'=>[H_TYPE=>H_T_IMG,H_ROWP=> 80]],
 						],						
 						'navList' => [V_S_READ => [V_S_UPDT]
 						],	
@@ -104,6 +104,9 @@ require_once("ViewConstant.php");
 						'attrList' => [
 							V_S_READ=> ['Jason'],
 						],
+						'attrHtml' => [
+							V_S_READ => ['Jason'=>[H_TYPE=>H_T_TEXTAREA,H_COL=>90,H_ROW=> 40]],
+						],					
 						'navList' => [V_S_READ => []
 						],	
 					],						
@@ -129,6 +132,7 @@ require_once("ViewConstant.php");
 				],
 				'attrHtml' => [
 							V_S_UPDT => ['User'=>H_T_SELECT],
+							V_S_SLCT => [V_S_SLCT=>[H_SLICE=>15]]
 				]				
 		],
 		'Prof' => [
