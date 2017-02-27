@@ -10,7 +10,7 @@ class ModBase_Abst_Sql_Test extends ModBase_Abst_Case
 			self::$CName='Student';
 			self::$HName='Child';
 			self::$DBName= 'test';
-			self::$db = new SQLBase(self::$DBName,'cl822','cl822');
+			self::$db = new SQLBase(self::$DBName);
 		}
 
 }

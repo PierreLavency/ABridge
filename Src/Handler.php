@@ -37,6 +37,7 @@ class Handler
 * @static
 */
     private static $_instance = null;
+    private $_filePath;
     private $_bases = []; //'fileBase'=> [name => class],
     private $_basesClasses =['fileBase'=>'FileBase','dataBase'=>'SQLBase'];
     private $_modHandler= [];

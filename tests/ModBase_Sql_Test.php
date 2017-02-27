@@ -9,7 +9,7 @@ class ModBase_Sql_Test extends ModBase_Case
 		{		
 			self::$CName='Student';
 			self::$DBName= 'test';
-			self::$db = new SQLBase(self::$DBName,'cl822','cl822');
+			self::$db = new SQLBase(self::$DBName);
 		}
 
 }

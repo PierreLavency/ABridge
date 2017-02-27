@@ -16,7 +16,7 @@ class FileBase_Test extends Base_Case {
         self::$CName='ERC';
         self::$CName2='ERCode';
         self::$DBName= 'atest';
-        self::$db = new FileBase(self::$DBName,'cl822','cl822');
+        self::$db = new FileBase(self::$DBName);
         
         if (self::$db->existsMod(self::$CName)) {self::$db ->delMod(self::$CName);}
         if (self::$db ->existsMod(self::$CName2)){self::$db ->delMod(self::$CName2);}

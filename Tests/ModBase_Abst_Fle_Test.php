@@ -11,7 +11,7 @@ class ModBase_Abst_Fle_Test extends ModBase_Abst_Case
 		self::$CName='Student';
 		self::$HName='Child';
 		self::$DBName= 'atest';
-		self::$db = new FileBase(self::$DBName,'cl822','cl822');
+		self::$db = new FileBase(self::$DBName);
 	}
 }
 

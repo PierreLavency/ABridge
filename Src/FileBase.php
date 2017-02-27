@@ -6,9 +6,9 @@ require_once("Base.php");
 class FileBase extends Base
 {
 
-    function  __construct($id,$usr,$psw) 
+    function  __construct($id) 
     {
-        parent::__construct('fileBase/'.$id, $usr, $psw);
+        parent::__construct('fileBase/'.$id);
     } 
     
     public function remove() 

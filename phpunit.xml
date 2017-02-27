@@ -1,5 +1,5 @@
 
-<phpunit bootstrap="Src/index_cli.php">
+<phpunit bootstrap="Src/ABridge_test.php">
   <testsuites>
     <testsuite name="ABridge">
       <directory>Tests</directory>

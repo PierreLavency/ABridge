@@ -5,7 +5,7 @@ require_once 'Logger.php';
 
 abstract class Base
 {
-    protected static $_filePath ='C:/Users/pierr/ABridge/Datastore/';
+    protected static $_filePath ="";
     protected $_objects=[];
     protected $_fileN;
     protected $_fileName;
@@ -13,7 +13,7 @@ abstract class Base
     protected $_logger;
     protected $_connected;
      
-    protected function  __construct($id,$usr,$psw) 
+    protected function  __construct($id) 
     {
         $this->_fileN = self::$_filePath . $id;
         $this->_fileName = $this->_fileN.'.txt';
@@ -31,6 +31,18 @@ abstract class Base
         $this->_objects = [];
         return true;
     }       
+    
+    public static function setPath($path)
+    {
+        self::$_filePath =$path;
+        return true;
+    }
+    
+    
+    public static function getPath()
+    {
+        return self::$_filePath;
+    }
     
     protected static function _exists($id) 
     {

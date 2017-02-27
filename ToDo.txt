@@ -54,6 +54,7 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- removed hard coded path/user etc. and review dir structure for applications / 2 days
 - set up slice size and other hard coded variable (rows/cols) clean up Jason // 1day
 - GUI to change home. 
 - GUI to change user  // 3 days

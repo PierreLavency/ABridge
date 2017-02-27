@@ -24,10 +24,25 @@ class Controler
     protected $_opL = [];
     protected $_logLevel = 0;
     protected $_sessionMgr ;
-
-    
-    function __construct($spec) 
+ 
+    function __construct() 
     {
+        $a = func_get_args();
+        $i = func_num_args();
+        if (method_exists($this, $f = 'construct'.$i)) {
+            call_user_func_array(array($this, $f), $a);
+        }
+    } 
+ 
+    function construct1($ini) 
+    {
+        $this->init();
+    }
+ 
+ 
+    function construct2($spec,$ini) 
+    {
+        $this->init();
         $this->_spec=$spec;
         $bases = [];
         $handlers = [];
@@ -56,7 +71,27 @@ class Controler
         }
         $this->_bases = $bases;
     }
-    
+ 
+    private function init()
+    {
+        $fpath= 'C:/Users/pierr/ABridge/Datastore/';
+        Logger::setPath($fpath);
+        Base::setPath($fpath);
+        $host = 'localhost';
+        if (isset($ini['host'])) {
+            $host= $ini['host'];
+        }
+        $usr = 'cl822';
+        if (isset($ini['user'])) {
+            $usr= $ini['user'];
+        }
+        $psw = 'cl822';
+        if (isset($ini['pass'])) {
+            $psw= $ini['pass'];
+        } 
+        SQLBase::setDB($host, $usr, $psw);
+    }
+ 
     function beginTrans() 
     {
         foreach ($this->_bases as $base) {

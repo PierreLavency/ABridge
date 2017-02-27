@@ -325,9 +325,6 @@ class Base_Case extends PHPUnit_Framework_TestCase {
             try {$x->delObj(self::$CName,'err');} catch (Exception $e) {$r = true;}
             $this->assertTrue($r);
 
-            $r=false;
-            try {new SQLBase(self::$DBName,'Notexist','Notexist');} catch (Exception $e) {$r = true;}
-            $this->assertTrue($r);
         }
 
     }

@@ -24,7 +24,7 @@
 class Logger
 {
     public $lines = [];
-    public $filePath ='C:/Users/pierr/ABridge/Datastore/Logstore/';
+    protected static $_filePath ="";
     public $fileName;
     public $name;
 
@@ -36,7 +36,24 @@ class Logger
     function __construct($name= "defaultLoggerFileName" ) 
     {
         $this->name = $name;
-        $this->fileName = $this->filePath.$name.".txt";
+        $this->fileName = self::$_filePath.'Logstore/'.$name.".txt";
+    }
+
+    public static function setPath($path)
+    {
+        self::$_filePath =$path;
+        return true;
+    }
+    
+    public static function getPath()
+    {
+        return self::$_filePath;
+    }
+
+    public static function exists($id) 
+    {
+        $f = self::$_filePath.'Logstore/'. $id.'.txt';
+        return file_exists($f);
     }
     
     /**

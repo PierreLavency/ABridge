@@ -9,6 +9,10 @@ class Logger_Test extends PHPUnit_Framework_TestCase {
  
 	public function testLogLine1()
     {
+		$this->assertTrue(Logger::setPath('C:/Users/pierr/ABridge/Datastore/'));
+		
+		$this->assertEquals(Logger::getPath(),'C:/Users/pierr/ABridge/Datastore/');
+		
 		$logName = basename(__FILE__, ".php");
 		
 		$this->assertNotNull(($x = new Logger($logName)));
@@ -17,7 +21,9 @@ class Logger_Test extends PHPUnit_Framework_TestCase {
 					
 		$this->assertEquals(1,$x->logLine ("this is my second logged line"));
 
-		$this->assertNotNull ($x->save());	
+		$this->assertNotNull ($x->save());
+
+		$this->assertTrue (Logger::exists($logName));
     }
  
 	/**
@@ -98,6 +104,8 @@ class Logger_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($y->diff($z),1);
 		$this->assertEquals($x->diff($z),-1);
     }
+	
+	
 }
 
 ?>	

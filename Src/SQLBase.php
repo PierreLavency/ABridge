@@ -8,29 +8,44 @@ require_once("Base.php");
 class SQLBase extends Base
 {
 
-    protected $_servername;
-    protected $_username;
-    protected $_password;
+    protected static $_servername;
+    protected static $_username;
+    protected static $_password;
     protected $_dbname;
     protected $_mysqli;
     
-    function  __construct($dbname,$usr,$psw)
+    function  __construct($dbname)
     {
-        $this->_servername = "localhost"; //bof
-        $this->_username = $usr;
-        $this->_password = $psw;
         $this->_dbname =$dbname;
         $this->connect();
-        parent::__construct('sqlBase/'.$dbname, $usr, $psw);
+        parent::__construct('sqlBase/'.$dbname);
     }
 
+    public static function setDB($server,$usr,$psw)
+    {
+        self::$_servername=$server;
+        self::$_username=$usr;
+        self::$_password=$psw;
+        return true;
+    }
+    
+    public static function getDB()
+    {
+        $res=[];
+        $res[]=self::$_servername;
+        $res[]=self::$_username;
+        $res[]=self::$_password;
+        return $res;
+    }
+    
+    
     public function connect()
     {
         try {       
             $this->_mysqli = new mysqli(
-                $this->_servername, 
-                $this->_username, 
-                $this->_password
+                self::$_servername, 
+                self::$_username, 
+                self::$_password
             );
         }
         catch (Exception $e) {
