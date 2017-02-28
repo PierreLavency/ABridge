@@ -4,7 +4,7 @@ require_once("ViewConstant.php");
 	$config = [
 	'Handlers' =>
 		[
-		'Session'  	 => ['fileBase','sid','Session'],
+		'Session'  	 => ['fileSession','sid',],
 		'CodeValue'  => ['fileBase','genealogy',],
 		'Code' 		 => ['fileBase','genealogy',],
 		'Student'	 => ['fileBase','genealogy',],
@@ -211,12 +211,14 @@ class SessionHdl
 class Cours {
 
 	private $_mod;
-	private $_credit;
+	private $_credit=0;
 
 	function __construct($mod) 
 	{
 		$this->_mod=$mod;
-		$this->_credit=$mod->getVal('Credits');
+		if ($mod->getId()) {
+			$this->_credit=$mod->getVal('Credits');
+		}
 	}
 		
 	public function delet()
@@ -295,6 +297,7 @@ class Student {
 		$this->_mod->setVal('NbrCredits',$credits);
 		return true;
 	}
+	
 	public function afterSave()
 	{
 		return true;

@@ -4,10 +4,10 @@ require_once("ViewConstant.php");
 	$config = [
 	'Handlers' =>
 		[
-		'CodeValue'  => ['dataBase','gen',],
-		'Code' 		 => ['dataBase','gen',],
-		'Person'	 => ['dataBase','gen',],
-		'User'	 	 => ['dataBase','gen',],
+		'CodeValue'  => ['dataBase'],
+		'Code' 		 => ['dataBase'],
+		'Person'	 => ['dataBase'],
+		'User'	 	 => ['dataBase'],
 		],
 	'Home' =>
 		['User','Person','Code','CodeValue','Home'],

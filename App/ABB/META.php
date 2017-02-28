@@ -1,13 +1,6 @@
 <?php
 	
-require_once('controler.php');
-require_once("ABB_SETUP.php");
-
 // when running this data will be lost !!
-
-	$ctrl = new Controler($config);
-	$ctrl->beginTrans();
-
 	
 	// Architecture building block 
 	
@@ -102,5 +95,4 @@ require_once("ABB_SETUP.php");
 	$r = $obj->getErrLog ();
 	$r->show();	
 	
-	$ctrl->commit();
 	

@@ -1,0 +1,205 @@
+a:6:{i:0;s:491:"test
+
+<a href='/ABridge.php/test?View=Update' >Update</a>
+
+<a href='/ABridge.php/test?View=Delete' >Delete</a>
+
+
+<table >
+	<tr>
+		<td>
+			id
+		</td>
+		<td>
+			0
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A1
+		</td>
+		<td>
+			5
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A2
+		</td>
+		<td>
+			aa
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A3
+		</td>
+		<td>
+			2016-12-08
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A4
+		</td>
+		<td>
+			<textarea name = "" disabled cols="50"  rows="5"  >ceci est un texte</textarea>
+		</td>
+	</tr>
+</table>
+
+
+";i:1;s:702:"<form method=POST action= /ABridge.php/test ><input type='hidden' name='action' value='Update' >
+	test
+<input type="submit" value = submit >
+
+	<table >
+		<tr>
+			<td>
+				id
+			</td>
+			<td>
+				0
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A1
+			</td>
+			<td>
+				<input type = "text" name = "A1" value = "5"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A2
+			</td>
+			<td>
+				<input type = "text" name = "A2" value = "aa"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A3
+			</td>
+			<td>
+				<input type = "text" name = "A3" value = "2016-12-08"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A4
+			</td>
+			<td>
+				<textarea name = "A4"  cols="50"  rows="5"  >ceci est un texte</textarea>
+			</td>
+		</tr>
+	</table>
+</form>  
+";i:2;s:639:"<form method=POST action= /ABridge.php/test ><input type='hidden' name='action' value='Create' >
+	test
+<input type="submit" value = submit >
+
+	<table >
+		<tr>
+			<td>
+				id
+			</td>
+			<td>
+				0
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A1
+			</td>
+			<td>
+				<input type = "text" name = "A1"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A2
+			</td>
+			<td>
+				<input type = "text" name = "A2"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A3
+			</td>
+			<td>
+				<input type = "text" name = "A3"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A4
+			</td>
+			<td>
+				<textarea name = "A4"  cols="50"  rows="5"  ></textarea>
+			</td>
+		</tr>
+	</table>
+</form>  
+";i:3;s:570:"<form method=POST action= /ABridge.php/test ><input type='hidden' name='action' value='Delete' >
+	test
+<input type="submit" value = submit >
+
+	<table >
+		<tr>
+			<td>
+				id
+			</td>
+			<td>
+				0
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A1
+			</td>
+			<td>
+				5
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A2
+			</td>
+			<td>
+				aa
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A3
+			</td>
+			<td>
+				2016-12-08
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A4
+			</td>
+			<td>
+				<textarea name = "" disabled cols="50"  rows="5"  >ceci est un texte</textarea>
+			</td>
+		</tr>
+	</table>
+</form>  
+";i:4;s:6:"5
+ aa
+";i:5;s:90:"<ul>
+	<li>
+		<a href=/ABridge.php/test >5
+ aa
+</a>
+	</li>
+	<li>
+		2016-12-08
+	</li>
+</ul>
+";}

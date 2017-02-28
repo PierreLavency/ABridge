@@ -8,7 +8,3 @@ $conf = parse_ini_file($home.'/Src/config.ini');
 $conf['name'] = 'UnitTest';
 require_once $home.'/Src/Index.php';
 
-
-
-
-

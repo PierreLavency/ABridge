@@ -17,7 +17,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     function testNew()
     {
 
-        $ctrl = new Controler($this->config,[]);
+        $ctrl = new Controler($this->config,['name'=>'UnitTest']);
         
         $x=new Model('tclass');
         $x->deleteMod();
@@ -34,7 +34,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO']=$this->path;
         $_GET['Action']=V_S_CREA;
         
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $resc = $ctrl->run($this->show,0);
         
         $_SERVER['REQUEST_METHOD']='POST';
@@ -42,10 +42,10 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_POST['Action']=V_S_CREA;
         $_POST['Name']=1;
         
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $res = $ctrl->run($this->show,0);
 
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $this->assertNotNull($x=new Model('tclass',1));
         $this->assertEquals($x->getVal('Name'),1);
         
@@ -65,7 +65,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['REQUEST_METHOD']='GET';   
         $_SERVER['PATH_INFO']=$fpath;
         
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $resc = $ctrl->run($this->show,0);
         
         $_SERVER['REQUEST_METHOD']='POST';
@@ -73,10 +73,10 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_POST['Action']=V_S_CREA;
         $_POST['Name']=1;
         
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $res = $ctrl->run($this->show,0);
         
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $this->assertNotNull($x=new Model('tclass',2));
         $this->assertEquals($x->getVal('Name'),1);
         
@@ -86,7 +86,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO']=$fpath;
         $_GET['Action']=V_S_UPDT;
         
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $res = $ctrl->run($this->show,0);
         
         $this->assertEquals($resc.'/2',$res);
@@ -97,10 +97,10 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_POST['Action']=V_S_UPDT;
         $_POST['Name']=2;
         
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $res = $ctrl->run($this->show,0);
 
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $this->assertNotNull($x=new Model('tclass',2));
         $this->assertEquals($x->getVal('Name'),2);
         
@@ -108,21 +108,21 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO']=$fpath;
         $_GET['Action']=V_S_READ;
         
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $res = $ctrl->run($this->show,0);
             
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$fpath;
         $_GET['Action']=V_S_DELT;
         
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $res = $ctrl->run($this->show,0);
 
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$fpath;
         $_POST['Action']=V_S_DELT;
         
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $res = $ctrl->run($this->show,0);
 
         $this->assertEquals($reso,$res);
@@ -132,12 +132,12 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_POST['Action']=V_S_UPDT;
         $_POST['Name']='a';
 
-        $ctrl = new Controler($this->config, []);
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $res = $ctrl->run($this->show,2);
         $this->expectOutputString(
 "<br>LINE:0<br>SELECT * FROM tclass where id= 1<br>LINE:1<br> **************  <br>LINE:2<br>SELECT id FROM tclass where Ref= '1'<br><br>"   
         );
-        $ctrl = new Controler($this->config, []);       
+        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);       
         $this->assertNotNull($x=new Model('tclass',1));
         $this->assertEquals($x->getVal('Name'),1);
         

@@ -1,13 +1,7 @@
 <?php
 	
-require_once('controler.php');
-require_once("GEN_SETUP.php");
-
 // when running this data will be lost !!
 
-	$ctrl = new Controler($config);
-	$ctrl->beginTrans();
-	
 	// CodeVal
 	$Code = 'Code';	
 	$CodeVal= 'CodeValue';
@@ -92,6 +86,4 @@ require_once("GEN_SETUP.php");
 	$res = $obj->saveMod();	
 	$r = $obj->getErrLog ();
 	$r->show();
-	
-	$ctrl->commit();
-	
+

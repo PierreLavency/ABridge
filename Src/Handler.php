@@ -39,9 +39,9 @@ class Handler
     private static $_instance = null;
     private $_filePath;
     private $_bases = []; //'fileBase'=> [name => class],
-    private $_basesClasses =['fileBase'=>'FileBase','dataBase'=>'SQLBase'];
+    private $_basesClasses =['fileBase'=>'FileBase','fileSession'=>'FileBase','dataBase'=>'SQLBase'];
     private $_modHandler= [];
-    private $_modBase =['fileBase' =>'ModBase','dataBase'=>'ModBase'];
+    private $_modBase =['fileBase' =>'ModBase','fileSession' =>'ModBase','dataBase'=>'ModBase'];
     private $_viewHandler=[]; // mod => spec
     
 /**

@@ -1,6 +1,10 @@
 
-Datastore/
+Datastore/fileBase/
+Datastore/sqlBase/
+Datastore/Test/
 TestCoverage/
 Bld/
 Docs/
-Try_test.php
+DirTest/
+App/RELTEST/
+App/TEST/

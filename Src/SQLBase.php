@@ -58,6 +58,7 @@ class SQLBase extends Base
             if (! $this->_mysqli->query($sql)) {
                 throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
             };
+            $this->_mysqli->select_db($this->_dbname);
         }
         return (parent::connect());
     }

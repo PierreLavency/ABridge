@@ -61,6 +61,13 @@ class Base_Mta_Test extends PHPUnit_Framework_TestCase {
         try {$x = new SqlBase($name);} catch (Exception $e) {$r = true;}
         $this->assertTrue($r);
 
+		$tres = SqlBase::setDB($res[0],'noexist','noexist');
+		$this->assertTrue($tres);
+
+		$r=false;
+        try {$x = new SqlBase($name);} catch (Exception $e) {$r = true;}
+        $this->assertTrue($r);
+		
 		$tres = SqlBase::setDB($res[0],$res[1],$res[2]);
 		$this->assertTrue($tres);
 

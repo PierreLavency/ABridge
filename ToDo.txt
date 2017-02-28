@@ -1,4 +1,4 @@
-- Release/installation  / ok but DB
+- Release/installation  / ok to test
 - backup system !!!
 - review include 
 - review constant
@@ -26,6 +26,7 @@
 
 - split alter drop and add in Base.
 - implement foreign keys
+- referential integrety
 - changed DB model independently of class model.
 - Propagate changes from abstract classe to concrete
 
@@ -54,7 +55,8 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
-- removed hard coded path/user etc. and review dir structure for applications / 2 days
+- Release/installation  tested locally / 1 day
+- removed hard coded path/user etc. and review dir structure for applications // 2 days
 - set up slice size and other hard coded variable (rows/cols) clean up Jason // 1day
 - GUI to change home. 
 - GUI to change user  // 3 days

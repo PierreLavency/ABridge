@@ -24,7 +24,8 @@ class Controler
     protected $_opL = [];
     protected $_logLevel = 0;
     protected $_sessionMgr ;
- 
+    protected $_bname ;
+     
     function __construct() 
     {
         $a = func_get_args();
@@ -36,13 +37,13 @@ class Controler
  
     function construct1($ini) 
     {
-        $this->init();
+        $this->init($ini);
     }
  
  
     function construct2($spec,$ini) 
     {
-        $this->init();
+        $this->init($ini);
         $this->_spec=$spec;
         $bases = [];
         $handlers = [];
@@ -51,19 +52,23 @@ class Controler
         $sesMgr = new SessionMgr();
         $this->_sessionMgr=$sesMgr;
         foreach ($config as $classN => $handler) {
+            if (count($handler) == 1) {
+                    $handler[]=$this->_bname;
+            }
             if (! in_array($handler, $handlers)) {
                 $handlers[] = $handler;
-                if (count($handler)==3) {
-                    if ($handler[2] == 'Session') {
-                        $id=$sesMgr->initSession($handler);
-                    }
+                if ($handler[0]== 'fileSession') {
+                    $id=$sesMgr->initSession($handler);
                     $x= Handler::get()->getBaseNm(  
                         $handler[0], 
                         $handler[1], 
                         $id
                     );
                 } else {
-                    $x = Handler::get()->getBase($handler[0], $handler[1]);
+                    $x = Handler::get()->getBase(
+                        $handler[0], 
+                        $handler[1]
+                    );
                 }
                 $bases[]=$x;
             }
@@ -72,9 +77,12 @@ class Controler
         $this->_bases = $bases;
     }
  
-    private function init()
+    private function init($ini)
     {
         $fpath= 'C:/Users/pierr/ABridge/Datastore/';
+        if (isset($ini['path'])) {
+            $fpath= $ini['path'];
+        }       
         Logger::setPath($fpath);
         Base::setPath($fpath);
         $host = 'localhost';
@@ -90,6 +98,12 @@ class Controler
             $psw= $ini['pass'];
         } 
         SQLBase::setDB($host, $usr, $psw);
+        
+        $bname = $ini['name'];
+        if (isset($init['bname'])) {
+            $bname = $init['bname'];
+        }
+        $this->_bname = $bname;
     }
  
     function beginTrans() 
