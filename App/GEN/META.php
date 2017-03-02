@@ -36,6 +36,8 @@
 	$r = $code-> getErrLog ();
 	$r->show();
 
+	require_once 'GEN_LOAD.php';
+	
 	// Person
 	
 	$person = new Model('Person');

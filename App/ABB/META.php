@@ -4,6 +4,9 @@
 	
 	// Architecture building block 
 	
+	require_once 'Acode_META.php';
+	
+	
 	$obj = new Model('ABB');
 	$res= $obj->deleteMod();
 

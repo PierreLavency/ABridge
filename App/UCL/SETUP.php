@@ -161,6 +161,7 @@ require_once("ViewConstant.php");
 		
 				'attrHtml' => [
 					V_S_CREA => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
+//					V_S_READ => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
 					V_S_READ => ['De'=>'Resume'],
 					V_S_UPDT => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
 					V_S_SLCT => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
@@ -198,6 +199,14 @@ class SessionHdl
 		$obj->save();
 		return $obj;
 		
+	}
+	
+	function existObj()
+	{
+		$obj = new Model('Session');
+		$obj->setCriteria([],[],[]);
+		$res = $obj->select();
+		return count($res);
 	}
 	
 	function getObj($mod) 

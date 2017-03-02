@@ -1,14 +1,6 @@
 
 <?php
 	
-require_once('controler.php');
-require_once("GEN_SETUP.php");
-
-	$ctrl = new Controler($config);
-	$ctrl->beginTrans();
-	
-	$Code = 'Code';	
-	$CodeVal= 'CodeValue';	
 	
 	$sex = new Model($Code);
 	$res = $sex->setVal('Name','Sexe');
@@ -37,5 +29,4 @@ require_once("GEN_SETUP.php");
 	$r = $sextype1-> getErrLog ();
 	$r->show();	
 	
-	$ctrl->commit();	
 	

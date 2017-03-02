@@ -1,13 +1,8 @@
 <?php
 	
-require_once('controler.php');
-require_once("ABB_SETUP.php");
-
 // when running this data will be lost !!
 
-	$ctrl = new Controler($config);
-	$ctrl->beginTrans();
-		
+
 	// Abstract 
 	
 	$obj = new Model('ACode');
@@ -166,6 +161,4 @@ require_once("ABB_SETUP.php");
 	$obj->setVal('Value','External');
 	$obj->save();
 
-	
-	$ctrl->commit();
-	
+

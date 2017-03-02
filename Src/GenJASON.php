@@ -65,7 +65,6 @@ function genJasLvl($h,$depth,$level,$show,$tmod,$tid)
                         $rmod = $hc->getModName();
                         $rid = $hc->getId();
                         if ($rmod != $tmod or $tid != $rid) {
-                            echo ' '.$rmod.$rid.$tmod.$tid.' ';
                             $res=$res. $tbss.'"'.$attr .'" : {' ;
                             $res=$res. '"'.$rmod.'" : {"id" : ';
                             $res=$res. $rid;

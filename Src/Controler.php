@@ -241,6 +241,10 @@ class Controler
     {
         $this->beginTrans();
         $this->_sessionMgr->startSessions();
+        if ($this->_sessionMgr->isNew()) {
+            $this->commit();
+            $this->beginTrans();
+        }
         $this->_request = new Request();
         $this->setLogLevl($logLevel);
         $h= $this->_sessionMgr->getHome();
@@ -256,7 +260,6 @@ class Controler
         }
         if ($this->_handle->nullobj()) {
             $this->showView($show);
-            $this->commit();
             $this->close();
             $this->showLog();
             return $this->_handle->getPath();

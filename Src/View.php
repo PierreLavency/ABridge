@@ -330,6 +330,11 @@ class View
         $res = [];
         
         if ($prop == V_P_OP and $viewState == V_S_SLCT) {
+            if ($this->_handle->isProtected($attr)) {
+                $res[H_TYPE]=H_T_PLAIN;
+                $res[H_DEFAULT]= '';
+                return $res;
+            }
             $res[H_TYPE]=H_T_SELECT;
             $name=$attr.'_OP';
             $res[H_NAME]=$name;
@@ -418,7 +423,11 @@ class View
                 if (is_null($nh)) {
                     return [H_TYPE =>H_T_PLAIN, H_DEFAULT=>""];
                 }
-                $rep= $this->getAttrHtml($attr, $viewState);
+                if ($this->_handle->isProtected($attr)) {
+                    $rep=V_S_REF;
+                } else {
+                    $rep= $this->getAttrHtml($attr, $viewState);
+                }
                 if (is_array($rep)) {
                     $res=$rep;
                 } else {
@@ -827,7 +836,7 @@ class View
     }
 
     protected function getSlice($attr,$list,$viewL,$viewState) 
-    {
+    {       
         $view[]=$viewL[0];
         $c=count($list);
         $pos=0;

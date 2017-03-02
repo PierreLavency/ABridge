@@ -1,15 +1,13 @@
-- Release/installation  / ok to test
 - backup system !!!
 - review include 
 - review constant
 - selection on protected (bug: possible to change op)
 
 - handle user preference
-- test cookies (bug: when cookies too old)
+- test cookies 
 - test Jason
 - order in list query and attr.
 - selection for Ref / Java script 
-
 - graphics : include svg bit in view. /2
 - view sort out persistence/2
 - multi language /2
@@ -55,6 +53,8 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- Release/installation  on different PC / 2 days
+- (bug: when cookies too old) 
 - Release/installation  tested locally / 1 day
 - removed hard coded path/user etc. and review dir structure for applications // 2 days
 - set up slice size and other hard coded variable (rows/cols) clean up Jason // 1day
