@@ -228,6 +228,7 @@ class Model
     {
         return $this->_errLog;
     }    
+    
     public function getErrLine() 
     {
         $c = $this->_errLog->logSize();
@@ -1461,6 +1462,24 @@ class Model
         }
         return $this->_id;
     }
+    
+    public function isDel() 
+    {
+        if ($this->isAbstr()) {
+            return false;
+        }
+        foreach ($this->getAllAttr() as $attr) {
+            $typ = $this->getTyp($attr);
+            if ($typ == M_CREF) {
+                $res=$this->getVal($attr);
+                if (count($res)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
     /**
      * Delete an object.
      *
@@ -1474,6 +1493,10 @@ class Model
         }
         if (! $this->_stateHdlr) {
             $this->_errLog->logLine(E_ERC006);
+            return false;
+        }
+        if (!$this->isDel()) {
+            $this->_errLog->logLine(E_ERC052);
             return false;
         }
         if (! is_null($this->_obj)) {

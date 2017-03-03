@@ -80,7 +80,7 @@ require_once("ViewConstant.php");
 						'attrList' => [
 							V_S_READ=> ['SurName','Name','InscritA'],
 						],
-						'navList' => [
+						'navList' => [V_S_READ => []
 						],	
 					],
 					'Image' =>[

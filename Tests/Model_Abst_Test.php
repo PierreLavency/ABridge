@@ -114,6 +114,9 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
 		
 		$res = $ABB->setAbstr(); 
 		$this->assertTrue($res);	
+
+		$res = $ABB->isDel();
+		$this->assertFalse($res);
 		
 		$res = $ABB->saveMod();	
 		$this->assertTrue($res);	

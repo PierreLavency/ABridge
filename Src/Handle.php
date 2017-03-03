@@ -109,7 +109,7 @@ Class Handle
                 case V_S_CREA :
                 case V_S_SLCT :
                     if (count($this->_request->pathArr()) == 1) {
-                    return $this->_home->canLink($this->_obj);
+                        return $this->_home->canLink($this->_obj);
                     }
                     return true;
                 case V_S_UPDT :
@@ -167,6 +167,9 @@ Class Handle
         if ($this->_home->isRoot() and $this->_request->isHomePath()) {
             return false;
         }
+//      if ($action == V_S_DELT) {
+//          return $this->_obj->isDel();
+//      }
         return true;   
     }
 

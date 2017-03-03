@@ -206,6 +206,15 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$r = $codeval-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);	
 
+		// check deletable 
+		
+		$this->assertFalse($code->isDel());
+
+
+		$code->delet();	
+
+		$this->assertEquals($code->getErrLine(),E_ERC052);		
+
 		$db->commit();
 		
 	}
@@ -317,6 +326,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$code = new Model($this->Code);
 		$this->assertNotNull($code);	
 		$log = $code->getErrLog ();
+
 		
 		$res = $code->setVal('CodeName','Sexe');
 		$this->assertFalse($res);
@@ -329,7 +339,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		$id1= $codeval->save();
 		$this->assertEquals($id1,0);	
-
+		
 		$r = $codeval-> getErrLog ();
 		$this->assertEquals($log->getLine(0),E_ERC019.':ValueOf');	
 		
@@ -372,7 +382,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$res = $codeval->setBkey('notexists',false);
 
 		$r = $codeval-> getErrLog ();
-		$this->assertEquals($log->getLine(5),E_ERC002.':notexists');
+		$this->assertEquals($log->getLine(8),E_ERC002.':notexists');
 		
 		$this->assertFalse($codeval->isOptl('id'));
 		
