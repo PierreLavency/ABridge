@@ -98,6 +98,8 @@ class Model_Slc_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals(18, count($x->select()));
 		$this->assertTrue($x->setCriteria(['c'],['b'=>'>'],['1959-05-26']));
 		$this->assertEquals(20, count($x->select()));	
+		$x->protect('a');
+		$this->assertEquals(1, count($x->select()));
 		
 		$db->commit();
 

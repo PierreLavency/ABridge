@@ -1032,6 +1032,21 @@ class Model
         if ($res == []) {
             return $result;
         }
+        
+        foreach ($this->getAllAttr() as $attr) {
+            if ($this->isProtected($attr)) {
+                $val = $this->getVal($attr);                
+                $key = array_search($attr, $res[0]);
+                if ($key!==false) {
+                    $res[2][$key]=$val;
+                } else {
+                    $res[2][]=$val;
+                    $res[0][]=$attr;
+                }
+                $res[1][$attr]='=';
+            }
+        }   
+        
         $mod=$this->getModName();
         $result=$this->_stateHdlr->findObjWheOp(
             $mod, 

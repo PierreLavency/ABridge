@@ -1,7 +1,6 @@
 - backup system !!!
 - review include 
 - review constant
-- selection on protected (bug: possible to change op)
 
 - handle user preference
 - order in list query and attr.
@@ -15,6 +14,7 @@
 - set up rest services 
 - set up modif logging 
 
+- extend code type to handle ref.
 - split alter drop and add in Base.
 - implement foreign keys
 - changed DB model independently of class model.
@@ -55,6 +55,7 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- selection on protected (bug: possible to change op) // 2hours 
 - referential integrety check in delete.  // 3 hours 
 - Release/installation  on different PC / 2 days
 - (bug: when cookies too old) 
