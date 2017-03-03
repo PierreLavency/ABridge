@@ -1,12 +1,28 @@
 #!/bin/bash
 # declare STRING variable
 
-if [ $# -eq 0 ] 
-then
-	set "dev"
-fi
+Phase="dev"
+BUILD="~/ABridge/Bld/"
+echo  "$BUILD*.*" 
 
-if [ $1 = "dev" ] 
+while getopts ":p:" opt; do
+  case $opt in
+    p)
+	  Phase=$OPTARG
+      echo "-p was triggered, Parameter: $OPTARG" >&2
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [ $Phase = "dev" ] 
 then
 	echo -e "building dev \n"
 	cp ~/ABridge/Src/ABridge_dev.php /C/xampp/htdocs/ABridge.php
@@ -37,4 +53,11 @@ cp -R ~/ABridge/App ~/ABridge/Bld/Tmp
 
 php ~/ABridge/Src/BuildPhar.php
 cp ~/ABridge/Bld/*.*  /C/xampp/htdocs
+
+if [ $Phase = "drop" ] 
+then
+	echo -e "\n dropping \n"
+	cp ~/ABridge/Bld/*.*  /C/Users/pierr/Drop
+fi
+
 
