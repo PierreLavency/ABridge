@@ -6,6 +6,17 @@ require_once("ModeConstant.php");
 
 class Request_Test extends PHPUnit_Framework_TestCase {
 
+	public function testR()
+	{
+		$_SERVER['REQUEST_METHOD']='GET';
+		$r=new Request();
+		$this->assertnotNull($r);
+		$this->assertEquals($r->getHomePath(),$r->getPath());
+	}
+	
+
+
+
     /**
      * @dataProvider Provider1
      */

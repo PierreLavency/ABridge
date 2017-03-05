@@ -4,14 +4,14 @@ require_once("Handle.php");
 require_once("FormatLib.php");
 
 
-function genJASON($h,$show,$depth=-1)
+function genJASON($h,$show,$tmst,$depth=-1)
 {
     $mod= $h->getModName();
     $id = $h->getId();
-    return genJasLvl($h, $depth, 0, $show, $mod, $id);
+    return genJasLvl($h, $depth, 0, $show, $mod, $id, $tmst);
 }
 
-function genJasLvl($h,$depth,$level,$show,$tmod,$tid)
+function genJasLvl($h,$depth,$level,$show,$tmod,$tid,$tmst)
 {
     $nl=getNl($level);
     $tbs=getTab($level);
@@ -29,7 +29,9 @@ function genJasLvl($h,$depth,$level,$show,$tmod,$tid)
     $c= count($aList);
     foreach ($aList as $attr) {
         $typ = $h->getTyp($attr);
-        if ((! $h->isEval($attr)) and (!($typ==M_CREF and $depth==0))) {
+        if ((! $h->isEval($attr)) 
+            and (!($typ==M_CREF and $depth==0))
+            and ($tmst or ($attr!='ctstp' and $attr!='utstp'))) {
             if (!$first and !$skip) {
                 $res=$res. ','.$nl;
             }
@@ -51,7 +53,7 @@ function genJasLvl($h,$depth,$level,$show,$tmod,$tid)
                         }
                         $nh= $h->getCref($attr, $id);
                         $res = $res.genJasLvl(
-                            $nh, $depth-1, $level+3, false, $tmod, $tid
+                            $nh, $depth-1, $level+3, false, $tmod, $tid, $tmst
                         );
                     }
                     $res=$res.$nl.$tbsss. " ] ".$nl ;        
@@ -75,10 +77,10 @@ function genJasLvl($h,$depth,$level,$show,$tmod,$tid)
                     }
                     break;
                 case M_CODE :
-                    $hc = $h->getCode($attr, $val);
-                    if (is_null($hc)) {
+                    if (is_null($val)) {
                         $res=$res. $tbss.'"'.$attr .'" : {}' ;
                     } else {
+                        $hc = $h->getCode($attr, $val);
                         $res=$res. $tbss.'"'.$attr .'" : {' ;
                         $res=$res. '"'.$hc->getModName().'" : {"id" : "';
                         $res=$res. $hc->getId();

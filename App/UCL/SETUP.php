@@ -276,7 +276,7 @@ class Student {
 			return $res;
 		}
 		if ($attr == 'Jason') {
-			$res = genJASON($this->_mod,false);
+			$res = genJASON($this->_mod,false,true);
 			return $res;
 		}
 	}

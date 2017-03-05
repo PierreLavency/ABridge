@@ -14,14 +14,12 @@ class GenHTML_Test extends PHPUnit_Framework_TestCase {
 		self::$log->load();
 	}
 	
-	
 	public function testFormElmOut()
     {
 		$test= GenHTLMCases();
 		$this->expectOutputString(self::$log->getLine(0));
 		$this->assertNotNull(genFormElem($test[0][0],true));
     }
-	
 	
     /**
      * @dataProvider Provider1

@@ -4,9 +4,8 @@ $path = $home.'/Src'. PATH_SEPARATOR .$home;
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
 //phpinfo();
-//require_once("Tests/GenHTML_init.php");  
-//require_once("Tests/View_init.php");     
-//require_once("Tests/View_init_Xref.php");    
+//$conf['name']='UnitTest';
+
 
 if (isset($conf['name'])) {
     $application= $conf['name'];
@@ -18,6 +17,10 @@ require_once "Controler.php";
 
 if ($application == 'UnitTest') {
     $ctrl = new Controler($conf);
+//require_once("Tests/GenHTML_init.php");  
+//require_once("Tests/GenJASON_init.php");  
+//require_once("Tests/View_init.php");     
+//require_once("Tests/View_init_Xref.php"); 
     return;
 }
 

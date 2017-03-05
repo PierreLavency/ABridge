@@ -258,12 +258,14 @@ class Controler
             $this->showLog();
             return $this->_handle->getPath();
         }
+        
         if ($this->_handle->nullobj()) {
             $this->showView($show);
             $this->close();
             $this->showLog();
             return $this->_handle->getPath();
         }
+        
         $action = $this->_request->getAction();
         $actionExec = false;
         if ($method =='POST') {
