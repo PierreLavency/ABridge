@@ -1,8 +1,8 @@
 <?php
 	
 
-require_once('Request.php');
-require_once("ModeConstant.php");
+require_once 'Request.php';
+require_once 'CstMode.php';
 
 class Request_Test extends PHPUnit_Framework_TestCase {
 
@@ -14,8 +14,6 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($r->getHomePath(),$r->getPath());
 	}
 	
-
-
 
     /**
      * @dataProvider Provider1

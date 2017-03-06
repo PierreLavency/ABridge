@@ -1,8 +1,8 @@
 
 <?php
 
-require_once('ErrorConstant.php');
-require_once('Model.php');
+require_once 'CstError.php';
+require_once 'Model.php';
 
 Class Home
 {

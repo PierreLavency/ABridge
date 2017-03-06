@@ -1,9 +1,9 @@
 <?php
 
-require_once("Handler.php"); 
-require_once("Handle.php"); 
-require_once("ModeConstant.php");
-require_once("TypeConstant.php");
+require_once 'Handler.php'; 
+require_once 'Handle.php'; 
+require_once 'CstMode.php';
+require_once 'CstType.php';
 
 class Handle_obj_Test extends PHPUnit_Framework_TestCase  
 {

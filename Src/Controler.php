@@ -9,7 +9,7 @@ require_once "Home.php";
 require_once "Handle.php";
 require_once "SessionMgr.php";
 require_once "GenJASON.php";
-require_once "ErrorConstant.php";
+
 
 class Controler
 {

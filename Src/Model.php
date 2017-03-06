@@ -11,11 +11,9 @@
  */
  
 require_once "Logger.php";
-require_once "TypeConstant.php";
-require_once "ErrorConstant.php";
+require_once "CstError.php";
 require_once "Type.php";
 require_once "Handler.php";
-
 
 define('M_P_EVAL', "M_P_EVAL");
 define('M_P_EVALP', "M_P_EVALP");

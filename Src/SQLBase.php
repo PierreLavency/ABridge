@@ -1,9 +1,9 @@
 
 <?php
 
-require_once("Type.php");
-require_once("ErrorConstant.php");
-require_once("Base.php");
+require_once 'Type.php';
+require_once 'CstError.php';
+require_once 'Base.php';
 
 class SQLBase extends Base
 {

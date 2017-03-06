@@ -1,8 +1,8 @@
 
 <?php
 
-require_once('ErrorConstant.php');
-require_once('ModeConstant.php');
+require_once 'CstError.php';
+require_once 'CstMode.php';
 
 Class Request
 {

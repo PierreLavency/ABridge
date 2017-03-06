@@ -1,6 +1,6 @@
 <?php
 
-    require_once("TypeConstant.php");
+    require_once 'CstType.php';
 
     
     function isMtype ($x) 

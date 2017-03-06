@@ -1,5 +1,6 @@
 <?php
-require_once("ViewConstant.php");
+require_once 'CstMode.php';
+require_once 'CstView.php';
 
 
 	$config = [

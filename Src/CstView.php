@@ -1,6 +1,5 @@
 <?php
 
-require_once('ModeConstant.php');
 
 define('V_TYPE', "v_type");
 define('V_ELEM', "v_elem");

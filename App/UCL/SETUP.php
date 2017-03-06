@@ -1,5 +1,6 @@
 <?php
-require_once("ViewConstant.php");
+require_once 'CstMode.php';
+require_once 'CstView.php';
 
 	$config = [
 	'Handlers' =>
@@ -139,7 +140,7 @@ require_once("ViewConstant.php");
 		
 				'attrList' => [
 					V_S_REF		=> ['SurName','Name'],
-					V_S_CREF	=> ['id'],
+					V_S_CREF	=> ['id','User'],
 				]
 				
 		],

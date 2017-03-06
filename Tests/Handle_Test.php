@@ -1,8 +1,8 @@
 <?php
 
-require_once("Handler.php"); 
-require_once("Handle.php"); 
-require_once("ModeConstant.php");
+require_once 'Handler.php'; 
+require_once 'Handle.php'; 
+require_once 'CstMode.php';
 
 class Handle_Test extends PHPUnit_Framework_TestCase  
 {

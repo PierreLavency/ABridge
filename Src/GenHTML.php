@@ -1,7 +1,7 @@
 <?php
 
-require_once("ViewConstant.php");
-require_once("FormatLib.php");
+require_once 'CstView.php';
+require_once 'FormatLib.php';
 
 function genFormL($action,$url,$hidden,$dspecL,$level) 
 {
