@@ -174,20 +174,20 @@ class SQLBase extends Base
             return false;
         };
         $sql = "\n ALTER TABLE $model ";
-        $sqlAdd = $this->addAttr($model, $addList);
-        if ($sqlAdd) {
-            $sql=$sql.$sqlAdd;
-        }
         $sqlDrop = $this->dropAttr($model, $delList);
         if ($sqlDrop) {
-            if ($sqlAdd) {
-                $sql = $sql . ',';
+            $sqlDrop=$sql.$sqlDrop;
+            $this->logLine(1, $sqlDrop);
+            if (! $this->_mysqli->query($sqlDrop)) {
+//                throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
             }
-            $sql=$sql.$sqlDrop;
         }
-        if ($sqlAdd or $sqlDrop) {
-            $this->logLine(1, $sql);
-            if (! $this->_mysqli->query($sql)) {
+        $sql = "\n ALTER TABLE $model ";
+        $sqlAdd = $this->addAttr($model, $addList);
+        if ($sqlAdd) {
+            $sqlAdd=$sql.$sqlAdd;
+            $this->logLine(1, $sqlAdd);
+            if (! $this->_mysqli->query($sqlAdd)) {
                 throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
             }
         }

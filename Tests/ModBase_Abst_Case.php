@@ -18,9 +18,14 @@ class ModBase_Abst_Case extends PHPUnit_Framework_TestCase {
 		$db=self::$db; 
 		$db->beginTrans();
 
-		$this->assertNotNull($sh=new ModBase($db));		
+		$this->assertNotNull($sh=new ModBase($db));
+		
+		$this->assertNotNull($mod=new Model(self::$HName));
+		$this->assertTrue($sh->eraseMod($mod));	
+
 		$this->assertNotNull($mod=new Model(self::$CName));
 		$this->assertTrue($sh->eraseMod($mod));
+					
 		$this->assertTrue($mod->addAttr('Name',M_STRING));
 		$this->assertTrue($mod->addAttr('Surname',M_STRING));
 		$this->assertTrue($mod->setAbstr());
@@ -50,7 +55,6 @@ class ModBase_Abst_Case extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($sh->saveMod($mod));
 
 		$this->assertNotNull($mod=new Model(self::$HName));
-		$this->assertTrue($sh->eraseMod($mod));
 		$this->assertFalse($mod->setInhNme(self::$CName));
 		$this->assertTrue($mod->addAttr('Sexe',M_STRING));
 		$this->assertTrue($sh->saveMod($mod));
@@ -65,8 +69,12 @@ class ModBase_Abst_Case extends PHPUnit_Framework_TestCase {
 	{
 		$db=self::$db; 
 		$db->beginTrans();
-
 		$this->assertNotNull($sh=new ModBase($db));		
+
+		$this->assertNotNull($mod=new Model(self::$HName));
+		$this->assertTrue($sh->restoreMod($mod));
+		$this->assertTrue($mod->existsAttr('Sexe'));
+		
 		$this->assertNotNull($mod=new Model(self::$CName));
 		$this->assertTrue($sh->restoreMod($mod));
 		$this->assertTrue($mod->existsAttr('Name'));

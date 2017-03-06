@@ -98,9 +98,25 @@ class ModBase
         $delList['attr_plst'] = $x;
         $delList['attr_typ'] = $values['attr_typ'];
         if ($abst) {
-            return ($this->_base->putMod($name, $ameta, [], []));
-            // changes should be propagated to subclass !!
-        }
+            $res= $this->_base->putMod($name, $ameta, [], []);
+            foreach ($this->_base->getAllMod() as $smod) {
+                $svals = $this->_base->getMod($smod); 
+                if (isset($svals['meta'])) {
+                    $sval = $svals['meta'];
+                    if (isset($sval['inhnme'])) {
+                        if ($sval['inhnme']==$name) {
+                            $this->_base->putMod(
+                                $smod, 
+                                $svals, 
+                                $addList, 
+                                $delList
+                            );
+                        }
+                    }
+                }
+            } 
+            return $res;            
+        }       
         return ($this->_base->putMod($name, $ameta, $addList, $delList)); 
     }
     
@@ -113,8 +129,8 @@ class ModBase
         }
         if (isset($values['meta'])) {
             $values = $values['meta'];
-//      } else {
- //         echo ' !!!! '.$name.' !!!! ';
+ //     } else {
+ //        echo ' !!!! '.$name.' !!!! ';
         }
         $attrlist=[];
         $attrtype=[];
@@ -254,7 +270,8 @@ class ModBase
             $this->_base->findObjWheOp($model, $attrList, $opList, $valList)
         );
     }
-    /*
+ 
+ /*
     public function copyMod($mod,$base) {
         $meta = $this->_base->getMod($mod);
         $inh = false;

@@ -1288,7 +1288,7 @@ class Model
                     return true;
                 }
             case M_CODE:
-                if ($c==3) {
+                if ($c==3 or $c==1) {
                     return true;
                 }
         }
@@ -1335,8 +1335,13 @@ class Model
         if ($r == M_CODE) {
             $r=$this->getParm($attr);
             $apath = explode('/', $r);
-            $mod = new Model($apath[1], (int) $apath[2]);
-            $val = $mod->getVal($apath[3]);
+            if (count($apath) > 2) {
+                $mod = new Model($apath[1], (int) $apath[2]);
+                $val = $mod->getVal($apath[3]);
+            } else {
+                $obj= new Model($apath[1]);
+                $val=$obj->_stateHdlr->findObjWheOp($apath[1], [], [], []);
+            }
         }
         if ($r == M_REF) {
             $mod = $this->getRefMod($attr);

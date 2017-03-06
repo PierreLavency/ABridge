@@ -1,7 +1,7 @@
 
 <?php
 
-require_once("Base.php");
+require_once 'Base.php';
 
 class FileBase extends Base
 {

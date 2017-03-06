@@ -1,6 +1,3 @@
-- review include 
-- review constant
-
 - handle user preference
 - order in list query and attr.
 - selection for Ref / Java script 
@@ -13,11 +10,8 @@
 - set up rest services 
 - set up modif logging 
 
-- extend code type to handle ref.
-- split alter drop and add in Base.
 - implement foreign keys
 - changed DB model independently of class model.
-- Propagate changes from abstract classe to concrete
 - support CREF on abstract (?)
 
 - Authenthication 
@@ -26,7 +20,6 @@
 TEST
 - Performance
 - test cookies 
-
 - improve view test coverage - need to separate view show and build // some progress
 - set up unit test for unittest
 
@@ -55,6 +48,11 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- extend code type to handle ref. // 1hours
+- Propagate changes from abstract classe to concrete // 4 hours 
+- split alter drop and add in Base. // 2 hours 
+- review include   // 0.5 day
+- review constant
 - backup system !!!
 - test Jason // 1 day 
 - selection on protected (bug: possible to change op) // 2hours 
