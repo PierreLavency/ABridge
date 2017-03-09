@@ -7,8 +7,8 @@ class Home_Test extends PHPUnit_Framework_TestCase
 	protected static $db1;
 	protected static $db2;
 
-	protected $CName='Example';
-	protected $CUser='User';
+	protected $CName='Exampleff';
+	protected $CUser='Userff';
 
 	protected $db;
 	
@@ -19,8 +19,8 @@ class Home_Test extends PHPUnit_Framework_TestCase
 		resetHandlers();
 	
 		$typ='dataBase';
-		$CName='Example';
-		$CUser='User';
+		$CName='Exampleff';
+		$CUser='Userff';
 		$name = 'test';
 		self::$db1=getBaseHandler ($typ, $name);
 		initStateHandler ($CName	,$typ, $name);
@@ -40,8 +40,8 @@ class Home_Test extends PHPUnit_Framework_TestCase
 	{
 		if ($typ== 'SQL') {
 			$this->db=self::$db1;
-			$this->CName='Example';
-			$this->CUser='User';
+			$this->CName='Exampleff';
+			$this->CUser='Userff';
 			} 
 		else {
 			$this->db=self::$db2;
@@ -111,7 +111,9 @@ class Home_Test extends PHPUnit_Framework_TestCase
 		$this->assertFalse($h->hlink($obj1));
 
 		$mod = new Model($this->CName);	
+
 		$res = $mod->addAttr($this->CUser,M_REF,'/'.$this->CUser);
+		
 		$res = $mod->saveMod();
 		$r = $mod-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);

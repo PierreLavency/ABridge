@@ -60,9 +60,22 @@ class SQLBase extends Base
             };
             $this->_mysqli->select_db($this->_dbname);
         }
+        $this->_mysqli->query('SET foreign_key_checks = 0');
         return (parent::connect());
     }
 
+    
+    public function checkFKey($flag) 
+    {
+        if ($flag) {
+            $this->_mysqli->query('SET foreign_key_checks = 1');
+        } else {
+            $this->_mysqli->query('SET foreign_key_checks = 0');
+        }
+        return true;
+    }
+    
+    
     public function remove() 
     {
         $sql = "DROP DATABASE $this->_dbname";
@@ -133,13 +146,23 @@ class SQLBase extends Base
     {
         if ($this->existsMod($model)) {
             return false;
-        }; 
+        };
+        $attrFrg=[];
+        if (isset($meta['attr_frg'])) {
+           $attrFrg = $meta['attr_frg'];
+        }       
         $s = "\n CREATE TABLE $model ( " ;
         if ($idF) {
             $s=$s. "\n id INT(11) UNSIGNED NOT NULL";
             $s=$s." AUTO_INCREMENT PRIMARY KEY ";
         } else {
             $s = $s. "\n id INT(11) UNSIGNED NOT NULL PRIMARY KEY ";
+            if (isset($attrFrg['id'])) {
+                $cName= $model.'_id';
+                $ref = $attrFrg['id'];
+                $s=$s.", \n CONSTRAINT $cName ";
+                $s=$s. "FOREIGN KEY (id) REFERENCES $ref(id)";
+            }
         }
         $attrLst=[];
         $attrTyp =[];
@@ -149,13 +172,19 @@ class SQLBase extends Base
         if (isset($meta['attr_typ'])) {
             $attrTyp = $meta['attr_typ'];
         }
+
         $c = count($attrLst);
         for ($i=0;$i<$c; $i++) {
             if ($attrLst[$i] != 'id') {
                 $attr = $attrLst[$i];
                 $typ=$attrTyp[$attr];
                 $typ = convertSqlType($typ);
-                $s = $s.", \n $attr $typ NULL";                 
+                $s = $s.", \n $attr $typ NULL";
+                if (isset($attrFrg[$attr])) {
+                    $cName= $model.'_'.$attr;
+                    $s=$s.", \n CONSTRAINT $cName ";
+                    $s=$s." FOREIGN KEY ($attr) REFERENCES $attrFrg[$attr](id)";
+                }
             }
         }
         $sql=$s. " ) \n";
@@ -173,17 +202,21 @@ class SQLBase extends Base
         if (! $this->existsMod($model)) {
             return false;
         };
+        $attrFrg=[];
+        if (isset($meta['attr_frg'])) {
+           $attrFrg = $meta['attr_frg'];
+        }   
         $sql = "\n ALTER TABLE $model ";
-        $sqlDrop = $this->dropAttr($model, $delList);
+        $sqlDrop = $this->dropAttr($model, $delList, $attrFrg);
         if ($sqlDrop) {
             $sqlDrop=$sql.$sqlDrop;
             $this->logLine(1, $sqlDrop);
             if (! $this->_mysqli->query($sqlDrop)) {
-//                throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
+                throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
             }
         }
         $sql = "\n ALTER TABLE $model ";
-        $sqlAdd = $this->addAttr($model, $addList);
+        $sqlAdd = $this->addAttr($model, $addList, $attrFrg);
         if ($sqlAdd) {
             $sqlAdd=$sql.$sqlAdd;
             $this->logLine(1, $sqlAdd);
@@ -196,7 +229,7 @@ class SQLBase extends Base
         return $r;
     }
     
-    public function dropAttr($model,$delList)
+    public function dropAttr($model,$delList, $attrFrg)
     {
         $sql = "";
         $attrLst=[];
@@ -209,6 +242,10 @@ class SQLBase extends Base
         }
         $i=0;
         foreach ($attrLst as $attr) {
+            if (isset($attrFrg[$attr])) {
+                $cName= $model.'_'.$attr;
+                $sql=$sql."\n DROP FOREIGN KEY $cName ,";
+            }           
             $sql = $sql."\n DROP $attr " ;
             if ($i+1<$c) {
                 $sql=$sql.",";
@@ -218,7 +255,7 @@ class SQLBase extends Base
         return $sql;
     }
     
-    public function addAttr($model,$addList)
+    public function addAttr($model,$addList,$attrFrg)
     {
         $attrLst=[];
         $attrTyp =[];
@@ -241,6 +278,11 @@ class SQLBase extends Base
             }
             $typ = convertSqlType($typ);
             $sql = $sql."\n ADD $attr $typ NULL" ;
+            if (isset($attrFrg[$attr])) {
+                $cName= $model.'_'.$attr;
+                $sql=$sql.", \n ADD CONSTRAINT $cName ";
+                $sql=$sql." FOREIGN KEY ($attr) REFERENCES $attrFrg[$attr](id)";
+            }
             $i++;
         }
         return $sql;
@@ -251,7 +293,7 @@ class SQLBase extends Base
         $sql = "\n DROP TABLE $model \n";
         $this->logLine(1, $sql);
         if (! $this->_mysqli->query($sql)) {
-            /*echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";*/
+ //           echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
         }; // if does not exist ok !!
         $r = parent::delMod($model);
         parent::commit();

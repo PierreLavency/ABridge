@@ -200,7 +200,9 @@ abstract class Base
         }
         return $this->_logger;
     }
-    
+ 
+    abstract protected function checkFKey($flag) ;
+ 
     abstract protected function remove() ; 
 
     abstract protected static function exists($name) ;  

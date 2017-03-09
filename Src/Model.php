@@ -526,10 +526,13 @@ class Model
         }
         $path=$this->getParm($attr);
         $patha=explode('/', $path);
-        if ($typ == M_CODE) {       
-            $m = new Model($patha[1], (int) $patha[2]);
-            $res=$m->getCref($patha[3], $id);
-            return ($res);
+        if ($typ == M_CODE) {
+            if (count($patha) == 4) {
+                $m = new Model($patha[1], (int) $patha[2]);
+                $res=$m->getCref($patha[3], $id);
+                return ($res);
+            } 
+            return new Model($patha[1], $id);
         }
         return new Model($this->getRefMod($attr), $id);
     }
@@ -1525,7 +1528,15 @@ class Model
                 return false;
             }
         }   
-        $res=$this->_stateHdlr->eraseObj($this);
+
+        try {
+            $res=$this->_stateHdlr->eraseObj($this); 
+        }         
+        catch (Exception $e) {
+            $this->_errLog->logLine(E_ERC052.':'.$e->getMessage());
+            return false;
+        }
+        
         if ($res) {
             $this->_id=0;
         }

@@ -50,6 +50,7 @@ class ModBase
             $plst   = array_diff($plst, $predef);
         }
         $meta=[];
+        $frg=[];        
         $meta['attr_lst']  = $mod->getAllAttr();
         $meta['attr_typ']  = $typ;
         $meta['attr_plst'] = $plst;
@@ -67,6 +68,7 @@ class ModBase
             $ityp =$metaInh['attr_typ'];
             $plst = array_merge($plst, $iplst);
             $typ= $typ+$ityp;
+            $frg['id']=$inh;
         }
         $ameta['attr_plst'] = $plst;
         $ameta['attr_typ'] = $typ;
@@ -76,13 +78,21 @@ class ModBase
             $ameta=$this->_abstr;
             $ameta['meta']=$meta;
         }
-
+        
+        foreach ($plst as $pattr) {
+            if ($mod->getTyp($pattr) == M_REF) {
+                $frg[$pattr] = $mod->getModRef($pattr);
+            }
+        }
+        $ameta['attr_frg']=$frg;
+        
         if ( ! $this->_base->existsMod($name)) {
             if ($inh) {
                 return ($this->_base->newModId($name, $ameta, false));
             }
             return ($this->_base->newMod($name, $ameta));
         }
+        
         $values = $this->_base->getMod($name);
         if ($abst) {
             $values=$values['meta'];
@@ -97,6 +107,13 @@ class ModBase
         $x = array_diff($iplst, $plst);
         $delList['attr_plst'] = $x;
         $delList['attr_typ'] = $values['attr_typ'];
+
+        foreach ($delList['attr_plst'] as $pattr) {
+            if ($delList['attr_typ'][$pattr] == M_REF) {
+                $frg[$pattr] = 'XX';
+            }
+        }
+        $ameta['attr_frg']=$frg;
         if ($abst) {
             $res= $this->_base->putMod($name, $ameta, [], []);
             foreach ($this->_base->getAllMod() as $smod) {
@@ -105,6 +122,7 @@ class ModBase
                     $sval = $svals['meta'];
                     if (isset($sval['inhnme'])) {
                         if ($sval['inhnme']==$name) {
+                            $svals['attr_frg']=$frg;
                             $this->_base->putMod(
                                 $smod, 
                                 $svals, 

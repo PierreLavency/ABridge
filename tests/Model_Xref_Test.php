@@ -127,6 +127,11 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res = $student->addAttr('Sexe',M_CODE,$path);	
 		$this->assertTrue($res);
 
+		$path='/'.$this->CodeVal;
+		$res = $student->addAttr('DSexe',M_CODE,$path);	
+		$this->assertTrue($res);
+
+
 		$res = $student->saveMod();	
 		$this->assertTrue($res);	
 	
@@ -172,6 +177,9 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res = $student->setVal('Sexe',2);
 		$this->assertFalse($res);
 
+		$res = $student->setVal('DSexe',2);
+		$this->assertFalse($res);	
+		
 		$db->commit();
 
 		//  Male
@@ -251,20 +259,35 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		
 		$res = $student->getValues('Sexe');
 		$this->assertEquals($res,[1,2]);	
+
+		$res = $student->getValues('DSexe');
+		$this->assertEquals($res,[1,2]);	
 		
 		$res = $student->setVal('Name','Quoilin');
 		$this->assertTrue($res);
 		
 		$res = $student->setVal('Sexe',null);
 		$this->assertTrue($res);
+
+		$res = $student->setVal('DSexe',null);
+		$this->assertTrue($res);
 		
 		$res = $student->setVal('Sexe',2);
+		$this->assertTrue($res);
+
+		$res = $student->setVal('DSexe',2);
 		$this->assertTrue($res);
 		
 		$res = $student->getCode('Sexe',2);
 		
 		$codeval = new Model($this->CodeVal,2);
 		$codeval->protect('ValueOf');
+				
+		$this->assertEquals($codeval,$res);
+
+		$res = $student->getCode('DSexe',2);
+		
+		$codeval = new Model($this->CodeVal,2);
 				
 		$this->assertEquals($codeval,$res);
 

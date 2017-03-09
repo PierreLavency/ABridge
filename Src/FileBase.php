@@ -11,6 +11,12 @@ class FileBase extends Base
         parent::__construct('fileBase/'.$id);
     } 
     
+    public function checkFKey($flag) 
+    {
+
+        return true;
+    }
+    
     public function remove() 
     {
         parent::erase();

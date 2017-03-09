@@ -381,12 +381,58 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
 		
 
 	}
+	
 	/**
      * @dataProvider Provider1
      *	
 	/**
     * @depends testDelMod
     */
+	
+	public function testChgAbstr($typ) 
+	{
+		$this->setTyp($typ);
+		$db=$this->db;
+		$db->beginTrans();
+
+		$ABB = new Model($this->ABB);
+		$this->assertNotNull($ABB);	
+		
+		$res = $ABB->addAttr('NewAttr',M_STRING); 
+		$this->assertTrue($res);	
+
+		$res= $ABB->saveMod();
+		$this->assertFalse($ABB->isErr());
+		
+		$Application = new Model($this->Application);
+		$this->assertNotNull($Application);	
+		
+		$this->assertTrue($Application->existsAttr('NewAttr'));	
+
+		$ABB = new Model($this->ABB);
+		$this->assertNotNull($ABB);	
+		
+		$res = $ABB->delAttr('NewAttr'); 
+		$this->assertTrue($res);	
+
+		$res= $ABB->saveMod();
+		$this->assertFalse($ABB->isErr());
+
+		$Application = new Model($this->Application);
+		$this->assertNotNull($Application);	
+		
+		$this->assertFalse($Application->existsAttr('NewAttr'));	
+		
+		$db->commit();
+	}
+	
+	/**
+     * @dataProvider Provider1
+     *	
+	/**
+    * @depends testChgAbstr
+    */
+	
 	public function testErr($typ) 
 	{
 		$this->setTyp($typ);
