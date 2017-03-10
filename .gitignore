@@ -1,4 +1,5 @@
 
+vendor/
 Datastore/fileBase/
 Datastore/sqlBase/
 Datastore/Test/

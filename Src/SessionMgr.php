@@ -83,6 +83,7 @@ class SessionMgr
         }
         if ($this->_new) {
             $hdl->initMod($this->_id);
+			echo "New Session <br>";
         }
         if (! $hdl->existObj()) {
             echo 'ERROR !!! ';
