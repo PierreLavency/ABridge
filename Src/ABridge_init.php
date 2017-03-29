@@ -5,5 +5,3 @@
 
 $init=true;
 require_once 'ABridge.php';
-
-

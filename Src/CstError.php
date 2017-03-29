@@ -6,7 +6,7 @@ define('E_ERC003', "ERC003");  //Attribute already exists
 define('E_ERC004', "ERC004");  // is not a type
 define('E_ERC005', "ERC005");  // is not a of base type
 define('E_ERC006', "ERC006");  // no state handler
-define('E_ERC007', "ERC007");  // object does not exist 
+define('E_ERC007', "ERC007");  // object does not exist
 define('E_ERC008', "ERC008");  // M_REF must have an associated path
 define('E_ERC009', "ERC009");  // M_REF object does not exists
 define('E_ERC010', "ERC010");  // invalid model name
@@ -29,7 +29,7 @@ define('E_ERC026', "ERC026");  // not a ref
 define('E_ERC027', "ERC027");  // not a cref
 define('E_ERC028', "ERC028");  // not a code
 define('E_ERC029', "ERC029");  // Ckey must be an array
-define('E_ERC030', "ERC030");  // attr in Ckey 
+define('E_ERC030', "ERC030");  // attr in Ckey
 define('E_ERC031', "ERC031");  // Ckey violation
 define('E_ERC032', "ERC032");  // id not in CREF
 define('E_ERC033', "ERC033");  // REF type missmatch
@@ -44,11 +44,11 @@ define('E_ERC041', "ERC041");  // no param for this type allowed
 define('E_ERC042', "ERC042");  // set not allowed on evalP attribute
 define('E_ERC043', "ERC043");  // invalid id
 define('E_ERC044', "ERC044");  // cannot instanciate abstract class
-define('E_ERC045', "ERC045");  // cannot set attr on abstract class 
+define('E_ERC045', "ERC045");  // cannot set attr on abstract class
 define('E_ERC046', "ERC046");  // type change not supported
 define('E_ERC047', "ERC047");  // not supported at inherited level
 define('E_ERC048', "ERC048");  // illegal action on path type
 define('E_ERC049', "ERC049");  // illegal action on obj
 define('E_ERC050', "ERC050");  // illegal action root
-define('E_ERC051', "ERC051");  // no sessionMg found 
-define('E_ERC052', "ERC052");  // cannot delete - ref integrity 
+define('E_ERC051', "ERC051");  // no sessionMg found
+define('E_ERC052', "ERC052");  // cannot delete - ref integrity

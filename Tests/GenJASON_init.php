@@ -5,7 +5,7 @@ require_once("UnitTest.php");
 
 $logName = basename(__FILE__, ".php");
 
-$log=new unitTest($logName);
+$log=new UnitTest($logName);
 
 /**************************************/
 

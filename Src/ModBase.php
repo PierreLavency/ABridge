@@ -1,35 +1,34 @@
 <?php
-require_once("Handler.php"); 
-require_once("Model.php"); 
+require_once 'Handler.php';
+require_once 'Model.php';
 
 class ModBase
 {
-    private $_base;
-    private $_abstr = [
+    private $base;
+    private $abstr = [
         'attr_lst' => ['CName'],
         'attr_plst'=> ['CName'],
         'attr_typ' => ['CName'=>M_STRING,],
         'abstract' => true,
     ];
     
-    function __construct($base) 
+    public function __construct($base)
     {
-        $this->_base=$base;
+        $this->base=$base;
     }
 
-    public function eraseMod($mod) 
+    public function eraseMod($mod)
     {
         $name = $mod->getModName();
-        return ($this->_base->delMod($name));
-
+        return ($this->base->delMod($name));
     }
     
-    protected function getPeristAttr ($mod)
+    protected function getPeristAttr($mod)
     {
         $attrLst = $mod->getAllAttr();
         $res= [];
         foreach ($attrLst as $attr) {
-            if (($mod->getTyp($attr) !=  M_CREF) 
+            if (($mod->getTyp($attr) !=  M_CREF)
                 and (! $mod->isEval($attr))
                 ) {
                 $res[]=$attr;
@@ -38,7 +37,7 @@ class ModBase
         return $res;
     }
     
-    public function saveMod($mod) 
+    public function saveMod($mod)
     {
         $name = $mod->getModName();
         $abst = $mod->isAbstr();
@@ -50,7 +49,7 @@ class ModBase
             $plst   = array_diff($plst, $predef);
         }
         $meta=[];
-        $frg=[];        
+        $frg=[];
         $meta['attr_lst']  = $mod->getAllAttr();
         $meta['attr_typ']  = $typ;
         $meta['attr_plst'] = $plst;
@@ -62,7 +61,7 @@ class ModBase
         $meta['inhnme']    = $inh;
         $meta['isabstr']   = $abst;
         if ($inh) {
-            $metaInh=$this->_base->getMod($inh);
+            $metaInh=$this->base->getMod($inh);
             $metaInh=$metaInh['meta'];
             $iplst=$metaInh['attr_plst'];
             $ityp =$metaInh['attr_typ'];
@@ -75,7 +74,7 @@ class ModBase
         $ameta['meta']=$meta;
 
         if ($abst) {
-            $ameta=$this->_abstr;
+            $ameta=$this->abstr;
             $ameta['meta']=$meta;
         }
         
@@ -86,14 +85,14 @@ class ModBase
         }
         $ameta['attr_frg']=$frg;
         
-        if ( ! $this->_base->existsMod($name)) {
+        if (! $this->base->existsMod($name)) {
             if ($inh) {
-                return ($this->_base->newModId($name, $ameta, false));
+                return ($this->base->newModId($name, $ameta, false));
             }
-            return ($this->_base->newMod($name, $ameta));
+            return ($this->base->newMod($name, $ameta));
         }
         
-        $values = $this->_base->getMod($name);
+        $values = $this->base->getMod($name);
         if ($abst) {
             $values=$values['meta'];
         }
@@ -115,33 +114,33 @@ class ModBase
         }
         $ameta['attr_frg']=$frg;
         if ($abst) {
-            $res= $this->_base->putMod($name, $ameta, [], []);
-            foreach ($this->_base->getAllMod() as $smod) {
-                $svals = $this->_base->getMod($smod); 
+            $res= $this->base->putMod($name, $ameta, [], []);
+            foreach ($this->base->getAllMod() as $smod) {
+                $svals = $this->base->getMod($smod);
                 if (isset($svals['meta'])) {
                     $sval = $svals['meta'];
                     if (isset($sval['inhnme'])) {
                         if ($sval['inhnme']==$name) {
                             $svals['attr_frg']=$frg;
-                            $this->_base->putMod(
-                                $smod, 
-                                $svals, 
-                                $addList, 
+                            $this->base->putMod(
+                                $smod,
+                                $svals,
+                                $addList,
                                 $delList
                             );
                         }
                     }
                 }
-            } 
-            return $res;            
-        }       
-        return ($this->_base->putMod($name, $ameta, $addList, $delList)); 
+            }
+            return $res;
+        }
+        return ($this->base->putMod($name, $ameta, $addList, $delList));
     }
     
-    public function restoreMod($mod) 
+    public function restoreMod($mod)
     {
         $name = $mod->getModName();
-        $values = $this->_base->getMod($name); 
+        $values = $this->base->getMod($name);
         if (!$values) {
             return false;
         }
@@ -171,7 +170,7 @@ class ModBase
             if ($inherit) {
                 $mod->setInhNme($inherit);
             }
-        }       
+        }
         if (isset($values['attr_lst'])) {
             $attrlist=$values['attr_lst'];
         }
@@ -215,11 +214,11 @@ class ModBase
         }
         foreach ($attrckey as $ckey) {
             $mod->setCkey($ckey, true);
-        }       
-        return true;    
+        }
+        return true;
     }
 
-    public function saveObj($mod) 
+    public function saveObj($mod)
     {
         $name = $mod->getModName();
         $values =$mod->getAllVal();
@@ -227,23 +226,23 @@ class ModBase
         if ($id == 0) {
             $abstr = $mod->getInhNme();
             if ($abstr) {
-                $id = $this->_base->newObj($abstr, ['CName'=>$name]);
-                return ($this->_base->newObjId($name, $values, $id));
+                $id = $this->base->newObj($abstr, ['CName'=>$name]);
+                return ($this->base->newObjId($name, $values, $id));
             } else {
-                return ($this->_base->newObj($name, $values));
-            }       
+                return ($this->base->newObj($name, $values));
+            }
         }
-        return ($this->_base->putObj($name, $id, $values)); 
+        return ($this->base->putObj($name, $id, $values));
     }
 
-    public function restoreObj($mod) 
+    public function restoreObj($mod)
     {
         $name = $mod->getModName();
         $id = $mod->getId();
         if ($id==0) {
             return false;
         }
-        $values = $this->_base->getObj($name, $id); 
+        $values = $this->base->getObj($name, $id);
         if (!$values) {
             return false;
         }
@@ -252,7 +251,7 @@ class ModBase
             $mod->construct2($name, $id);
             return $id;
         }
-        foreach ($values as $attr=>$val) {
+        foreach ($values as $attr => $val) {
             if ($mod->existsAttr($attr)) {
                 $typ=$mod->getTyp($attr);
                 $valn=convertString($val, $typ);
@@ -262,7 +261,7 @@ class ModBase
         return $id;
     }
 
-    public function eraseObj($mod) 
+    public function eraseObj($mod)
     {
         $name = $mod->getModName();
         $id = $mod->getId();
@@ -271,27 +270,27 @@ class ModBase
         }
         $abstr = $mod->getInhNme();
         if ($abstr) {
-            $this->_base->delObj($abstr, $id);
+            $this->base->delObj($abstr, $id);
         }
-        return ($this->_base->delObj($name, $id));
+        return ($this->base->delObj($name, $id));
     }
     
     
-    public function findObj($modN,$attr,$val) 
+    public function findObj($modN, $attr, $val)
     {
-        return ($this->_base->findObj($modN, $attr, $val));
+        return ($this->base->findObj($modN, $attr, $val));
     }
 
-    public function findObjWheOp($model,$attrList,$opList,$valList)
+    public function findObjWheOp($model, $attrList, $opList, $valList)
     {
         return (
-            $this->_base->findObjWheOp($model, $attrList, $opList, $valList)
+            $this->base->findObjWheOp($model, $attrList, $opList, $valList)
         );
     }
  
  /*
     public function copyMod($mod,$base) {
-        $meta = $this->_base->getMod($mod);
+        $meta = $this->base->getMod($mod);
         $inh = false;
         if (isset($meta['inhnme'])) {
             $inh = $meta['inhnme']; 
@@ -305,5 +304,4 @@ class ModBase
     }
     
     */
-    
 }

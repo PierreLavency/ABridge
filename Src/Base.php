@@ -5,83 +5,83 @@ require_once 'Logger.php';
 
 abstract class Base
 {
-    protected static $_filePath ="";
-    protected $_objects=[];
-    protected $_fileN;
-    protected $_fileName;
-    protected $_logLevl;
-    protected $_logger;
-    protected $_connected;
+    protected static $filePath ="";
+    protected $objects=[];
+    protected $fileN;
+    protected $fileName;
+    protected $logLevl;
+    protected $logger;
+    protected $connected;
      
-    protected function  __construct($id) 
+    protected function __construct($id)
     {
-        $this->_fileN = self::$_filePath . $id;
-        $this->_fileName = $this->_fileN.'.txt';
-        $this->_logLevl=0;
-        $this->_logger=null;
-        $this->_connected=true;
+        $this->fileN = self::$filePath . $id;
+        $this->fileName = $this->fileN.'.txt';
+        $this->logLevl=0;
+        $this->logger=null;
+        $this->connected=true;
         $this->load();
     }
 
-    protected function erase() 
+    protected function erase()
     {
-        if (file_exists($this->_fileName)) {
-            unlink($this->_fileName);
+        if (file_exists($this->fileName)) {
+            unlink($this->fileName);
         }
-        $this->_objects = [];
+        $this->objects = [];
         return true;
-    }       
+    }
     
     public static function setPath($path)
     {
-        self::$_filePath =$path;
+        self::$filePath =$path;
         return true;
     }
     
     
     public static function getPath()
     {
-        return self::$_filePath;
+        return self::$filePath;
     }
     
-    protected static function _exists($id) 
+    protected static function existsBase($id)
     {
-        $f = self::$_filePath . $id.'.txt';
+        $f = self::$filePath . $id.'.txt';
         return file_exists($f);
     }
     
-    function connect() 
+    public function connect()
     {
-        $this->_connected = true;
+        $this->connected = true;
         return true;
     }
     
-    function close() 
+    public function close()
     {
         if (! $this->isConnected()) {
             throw new Exception(E_ERC025);
         }
-        $this->_connected = false;
+        $this->connected = false;
         return true;
     }
     
-    function isConnected() 
+    public function isConnected()
     {
-        return $this->_connected;
+        return $this->connected;
     }
     
-    private function load() 
+    private function load()
     {
-        if (file_exists($this->_fileName)) {
-            $file = file_get_contents($this->_fileName, FILE_USE_INCLUDE_PATH);
-            $this->_objects = unserialize($file);
+        if (file_exists($this->fileName)) {
+            $file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
+            $this->objects = unserialize($file);
             return true;
         }
-        $this->_objects = [];
+        $this->objects = [];
         return true;
     }
     
-    function beginTrans() 
+    public function beginTrans()
     {
         if (! $this->isConnected()) {
             throw new Exception(E_ERC025);
@@ -90,17 +90,17 @@ abstract class Base
         return true;
     }
 
-    function commit()
+    public function commit()
     {
         if (! $this->isConnected()) {
             throw new Exception(E_ERC025);
         }
-        $file = serialize($this->_objects);
-        $r=file_put_contents($this->_fileName, $file, FILE_USE_INCLUDE_PATH);
+        $file = serialize($this->objects);
+        $r=file_put_contents($this->fileName, $file, FILE_USE_INCLUDE_PATH);
         return $r;
     }
 
-    function rollback() 
+    public function rollback()
     {
         if (! $this->isConnected()) {
             throw new Exception(E_ERC025);
@@ -109,118 +109,116 @@ abstract class Base
         return true;
     }
  
-    function existsMod ($model) 
+    public function existsMod($model)
     {
         if (! $this->isConnected()) {
             throw new Exception(E_ERC025);
         }
-        return(array_key_exists($model, $this->_objects));
+        return(array_key_exists($model, $this->objects));
     }
  
-    function newMod($model,$meta) 
+    public function newMod($model, $meta)
     {
         return $this->newModId($model, $meta, true);
     }
     
-    function newModId($model,$meta,$idF) 
+    public function newModId($model, $meta, $idF)
     {
         if ($this->existsMod($model)) {
             return false;
-        }; 
+        }
         $meta['lastId']=1;
         if (!$idF) {
             $meta['lastId']=0;
         }
-        $this->_objects[$model][0] = $meta;
+        $this->objects[$model][0] = $meta;
         return true;
-    }   
+    }
 
-    function getAllMod () 
+    public function getAllMod()
     {
         if (! $this->isConnected()) {
             throw new Exception(E_ERC025);
         }
-        return array_keys($this->_objects);
+        return array_keys($this->objects);
     }
     
     
-    function getMod($model) 
+    public function getMod($model)
     {
         if (! $this->existsMod($model)) {
             return false;
         };
-        $meta = $this->_objects[$model][0] ;
+        $meta = $this->objects[$model][0] ;
         unset($meta['lastId']);
         return $meta;
     }
     
-    protected function putModel($model,$meta) 
+    protected function putModel($model, $meta)
     {
-        $id = $this->_objects[$model][0]['lastId'] ;
+        $id = $this->objects[$model][0]['lastId'] ;
         $meta['lastId']=$id;
-        $this->_objects[$model][0] = $meta;
+        $this->objects[$model][0] = $meta;
         return true;
     }
     
-    function delMod($model) 
+    public function delMod($model)
     {
         if (! $this->existsMod($model)) {
             return true;
         };
-        unset($this->_objects[$model]);
-        return true;    
-    }
-    
-    function setLogLevl ($levl) 
-    {
-        if (($levl > 0) and is_null($this->_logger)) {
-            $logname = $this->_fileN.'_ErrLog';
-            $this->_logger = new Logger($logname);
-            
-        }
-        $this->_logLevl=$levl;
+        unset($this->objects[$model]);
         return true;
     }
     
-    function logLine($levl,$line) 
+    public function setLogLevl($levl)
     {
-        if ($this->_logLevl <= 0) {
+        if (($levl > 0) and is_null($this->logger)) {
+            $logname = $this->fileN.'_ErrLog';
+            $this->logger = new Logger($logname);
+        }
+        $this->logLevl=$levl;
+        return true;
+    }
+    
+    protected function logLine($levl, $line)
+    {
+        if ($this->logLevl <= 0) {
             return true;
         }
-        if ($levl <= $this->_logLevl) {
-            $this->_logger->logLine($line);
+        if ($levl <= $this->logLevl) {
+            $this->logger->logLine($line);
         }
         return true;
     }
     
-    function getLog() 
+    public function getLog()
     {
-        if (is_null($this->_logger)) {
+        if (is_null($this->logger)) {
             return false;
         }
-        return $this->_logger;
+        return $this->logger;
     }
  
-    abstract protected function checkFKey($flag) ;
+    abstract protected function checkFKey($flag);
  
-    abstract protected function remove() ; 
+    abstract protected function remove();
 
-    abstract protected static function exists($name) ;  
+    abstract protected static function exists($name);
 
-    abstract protected function putMod($model,$meta,$addList,$delList);
+    abstract protected function putMod($model, $meta, $addList, $delList);
     
-    abstract protected function newObj($model, $values) ;
+    abstract protected function newObj($model, $values);
     
-    abstract protected function newObjId($model, $values, $id) ;
+    abstract protected function newObjId($model, $values, $id);
 
-    abstract protected function getObj($model, $id) ;
+    abstract protected function getObj($model, $id);
 
-    abstract protected function putObj($model, $id , $values) ;
+    abstract protected function putObj($model, $id, $values);
 
-    abstract protected function delObj($model, $id) ;
+    abstract protected function delObj($model, $id);
     
-    abstract protected function findObj($model, $attr, $val) ;
+    abstract protected function findObj($model, $attr, $val);
 
-    abstract protected function findObjWheOp($model,$attrList,$opList,$valList);
-
-};
+    abstract protected function findObjWheOp($model, $attrList, $opList, $valList);
+}

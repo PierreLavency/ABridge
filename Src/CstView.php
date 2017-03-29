@@ -13,8 +13,8 @@ define('V_VNAV', "v_vnav");
 define('V_NAV', "v_nav");
 define('V_NAVC', "new");
 define('V_CNAV', "v_cnav");
-define('V_ERROR', "v_error"); 
-define('V_PLAIN', "v_plain"); 
+define('V_ERROR', "v_error");
+define('V_PLAIN', "v_plain");
 define('V_FORM', "v_form");
 
 
@@ -29,7 +29,7 @@ define('V_STRING', "v_string");
 // V_ELEM
 define('V_ATTR', "v_attr");
     
-define('V_PROP', "v_prop");   
+define('V_PROP', "v_prop");
 define('V_P_INP', "v_p_Attr");
 define('V_P_LBL', "v_p_Lbl");
 define('V_P_VAL', "v_p_Val");
@@ -48,7 +48,7 @@ define('V_B_NXT', "Next");
 define('V_B_PRV', "Previous");
 define('V_B_NEW', "New");
 
-define('H_TYPE', "type");   
+define('H_TYPE', "type");
 define('H_T_TEXTAREA', "textarea");
 define('H_T_SUBMIT', "submit");
 define('H_T_TEXT', "text");
@@ -82,4 +82,3 @@ define('H_HIDDEN2', "hidden2");
 define('H_SEPARATOR', "separator");
 define('H_DISABLED', "disabled");
 define('H_SLICE', "slice");
-    

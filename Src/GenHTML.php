@@ -3,10 +3,10 @@
 require_once 'CstView.php';
 require_once 'FormatLib.php';
 
-function genFormL($action,$url,$hidden,$dspecL,$level) 
+function genFormL($action, $url, $hidden, $dspecL, $level)
 {
     $formS = '<form method='.$action.' action= '.$url. ' >';
-    foreach ($hidden as $name=>$val) {
+    foreach ($hidden as $name => $val) {
         $formS=$formS."<input type='hidden' name='";
         $formS=$formS.$name."' value='".$val."' >" ;
     }
@@ -25,7 +25,7 @@ function genFormL($action,$url,$hidden,$dspecL,$level)
 }
 
 
-function gen1TableL ($dspecL,$level)
+function gen1TableL($dspecL, $level)
 {
     $tableS = '<table > <tr>';
     $tableSE = '</tr> </table>';
@@ -44,7 +44,7 @@ function gen1TableL ($dspecL,$level)
     return $result;
 }
 
-function genTableL ($dspecL,$level)
+function genTableL($dspecL, $level)
 {
     $tableS = '<table >';
     $tableSE = '</table>';
@@ -63,7 +63,7 @@ function genTableL ($dspecL,$level)
     return $result;
 }
 
-function genLineL($dspecL,$level)
+function genLineL($dspecL, $level)
 {
     $elementS   = '<td>'  ;
     $elementES   = '</td>'  ;
@@ -82,11 +82,11 @@ function genLineL($dspecL,$level)
         $result=$result.$tab.$elementS. $nl;
         $result=$result.genFormElemL($dspecL, $level+1);
         $result=$result.$tab.$elementES.$nl;
-    } 
+    }
     return $result;
 }
 
-function genListL($dspecL,$level)
+function genListL($dspecL, $level)
 {
     $listS   = '<ul>'  ;
     $listES = '</ul>';
@@ -94,9 +94,9 @@ function genListL($dspecL,$level)
     $elementES   = '</li>'  ;
     $tab = getTab($level);
     $nl  = getNl($level);
-    $tabn=getTab($level+1);;
+    $tabn=getTab($level+1);
     
-    $result = $tab.$listS ; 
+    $result = $tab.$listS;
     foreach ($dspecL as $dspec) {
         $result=$result . $nl . $tabn. $elementS. $nl;
         $result=$result .genFormElemL($dspec, $level+2).$tabn.$elementES;
@@ -105,11 +105,11 @@ function genListL($dspecL,$level)
     return $result;
 }
 
-function genHTML($dspec,$show = true)
+function genHTML($dspec, $show = true)
 {
     $htmlS="<!DOCTYPE html>\n<html>\n<head>\n<title>ABridge</title>";
     $htmlS= $htmlS."\n</head>\n<body> \n ";
-    $htmlSE="\n </body> \n </html>";    
+    $htmlSE="\n </body> \n </html>";
     $res=genFormElemL($dspec, 0);
     $result = $htmlS.$res.$htmlSE;
     if ($show) {
@@ -119,16 +119,16 @@ function genHTML($dspec,$show = true)
 }
 
 
-function genFormElem($dspec,$show = true)    
+function genFormElem($dspec, $show = true)
 {
     $res=genFormElemL($dspec, 0);
     if ($show) {
         echo $res;
     }
     return $res;
-}   
+}
 
-function genFormElemL($dspec,$level)   
+function genFormElemL($dspec, $level)
 {
     $buttonS    = '<input type="submit" value = ';
     $buttonES   = '</button>';
@@ -170,13 +170,13 @@ function genFormElemL($dspec,$level)
         switch ($t) {
             case H_TYPE:
                 $type = $v;
-                break; 
+                break;
             case H_NAME:
                 $name = $v;
-                break;              
+                break;
             case H_LABEL:
                 $label = $v;
-                break; 
+                break;
             case H_SEPARATOR:
                 $separator = $v;
                 break;
@@ -184,42 +184,42 @@ function genFormElemL($dspec,$level)
                 if ($v) {
                     $disabled = 'disabled';
                 }
-                break; 
+                break;
             case H_DEFAULT:
                 $default = $v;
-                break; 
+                break;
             case H_COL:
                 $col = $v;
-                break; 
+                break;
             case H_ROW:
                 $row = $v;
                 break;
             case H_COLP:
                 $colp = $v;
-                break; 
+                break;
             case H_ROWP:
                 $rowp = $v;
-                break;              
+                break;
             case H_VALUES:
                 $values = $v;
-                break;  
+                break;
             case H_ACTION:
                 $action = $v;
-                break;  
+                break;
             case H_HIDDEN:
                 $hidden = $v;
-                break;  
+                break;
             case H_URL:
                 $url = $v;
-                break; 
+                break;
             case H_BACTION:
                 $baction = $v;
-                break;                  
+                break;
             case H_ARG:
                 $arg = $v;
                 break;
-        }; 
-    };
+        }
+    }
     
     $nameS="";
     if (! is_null($name)) {
@@ -241,7 +241,7 @@ function genFormElemL($dspec,$level)
             $result = $tab.$linkS.$name.$endS.$label.$linkES.$nl;
             break;
         case H_T_LIST_BR:
-            $result = ""; 
+            $result = "";
             foreach ($arg as $elm) {
                 $res= genFormElemL($elm, false, $level);
                 $result = $result. $res . "\n";
@@ -263,7 +263,7 @@ function genFormElemL($dspec,$level)
             foreach ($arg as $elem) {
                 $result=$result.genFormElemL($elem, false, -1);
                 $i++;
-                if ($i < $c ) {
+                if ($i < $c) {
                     $result = $result . $separator;
                 }
             }
@@ -272,9 +272,9 @@ function genFormElemL($dspec,$level)
             $result = genFormL($action, $url, $hidden, $arg, $level);
             break;
         case H_T_TEXTAREA:
-            $result = $textareaS . $nameS . $disabled; 
-            $result = $result . $colS . $col . '" ' ; 
-            $result = $result . $rowS . $row . '" ' . $endS ; 
+            $result = $textareaS . $nameS . $disabled;
+            $result = $result . $colS . $col . '" ' ;
+            $result = $result . $rowS . $row . '" ' . $endS ;
             if ($default) {
                 $result = $result.$default;
             };
@@ -288,7 +288,7 @@ function genFormElemL($dspec,$level)
             $result = $result.$endS.$nl;
             break;
         case H_T_TEXT:
-            $result = $inputS; 
+            $result = $inputS;
             $result = $result . $typeS;
             $result = $result . $nameS;
             $valueS ='';
@@ -314,7 +314,7 @@ function genFormElemL($dspec,$level)
                 $result = $result . $valuelbl. $separator;
                 $result = $result. $nl;
             };
-            break;    
+            break;
         case H_T_SELECT:
             $result = $selectS;
             $result = $tab.$result. $nameS . $endS . $nl ;
@@ -333,7 +333,7 @@ function genFormElemL($dspec,$level)
             $result = $result . $tab.$selectES. $nl;
             break;
         case H_T_IMG:
-            $result = $imgS.$default.'"'.$altS.$default.'"'.$widthS.$colp.'"'.$heightS.$rowp.'"'.$endS; 
+            $result = $imgS.$default.'"'.$altS.$default.'"'.$widthS.$colp.'"'.$heightS.$rowp.'"'.$endS;
             break;
         case H_T_PLAIN:
             $result = $tab.$default.$nl;

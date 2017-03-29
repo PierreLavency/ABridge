@@ -2,7 +2,7 @@
 <?php
 require_once 'Logger.php';
 
-class unitTest
+class UnitTest
 {
     public $logName;
     public $runLogger;
@@ -10,42 +10,42 @@ class unitTest
     public $verbatim=0;
     public $init;
 
-    function  __construct($name,$init=0) 
+    public function __construct($name, $init = 0)
     {
         $this->logName = $name;
         $this->init = $init;
         if ($init) {
-            $this->runLogger = new Logger($this->logName); 
+            $this->runLogger = new Logger($this->logName);
             $this->testLogger = $this->runLogger;
             $this->verbatim = 2;
         } else {
-            $this->runLogger = new Logger($this->logName."_run"); 
+            $this->runLogger = new Logger($this->logName."_run");
             $this->testLogger= new Logger($this->logName);
         }
     }
 
-    function logLine ($line)
+    public function logLine($line)
     {
         return $this->runLogger->logLine($line);
     }
     
-    function setVerbatim ($level) 
+    public function setVerbatim($level)
     {
         $this->verbatim = $level;
         return $level;
     }
     
-    function showTest() 
+    public function showTest()
     {
         $this->runLogger->show();
     }
     
-    function includeLog($log)
+    public function includeLog($log)
     {
         return $this->runLogger->includeLog($log);
     }
     
-    function saveTest() 
+    public function saveTest()
     {
         $err = false;
         $result = "Test : " . $this->logName . " on : ";
@@ -62,12 +62,12 @@ class unitTest
             $this->testLogger->load();
             $r = $this->testLogger->diff($this->runLogger);
             if ($r) {
-                    if ($r>0) {
-                        $rline = $r-1;
-                        $result= $result . "ko diff in line $rline";
-                    } else {
-                        $result= $result . "ko diff in number of line";
-                    }
+                if ($r>0) {
+                    $rline = $r-1;
+                    $result= $result . "ko diff in line $rline";
+                } else {
+                    $result= $result . "ko diff in number of line";
+                }
                     $this->runLogger->save();
                     $err = true;
             } else {
@@ -78,7 +78,7 @@ class unitTest
             if ($err) {
                 echo $result. "<br><br>";
             }
-        }           
+        }
         if ($this->verbatim > 0) {
             echo $result. "<br><br>";
         }
@@ -88,10 +88,7 @@ class unitTest
             if (! $this->init) {
                 echo "EXPECTED"."<br>";
                 $this->testLogger->show();
-                
             }
         }
     }
-
 }
-

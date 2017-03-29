@@ -3,70 +3,70 @@
 
 // must clean up interface with set up !!
 
-require_once "View.php";
-require_once "Request.php";
-require_once "Home.php";
-require_once "Handle.php";
-require_once "SessionMgr.php";
-require_once "GenJASON.php";
+require_once 'View.php';
+require_once 'Request.php';
+require_once 'Home.php';
+require_once 'Handle.php';
+require_once 'SessionMgr.php';
+require_once 'GenJASON.php';
 
 
 class Controler
 {
-    protected $_bases=[];
+    protected $bases=[];
 
-    protected $_handle=null;
-    protected $_request= null;
-    protected $_home= null; 
-    protected $_spec = [];
-    protected $_attrL = [];
-    protected $_valL = [];
-    protected $_opL = [];
-    protected $_logLevel = 0;
-    protected $_sessionMgr ;
-    protected $_bname ;
+    protected $handle=null;
+    protected $request= null;
+    protected $home= null;
+    protected $spec = [];
+    protected $attrL = [];
+    protected $valL = [];
+    protected $opL = [];
+    protected $logLevel = 0;
+    protected $sessionMgr ;
+    protected $bname ;
      
-    function __construct() 
+    public function __construct()
     {
         $a = func_get_args();
         $i = func_num_args();
         if (method_exists($this, $f = 'construct'.$i)) {
             call_user_func_array(array($this, $f), $a);
         }
-    } 
+    }
  
-    function construct1($ini) 
+    public function construct1($ini)
     {
         $this->init($ini);
     }
  
  
-    function construct2($spec,$ini) 
+    public function construct2($spec, $ini)
     {
         $this->init($ini);
-        $this->_spec=$spec;
+        $this->spec=$spec;
         $bases = [];
         $handlers = [];
         resetHandlers();
         $config=$spec['Handlers'];
         $sesMgr = new SessionMgr();
-        $this->_sessionMgr=$sesMgr;
+        $this->sessionMgr=$sesMgr;
         foreach ($config as $classN => $handler) {
             if (count($handler) == 1) {
-                    $handler[]=$this->_bname;
+                    $handler[]=$this->bname;
             }
             if (! in_array($handler, $handlers)) {
                 $handlers[] = $handler;
                 if ($handler[0]== 'fileSession') {
                     $id=$sesMgr->initSession($handler);
-                    $x= Handler::get()->getBaseNm(  
-                        $handler[0], 
-                        $handler[1], 
+                    $x= Handler::get()->getBaseNm(
+                        $handler[0],
+                        $handler[1],
                         $id
                     );
                 } else {
                     $x = Handler::get()->getBase(
-                        $handler[0], 
+                        $handler[0],
                         $handler[1]
                     );
                 }
@@ -74,7 +74,7 @@ class Controler
             }
             initStateHandler($classN, $handler[0], $handler[1]);
         }
-        $this->_bases = $bases;
+        $this->bases = $bases;
     }
  
     private function init($ini)
@@ -82,7 +82,7 @@ class Controler
         $fpath= 'C:/Users/pierr/ABridge/Datastore/';
         if (isset($ini['path'])) {
             $fpath= $ini['path'];
-        }       
+        }
         Logger::setPath($fpath);
         Base::setPath($fpath);
         $host = 'localhost';
@@ -96,68 +96,68 @@ class Controler
         $psw = 'cl822';
         if (isset($ini['pass'])) {
             $psw= $ini['pass'];
-        } 
+        }
         SQLBase::setDB($host, $usr, $psw);
         
         $bname = $ini['name'];
         if (isset($init['bname'])) {
             $bname = $init['bname'];
         }
-        $this->_bname = $bname;
+        $this->bname = $bname;
     }
  
-    function beginTrans() 
+    public function beginTrans()
     {
-        foreach ($this->_bases as $base) {
+        foreach ($this->bases as $base) {
             $base-> beginTrans();
         }
     }
     
-    protected function setLogLevl($level) 
+    protected function setLogLevl($level)
     {
-        $this->_logLevel=$level;
+        $this->logLevel=$level;
         if (!$level) {
             return true;
         }
         if ($level == 1) {
-            $urli = $this->_request->getDocRoot();
+            $urli = $this->request->getDocRoot();
             echo 'uri is '.$urli. '<br>';
-            $urlp = $this->_request->getRpath();
+            $urlp = $this->request->getRpath();
             echo 'path is '.$urlp. '<br>';
-            $method = $this->_request->getMethod();
+            $method = $this->request->getMethod();
             echo 'method is '.$method. '<br>';
         }
-        foreach ($this->_bases as $base) {
+        foreach ($this->bases as $base) {
             $base-> setLogLevl($level);
         }
     }
     
-    protected function logStartView() 
+    protected function logStartView()
     {
-        if ($this->_logLevel <=1) {
+        if ($this->logLevel <=1) {
             return true;
         }
-        foreach ($this->_bases as $base) {
+        foreach ($this->bases as $base) {
             $log = $base-> getLog();
             $log->logLine(' **************  ');
         }
     }
     
-    protected function showLog() 
+    protected function showLog()
     {
-        if ($this->_logLevel<=1) {
+        if ($this->logLevel<=1) {
             return true;
         }
-        foreach ($this->_bases as $base) {
+        foreach ($this->bases as $base) {
             $log = $base-> getLog();
             $log->show();
         }
     }
     
-    function commit()
+    public function commit()
     {
         $res = true;
-        foreach ($this->_bases as $base) {
+        foreach ($this->bases as $base) {
             $r =$base->commit();
             $res = ($res and $r);
         }
@@ -167,26 +167,26 @@ class Controler
     protected function close()
     {
         $res = true;
-        foreach ($this->_bases as $base) {
+        foreach ($this->bases as $base) {
             $r =$base->close();
             $res = ($res and $r);
         }
         return $res;
     }
     
-    function rollback()
+    public function rollback()
     {
         $res = true;
-        foreach ($this->_bases as $base) {
+        foreach ($this->bases as $base) {
             $r =$base->rollback();
             $res = ($res and $r);
         }
         return $res;
     }
     
-    protected function setVal($action) 
+    protected function setVal($action)
     {
-        $c= $this->_handle;
+        $c= $this->handle;
         foreach ($c->getAttrList() as $attr) {
             $cond = false;
             if ($action == V_S_SLCT) {
@@ -194,130 +194,128 @@ class Controler
             } else {
                 $cond = $c->isModif($attr);
             }
-            $typ= $c->getTyp($attr);            
-            $val=$this->_request->getPrm($attr);
+            $typ= $c->getTyp($attr);
+            $val=$this->request->getPrm($attr);
             if (!is_null($val)) {
                 $valC = convertString($val, $typ);
                 if ($c->isModif($attr)) {
                     $c->setVal($attr, $valC);
                 }
                 if (!is_null($valC) and $c->isSelect($attr)) {
-                    $this->_attrL[]=$attr;
-                    $this->_valL[]=$valC;
+                    $this->attrL[]=$attr;
+                    $this->valL[]=$valC;
                 }
             }
             $name=$attr.'_OP';
-            $val=$this->_request->getPrm($name);
+            $val=$this->request->getPrm($name);
             if (!is_null($val)) {
-                $this->_opL[$attr]=$val;
+                $this->opL[$attr]=$val;
             }
             if ($c->isProtected($attr)) {
-                $this->_attrL[]=$attr;
-                $this->_valL[]=$c->getVal($attr);
-            }      
+                $this->attrL[]=$attr;
+                $this->valL[]=$c->getVal($attr);
+            }
         }
         return (!$c->isErr());
     }
         
-    protected function showView($show) 
+    protected function showView($show)
     {
         $this->logStartView();
-        $spec = $this->_spec;
+        $spec = $this->spec;
         if (isset($spec['Views'])) {
             $specv = $spec['Views'];
-            foreach ($specv as $mod=>$specm) {
+            foreach ($specv as $mod => $specm) {
                 Handler::get()->setViewHandler($mod, $specm);
             }
-        }       
-        $v=new View($this->_handle);
+        }
+        $v=new View($this->handle);
         $home=$spec['Home'];
         $v->setNavClass($home);
-        $action = $this->_request->getAction();
+        $action = $this->request->getAction();
         $v->show($action, $show);
         return true;
     }
     
-    function run($show,$logLevel)
+    public function run($show, $logLevel)
     {
         $this->beginTrans();
-        $this->_sessionMgr->startSessions();
-        if ($this->_sessionMgr->isNew()) {
+        $this->sessionMgr->startSessions();
+        if ($this->sessionMgr->isNew()) {
             $this->commit();
             $this->beginTrans();
         }
-        $this->_request = new Request();
+        $this->request = new Request();
         $this->setLogLevl($logLevel);
-        $h= $this->_sessionMgr->getHome();
-        $this->_home= new Home($h);
-        $this->_handle = new Handle($this->_request, $this->_home);
-        $method=$this->_request->getMethod();
+        $h= $this->sessionMgr->getHome();
+        $this->home= new Home($h);
+        $this->handle = new Handle($this->request, $this->home);
+        $method=$this->request->getMethod();
         
-        if ($this->_request->getDocRoot() == '/API.php') { 
-            genJASON($this->_handle, true);
+        if ($this->request->getDocRoot() == '/API.php') {
+            genJASON($this->handle, true);
             $this->close();
             $this->showLog();
-            return $this->_handle->getPath();
+            return $this->handle->getPath();
         }
         
-        if ($this->_handle->nullobj()) {
+        if ($this->handle->nullobj()) {
             $this->showView($show);
             $this->close();
             $this->showLog();
-            return $this->_handle->getPath();
+            return $this->handle->getPath();
         }
         
-        $action = $this->_request->getAction();
+        $action = $this->request->getAction();
         $actionExec = false;
         if ($method =='POST') {
-            if ($action == V_S_UPDT 
-            or  $action == V_S_CREA 
+            if ($action == V_S_UPDT
+            or  $action == V_S_CREA
             or  $action==V_S_SLCT) {
                 $res = $this->setVal($action);
             }
-            if (!$this->_handle->isErr()) {
+            if (!$this->handle->isErr()) {
                 if ($action == V_S_DELT) {
-                    $this->_handle->delet();
+                    $this->handle->delet();
                 }
                 if ($action == V_S_UPDT or $action == V_S_CREA) {
-                    $this->_handle->save();         
+                    $this->handle->save();
                 }
                 if ($action == V_S_SLCT) {
-                    $valL=$this->_valL;
-                    $attrL=$this->_attrL;
-                    $opL=$this->_opL;
-                    $res = $this->_handle->setCriteria($attrL, $opL, $valL);
+                    $valL=$this->valL;
+                    $attrL=$this->attrL;
+                    $opL=$this->opL;
+                    $res = $this->handle->setCriteria($attrL, $opL, $valL);
                 }
             }
-            if (!$this->_handle->isErr()) {
+            if (!$this->handle->isErr()) {
                 $res=$this->commit();
                 if ($res) {
                     $actionExec=true;
                 }
             } else {
-                $this->rollback(); 
+                $this->rollback();
             }
         }
         if ($actionExec) {
-            $rdoc =$this->_request->getDocRoot();
+            $rdoc =$this->request->getDocRoot();
             if ($action == V_S_DELT) {
-                $npath = $this->_request->popObj();
-                $this->_request= new Request($rdoc, $npath, V_S_READ);
-                $this->_handle = new Handle($this->_request, $this->_home);
+                $npath = $this->request->popObj();
+                $this->request= new Request($rdoc, $npath, V_S_READ);
+                $this->handle = new Handle($this->request, $this->home);
             }
             if ($action == V_S_CREA) {
-                $npath = $this->_request->pushId($this->_handle->getId());
-                $this->_request= new Request($rdoc, $npath, V_S_READ);
-                $this->_handle = new Handle($this->_request, $this->_home);
+                $npath = $this->request->pushId($this->handle->getId());
+                $this->request= new Request($rdoc, $npath, V_S_READ);
+                $this->handle = new Handle($this->request, $this->home);
             }
             if ($action != V_S_SLCT) {
-                $this->_request->setAction(V_S_READ);
+                $this->request->setAction(V_S_READ);
             }
         }
         $this->showView($show);
         $this->close();
         $this->showLog();
-        return $this->_handle->getPath();
+        return $this->handle->getPath();
     }
 }
-
-

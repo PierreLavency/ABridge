@@ -8,94 +8,92 @@ require_once 'Base.php';
 class SQLBase extends Base
 {
 
-    protected static $_servername;
-    protected static $_username;
-    protected static $_password;
-    protected $_dbname;
-    protected $_mysqli;
+    protected static $servername;
+    protected static $username;
+    protected static $password;
+    protected $dbname;
+    protected $mysqli;
     
-    function  __construct($dbname)
+    public function __construct($dbname)
     {
-        $this->_dbname =$dbname;
+        $this->dbname =$dbname;
         $this->connect();
         parent::__construct('sqlBase/'.$dbname);
     }
 
-    public static function setDB($server,$usr,$psw)
+    public static function setDB($server, $usr, $psw)
     {
-        self::$_servername=$server;
-        self::$_username=$usr;
-        self::$_password=$psw;
+        self::$servername=$server;
+        self::$username=$usr;
+        self::$password=$psw;
         return true;
     }
     
     public static function getDB()
     {
         $res=[];
-        $res[]=self::$_servername;
-        $res[]=self::$_username;
-        $res[]=self::$_password;
+        $res[]=self::$servername;
+        $res[]=self::$username;
+        $res[]=self::$password;
         return $res;
     }
     
     
     public function connect()
     {
-        try {       
-            $this->_mysqli = new mysqli(
-                self::$_servername, 
-                self::$_username, 
-                self::$_password
+        try {
+            $this->mysqli = new mysqli(
+                self::$servername,
+                self::$username,
+                self::$password
             );
-        }
-        catch (Exception $e) {
-            throw 
+        } catch (Exception $e) {
+            throw
             new Exception(E_ERC021. ':' . $e->getMessage());
         }
-        $this->_mysqli->autocommit(false);
-        if (! $this->_mysqli->select_db($this->_dbname)) {
-            $sql = "CREATE DATABASE $this->_dbname";
-            if (! $this->_mysqli->query($sql)) {
-                throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
+        $this->mysqli->autocommit(false);
+        if (! $this->mysqli->select_db($this->dbname)) {
+            $sql = "CREATE DATABASE $this->dbname";
+            if (! $this->mysqli->query($sql)) {
+                throw new Exception(E_ERC021. ':' . $this->mysqli->error);
             };
-            $this->_mysqli->select_db($this->_dbname);
+            $this->mysqli->select_db($this->dbname);
         }
-        $this->_mysqli->query('SET foreign_key_checks = 0');
+        $this->mysqli->query('SET foreign_key_checks = 0');
         return (parent::connect());
     }
 
     
-    public function checkFKey($flag) 
+    public function checkFKey($flag)
     {
         if ($flag) {
-            $this->_mysqli->query('SET foreign_key_checks = 1');
+            $this->mysqli->query('SET foreign_key_checks = 1');
         } else {
-            $this->_mysqli->query('SET foreign_key_checks = 0');
+            $this->mysqli->query('SET foreign_key_checks = 0');
         }
         return true;
     }
     
     
-    public function remove() 
+    public function remove()
     {
-        $sql = "DROP DATABASE $this->_dbname";
-        $this->_mysqli->query($sql);
+        $sql = "DROP DATABASE $this->dbname";
+        $this->mysqli->query($sql);
         parent::erase();
         return $this->close();
     }
 
     public static function exists($id)
     {
-        return parent::_exists('sqlBase\\'.$id);
+        return parent::existsBase('sqlBase\\'.$id);
     }
     
     public function beginTrans()
     {
         try {
-            $this->_mysqli->begin_transaction();
-        }
-        catch (Exception $e) {
-            throw 
+            $this->mysqli->begin_transaction();
+        } catch (Exception $e) {
+            throw
             new Exception(E_ERC021. ':' . $e->getMessage());
         }
         return (parent::beginTrans());
@@ -104,53 +102,50 @@ class SQLBase extends Base
     public function commit()
     {
         try {
-            $this->_mysqli->commit();
-        }
-        catch (Exception $e) {
-            throw 
+            $this->mysqli->commit();
+        } catch (Exception $e) {
+            throw
             new Exception(E_ERC021. ':' . $e->getMessage());
-        } 
+        }
         return (parent::commit());
     }
     
-    public function rollback() 
+    public function rollback()
     {
         try {
-            $this->_mysqli->rollback();
-        }
-        catch (Exception $e) {
-            throw 
+            $this->mysqli->rollback();
+        } catch (Exception $e) {
+            throw
             new Exception(E_ERC021. ':' . $e->getMessage());
         }
         return (parent::rollback());
     }
     
-    public function close() 
+    public function close()
     {
         try {
-            $this->_mysqli->close();
-        }
-        catch (Exception $e) {
-            throw 
+            $this->mysqli->close();
+        } catch (Exception $e) {
+            throw
             new Exception(E_ERC021. ':' . $e->getMessage());
         }
         return (parent::close());
     }
  
-    public function newMod($model,$meta) 
+    public function newMod($model, $meta)
     {
         return $this->newModId($model, $meta, true);
     }
  
-    public function newModId($model,$meta,$idF) 
+    public function newModId($model, $meta, $idF)
     {
         if ($this->existsMod($model)) {
             return false;
         };
         $attrFrg=[];
         if (isset($meta['attr_frg'])) {
-           $attrFrg = $meta['attr_frg'];
-        }       
+            $attrFrg = $meta['attr_frg'];
+        }
         $s = "\n CREATE TABLE $model ( " ;
         if ($idF) {
             $s=$s. "\n id INT(11) UNSIGNED NOT NULL";
@@ -174,7 +169,7 @@ class SQLBase extends Base
         }
 
         $c = count($attrLst);
-        for ($i=0;$i<$c; $i++) {
+        for ($i=0; $i<$c; $i++) {
             if ($attrLst[$i] != 'id') {
                 $attr = $attrLst[$i];
                 $typ=$attrTyp[$attr];
@@ -189,30 +184,30 @@ class SQLBase extends Base
         }
         $sql=$s. " ) \n";
         $this->logLine(1, $sql);
-        if (! $this->_mysqli->query($sql)) {
-            throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
+        if (! $this->mysqli->query($sql)) {
+            throw new Exception(E_ERC021. ':' . $this->mysqli->error);
         };
         $r = parent::newModId($model, $meta, $idF);
         parent::commit(); //DML always autocommited!!
         return $r;
-    }   
+    }
 
-    public function putMod($model,$meta,$addList,$delList) 
+    public function putMod($model, $meta, $addList, $delList)
     {
         if (! $this->existsMod($model)) {
             return false;
         };
         $attrFrg=[];
         if (isset($meta['attr_frg'])) {
-           $attrFrg = $meta['attr_frg'];
-        }   
+            $attrFrg = $meta['attr_frg'];
+        }
         $sql = "\n ALTER TABLE $model ";
         $sqlDrop = $this->dropAttr($model, $delList, $attrFrg);
         if ($sqlDrop) {
             $sqlDrop=$sql.$sqlDrop;
             $this->logLine(1, $sqlDrop);
-            if (! $this->_mysqli->query($sqlDrop)) {
-                throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
+            if (! $this->mysqli->query($sqlDrop)) {
+                throw new Exception(E_ERC021. ':' . $this->mysqli->error);
             }
         }
         $sql = "\n ALTER TABLE $model ";
@@ -220,16 +215,16 @@ class SQLBase extends Base
         if ($sqlAdd) {
             $sqlAdd=$sql.$sqlAdd;
             $this->logLine(1, $sqlAdd);
-            if (! $this->_mysqli->query($sqlAdd)) {
-                throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
+            if (! $this->mysqli->query($sqlAdd)) {
+                throw new Exception(E_ERC021. ':' . $this->mysqli->error);
             }
         }
         $r = parent::putModel($model, $meta);
-        parent::commit(); 
+        parent::commit();
         return $r;
     }
     
-    public function dropAttr($model,$delList, $attrFrg)
+    public function dropAttr($model, $delList, $attrFrg)
     {
         $sql = "";
         $attrLst=[];
@@ -245,7 +240,7 @@ class SQLBase extends Base
             if (isset($attrFrg[$attr])) {
                 $cName= $model.'_'.$attr;
                 $sql=$sql."\n DROP FOREIGN KEY $cName ,";
-            }           
+            }
             $sql = $sql."\n DROP $attr " ;
             if ($i+1<$c) {
                 $sql=$sql.",";
@@ -255,7 +250,7 @@ class SQLBase extends Base
         return $sql;
     }
     
-    public function addAttr($model,$addList,$attrFrg)
+    public function addAttr($model, $addList, $attrFrg)
     {
         $attrLst=[];
         $attrTyp =[];
@@ -288,31 +283,31 @@ class SQLBase extends Base
         return $sql;
     }
     
-    public function delMod($model) 
+    public function delMod($model)
     {
         $sql = "\n DROP TABLE $model \n";
         $this->logLine(1, $sql);
-        if (! $this->_mysqli->query($sql)) {
- //           echo E_ERC021.":$sql" . ":".$this->_mysqli->error."<br>";
+        if (! $this->mysqli->query($sql)) {
+ //           echo E_ERC021.":$sql" . ":".$this->mysqli->error."<br>";
         }; // if does not exist ok !!
         $r = parent::delMod($model);
         parent::commit();
         return $r;
     }
     
-    public function getObj($model, $id) 
+    public function getObj($model, $id)
     {
         if (! $this->existsMod($model)) {
             return false;
         };
         $sql = "SELECT * FROM $model where id= $id";
         $this->logLine(1, $sql);
-        $result = $this->_mysqli->query($sql);
+        $result = $this->mysqli->query($sql);
         if ($result->num_rows ==1) {
             // output data of each row
             $row = $result->fetch_assoc();
             $res=[];
-            foreach ($row as $attr=>$val) {
+            foreach ($row as $attr => $val) {
                 if (($attr != 'id') and (!is_null($val))) {
                     $res[$attr]=$val;
                 }
@@ -323,7 +318,7 @@ class SQLBase extends Base
         }
     }
     
-    public function putObj($model, $id , $values) 
+    public function putObj($model, $id, $values)
     {
         if (! $this->existsMod($model)) {
             return false;
@@ -334,7 +329,7 @@ class SQLBase extends Base
         $lv = '';
         $i = 0;
         $c = count($values);
-        foreach ($values as $key=>$val) {
+        foreach ($values as $key => $val) {
             $i++;
             if (is_null($val)) {
                 $v="NULL";
@@ -343,29 +338,29 @@ class SQLBase extends Base
             }
             $lv = $lv . $key. '=' . $v;
             if ($i<$c) {
-                $lv = $lv . ',';           
+                $lv = $lv . ',';
             }
         }
         $sql = "\n UPDATE $model SET $lv WHERE id= $id \n" ;
         $this->logLine(1, $sql);
-        if (! $this->_mysqli->query($sql)) {
-            throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
+        if (! $this->mysqli->query($sql)) {
+            throw new Exception(E_ERC021. ':' . $this->mysqli->error);
         };
-        if ($this->_mysqli->affected_rows == 1) {
+        if ($this->mysqli->affected_rows == 1) {
             return $id; /* -> true*/
         }
         return false;
     }
        
-    public function delObj($model, $id) 
+    public function delObj($model, $id)
     {
         if (! $this->existsMod($model)) {
             return false;
         };
         $sql = "\n DELETE FROM $model WHERE id=$id \n";
         $this->logLine(1, $sql);
-        if (! $this->_mysqli->query($sql)) {
-            throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
+        if (! $this->mysqli->query($sql)) {
+            throw new Exception(E_ERC021. ':' . $this->mysqli->error);
         };
 
         return true;
@@ -375,7 +370,7 @@ class SQLBase extends Base
     public function newObj($model, $values)
     {
         return $this->newObjId($model, $values, 0);
-    }   
+    }
     
     public function newObjId($model, $values, $id)
     {
@@ -384,7 +379,7 @@ class SQLBase extends Base
         };
         $la = '(';
         $lv = $la;
-        $c = count($values);        
+        $c = count($values);
         if ($id) {
             $la='(id';
             $lv="($id";
@@ -394,7 +389,7 @@ class SQLBase extends Base
             }
         }
         $i = 0;
-        foreach ($values as $key=>$val) {
+        foreach ($values as $key => $val) {
             $i++;
             $la = $la . $key;
             if (is_null($val)) {
@@ -412,37 +407,37 @@ class SQLBase extends Base
         $lv = $lv. ')';
         $sql = "\n INSERT INTO $model \n $la \n VALUES \n $lv \n";
         $this->logLine(1, $sql);
-        if (! $this->_mysqli->query($sql)) {
-            throw new Exception(E_ERC021. ':' . $this->_mysqli->error);
+        if (! $this->mysqli->query($sql)) {
+            throw new Exception(E_ERC021. ':' . $this->mysqli->error);
         };
         if ($id) {
             return $id;
         }
-        $id = $this->_mysqli->insert_id;
+        $id = $this->mysqli->insert_id;
         if (!$id) {
             throw new Exception(E_ERC043.':'.$id);
         }
         return $id;
     }
     
-    public function findObj($model, $attr, $val) 
+    public function findObj($model, $attr, $val)
     {
         if (! $this->existsMod($model)) {
             return false;
-        }; 
+        }
         $res = [];
         $sql = "SELECT id FROM $model where $attr= '$val'";
         $this->logLine(1, $sql);
-        $result = $this->_mysqli->query($sql);
+        $result = $this->mysqli->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $res[]= (int) $row["id"]; // not sure for int
-            }; 
+            }
         }
         return $res;
-    }   
+    }
 
-    private function buildWheOp($attrLst,$opLst,$valLst) 
+    private function buildWheOp($attrLst, $opLst, $valLst)
     {
         if ($attrLst == []) {
             return ' true ';
@@ -462,20 +457,20 @@ class SQLBase extends Base
         return $res;
     }
         
-    public function findObjWheOp($model,$attrList,$opList,$valList)
+    public function findObjWheOp($model, $attrList, $opList, $valList)
     {
         if (! $this->existsMod($model)) {
             return false;
-        }; 
+        }
         $res = [];
         $w= $this->buildWheOp($attrList, $opList, $valList);
         $sql = "SELECT id FROM $model where ". $w;
         $this->logLine(1, $sql);
-        $result = $this->_mysqli->query($sql);
+        $result = $this->mysqli->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $res[]= (int) $row["id"]; // not sure for int
-            }; 
+            }
         }
         return $res;
     }

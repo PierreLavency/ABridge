@@ -39,4 +39,3 @@ if (isset($init)) {
 
 $ctrl->run(true, 0);
 return;
-

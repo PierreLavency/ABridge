@@ -5,134 +5,131 @@ require_once('Request.php');
 require_once('Home.php');
 require_once('Model.php');
 
-Class Handle
+class Handle
 {
-
-    protected $_home=null; 
-    protected $_request=null; 
-    protected $_obj=null;
+    protected $home=null;
+    protected $request=null;
+    protected $obj=null;
+    protected $mainObj=null;
+    protected $pathNrmArr;
+    protected $startHome=false;
+    protected $urlRoot='/ABridge.php';
     
-    protected $_mainObj=null;
-    protected $_pathNrmArr;
-    protected $_startHome=false;
-
-    protected $_urlRoot='/ABridge.php';
-    
-    public function __construct() 
+    public function __construct()
     {
         $a = func_get_args();
         $i = func_num_args();
         if (method_exists($this, $f = 'construct'.$i)) {
-        call_user_func_array(array($this, $f), $a);
+            call_user_func_array(array($this, $f), $a);
         }
     }
 
-    protected function construct2($request,$home) 
+    protected function construct2($request, $home)
     {
-        $this->_request = $request; 
-        $this->_urlRoot=$request->getDocRoot();
-        $this->_home = $home;
+        $this->request = $request;
+        $this->urlRoot=$request->getDocRoot();
+        $this->home = $home;
         $this->initObj();
-        $action=$this->_request->getAction();
+        $action=$this->request->getAction();
         $res = $this->checkActionObj($action);
         if (!$res) {
             throw new Exception(E_ERC049.':'.$action);
         }
     }
 
-    protected function construct4($req,$home,$obj,$main) 
+    protected function construct4($req, $home, $obj, $main)
     {
-        $this->_request = $req; 
-        $this->_home = $home;
-        $this->_obj = $obj;
-        $this->_mainObj = $main;
+        $this->request = $req;
+        $this->home = $home;
+        $this->obj = $obj;
+        $this->mainObj = $main;
     }
     
     private function initObj()
     {
-        $this->_obj=null;
-        $this->_startHome = false;
+        $this->obj=null;
+        $this->startHome = false;
         $obj = null;
         $fobj = null;
 
-        if ($this->_request->isHomePath()) {
-            $this->_obj = $this->_home->getObj();
-            $this->_startHome = true;
-            return $this->_obj;
+        if ($this->request->isHomePath()) {
+            $this->obj = $this->home->getObj();
+            $this->startHome = true;
+            return $this->obj;
         }
         $this->pathNrmArr=[];
-        $pathArr= $this->_request->pathArr();
-        $objN   = $this->_request->objN();
+        $pathArr= $this->request->pathArr();
+        $objN   = $this->request->objN();
         for ($i=0; $i<$objN; $i=$i+2) {
             $mod = $pathArr[$i];
             $id  = $pathArr[$i+1];
             if (is_null($obj)) {
                 $obj = new Model($mod, $id);
-                if ($this->_home->isLinked($obj)) {
-                    $this->_startHome = true;
+                if ($this->home->isLinked($obj)) {
+                    $this->startHome = true;
                 }
             } else {
                 $obj = $obj->getCref($mod, $id);
             }
-            $this->_pathNrmArr[]=$obj->getModName();
-            $this->_pathNrmArr[]=$obj->getId();
+            $this->pathNrmArr[]=$obj->getModName();
+            $this->pathNrmArr[]=$obj->getId();
         }
-        if ($this->_request->isClassPath()) {
+        if ($this->request->isClassPath()) {
             $c = count($pathArr);
             $mod =  $pathArr[$c-1];
             if ($c == 1) {
                 $obj = new Model($mod);
-                if ($this->_home->canLink($obj)) {
-                    $this->_startHome = true;
-                }               
+                if ($this->home->canLink($obj)) {
+                    $this->startHome = true;
+                }
             } else {
                 $obj = $obj->newCref($mod);
             }
-            $this->_pathNrmArr[]=$obj->getModName();
+            $this->pathNrmArr[]=$obj->getModName();
         }
-        $this->_home->hlink($obj);
-        $this->_obj =$obj;
+        $this->home->hlink($obj);
+        $this->obj =$obj;
     }
  
     protected function checkActionObj($action)
     {
         if (! $this->isMain()) {
             return false;
-        }       
-        if ($this->_home->isRoot()) {
+        }
+        if ($this->home->isRoot()) {
             return true;
         }
-        if ($this->_startHome) {
+        if ($this->startHome) {
             switch ($action) {
-                case V_S_READ :
+                case V_S_READ:
                     return true;
-                case V_S_CREA :
-                case V_S_SLCT :
-                    if (count($this->_request->pathArr()) == 1) {
-                        return $this->_home->canLink($this->_obj);
+                case V_S_CREA:
+                case V_S_SLCT:
+                    if (count($this->request->pathArr()) == 1) {
+                        return $this->home->canLink($this->obj);
                     }
                     return true;
-                case V_S_UPDT :
-                case V_S_DELT :
-                    return ($this->_home->isLinked($this->_obj));
+                case V_S_UPDT:
+                case V_S_DELT:
+                    return ($this->home->isLinked($this->obj));
             }
         }
         return false;
     }
 
-    public function nullObj() 
+    public function nullObj()
     {
-        return (is_null($this->_obj));
+        return (is_null($this->obj));
     }
     
     protected function isMain()
     {
-        return (is_null($this->_mainObj));
+        return (is_null($this->mainObj));
     }
 
     protected function getMain()
     {
-        $res = $this->_mainObj;
+        $res = $this->mainObj;
         if (is_null($res)) {
             return $this;
         } else {
@@ -159,106 +156,106 @@ Class Handle
 
 // Autorize Actions
 
-    public function isAllowed($action) 
+    public function isAllowed($action)
     {
         if (! $this->checkActionObj($action)) {
             return false;
         }
-        if ($this->_home->isRoot() and $this->_request->isHomePath()) {
+        if ($this->home->isRoot() and $this->request->isHomePath()) {
             return false;
         }
 //      if ($action == V_S_DELT) {
-//          return $this->_obj->isDel();
+//          return $this->obj->isDel();
 //      }
-        return true;   
+        return true;
     }
 
-    public function isAllowedMod($mod,$action) 
+    public function isAllowedMod($mod, $action)
     {
         if (! $this->isMain()) {
             return false;
         }
         $x = new Model($mod);
-        return $this->_home->canLink($x);
+        return $this->home->canLink($x);
     }
         
 
-    public function isAllowedCref($attr,$action)
+    public function isAllowedCref($attr, $action)
     {
         if (! $this->isMain()) {
             return false;
         }
-        if ($this->_request->getAction() != V_S_READ) {
+        if ($this->request->getAction() != V_S_READ) {
             return false;
         }
         if (! $this->checkActionObj(V_S_UPDT)) {
             return false;
         }
         return true;
-    }   
+    }
    
 // from req
 
     public function getReq()
     {
-        return $this->getMain()->_request;
+        return $this->getMain()->request;
     }
 
     public function getPath()
     {
-        if (is_null($this->_request)) {
+        if (is_null($this->request)) {
             return null;
         }
-        return $this->_request->getPath();
+        return $this->request->getPath();
     }
     
     public function getRPath()
     {
-        if (is_null($this->_request)) {
+        if (is_null($this->request)) {
             return null;
         }
-        return $this->_request->getRPath();
+        return $this->request->getRPath();
     }
 
 // Handle
  
-    public function getObjId($id) 
+    public function getObjId($id)
     {
-        $obj = new Model($this->_obj->getModName(), (int) $id);
+        $obj = new Model($this->obj->getModName(), (int) $id);
         $path = $this->getRPath().'/'.$id;
-        $req = new Request($this->_urlRoot, $path, V_S_READ); 
-        $h= new Handle($req, $this->_home, $obj, $this);
-        return $h; 
+        $req = new Request($this->urlRoot, $path, V_S_READ);
+        $h= new Handle($req, $this->home, $obj, $this);
+        return $h;
     }
   
-    public function getCref($attr, $id) 
+    public function getCref($attr, $id)
     {
-        $obj = $this->_obj->getCref($attr, (int) $id);
+        $obj = $this->obj->getCref($attr, (int) $id);
         $path = $this->getRPath().'/'.$attr.'/'.$id;
-        if ($this->_request->isHomePath()) {
+        if ($this->request->isHomePath()) {
             $path = '/'.$attr.'/'.$id;
         }
-        $req = new Request($this->_urlRoot, $path, V_S_READ);
-        $h= new Handle($req, $this->_home, $obj, $this);
-        return $h; 
+        $req = new Request($this->urlRoot, $path, V_S_READ);
+        $h= new Handle($req, $this->home, $obj, $this);
+        return $h;
     }
 
-    public function getCode($attr,$id)
+    public function getCode($attr, $id)
     {
-        $obj = $this->_obj->getCode($attr, $id);
+        $obj = $this->obj->getCode($attr, $id);
         $path = $this->getRefPath($obj);
         if (is_null($path)) {
             $req=null;
         } else {
-            $req= new Request($this->_urlRoot, $path, V_S_READ);
-        }       
-        $h= new Handle($req, $this->_home, $obj, $this);
-        return $h; 
+            $req= new Request($this->urlRoot, $path, V_S_READ);
+        }
+        $h= new Handle($req, $this->home, $obj, $this);
+        return $h;
     }
     
     public function getRef($attr)
     {
-        $obj = $this->_obj->getRef($attr);
+        $obj = $this->obj->getRef($attr);
         if (is_null($obj)) {
             return null;
         }
@@ -266,23 +263,23 @@ Class Handle
         if (is_null($path)) {
             $req=null;
         } else {
-            $req= new Request($this->_urlRoot, $path, V_S_READ);
-        }       
-        $h= new Handle($req, $this->_home, $obj, $this);
-        return $h; 
+            $req= new Request($this->urlRoot, $path, V_S_READ);
+        }
+        $h= new Handle($req, $this->home, $obj, $this);
+        return $h;
     }
     
     protected function getRefPath($obj)
     {
-        if (!is_null($this->_mainObj)) {
-            return ($this->_mainObj->getRefPath($obj));
+        if (!is_null($this->mainObj)) {
+            return ($this->mainObj->getRefPath($obj));
         }
         
         $mod= $obj->getModName();
         $id = $obj->getId();
-        $path='/'.$mod.'/'.$id;     
-        $resN = $this->_pathNrmArr;
-        $res  = $this->_request->pathArr();
+        $path='/'.$mod.'/'.$id;
+        $resN = $this->pathNrmArr;
+        $res  = $this->request->pathArr();
         $c = count($res);
         $found = false;
         while ((count($res) > 1) and (! $found)) {
@@ -299,125 +296,125 @@ Class Handle
             $path = '/'.implode('/', $res);
             return $path;
         }
-        if ($this->_home->isRoot()) {
-            return $path;
-        }         
-        if ($this->_home->isLinked($obj)) {
+        if ($this->home->isRoot()) {
             return $path;
         }
-        return null; 
-    }  
+        if ($this->home->isLinked($obj)) {
+            return $path;
+        }
+        return null;
+    }
      
 // obj  : access should be controlled here 
     
-    public function getAttrList() 
+    public function getAttrList()
     {
-        return $this->_obj->getAttrList();
+        return $this->obj->getAttrList();
     }
 
     public function getModName()
     {
-        return $this->_obj->getModName();
+        return $this->obj->getModName();
     }
 
     public function getId()
     {
-        return $this->_obj->getId();
+        return $this->obj->getId();
     }
     
     public function getTyp($attr)
     {
-        return $this->_obj->getTyp($attr);
+        return $this->obj->getTyp($attr);
     }
     
     public function getVal($attr)
     {
-        return $this->_obj->getVal($attr);
+        return $this->obj->getVal($attr);
     }
     
     public function getDflt($attr)
     {
-        return $this->_obj->getDflt($attr);
+        return $this->obj->getDflt($attr);
     }
     
     public function getValues($attr)
     {
-        return $this->_obj->getValues($attr);
-    }   
+        return $this->obj->getValues($attr);
+    }
  
     public function getModCref($attr)
     {
-        return $this->_obj->getModCref($attr);
-    }   
+        return $this->obj->getModCref($attr);
+    }
    
     public function getAbstrNme()
     {
-        return $this->_obj->getAbstrNme();
-    }   
+        return $this->obj->getAbstrNme();
+    }
    
     public function getModRef($attr)
     {
-        return $this->_obj->getModRef($attr);
-    }   
+        return $this->obj->getModRef($attr);
+    }
     
     public function isProtected($attr)
     {
-        return $this->_obj->isProtected($attr);
+        return $this->obj->isProtected($attr);
     }
       
     public function isMdtr($attr)
     {
-        return $this->_obj->isMdtr($attr);
+        return $this->obj->isMdtr($attr);
     }
 
     public function isEval($attr)
     {
-        return $this->_obj->isEval($attr);
+        return $this->obj->isEval($attr);
     }
     
     public function isModif($attr)
     {
-        return $this->_obj->isModif($attr);
+        return $this->obj->isModif($attr);
     }
 
     public function isSelect($attr)
     {
-        return $this->_obj->isSelect($attr);
+        return $this->obj->isSelect($attr);
     }
 
-    public function setVal($attr,$val)
+    public function setVal($attr, $val)
     {
-        return $this->_obj->setVal($attr, $val);
+        return $this->obj->setVal($attr, $val);
     }
 
     public function save()
     {
-        return $this->_obj->save();
+        return $this->obj->save();
     }
 
     public function setCriteria($attrL, $opL, $valL)
     {
-        return $this->_obj->setCriteria($attrL, $opL, $valL);
-    }   
+        return $this->obj->setCriteria($attrL, $opL, $valL);
+    }
 
     public function select()
     {
-        return $this->_obj->select();
+        return $this->obj->select();
     }
     
     public function delet()
     {
-        $res = $this->_obj->delet();
+        $res = $this->obj->delet();
         return $res;
     }
     
     public function isErr()
     {
-        return $this->_obj->isErr();
+        return $this->obj->isErr();
     }
 
     public function getErrLog()
     {
-        return $this->_obj->getErrLog();
+        return $this->obj->getErrLog();
     }
 }

@@ -16,5 +16,3 @@ $phar->buildFromIterator(
 $phar->setStub($phar->createDefaultStub("\Src\index.php"));
 
 echo $phar->count();
-
-
