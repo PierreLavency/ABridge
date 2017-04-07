@@ -26,6 +26,7 @@ if [ $Phase = "dev" ]
 then
 	echo -e "building dev \n"
 	cp ~/ABridge/Src/ABridge_dev.php /C/xampp/htdocs/ABridge.php
+	cp ~/ABridge/Src/ABridge_dev.php /C/xampp/htdocs/ABridgeAPI.php
 	cp ~/ABridge/Src/ABridge_init.php /C/xampp/htdocs/ABridge_init.php
 	exit
 fi
@@ -40,6 +41,7 @@ rm -R ~/ABridge/Bld/Tmp/App
 cp -R ~/ABridge/Src ~/ABridge/Bld/Tmp
 cp ~/ABridge/Bld/Tmp/Src/config.ini ~/ABridge/Bld
 cp ~/ABridge/Bld/Tmp/Src/ABridge_prod.php ~/ABridge/Bld/ABridge.php
+cp ~/ABridge/Bld/Tmp/Src/ABridge_prod.php ~/ABridge/Bld/ABridgeAPI.php
 cp ~/ABridge/Bld/Tmp/Src/ABridge_init.php ~/ABridge/Bld/ABridge_init.php
 
 rm ~/ABridge/Bld/Tmp/Src/config.ini

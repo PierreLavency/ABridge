@@ -1,3 +1,8 @@
+BUG 
+- session with API
+
+
+DEV
 - handle user preference
 - order in list query and attr.
 - selection for Ref / Java script 
@@ -44,6 +49,7 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- update API - 2 hours
 - integrate composer and phpdepends 
 - switch to PSR2 / 3 days
 - implement foreign keys // 2 days

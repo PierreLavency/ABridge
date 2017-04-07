@@ -252,8 +252,8 @@ class Controler
         $this->handle = new Handle($this->request, $this->home);
         $method=$this->request->getMethod();
         
-        if ($this->request->getDocRoot() == '/API.php') {
-            genJASON($this->handle, true);
+        if ($this->request->getDocRoot() == '/ABridgeAPI.php') {
+            genJASON($this->handle, true, true);
             $this->close();
             $this->showLog();
             return $this->handle->getPath();
