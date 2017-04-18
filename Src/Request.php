@@ -6,18 +6,24 @@ require_once 'CstMode.php';
 
 class Request
 {
-    protected $docRoot='/ABridge.php';
+    // CPath = docRoot + path + action
+ 
+    protected static $docRoot='/ABridge.php';
     protected $path=null;
+    protected $rolePath = null;
     protected $pathArr;
     protected $objN;
     protected $length;
     protected $isClassPath=false;
     protected $isObjPath=false;
-    protected $isHomePath=false;
+    protected $isRootPath=false;
     protected $action=null;
     protected $method=null;
     protected $getp=null;
     protected $postp=null;
+
+    protected $role = [];
+    protected $cond = [];
     
     public function __construct()
     {
@@ -33,7 +39,7 @@ class Request
         if (isset($_SERVER['PHP_SELF'])) {
             $uri = explode('/', $_SERVER['PHP_SELF']);
             if (count($uri) > 1) {
-                $this->docRoot='/'.$uri[1];
+                self::$docRoot='/'.$uri[1];
             }
         }
         if (isset($_SERVER['PATH_INFO'])) {
@@ -49,9 +55,8 @@ class Request
         $this->checkActionPath($this->getAction());
     }
  
-    protected function construct3($docRoot, $path, $action)
+    protected function construct2($path, $action)
     {
-        $this->docRoot=$docRoot;
         $this->initPath($path);
         $this->action=$action;
         $this->checkActionPath($this->getAction());
@@ -68,10 +73,12 @@ class Request
         }
         array_shift($pathArr);
         if ($pathArr[0] == "") { // '/' alones
-            $this->isHomePath=true;
+            $this->isRootPath=true;
+            $this->rolePath='/';
             return;
         }
-        $this->isHomePath=false;
+        $this->rolePath="";
+        $this->isRootPath=false;
         $c = count($pathArr);
         $r = $c%2;
         $obj = null;
@@ -88,6 +95,7 @@ class Request
                 throw new Exception(E_ERC036.':'.$pathStrg.':'.$j);
             }
             $this->pathArr[]=$pathArr[$i];
+            $this->rolePath=$this->rolePath.'/'.$pathArr[$i];
             $this->pathArr[]=(int) $pathArr[$i+1];
         }
         if ($this->isClassPath) {
@@ -96,6 +104,7 @@ class Request
                 throw new Exception(E_ERC036.':'.$pathStrg.':'.$j);
             }
             $this->pathArr[$c-1]=$pathArr[$c-1];
+            $this->rolePath=$this->rolePath.'/'.$pathArr[$c-1];
         }
     }
 
@@ -106,21 +115,24 @@ class Request
     
     public function getDocRoot()
     {
-        return $this->docRoot;
+        return self::$docRoot;
     }
     
     public function prfxPath($path)
     {
         
-        return $this->docRoot.$path;
+        return self::$docRoot.$path;
     }
 
-    public function formPath($path, $action)
+    public function joinPathAction($path, $action)
     {
+        if ($action == V_S_READ) {
+            return $path;
+        }
         return $path.'?Action='.$action;
     }
     
-    public function getHomePath()
+    public function getRootPath()
     {
         $path = $this->prfxPath('/');
         return $path;
@@ -148,14 +160,14 @@ class Request
         return $this->objN;
     }
     
-    public function isHomePath()
+    public function isRootPath()
     {
-        return ($this->isHomePath);
+        return ($this->isRootPath);
     }
     
     public function isClassPath()
     {
-        if ($this->isHomePath) {
+        if ($this->isRootPath) {
             return false;
         }
         if ($this->isClassPath) {
@@ -166,7 +178,7 @@ class Request
  
     public function isObjPath()
     {
-        if ($this->isHomePath) {
+        if ($this->isRootPath) {
             return false;
         }
         if ($this->isClassPath) {
@@ -183,7 +195,7 @@ class Request
  
     public function objPath()
     {
-        if ($this->isHomePath()) {
+        if ($this->isRootPath()) {
             throw new Exception(E_ERC038);
         }
         if ($this->isObjPath()) {
@@ -202,7 +214,7 @@ class Request
     
     public function classPath()
     {
-        if ($this->isHomePath()) {
+        if ($this->isRootPath()) {
             throw new Exception(E_ERC038);
         }
         if ($this->isClassPath()) {
@@ -228,6 +240,7 @@ class Request
         array_pop($res);
         array_pop($res);
         $path = $this->arrToPath($res);
+        $this->construct2($path, V_S_READ);
         return $path;
     }
 
@@ -236,7 +249,9 @@ class Request
         if (! $this->isClassPath()) {
             throw new Exception(E_ERC037);
         }
-        return $this->path.'/'.$id;
+        $path = $this->path.'/'.$id;
+        $this->construct2($path, V_S_READ);
+        return $path;
     }
     
 // Action   
@@ -268,7 +283,7 @@ class Request
         throw new Exception(E_ERC048);
     }
     
-    private function cleanInputs($data)
+    protected function cleanInputs($data)
     {
         $cleanInput = array();
         if (is_array($data)) {
@@ -304,7 +319,7 @@ class Request
         return true;
     }
     
-    public function checkActionPath($action)
+    protected function checkActionPath($action)
     {
         if ($this->isClassPath()) {
             if ($action == V_S_SLCT or $action == V_S_CREA) {
@@ -318,23 +333,23 @@ class Request
                 return true;
             }
         }
-        if ($this->isHomePath()) {
+        if ($this->isRootPath()) {
             if ($action == V_S_READ or $action == V_S_UPDT) {
                 return true;
             }
         }
-        throw new Exception(E_ERC048.':'.$action);
+        throw new Exception(E_ERC048.':'.$action.':'.$this->getPath());
     }
     
     public function getActionPath($action)
     {
-        if ($this->isHomePath()) {
+        if ($this->isRootPath()) {
             if ($action == V_S_READ) {
                 return $this->getPath();
             }
             if ($action == V_S_UPDT) {
-                $path = $this->formPath($this->getPath(), $action);
-                return $path;
+                $path = $this->joinPathAction($this->getPath(), $action);
+                return $this->getPath();
             }
         }
         if ($this->isObjPath()) {
@@ -342,12 +357,12 @@ class Request
                 return $this->getPath();
             }
             if ($action == V_S_UPDT or $action == V_S_DELT) {
-                $path = $this->formPath($this->getPath(), $action);
-                return $path;
+                $path = $this->joinPathAction($this->getPath(), $action);
+                return $this->getPath();
             }
             if ($action == V_S_SLCT or $action == V_S_CREA) {
-                $path = $this->formPath($this->classPath(), $action);
-                return $path;
+                $path = $this->joinPathAction($this->classPath(), $action);
+                return $this->classPath();
             }
         }
         if ($this->isClassPath()) {
@@ -355,8 +370,8 @@ class Request
                 return $this->objPath();
             }
             if ($action == V_S_SLCT or $action == V_S_CREA) {
-                $path = $this->formPath($this->getPath(), $action);
-                return $path;
+                $path = $this->joinPathAction($this->getPath(), $action);
+                return $this->getPath();
             }
         }
         return null;
@@ -364,14 +379,14 @@ class Request
     
     public function getClassPath($mod, $action)
     {
-        $path=$this->formPath($this->prfxPath('/'.$mod), $action);
+        $path=$this->joinPathAction($this->prfxPath('/'.$mod), $action);
         return $path;
     }
    
     public function getCrefPath($attr, $action)
     {
         $path = $this->getPath().'/'.$attr;
-        $path= $this->formPath($path, $action);
+        $path= $this->joinPathAction($path, $action);
         return $path;
     }
 }

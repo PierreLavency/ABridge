@@ -1,10 +1,10 @@
 BUG 
 - session with API
 
-
 DEV
 - handle user preference
 - order in list query and attr.
+- confirmation on META load / Java Script
 - selection for Ref / Java script 
 - graphics : include svg bit in view. /2
 - view sort out persistence/2
@@ -49,6 +49,7 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- check path on request // 2 days 
 - update API - 2 hours
 - integrate composer and phpdepends 
 - switch to PSR2 / 3 days

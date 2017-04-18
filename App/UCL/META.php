@@ -186,7 +186,7 @@
 	$res = $obj->addAttr('User',M_REF,'/User');
  	$res = $obj->addAttr('Comment',M_STRING);
 
-	echo "Seesion<br>";		
+	echo "Session<br>";		
 	$res = $obj->saveMod();	
 	$r = $obj->getErrLog ();
 	$r->show();

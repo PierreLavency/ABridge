@@ -301,12 +301,10 @@ class Controler
             $rdoc =$this->request->getDocRoot();
             if ($action == V_S_DELT) {
                 $npath = $this->request->popObj();
-                $this->request= new Request($rdoc, $npath, V_S_READ);
                 $this->handle = new Handle($this->request, $this->home);
             }
             if ($action == V_S_CREA) {
                 $npath = $this->request->pushId($this->handle->getId());
-                $this->request= new Request($rdoc, $npath, V_S_READ);
                 $this->handle = new Handle($this->request, $this->home);
             }
             if ($action != V_S_SLCT) {

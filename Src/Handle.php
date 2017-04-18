@@ -1,9 +1,9 @@
 
 <?php
 
-require_once('Request.php');
-require_once('Home.php');
-require_once('Model.php');
+require_once 'Request.php';
+require_once 'Home.php';
+require_once 'Model.php';
 
 class Handle
 {
@@ -13,7 +13,7 @@ class Handle
     protected $mainObj=null;
     protected $pathNrmArr;
     protected $startHome=false;
-    protected $urlRoot='/ABridge.php';
+
     
     public function __construct()
     {
@@ -27,7 +27,6 @@ class Handle
     protected function construct2($request, $home)
     {
         $this->request = $request;
-        $this->urlRoot=$request->getDocRoot();
         $this->home = $home;
         $this->initObj();
         $action=$this->request->getAction();
@@ -52,7 +51,7 @@ class Handle
         $obj = null;
         $fobj = null;
 
-        if ($this->request->isHomePath()) {
+        if ($this->request->isRootPath()) {
             $this->obj = $this->home->getObj();
             $this->startHome = true;
             return $this->obj;
@@ -156,12 +155,25 @@ class Handle
 
 // Autorize Actions
 
-    public function isAllowed($action)
+    public function getActionPath($action)
+    {
+        if (! $this->isAllowed($action)) {
+            return null;
+        }
+        $path = $this->request->getActionPath($action);
+        if (is_null($path)) {
+            return null;
+        }
+        $path = $this->request->joinPathAction($path, $action);
+        return $path;
+    }
+
+    protected function isAllowed($action)
     {
         if (! $this->checkActionObj($action)) {
             return false;
         }
-        if ($this->home->isRoot() and $this->request->isHomePath()) {
+        if ($this->home->isRoot() and $this->request->isRootPath()) {
             return false;
         }
 //      if ($action == V_S_DELT) {
@@ -169,8 +181,18 @@ class Handle
 //      }
         return true;
     }
-
-    public function isAllowedMod($mod, $action)
+    
+    public function getClassPath($mod, $action)
+    {
+        if (! $this->isAllowedMod($mod, $action)) {
+            return null;
+        }
+        $path = $this->request->getClassPath($mod, $action);
+        return $path;
+    }
+    
+    
+    protected function isAllowedMod($mod, $action)
     {
         if (! $this->isMain()) {
             return false;
@@ -180,7 +202,16 @@ class Handle
     }
         
 
-    public function isAllowedCref($attr, $action)
+    public function getCrefPath($attr, $action)
+    {
+        if (! $this->isAllowedCref($attr, $action)) {
+            return null;
+        }
+        $path = $this->request->getCrefPath($attr, $action);
+        return $path;
+    }
+        
+    protected function isAllowedCref($attr, $action)
     {
         if (! $this->isMain()) {
             return false;
@@ -218,24 +249,24 @@ class Handle
     }
 
 // Handle
- 
+ // in selection list
     public function getObjId($id)
     {
         $obj = new Model($this->obj->getModName(), (int) $id);
         $path = $this->getRPath().'/'.$id;
-        $req = new Request($this->urlRoot, $path, V_S_READ);
+        $req = new Request($path, V_S_READ);
         $h= new Handle($req, $this->home, $obj, $this);
         return $h;
     }
-  
+  // in cref list
     public function getCref($attr, $id)
     {
         $obj = $this->obj->getCref($attr, (int) $id);
         $path = $this->getRPath().'/'.$attr.'/'.$id;
-        if ($this->request->isHomePath()) {
+        if ($this->request->isRootPath()) {
             $path = '/'.$attr.'/'.$id;
         }
-        $req = new Request($this->urlRoot, $path, V_S_READ);
+        $req = new Request($path, V_S_READ);
         $h= new Handle($req, $this->home, $obj, $this);
         return $h;
     }
@@ -247,7 +278,7 @@ class Handle
         if (is_null($path)) {
             $req=null;
         } else {
-            $req= new Request($this->urlRoot, $path, V_S_READ);
+            $req= new Request($path, V_S_READ);
         }
         $h= new Handle($req, $this->home, $obj, $this);
         return $h;
@@ -263,7 +294,7 @@ class Handle
         if (is_null($path)) {
             $req=null;
         } else {
-            $req= new Request($this->urlRoot, $path, V_S_READ);
+            $req= new Request($path, V_S_READ);
         }
         $h= new Handle($req, $this->home, $obj, $this);
         return $h;
@@ -296,6 +327,7 @@ class Handle
             $path = '/'.implode('/', $res);
             return $path;
         }
+        // to be reviewed
         if ($this->home->isRoot()) {
             return $path;
         }

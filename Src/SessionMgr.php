@@ -35,7 +35,7 @@ class SessionMgr
     
     public function initSession($handle)
     {
-        if (! class_exists('SessionHdl')) {
+        if (! class_exists('SessionMeta')) {
             throw new exception(E_ERC051);
         }
         $this->init=true;
@@ -72,7 +72,7 @@ class SessionMgr
         if (! $this->init) {
             return true;
         }
-        $hdl = new SessionHdl();
+        $hdl = new SessionMeta();
         if ($this->prevSess) {
             $x=Handler::get()->getBaseNm(
                 $this->typ,
@@ -119,5 +119,10 @@ class SessionMgr
             $this->sessHdl->save();
         }
         return $home;
+    }
+    
+    public function getHandle()
+    {
+        return $this->sessHdl;
     }
 }

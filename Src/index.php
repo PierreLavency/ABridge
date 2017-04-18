@@ -30,7 +30,7 @@ $ctrl = new Controler($config, $conf);
 
 if (isset($init)) {
     $ctrl->beginTrans();
-    require_once $path.'META.php';
+//    require_once $path.'META.php';
     $ctrl->commit();
     return;
 }

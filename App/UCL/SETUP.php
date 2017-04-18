@@ -14,21 +14,22 @@ require_once 'CstView.php';
 		'Prof'		 => ['fileBase','genealogy',],
 		'Charge'	 => ['fileBase','genealogy',],
 		'User'	 	 => ['dataBase','genealogy',],
+		'Role'	 	 => ['dataBase','genealogy',],
 		],
 	'Home' =>
-		['Session','User','Student','Cours','Inscription','Prof','Charge','Code','CodeValue','Home'],
+		['Session','User','Role','Student','Cours','Inscription','Prof','Charge','Code','CodeValue','Home'],
 		
 	'Views' => [
 	
 		'Session' =>[
 			'attrList' => [
-							V_S_READ=> ['id','User','Comment','vnum','ctstp','utstp'],
-							V_S_UPDT=> ['id','User','Comment'],					
+							V_S_READ=> ['id','User','Role','Comment','vnum','ctstp','utstp'],
+							V_S_UPDT=> ['id','User','Role','Comment'],					
 						],
 			'attrHtml' => [
-						V_S_UPDT => ['User'=>H_T_SELECT],
-						V_S_SLCT => ['User'=>H_T_SELECT],
-						V_S_READ => ['User'=>H_T_PLAIN],					
+						V_S_UPDT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],
+						V_S_SLCT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],
+						V_S_READ => ['User'=>H_T_PLAIN,],					
 					],		
 			'navList' => [V_S_READ => [V_S_UPDT,V_S_SLCT],
 						],
@@ -38,6 +39,12 @@ require_once 'CstView.php';
 		
 				'attrList' => [
 					V_S_REF		=> ['SurName','Name'],
+				]
+
+		],
+		'Role' =>[	
+				'attrList' => [
+					V_S_REF		=> ['Name'],
 				]
 
 		],
@@ -183,7 +190,7 @@ require_once 'CstView.php';
 	];
 
 
-class SessionHdl
+class SessionMeta
 {
 	
 	function initMod($mod) 
@@ -192,6 +199,7 @@ class SessionHdl
 		$res= $obj->deleteMod();
 
 		$res = $obj->addAttr('User',M_REF,'/User');
+		$res = $obj->addAttr('Role',M_REF,'/Role');
 		$res = $obj->addAttr('Comment',M_STRING);
 		$res = $obj->saveMod();
 		

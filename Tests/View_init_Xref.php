@@ -28,7 +28,7 @@ $p = $test[$i][1];
 $s = $test[$i][2];	
 
 $home= new Home('/');
-$request = new Request('/ABridge.php',$p,V_S_READ);
+$request = new Request($p,V_S_READ);
 $handle = new Handle($request, $home);	
 $v = new View($handle);	
 

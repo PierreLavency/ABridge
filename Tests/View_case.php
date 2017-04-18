@@ -31,7 +31,7 @@ function viewCases()
 	
 
 	$home= new Home('/');
-	$request = new Request('/ABridge.php','/',V_S_READ);
+	$request = new Request('/',V_S_READ);
 	$handle = new Handle($request, $home);
 	$v = new View($handle);
 
@@ -43,7 +43,7 @@ function viewCases()
 	$test[0]=[$v,$path,V_S_CREA,0];		
 
 	$path = '/test/1';
-	$request = new Request('/ABridge.php','/test/1',V_S_READ);
+	$request = new Request('/test/1',V_S_READ);
 	$handle = new Handle($request, $home,$x,null);
 	$v = new View($handle);	
 	

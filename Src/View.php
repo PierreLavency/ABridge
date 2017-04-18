@@ -171,7 +171,6 @@ class View
         return $res;
     }
 
-    
     public function setNavView($dspec, $viewState)
     {
         $this->navView=[];
@@ -426,7 +425,7 @@ class View
                 if ($this->handle->isProtected($attr)) {
                     $rep=V_S_REF;
                 } else {
-                    $rep= $this->getAttrHtml($attr, $viewState);
+                    $rep=$this->getAttrHtml($attr, $viewState);
                 }
                 if (is_array($rep)) {
                     $res=$rep;
@@ -528,10 +527,10 @@ class View
             if ($nav==V_B_RFCH) {
                 $nav=V_S_SLCT;
             }
-            if (!$this->handle->isAllowed($nav)) {
+            $path = $this->handle->getActionPath($nav);
+            if (is_null($path)) {
                 return false;
             }
-            $path = $this->req->getActionPath($nav);
             if (!is_null($this->_name)) {
                 $path = $path.$con.'View='.$this->_name;
             }
@@ -548,12 +547,12 @@ class View
         $res[H_TYPE]=H_T_LINK;
         $res[H_LABEL]=$this->getLbl($mod);
         if ($mod == 'Home') {
-            $path = $this->req->getHomePath();
+            $path = $this->req->getRootPath();
         } else {
-            if (!$this->handle->isAllowedMod($mod, $nav)) {
+            $path = $this->handle->getClassPath($mod, $nav);
+            if (is_null($path)) {
                 return false;
             }
-            $path = $this->req->getClassPath($mod, $nav);
         }
         $res[H_NAME]="'".$path."'";
         return $res;
@@ -567,11 +566,11 @@ class View
         $attr=$spec[V_ATTR];
         if ($nav==V_B_NEW) {
             $result[H_TYPE]=H_T_LINK;
-            if (!$this->handle->isAllowedCref($attr, V_S_CREA)) {
+            $path=$this->handle->getCrefPath($attr, V_S_CREA);
+            if (is_null($path)) {
                 return false;
             }
-            $path="'".$this->req->getCrefPath($attr, V_S_CREA)."'";
-            $result[H_NAME]=$path;
+            $result[H_NAME]="'".$path."'";
         } else {
             $pos = $spec[V_ID];
             $viewn="";
