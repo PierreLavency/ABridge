@@ -20,10 +20,10 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 	
 		resetHandlers();
 		$typ='dataBase';
-		$name='atest';	
-		$Code='Code';		
-		$CodeVal='CodeVal';		
-		$Student='Student';
+		$name='test';	
+		$Code=get_called_class().'_1';		
+		$CodeVal=get_called_class().'_2';		
+		$Student=get_called_class().'_3';
 		self::$db1=getBaseHandler ($typ, $name);
 		initStateHandler ($Code		,$typ, $name);
 		initStateHandler ($CodeVal	,$typ, $name);
@@ -31,9 +31,9 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		$typ='fileBase';
 		$name=$name.'_f';
-		$Code='Codef';		
-		$CodeVal='CodeValf';		
-		$Student='Studentf';
+		$Code=get_called_class().'_f_1';		
+		$CodeVal=get_called_class().'_f_2';		
+		$Student=get_called_class().'_f_3';
 		self::$db2=getBaseHandler ($typ, $name);
 		initStateHandler ($Code		,$typ, $name);
 		initStateHandler ($CodeVal	,$typ, $name);
@@ -45,15 +45,15 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 	{
 		if ($typ== 'SQL') {
 			$this->db=self::$db1;
-			$this->Student='Student';
-			$this->Code='Code';
-			$this->CodeVal='CodeVal';
+			$this->Code=get_called_class().'_1';		
+			$this->CodeVal=get_called_class().'_2';		
+			$this->Student=get_called_class().'_3';
 			} 
 		else {
 			$this->db=self::$db2;
-			$this->Student='Studentf';
-			$this->Code='Codef';
-			$this->CodeVal='CodeValf';
+			$this->Code=get_called_class().'_f_1';		
+			$this->CodeVal=get_called_class().'_f_2';		
+			$this->Student=get_called_class().'_f_3';
 			}
 
 	}

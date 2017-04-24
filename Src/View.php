@@ -317,7 +317,7 @@ class View
         return $res;
     }
     
-    public function evale($spec, $viewState)
+    public function element($spec, $viewState)
     {
         $attr = $spec[V_ATTR];
         if ($attr == V_S_SLCT) { //bof
@@ -484,7 +484,7 @@ class View
         return $res;
     }
     
-    public function evalv($spec, $viewState)
+    public function menuObjView($spec, $viewState)
     {
         $viewn=$spec[V_P_VAL];
         $res= [];
@@ -509,7 +509,7 @@ class View
         return $res;
     }
 
-    public function evaln($nav, $viewState)
+    public function menuObjAction($nav, $viewState)
     {
         $res=[];
         $nav=$nav[V_P_VAL];
@@ -539,7 +539,7 @@ class View
         return $res;
     }
     
-    public function evalc($spec, $viewState)
+    public function menuTop($spec, $viewState)
     {
         $res=[];
         $nav=$spec[V_P_VAL];
@@ -547,7 +547,7 @@ class View
         $res[H_TYPE]=H_T_LINK;
         $res[H_LABEL]=$this->getLbl($mod);
         if ($mod == 'Home') {
-            $path = $this->req->getRootPath();
+            $path = $this->req->getRootUrl();
         } else {
             $path = $this->handle->getClassPath($mod, $nav);
             if (is_null($path)) {
@@ -558,7 +558,7 @@ class View
         return $res;
     }
     
-    public function evalcn($spec, $viewState)
+    public function menuCref($spec, $viewState)
     {
         $result=[];
         $nav=$spec[V_P_VAL];
@@ -596,16 +596,16 @@ class View
         $result=[];
         switch ($type) {
             case V_ELEM:
-                $result= $this->evale($spec, $viewState);
+                $result= $this->element($spec, $viewState);
                 break;
             case V_VNAV:
-                $result= $this->evalv($spec, $viewState);
+                $result= $this->menuObjView($spec, $viewState);
                 break;
             case V_NAV:
-                $result= $this->evaln($spec, $viewState);
+                $result= $this->menuObjAction($spec, $viewState);
                 break;
             case V_CNAV:
-                $result= $this->evalc($spec, $viewState);
+                $result= $this->menuTop($spec, $viewState);
                 break;
             case V_OBJ:
                 $result= $this->evalo($spec, $viewState);
@@ -647,7 +647,7 @@ class View
                 $result[H_ARG]=$arg;
                 break;
             case V_NAVC:
-                    $result= $this->evalcn($spec, $viewState);
+                    $result= $this->menuCref($spec, $viewState);
                 break;
             case V_PLAIN:
             case V_ERROR:

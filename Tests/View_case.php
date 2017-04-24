@@ -1,7 +1,7 @@
 <?php
 
 require_once("Request.php");
-require_once("Home.php");
+require_once("SessionHdl.php");
 require_once("Handle.php");
 require_once("Model.php"); 
 require_once("View.php"); 
@@ -30,7 +30,7 @@ function viewCases()
 	$x->setVal('A4','ceci est un texte');
 	
 
-	$home= new Home('/');
+	$home= new sessionHdl();
 	$request = new Request('/',V_S_READ);
 	$handle = new Handle($request, $home);
 	$v = new View($handle);
@@ -44,7 +44,8 @@ function viewCases()
 
 	$path = '/test/1';
 	$request = new Request('/test/1',V_S_READ);
-	$handle = new Handle($request, $home,$x,null);
+	$objs=[['test',$x]];
+	$handle = new Handle($request, $home,$objs,$x,null);
 	$v = new View($handle);	
 	
 	$v->setNavClass(['test']);	

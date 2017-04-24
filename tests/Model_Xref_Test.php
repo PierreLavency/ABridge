@@ -8,10 +8,9 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 	protected static $db1;
 	protected static $db2;
 
-
-	protected $Code='Code';		
-	protected $CodeVal='CodeVal';		
-	protected $Student='Student';
+	protected $Code;		
+	protected $CodeVal;		
+	protected $Student;
 	protected $db;
 	
 	
@@ -21,9 +20,9 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		resetHandlers();
 		$typ='dataBase';
 		$name='test';	
-		$Code='Code';		
-		$CodeVal='CodeVal';		
-		$Student='Student';
+		$Code=get_called_class().'_1';		
+		$CodeVal=get_called_class().'_2';		
+		$Student=get_called_class().'_3';
 		self::$db1=getBaseHandler ($typ, $name);
 		initStateHandler ($Code		,$typ, $name);
 		initStateHandler ($CodeVal	,$typ, $name);
@@ -31,9 +30,9 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		
 		$typ='fileBase';
 		$name=$name.'_f';
-		$Code='Codef';		
-		$CodeVal='CodeValf';		
-		$Student='Studentf';
+		$Code=get_called_class().'_f_1';		
+		$CodeVal=get_called_class().'_f_2';		
+		$Student=get_called_class().'_f_3';
 		self::$db2=getBaseHandler ($typ, $name);
 		initStateHandler ($Code		,$typ, $name);
 		initStateHandler ($CodeVal	,$typ, $name);
@@ -45,15 +44,15 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 	{
 		if ($typ== 'SQL') {
 			$this->db=self::$db1;
-			$this->Student='Student';
-			$this->Code='Code';
-			$this->CodeVal='CodeVal';
+			$this->Student=get_called_class().'_1';
+			$this->Code=get_called_class().'_2';
+			$this->CodeVal=get_called_class().'_3';
 			} 
 		else {
 			$this->db=self::$db2;
-			$this->Student='Studentf';
-			$this->Code='Codef';
-			$this->CodeVal='CodeValf';
+			$this->Student=get_called_class().'_f_1';
+			$this->Code=get_called_class().'_f_2';
+			$this->CodeVal=get_called_class().'_f_3';
 			}
 
 	}
@@ -198,7 +197,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res = $codeval->getRef('ValueOf');
 		$this->assertEquals($res,$code);	
 		
-		$res = $codeval->getRefMod('ValueOf');
+		$res = $codeval->getModRef('ValueOf');
 		$this->assertEquals($res,$this->Code);		
 				
 		$id1= $codeval->save();
@@ -364,7 +363,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals($student->getErrLine(),E_ERC016.':Sexe:1000');
 		
 		
-		$res = $student->getRefMod('notexists');
+		$res = $student->getModRef('notexists');
 		$this->assertFalse($res);
 		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
 
@@ -376,7 +375,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertFalse($res);
 		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
 		
-		$res = $student->getRefMod('Sexe');
+		$res = $student->getModRef('Sexe');
 		$this->assertFalse($res);
 		$this->assertEquals($student->getErrLine(),E_ERC026.':Sexe');		
 

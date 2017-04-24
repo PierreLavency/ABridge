@@ -18,7 +18,7 @@ class SessionMgr
     
     public function __construct()
     {
-        $cookie = 'sidn';
+        $cookie = 'sidnn';
         $pcookie=$this->pvs($cookie);
         if (isset($_COOKIE[$cookie])) {
             unset($_COOKIE[$cookie]);
@@ -123,6 +123,11 @@ class SessionMgr
     
     public function getHandle()
     {
-        return $this->sessHdl;
+        if (! is_null($this->sessHdl)) {
+            $res= new SessionHdl($this->sessHdl, $this->sessHdl->getRef('Role'));
+        } else {
+            $res= new SessionHdl();
+        }
+        return $res;
     }
 }

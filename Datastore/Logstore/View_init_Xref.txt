@@ -1,10 +1,10 @@
-a:7:{i:0;s:1755:"<!DOCTYPE html>
+a:7:{i:0;s:1785:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/dir/2 ><input type='hidden' name='Action' value='Create' >
+ <form method=POST action= /ABridge.php/viewCasesXref/2 ><input type='hidden' name='Action' value='Create' >
 	<table > <tr>
 		<td>
 			<a href='/ABridge.php/dir?Action=Select' >dir</a>
@@ -12,7 +12,7 @@ a:7:{i:0;s:1755:"<!DOCTYPE html>
 	</tr> </table>
 	<table > <tr>
 		<td>
-			dir
+			viewCasesXref
 		</td>
 	</tr> </table>
 	<table > <tr>
@@ -20,7 +20,7 @@ a:7:{i:0;s:1755:"<!DOCTYPE html>
 			<input type="submit" value = Create >
 		</td>
 		<td>
-			<a href='/ABridge.php/dir/2' >Cancel</a>
+			<a href='/ABridge.php/viewCasesXref/2' >Cancel</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -102,7 +102,7 @@ a:7:{i:0;s:1755:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:1;s:3376:"<!DOCTYPE html>
+ </html>";i:1;s:3706:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -116,22 +116,22 @@ a:7:{i:0;s:1755:"<!DOCTYPE html>
 
 <table > <tr>
 	<td>
-		dir
+		viewCasesXref
 	</td>
 </tr> </table>
 
 <table > <tr>
 	<td>
-		<a href='/ABridge.php/dir/2?Action=Update' >Update</a>
+		<a href='/ABridge.php/viewCasesXref/2?Action=Update' >Update</a>
 	</td>
 	<td>
-		<a href='/ABridge.php/dir/2?Action=Delete' >Delete</a>
+		<a href='/ABridge.php/viewCasesXref/2?Action=Delete' >Delete</a>
 	</td>
 	<td>
-		<a href='/ABridge.php/dir?Action=Create' >Create</a>
+		<a href='/ABridge.php/viewCasesXref?Action=Create' >Create</a>
 	</td>
 	<td>
-		<a href='/ABridge.php/dir?Action=Select' >Select</a>
+		<a href='/ABridge.php/viewCasesXref?Action=Select' >Select</a>
 	</td>
 </tr> </table>
 
@@ -157,7 +157,7 @@ a:7:{i:0;s:1755:"<!DOCTYPE html>
 			Father
 		</td>
 		<td>
-			<a href=/ABridge.php/dir/1 >1
+			<a href=/ABridge.php/viewCasesXref/1 >1
 </a>
 		</td>
 	</tr>
@@ -166,7 +166,7 @@ a:7:{i:0;s:1755:"<!DOCTYPE html>
 			Mother
 		</td>
 		<td>
-			<a href=/ABridge.php/dir/1 >1
+			<a href=/ABridge.php/viewCasesXref/1 >1
 </a>
 		</td>
 	</tr>
@@ -176,16 +176,16 @@ FatherOf
 
 11 : 0-10
 
-<a href='/ABridge.php/dir/2?FatherOf=0' >Previous</a>
+<a href='/ABridge.php/viewCasesXref/2?FatherOf=0' >Previous</a>
 
-<a href='/ABridge.php/dir/2?FatherOf=10' >Next</a>
+<a href='/ABridge.php/viewCasesXref/2?FatherOf=10' >Next</a>
 
-<a href='/ABridge.php/dir/2/FatherOf?Action=Create' >New</a>
+<a href='/ABridge.php/viewCasesXref/2/FatherOf?Action=Create' >New</a>
 
 <table >
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/FatherOf/10 >10
+			<a href=/ABridge.php/viewCasesXref/2/FatherOf/10 >10
 </a>
 		</td>
 		<td>
@@ -194,7 +194,7 @@ FatherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/FatherOf/11 >11
+			<a href=/ABridge.php/viewCasesXref/2/FatherOf/11 >11
 </a>
 		</td>
 		<td>
@@ -203,7 +203,7 @@ FatherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/FatherOf/12 >12
+			<a href=/ABridge.php/viewCasesXref/2/FatherOf/12 >12
 </a>
 		</td>
 		<td>
@@ -212,7 +212,7 @@ FatherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/FatherOf/13 >13
+			<a href=/ABridge.php/viewCasesXref/2/FatherOf/13 >13
 </a>
 		</td>
 		<td>
@@ -221,7 +221,7 @@ FatherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/FatherOf/14 >14
+			<a href=/ABridge.php/viewCasesXref/2/FatherOf/14 >14
 </a>
 		</td>
 		<td>
@@ -230,7 +230,7 @@ FatherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/FatherOf/15 >15
+			<a href=/ABridge.php/viewCasesXref/2/FatherOf/15 >15
 </a>
 		</td>
 		<td>
@@ -239,7 +239,7 @@ FatherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/FatherOf/16 >16
+			<a href=/ABridge.php/viewCasesXref/2/FatherOf/16 >16
 </a>
 		</td>
 		<td>
@@ -248,7 +248,7 @@ FatherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/FatherOf/17 >17
+			<a href=/ABridge.php/viewCasesXref/2/FatherOf/17 >17
 </a>
 		</td>
 		<td>
@@ -257,7 +257,7 @@ FatherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/FatherOf/18 >18
+			<a href=/ABridge.php/viewCasesXref/2/FatherOf/18 >18
 </a>
 		</td>
 		<td>
@@ -266,7 +266,7 @@ FatherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/FatherOf/19 >19
+			<a href=/ABridge.php/viewCasesXref/2/FatherOf/19 >19
 </a>
 		</td>
 		<td>
@@ -280,16 +280,16 @@ MotherOf
 
 11 : 0-10
 
-<a href='/ABridge.php/dir/2?MotherOf=0' >Previous</a>
+<a href='/ABridge.php/viewCasesXref/2?MotherOf=0' >Previous</a>
 
-<a href='/ABridge.php/dir/2?MotherOf=10' >Next</a>
+<a href='/ABridge.php/viewCasesXref/2?MotherOf=10' >Next</a>
 
-<a href='/ABridge.php/dir/2/MotherOf?Action=Create' >New</a>
+<a href='/ABridge.php/viewCasesXref/2/MotherOf?Action=Create' >New</a>
 
 <table >
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/MotherOf/10 >10
+			<a href=/ABridge.php/viewCasesXref/2/MotherOf/10 >10
 </a>
 		</td>
 		<td>
@@ -298,7 +298,7 @@ MotherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/MotherOf/11 >11
+			<a href=/ABridge.php/viewCasesXref/2/MotherOf/11 >11
 </a>
 		</td>
 		<td>
@@ -307,7 +307,7 @@ MotherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/MotherOf/12 >12
+			<a href=/ABridge.php/viewCasesXref/2/MotherOf/12 >12
 </a>
 		</td>
 		<td>
@@ -316,7 +316,7 @@ MotherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/MotherOf/13 >13
+			<a href=/ABridge.php/viewCasesXref/2/MotherOf/13 >13
 </a>
 		</td>
 		<td>
@@ -325,7 +325,7 @@ MotherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/MotherOf/14 >14
+			<a href=/ABridge.php/viewCasesXref/2/MotherOf/14 >14
 </a>
 		</td>
 		<td>
@@ -334,7 +334,7 @@ MotherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/MotherOf/15 >15
+			<a href=/ABridge.php/viewCasesXref/2/MotherOf/15 >15
 </a>
 		</td>
 		<td>
@@ -343,7 +343,7 @@ MotherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/MotherOf/16 >16
+			<a href=/ABridge.php/viewCasesXref/2/MotherOf/16 >16
 </a>
 		</td>
 		<td>
@@ -352,7 +352,7 @@ MotherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/MotherOf/17 >17
+			<a href=/ABridge.php/viewCasesXref/2/MotherOf/17 >17
 </a>
 		</td>
 		<td>
@@ -361,7 +361,7 @@ MotherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/MotherOf/18 >18
+			<a href=/ABridge.php/viewCasesXref/2/MotherOf/18 >18
 </a>
 		</td>
 		<td>
@@ -370,7 +370,7 @@ MotherOf
 	</tr>
 	<tr>
 		<td>
-			<a href=/ABridge.php/dir/2/MotherOf/19 >19
+			<a href=/ABridge.php/viewCasesXref/2/MotherOf/19 >19
 </a>
 		</td>
 		<td>
@@ -383,13 +383,13 @@ MotherOf
 
 
  </body> 
- </html>";i:2;s:926:"<!DOCTYPE html>
+ </html>";i:2;s:956:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/dir/2 ><input type='hidden' name='Action' value='Update' >
+ <form method=POST action= /ABridge.php/viewCasesXref/2 ><input type='hidden' name='Action' value='Update' >
 	<table > <tr>
 		<td>
 			<a href='/ABridge.php/dir?Action=Select' >dir</a>
@@ -397,7 +397,7 @@ MotherOf
 	</tr> </table>
 	<table > <tr>
 		<td>
-			dir
+			viewCasesXref
 		</td>
 	</tr> </table>
 	<table > <tr>
@@ -405,7 +405,7 @@ MotherOf
 			<input type="submit" value = Update >
 		</td>
 		<td>
-			<a href='/ABridge.php/dir/2' >Cancel</a>
+			<a href='/ABridge.php/viewCasesXref/2' >Cancel</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -445,13 +445,13 @@ MotherOf
 </form>  
 
  </body> 
- </html>";i:3;s:844:"<!DOCTYPE html>
+ </html>";i:3;s:894:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/dir/2 ><input type='hidden' name='Action' value='Delete' >
+ <form method=POST action= /ABridge.php/viewCasesXref/2 ><input type='hidden' name='Action' value='Delete' >
 	<table > <tr>
 		<td>
 			<a href='/ABridge.php/dir?Action=Select' >dir</a>
@@ -459,7 +459,7 @@ MotherOf
 	</tr> </table>
 	<table > <tr>
 		<td>
-			dir
+			viewCasesXref
 		</td>
 	</tr> </table>
 	<table > <tr>
@@ -467,7 +467,7 @@ MotherOf
 			<input type="submit" value = Delete >
 		</td>
 		<td>
-			<a href='/ABridge.php/dir/2' >Cancel</a>
+			<a href='/ABridge.php/viewCasesXref/2' >Cancel</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -492,7 +492,7 @@ MotherOf
 				Father
 			</td>
 			<td>
-				<a href=/ABridge.php/dir/1 >1
+				<a href=/ABridge.php/viewCasesXref/1 >1
 </a>
 			</td>
 		</tr>
@@ -501,7 +501,7 @@ MotherOf
 				Mother
 			</td>
 			<td>
-				<a href=/ABridge.php/dir/1 >1
+				<a href=/ABridge.php/viewCasesXref/1 >1
 </a>
 			</td>
 		</tr>
@@ -509,13 +509,13 @@ MotherOf
 </form>  
 
  </body> 
- </html>";i:4;s:1896:"<!DOCTYPE html>
+ </html>";i:4;s:1946:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/dir/2 ><input type='hidden' name='Action' value='Select' >
+ <form method=POST action= /ABridge.php/viewCasesXref/2 ><input type='hidden' name='Action' value='Select' >
 	<table > <tr>
 		<td>
 			<a href='/ABridge.php/dir?Action=Select' >dir</a>
@@ -523,7 +523,7 @@ MotherOf
 	</tr> </table>
 	<table > <tr>
 		<td>
-			dir
+			viewCasesXref
 		</td>
 	</tr> </table>
 	<table > <tr>
@@ -531,13 +531,13 @@ MotherOf
 			<input type="submit" value = Select >
 		</td>
 		<td>
-			<a href='/ABridge.php/dir?Action=Select' >Refresh</a>
+			<a href='/ABridge.php/viewCasesXref?Action=Select' >Refresh</a>
 		</td>
 		<td>
-			<a href='/ABridge.php/dir/2' >Cancel</a>
+			<a href='/ABridge.php/viewCasesXref/2' >Cancel</a>
 		</td>
 		<td>
-			<a href='/ABridge.php/dir?Action=Create' >Create</a>
+			<a href='/ABridge.php/viewCasesXref?Action=Create' >Create</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -615,17 +615,17 @@ Select
 
  </body> 
  </html>";i:5;s:7:"Name_2
-";i:6;s:166:"<ul>
+";i:6;s:196:"<ul>
 	<li>
-		<a href=/ABridge.php/dir/2 >Name_2
+		<a href=/ABridge.php/viewCasesXref/2 >Name_2
 </a>
 	</li>
 	<li>
-		<a href=/ABridge.php/dir/1 >1
+		<a href=/ABridge.php/viewCasesXref/1 >1
 </a>
 	</li>
 	<li>
-		<a href=/ABridge.php/dir/1 >1
+		<a href=/ABridge.php/viewCasesXref/1 >1
 </a>
 	</li>
 </ul>

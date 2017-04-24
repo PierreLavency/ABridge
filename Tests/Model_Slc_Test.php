@@ -19,12 +19,12 @@ class Model_Slc_Test extends PHPUnit_Framework_TestCase
 		resetHandlers();
 		$typ='dataBase';
 		$name='test';	
-		$Student='testeval';
+		$Student=get_called_class().'_1';
 		
 		self::$db1=getBaseHandler ($typ, $name);
 
 		initStateHandler ($Student	,$typ, $name);
-		$Student='testeval';	
+		$Student=get_called_class().'_f_1';	
 		$typ='fileBase';
 		
 		self::$db2=getBaseHandler ($typ, $name);
@@ -37,13 +37,12 @@ class Model_Slc_Test extends PHPUnit_Framework_TestCase
 	{
 		if ($typ== 'SQL') {
 			$this->db=self::$db1;
-			$this->Student='testeval';
+			$this->Student=get_called_class().'_1';
 
 			} 
 		else {
 			$this->db=self::$db2;
-			$this->Student='testeval';
-
+			$this->Student=get_called_class().'_f_1';
 			}
 
 	}

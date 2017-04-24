@@ -2,19 +2,18 @@
 <?php
 
 require_once 'Request.php';
-require_once 'Home.php';
+require_once 'SessionHdl.php';
 require_once 'Model.php';
 
 class Handle
 {
-    protected $home=null;
+    protected $sessionHdl=null;
     protected $request=null;
     protected $obj=null;
     protected $mainObj=null;
-    protected $pathNrmArr;
-    protected $startHome=false;
-
-    
+    protected $pathNrmArr=[];
+    protected $attrObjs=[];
+ 
     public function __construct()
     {
         $a = func_get_args();
@@ -24,22 +23,32 @@ class Handle
         }
     }
 
-    protected function construct2($request, $home)
+    protected function construct2($request, $sessionHdl)
     {
         $this->request = $request;
-        $this->home = $home;
-        $this->initObj();
-        $action=$this->request->getAction();
-        $res = $this->checkActionObj($action);
+        $this->sessionHdl = $sessionHdl;
+        $res = $sessionHdl->checkReq($this->request);
         if (!$res) {
             throw new Exception(E_ERC049.':'.$action);
         }
+        $this->initObj();
     }
 
-    protected function construct4($req, $home, $obj, $main)
+    protected function construct3($path, $action, $sessionHdl)
+    {
+        $req = new Request($path, $action);
+        $this->construct2($req, $sessionHdl);
+    }
+
+    protected function construct5($req, $sessionHdl, $objs, $obj, $main)
     {
         $this->request = $req;
-        $this->home = $home;
+        $this->sessionHdl = $sessionHdl;
+        $this->attrObjs=$objs;
+        foreach ($objs as $attrObj) {
+            $this->pathNrmArr[]=$attrObj[1]->getModName();
+            $this->pathNrmArr[]=$attrObj[1]->getId();
+        }
         $this->obj = $obj;
         $this->mainObj = $main;
     }
@@ -47,14 +56,9 @@ class Handle
     private function initObj()
     {
         $this->obj=null;
-        $this->startHome = false;
         $obj = null;
-        $fobj = null;
-
-        if ($this->request->isRootPath()) {
-            $this->obj = $this->home->getObj();
-            $this->startHome = true;
-            return $this->obj;
+        if ($this->request->isRoot()) {
+            return;
         }
         $this->pathNrmArr=[];
         $pathArr= $this->request->pathArr();
@@ -64,64 +68,37 @@ class Handle
             $id  = $pathArr[$i+1];
             if (is_null($obj)) {
                 $obj = new Model($mod, $id);
-                if ($this->home->isLinked($obj)) {
-                    $this->startHome = true;
-                }
             } else {
                 $obj = $obj->getCref($mod, $id);
             }
             $this->pathNrmArr[]=$obj->getModName();
             $this->pathNrmArr[]=$obj->getId();
+            $this->attrObjs[]=[$mod,$obj];
         }
         if ($this->request->isClassPath()) {
             $c = count($pathArr);
             $mod =  $pathArr[$c-1];
             if ($c == 1) {
                 $obj = new Model($mod);
-                if ($this->home->canLink($obj)) {
-                    $this->startHome = true;
-                }
             } else {
                 $obj = $obj->newCref($mod);
             }
             $this->pathNrmArr[]=$obj->getModName();
+            $this->attrObjs[]=[$mod,$obj];
         }
-        $this->home->hlink($obj);
         $this->obj =$obj;
+        $res = $this->sessionHdl->checkARight($this->request, $this->attrObjs);
+        if (!$res) {
+            throw new Exception(E_ERC053);
+        }
     }
  
-    protected function checkActionObj($action)
-    {
-        if (! $this->isMain()) {
-            return false;
-        }
-        if ($this->home->isRoot()) {
-            return true;
-        }
-        if ($this->startHome) {
-            switch ($action) {
-                case V_S_READ:
-                    return true;
-                case V_S_CREA:
-                case V_S_SLCT:
-                    if (count($this->request->pathArr()) == 1) {
-                        return $this->home->canLink($this->obj);
-                    }
-                    return true;
-                case V_S_UPDT:
-                case V_S_DELT:
-                    return ($this->home->isLinked($this->obj));
-            }
-        }
-        return false;
-    }
-
     public function nullObj()
     {
         return (is_null($this->obj));
     }
     
-    protected function isMain()
+    public function isMain()
     {
         return (is_null($this->mainObj));
     }
@@ -143,174 +120,124 @@ class Handle
         $main = $this->getMain();
         $cid =  $main->getId();
         $cmod = $main->getModName();
-        if ($cid == $rid and $cmod == $rmod and $rid!= 0) {
+        if ($cid === $rid and $cmod === $rmod and $rid!= 0) {
             return true;
         }
         $cmod = $main->getAbstrNme();
-        if ($cid == $rid and $cmod == $rmod and $rid!= 0) {
+        if ($cid === $rid and $cmod === $rmod and $rid!= 0) {
             return true;
         }
         return false;
     }
 
-// Autorize Actions
+// Autorize Actions on object
 
     public function getActionPath($action)
     {
-        if (! $this->isAllowed($action)) {
+        // for object menu
+        $req = $this->request->getActionReq($action);
+        $res = $this->sessionHdl->checkARight($req, $this->attrObjs);
+        if (!$res) {
             return null;
         }
-        $path = $this->request->getActionPath($action);
-        if (is_null($path)) {
-            return null;
-        }
-        $path = $this->request->joinPathAction($path, $action);
-        return $path;
-    }
-
-    protected function isAllowed($action)
-    {
-        if (! $this->checkActionObj($action)) {
-            return false;
-        }
-        if ($this->home->isRoot() and $this->request->isRootPath()) {
-            return false;
-        }
-//      if ($action == V_S_DELT) {
-//          return $this->obj->isDel();
-//      }
-        return true;
-    }
-    
-    public function getClassPath($mod, $action)
-    {
-        if (! $this->isAllowedMod($mod, $action)) {
-            return null;
-        }
-        $path = $this->request->getClassPath($mod, $action);
-        return $path;
-    }
-    
-    
-    protected function isAllowedMod($mod, $action)
-    {
-        if (! $this->isMain()) {
-            return false;
-        }
-        $x = new Model($mod);
-        return $this->home->canLink($x);
-    }
-        
-
-    public function getCrefPath($attr, $action)
-    {
-        if (! $this->isAllowedCref($attr, $action)) {
-            return null;
-        }
-        $path = $this->request->getCrefPath($attr, $action);
-        return $path;
-    }
-        
-    protected function isAllowedCref($attr, $action)
-    {
-        if (! $this->isMain()) {
-            return false;
-        }
-        if ($this->request->getAction() != V_S_READ) {
-            return false;
-        }
-        if (! $this->checkActionObj(V_S_UPDT)) {
-            return false;
-        }
-        return true;
+        return $req->getUrl();
     }
    
-// from req
-
-    public function getReq()
+    public function getClassPath($mod, $action)
     {
-        return $this->getMain()->request;
-    }
-
-    public function getPath()
-    {
-        if (is_null($this->request)) {
+        // for "top"  menu
+        $req = $this->request->getModReq($mod, $action);
+        $res = $this->sessionHdl->checkReq($req);
+        if (!$res) {
             return null;
         }
-        return $this->request->getPath();
-    }
-    
-    public function getRPath()
-    {
-        if (is_null($this->request)) {
+        $x = new Model($mod);
+        $res = $this->sessionHdl->checkARight($req, [[$mod,$x]]);
+        if (!$res) {
             return null;
         }
-        return $this->request->getRPath();
+        return $req->getUrl();
     }
-
+      
+    public function getCrefPath($attr, $action)
+    {
+        // for Cref menu
+        $req= $this->request->getCrefReq($attr, $action);
+        if (is_null($req)) {
+            return null;
+        }
+        $res = $this->sessionHdl->checkARight($req, $this->attrObjs);
+        if (!$res) {
+            return null;
+        }
+        return $req->getUrl();
+    }
+   
 // Handle
- // in selection list
+
+    protected function newHdl($req, $sessionHdl, $objs, $obj, $robj)
+    {
+        $res = $this->sessionHdl->checkARight($req, $objs);
+        if (!$res) {
+            return null;
+        }
+        $h= new Handle($req, $this->sessionHdl, $objs, $obj, $this);
+        return $h;
+    }
+
     public function getObjId($id)
     {
-        $obj = new Model($this->obj->getModName(), (int) $id);
-        $path = $this->getRPath().'/'.$id;
-        $req = new Request($path, V_S_READ);
-        $h= new Handle($req, $this->home, $obj, $this);
-        return $h;
+         // in selection list
+        $req = $this->request->getObjReq($id, V_S_READ);
+        $res = $this->sessionHdl->checkReq($req);
+        if (!$res) {
+            return null;
+        }
+        $mod=$this->obj->getModName();
+        $obj = new Model($mod, (int) $id);
+        $objs= $this->attrObjs;
+        $lobjs= array_pop($objs);
+        $objs[] = [$lobjs[0],$obj];
+        return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
     }
-  // in cref list
+    
     public function getCref($attr, $id)
     {
-        $obj = $this->obj->getCref($attr, (int) $id);
-        $path = $this->getRPath().'/'.$attr.'/'.$id;
-        if ($this->request->isRootPath()) {
-            $path = '/'.$attr.'/'.$id;
+         // in cref list
+        $req = $this->request->getCrefReq($attr, V_S_READ, $id);
+        $res = $this->sessionHdl->checkReq($req);
+        if (!$res) {
+            return null;
         }
-        $req = new Request($path, V_S_READ);
-        $h= new Handle($req, $this->home, $obj, $this);
-        return $h;
+        $obj = $this->obj->getCref($attr, (int) $id);
+        $objs = $this->attrObjs;
+        $objs[]=[$attr,$obj];
+        return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
     }
 
     public function getCode($attr, $id)
     {
         $obj = $this->obj->getCode($attr, $id);
-        $path = $this->getRefPath($obj);
-        if (is_null($path)) {
-            $req=null;
-        } else {
-            $req= new Request($path, V_S_READ);
-        }
-        $h= new Handle($req, $this->home, $obj, $this);
-        return $h;
+        return $this->getRefHdl($obj);
     }
     
     public function getRef($attr)
     {
         $obj = $this->obj->getRef($attr);
+        return $this->getRefHdl($obj);
+    }
+    
+    protected function getRefHdl($obj)
+    {
         if (is_null($obj)) {
             return null;
         }
-        $path = $this->getRefPath($obj);
-        if (is_null($path)) {
-            $req=null;
-        } else {
-            $req= new Request($path, V_S_READ);
-        }
-        $h= new Handle($req, $this->home, $obj, $this);
-        return $h;
-    }
-    
-    protected function getRefPath($obj)
-    {
-        if (!is_null($this->mainObj)) {
-            return ($this->mainObj->getRefPath($obj));
-        }
-        
+
         $mod= $obj->getModName();
         $id = $obj->getId();
-        $path='/'.$mod.'/'.$id;
         $resN = $this->pathNrmArr;
         $res  = $this->request->pathArr();
+        $objs = $this->attrObjs;
         $c = count($res);
         $found = false;
         while ((count($res) > 1) and (! $found)) {
@@ -321,20 +248,17 @@ class Handle
             } else {
                 array_pop($res);
                 array_pop($res);
+                array_pop($objs);
             }
         }
         if ($found) {
             $path = '/'.implode('/', $res);
-            return $path;
+            $req = new Request($path, V_S_READ);
+        } else {
+            $req = $this->request->getModReq($mod, V_S_READ, $id);
+            $objs[]=[$mod,$obj];
         }
-        // to be reviewed
-        if ($this->home->isRoot()) {
-            return $path;
-        }
-        if ($this->home->isLinked($obj)) {
-            return $path;
-        }
-        return null;
+        return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
     }
      
 // obj  : access should be controlled here 
@@ -416,12 +340,19 @@ class Handle
 
     public function setVal($attr, $val)
     {
+        // check action
         return $this->obj->setVal($attr, $val);
     }
 
     public function save()
     {
-        return $this->obj->save();
+        $pid = $this->obj->getId();
+        $id = $this->obj->save();
+        // check action and popid ? shoudl check access rights
+        if (($id) and $pid != $id) {
+            $this->request->pushId($id);
+        }
+        return $id;
     }
 
     public function setCriteria($attrL, $opL, $valL)
@@ -436,6 +367,7 @@ class Handle
     
     public function delet()
     {
+        // check action
         $res = $this->obj->delet();
         return $res;
     }
@@ -448,5 +380,28 @@ class Handle
     public function getErrLog()
     {
         return $this->obj->getErrLog();
+    }
+
+// from req
+
+    public function getReq()
+    {
+        return $this->getMain()->request;
+    }
+
+
+    public function getPath()
+    {
+        return $this->request->getPath();
+    }
+ 
+    public function getUrl()
+    {
+        return $this->request->getUrl();
+    }
+
+    public function getRPath()
+    {
+        return $this->request->getRPath();
     }
 }

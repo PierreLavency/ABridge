@@ -128,6 +128,16 @@ function checkType($x, $type)
     }
 }
 
+function checkIdentifier($name)
+{
+    $res = preg_match("#^[a-zA-Z_][a-zA-Z0-9_]*$#", $name);
+    if ($res == 1) {
+        return true;
+    }
+    return false;
+}
+
+
 function convertSqlType($typ)
 {
     $type = baseType($typ);

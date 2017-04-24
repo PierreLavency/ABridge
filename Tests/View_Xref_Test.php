@@ -2,6 +2,7 @@
 	
 require_once('Logger.php');
 require_once('View_case_Xref.php');
+require_once 'SessionHdl.php';
 
 class View_Xref_Test extends PHPUnit_Framework_TestCase {
 
@@ -23,7 +24,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase {
 		$p = $test[0][1];
 		$s = $test[0][2];	
 		self::$db->beginTrans();
-		$home= new Home('/');
+		$home= new SessionHdl();
 		$request = new Request($p,V_S_READ);
 		$handle = new Handle($request, $home);	
 		$v = new View($handle);	
@@ -46,7 +47,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase {
 
 	self::$db->beginTrans();
 	
-	$home= new Home('/');
+	$home= new SessionHdl();
 	$request = new Request($p,V_S_READ);
 	$handle = new Handle($request, $home);	
 	$v = new View($handle);	

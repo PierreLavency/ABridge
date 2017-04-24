@@ -9,10 +9,10 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
 	protected static $db2;
 
 
-	protected $Application='Application';		
-	protected $Component='Component';		
-	protected $ABB='ABB';
-	protected $Exchange='Exchange';
+	protected $Application;		
+	protected $Component;		
+	protected $ABB;
+	protected $Exchange;
 	protected $db;
 	protected $napp=2;
 	protected $ncomp=5;
@@ -24,10 +24,10 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
 		resetHandlers();
 		$typ='dataBase';
 		$name='atest';	
-		$Application='Application';		
-		$Component='Component';		
-		$ABB='ABB';
-		$Exchange='Exchange';
+		$Application=get_called_class().'_1';	
+		$Component=get_called_class().'_2';		
+		$ABB=get_called_class().'_3';
+		$Exchange=get_called_class().'_4';
 		
 		self::$db1=getBaseHandler ($typ, $name);
 		initStateHandler ($Application		,$typ, $name);
@@ -37,10 +37,10 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
 		
 		$typ='fileBase';
 		$name=$name.'_f';
-		$Application='Applicationf';		
-		$Component='Componentf';		
-		$ABB='ABBf';
-		$Exchange='Exchangef';		
+		$Application=get_called_class().'_f_1';		
+		$Component=get_called_class().'_f_2';		
+		$ABB=get_called_class().'_f_3';
+		$Exchange=get_called_class().'_f_4';		
 		self::$db2=getBaseHandler ($typ, $name);
 		initStateHandler ($Application		,$typ, $name);
 		initStateHandler ($Component	,$typ, $name);
@@ -53,17 +53,17 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
 	{
 		if ($typ== 'SQL') {
 			$this->db=self::$db1;
-			$this->ABB='ABB';
-			$this->Application='Application';
-			$this->Component='Component';
-			$this->Exchange='Exchange';			
+			$this->ABB=get_called_class().'_3';
+			$this->Application=get_called_class().'_1';
+			$this->Component=get_called_class().'_2';
+			$this->Exchange=get_called_class().'_4';			
 			} 
 		else {
 			$this->db=self::$db2;
-			$this->ABB='ABBf';
-			$this->Application='Applicationf';
-			$this->Component='Componentf';
-			$this->Exchange='Exchangef';					
+			$this->ABB=get_called_class().'_f_3';
+			$this->Application=get_called_class().'_f_1';
+			$this->Component=get_called_class().'_f_2';
+			$this->Exchange=get_called_class().'_f_4';					
 			}
 
 	}

@@ -1,6 +1,5 @@
 
 <?php
-
 require_once 'CstError.php';
 require_once 'CstMode.php';
 
@@ -10,13 +9,13 @@ class Request
  
     protected static $docRoot='/ABridge.php';
     protected $path=null;
-    protected $rolePath = null;
+    protected $modPath = null;
     protected $pathArr;
     protected $objN;
     protected $length;
     protected $isClassPath=false;
     protected $isObjPath=false;
-    protected $isRootPath=false;
+    protected $isRoot=false;
     protected $action=null;
     protected $method=null;
     protected $getp=null;
@@ -73,12 +72,12 @@ class Request
         }
         array_shift($pathArr);
         if ($pathArr[0] == "") { // '/' alones
-            $this->isRootPath=true;
-            $this->rolePath='/';
+            $this->isRoot=true;
+            $this->modPath='|';
             return;
         }
-        $this->rolePath="";
-        $this->isRootPath=false;
+        $this->modPath="";
+        $this->isRoot=false;
         $c = count($pathArr);
         $r = $c%2;
         $obj = null;
@@ -87,7 +86,7 @@ class Request
         $this->isClassPath = $r;
         $this->objN = $c-$r;
         for ($i=0; $i < $this->objN; $i=$i+2) {
-            if (! ctype_alnum($pathArr[$i])) {
+            if (! checkIdentifier($pathArr[$i])) {
                 throw new Exception(E_ERC036.':'.$pathStrg.':'.$i);
             }
             if (! ctype_digit($pathArr[$i+1])) {
@@ -95,16 +94,16 @@ class Request
                 throw new Exception(E_ERC036.':'.$pathStrg.':'.$j);
             }
             $this->pathArr[]=$pathArr[$i];
-            $this->rolePath=$this->rolePath.'/'.$pathArr[$i];
+            $this->modPath=$this->modPath.'|'.$pathArr[$i];
             $this->pathArr[]=(int) $pathArr[$i+1];
         }
         if ($this->isClassPath) {
-            if (! ctype_alnum($pathArr[$c-1])) {
+            if (! checkIdentifier($pathArr[$c-1])) {
                 $j = $c-1;
                 throw new Exception(E_ERC036.':'.$pathStrg.':'.$j);
             }
             $this->pathArr[$c-1]=$pathArr[$c-1];
-            $this->rolePath=$this->rolePath.'/'.$pathArr[$c-1];
+            $this->modPath=$this->modPath.'|'.$pathArr[$c-1];
         }
     }
 
@@ -113,34 +112,41 @@ class Request
         return $this->method;
     }
     
+    public function getModPath()
+    {
+        $path = $this->modPath;
+        return $path;
+    }
+    
+    public function getUrl()
+    {
+        $url= self::$docRoot.$this->path;
+        $action =$this->getAction();
+        if ($action != V_S_READ) {
+            $url=$url.'?Action='.$action;
+        }
+        return $url;
+    }
+
     public function getDocRoot()
     {
         return self::$docRoot;
     }
     
-    public function prfxPath($path)
+    public function getRootUrl()
     {
-        
-        return self::$docRoot.$path;
-    }
-
-    public function joinPathAction($path, $action)
-    {
-        if ($action == V_S_READ) {
-            return $path;
-        }
-        return $path.'?Action='.$action;
-    }
-    
-    public function getRootPath()
-    {
-        $path = $this->prfxPath('/');
+        $path = $this->getDocRoot().'/';
         return $path;
     }
-    
+
+    public function isRoot()
+    {
+        return ($this->isRoot);
+    }
+// deprecated use Url.
     public function getPath()
     {
-        $path = $this->prfxPath($this->path);
+        $path = $this->getDocRoot().$this->path;
         return $path;
     }
 
@@ -154,20 +160,14 @@ class Request
         return $this->pathArr;
     }
 
-
     public function objN()
     {
         return $this->objN;
     }
-    
-    public function isRootPath()
-    {
-        return ($this->isRootPath);
-    }
-    
+       
     public function isClassPath()
     {
-        if ($this->isRootPath) {
+        if ($this->isRoot) {
             return false;
         }
         if ($this->isClassPath) {
@@ -178,7 +178,7 @@ class Request
  
     public function isObjPath()
     {
-        if ($this->isRootPath) {
+        if ($this->isRoot) {
             return false;
         }
         if ($this->isClassPath) {
@@ -190,40 +190,6 @@ class Request
     protected function arrToPath($parr)
     {
         $path = '/'.implode('/', $parr);
-        return $path;
-    }
- 
-    public function objPath()
-    {
-        if ($this->isRootPath()) {
-            throw new Exception(E_ERC038);
-        }
-        if ($this->isObjPath()) {
-            $path = $this->getPath();
-            return $path;
-        }
-        $res = $this->pathArr;
-        array_pop($res);
-        if (count($res)==0) {
-            return $this->prfxPath('/');
-        }
-        $path = $this->arrToPath($res);
-        $path = $this->prfxPath($path);
-        return $path;
-    }
-    
-    public function classPath()
-    {
-        if ($this->isRootPath()) {
-            throw new Exception(E_ERC038);
-        }
-        if ($this->isClassPath()) {
-            return $this->getPath();
-        }
-        $res = $this->pathArr;
-        array_pop($res);
-        $path = $this->arrToPath($res);
-        $path = $this->prfxPath($path);
         return $path;
     }
         
@@ -333,60 +299,80 @@ class Request
                 return true;
             }
         }
-        if ($this->isRootPath()) {
-            if ($action == V_S_READ or $action == V_S_UPDT) {
+        if ($this->isRoot()) {
+            if ($action == V_S_READ) {
                 return true;
             }
         }
         throw new Exception(E_ERC048.':'.$action.':'.$this->getPath());
     }
-    
-    public function getActionPath($action)
+
+    public function getActionReq($action)
     {
-        if ($this->isRootPath()) {
+        if ($this->isRoot()) {
             if ($action == V_S_READ) {
-                return $this->getPath();
+                return new request($this->getRPath(), $action);
             }
-            if ($action == V_S_UPDT) {
-                $path = $this->joinPathAction($this->getPath(), $action);
-                return $this->getPath();
-            }
+            return null;
         }
         if ($this->isObjPath()) {
             if ($action == V_S_READ) {
-                return $this->getPath();
+                return new request($this->getRPath(), $action);
             }
             if ($action == V_S_UPDT or $action == V_S_DELT) {
-                $path = $this->joinPathAction($this->getPath(), $action);
-                return $this->getPath();
+                return new request($this->getRPath(), $action);
             }
             if ($action == V_S_SLCT or $action == V_S_CREA) {
-                $path = $this->joinPathAction($this->classPath(), $action);
-                return $this->classPath();
+                $res = $this->pathArr;
+                array_pop($res);
+                $path = $this->arrToPath($res);
+                return new request($path, $action);
             }
         }
         if ($this->isClassPath()) {
             if ($action == V_S_READ) {
-                return $this->objPath();
+                $res = $this->pathArr;
+                array_pop($res);
+                if (count($res)==0) {
+                    $path= '/';
+                } else {
+                    $path = $this->arrToPath($res);
+                }
+                return new request($path, $action);
             }
             if ($action == V_S_SLCT or $action == V_S_CREA) {
-                $path = $this->joinPathAction($this->getPath(), $action);
-                return $this->getPath();
+                return new request($this->getRPath(), $action);
             }
         }
         return null;
     }
     
-    public function getClassPath($mod, $action)
+    public function getModReq($mod, $action, $id = 0)
     {
-        $path=$this->joinPathAction($this->prfxPath('/'.$mod), $action);
-        return $path;
+        // for object creation from menu (should use  "path"  ?)
+        $path='/'.$mod;
+        if ($id) {
+            $path = $path.'/'.$id;
+        }
+        $req = new Request($path, $action);
+        return $req;
     }
    
-    public function getCrefPath($attr, $action)
+    public function getObjReq($id, $action)
     {
-        $path = $this->getPath().'/'.$attr;
-        $path= $this->joinPathAction($path, $action);
-        return $path;
+        // for object selection in list
+        $req = new Request($this->getRPath().'/'.$id, $action);
+        return $req;
+    }
+       
+    public function getCrefReq($attr, $action, $id = 0)
+    {
+        // for selection/creqtion of Cref
+        $path=$this->getRPath().'/'.$attr;
+        if ($id) {
+            $path = $path.'/'.$id;
+        }
+        $req = new Request($path, $action);
+        return $req;
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 require_once("Model.php"); 
 require_once("Controler.php"); 
 
@@ -8,8 +7,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 {
     
     protected $config =  [
-	'Handlers' => ['tclass'=>['dataBase','test'],],
-	'Home'=>['tclass']
+	'Handlers' => ['Controler_Test_1'=>['dataBase','test'],],
+	'Home'=>['Controler_Test_1']
 	];
     protected $show = false;
 	protected $path;
@@ -19,16 +18,16 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $ctrl = new Controler($this->config,['name'=>'UnitTest']);
         
-        $x=new Model('tclass');
+        $x=new Model('Controler_Test_1');
         $x->deleteMod();
-        $x=new Model('tclass');
+        $x=new Model('Controler_Test_1');
         $x->addAttr('Name',M_INT);
-        $x->addAttr('Ref',M_REF,'/tclass');
-        $x->addAttr('Cref',M_CREF,'/tclass/Ref');
+        $x->addAttr('Ref',M_REF,'/Controler_Test_1');
+        $x->addAttr('Cref',M_CREF,'/Controler_Test_1/Ref');
         
         $x->saveMod();
         
-        $this->path='/tclass';
+        $this->path='/Controler_Test_1';
 
         $_SERVER['REQUEST_METHOD']='GET';   
         $_SERVER['PATH_INFO']=$this->path;
@@ -46,7 +45,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $res = $ctrl->run($this->show,0);
 
         $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
-        $this->assertNotNull($x=new Model('tclass',1));
+        $this->assertNotNull($x=new Model('Controler_Test_1',1));
         $this->assertEquals($x->getVal('Name'),1);
         
 		$x=$this->path.'/1';
@@ -60,7 +59,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($resc.'/1',$reso);
 
 		
-		$fpath = '/tclass/1/Cref';
+		$fpath = '/Controler_Test_1/1/Cref';
 		
         $_SERVER['REQUEST_METHOD']='GET';   
         $_SERVER['PATH_INFO']=$fpath;
@@ -77,7 +76,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $res = $ctrl->run($this->show,0);
         
         $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
-        $this->assertNotNull($x=new Model('tclass',2));
+        $this->assertNotNull($x=new Model('Controler_Test_1',2));
         $this->assertEquals($x->getVal('Name'),1);
         
         $fpath = $fpath.'/2';
@@ -101,7 +100,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $res = $ctrl->run($this->show,0);
 
         $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
-        $this->assertNotNull($x=new Model('tclass',2));
+        $this->assertNotNull($x=new Model('Controler_Test_1',2));
         $this->assertEquals($x->getVal('Name'),2);
         
         $_SERVER['REQUEST_METHOD']='GET';
@@ -135,10 +134,10 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $res = $ctrl->run($this->show,2);
         $this->expectOutputString(
-"<br>LINE:0<br>SELECT * FROM tclass where id= 1<br>LINE:1<br> **************  <br>LINE:2<br>SELECT id FROM tclass where Ref= '1'<br><br>"   
+"<br>LINE:0<br>SELECT * FROM Controler_Test_1 where id= 1<br>LINE:1<br> **************  <br>LINE:2<br>SELECT id FROM Controler_Test_1 where Ref= '1'<br><br>"   
         );
         $ctrl = new Controler($this->config, ['name'=>'UnitTest']);       
-        $this->assertNotNull($x=new Model('tclass',1));
+        $this->assertNotNull($x=new Model('Controler_Test_1',1));
         $this->assertEquals($x->getVal('Name'),1);
         
         

@@ -11,7 +11,7 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 		$_SERVER['REQUEST_METHOD']='GET';
 		$r=new Request();
 		$this->assertnotNull($r);
-		$this->assertEquals($r->getRootPath(),$r->getPath());
+		$this->assertEquals($r->getRootUrl(),$r->getPath());
 	}
 	
 
@@ -19,7 +19,7 @@ class Request_Test extends PHPUnit_Framework_TestCase {
      * @dataProvider Provider1
      */
  
-	public function testRequest($a, $b, $c, $e1,$e2,$e3,$e4)
+	public function testRequest($a, $b, $c, $e1,$e2,$e3,$e4,$e5,$e6,$e7)
     {
 		$_SERVER['PATH_INFO']=$a;
 		$_SERVER['REQUEST_METHOD']=$b;
@@ -32,35 +32,33 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 		}
 		
 		$r=new Request();
-        $this->assertnotNull($r);
+		$this->assertEquals($a,$r->getRPath());
+		$this->assertEquals($b,$r->getMethod());
 		$this->assertEquals($e1,$r->getAction());
-		$this->assertEquals($e2,$r->isRootPath());
+		$this->assertEquals($e2,$r->isRoot());
 		$this->assertEquals($e3,$r->isClassPath());		
 		$this->assertEquals($e4,$r->isObjPath());
-		
+		$this->assertEquals($e5,$r->ObjN());
+		$this->assertEquals($e6,count($r->pathArr()));
+		$this->assertEquals($e7,$r->getModPath());	
 	}
  
     public function Provider1() {
         return [
-			['/', 	    'GET',null,		V_S_READ,true,false,false],
-			['/X', 	    'GET',null,		V_S_SLCT,false,true,false],
-			['/X/1', 	'GET',null,		V_S_READ,false,false,true],
-            ['/X/1/X', 	'GET',null,		V_S_SLCT,false,true,false],
-            ['/X/1/X/1','GET',null,		V_S_READ,false,false,true],
-			
-			['/', 	    'GET',V_S_UPDT,	V_S_UPDT,true,false,false],
-			['/X', 	    'GET',V_S_CREA,	V_S_CREA,false,true,false],
-			['/X/1', 	'GET',V_S_UPDT,	V_S_UPDT,false,false,true],
-            ['/X/1/X', 	'GET',V_S_SLCT,	V_S_SLCT,false,true,false],
-            ['/X/1/X/1','GET',V_S_DELT,	V_S_DELT,false,false,true],
-			
-			['/X', 	    'POST',null,	V_S_CREA,false,true,false],
-			
-			['/', 	    'POST',V_S_UPDT,V_S_UPDT,true,false,false],
-			['/X', 	    'POST',V_S_CREA,V_S_CREA,false,true,false],
-			['/X/1', 	'POST',V_S_UPDT,V_S_UPDT,false,false,true],
-            ['/X/1/X', 	'POST',V_S_SLCT,V_S_SLCT,false,true,false],
-            ['/X/1/X/1','POST',V_S_DELT,V_S_DELT,false,false,true],
+			['/', 	    'GET',null,		V_S_READ,true,false,false,0,0,'|'],
+			['/X', 	    'GET',null,		V_S_SLCT,false,true,false,0,1,'|X'],
+			['/X/1', 	'GET',null,		V_S_READ,false,false,true,2,2,'|X'],
+            ['/X/1/Y', 	'GET',null,		V_S_SLCT,false,true,false,2,3,'|X|Y'],
+            ['/X/1/X/1','GET',null,		V_S_READ,false,false,true,4,4,'|X|X'],
+			['/X', 	    'GET',V_S_CREA,	V_S_CREA,false,true,false,0,1,'|X'],
+			['/X/1', 	'GET',V_S_UPDT,	V_S_UPDT,false,false,true,2,2,'|X'],
+            ['/X/1/X', 	'GET',V_S_SLCT,	V_S_SLCT,false,true,false,2,3,'|X|X'],
+            ['/X/1/X/1','GET',V_S_DELT,	V_S_DELT,false,false,true,4,4,'|X|X'],	
+			['/X', 	    'POST',null,	V_S_CREA,false,true,false,0,1,'|X'],
+			['/X', 	    'POST',V_S_CREA,V_S_CREA,false,true,false,0,1,'|X'],
+			['/X/1', 	'POST',V_S_UPDT,V_S_UPDT,false,false,true,2,2,'|X'],
+            ['/X/1/X', 	'POST',V_S_SLCT,V_S_SLCT,false,true,false,2,3,'|X|X'],
+            ['/X/1/X/1','POST',V_S_DELT,V_S_DELT,false,false,true,4,4,'|X|X'],
 	
  			];
     }
@@ -68,7 +66,7 @@ class Request_Test extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider Provider2
      */
- 	public function testGetAction($a, $b, $c, $d,$e1)
+ 	public function testGetAction($a, $b, $c, $e0, $d,$e1)
     {
 		$_SERVER['PATH_INFO']=$a;
 		$_SERVER['REQUEST_METHOD']=$b;
@@ -80,70 +78,63 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 			$_POST['Action']=$c;
 		}
 		
-		$r=new Request();
-        $this->assertnotNull($r);
+		$r1=new Request();		
+		$this->assertEquals($r1->getAction(),$e0);
+		
 		if (!is_null($e1)) {
-			if ($d == V_S_READ) {
-				$e= $r->prfxPath($e1);
-			} else {
-				$e= $r->prfxPath($e1);
-			}
+			$e= $r1->getDocRoot().$e1;
 		} else {
 			$e=null;
 		}
-		$res = $r->getActionPath($d);
-		if (! is_null($res)) {
-			$res = $r->joinPathAction($res,$d);
+		$req1 = $r1->getActionReq($d);
+		$res = null;
+		if (! is_null($req1)) {
+			$res = $req1->getUrl();
+		}
+		$this->assertEquals($e,$res);
+		
+		$r2=new Request($a,$e0);
+		$req2 = $r2->getActionReq($d);		
+		$res = null;
+		if (! is_null($req2)) {
+			$res = $req2->getUrl();
 		}
 		$this->assertEquals($e,$res);
 	}
 	
 	public function Provider2() {
         return [
-			['/', 	    'GET',null,		V_S_READ,'/'],
-			['/', 	    'GET',null,		V_S_UPDT,'/?Action='.V_S_UPDT],
-			['/X', 	    'GET',null,		V_S_SLCT,'/X?Action='.V_S_SLCT],
-			['/X', 	    'GET',null,		V_S_READ,'/'],			
-			['/X/1', 	'GET',null,		V_S_READ,'/X/1'],
-			['/X/1', 	'GET',null,		V_S_SLCT,'/X?Action='.V_S_SLCT],
-            ['/X/1/X', 	'GET',null,		V_S_CREA,'/X/1/X?Action='.V_S_CREA],
-	        ['/X/1/X', 	'GET',null,		V_S_READ,'/X/1'],
-	        ['/X/1/X', 	'GET',null,		V_S_UPDT,null],
-		    ['/', 		'GET',null,		V_S_DELT,null],		
-			['/X/1', 	'GET',null,		'X',null],			
-            ['/X/1/X/1','GET',null,		V_S_DELT,'/X/1/X/1?Action='.V_S_DELT],
+			['/', 	    'GET',null,V_S_READ,		V_S_READ,'/'],
+			['/X', 	    'GET',null,V_S_SLCT,		V_S_SLCT,'/X?Action='.V_S_SLCT],
+			['/X', 	    'GET',null,V_S_SLCT,		V_S_READ,'/'],			
+			['/X/1', 	'GET',null,V_S_READ,		V_S_READ,'/X/1'],
+			['/X/1', 	'GET',null,V_S_READ,		V_S_SLCT,'/X?Action='.V_S_SLCT],
+            ['/X/1/X', 	'GET',null,V_S_SLCT,		V_S_CREA,'/X/1/X?Action='.V_S_CREA],
+	        ['/X/1/X', 	'GET',null,V_S_SLCT,		V_S_READ,'/X/1'],
+	        ['/X/1/X', 	'GET',null,V_S_SLCT,		V_S_UPDT,null],
+		    ['/', 		'GET',null,V_S_READ,		V_S_DELT,null],		
+			['/X/1', 	'GET',null,V_S_READ,		'X'		,null],			
+            ['/X/1/X/1','GET',null,V_S_READ,		V_S_DELT,'/X/1/X/1?Action='.V_S_DELT],
  			];
     }
 
-
- 
 	public function testMethods() 
 	{
-			$r=new Request('/X/1/X',V_S_CREA);
-			$this->assertnotNull($r);
-			$this->assertEquals($r->prfxPath('/X/1/X'),$r->classPath());
-			
-			$this->assertEquals($r->objN(),2);
-			$this->assertEquals(count($r->pathArr()),3);
-			$res = $r->getClassPath('X',V_S_CREA);
-			$this->assertEquals($res,$r->prfxPath('/X?Action='.V_S_CREA));
+	
+			$p1 = new Request('/X',V_S_CREA);
+			$this->assertNotNull($p1);
+		
+			try {$x=$p1->popObj();} catch (Exception $e) {$r= $e->getMessage();}
+			$this->assertEquals($r, E_ERC035);		
 
+			$p1 = new Request('/X/1',V_S_READ);
+			$this->assertNotNull($p1);	
 			
-			$r=new Request('/X/1/X/1',V_S_READ);
-			$this->assertnotNull($r);
-			
-			$res = $r->getCrefPath('X',V_S_CREA);
-			$this->assertEquals($res,$r->prfxPath('/X/1/X/1/X?Action='.V_S_CREA));
-			
-			$p = $r->popObj();
-			$this->assertEquals('/X/1',$p);
-			
-			$r=new Request('/X/1',V_S_READ);
-			$this->assertnotNull($r);
-			$p = $r->popObj();
-			$this->assertEquals('/',$p);
-			
-			$this->assertEquals($r->prfxPath('/X/1'),$r->objPath());
+			$p1->setAction(V_S_UPDT);
+			$this->assertEquals(V_S_UPDT,$p1->getAction());
+		
+			try {$x=$p1->pushId(1);} catch (Exception $e) {$r= $e->getMessage();}
+			$this->assertEquals($r, E_ERC037);
 			
 			$_SERVER['PATH_INFO']='/X/1';
 			$_SERVER['REQUEST_METHOD']='GET';
@@ -153,76 +144,109 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 			$r=new Request();
 			$this->assertnotNull($r);
 			$this->assertEquals('/API.php',$r->getDocRoot());
-			$this->assertEquals('/API.php/',$r->getRootPath());
+			$this->assertEquals('/API.php/',$r->getRootUrl());
 			$this->assertEquals('X',$r->getPrm('Name'));
+						
+			unset($_GET['Name']);
+			$_SERVER['PATH_INFO']='/X/1';
+			$_SERVER['REQUEST_METHOD']='POST';
+			$_SERVER['PHP_SELF']='/ABridge.php';
+			$_POST['Name']='X';	
+			
+			try {$x=new Request();} catch (Exception $e) {$r= $e->getMessage();}
+			$this->assertEquals($r, E_ERC048);
+			
+			$_SERVER['PATH_INFO']='/X';
+			$r=new Request();
+			$this->assertEquals('X',$r->getPrm('Name'));
+			$this->assertNull($r->getPrm('XX'));
+			
 	}
+
 	
 	public function testPathErr() 
-	{
-
-
-		$_SERVER['PATH_INFO']='/X/1';
-		$_SERVER['REQUEST_METHOD']='POST';
-		$_SERVER['PHP_SELF']='/ABridge.php';
+	{				
+		$tc = [
+			['1',		V_S_READ,	E_ERC036.':1'],
+			['/*/1',	V_S_READ,	E_ERC036.':/*/1:0'],
+			['/a/$',	V_S_READ,	E_ERC036.':/a/$:1'],
+			['/a/1/$',	V_S_READ,	E_ERC036.':/a/1/$:2'],
+			['/X',		V_S_READ,	E_ERC048.':'.V_S_READ.':/ABridge.php'.'/X'],
+			['/X/1',	V_S_SLCT,	E_ERC048.':'.V_S_SLCT.':/ABridge.php'.'/X/1'],
+			['/',		V_S_SLCT,	E_ERC048.':'.V_S_SLCT.':/ABridge.php'.'/'],
 			
-		try {$x=new Request();} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC048);
-				
-		$r=new Request('/',V_S_READ);
-		$this->assertnotNull($r);
-
-		try {$r->objPath();} catch (Exception $e) {$x= $e->getMessage();}
-		$this->assertEquals($x, E_ERC038);
-
-		try {$r->classPath();} catch (Exception $e) {$x= $e->getMessage();}
-		$this->assertEquals($x, E_ERC038);
-		
-		$pathStrg=1;
-		try {$x=new Request($pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC036.':'.$pathStrg);
-				
-		$pathStrg='/$/1';
-		try {$x=new Request($pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC036.':'.$pathStrg.':0');
-
-		$pathStrg='/a/$';
-		try {$x=new Request($pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC036.':'.$pathStrg.':1');
-
-		$pathStrg='/a/1/$';
-		try {$x=new Request($pathStrg,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC036.':'.$pathStrg.':2');
-		
-		$path='/X';
-		
-		try {$x=new Request($path,V_S_READ);} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC048.':'.V_S_READ.':/ABridge.php'.$path);
-		
-		
-		$p1 = new Request($path,V_S_CREA);
-		$this->assertNotNull($p1);
-		
-		try {$x=$p1->popObj();} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC035);
-
-		$path='/X/1';
-		try {$x=new Request($path,V_S_SLCT);} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC048.':'.V_S_SLCT.':/ABridge.php'.$path);	
-		
-		$p1 = new Request($path,V_S_READ);
-		$this->assertNotNull($p1);	
-		
-		try {$x=$p1->pushId(1);} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC037);
-		
-		$path='/';
-		try {$x=new Request($path,V_S_SLCT);} catch (Exception $e) {$r= $e->getMessage();}
-		$this->assertEquals($r, E_ERC048.':'.V_S_SLCT.':/ABridge.php'.$path);	
+		];
 	
+		foreach ($tc as $d) {
+			try {$x=new Request($d[0],$d[1]);} catch (Exception $e) {$r= $e->getMessage();}
+			$this->assertEquals($r,$d[2]);
+		}
 	
 	}
+
 	
+    /**
+     * @dataProvider Provider_pop
+     */
+	public function testPop ($p,$e)
+	{
+			$r=new Request($p,V_S_READ);
+		
+			$res = $r->popObj();
+			$this->assertEquals($e,$res);
+
+
+	}
+	public function Provider_pop() {
+        return [
+				['/X/1/X/1','/X/1'],
+				['/X/1','/'],
+ 			];
+    }
 	
+    /**
+     * @dataProvider Provider_push
+     */
+	public function testpushId($p,$e,$attr,$act,$e2)
+	{
+			$r=new Request($p,V_S_CREA);
+		
+			$res = $r->pushId(1);
+			$this->assertEquals($e,$res);
+
+			$r2 = $r->getCrefReq($attr,$act);
+			$this->assertEquals($e2,$r2->getRPath());
+			$this->assertEquals($act,$r2->getAction());
+			
+			$r2->pushId(1);
+			$r2->popObj();
+			$this->assertEquals($e,$r2->getRPath());
+
+	}
+	public function Provider_push() {
+        return [
+				['/X',		'/X/1',		'A',V_S_CREA,	'/X/1/A'],
+				['/X/1/Y',	'/X/1/Y/1',	'B',V_S_CREA,	'/X/1/Y/1/B'],
+ 			];
+    }
+	
+	public function testGetModReq() 
+	{
+			$name = 'X';
+			$r=new Request('/',V_S_READ);
+			$r = $r->getModReq($name,V_S_CREA);
+			$p1='/'.$name; 
+			$this->assertEquals($p1, $r->getRPath());
+			
+			$res = $r->pushId(1);
+			$p2=$p1.'/1';
+			$this->assertEquals($p2, $r->getRPath());
+			
+			$r = $r->getActionReq(V_S_SLCT);
+			$this->assertEquals($p1, $r->getRPath());
+		
+			
+	}
+			
 }
 
-?>	

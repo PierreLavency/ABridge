@@ -5,7 +5,7 @@
 
 require_once 'View.php';
 require_once 'Request.php';
-require_once 'Home.php';
+require_once 'SessionHdl.php';
 require_once 'Handle.php';
 require_once 'SessionMgr.php';
 require_once 'GenJASON.php';
@@ -17,7 +17,7 @@ class Controler
 
     protected $handle=null;
     protected $request= null;
-    protected $home= null;
+    protected $sessionHdl= null;
     protected $spec = [];
     protected $attrL = [];
     protected $valL = [];
@@ -98,7 +98,6 @@ class Controler
             $psw= $ini['pass'];
         }
         SQLBase::setDB($host, $usr, $psw);
-        
         $bname = $ini['name'];
         if (isset($init['bname'])) {
             $bname = $init['bname'];
@@ -247,9 +246,8 @@ class Controler
         }
         $this->request = new Request();
         $this->setLogLevl($logLevel);
-        $h= $this->sessionMgr->getHome();
-        $this->home= new Home($h);
-        $this->handle = new Handle($this->request, $this->home);
+        $this->sessionHdl= $this->sessionMgr->getHandle();
+        $this->handle = new Handle($this->request, $this->sessionHdl);
         $method=$this->request->getMethod();
         
         if ($this->request->getDocRoot() == '/ABridgeAPI.php') {
@@ -301,12 +299,14 @@ class Controler
             $rdoc =$this->request->getDocRoot();
             if ($action == V_S_DELT) {
                 $npath = $this->request->popObj();
-                $this->handle = new Handle($this->request, $this->home);
+                $this->handle = new Handle($this->request, $this->sessionHdl);
             }
+/*
             if ($action == V_S_CREA) {
                 $npath = $this->request->pushId($this->handle->getId());
-                $this->handle = new Handle($this->request, $this->home);
+                $this->handle = new Handle($this->request, $this->sessionHdl);
             }
+*/
             if ($action != V_S_SLCT) {
                 $this->request->setAction(V_S_READ);
             }

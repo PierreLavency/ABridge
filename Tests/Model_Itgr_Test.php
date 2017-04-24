@@ -23,11 +23,11 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
 	
 		resetHandlers();
 		$typ='dataBase';
-		$name='atest';	
-		$Application='AApplication';		
-		$AbstrApp='AbstrApp';		
-		$Code='ACode';
-		$Exchange='Exchange';
+		$name='test';	
+		$Application=get_called_class().'_1';		
+		$AbstrApp=get_called_class().'_2';		
+		$Code=get_called_class().'_3';
+		$Exchange=get_called_class().'_4';
 		
 		self::$db1=getBaseHandler ($typ, $name);
 		initStateHandler ($Application		,$typ, $name);
@@ -37,10 +37,11 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
 		
 		$typ='fileBase';
 		$name=$name.'_f';
-		$Application='Applicationf';		
-		$AbstrApp='AbstrAppf';		
-		$Code='Codef';
-		$Exchange='Exchangef';		
+		$Application=get_called_class().'_f_1';		
+		$AbstrApp=get_called_class().'_f_2';		
+		$Code=get_called_class().'_f_3';
+		$Exchange=get_called_class().'_f_4';
+		
 		self::$db2=getBaseHandler ($typ, $name);
 		initStateHandler ($Application		,$typ, $name);
 		initStateHandler ($AbstrApp	,$typ, $name);
@@ -53,17 +54,17 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
 	{
 		if ($typ== 'SQL') {
 			$this->db=self::$db1;
-			$this->Code='ACode';
-			$this->Application='AApplication';
-			$this->AbstrApp='AbstrApp';
-			$this->Exchange='Exchange';			
+			$this->Application=get_called_class().'_1';		
+			$this->AbstrApp=get_called_class().'_2';		
+			$this->Code=get_called_class().'_3';
+			$this->Exchange=get_called_class().'_4';		
 			} 
 		else {
 			$this->db=self::$db2;
-			$this->Code='Codef';
-			$this->Application='Applicationf';
-			$this->AbstrApp='AbstrAppf';
-			$this->Exchange='Exchangef';					
+			$this->Application=get_called_class().'_f_1';		
+			$this->AbstrApp=get_called_class().'_f_2';		
+			$this->Code=get_called_class().'_f_3';
+			$this->Exchange=get_called_class().'_f_4';			
 			}
 
 	}

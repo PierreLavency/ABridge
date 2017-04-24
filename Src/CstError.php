@@ -52,3 +52,4 @@ define('E_ERC049', "ERC049");  // illegal action on obj
 define('E_ERC050', "ERC050");  // illegal action root
 define('E_ERC051', "ERC051");  // no sessionMg found
 define('E_ERC052', "ERC052");  // cannot delete - ref integrity
+define('E_ERC053', "ERC053");  // acess denied

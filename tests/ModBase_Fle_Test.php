@@ -8,7 +8,7 @@ class ModBase_Fle_Test extends ModBase_Case
 
 	public static function setUpBeforeClass()
 	{		
-		self::$CName='Student';
+		self::$CName=get_called_class().'_f_1';
 		self::$DBName= 'atest';
 		self::$db = new FileBase(self::$DBName);
 	}

@@ -17,14 +17,14 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
 	
 		resetHandlers();
 		$typ='dataBase';
-		$name='atest';	
-		$Cname='students';		
+		$name='test';	
+		$Cname=get_called_class().'_1';		
 		self::$db1=getBaseHandler ($typ, $name);
 		initStateHandler ($Cname,$typ, $name);
 		
 		$typ='fileBase';
 		$name=$name.'_f';
-		$Cname='studentsf';		
+		$Cname=get_called_class().'_f_1';		
 		self::$db2=getBaseHandler ($typ, $name);
 		initStateHandler ($Cname,$typ, $name);
 		
@@ -32,7 +32,12 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
 	
 	public function setTyp ($typ) 
 	{
-		if ($typ== 'SQL') {$this->db=self::$db1;$this->Cname='students';} else {$this->db=self::$db2;$this->Cname='studentsf';}
+		if ($typ== 'SQL') {
+				$this->db=self::$db1;
+				$this->Cname=get_called_class().'_1';
+			} else {
+				$this->db=self::$db2;
+				$this->Cname=get_called_class().'_f_1';}
 
 	}
 	

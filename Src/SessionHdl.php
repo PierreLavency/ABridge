@@ -1,9 +1,10 @@
 <?php
 
-class Role
+class SessionHdl
 {
-    protected $spec = [];
+    protected $roleSpec = [];
     protected $session = null;
+    protected $isRoot = false;
     
     public function __construct()
     {
@@ -16,14 +17,40 @@ class Role
 
     protected function construct0()
     {
-        $this->spec = [['true', 'true', 'true']];
-        $this->session = null;
+        $this->isRoot = true;
+        $this->roleSpec=[['true', 'true', 'true']];
+        $this->session=null;
     }
  
-    protected function construct2($spec, $session)
+    protected function construct2($session, $role)
     {
-        $this->spec = $spec;
+        $this->roleSpec=[];
         $this->session = $session;
+        $this->isRoot=false;
+        if (is_null($session)) {
+            $this->isRoot = true;
+            $this->roleSpec=[['true', 'true', 'true']];
+            return;
+        }
+        $user = $session->getVal('User');
+        if (is_null($user)) {
+            $this->isRoot = true;
+            $this->roleSpec=[['true', 'true', 'true']];
+            return;
+        }
+        if (! is_null($role)) {
+            $res = $role->getVal('Spec');
+            $val = json_decode($res, true);
+//					var_dump($val);
+            if (! is_null('Spec')) {
+                $this->roleSpec= json_decode($res, true);
+            }
+        }
+    }
+    
+    public function isRoot()
+    {
+        return ($this->isRoot);
     }
     
     protected function matchEval($elm, $patrn)
@@ -39,10 +66,13 @@ class Role
         }
         return false;
     }
-    
-    public function checkPath($action, $path)
+
+    public function checkReq($req)
     {
-        $res= $this->getCond($action, $path);
+        if (is_null($req)) {
+            return false;
+        }
+        $res= $this->getCond($req->getAction(), $req->getModpath());
         if ($res) {
             return true;
         } else {
@@ -50,12 +80,12 @@ class Role
         }
     }
         
-    protected function getCond($action, $path)
+    protected function getCond($action, $modpath)
     {
-        $spec = $this->spec;
+        $roleSpec = $this->roleSpec;
         $cond = [];
-        foreach ($spec as $elm) {
-            if ($this->matchEval($action, $elm[0]) and $this->matchEval($path, $elm[1])) {
+        foreach ($roleSpec as $elm) {
+            if ($this->matchEval($action, $elm[0]) and $this->matchEval($modpath, $elm[1])) {
                 $ncond = $elm[2];
                 switch ($ncond) {
                     case 'true':
@@ -83,15 +113,15 @@ class Role
         return $cond;
     }
 
-    public function getAttrCond($action, $path, $attr)
+    public function getReqCond($req, $attr)
     {
-        $cond=$this->getCond($action, $path);
+        $cond=$this->getCond($req->getAction(), $req->getModpath());
         if (! $cond) {
             return false;
         }
         return $this->getCondAttr($cond, $attr);
     }
-
+    
     protected function getCondAttr($cond, $attr)
     {
         $condElm = [];
@@ -109,10 +139,14 @@ class Role
         return $condElm;
     }
 
-    
-    public function checkARight($action, $rpath, $attrObjs)
+    public function checkARight($req, $attrObjs)
     {
-        $pathcond = $this->getCond($action, $rpath);
+        if (is_null($req)) {
+            return false;
+        }
+        $action = $req->getAction();
+        $modpath=$req->getModpath();
+        $pathcond = $this->getCond($action, $modpath);
         if (!$pathcond) {
             return false;
         }
@@ -150,10 +184,10 @@ class Role
     
     protected function checkLinkAttr($obj, $attro, $attrs)
     {
-        $sess= $this->session;
-        if (is_null($sess)) {
+        if ($this->isRoot) {
             return true;
         }
+        $sess= $this->session;
         if (is_null($obj)) {
             return false;
         }
@@ -165,7 +199,7 @@ class Role
         if (baseType($typ) != baseType($typs)) {
             return false;
         }
-        if ($typ == M_REF and ($obj->getRefMod($attro) != $sess->getRefMod($attrs))) {
+        if ($typ == M_REF and ($obj->getModRef($attro) != $sess->getModRef($attrs))) {
             return false;
         }
         $id1=$sess->getVal($attrs);

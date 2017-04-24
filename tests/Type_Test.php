@@ -126,6 +126,24 @@ class Type_Test extends PHPUnit_Framework_TestCase {
 			];
     }	
 	
+	/**
+     * @dataProvider Provider5
+     */
+	function testidentif($x,$expected) {
+		$this->assertEquals($expected,checkIdentifier($x));
+	}
+
+	public function Provider5() {
+        return [
+			['1',	false],
+			['_',	true ],
+			['A',	true ],
+			['A1',	true ],
+			['A_1',	true ],
+			['A_B_C',true],
+			['1A'	,false],
+			];
+    }	
 }
 
 ?>	

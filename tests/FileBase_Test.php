@@ -9,12 +9,9 @@ class FileBase_Test extends Base_Case {
     
     public static function setUpBeforeClass()
     {   
-        self::$CName='ERC';
-        self::$CName2='ERCode';
-        self::$DBName= 'test';
         
-        self::$CName='ERC';
-        self::$CName2='ERCode';
+        self::$CName=get_called_class().'_f_1';
+        self::$CName2=get_called_class().'_f_2';
         self::$DBName= 'atest';
         self::$db = new FileBase(self::$DBName);
         

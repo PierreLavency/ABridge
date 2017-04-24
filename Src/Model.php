@@ -174,7 +174,7 @@ class Model
      */
     protected function init($name, $id)
     {
-        if (! checkType($name, M_ALPHA)) {
+        if (! checkIdentifier($name)) {
             throw new Exception(E_ERC010.':'.$name.':'.M_ALPHA);
         }
         $this->initattr();
@@ -431,7 +431,7 @@ class Model
 
     public function getRef($attr)
     {
-        $mod = $this->getRefMod($attr);
+        $mod = $this->getModRef($attr);
         if (! $mod) {
             throw new Exception($this->getErrLine());
         }
@@ -445,7 +445,7 @@ class Model
 
     protected function setRef($attr, $mod)
     {
-        $modA = $this->getRefMod($attr);
+        $modA = $this->getModRef($attr);
         $modN = $mod->getModName();
         if ($modA != $modN) {
             $abstr = $mod->getInhObj();
@@ -531,7 +531,7 @@ class Model
             }
             return new Model($patha[1], $id);
         }
-        return new Model($this->getRefMod($attr), $id);
+        return new Model($this->getModRef($attr), $id);
     }
 
     /**
@@ -1300,13 +1300,8 @@ class Model
         $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
         return false;
     }
-
+ 
     public function getModRef($attr)
-    {
-        return $this->getRefMod($attr);
-    }
-    // should be private
-    public function getRefMod($attr)
     {
         if (! $this->existsAttr($attr)) {
             $this->errLog->logLine(E_ERC002.':'.$attr);
@@ -1349,7 +1344,7 @@ class Model
             }
         }
         if ($r == M_REF) {
-            $mod = $this->getRefMod($attr);
+            $mod = $this->getModRef($attr);
             $obj= new Model($mod);
             $val=$obj->stateHdlr->findObjWheOp($mod, [], [], []);
         }
@@ -1370,7 +1365,7 @@ class Model
             return true;
         }
 
-        $mod = $this->getRefMod($attr);
+        $mod = $this->getModRef($attr);
         try {
             $res = new Model($mod, $id);
         } catch (Exception $e) {

@@ -4,18 +4,17 @@ require_once 'Handler.php';
 require_once 'Handle.php'; 
 require_once 'CstMode.php';
 require_once 'CstType.php';
+require_once 'SessionHdl.php';
 
 class Handle_obj_Test extends PHPUnit_Framework_TestCase  
 {
     protected static $db1;
     protected static $db2;
 
-    protected $CName='Example';
-    protected $CUser='User';
-    protected $CCode='Code';
-	
     protected $db;
-    
+	protected $CName;
+	protected $CUser;
+    protected $CCode;    
     
     public static function setUpBeforeClass()
     {   
@@ -23,9 +22,9 @@ class Handle_obj_Test extends PHPUnit_Framework_TestCase
         resetHandlers();
     
         $typ='dataBase';
-        $CName='Example';
-        $CUser='User';
-		$CCode='Code';
+        $CName=get_called_class().'_1';
+        $CUser=get_called_class().'_2';
+		$CCode=get_called_class().'_3';
         $name = 'test';
         self::$db1=getBaseHandler ($typ, $name);
         initStateHandler ($CName    ,$typ, $name);
@@ -34,9 +33,9 @@ class Handle_obj_Test extends PHPUnit_Framework_TestCase
  
         $typ='fileBase';
         $name=$name.'_f';
-        $CName='Examplef';
-        $CUser='Userf';
-		$CCode='Codef';
+        $CName=get_called_class().'_f_1';
+        $CUser=get_called_class().'_f_2';
+		$CCode=get_called_class().'_f_3';
         self::$db2=getBaseHandler ($typ, $name);
         initStateHandler ($CName    ,$typ, $name);
         initStateHandler ($CUser    ,$typ, $name);
@@ -48,15 +47,15 @@ class Handle_obj_Test extends PHPUnit_Framework_TestCase
     {
         if ($typ== 'SQL') {
             $this->db=self::$db1;
-            $this->CName='Example';
-            $this->CUser='User';
-			$this->CCode='Code';
+            $this->CName=get_called_class().'_1';
+            $this->CUser=get_called_class().'_2';
+			$this->CCode=get_called_class().'_3';
             } 
         else {
             $this->db=self::$db2;
-            $this->CName='Examplef';
-            $this->CUser='Userf';
-			$this->CCode='Codef';
+            $this->CName=get_called_class().'_f_1';
+            $this->CUser=get_called_class().'_f_2';
+			$this->CCode=get_called_class().'_f_3';
             }
 
     }
@@ -160,7 +159,7 @@ class Handle_obj_Test extends PHPUnit_Framework_TestCase
         $id=2;      
         $path1 = '/'.$this->CName.'/'.$id;
         $r = new Request($path1,V_S_READ);
-        $ho = new Home('/'); 
+        $ho = new SessionHdl(); 
         
         $h = new Handle($r,$ho);
         $this->assertFalse($h->nullObj());
@@ -197,9 +196,7 @@ class Handle_obj_Test extends PHPUnit_Framework_TestCase
     {
         $this->setTyp($typ);
         $db=$this->db;
-        $db->beginTrans();
-
-        
+        $db->beginTrans();       
         
         $db->commit();
     }
@@ -219,7 +216,7 @@ class Handle_obj_Test extends PHPUnit_Framework_TestCase
         $id=4;      
         $path1 = '/'.$this->CName.'/'.$id;
         $r = new Request($path1,V_S_READ);
-        $ho = new Home('/'); 
+        $ho = new SessionHdl(); 
         
         $h = new Handle($r,$ho);
         $this->assertTrue($h->delet()); 
