@@ -155,7 +155,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$path1 = $path0.'/'.$ho1->getId();
 		$r = new Request($path1,V_S_READ);
 	
-		$h1 = new Handle($r,$ho);
+		$h1 = new Handle($path1,V_S_READ,$ho);
 		$this->assertNotNull($h1);
 		$this->assertTrue($h1->isMain());
 		$this->assertEquals($path1,  $h1->getRPath());		
@@ -181,7 +181,9 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals($h2->getRPath(),$h2r->getRPath());
 		
 		$h = new Handle($path0,V_S_CREA,$ho);
-		$url= $h->getClassPath($this->CName, V_S_CREA);
+		$ht = new Handle($path0,$ho);
+		$ht->setAction(V_S_CREA);
+		$url= $ht->getUrl();
 		$urle= $h->getUrl();
 		$this->assertEquals($urle,$url);		
 		$url= $h1->getActionPath(V_S_CREA);
@@ -226,8 +228,8 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$h = new Handle('/',V_S_READ,$ho);
 		$this->assertTrue($h->nullObj());
 
-		$req = new Request('/'.$this->CName.'/'.$h1->getId().'/CRef',V_S_CREA);
-		$h = new Handle($req, $ho);
+		$path= '/'.$this->CName.'/'.$h1->getId().'/CRef';
+		$h = new Handle($path,V_S_CREA , $ho);
 		$id = $h ->save();
 		$this->assertNotNull($id);
 		$res = $h->delet();
@@ -268,8 +270,6 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$act_path = $h1->getActionPath(V_S_UPDT);
 		$this->assertNotNull($act_path);			
 
-		$act_path = $h1->getClassPath($this->CName,V_S_CREA);
-		$this->assertNotNull($act_path);
 		
         $this->assertEquals(2,$h1->getCode('Code',2)->getId());		
 		$this->assertNull($h1->getCode('Code',2)->getPath());
@@ -289,9 +289,6 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$h2 = new Handle($r,$ho);
 		
 		$act_path = $h2->getCrefPath('CRef',V_S_CREA);
-		$this->assertNull($act_path);	
-		
-		$act_path = $h2->getClassPath($this->CUser,V_S_CREA);
 		$this->assertNull($act_path);	
 
 		$path3 = $path2.'/CRef/3/CRef';

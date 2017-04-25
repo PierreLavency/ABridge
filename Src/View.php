@@ -193,8 +193,15 @@ class View
     {
         $this->navClass=[];
         foreach ($dspec as $classN) {
+			$action =  V_S_SLCT;
+			if (is_array($classN)) {
+				$path=$classN[0];
+				$action = $classN[1];
+			} else {
+				$path=$classN;
+			}	
             $this->navClass[]=
-            [V_TYPE=>V_CNAV,V_OBJ=>$classN,V_P_VAL=>V_S_SLCT];
+            [V_TYPE=>V_CNAV,V_OBJ=>$path,V_P_VAL=>$action];
         }
         return true;
     }
@@ -543,18 +550,21 @@ class View
     {
         $res=[];
         $nav=$spec[V_P_VAL];
-        $mod=$spec[V_OBJ];
+        $path=$spec[V_OBJ];
         $res[H_TYPE]=H_T_LINK;
-        $res[H_LABEL]=$this->getLbl($mod);
-        if ($mod == 'Home') {
-            $path = $this->req->getRootUrl();
-        } else {
-            $path = $this->handle->getClassPath($mod, $nav);
-            if (is_null($path)) {
-                return false;
-            }
-        }
-        $res[H_NAME]="'".$path."'";
+		$sessHdl = $this->handle->getSessionHdl();		
+		try {
+			$hdl = new Handle($path,$sessHdl);
+		} catch (Exception $e) {
+			return false;
+		}
+        $res[H_NAME]="'".$hdl->getUrl()."'";
+		if ($hdl->nullObj()) {
+			$mod='Home';
+		} else {
+			$mod=$hdl->getModName();
+		}
+        $res[H_LABEL]=$this->getLbl($mod);		
         return $res;
     }
     

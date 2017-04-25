@@ -244,10 +244,10 @@ class Controler
             $this->commit();
             $this->beginTrans();
         }
-        $this->request = new Request();
         $this->setLogLevl($logLevel);
         $this->sessionHdl= $this->sessionMgr->getHandle();
-        $this->handle = new Handle($this->request, $this->sessionHdl);
+        $this->handle = new Handle($this->sessionHdl);
+        $this->request = $this->handle->getReq();		
         $method=$this->request->getMethod();
         
         if ($this->request->getDocRoot() == '/ABridgeAPI.php') {
@@ -299,7 +299,7 @@ class Controler
             $rdoc =$this->request->getDocRoot();
             if ($action == V_S_DELT) {
                 $npath = $this->request->popObj();
-                $this->handle = new Handle($this->request, $this->sessionHdl);
+                $this->handle = new Handle($npath,V_S_READ, $this->sessionHdl);
             }
 /*
             if ($action == V_S_CREA) {

@@ -32,7 +32,7 @@ $request = new Request($p,V_S_READ);
 $handle = new Handle($request, $home);	
 $v = new View($handle);	
 
-$v->setNavClass(['dir']);
+$v->setNavClass(['/dir']);
 $v->setAttrListHtml(['Mother'=>H_T_SELECT], V_S_CREA);
 $v->setAttrList(['Name'],V_S_REF);	
 $res = $v->show($s,$show); 

@@ -5,8 +5,10 @@ BUG
 
 DEV
 - unify get code with get reference
-- extend home menu with path
-- increase autorisations rule cazpbility (classes indepent of path etc.)
+- review method names in View (menu);
+- review popobj
+
+- increase autorisations rule caapbility (classes indepent of path etc.)
 - review session management.
 - handle user preference
 - order in list query and attr.
@@ -55,7 +57,7 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
-
+- extend home menu with path // 1 day
 - integrate role // 5 days
 - allow _ and number in class id // 2 hours 
 - fix issue with name clash in unit tests  // 4 hours
@@ -63,8 +65,7 @@ DONE
 - rule base access control // 3 days
 - review request and improve unit tests // 2 days
 - review handle // 3 days
-- unit test hande // 2 days
-
+- unit test handle // 2 days
 - check path on request // 2 days 
 - update API - 2 hours
 - integrate composer and phpdepends 

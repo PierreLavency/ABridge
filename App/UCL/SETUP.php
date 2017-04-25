@@ -17,7 +17,7 @@ require_once 'CstView.php';
 		'Role'	 	 => ['dataBase','genealogy',],
 		],
 	'Home' =>
-		['Session','User','Role','Student','Cours','Inscription','Prof','Charge','Code','CodeValue','Home'],
+		['/Session/1','/User','/Role','/Student','/Cours','/Inscription','/Prof','/Charge','/Code','/CodeValue','/'],
 		
 	'Views' => [
 	

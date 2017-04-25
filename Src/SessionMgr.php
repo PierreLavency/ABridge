@@ -101,7 +101,9 @@ class SessionMgr
         $tst= time()-$d->getTimestamp();
  //           echo 'Age :'.$tst;
     }
-    
+
+
+
     public function isNew()
     {
         return $this->newSess;

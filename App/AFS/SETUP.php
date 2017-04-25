@@ -10,6 +10,6 @@ require_once 'CstView.php';
 		'Fle'  => ['dataBase'],
 		],
 	'Home' =>
-		['Dir','Fle'],
+		['/Dir','/Fle'],
 	];
 	

@@ -23,7 +23,25 @@ class Handle
         }
     }
 
-    protected function construct2($request, $sessionHdl)
+	protected function construct1($sessionHdl)
+    {
+        $request = new Request();
+        $this->initReq($request, $sessionHdl);
+    }
+	
+	protected function construct2($path, $sessionHdl) 
+	{
+        $request = new Request($path);
+		$this->initReq($request,$sessionHdl);
+	}
+	
+    protected function construct3($path, $action, $sessionHdl)
+    {
+        $request = new Request($path, $action);
+		$this->initReq($request,$sessionHdl);
+    }
+
+	protected function initReq($request, $sessionHdl)
     {
         $this->request = $request;
         $this->sessionHdl = $sessionHdl;
@@ -33,13 +51,7 @@ class Handle
         }
         $this->initObj();
     }
-
-    protected function construct3($path, $action, $sessionHdl)
-    {
-        $req = new Request($path, $action);
-        $this->construct2($req, $sessionHdl);
-    }
-
+	
     protected function construct5($req, $sessionHdl, $objs, $obj, $main)
     {
         $this->request = $req;
@@ -93,6 +105,10 @@ class Handle
         }
     }
  
+	public function getSessionHdl() {
+		return $this->sessionHdl;
+	}
+	
     public function nullObj()
     {
         return (is_null($this->obj));
@@ -142,23 +158,7 @@ class Handle
         }
         return $req->getUrl();
     }
-   
-    public function getClassPath($mod, $action)
-    {
-        // for "top"  menu
-        $req = $this->request->getModReq($mod, $action);
-        $res = $this->sessionHdl->checkReq($req);
-        if (!$res) {
-            return null;
-        }
-        $x = new Model($mod);
-        $res = $this->sessionHdl->checkARight($req, [[$mod,$x]]);
-        if (!$res) {
-            return null;
-        }
-        return $req->getUrl();
-    }
-      
+
     public function getCrefPath($attr, $action)
     {
         // for Cref menu
@@ -253,11 +253,11 @@ class Handle
         }
         if ($found) {
             $path = '/'.implode('/', $res);
-            $req = new Request($path, V_S_READ);
         } else {
-            $req = $this->request->getModReq($mod, V_S_READ, $id);
+			$path ='/'.$mod.'/'.$id;
             $objs[]=[$mod,$obj];
         }
+		$req = new Request($path, V_S_READ);
         return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
     }
      
@@ -383,6 +383,11 @@ class Handle
     }
 
 // from req
+
+    public function setAction($action)
+    {
+        return $this->getMain()->request->setAction($action);
+    }
 
     public function getReq()
     {

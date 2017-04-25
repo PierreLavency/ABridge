@@ -11,7 +11,7 @@ require_once 'CstView.php';
 		'User'	 	 => ['dataBase'],
 		],
 	'Home' =>
-		['User','Person','Code','CodeValue','Home'],
+		['/User','/Person','/Code','/CodeValue','/'],
 		
 	'Views' => [
 		'User' =>[

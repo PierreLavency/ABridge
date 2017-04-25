@@ -64,6 +64,26 @@ class Request_Test extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @dataProvider Prov_testRequest1
+     */	
+	public function testRequest1($p,$e)
+	{
+			$req= new Request($p);
+			$res=$req->getAction();
+			$this->assertEquals($e,$res);
+	}
+
+    public function Prov_testRequest1() {
+        return [
+			['/',   	V_S_READ],
+			['/X', 		V_S_SLCT],
+			['/X/1',	V_S_READ],
+			['/X/1/X', 	V_S_SLCT],
+			['/X/1/X/2',V_S_READ],
+ 			];
+    }	
+	
+    /**
      * @dataProvider Provider2
      */
  	public function testGetAction($a, $b, $c, $e0, $d,$e1)
@@ -229,7 +249,7 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 				['/X/1/Y',	'/X/1/Y/1',	'B',V_S_CREA,	'/X/1/Y/1/B'],
  			];
     }
-	
+/*	
 	public function testGetModReq() 
 	{
 			$name = 'X';
@@ -247,6 +267,6 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 		
 			
 	}
-			
+*/			
 }
 

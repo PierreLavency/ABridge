@@ -21,7 +21,7 @@ require_once 'CstView.php';
 		'User'	 	 => ['dataBase','abbtest',],
 		],
 	'Home' =>
-		['Application','Component','Interface','Exchange','Home'],
+		['/Application','/Component','/Interface','/Exchange','/'],
 	'Views' => [
 		'Application'=> [
 		

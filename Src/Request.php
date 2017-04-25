@@ -54,13 +54,21 @@ class Request
         $this->checkActionPath($this->getAction());
     }
  
-    protected function construct2($path, $action)
+    protected function construct1($path)
+    {
+        $this->initPath($path);
+		$this->method='GET';
+        $this->initAction();
+        $this->checkActionPath($this->getAction());
+    }
+
+	protected function construct2($path, $action)
     {
         $this->initPath($path);
         $this->action=$action;
         $this->checkActionPath($this->getAction());
     }
-
+	
 // Path
      
     protected function initPath($pathStrg)
@@ -233,7 +241,7 @@ class Request
             if ($this->isClassPath()) {
                 $this->action = V_S_SLCT;
                 return $this->action;
-            }
+            }	
             return $this->action;
         }
         if ($this->method =='POST') {
@@ -346,18 +354,7 @@ class Request
         }
         return null;
     }
-    
-    public function getModReq($mod, $action, $id = 0)
-    {
-        // for object creation from menu (should use  "path"  ?)
-        $path='/'.$mod;
-        if ($id) {
-            $path = $path.'/'.$id;
-        }
-        $req = new Request($path, $action);
-        return $req;
-    }
-   
+
     public function getObjReq($id, $action)
     {
         // for object selection in list

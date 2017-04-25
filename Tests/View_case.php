@@ -32,10 +32,10 @@ function viewCases()
 
 	$home= new sessionHdl();
 	$request = new Request('/',V_S_READ);
-	$handle = new Handle($request, $home);
+	$handle = new Handle('/',V_S_READ, $home);
 	$v = new View($handle);
 
-	$v->setNavClass(['test']);
+	$v->setNavClass(['/test']);
 
 	$path = '/';
 	
@@ -48,7 +48,7 @@ function viewCases()
 	$handle = new Handle($request, $home,$objs,$x,null);
 	$v = new View($handle);	
 	
-	$v->setNavClass(['test']);	
+	$v->setNavClass(['/test']);	
 
 	$v->setAttrList(['A1','A2'],V_S_REF);
 	$v->setLblList(['A1'=>'A1','A2'=>'A2']);
