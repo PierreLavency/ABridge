@@ -189,7 +189,7 @@ class View
         return [];
     }
     
-    public function setNavClass($dspec)
+    public function setTopMenu($dspec)
     {
         $this->navClass=[];
         foreach ($dspec as $classN) {
@@ -206,7 +206,7 @@ class View
         return true;
     }
 
-    public function getNavClass($viewState)
+    public function getTopMenu($viewState)
     {
         if (isset($this->navClass)) {
             return $this->navClass;
@@ -420,6 +420,9 @@ class View
                 } else {
                     $nh=$this->handle->getObjId($id);
                 }
+				if (is_null($nh)) {
+					return false;
+				}
                 $v = new View($nh);
                 $res = $v->buildView(V_S_CREF, true);
                 return $res;
@@ -508,13 +511,6 @@ class View
         }
         return $res;
     }
-    
-    public function evalo($dspec, $viewState)
-    {
-        $name = $this->handle->getModName();
-        $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$name];
-        return $res;
-    }
 
     public function menuObjAction($nav, $viewState)
     {
@@ -598,6 +594,13 @@ class View
             }
         }
         return $result;
+    }
+    
+    public function evalo($dspec, $viewState)
+    {
+        $name = $this->handle->getModName();
+        $res =[H_TYPE =>H_T_PLAIN, H_DEFAULT=>$name];
+        return $res;
     }
     
     public function subst($spec, $viewState)
@@ -772,7 +775,7 @@ class View
             $this->initView($this->handle, $viewState, $rec);
         }
         if (is_null($this->handle) or $this->handle->nullObj()) {
-            $navClass= $this->getNavClass($viewState);
+            $navClass= $this->getTopMenu($viewState);
             $arg[]= [V_TYPE=>V_LIST,V_LT=>V_CNAV,V_ARG=>$navClass];
             $speci = [V_TYPE=>V_LIST,V_LT=>V_OBJ,V_ARG=>$arg];
             $r=$this->subst($speci, $viewState);
@@ -810,7 +813,7 @@ class View
             return $r;
         }
         $arg = [];
-        $navClass= $this->getNavClass($viewState);
+        $navClass= $this->getTopMenu($viewState);
         $arg[]= [V_TYPE=>V_LIST,V_LT=>V_CNAV,V_ARG=>$navClass];
         $navView[]=[V_TYPE=>V_OBJ];
         $navView = array_merge($navView, $this->getNavView($viewState));

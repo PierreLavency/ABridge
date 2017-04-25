@@ -230,7 +230,7 @@ class Controler
         }
         $v=new View($this->handle);
         $home=$spec['Home'];
-        $v->setNavClass($home);
+        $v->setTopMenu($home);
         $action = $this->request->getAction();
         $v->show($action, $show);
         return true;
@@ -301,12 +301,7 @@ class Controler
                 $npath = $this->request->popObj();
                 $this->handle = new Handle($npath,V_S_READ, $this->sessionHdl);
             }
-/*
-            if ($action == V_S_CREA) {
-                $npath = $this->request->pushId($this->handle->getId());
-                $this->handle = new Handle($this->request, $this->sessionHdl);
-            }
-*/
+
             if ($action != V_S_SLCT) {
                 $this->request->setAction(V_S_READ);
             }

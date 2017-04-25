@@ -28,7 +28,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase {
 		$request = new Request($p,V_S_READ);
 		$handle = new Handle($p,V_S_READ, $home);	
 		$v = new View($handle);	
-		$v->setNavClass(['/dir']);	
+		$v->setTopMenu(['/dir']);	
 		$v->setAttrList(['Name'],V_S_REF);	
 		$v->setAttrListHtml(['Mother'=>H_T_SELECT], V_S_CREA);		
 		
@@ -52,7 +52,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase {
 	$handle = new Handle($p,V_S_READ, $home);	
 	$v = new View($handle);	
 	
-	$v->setNavClass(['/dir']);	
+	$v->setTopMenu(['/dir']);	
 	$v->setAttrList(['Name'],V_S_REF);	
 	$v->setAttrListHtml(['Mother'=>H_T_SELECT], V_S_CREA);
 	

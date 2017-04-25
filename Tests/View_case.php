@@ -35,7 +35,7 @@ function viewCases()
 	$handle = new Handle('/',V_S_READ, $home);
 	$v = new View($handle);
 
-	$v->setNavClass(['/test']);
+	$v->setTopMenu(['/test']);
 
 	$path = '/';
 	
@@ -48,7 +48,7 @@ function viewCases()
 	$handle = new Handle($request, $home,$objs,$x,null);
 	$v = new View($handle);	
 	
-	$v->setNavClass(['/test']);	
+	$v->setTopMenu(['/test']);	
 
 	$v->setAttrList(['A1','A2'],V_S_REF);
 	$v->setLblList(['A1'=>'A1','A2'=>'A2']);
