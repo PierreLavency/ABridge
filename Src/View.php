@@ -11,7 +11,6 @@ class View
     // property
 
     protected $handle;
-    protected $req;
     
     protected $name;
 
@@ -22,8 +21,8 @@ class View
     protected $listHtml = [
                 V_VLIST => H_T_1TABLE,
                 V_OBJ   => H_T_LIST_BR,
-                V_CNAV  => H_T_1TABLE,
-                V_NAV   => H_T_1TABLE,
+                V_TOPMENU  => H_T_1TABLE,
+                V_OBJACTIONMENU   => H_T_1TABLE,
                 V_ALIST => H_T_TABLE,
                 V_ATTR  => H_T_LIST,
                 V_CLIST => H_T_LIST_BR,
@@ -36,32 +35,32 @@ class View
 
     protected $nav=[
               V_S_READ =>[
-                [V_TYPE=>V_NAV,V_P_VAL=>V_S_UPDT],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_S_DELT],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_S_CREA],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_S_SLCT],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_S_UPDT],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_S_DELT],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_S_CREA],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_S_SLCT],
                 ],
               V_S_SLCT =>[
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_RFCH],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_S_CREA],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_B_SUBM],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_B_RFCH],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_B_CANC],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_S_CREA],
                 ],
               V_S_CREA =>[
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_B_SUBM],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_B_CANC],
                 ],
               V_S_UPDT =>[
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_B_SUBM],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_B_CANC],
                 ],
               V_S_DELT =>[
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_SUBM],
-                [V_TYPE=>V_NAV,V_P_VAL=>V_B_CANC],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_B_SUBM],
+                [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>V_B_CANC],
                 ],
               ];
 
-    protected $navClass=[];
+    protected $topMenu=[];
     protected $navView=[];
     
     protected $attrProp=[
@@ -81,7 +80,6 @@ class View
     public function __construct($handle)
     {
         $this->handle=$handle;
-        $this->req=$handle->getReq();
     }
 
     // methods
@@ -171,17 +169,17 @@ class View
         return $res;
     }
 
-    public function setNavView($dspec, $viewState)
+    public function setMenuObjView($dspec, $viewState)
     {
         $this->navView=[];
         foreach ($dspec as $viewN) {
             $this->navView[]=
-            [V_TYPE=>V_VNAV,V_P_VAL=>$viewN];
+            [V_TYPE=>V_OBJVIEWMENU,V_P_VAL=>$viewN];
         }
         return true;
     }
     
-    public function getNavView($viewState)
+    public function getMenuObjView($viewState)
     {
         if (isset($this->navView)) {
             return $this->navView;
@@ -191,40 +189,40 @@ class View
     
     public function setTopMenu($dspec)
     {
-        $this->navClass=[];
+        $this->topMenu=[];
         foreach ($dspec as $classN) {
-			$action =  V_S_SLCT;
-			if (is_array($classN)) {
-				$path=$classN[0];
-				$action = $classN[1];
-			} else {
-				$path=$classN;
-			}	
-            $this->navClass[]=
-            [V_TYPE=>V_CNAV,V_OBJ=>$path,V_P_VAL=>$action];
+            $action =  V_S_SLCT;
+            if (is_array($classN)) {
+                $path=$classN[0];
+                $action = $classN[1];
+            } else {
+                $path=$classN;
+            }
+            $this->topMenu[]=
+            [V_TYPE=>V_TOPMENU,V_OBJ=>$path,V_P_VAL=>$action];
         }
         return true;
     }
 
     public function getTopMenu($viewState)
     {
-        if (isset($this->navClass)) {
-            return $this->navClass;
+        if (isset($this->topMenu)) {
+            return $this->topMenu;
         }
         return [];
     }
     
-    public function setNav($dspec, $viewState)
+    public function setMenuObjAction($dspec, $viewState)
     {
         $navList=[];
         foreach ($dspec as $navE) {
-            $navList[]= [V_TYPE=>V_NAV,V_P_VAL=>$navE];
+            $navList[]= [V_TYPE=>V_OBJACTIONMENU,V_P_VAL=>$navE];
         }
         $this->nav[$viewState]= $navList;
         return true;
     }
     
-    public function getNav($viewState)
+    public function getMenuObjAction($viewState)
     {
         if (isset($this->nav[$viewState])) {
             return $this->nav[$viewState];
@@ -351,7 +349,7 @@ class View
             if ($typ == M_STRING) {
                 $res[H_VALUES]=[['::','::'],['=','='],['>','>'],['<','<']];
             }
-            $default=$this->req->getPrm($name);
+            $default=$this->handle->getPrm($name);
             if (is_null($default)) {
                 $default= '=';
             }
@@ -366,7 +364,7 @@ class View
             ($viewState == V_S_SLCT
              and $this->handle->isSelect($attr)))) {
             $res[H_NAME]=$attr;
-            $default=$this->req->getPrm($attr);
+            $default=$this->handle->getPrm($attr);
             if (is_null($default)) {
                 if ($viewState == V_S_UPDT) {
                     $default=$this->handle->getVal($attr);
@@ -420,9 +418,9 @@ class View
                 } else {
                     $nh=$this->handle->getObjId($id);
                 }
-				if (is_null($nh)) {
-					return false;
-				}
+                if (is_null($nh)) {
+                    return false;
+                }
                 $v = new View($nh);
                 $res = $v->buildView(V_S_CREF, true);
                 return $res;
@@ -548,19 +546,19 @@ class View
         $nav=$spec[V_P_VAL];
         $path=$spec[V_OBJ];
         $res[H_TYPE]=H_T_LINK;
-		$sessHdl = $this->handle->getSessionHdl();		
-		try {
-			$hdl = new Handle($path,$sessHdl);
-		} catch (Exception $e) {
-			return false;
-		}
+        $sessHdl = $this->handle->getSessionHdl();
+        try {
+            $hdl = new Handle($path, $sessHdl);
+        } catch (Exception $e) {
+            return false;
+        }
         $res[H_NAME]="'".$hdl->getUrl()."'";
-		if ($hdl->nullObj()) {
-			$mod='Home';
-		} else {
-			$mod=$hdl->getModName();
-		}
-        $res[H_LABEL]=$this->getLbl($mod);		
+        if ($hdl->nullObj()) {
+            $mod='Home';
+        } else {
+            $mod=$hdl->getModName();
+        }
+        $res[H_LABEL]=$this->getLbl($mod);
         return $res;
     }
     
@@ -611,13 +609,13 @@ class View
             case V_ELEM:
                 $result= $this->element($spec, $viewState);
                 break;
-            case V_VNAV:
+            case V_OBJVIEWMENU:
                 $result= $this->menuObjView($spec, $viewState);
                 break;
-            case V_NAV:
+            case V_OBJACTIONMENU:
                 $result= $this->menuObjAction($spec, $viewState);
                 break;
-            case V_CNAV:
+            case V_TOPMENU:
                 $result= $this->menuTop($spec, $viewState);
                 break;
             case V_OBJ:
@@ -659,7 +657,7 @@ class View
                 }
                 $result[H_ARG]=$arg;
                 break;
-            case V_NAVC:
+            case V_CREFMENU:
                     $result= $this->menuCref($spec, $viewState);
                 break;
             case V_PLAIN:
@@ -701,7 +699,7 @@ class View
             return true;
         }
         if (!$rec) {
-            $this->_name=$this->req->getPrm('View');
+            $this->_name=$this->handle->getPrm('View');
         }
         $modName = $handle->getModName();
         $spec = Handler::get()->getViewHandler($modName);
@@ -737,7 +735,7 @@ class View
         if (isset($spec['navList'])) {
             $specma=$spec['navList'];
             if (isset($specma[$viewState])) {
-                $this->setNav($specma[$viewState], $viewState);
+                $this->setMenuObjAction($specma[$viewState], $viewState);
             }
         }
         if (isset($spec['lblList'])) {
@@ -759,7 +757,7 @@ class View
                     }
                     $first=false;
                 }
-                $this->setNavView($viewL, $viewState);
+                $this->setMenuObjView($viewL, $viewState);
             }
         }
     }
@@ -775,8 +773,8 @@ class View
             $this->initView($this->handle, $viewState, $rec);
         }
         if (is_null($this->handle) or $this->handle->nullObj()) {
-            $navClass= $this->getTopMenu($viewState);
-            $arg[]= [V_TYPE=>V_LIST,V_LT=>V_CNAV,V_ARG=>$navClass];
+            $topMenu= $this->getTopMenu($viewState);
+            $arg[]= [V_TYPE=>V_LIST,V_LT=>V_TOPMENU,V_ARG=>$topMenu];
             $speci = [V_TYPE=>V_LIST,V_LT=>V_OBJ,V_ARG=>$arg];
             $r=$this->subst($speci, $viewState);
             return $r;
@@ -796,7 +794,7 @@ class View
             }
             if ($typ == M_CREF) {
                 $view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL];
-                $view[]=[V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_NEW];
+                $view[]=[V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_B_NEW];
                 $list = $this->handle->getVal($attr);
                 $view = $this->getSlice($attr, $list, $view, $viewState);
                 $specL[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
@@ -813,13 +811,13 @@ class View
             return $r;
         }
         $arg = [];
-        $navClass= $this->getTopMenu($viewState);
-        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_CNAV,V_ARG=>$navClass];
-        $navView[]=[V_TYPE=>V_OBJ];
-        $navView = array_merge($navView, $this->getNavView($viewState));
-        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_VLIST,V_ARG=>$navView];
-        $navs = $this->getNav($viewState);
-        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_NAV,V_ARG=>$navs];
+        $topMenu= $this->getTopMenu($viewState);
+        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_TOPMENU,V_ARG=>$topMenu];
+        $menuObjView[]=[V_TYPE=>V_OBJ];
+        $menuObjView = array_merge($menuObjView, $this->getMenuObjView($viewState));
+        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_VLIST,V_ARG=>$menuObjView];
+        $menuObjAction = $this->getMenuObjAction($viewState);
+        $arg[]= [V_TYPE=>V_LIST,V_LT=>V_OBJACTIONMENU,V_ARG=>$menuObjAction];
         $arg[]= [V_TYPE=>V_LIST,V_LT=>V_ALIST,V_ARG=>$spec];
         if ($viewState == V_S_SLCT) {
             $view=[];
@@ -854,7 +852,7 @@ class View
         $pos=0;
         $prm = $this->getAttrHtml($attr, $viewState);
         $slice = $prm[H_SLICE];
-        $npos = $this->req->getPrm($attr); //not work
+        $npos = $this->handle->getPrm($attr); //not work
         if (!is_null($npos)) {
             $pos=(int) $npos;
             if ($pos<0) {
@@ -887,9 +885,9 @@ class View
                 $npos=$pos;
             }
             $view[]=
-            [V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_PRV,V_ID=>-$pos];
+            [V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_B_PRV,V_ID=>-$pos];
             $view[]=
-            [V_TYPE=>V_NAVC,V_ATTR => $attr,V_P_VAL=>V_B_NXT,V_ID=>$npos];
+            [V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_B_NXT,V_ID=>$npos];
         }
         $first = true;
         foreach ($viewL as $elm) {

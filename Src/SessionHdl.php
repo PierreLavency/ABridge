@@ -38,7 +38,7 @@ class SessionHdl
             $this->roleSpec=[['true', 'true', 'true']];
             return;
         }
-		
+        
         if (! is_null($role)) {
             $res = $role->getVal('Spec');
             $val = json_decode($res, true);

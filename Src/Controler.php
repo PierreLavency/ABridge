@@ -4,19 +4,16 @@
 // must clean up interface with set up !!
 
 require_once 'View.php';
-require_once 'Request.php';
 require_once 'SessionHdl.php';
 require_once 'Handle.php';
 require_once 'SessionMgr.php';
 require_once 'GenJASON.php';
-
 
 class Controler
 {
     protected $bases=[];
 
     protected $handle=null;
-    protected $request= null;
     protected $sessionHdl= null;
     protected $spec = [];
     protected $attrL = [];
@@ -118,18 +115,24 @@ class Controler
         if (!$level) {
             return true;
         }
-        if ($level == 1) {
-            $urli = $this->request->getDocRoot();
-            echo 'uri is '.$urli. '<br>';
-            $urlp = $this->request->getRpath();
-            echo 'path is '.$urlp. '<br>';
-            $method = $this->request->getMethod();
-            echo 'method is '.$method. '<br>';
-        }
+
         foreach ($this->bases as $base) {
             $base-> setLogLevl($level);
         }
     }
+
+    protected function logUrl()
+    {
+        if ($this->logLevel == 1) {
+            $urli = $this->handle->getDocRoot();
+            echo 'uri is '.$urli. '<br>';
+            $urlp = $this->handle->getRpath();
+            echo 'path is '.$urlp. '<br>';
+            $method = $this->handle->getMethod();
+            echo 'method is '.$method. '<br>';
+        }
+    }
+
     
     protected function logStartView()
     {
@@ -194,7 +197,7 @@ class Controler
                 $cond = $c->isModif($attr);
             }
             $typ= $c->getTyp($attr);
-            $val=$this->request->getPrm($attr);
+            $val=$c->getPrm($attr);
             if (!is_null($val)) {
                 $valC = convertString($val, $typ);
                 if ($c->isModif($attr)) {
@@ -206,7 +209,7 @@ class Controler
                 }
             }
             $name=$attr.'_OP';
-            $val=$this->request->getPrm($name);
+            $val=$c->getPrm($name);
             if (!is_null($val)) {
                 $this->opL[$attr]=$val;
             }
@@ -231,7 +234,7 @@ class Controler
         $v=new View($this->handle);
         $home=$spec['Home'];
         $v->setTopMenu($home);
-        $action = $this->request->getAction();
+        $action = $this->handle->getAction();
         $v->show($action, $show);
         return true;
     }
@@ -247,10 +250,10 @@ class Controler
         $this->setLogLevl($logLevel);
         $this->sessionHdl= $this->sessionMgr->getHandle();
         $this->handle = new Handle($this->sessionHdl);
-        $this->request = $this->handle->getReq();		
-        $method=$this->request->getMethod();
+        $this->logUrl();
+        $method=$this->handle->getMethod();
         
-        if ($this->request->getDocRoot() == '/ABridgeAPI.php') {
+        if ($this->handle->getDocRoot() == '/ABridgeAPI.php') {
             genJASON($this->handle, true, true);
             $this->close();
             $this->showLog();
@@ -264,7 +267,7 @@ class Controler
             return $this->handle->getPath();
         }
         
-        $action = $this->request->getAction();
+        $action = $this->handle->getAction();
         $actionExec = false;
         if ($method =='POST') {
             if ($action == V_S_UPDT
@@ -296,14 +299,12 @@ class Controler
             }
         }
         if ($actionExec) {
-            $rdoc =$this->request->getDocRoot();
             if ($action == V_S_DELT) {
-                $npath = $this->request->popObj();
-                $this->handle = new Handle($npath,V_S_READ, $this->sessionHdl);
+                $npath = $this->handle->popObj();
+                $this->handle = new Handle($npath, V_S_READ, $this->sessionHdl);
             }
-
             if ($action != V_S_SLCT) {
-                $this->request->setAction(V_S_READ);
+                $this->handle->setAction(V_S_READ);
             }
         }
         $this->showView($show);

@@ -57,18 +57,18 @@ class Request
     protected function construct1($path)
     {
         $this->initPath($path);
-		$this->method='GET';
+        $this->method='GET';
         $this->initAction();
         $this->checkActionPath($this->getAction());
     }
 
-	protected function construct2($path, $action)
+    protected function construct2($path, $action)
     {
         $this->initPath($path);
         $this->action=$action;
         $this->checkActionPath($this->getAction());
     }
-	
+    
 // Path
      
     protected function initPath($pathStrg)
@@ -241,7 +241,7 @@ class Request
             if ($this->isClassPath()) {
                 $this->action = V_S_SLCT;
                 return $this->action;
-            }	
+            }
             return $this->action;
         }
         if ($this->method =='POST') {

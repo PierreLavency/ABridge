@@ -23,25 +23,25 @@ class Handle
         }
     }
 
-	protected function construct1($sessionHdl)
+    protected function construct1($sessionHdl)
     {
         $request = new Request();
         $this->initReq($request, $sessionHdl);
     }
-	
-	protected function construct2($path, $sessionHdl) 
-	{
+    
+    protected function construct2($path, $sessionHdl)
+    {
         $request = new Request($path);
-		$this->initReq($request,$sessionHdl);
-	}
-	
+        $this->initReq($request, $sessionHdl);
+    }
+    
     protected function construct3($path, $action, $sessionHdl)
     {
         $request = new Request($path, $action);
-		$this->initReq($request,$sessionHdl);
+        $this->initReq($request, $sessionHdl);
     }
 
-	protected function initReq($request, $sessionHdl)
+    protected function initReq($request, $sessionHdl)
     {
         $this->request = $request;
         $this->sessionHdl = $sessionHdl;
@@ -51,7 +51,7 @@ class Handle
         }
         $this->initObj();
     }
-	
+    
     protected function construct5($req, $sessionHdl, $objs, $obj, $main)
     {
         $this->request = $req;
@@ -105,10 +105,11 @@ class Handle
         }
     }
  
-	public function getSessionHdl() {
-		return $this->sessionHdl;
-	}
-	
+    public function getSessionHdl()
+    {
+        return $this->sessionHdl;
+    }
+    
     public function nullObj()
     {
         return (is_null($this->obj));
@@ -254,10 +255,10 @@ class Handle
         if ($found) {
             $path = '/'.implode('/', $res);
         } else {
-			$path ='/'.$mod.'/'.$id;
+            $path ='/'.$mod.'/'.$id;
             $objs[]=[$mod,$obj];
         }
-		$req = new Request($path, V_S_READ);
+        $req = new Request($path, V_S_READ);
         return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
     }
      
@@ -384,20 +385,36 @@ class Handle
 
 // from req
 
+
     public function setAction($action)
     {
-        return $this->getMain()->request->setAction($action);
+        // check rights !
+        return  $this->getMain()->request->setAction($action);
     }
 
     public function getReq()
     {
         return $this->getMain()->request;
     }
-
-
+    
+    public function getDocRoot()
+    {
+        return $this->request->getDocRoot();
+    }
+    
+    public function getRPath()
+    {
+        return $this->request->getRPath();
+    }
+    
     public function getPath()
     {
         return $this->request->getPath();
+    }
+ 
+    public function getAction()
+    {
+        return  $this->request->getAction();
     }
  
     public function getUrl()
@@ -405,8 +422,18 @@ class Handle
         return $this->request->getUrl();
     }
 
-    public function getRPath()
+    public function getMethod()
     {
-        return $this->request->getRPath();
+        return $this->request->getMethod();
+    }
+    
+    public function getPrm($attr)
+    {
+        return $this->request->getPrm($attr);
+    }
+    
+    public function popObj()
+    {
+        return $this->request->popObj();
     }
 }
