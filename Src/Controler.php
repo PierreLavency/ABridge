@@ -272,7 +272,7 @@ class Controler
         if ($method =='POST') {
             if ($action == V_S_UPDT
             or  $action == V_S_CREA
-            or  $action==V_S_SLCT) {
+            or  $action == V_S_SLCT) {
                 $res = $this->setVal($action);
             }
             if (!$this->handle->isErr()) {
@@ -300,8 +300,7 @@ class Controler
         }
         if ($actionExec) {
             if ($action == V_S_DELT) {
-                $npath = $this->handle->popObj();
-                $this->handle = new Handle($npath, V_S_READ, $this->sessionHdl);
+                $this->handle=$this->handle->getDD();
             }
             if ($action != V_S_SLCT) {
                 $this->handle->setAction(V_S_READ);

@@ -186,6 +186,23 @@ class Handle
         return $h;
     }
 
+    public function getDD()
+    {
+        if ($this->request->isRoot()) {
+            return $this;
+        }
+        $req = $this->request->popReq();
+        if ($req ->isRoot()) {
+            return $this->newHdl($req, $this->sessionHdl, [], $null, $this);
+        }
+        $objs= $this->attrObjs;
+        array_pop($objs);
+        $obje=$objs[count($objs)-1];
+        $obj=$obje[1];
+        return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
+    }
+    
+    
     public function getObjId($id)
     {
          // in selection list
@@ -392,11 +409,6 @@ class Handle
         return  $this->getMain()->request->setAction($action);
     }
 
-    public function getReq()
-    {
-        return $this->getMain()->request;
-    }
-    
     public function getDocRoot()
     {
         return $this->request->getDocRoot();
@@ -430,10 +442,5 @@ class Handle
     public function getPrm($attr)
     {
         return $this->request->getPrm($attr);
-    }
-    
-    public function popObj()
-    {
-        return $this->request->popObj();
     }
 }

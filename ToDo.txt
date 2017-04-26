@@ -4,11 +4,9 @@ BUG
 
 DEV
 - unify get code with get reference
-- review method names in View (menu);
-- review popobj
-- review logging in Controller
+- review logging in Controller and elsewhere
 
-- increase autorisations rule caapbility (classes indepent of path etc.)
+- increase autorisations rule capbility (classes indepent of path etc.)
 - review session management.
 - handle user preference
 - order in list query and attr.
@@ -57,6 +55,8 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- review popobj // 4hours
+- review method names in View (menu) // 4 hours
 - BUG FIX with student role on inscription not belonging to user. // 2 hours
 - extend home menu with path // 1 day
 - integrate role // 5 days

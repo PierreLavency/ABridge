@@ -201,21 +201,21 @@ class Request
         return $path;
     }
         
-    public function popObj()
+    public function popReq()
     {
-        if ($this->isClassPath()) {
-            throw new Exception(E_ERC035);
-        }
-        if ($this->length <= 2) {
-            $path ='/';
-            return $path;
+        if ($this->isRoot) {
+            return $this;
         }
         $res = $this->pathArr;
-        array_pop($res);
-        array_pop($res);
+        if ($this->isClassPath()) {
+            array_pop($res);
+        }
+        if ($this->isObjPath()) {
+            array_pop($res);
+            array_pop($res);
+        }
         $path = $this->arrToPath($res);
-        $this->construct2($path, V_S_READ);
-        return $path;
+        return new Request($path, V_S_READ);
     }
 
     public function pushId($id)

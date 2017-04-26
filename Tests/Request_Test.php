@@ -143,10 +143,10 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 	
 			$p1 = new Request('/X',V_S_CREA);
 			$this->assertNotNull($p1);
-		
+/*		
 			try {$x=$p1->popObj();} catch (Exception $e) {$r= $e->getMessage();}
 			$this->assertEquals($r, E_ERC035);		
-
+*/
 			$p1 = new Request('/X/1',V_S_READ);
 			$this->assertNotNull($p1);	
 			
@@ -210,9 +210,10 @@ class Request_Test extends PHPUnit_Framework_TestCase {
      */
 	public function testPop ($p,$e)
 	{
-			$r=new Request($p,V_S_READ);
+			$r=new Request($p);
 		
-			$res = $r->popObj();
+			$r = $r->popReq();
+			$res=$r->getRPath();
 			$this->assertEquals($e,$res);
 
 
@@ -221,6 +222,9 @@ class Request_Test extends PHPUnit_Framework_TestCase {
         return [
 				['/X/1/X/1','/X/1'],
 				['/X/1','/'],
+				['/','/'],
+				['/X','/'],
+				['/X/1/X', '/X/1']
  			];
     }
 	
@@ -239,8 +243,8 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 			$this->assertEquals($act,$r2->getAction());
 			
 			$r2->pushId(1);
-			$r2->popObj();
-			$this->assertEquals($e,$r2->getRPath());
+			$r3=$r2->popReq();
+			$this->assertEquals($e,$r3->getRPath());
 
 	}
 	public function Provider_push() {
