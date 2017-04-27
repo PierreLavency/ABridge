@@ -1,10 +1,10 @@
-a:7:{i:0;s:1785:"<!DOCTYPE html>
+a:7:{i:0;s:1787:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/viewCasesXref/2 ><input type='hidden' name='Action' value='Create' >
+ <form method=POST action= '/ABridge.php/viewCasesXref/2' ><input type='hidden' name='Action' value='Create' >
 	<table > <tr>
 		<td>
 			<a href='/ABridge.php/dir?Action=Select' >dir</a>
@@ -383,13 +383,13 @@ MotherOf
 
 
  </body> 
- </html>";i:2;s:956:"<!DOCTYPE html>
+ </html>";i:2;s:958:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/viewCasesXref/2 ><input type='hidden' name='Action' value='Update' >
+ <form method=POST action= '/ABridge.php/viewCasesXref/2' ><input type='hidden' name='Action' value='Update' >
 	<table > <tr>
 		<td>
 			<a href='/ABridge.php/dir?Action=Select' >dir</a>
@@ -445,13 +445,13 @@ MotherOf
 </form>  
 
  </body> 
- </html>";i:3;s:894:"<!DOCTYPE html>
+ </html>";i:3;s:896:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/viewCasesXref/2 ><input type='hidden' name='Action' value='Delete' >
+ <form method=POST action= '/ABridge.php/viewCasesXref/2' ><input type='hidden' name='Action' value='Delete' >
 	<table > <tr>
 		<td>
 			<a href='/ABridge.php/dir?Action=Select' >dir</a>
@@ -509,13 +509,13 @@ MotherOf
 </form>  
 
  </body> 
- </html>";i:4;s:1946:"<!DOCTYPE html>
+ </html>";i:4;s:1948:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= /ABridge.php/viewCasesXref/2 ><input type='hidden' name='Action' value='Select' >
+ <form method=POST action= '/ABridge.php/viewCasesXref/2' ><input type='hidden' name='Action' value='Select' >
 	<table > <tr>
 		<td>
 			<a href='/ABridge.php/dir?Action=Select' >dir</a>

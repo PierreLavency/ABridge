@@ -149,7 +149,7 @@ class Handle
 
 // Autorize Actions on object
 
-    public function getActionPath($action)
+    public function getActionUrl($action)
     {
         // for object menu
         $req = $this->request->getActionReq($action);
@@ -160,7 +160,7 @@ class Handle
         return $req->getUrl();
     }
 
-    public function getCrefPath($attr, $action)
+    public function getCrefUrl($attr, $action)
     {
         // for Cref menu
         $req= $this->request->getCrefReq($attr, $action);
@@ -418,20 +418,15 @@ class Handle
     {
         return $this->request->getRPath();
     }
-    
-    public function getPath()
-    {
-        return $this->request->getPath();
-    }
- 
+
     public function getAction()
     {
         return  $this->request->getAction();
     }
  
-    public function getUrl()
+    public function getUrl($Prm = [])
     {
-        return $this->request->getUrl();
+        return $this->request->getUrl($Prm);
     }
 
     public function getMethod()

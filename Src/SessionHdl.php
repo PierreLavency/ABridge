@@ -200,10 +200,10 @@ class SessionHdl
         if (baseType($typ) != baseType($typs)) {
             return false;
         }
-        if  ($typ == M_REF
-		and $typs == M_REF
-		and ($obj->getModRef($attro) != $sess->getModRef($attrs))
-		) {
+        if ($typ == M_REF
+        and $typs == M_REF
+        and ($obj->getModRef($attro) != $sess->getModRef($attrs))
+        ) {
             return false;
         }
         $id1=$sess->getVal($attrs);

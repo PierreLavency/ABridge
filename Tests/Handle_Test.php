@@ -186,14 +186,14 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$url= $ht->getUrl();
 		$urle= $h->getUrl();
 		$this->assertEquals($urle,$url);		
-		$url= $h1->getActionPath(V_S_CREA);
+		$url= $h1->getActionUrl(V_S_CREA);
 		$this->assertEquals($urle,$url);
 		
 		$h = new Handle($path0,V_S_SLCT,$ho);
 		$h=$h->getObjId($h1->getId());
 		$this->assertEquals($h1->getUrl(),$h->getUrl());
 
-		$url = $h1->getCrefPath('CRef',V_S_CREA);
+		$url = $h1->getCrefUrl('CRef',V_S_CREA);
 		$this->assertEquals($h1->getUrl().'/CRef?Action='.V_S_CREA,$url);
 		
 		$id = $h1->getVal('Code');
@@ -250,67 +250,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->setTyp($typ);
 		$db=$this->db;
 		$db->beginTrans();
-		
-		$path1 = '/'.$this->CName.'/1';
-		$r = new Request($path1,V_S_READ);
 
-//		$ho = new Home('/'.$this->CUser.'/1'); 
-		$ho = new sessionHdl();
-
-		$h1 = new Handle($r,$ho);
-		$this->assertNotNull($h1);
-		$this->assertEquals($path1,  $h1->getRPath());
-
-		$res = $h1->getRef('Ref');
-		$this->assertNull($res);
-		
-		$act_path = $h1->getActionPath('x');
-		$this->assertNull($act_path);
-			
-		$act_path = $h1->getActionPath(V_S_UPDT);
-		$this->assertNotNull($act_path);			
-
-		
-        $this->assertEquals(2,$h1->getCode('Code',2)->getId());		
-		$this->assertNull($h1->getCode('Code',2)->getPath());
-		
-		$h2 = $h1->getCref('CRef',2);		
-		$path2=$path1.'/CRef/2';
-		$this->assertEquals($path2,  $h2->getRPath());
-
-		$act_path = $h2->getCrefPath('CRef',V_S_CREA);
-		$this->assertNull($act_path);
-		
-		$h3 = $h2->getCref('CRef',3);
-		$h4 = $h3->getRef('Ref');
-//		$this->assertNull($h4->getRPath());
-
-		$r = new Request($path2,V_S_READ);
-		$h2 = new Handle($r,$ho);
-		
-		$act_path = $h2->getCrefPath('CRef',V_S_CREA);
-		$this->assertNull($act_path);	
-
-		$path3 = $path2.'/CRef/3/CRef';
-		$r = new Request($path3,V_S_CREA);		
-		$h5 = new Handle($r,$ho);
-		$act_path=$h5->getRPath();
-		$this->assertEquals($path3,  $act_path);
-
-		$path4 = '/'.$this->CName.'/4';
-		$r = new Request($path4,V_S_READ);		
-		$h6 = new Handle($r,$ho);
-
-		$h7 = $h6->getRef('Ref');
-		$this->assertEquals('/'.$this->CName.'/3',  $h7->getRPath());
-
-		$path5 = '/'.$this->CName.'/3';
-		$r = new Request($path5,V_S_READ);		
-		$h8 = new Handle($r,$ho);
-		$h9 = $h8->getRef('Ref');
-		$this->assertNull($h9->getPath());
-		
-		
 		$db->commit();
 	}
 	
@@ -325,47 +265,6 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->setTyp($typ);
 		$db=$this->db;
 		$db->beginTrans();
-
-		$path1 = '/';
-		$r = new Request($path1,V_S_READ);
-
-//		$ho = new Home('/'.$this->CUser.'/1'); 
-		$ho = new sessionHdl();
-		
-		$h1 = new Handle($r,$ho);
-		$this->assertNotNull($h1);	
-
-		$h2 = $h1->getCref($this->CName,1);		
-		$path2='/'.$this->CName.'/1';
-		$this->assertEquals($path2,  $h2->getRPath());
-
-		$path3 = '/'.$this->CName;
-		$r = new Request($path3,V_S_CREA);
-//		$ho = new Home('/'.$this->CUser.'/1'); 
-		$ho = new sessionHdl();
-
-		$h3 = new Handle($r,$ho);
-		$this->assertEquals($path3,  $h3->getRPath());		
-
-		$path4 = '/'.$this->CUser;
-		$r = new Request($path4,V_S_CREA);
-//		$ho = new Home('/'.$this->CUser.'/1'); 
-		$ho = new sessionHdl();
-		
-		try {$h4 = new Handle($r,$ho);} catch (Exception $e) {$res=$e->getMessage();}
-		$this->assertEquals($res,E_ERC049.':'.V_S_CREA);
-
-		$path1 = '/';
-		$r = new Request($path1,V_S_READ);
-//		$ho = new Home('/');
-		$ho = new sessionHdl();
-		
-		$h1 = new Handle($r,$ho);
-		$this->assertNotNull($h1);	
-		
-		$act_path = $h1->getActionPath(V_S_READ);
-
-		$this->assertNull($act_path);			
 
 		
 		$db->commit();

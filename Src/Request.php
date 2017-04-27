@@ -126,12 +126,22 @@ class Request
         return $path;
     }
     
-    public function getUrl()
+    public function getUrl($prm = [])
     {
         $url= self::$docRoot.$this->path;
         $action =$this->getAction();
+        $first = true;
         if ($action != V_S_READ) {
             $url=$url.'?Action='.$action;
+            $first = false;
+        }
+        foreach ($prm as $name => $value) {
+            if ($first) {
+                $url = $url.'?'.$name.'='.$value;
+                $first = false;
+            } else {
+                $url = $url. '&'.$name.'='.$value;
+            }
         }
         return $url;
     }
@@ -151,12 +161,7 @@ class Request
     {
         return ($this->isRoot);
     }
-// deprecated use Url.
-    public function getPath()
-    {
-        $path = $this->getDocRoot().$this->path;
-        return $path;
-    }
+
 
     public function getRPath()
     {
@@ -312,7 +317,7 @@ class Request
                 return true;
             }
         }
-        throw new Exception(E_ERC048.':'.$action.':'.$this->getPath());
+        throw new Exception(E_ERC048.':'.$action.':'.$this->getRPath());
     }
 
     public function getActionReq($action)

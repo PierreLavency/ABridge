@@ -11,7 +11,7 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 		$_SERVER['REQUEST_METHOD']='GET';
 		$r=new Request();
 		$this->assertnotNull($r);
-		$this->assertEquals($r->getRootUrl(),$r->getPath());
+		$this->assertEquals($r->getRootUrl(),$r->getUrl());
 	}
 	
 
@@ -66,20 +66,21 @@ class Request_Test extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider Prov_testRequest1
      */	
-	public function testRequest1($p,$e)
+	public function testRequest1($p,$e,$prm,$e2)
 	{
 			$req= new Request($p);
 			$res=$req->getAction();
 			$this->assertEquals($e,$res);
+			$this->assertEquals($req->getUrl().$e2,$req->getUrl($prm));
 	}
 
     public function Prov_testRequest1() {
         return [
-			['/',   	V_S_READ],
-			['/X', 		V_S_SLCT],
-			['/X/1',	V_S_READ],
-			['/X/1/X', 	V_S_SLCT],
-			['/X/1/X/2',V_S_READ],
+			['/',   	V_S_READ, ['X'=>'x'], "?X=x"],
+			['/X', 		V_S_SLCT, ['X'=>'x'], "&X=x"],
+			['/X/1',	V_S_READ, ['X'=>'x','Y'=>'y'], "?X=x&Y=y"],
+			['/X/1/X', 	V_S_SLCT, ['X'=>'x','Y'=>'y'], "&X=x&Y=y"],
+			['/X/1/X/2',V_S_READ, [], ""],
  			];
     }	
 	
@@ -143,10 +144,7 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 	
 			$p1 = new Request('/X',V_S_CREA);
 			$this->assertNotNull($p1);
-/*		
-			try {$x=$p1->popObj();} catch (Exception $e) {$r= $e->getMessage();}
-			$this->assertEquals($r, E_ERC035);		
-*/
+
 			$p1 = new Request('/X/1',V_S_READ);
 			$this->assertNotNull($p1);	
 			
@@ -191,9 +189,9 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 			['/*/1',	V_S_READ,	E_ERC036.':/*/1:0'],
 			['/a/$',	V_S_READ,	E_ERC036.':/a/$:1'],
 			['/a/1/$',	V_S_READ,	E_ERC036.':/a/1/$:2'],
-			['/X',		V_S_READ,	E_ERC048.':'.V_S_READ.':/ABridge.php'.'/X'],
-			['/X/1',	V_S_SLCT,	E_ERC048.':'.V_S_SLCT.':/ABridge.php'.'/X/1'],
-			['/',		V_S_SLCT,	E_ERC048.':'.V_S_SLCT.':/ABridge.php'.'/'],
+			['/X',		V_S_READ,	E_ERC048.':'.V_S_READ.':/X'],
+			['/X/1',	V_S_SLCT,	E_ERC048.':'.V_S_SLCT.':/X/1'],
+			['/',		V_S_SLCT,	E_ERC048.':'.V_S_SLCT.':/'],
 			
 		];
 	
@@ -253,24 +251,6 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 				['/X/1/Y',	'/X/1/Y/1',	'B',V_S_CREA,	'/X/1/Y/1/B'],
  			];
     }
-/*	
-	public function testGetModReq() 
-	{
-			$name = 'X';
-			$r=new Request('/',V_S_READ);
-			$r = $r->getModReq($name,V_S_CREA);
-			$p1='/'.$name; 
-			$this->assertEquals($p1, $r->getRPath());
-			
-			$res = $r->pushId(1);
-			$p2=$p1.'/1';
-			$this->assertEquals($p2, $r->getRPath());
-			
-			$r = $r->getActionReq(V_S_SLCT);
-			$this->assertEquals($p1, $r->getRPath());
-		
-			
-	}
-*/			
+
 }
 

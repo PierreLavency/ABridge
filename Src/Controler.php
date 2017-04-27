@@ -257,14 +257,14 @@ class Controler
             genJASON($this->handle, true, true);
             $this->close();
             $this->showLog();
-            return $this->handle->getPath();
+            return $this->handle->getUrl();
         }
         
         if ($this->handle->nullobj()) {
             $this->showView($show);
             $this->close();
             $this->showLog();
-            return $this->handle->getPath();
+            return $this->handle->getUrl();
         }
         
         $action = $this->handle->getAction();
@@ -309,6 +309,6 @@ class Controler
         $this->showView($show);
         $this->close();
         $this->showLog();
-        return $this->handle->getPath();
+        return $this->handle->getUrl();
     }
 }

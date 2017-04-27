@@ -29,7 +29,7 @@ $s = $test[$i][2];
 
 $home= new SessionHdl();
 $request = new Request($p,V_S_READ);
-$handle = new Handle($request, $home);	
+$handle = new Handle($p,V_S_READ, $home);	
 $v = new View($handle);	
 
 $v->setTopMenu(['/dir']);

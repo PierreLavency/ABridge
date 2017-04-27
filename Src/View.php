@@ -408,7 +408,7 @@ class View
             if ($attr == 'id' and $viewState == V_S_CREF) {
                 $res[H_TYPE]=H_T_LINK;
                 $res[H_LABEL]=$this->show(V_S_REF, false);
-                $res[H_NAME]=$this->handle->getPath();
+                $res[H_NAME]=$this->handle->getUrl();
                 return $res;
             }
             if ($typ==M_CREF) {
@@ -441,7 +441,7 @@ class View
                     $res[H_TYPE]= $rep;
                 }
                 if ($rep==V_S_REF) {
-                    $refpath = $nh->getPath();
+                    $refpath = $nh->getUrl();
                     $res[H_TYPE]= H_T_LINK;
                     $res[H_NAME]=$refpath;
                     if (is_null($refpath)) {
@@ -501,7 +501,7 @@ class View
         }
         if ($viewn != $this->_name) {
             $res[H_LABEL]=$this->getLbl($viewn);
-            $res[H_NAME]="'".$this->handle->getPath().'?View='.$viewn."'";
+            $res[H_NAME]="'".$this->handle->getUrl(['View'=>$viewn])."'";
             $res[H_TYPE]=H_T_LINK;
         } else {
             $res[H_TYPE]=H_T_PLAIN;
@@ -528,7 +528,7 @@ class View
             if ($nav==V_B_RFCH) {
                 $nav=V_S_SLCT;
             }
-            $path = $this->handle->getActionPath($nav);
+            $path = $this->handle->getActionUrl($nav);
             if (is_null($path)) {
                 return false;
             }
@@ -570,18 +570,18 @@ class View
         $attr=$spec[V_ATTR];
         if ($nav==V_B_NEW) {
             $result[H_TYPE]=H_T_LINK;
-            $path=$this->handle->getCrefPath($attr, V_S_CREA);
+            $path=$this->handle->getCrefUrl($attr, V_S_CREA);
             if (is_null($path)) {
                 return false;
             }
             $result[H_NAME]="'".$path."'";
         } else {
             $pos = $spec[V_ID];
-            $viewn="";
+            $prm = [$attr=>$pos];
             if (!is_null($this->_name)) {
-                $viewn='&View='.$this->_name;
+                $prm['View']=$this->_name;
             }
-            $path="'".$this->handle->getPath().'?'.$attr.'='.$pos.$viewn."'";
+            $path="'".$this->handle->getUrl($prm)."'";
             if ($viewState == V_S_SLCT) {
                 $result[H_TYPE]=H_T_SUBMIT;
                 $result[H_BACTION]=$path;
@@ -639,7 +639,7 @@ class View
                 break;
             case V_FORM:
                 $result[H_TYPE]=H_T_FORM;
-                $path = $this->handle->getPath();
+                $path = "'".$this->handle->getUrl()."'";
                 $result[H_ACTION]="POST";
                 $hid = [];
                 $hid['Action']=$viewState;
