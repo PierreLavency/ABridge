@@ -47,7 +47,7 @@ class Handle
         $this->sessionHdl = $sessionHdl;
         $res = $sessionHdl->checkReq($this->request);
         if (!$res) {
-            throw new Exception(E_ERC049.':'.$action);
+            throw new Exception(E_ERC049.':'.$this->request->getUrl());
         }
         $this->initObj();
     }
@@ -101,7 +101,7 @@ class Handle
         $this->obj =$obj;
         $res = $this->sessionHdl->checkARight($this->request, $this->attrObjs);
         if (!$res) {
-            throw new Exception(E_ERC053);
+            throw new Exception(E_ERC053.':'.$this->request->getUrl());
         }
     }
  

@@ -102,8 +102,6 @@ class SessionMgr
  //           echo 'Age :'.$tst;
     }
 
-
-
     public function isNew()
     {
         return $this->newSess;

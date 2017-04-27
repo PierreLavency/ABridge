@@ -49,7 +49,7 @@ define('E_ERC046', "ERC046");  // type change not supported
 define('E_ERC047', "ERC047");  // not supported at inherited level
 define('E_ERC048', "ERC048");  // illegal action on path type
 define('E_ERC049', "ERC049");  // illegal action on obj
-define('E_ERC050', "ERC050");  // illegal action root
+define('E_ERC050', "ERC050");  // NOT USED
 define('E_ERC051', "ERC051");  // no sessionMg found
 define('E_ERC052', "ERC052");  // cannot delete - ref integrity
 define('E_ERC053', "ERC053");  // acess denied

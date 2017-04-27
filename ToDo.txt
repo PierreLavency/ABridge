@@ -1,14 +1,21 @@
 BUG 
 - session with API.
 - ' in txt fields.
+- on select / create user in student role.
 
 DEV
-- unify get code with get reference
+- review Url vs path and prm in View.
+- unify get code with get reference.
+- extend code/cref to "dot" Cref attributes.
+- handle user preference.
+
 - review logging in Controller and elsewhere
+- clean up errors in access management.
 
 - increase autorisations rule capbility (classes indepent of path etc.)
 - review session management.
-- handle user preference
+
+
 - order in list query and attr.
 - confirmation on META load / Java Script
 - selection for Ref / Java script 
