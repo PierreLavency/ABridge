@@ -47,9 +47,6 @@ require_once 'CstView.php';
 			'attrList' => [
 				V_S_REF		=> ['SurName','Name'],
 				],
-/*			'attrHtml' => [
-				V_S_READ => ['Profile'=>[H_SLICE=>5,V_COUNTF=>false,V_CTYP=>V_C_TYP1]]					
-				],		*/
 		],
 		'Role' =>[	
 				'attrList' => [

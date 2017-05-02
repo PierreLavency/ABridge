@@ -818,7 +818,7 @@ class View
                 if ($ctyp == V_C_TYPN or count($list)==0) {
                     $view[]=[V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_B_NEW];
                 }
-                if ($ctyp == V_C_TYP1 or count($list)>0) {
+                if ($ctyp == V_C_TYP1 and count($list)>0) {
                     $view[]=[V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_C_TYP1,V_ID=>$list[0]];
                 }
                 if ($ctyp==V_C_TYPN) {
