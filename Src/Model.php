@@ -483,6 +483,17 @@ class Model
         return ($patha);
     }
 
+    
+    public function isOneCref($attr)
+    {
+        $patha=$this->getCrefMod($attr);
+        if (!$patha) {
+            throw new Exception($this->getErrLine());
+        }
+        $m=new Model($patha[1]);
+        return $m->isBkey($patha[2]);
+    }
+    
     public function newCref($attr)
     {
         $patha=$this->getCrefMod($attr);
@@ -1081,7 +1092,8 @@ class Model
         if ($type == M_CREF) { //will not work if on different Base !!
             $path = $this->getParm($attr);
             $patha=explode('/', $path);
-            $hdlr=$this->stateHdlr;
+            $m= new Model($patha[1]);
+            $hdlr=$m->stateHdlr;
             $res=$hdlr->findObj($patha[1], $patha[2], $this->getId());
             return $res;
         }
@@ -1174,14 +1186,14 @@ class Model
                 return false;
             }
         }
-        // BKey
+        /* BKey -> move to save !!
         if ($this->isBkey($attr) and $check) {
             $res = $this->checkBkey($attr, $val);
             if (! $res) {
                 $this->errLog->logLine(E_ERC018.':'.$attr.':'.$val);
                 return false;
             }
-        }
+        } */
         return ($this->setValNoCheck($attr, $val));
     }
     /**
@@ -1398,6 +1410,19 @@ class Model
         return true;
     }
 
+    protected function checkBkeyList($keyList)
+    {
+        foreach ($keyList as $attr) {
+            $val =$this->getVal($attr);
+            $res=$this->checkBkey($attr, $val);
+            if (! $res) {
+                $this->errLog->logLine(E_ERC018.':'.$attr.':'.$val);
+                return false;
+            }
+        }
+        return true;
+    }
+    
     protected function checkCkeyList($ckeyList)
     {
         foreach ($ckeyList as $attrLst) {
@@ -1444,11 +1469,20 @@ class Model
             }
         }
 
+        $keyList=$this->getAllBkey();
+        if (!$this->checkBkeyList($keyList)) {
+            return false;
+        }
+        
         $ckeyList=$this->getAllCkey();
         if (!$this->checkCkeyList($ckeyList)) {
             return false;
         }
         if (!is_null($abstr)) {
+            $keyList=$abstr->getAllBkey();
+            if (!$this->checkBkeyList($keyList)) {
+                return false;
+            }
             $ckeyList= $abstr->getAllCkey();
             if (!$this->checkCkeyList($ckeyList)) {
                 return false;

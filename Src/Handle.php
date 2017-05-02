@@ -153,7 +153,7 @@ class Handle
     {
         // for object menu
         $req = $this->request->getActionReq($action);
-        $res = $this->sessionHdl->checkARight($req, $this->attrObjs);
+        $res = $this->sessionHdl->checkARight($req, $this->attrObjs, false);
         if (!$res) {
             return null;
         }
@@ -178,7 +178,7 @@ class Handle
 
     protected function newHdl($req, $sessionHdl, $objs, $obj, $robj)
     {
-        $res = $this->sessionHdl->checkARight($req, $objs);
+        $res = $this->sessionHdl->checkARight($req, $objs, false); // all access in read so false
         if (!$res) {
             return null;
         }
@@ -193,7 +193,7 @@ class Handle
         }
         $req = $this->request->popReq();
         if ($req ->isRoot()) {
-            return $this->newHdl($req, $this->sessionHdl, [], $null, $this);
+            return $this->newHdl($req, $this->sessionHdl, [], null, $this);
         }
         $objs= $this->attrObjs;
         array_pop($objs);
@@ -329,6 +329,11 @@ class Handle
     public function getModRef($attr)
     {
         return $this->obj->getModRef($attr);
+    }
+
+    public function isOneCref($attr)
+    {
+        return $this->obj->isOneCref($attr);
     }
     
     public function isProtected($attr)

@@ -1,14 +1,16 @@
 <?php
 	
 
-// when running this data will be lost !!
-
 
 	$Code = 'Code';	
 	$CodeVal= 'CodeValue';
 	$Student = 'Student';
 	$Inscription = 'Inscription';
 	$Cours = 'Cours';
+	$User ='User';
+	$Role = 'Role';
+	$Session ='Session';
+	$Distribution = 'Distribution';
 	
 	// CodeVal
 		
@@ -40,30 +42,26 @@
 
 
 	// User
-		
-
-	// Role
-		
-	$obj = new Model('Role');
-	$res= $obj->deleteMod();
-
-	$res = $obj->addAttr('Name',M_STRING);
- 	$res = $obj->addAttr('Spec',M_TXT);
-
-	echo "Role<br>";		
+	$obj = new Model($User);
+	
+	$res = $obj->addAttr('Profile',M_CREF,'/'.$Student.'/'.$User);
+	
+	echo "User<br>";		
 	$res = $obj->saveMod();	
 	$r = $obj->getErrLog ();
 	$r->show();
 	
+	
+	// Role
+		
+
+	
+	// Distribution
+
+
+
 	
 	// Session 
 	
-	$obj = new Model('Session');
 
-	$res = $obj->addAttr('Role',M_REF,'/Role');
-
-	echo "Session<br>";		
-	$res = $obj->saveMod();	
-	$r = $obj->getErrLog ();
-	$r->show();
 	

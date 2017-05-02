@@ -1,15 +1,26 @@
 BUG 
-- session with API.
-- ' in txt fields.
+B1 session with API.
+B2 ' in txt fields. 
+B6 refresh menu when role changed.
+B7 "&" in url 
 
 DEV
+- link menu and roles.
+- fall back on id when REF view is null.
+- unify management of param on GET and POST
 - handle session singleton
 - unify get code with get reference.
 - extend code/cref to "dot" Cref attributes.
 - handle user preference.
 - review logging 
-- increase autorisations rule capbility (classes indepent of path etc.)
+- check Access on when setting id with Ref/Cref (?)
+- increase autorisations rule capability (classes indepent of path, views etc.)
 - review session management.
+
+- review custom code integration.
+- confirmation on META load (Java Script)
+- handle predefine models. 
+- user Jason to save data rather than serilialisation.
 
 - order in list query and attr.
 - confirmation on META load / Java Script
@@ -23,14 +34,16 @@ DEV
 - set up modif logging // node.js ?
 
 - changed DB model independently of class model.
+- implement unique index.
 - support CREF on abstract (?)
 
 - Authenthication 
-- Authorisation should allow access not linked to home
+
 
 TEST
-- Performance
-- test cookies 
+- review controller 
+- Performance -> review controller tests 
+- test cookies -> review session 
 - improve view test coverage - need to separate view show and build // some progress
 - set up unit test for unittest
 
@@ -57,9 +70,15 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- implement 1 to 1 view. // 4 hours
+- Authorisation should allow access not linked to home // 2 days 
+B3 selection on unique attributes (move check to save) / 2 hours
+B4 Cref across BaseHandler; /fixed 1 hour
+B5 remove protection when checking action / fixed 2 hours
+
 - review Url vs path and prm in View. // 4 hours
 - clean up errors in access management.
-- BUGFIX - on select / create user in student role // 4 hours
+- B0 - on select / create user in student role // 4 hours
 - review popobj // 4hours
 - review method names in View (menu) // 4 hours
 - BUG FIX with student role on inscription not belonging to user. // 2 hours

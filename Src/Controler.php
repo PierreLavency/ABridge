@@ -133,7 +133,6 @@ class Controler
         }
     }
 
-    
     protected function logStartView()
     {
         if ($this->logLevel <=1) {

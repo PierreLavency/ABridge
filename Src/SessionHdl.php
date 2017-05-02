@@ -22,6 +22,18 @@ class SessionHdl
         $this->session=null;
     }
  
+    public function refresh()
+    {
+        $this->construct1($this->session);
+    }
+ 
+ 
+    protected function construct1($session)
+    {
+         $role = $session->getRef('Role');
+         $this->construct2($session, $role);
+    }
+ 
     protected function construct2($session, $role)
     {
         $this->roleSpec=[];
@@ -38,7 +50,6 @@ class SessionHdl
             $this->roleSpec=[['true', 'true', 'true']];
             return;
         }
-        
         if (! is_null($role)) {
             $res = $role->getVal('Spec');
             $val = json_decode($res, true);
@@ -83,6 +94,7 @@ class SessionHdl
         
     protected function getCond($action, $modpath)
     {
+//		echo ' '.$action.':'.$modpath."<br>";
         $roleSpec = $this->roleSpec;
         $cond = [];
         foreach ($roleSpec as $elm) {
@@ -140,7 +152,7 @@ class SessionHdl
         return $condElm;
     }
 
-    public function checkARight($req, $attrObjs)
+    public function checkARight($req, $attrObjs, $protect = true)
     {
         if (is_null($req)) {
             return false;
@@ -154,7 +166,7 @@ class SessionHdl
         foreach ($attrObjs as $attrObj) {
             $attr = $attrObj[0];
             $obj = $attrObj[1];
-            $res = $this->checkAttrCond($pathcond, $attr, $obj);
+            $res = $this->checkAttrCond($pathcond, $attr, $obj, $protect);
             if (!$res) {
                 return false;
             }
@@ -162,7 +174,7 @@ class SessionHdl
         return true;
     }
     
-    protected function checkAttrCond($pathcond, $attr, $obj)
+    protected function checkAttrCond($pathcond, $attr, $obj, $protect)
     {
         $cond = $this->getCondAttr($pathcond, $attr);
         if ($cond == ['true']) {
@@ -175,7 +187,7 @@ class SessionHdl
                 $attro= $attra[0];
                 $attrs=$attra[1];
             }
-            $res = $this->checkLinkAttr($obj, $attro, $attrs);
+            $res = $this->checkLinkAttr($obj, $attro, $attrs, $protect);
             if (!$res) {
                 return false;
             }
@@ -183,7 +195,7 @@ class SessionHdl
         return true;
     }
     
-    protected function checkLinkAttr($obj, $attro, $attrs)
+    protected function checkLinkAttr($obj, $attro, $attrs, $protect)
     {
         if ($this->isRoot) {
             return true;
@@ -209,12 +221,16 @@ class SessionHdl
         $id1=$sess->getVal($attrs);
         $id2=$obj->getVal($attro);
         if ($id1 === $id2) {
-            $obj->protect($attro);
+            if ($protect) {
+                $obj->protect($attro);
+            }
             return true;
         }
         if ($obj->getId()==0 and is_null($id2)) {
-            $obj->setVal($attro, $id1);
-            $obj->protect($attro);
+            if ($protect) {
+                $obj->setVal($attro, $id1);
+                $obj->protect($attro);
+            }
             return true;
         }
         return false;

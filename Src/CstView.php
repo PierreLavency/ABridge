@@ -47,6 +47,11 @@ define('V_B_RFCH', "Refresh");
 define('V_B_NXT', "Next");
 define('V_B_PRV', "Previous");
 define('V_B_NEW', "New");
+define('V_COUNTF', "v_countf");
+define('V_CTYP', "v_ctyp");
+define('V_C_TYP1', "v_c_typ1");
+define('V_C_TYPN', "v_c_typn");
+
 
 define('H_TYPE', "type");
 define('H_T_TEXTAREA', "textarea");

@@ -298,7 +298,10 @@ class View
             return H_T_TEXTAREA;
         }
         if ($typ == M_CREF) {
-            return [H_SLICE=>10,];
+            if ($attr!= V_S_SLCT and $this->handle->isOneCref($attr)) {
+                return [V_CTYP=>V_C_TYP1];
+            }
+            return [H_SLICE=>10,V_COUNTF=>true,V_CTYP=>V_C_TYPN];
         }
         return H_T_PLAIN;
     }
@@ -386,10 +389,12 @@ class View
                 }
                 foreach ($vals as $v) {
                     $m = $this->handle->getCode($attr, (int) $v);
-                    $vw = new View($m);
-                    $l = $vw->show(V_S_REF, false);
-                    $r = [$v,$l];
-                    $values[]=$r;
+                    if (! is_null($m)) {
+                        $vw = new View($m);
+                        $l = $vw->show(V_S_REF, false);
+                        $r = [$v,$l];
+                        $values[]=$r;
+                    }
                 }
                 $res[H_VALUES]=$values;
             }
@@ -568,28 +573,41 @@ class View
         $nav=$spec[V_P_VAL];
         $result[H_LABEL]=$this->getLbl($nav);
         $attr=$spec[V_ATTR];
-        if ($nav==V_B_NEW) {
-            $result[H_TYPE]=H_T_LINK;
-            $path=$this->handle->getCrefUrl($attr, V_S_CREA);
-            if (is_null($path)) {
-                return false;
-            }
-            $result[H_NAME]="'".$path."'";
-        } else {
-            $pos = $spec[V_ID];
-            $prm = [$attr=>$pos];
-            if (!is_null($this->_name)) {
-                $prm['View']=$this->_name;
-            }
-            $path="'".$this->handle->getUrl($prm)."'";
-            if ($viewState == V_S_SLCT) {
-                $result[H_TYPE]=H_T_SUBMIT;
-                $result[H_BACTION]=$path;
-            }
-            if ($viewState == V_S_READ) {
+        switch ($nav) {
+            case V_B_NEW:
                 $result[H_TYPE]=H_T_LINK;
-                $result[H_NAME]=$path;
-            }
+                $path=$this->handle->getCrefUrl($attr, V_S_CREA);
+                if (is_null($path)) {
+                    return false;
+                }
+                $result[H_NAME]="'".$path."'";
+                break;
+            case V_C_TYP1:
+                $id=$spec[V_ID];
+                $nh=$this->handle->getCref($attr, $id);
+                if (is_null($nh)) {
+                    return false;
+                }
+                $v = new View($nh);
+                $result[H_TYPE]=H_T_LINK;
+                $result[H_NAME]="'".$nh->getUrl([])."'";
+                $result[H_LABEL]=$res = $v->buildView(V_S_REF, true);
+                break;
+            default:
+                $pos = $spec[V_ID];
+                $prm = [$attr=>$pos];
+                if (!is_null($this->_name)) {
+                    $prm['View']=$this->_name;
+                }
+                $path="'".$this->handle->getUrl($prm)."'";
+                if ($viewState == V_S_SLCT) {
+                    $result[H_TYPE]=H_T_SUBMIT;
+                    $result[H_BACTION]=$path;
+                }
+                if ($viewState == V_S_READ) {
+                    $result[H_TYPE]=H_T_LINK;
+                    $result[H_NAME]=$path;
+                }
         }
         return $result;
     }
@@ -793,10 +811,19 @@ class View
                 }
             }
             if ($typ == M_CREF) {
-                $view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL];
-                $view[]=[V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_B_NEW];
+                $prm = $this->getAttrHtml($attr, $viewState);
+                $ctyp=$prm[V_CTYP];
                 $list = $this->handle->getVal($attr);
-                $view = $this->getSlice($attr, $list, $view, $viewState);
+                $view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL];
+                if ($ctyp == V_C_TYPN or count($list)==0) {
+                    $view[]=[V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_B_NEW];
+                }
+                if ($ctyp == V_C_TYP1 or count($list)>0) {
+                    $view[]=[V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_C_TYP1,V_ID=>$list[0]];
+                }
+                if ($ctyp==V_C_TYPN) {
+                    $view = $this->getSlice($attr, $list, $view, $viewState, $prm);
+                }
                 $specL[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
             }
         }
@@ -821,9 +848,10 @@ class View
         $arg[]= [V_TYPE=>V_LIST,V_LT=>V_ALIST,V_ARG=>$spec];
         if ($viewState == V_S_SLCT) {
             $view=[];
+            $prm = $this->getAttrHtml(V_S_SLCT, $viewState);
             $view[]=[V_TYPE=>V_ELEM,V_ATTR => V_S_SLCT, V_PROP => V_P_LBL];
             $list=$this->handle->select();
-            $view = $this->getSlice(V_S_SLCT, $list, $view, $viewState);
+            $view = $this->getSlice(V_S_SLCT, $list, $view, $viewState, $prm);
             $specS[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
             $arg[] = [V_TYPE=>V_LIST,V_LT=>V_CLIST,V_ARG=>$specS];
         }
@@ -845,12 +873,11 @@ class View
         return $r;
     }
 
-    protected function getSlice($attr, $list, $viewL, $viewState)
+    protected function getSlice($attr, $list, $viewL, $viewState, $prm)
     {
         $view[]=$viewL[0];
         $c=count($list);
         $pos=0;
-        $prm = $this->getAttrHtml($attr, $viewState);
         $slice = $prm[H_SLICE];
         $npos = $this->handle->getPrm($attr); //not work
         if (!is_null($npos)) {
@@ -873,12 +900,15 @@ class View
             $viewe[]=[V_TYPE=>V_ELEM,V_ATTR => $attr,
                       V_PROP => V_P_VAL,V_ID=>$id];
         }
-        $ind = $c;
-        if ($c > $slice) {
-            $nc=count($list)+$pos;
-            $ind=$c.' : '.$pos.'-'.$nc;
+        $countf=$prm[V_COUNTF];
+        if ($countf) {
+            $ind = $c;
+            if ($c > $slice) {
+                $nc=count($list)+$pos;
+                $ind=$c.' : '.$pos.'-'.$nc;
+            }
+            $view[]=[V_TYPE=>V_PLAIN,V_STRING=>$ind];
         }
-        $view[]=[V_TYPE=>V_PLAIN,V_STRING=>$ind];
         if ($c > $slice) {
             $npos= $pos+$slice;
             if ($npos>=$c) {

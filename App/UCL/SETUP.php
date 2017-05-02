@@ -15,9 +15,10 @@ require_once 'CstView.php';
 		'Charge'	 => ['fileBase','genealogy',],
 		'User'	 	 => ['dataBase','genealogy',],
 		'Role'	 	 => ['dataBase','genealogy',],
+		'Distribution'=> ['dataBase','genealogy',],
 		],
 	'Home' =>
-		['/Session/1','/User','/Role','/Student','/Cours','/Inscription','/Prof','/Charge','/Code','/CodeValue','/'],
+		['/Session/1','/User','/Role','/Distribution','/Student','/Cours','/Inscription','/Prof','/Charge','/Code','/CodeValue','/'],
 		
 	'Views' => [
 	
@@ -25,22 +26,30 @@ require_once 'CstView.php';
 			'attrList' => [
 							V_S_READ=> ['id','User','Role','Comment','vnum','ctstp','utstp'],
 							V_S_UPDT=> ['id','User','Role','Comment'],					
-						],
+			],
 			'attrHtml' => [
 						V_S_UPDT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],
-						V_S_SLCT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],
-						V_S_READ => ['User'=>H_T_PLAIN,],					
-					],		
+						V_S_SLCT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],					
+			],		
 			'navList' => [V_S_READ => [V_S_UPDT,V_S_SLCT],
-						],
+			],
 
 		],
-		'User' =>[
-		
-				'attrList' => [
-					V_S_REF		=> ['SurName','Name'],
-				]
+		'Distribution' =>[
+			'attrHtml' => [
+				V_S_CREA => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
+				V_S_UPDT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
+				V_S_SLCT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
+			],
 
+		],
+		'User' =>[		
+			'attrList' => [
+				V_S_REF		=> ['SurName','Name'],
+				],
+/*			'attrHtml' => [
+				V_S_READ => ['Profile'=>[H_SLICE=>5,V_COUNTF=>false,V_CTYP=>V_C_TYP1]]					
+				],		*/
 		],
 		'Role' =>[	
 				'attrList' => [
@@ -57,6 +66,7 @@ require_once 'CstView.php';
 					V_S_CREA => ['Sexe'=>H_T_RADIO],
 					V_S_UPDT => ['Sexe'=>H_T_RADIO],
 					V_S_SLCT => ['Sexe'=>H_T_RADIO],
+					V_S_READ => ['InscritA'=>[H_SLICE=>5,V_COUNTF=>true,V_CTYP=>V_C_TYPN]]	
 				],
 				'attrProp' => [
 					V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
@@ -140,7 +150,7 @@ require_once 'CstView.php';
 				],
 				'attrHtml' => [
 							V_S_UPDT => ['User'=>H_T_SELECT],
-							V_S_SLCT => [V_S_SLCT=>[H_SLICE=>15]]
+							V_S_SLCT => [V_S_SLCT=>[H_SLICE=>15,V_COUNTF=>true,V_CTYP=>V_C_TYPN]]
 				]				
 		],
 		'Prof' => [

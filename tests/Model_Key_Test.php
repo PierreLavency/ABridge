@@ -329,7 +329,8 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 
 		
 		$res = $code->setVal('CodeName','Sexe');
-		$this->assertFalse($res);
+		$this->asserttrue($res);
+		$code->save();
 		$this->assertEquals($log->getLine(0),E_ERC018.':CodeName:Sexe');
 		
 						

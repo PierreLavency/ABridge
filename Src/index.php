@@ -24,13 +24,14 @@ if ($application == 'UnitTest') {
     return;
 }
 
+
 $path = "App/".$application .'/';
 require_once $path.'SETUP.php' ;
 $ctrl = new Controler($config, $conf);
 
 if (isset($init)) {
     $ctrl->beginTrans();
-//    require_once $path.'META.php';
+//    require_once $path.'DELTA.php';
     $ctrl->commit();
     return;
 }

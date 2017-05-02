@@ -9,6 +9,11 @@
 	$Student = 'Student';
 	$Inscription = 'Inscription';
 	$Cours = 'Cours';
+	$User ='User';
+	$Role = 'Role';
+	$Session ='Session';
+	$Distribution = 'Distribution';
+	
 	
 	// CodeVal
 		
@@ -60,33 +65,35 @@
 	
 	// Student 
 		
-	$student = new Model($Student);
-	$res= $student->deleteMod();
+	$obj = new Model($Student);
+	$res= $obj->deleteMod();
 
-	$res = $student->addAttr('Name',M_STRING);
+	$res = $obj->addAttr('Name',M_STRING);
 
-	$res = $student->addAttr('SurName',M_STRING);
+	$res = $obj->addAttr('SurName',M_STRING);
 	
-	$res = $student->addAttr('BirthDay',M_DATE);
+	$res = $obj->addAttr('BirthDay',M_DATE);
 	
 	$path='/'.$Code."/$sex_id/Values";
-	$res = $student->addAttr('Sexe',M_CODE,$path);	
+	$res = $obj->addAttr('Sexe',M_CODE,$path);	
 	
 	$path='/'.$Code."/$country_id/Values";
-	$res = $student->addAttr('Country',M_CODE,$path);	
+	$res = $obj->addAttr('Country',M_CODE,$path);	
 
 	$path='/'.$Inscription.'/De';
-	$res = $student->addAttr('InscritA',M_CREF,$path);
+	$res = $obj->addAttr('InscritA',M_CREF,$path);
 
-	$student->addAttr('NbrCours',M_INT,M_P_EVAL);
-	$student->addAttr('NbrCredits',M_INT,M_P_EVALP);
-	$student->addAttr('Jason',M_TXT,M_P_EVAL);
-	$student->addAttr('Image',M_STRING);	
-	$student->addAttr('User',M_REF,'/User');
+	$obj->addAttr('NbrCours',M_INT,M_P_EVAL);
+	$obj->addAttr('NbrCredits',M_INT,M_P_EVALP);
+	$obj->addAttr('Jason',M_TXT,M_P_EVAL);
+	$obj->addAttr('Image',M_STRING);	
+	$obj->addAttr($User,M_REF,'/'.$User);
+	
+	$res=$obj->setBkey($User,true);
 
 	echo $Student."<br>";	
-	$res = $student->saveMod();	
-	$r = $student-> getErrLog ();
+	$res = $obj->saveMod();	
+	$r = $obj-> getErrLog ();
 	$r->show();
 
 	// Cours 
@@ -102,7 +109,7 @@
 	$cours->addAttr('Credits',M_INT);
 	
 	$cours->addAttr('Par',M_CREF,'/Charge/De');
-	$cours->addAttr('User',M_REF,'/User');
+	$cours->addAttr($User,M_REF,'/'.$User);
 
 	echo $Cours."<br>";	
 	$res = $cours->saveMod();	
@@ -143,7 +150,7 @@
 	$prof->addAttr('Sexe',M_CODE,$path);
 
 	$prof->addAttr('Donne',M_CREF,'/Charge/Par');
-	$prof->addAttr('User',M_REF,'/User');
+	$prof->addAttr($User,M_REF,'/'.$User);
 
 	echo "Prof<br>";	
 	$prof->saveMod();	
@@ -167,27 +174,63 @@
 
 	// User
 		
-	$obj = new Model('User');
+	$obj = new Model($User);
 	$res= $obj->deleteMod();
 
 	$res = $obj->addAttr('Name',M_STRING);
  	$res = $obj->addAttr('SurName',M_STRING);
-
+	$res = $obj->addAttr('Play',M_CREF,'/'.$Distribution.'/toUser');
+	
 	echo "User<br>";		
 	$res = $obj->saveMod();	
 	$r = $obj->getErrLog ();
 	$r->show();
 
-	// Session
-	
-	$obj = new Model('Session');
+	// Role
+		
+	$obj = new Model($Role);
 	$res= $obj->deleteMod();
 
-	$res = $obj->addAttr('User',M_REF,'/User');
- 	$res = $obj->addAttr('Comment',M_STRING);
+	$res = $obj->addAttr('Name',M_STRING);
+ 	$res = $obj->addAttr('Spec',M_TXT);
+	$res = $obj->addAttr('PlayedBy',M_CREF,'/'.$Distribution.'/ofRole');
+	
+	echo "$Role<br>";		
+	$res = $obj->saveMod();	
+	$r = $obj->getErrLog ();
+	$r->show();	
+	
+	// Session
+	
+	$obj = new Model($Session);
+	$res= $obj->deleteMod();
 
+	$res = $obj->addAttr($User,M_REF,'/'.$User);
+ 	$res = $obj->addAttr('Comment',M_STRING);
+	$res = $obj->addAttr($Role,M_REF,'/'.$Role);
+	
 	echo "Session<br>";		
 	$res = $obj->saveMod();	
 	$r = $obj->getErrLog ();
 	$r->show();
+	
+	// Distribution
+
+	$obj = new Model($Distribution);
+	$res= $obj->deleteMod();
+
+	$path='/'.$Role;
+	$res = $obj->addAttr('ofRole',M_REF,$path);
+	$res = $obj->setMdtr('ofRole',true); // Mdtr
+
+	$path='/'.$User;
+	$res = $obj->addAttr('toUser',M_REF,$path);
+	$res = $obj->setMdtr('toUser',true); // Mdtr
+
+	$obj->setCkey(['ofRole','toUser'],true);
+	
+	echo "$Distribution<br>";		
+	$res = $obj->saveMod();	
+	$r = $obj->getErrLog ();
+	$r->show();	
 	
