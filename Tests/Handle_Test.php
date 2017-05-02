@@ -194,7 +194,8 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals($h1->getUrl(),$h->getUrl());
 
 		$url = $h1->getCrefUrl('CRef',V_S_CREA);
-		$this->assertEquals($h1->getUrl().'/CRef?Action='.V_S_CREA,$url);
+		$res='"'.$h1->getDocRoot().$path0.'/'.$h1->getId().'/CRef?Action='.V_S_CREA.'"';
+		$this->assertEquals($res,$url);
 		
 		$id = $h1->getVal('Code');
 		$hc1r=$h1->getCode('Code',$id);

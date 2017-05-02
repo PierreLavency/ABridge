@@ -3,11 +3,11 @@ B1 session with API.
 B2 ' in txt fields. 
 B6 refresh menu when role changed.
 B7 "&" in url 
-B8 firts reference on Cref NxN
+B9
 
 DEV
 - link menu and roles.
-- fall back on id when REF view is null.
+- fall back on id when V_C_REF view is null.
 - unify management of param on GET and POST
 - handle session singleton
 - unify get code with get reference.
@@ -23,6 +23,7 @@ DEV
 - handle predefine models. 
 - user Jason to save data rather than serilialisation.
 
+- cref menu from cref val;
 - order in list query and attr.
 - confirmation on META load / Java Script
 - selection for Ref / Java script 

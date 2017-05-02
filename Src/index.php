@@ -31,7 +31,7 @@ $ctrl = new Controler($config, $conf);
 
 if (isset($init)) {
     $ctrl->beginTrans();
-//    require_once $path.'DELTA.php';
+ //   require_once $path.'DELTA.php';
     $ctrl->commit();
     return;
 }

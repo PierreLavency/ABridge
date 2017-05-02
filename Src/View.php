@@ -506,7 +506,7 @@ class View
         }
         if ($viewn != $this->_name) {
             $res[H_LABEL]=$this->getLbl($viewn);
-            $res[H_NAME]="'".$this->handle->getUrl(['View'=>$viewn])."'";
+            $res[H_NAME]=$this->handle->getUrl(['View'=>$viewn]);
             $res[H_TYPE]=H_T_LINK;
         } else {
             $res[H_TYPE]=H_T_PLAIN;
@@ -523,24 +523,23 @@ class View
             $res[H_TYPE]=H_T_SUBMIT;
             $res[H_LABEL]=$this->getLbl($viewState);
         } else {
-            $con='&';
             $res[H_TYPE]=H_T_LINK;
             $res[H_LABEL]=$this->getLbl($nav);
             if ($nav==V_B_CANC) {
                 $nav=V_S_READ;
-                $con='?';
             }
             if ($nav==V_B_RFCH) {
                 $nav=V_S_SLCT;
             }
-            $path = $this->handle->getActionUrl($nav);
+            $prm=[];
+            if (!is_null($this->_name)) {
+                $prm['View']=$this->_name;
+            }
+            $path = $this->handle->getActionUrl($nav, $prm);
             if (is_null($path)) {
                 return false;
             }
-            if (!is_null($this->_name)) {
-                $path = $path.$con.'View='.$this->_name;
-            }
-            $res[H_NAME]="'".$path."'";
+            $res[H_NAME]=$path;
         }
         return $res;
     }
@@ -557,7 +556,7 @@ class View
         } catch (Exception $e) {
             return false;
         }
-        $res[H_NAME]="'".$hdl->getUrl()."'";
+        $res[H_NAME]=$hdl->getUrl();
         if ($hdl->nullObj()) {
             $mod='Home';
         } else {
@@ -573,14 +572,18 @@ class View
         $nav=$spec[V_P_VAL];
         $result[H_LABEL]=$this->getLbl($nav);
         $attr=$spec[V_ATTR];
+        $prm = [];
+        if (!is_null($this->_name)) {
+            $prm['View']=$this->_name;
+        }
         switch ($nav) {
             case V_B_NEW:
                 $result[H_TYPE]=H_T_LINK;
-                $path=$this->handle->getCrefUrl($attr, V_S_CREA);
+                $path=$this->handle->getCrefUrl($attr, V_S_CREA, $prm);
                 if (is_null($path)) {
                     return false;
                 }
-                $result[H_NAME]="'".$path."'";
+                $result[H_NAME]=$path;
                 break;
             case V_C_TYP1:
                 $id=$spec[V_ID];
@@ -590,16 +593,13 @@ class View
                 }
                 $v = new View($nh);
                 $result[H_TYPE]=H_T_LINK;
-                $result[H_NAME]="'".$nh->getUrl([])."'";
+                $result[H_NAME]=$nh->getUrl([]);
                 $result[H_LABEL]=$res = $v->buildView(V_S_REF, true);
                 break;
             default:
                 $pos = $spec[V_ID];
-                $prm = [$attr=>$pos];
-                if (!is_null($this->_name)) {
-                    $prm['View']=$this->_name;
-                }
-                $path="'".$this->handle->getUrl($prm)."'";
+                $prm[$attr] = $pos;
+                $path=$this->handle->getUrl($prm, $prm);
                 if ($viewState == V_S_SLCT) {
                     $result[H_TYPE]=H_T_SUBMIT;
                     $result[H_BACTION]=$path;
@@ -657,13 +657,12 @@ class View
                 break;
             case V_FORM:
                 $result[H_TYPE]=H_T_FORM;
-                $path = "'".$this->handle->getUrl()."'";
                 $result[H_ACTION]="POST";
                 $hid = [];
-                $hid['Action']=$viewState;
                 if (!is_null($this->_name)) {
                     $hid['View']=$this->_name;
                 }
+                $path = $this->handle->getUrl($hid);
                 $result[H_HIDDEN]=$hid;
                 $result[H_URL]=$path;
                 $arg=[];

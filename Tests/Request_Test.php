@@ -71,16 +71,16 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 			$req= new Request($p);
 			$res=$req->getAction();
 			$this->assertEquals($e,$res);
-			$this->assertEquals($req->getUrl().$e2,$req->getUrl($prm));
+			$this->assertEquals('"'.$req->getDocRoot().$e2,$req->getUrl($prm));
 	}
 
     public function Prov_testRequest1() {
         return [
-			['/',   	V_S_READ, ['X'=>'x'], "?X=x"],
-			['/X', 		V_S_SLCT, ['X'=>'x'], "&X=x"],
-			['/X/1',	V_S_READ, ['X'=>'x','Y'=>'y'], "?X=x&Y=y"],
-			['/X/1/X', 	V_S_SLCT, ['X'=>'x','Y'=>'y'], "&X=x&Y=y"],
-			['/X/1/X/2',V_S_READ, [], ""],
+			['/',   	V_S_READ, ['X'=>'x'], '/?X=x"'],
+			['/X', 		V_S_SLCT, ['X'=>'x'], '/X?Action='.V_S_SLCT.' & X=x"'],
+			['/X/1',	V_S_READ, ['X'=>'x','Y'=>'y'], '/X/1?X=x & Y=y"'],
+			['/X/1/X', 	V_S_SLCT, ['X'=>'x','Y'=>'y'], '/X/1/X?Action='.V_S_SLCT.' & X=x & Y=y"'],
+			['/X/1/X/2',V_S_READ, [], '/X/1/X/2"'],
  			];
     }	
 	
@@ -103,7 +103,7 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($r1->getAction(),$e0);
 		
 		if (!is_null($e1)) {
-			$e= $r1->getDocRoot().$e1;
+			$e= '"'.$r1->getDocRoot().$e1.'"';
 		} else {
 			$e=null;
 		}
@@ -162,7 +162,7 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 			$r=new Request();
 			$this->assertnotNull($r);
 			$this->assertEquals('/API.php',$r->getDocRoot());
-			$this->assertEquals('/API.php/',$r->getRootUrl());
+			$this->assertEquals('"/API.php/"',$r->getRootUrl());
 			$this->assertEquals('X',$r->getPrm('Name'));
 						
 			unset($_GET['Name']);

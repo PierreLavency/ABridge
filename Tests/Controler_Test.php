@@ -38,7 +38,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$this->path;
-        $_POST['Action']=V_S_CREA;
+		$_GET['Action']=V_S_CREA;
+//        $_POST['Action']=V_S_CREA;
         $_POST['Name']=1;
         
         $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
@@ -53,7 +54,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$this->path;
 		unset($_GET['Action']);
-        
+//        unset($_POST['Action']);
+		
         $reso = $ctrl->run($this->show,0);
         
         $this->assertEquals($res,$reso);
@@ -69,7 +71,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$fpath;
-        $_POST['Action']=V_S_CREA;
+ //       $_POST['Action']=V_S_CREA;
+        $_GET['Action']=V_S_CREA;
         $_POST['Name']=1;
         
         $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
@@ -91,7 +94,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$fpath;
-        $_POST['Action']=V_S_UPDT;
+		$_GET['Action']=V_S_UPDT;
+ //       $_POST['Action']=V_S_UPDT;
         $_POST['Name']=2;
         
         $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
@@ -118,7 +122,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$fpath;
-        $_POST['Action']=V_S_DELT;
+//        $_POST['Action']=V_S_DELT;
+        $_GET['Action']=V_S_DELT;
         
         $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
         $res = $ctrl->run($this->show,0);
@@ -127,7 +132,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$this->path;
-        $_POST['Action']=V_S_UPDT;
+//        $_POST['Action']=V_S_UPDT;
+        $_GET['Action']=V_S_UPDT;
         $_POST['Name']='a';
 
         $ctrl = new Controler($this->config, ['name'=>'UnitTest']);

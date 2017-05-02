@@ -140,10 +140,10 @@ class Request
                 $url = $url.'?'.$name.'='.$value;
                 $first = false;
             } else {
-                $url = $url. '&'.$name.'='.$value;
+                $url = $url. ' & '.$name.'='.$value;
             }
         }
-        return $url;
+        return '"'.$url.'"';
     }
 
     public function getDocRoot()
@@ -153,7 +153,7 @@ class Request
     
     public function getRootUrl()
     {
-        $path = $this->getDocRoot().'/';
+        $path = '"'.$this->getDocRoot().'/'.'"';
         return $path;
     }
 
@@ -237,12 +237,13 @@ class Request
 
     protected function initAction()
     {
+        $action = $this->getPrm('Action');
+        if (! is_null($action)) {
+            $this->action =$action;
+            return $this->action;
+        }
         if ($this->method == 'GET') {
             $this->action = V_S_READ;
-            if (isset($this->getp['Action'])) {
-                $this->action =$this->getp['Action'];
-                return $this->action;
-            }
             if ($this->isClassPath()) {
                 $this->action = V_S_SLCT;
                 return $this->action;
@@ -250,10 +251,6 @@ class Request
             return $this->action;
         }
         if ($this->method =='POST') {
-            if (isset($this->postp['Action'])) {
-                $this->action = $this->postp['Action'];
-                return $this->action;
-            }
             if ($this->isClassPath()) {
                 $this->action = V_S_CREA;
                 return $this->action;

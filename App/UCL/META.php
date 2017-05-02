@@ -138,7 +138,7 @@
 
 	// Prof
 	
-	$prof=new Model('Prof');
+	$prof=new Model($Prof);
 	$res= $prof->deleteMod();
 	
 	$prof->addAttr('Name',M_STRING);
@@ -151,7 +151,8 @@
 
 	$prof->addAttr('Donne',M_CREF,'/Charge/Par');
 	$prof->addAttr($User,M_REF,'/'.$User);
-
+	$res=$prof->setBkey($User,true);
+	
 	echo "Prof<br>";	
 	$prof->saveMod();	
 	$r = $prof-> getErrLog ();
@@ -180,6 +181,9 @@
 	$res = $obj->addAttr('Name',M_STRING);
  	$res = $obj->addAttr('SurName',M_STRING);
 	$res = $obj->addAttr('Play',M_CREF,'/'.$Distribution.'/toUser');
+	
+	$res = $obj->addAttr('Profile',M_CREF,'/'.$Student.'/'.$User);
+	$res = $obj->addAttr('ProfProfile',M_CREF,'/'.$Prof.'/'.$User);
 	
 	echo "User<br>";		
 	$res = $obj->saveMod();	

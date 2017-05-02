@@ -11,6 +11,7 @@
 	$Role = 'Role';
 	$Session ='Session';
 	$Distribution = 'Distribution';
+	$Prof = 'Prof';
 	
 	// CodeVal
 		
@@ -35,8 +36,14 @@
 
 
 	// Prof
+	$prof=new Model($Prof);
 	
 
+	
+	echo "Prof<br>";	
+	$prof->saveMod();	
+	$r = $prof-> getErrLog ();
+	$r->show();
 	// Charge
 	
 
@@ -44,7 +51,7 @@
 	// User
 	$obj = new Model($User);
 	
-	$res = $obj->addAttr('Profile',M_CREF,'/'.$Student.'/'.$User);
+
 	
 	echo "User<br>";		
 	$res = $obj->saveMod();	
