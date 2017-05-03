@@ -37,7 +37,6 @@ class Controler
         $this->init($ini);
     }
  
- 
     public function construct2($spec, $ini)
     {
         $this->init($ini);
@@ -96,9 +95,6 @@ class Controler
         }
         SQLBase::setDB($host, $usr, $psw);
         $bname = $ini['name'];
-        if (isset($init['bname'])) {
-            $bname = $init['bname'];
-        }
         $this->bname = $bname;
     }
  
@@ -123,7 +119,7 @@ class Controler
 
     protected function logUrl()
     {
-        if ($this->logLevel == 1) {
+        if ($this->logLevel > 0) {
             $urli = $this->handle->getDocRoot();
             echo 'uri is '.$urli. '<br>';
             $urlp = $this->handle->getRpath();
@@ -165,7 +161,7 @@ class Controler
         return $res;
     }
     
-    protected function close()
+    public function close()
     {
         $res = true;
         foreach ($this->bases as $base) {
@@ -254,18 +250,14 @@ class Controler
         
         if ($this->handle->getDocRoot() == '/ABridgeAPI.php') {
             genJASON($this->handle, true, true);
-            $this->close();
             $this->showLog();
-            return $this->handle->getUrl();
+            return $this->handle;
         }
-        
         if ($this->handle->nullobj()) {
             $this->showView($show);
-            $this->close();
             $this->showLog();
-            return $this->handle->getUrl();
+            return $this->handle;
         }
-        
         $action = $this->handle->getAction();
         $actionExec = false;
         if ($method =='POST') {
@@ -306,8 +298,7 @@ class Controler
             }
         }
         $this->showView($show);
-        $this->close();
         $this->showLog();
-        return $this->handle->getUrl();
+        return $this->handle;
     }
 }

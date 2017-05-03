@@ -42,6 +42,7 @@ class GenJASON_Test extends PHPUnit_Framework_TestCase {
  
 	public function testJason($a,$b,$c,$expected)
     {	
+		self::$db->connect();
 	
 		self::$db->beginTrans();
 		

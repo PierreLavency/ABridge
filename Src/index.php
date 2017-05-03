@@ -33,10 +33,12 @@ if (isset($init)) {
     $ctrl->beginTrans();
  //   require_once $path.'DELTA.php';
     $ctrl->commit();
+    $ctrl->close();
     return;
 }
 
 //require_once("testAPI.php");
 
 $ctrl->run(true, 0);
+$ctrl->close();
 return;

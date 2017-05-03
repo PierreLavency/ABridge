@@ -27,6 +27,7 @@ require_once 'CstView.php';
 					V_S_CREA => ['Sexe'=>H_T_RADIO],
 					V_S_UPDT => ['Sexe'=>H_T_RADIO],
 					V_S_SLCT => ['Sexe'=>H_T_RADIO],
+					V_S_READ => ['text'=>[H_TYPE=>H_T_TEXTAREA,H_COL=>90,H_ROW=> 10]],
 				],
 				'attrList' => [
 					V_S_CREF 	=> ['id','Sexe','BirthDay','DeathDate','Age','DeathAge','Father','Mother'],

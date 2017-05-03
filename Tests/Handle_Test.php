@@ -153,7 +153,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 // 		
 		$path0= '/'.$this->CName;				
 		$path1 = $path0.'/'.$ho1->getId();
-		$r = new Request($path1,V_S_READ);
+
 	
 		$h1 = new Handle($path1,V_S_READ,$ho);
 		$this->assertNotNull($h1);

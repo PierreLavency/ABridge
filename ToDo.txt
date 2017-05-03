@@ -2,8 +2,8 @@ BUG
 B1 session with API.
 B2 ' in txt fields. 
 B6 refresh menu when role changed.
-B7 "&" in url 
-B9
+B9 Race condition in test suite
+B10
 
 DEV
 - link menu and roles.
@@ -14,7 +14,6 @@ DEV
 - extend code/cref to "dot" Cref attributes.
 - handle user preference.
 - review logging 
-- check Access on when setting id with Ref/Cref (?)
 - increase autorisations rule capability (classes indepent of path, views etc.)
 - review session management.
 
@@ -72,6 +71,9 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+
+Standardize Url management // 4hours
+B7 "&" in url
 
 - implement 1 to 1 view. // 4 hours
 - Authorisation should allow access not linked to home // 2 days 
