@@ -693,6 +693,9 @@ class View
             $r=genHTML($r, $show);
         } else {
             $r=genFormElem($r, $show);
+            if ($viewState == V_S_REF and ctype_space($r)) {
+                $r=$this->handle->getid();
+            }
         }
         return $r;
     }
@@ -707,6 +710,9 @@ class View
         }
         $r = $this->buildView($viewState, true);
         $r=genFormElem($r, false);
+        if ($viewState == V_S_REF and ctype_space($r)) {
+            $r=$this->handle->getid();
+        }
         return $r;
     }
   

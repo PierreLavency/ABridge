@@ -6,23 +6,21 @@ B9 Race condition in test suite
 B10
 
 DEV
-- link menu and roles.
-- fall back on id when V_C_REF view is null.
-- unify management of param on GET and POST
-- handle session singleton
-- unify get code with get reference.
-- extend code/cref to "dot" Cref attributes.
-- handle user preference.
 - review logging 
-- increase autorisations rule capability (classes indepent of path, views etc.)
+- link menu and roles.
+- unify get code with get reference.
+- extend code/ref to "dot" Cref attributes.
+- handle user preference.
+- increase autorisations rule capability
+	- NxN
+	- views
 - review session management.
 
-- review custom code integration.
-- confirmation on META load (Java Script)
+- review custom code integration
+- extend to static HTML
 - handle predefine models. 
 - user Jason to save data rather than serilialisation.
 
-- cref menu from cref val;
 - order in list query and attr.
 - confirmation on META load / Java Script
 - selection for Ref / Java script 
@@ -33,17 +31,14 @@ DEV
 - delete all object in class /2
 - set up rest services 
 - set up modif logging // node.js ?
-
 - changed DB model independently of class model.
 - implement unique index.
 - support CREF on abstract (?)
 
 - Authenthication 
 
-
 TEST
-- review controller 
-- Performance -> review controller tests 
+- Performance -> review logging
 - test cookies -> review session 
 - improve view test coverage - need to separate view show and build // some progress
 - set up unit test for unittest
@@ -72,15 +67,17 @@ phpunit --coverage-html Testcoverage Tests
 
 DONE
 
-Standardize Url management // 4hours
+- fall back on id when V_C_REF view is null.
+- review controller test // 1 day
+-Standardize Url management // 4hours
 B7 "&" in url
-
 - implement 1 to 1 view. // 4 hours
+- handle session singleton.
 - Authorisation should allow access not linked to home // 2 days 
+- unify management of param on GET and POST
 B3 selection on unique attributes (move check to save) / 2 hours
 B4 Cref across BaseHandler; /fixed 1 hour
 B5 remove protection when checking action / fixed 2 hours
-
 - review Url vs path and prm in View. // 4 hours
 - clean up errors in access management.
 - B0 - on select / create user in student role // 4 hours
