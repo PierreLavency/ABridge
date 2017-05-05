@@ -53,19 +53,10 @@ class Controler
             }
             if (! in_array($handler, $handlers)) {
                 $handlers[] = $handler;
-                if ($handler[0]== 'fileSession') {
-                    $id=$sesMgr->initSession($handler);
-                    $x= Handler::get()->getBaseNm(
-                        $handler[0],
-                        $handler[1],
-                        $id
-                    );
-                } else {
-                    $x = Handler::get()->getBase(
-                        $handler[0],
-                        $handler[1]
-                    );
-                }
+                $x = Handler::get()->getBase(
+                    $handler[0],
+                    $handler[1]
+                );
                 $bases[]=$x;
             }
             initStateHandler($classN, $handler[0], $handler[1]);
@@ -238,7 +229,7 @@ class Controler
     {
         $this->beginTrans();
         $this->sessionMgr->startSessions();
-        if ($this->sessionMgr->isNew()) {
+        if ($this->sessionMgr->isChanged()) {
             $this->commit();
             $this->beginTrans();
         }

@@ -12,7 +12,7 @@ class SessionMgr
     protected $typ;
     protected $nameSess;
     protected $prevnameSess;
-    protected $timer=3600; // 1 heure
+    protected $timer= 3600; // 1 heure
     protected $prevtimer=86400; // 1 jour
     protected $sessHdl = null;
     protected $init=false;
@@ -27,6 +27,9 @@ class SessionMgr
         if (isset($_COOKIE[$pcookie])) {
             unset($_COOKIE[$pcookie]);
         }
+        if (class_exists('SessionMeta')) {
+            $this->initSession();
+        }
     }
     
     private function pvs($name)
@@ -34,16 +37,16 @@ class SessionMgr
         return 'p'.$name;
     }
     
-    public function initSession($handle)
+    public function initSession()
     {
         if (! class_exists('SessionMeta')) {
             throw new exception(E_ERC051);
         }
         $this->init=true;
-        $typ = $handle[0];
-        $this->typ=$typ;
-        $this->nameSess=$handle[1];
-        $name = $handle[1];
+
+        // hard code 1
+        $this->nameSess='sid';
+        $name = 'sid';
         $pname = $this->pvs($name);
         $this->prevnameSess=$pname;
         if (isset($_COOKIE[$name])) {
@@ -56,7 +59,7 @@ class SessionMgr
         $this->id=$id;
         if (isset($_COOKIE[$pname])) {
             $pid = $_COOKIE[$pname];
-            if ($pid != $id) {
+            if ($pid != $id and !$this->newSess) {
                 $this->prevSess=true;
                 setcookie($pname, $id, time() + $this->prevtimer, "/");
             }
@@ -75,27 +78,24 @@ class SessionMgr
         }
         $hdl = new SessionMeta();
         if ($this->prevSess) {
-            $x=Handler::get()->getBaseNm(
-                $this->typ,
-                $this->prevnameSess,
-                $this->pid
-            );
-            $x->remove();
+            $pobj=$hdl->getObj($this->pid);
+            $pobj->delet();
+            echo "Delete previous Session <br>";
         }
         if ($this->newSess) {
-            $hdl->initMod($this->id);
+            $hdl->newObj($this->id);
             echo "New Session <br>";
         }
-        if (! $hdl->existObj()) {
+        $obj = $hdl->getObj($this->id);
+        if (is_null($obj)) {
             echo 'ERROR !!! ';
             echo 'new : '.$this->newSess;
             echo 'id : '.$this->id;
             echo 'pnew : '.$this->prevSess;
             echo 'pid : '.$this->pid;
-            $hdl->initMod($this->id);
+            $hdl->newObj($this->id);
             $this->newSess=true;
         }
-        $obj = $hdl->getObj($this->id);
         $this->sessHdl = $obj;
         $age = $obj->getVal('ctstp');
         $d = new DateTime($age);
@@ -103,23 +103,9 @@ class SessionMgr
  //           echo 'Age :'.$tst;
     }
 
-    public function isNew()
+    public function isChanged()
     {
-        return $this->newSess;
-    }
-    
-    public function getHome()
-    {
-        $home = '/';
-        if (! is_null($this->sessHdl)) {
-            $usrn= $this->sessHdl->getVal('User');
-            if (! is_null($usrn)) {
-                $home = '/User/'.$usrn;
-            }
-            $this->sessHdl->setVal('Comment', $home);
-            $this->sessHdl->save();
-        }
-        return $home;
+        return ($this->newSess or $this->prevSess);
     }
     
     public function getHandle()

@@ -210,8 +210,11 @@
 	$res= $obj->deleteMod();
 
 	$res = $obj->addAttr($User,M_REF,'/'.$User);
- 	$res = $obj->addAttr('Comment',M_STRING);
 	$res = $obj->addAttr($Role,M_REF,'/'.$Role);
+	$res = $obj->addAttr('Comment',M_STRING);
+	$res = $obj->addAttr('BKey',M_STRING);
+	$res = $obj->setBkey('BKey',true);
+		
 	
 	echo "Session<br>";		
 	$res = $obj->saveMod();	

@@ -5,7 +5,7 @@ require_once 'CstView.php';
 	$config = [
 	'Handlers' =>
 		[
-		'Session'  	 => ['fileSession','sid',],
+		'Session'  	 => ['fileBase','genealogy',],
 		'CodeValue'  => ['fileBase','genealogy',],
 		'Code' 		 => ['fileBase','genealogy',],
 		'Student'	 => ['fileBase','genealogy',],
@@ -18,20 +18,21 @@ require_once 'CstView.php';
 		'Distribution'=> ['dataBase','genealogy',],
 		],
 	'Home' =>
-		['/Session/1','/User','/Role','/Distribution','/Student','/Cours','/Inscription','/Prof','/Charge','/Code','/CodeValue','/'],
+		['/Session','/User','/Role','/Distribution','/Student','/Cours','/Inscription','/Prof','/Charge','/Code','/CodeValue','/'],
 		
 	'Views' => [
 	
 		'Session' =>[
 			'attrList' => [
-							V_S_READ=> ['id','User','Role','Comment','vnum','ctstp','utstp'],
-							V_S_UPDT=> ['id','User','Role','Comment'],					
+						V_S_READ=> ['id','User','Role','Comment','BKey','vnum','ctstp','utstp'],
+						V_S_UPDT=> ['id','User','Role','Comment'],
+						V_S_CREF=> ['id','User','Role','Comment','BKey','vnum','ctstp','utstp'],									
 			],
 			'attrHtml' => [
 						V_S_UPDT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],
 						V_S_SLCT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],					
 			],		
-			'navList' => [V_S_READ => [V_S_UPDT,V_S_SLCT],
+			'navList' => [V_S_READ => [V_S_UPDT,V_S_SLCT,V_S_DELT],
 			],
 
 		],
@@ -200,36 +201,30 @@ require_once 'CstView.php';
 class SessionMeta
 {
 	
-	function initMod($mod) 
+	function newObj($Bkey)
 	{
-		$obj = new Model('Session');
-		$res= $obj->deleteMod();
-
-		$res = $obj->addAttr('User',M_REF,'/User');
-		$res = $obj->addAttr('Role',M_REF,'/Role');
-		$res = $obj->addAttr('Comment',M_STRING);
-		$res = $obj->saveMod();
-		
 		$obj = new Model('Session');
 		$obj->setVal('Comment','/');
+		$obj->setVal('BKey',$Bkey);
 		$obj->save();
 		return $obj;
-		
 	}
 	
-	function existObj()
+	
+	function getObj($Bkey) 
 	{
 		$obj = new Model('Session');
-		$obj->setCriteria([],[],[]);
+		$obj->setCriteria(['BKey'],['='],[$Bkey]);
 		$res = $obj->select();
-		return count($res);
-	}
-	
-	function getObj($mod) 
-	{
-		$obj= new Model('Session',1);
+		if ($res==[]) {
+			return null;
+		}
+		$id= array_pop($res);
+		$obj= new Model('Session',$id);
 		return $obj;
 	}
+	
+	
 	
 }
 	

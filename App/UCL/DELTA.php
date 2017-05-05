@@ -36,27 +36,13 @@
 
 
 	// Prof
-	$prof=new Model($Prof);
-	
 
-	
-	echo "Prof<br>";	
-	$prof->saveMod();	
-	$r = $prof-> getErrLog ();
-	$r->show();
 	// Charge
 	
 
 
 	// User
-	$obj = new Model($User);
-	
 
-	
-	echo "User<br>";		
-	$res = $obj->saveMod();	
-	$r = $obj->getErrLog ();
-	$r->show();
 	
 	
 	// Role
@@ -66,9 +52,18 @@
 	// Distribution
 
 
-
-	
 	// Session 
 	
+	$obj = new Model($Session);
+	$res= $obj->deleteMod();
 
+	$res = $obj->addAttr($User,M_REF,'/'.$User);
+	$res = $obj->addAttr($Role,M_REF,'/'.$Role);
+	$res = $obj->addAttr('Comment',M_STRING);
+	$res = $obj->addAttr('BKey',M_STRING);
+	$res = $obj->setBkey('BKey',true);
+		
+	$res = $obj->saveMod();
+	$r = $obj->getErrLog ();
+	$r->show();
 	
