@@ -14,6 +14,10 @@ define('M_DATE', "m_date");
 define('M_ALNUM', "m_alnum");
 define('M_ALPHA', "m_alpha");
 define('M_TXT', "m_txt");
+define('M_RTXT', "m_rawtxt");
+define('M_JSON', "m_jason");
+define('M_HTML', "m_html");
+
 
 define('M_FORMAT_T', 'Y-m-d H:i:s');
 define('M_FORMAT_D', 'Y-m-d');

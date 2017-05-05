@@ -21,9 +21,9 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase {
 		];
 
 		$role = new Model('RoleSess');
-		$role->addAttr('Spec',M_STRING);
+		$role->addAttr('JSpec',M_STRING);
 		$res = json_encode($rolespec);
-		$role->setVal('Spec',$res);
+		$role->setVal('JSpec',$res);
 
 		$y = new Model('TestSess');
 		$y->addAttr('User',M_INT);
@@ -97,10 +97,10 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase {
 		];
 		
 		$role = new Model('RoleSess');
-		$role->addAttr('Spec',M_STRING);
+		$role->addAttr('JSpec',M_STRING);
 		$js=json_encode($rolespec);
 //		echo $js;
-		$role->setVal('Spec',$js);
+		$role->setVal('JSpec',$js);
 	
 		$y = new Model('TestSess');
 		$y->addAttr('User',M_INT);

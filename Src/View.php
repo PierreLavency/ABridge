@@ -108,7 +108,7 @@ class View
                 foreach ($res as $attr) {
                     $atyp=$this->handle->getTyp($attr);
                     $eval = $this->handle->isEval($attr);
-                    if ($atyp != M_CREF and $atyp != M_TXT and !$eval) {
+                    if ($atyp != M_CREF and isStruct($atyp) and !$eval) {
                         $dspec[]=$attr;
                     }
                 }
@@ -126,7 +126,7 @@ class View
                 $res = array_diff($res, $ref);
                 foreach ($res as $attr) {
                     $atyp=$this->handle->getTyp($attr);
-                    if ($atyp != M_CREF and $atyp != M_TXT) {
+                    if ($atyp != M_CREF and isStruct($atyp)) {
                         $dspec[]=$attr;
                     }
                 }
@@ -294,14 +294,17 @@ class View
         if ($typ == M_REF) {
             return V_S_REF;
         }
-        if ($typ==M_TXT) {
-            return H_T_TEXTAREA;
-        }
         if ($typ == M_CREF) {
             if ($attr!= V_S_SLCT and $this->handle->isOneCref($attr)) {
                 return [V_CTYP=>V_C_TYP1];
             }
             return [H_SLICE=>10,V_COUNTF=>true,V_CTYP=>V_C_TYPN];
+        }
+        if ($typ == M_HTML) {
+            return H_T_PLAIN;
+        }
+        if (! isStruct($typ)) {
+            return H_T_TEXTAREA;
         }
         return H_T_PLAIN;
     }
@@ -316,7 +319,7 @@ class View
         }
         $typ = $this->handle->getTyp($attr);
         $res=H_T_TEXT;
-        if ($typ == M_TXT) {
+        if (!isStruct($typ)) {
             $res=H_T_TEXTAREA;
         }
         if ($typ == M_CODE) {

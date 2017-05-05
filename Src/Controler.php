@@ -183,7 +183,7 @@ class Controler
                 $cond = $c->isModif($attr);
             }
             $typ= $c->getTyp($attr);
-            $val=$c->getPrm($attr);
+            $val= $c->getPrm($attr, isRaw($typ));
             if (!is_null($val)) {
                 $valC = convertString($val, $typ);
                 if ($c->isModif($attr)) {

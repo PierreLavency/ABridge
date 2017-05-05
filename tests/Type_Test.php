@@ -58,9 +58,31 @@ class Type_Test extends PHPUnit_Framework_TestCase {
 			['2016-10-25 12:30:48'	,	M_TMSTP,	1],				
 			['25-10-2016'			,	M_TMSTP,	0],				
 			['now'					,	M_TMSTP,	0],			
-			['now          vvvvvv'	,	M_TXT,		1],						
+			['now          vvvvvv'	,	M_TXT,		1],
+			['now  </br>   vvvvvv'	,	M_TXT,		0],			
+			['now  </br>   vvvvvv'	,	M_RTXT,		1],	
+			['["x","y",{"x":"y<>z"}]'	,	M_JSON,		1],	
+			['["x","y",{"x":"y<>z"},]'	,	M_JSON,		0],						
 			];
     }
+
+	/**
+     * @dataProvider Provider_isStruct
+     */
+ 
+	public function testisStruc($a, $expected, $e2)
+    {
+        $this->assertEquals($expected,isStruct($a));
+		$this->assertEquals($e2,isRaw($a));
+    }
+	
+	   public function Provider_isStruct(){
+        return [
+            [M_INT,		true, 	false],
+            [M_JSON,	false,	true]
+			];
+    }
+
 	/**
      * @dataProvider Provider2
      */
@@ -98,7 +120,8 @@ class Type_Test extends PHPUnit_Framework_TestCase {
             ['x', 	    M_FLOAT,	'x'],
 			['x', 	    M_BOOL,	'x'],
 	        ["pp", 		M_INT,		"pp"],	
- 			["pp", 		M_TXT,		"pp"],	
+ 			["pp", 		M_TXT,		"pp"],
+ 			["pp", 		M_RTXT,		"pp"],				
 			];
     }	
 	
@@ -113,6 +136,7 @@ class Type_Test extends PHPUnit_Framework_TestCase {
 	public function Provider4() {
         return [
             [M_INT,		'INT(11)'],
+			[M_TMSTP,	'TIMESTAMP'],
             [M_INTP, 	'INT(11) UNSIGNED'],
             [M_STRING, 	'VARCHAR(255)'],
             [M_FLOAT,	'FLOAT'],
@@ -122,6 +146,7 @@ class Type_Test extends PHPUnit_Framework_TestCase {
 			[M_ALPHA, 	'VARCHAR(255)'],
 			[M_DATE, 	'DATE'],
 			[M_TXT, 	'TEXT'],
+			[M_RTXT, 	'TEXT'],		
 			['notexists', 	false],
 			];
     }	

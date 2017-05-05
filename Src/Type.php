@@ -6,7 +6,7 @@ require_once 'CstType.php';
 function isMtype($x)
 {
     $l=[
-    M_INT,M_INTP,M_FLOAT,M_BOOL,M_STRING,M_TXT,
+    M_INT,M_INTP,M_FLOAT,M_BOOL,M_STRING,M_TXT,M_RTXT,M_JSON, M_HTML,
     M_ID,M_REF,M_CREF,M_CODE,M_TMSTP,M_DATE, M_ALPHA,M_ALNUM, ];
     return (in_array($x, $l));
 }
@@ -20,6 +20,18 @@ function baseType($type)
     return ($type);
 }
 
+function isStruct($type)
+{
+    if ($type == M_TXT or $type == M_RTXT or $type == M_JSON or $type==M_HTML) {
+        return false;
+    }
+    return true;
+}
+
+function isRaw($type)
+{
+    return (! isStruct($type));
+}
 
 function convertString($x, $typ)
 {
@@ -100,10 +112,19 @@ function checkType($x, $type)
             return is_bool($x);
             break;
         case M_STRING:
-            return is_string($x);
+            return (is_string($x));
+            return false;
+            break;
+        case M_HTML:
+        case M_RTXT:
+            return true;
+            break;
+        case M_JSON:
+            $r= json_decode($x);
+            return (! is_null($r));
             break;
         case M_TXT:
-            return true;
+            return ($x===trim(strip_tags($x)));
             break;
         case M_ALNUM:
             if (is_string($x)) {
@@ -154,6 +175,9 @@ function convertSqlType($typ)
             return 'BOOLEAN';
         case M_STRING:
             return 'VARCHAR(255)';
+        case M_RTXT:
+        case M_HTML:
+        case M_JSON:
         case M_TXT:
             return 'TEXT';
         case M_ALNUM:

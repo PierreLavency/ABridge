@@ -196,7 +196,7 @@
 	$res= $obj->deleteMod();
 
 	$res = $obj->addAttr('Name',M_STRING);
- 	$res = $obj->addAttr('Spec',M_TXT);
+ 	$res = $obj->addAttr('JSpec',M_JSON);	
 	$res = $obj->addAttr('PlayedBy',M_CREF,'/'.$Distribution.'/ofRole');
 	
 	echo "$Role<br>";		
@@ -240,4 +240,16 @@
 	$res = $obj->saveMod();	
 	$r = $obj->getErrLog ();
 	$r->show();	
+ 
+ // Pages
 	
+	$obj = new Model($Page);
+	$res= $obj->deleteMod();
+
+ 	$res = $obj->addAttr('Subject',M_STRING);
+ 	$res = $obj->addAttr('Content',M_HTML);
+	
+	echo "$Page<br>";		
+	$res = $obj->saveMod();	
+	$r = $obj->getErrLog ();
+	$r->show();		

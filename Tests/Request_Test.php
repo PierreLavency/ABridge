@@ -251,6 +251,40 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 				['/X/1/Y',	'/X/1/Y/1',	'B',V_S_CREA,	'/X/1/Y/1/B'],
  			];
     }
+	
+    /**
+     * @dataProvider Provider_prm
+     */
+	public function testPrm($p1,$p2,$p3,$p4,$e)
+	{
+			$_SERVER['PHP_SELF']='/ABridge.php';
+			$_SERVER['PATH_INFO']=$p1;
+			$_SERVER['REQUEST_METHOD']=$p2;
+			$_GET['Action']=$p3;
+			if ($p2 == 'GET') {
+				unset($_POST['a_param']);
+				$_GET['a_param']=$p4;
+			} else {
+				unset($_GET['a_param']);
+				$_POST['a_param']=$p4;
+			}
 
+			$r=new Request();
+			$this->assertEquals($p4,$r->getPrm('a_param',true));
+			$this->assertEquals($e,$r->getPrm('a_param',false));
+			
+
+	}
+
+	public function Provider_prm() {
+        return [
+				['/X/1',		'GET' , V_S_READ,'param_value',		'param_value'],
+				['/X/1',		'GET' , V_S_READ,'param <br> value','param  value'],				
+				['/X/1/Y/1',	'POST',	V_S_UPDT,'param_value',		'param_value'],
+				['/X/1/Y/1',	'POST',	V_S_UPDT,'param_value<>',	'param_value'],
+				['/X/1/Y/1',	'POST',	V_S_UPDT,null,	null],				
+ 			];
+    }
+	
 }
 

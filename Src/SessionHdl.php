@@ -51,11 +51,11 @@ class SessionHdl
             return;
         }
         if (! is_null($role)) {
-            $res = $role->getVal('Spec');
+            $res = $role->getVal('JSpec');
             $val = json_decode($res, true);
 //					var_dump($val);
-            if (! is_null('Spec')) {
-                $this->roleSpec= json_decode($res, true);
+            if (! is_null($val)) {
+                $this->roleSpec= $val;
             }
         }
     }

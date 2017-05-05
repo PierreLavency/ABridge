@@ -12,6 +12,7 @@
 	$Session ='Session';
 	$Distribution = 'Distribution';
 	$Prof = 'Prof';
+	$Page ='Page';
 	
 	// CodeVal
 		
@@ -48,22 +49,13 @@
 	// Role
 		
 
-	
 	// Distribution
 
 
 	// Session 
 	
-	$obj = new Model($Session);
-	$res= $obj->deleteMod();
+    // Pages
+	
 
-	$res = $obj->addAttr($User,M_REF,'/'.$User);
-	$res = $obj->addAttr($Role,M_REF,'/'.$Role);
-	$res = $obj->addAttr('Comment',M_STRING);
-	$res = $obj->addAttr('BKey',M_STRING);
-	$res = $obj->setBkey('BKey',true);
-		
-	$res = $obj->saveMod();
-	$r = $obj->getErrLog ();
-	$r->show();
+	
 	

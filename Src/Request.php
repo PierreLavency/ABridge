@@ -272,8 +272,11 @@ class Request
         return $cleanInput;
     }
     
-    public function getPrm($attr)
+    public function getPrm($attr, $raw = false)
     {
+        if ($raw) {
+            return $this->getRawPrm($attr);
+        }
         if (isset($this->getp[$attr])) {
             return $this->getp[$attr];
         }
@@ -282,7 +285,18 @@ class Request
         }
         return null;
     }
-    
+ 
+    protected function getRawPrm($attr)
+    {
+        if (isset($_GET[$attr])) {
+            return $_GET[$attr];
+        }
+        if (isset($_POST[$attr])) {
+            return $_POST[$attr];
+        }
+        return null;
+    }
+ 
     public function getAction()
     {
         return $this->action;

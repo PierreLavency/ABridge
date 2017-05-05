@@ -439,8 +439,8 @@ class Handle
         return $this->request->getMethod();
     }
     
-    public function getPrm($attr)
+    public function getPrm($attr, $raw = false)
     {
-        return $this->request->getPrm($attr);
+        return $this->request->getPrm($attr, $raw);
     }
 }

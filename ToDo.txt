@@ -6,7 +6,7 @@ B9 Race condition in test suite
 B10
 
 DEV
-
+- remove 'custom' class for session management.
 - review logging 
 - link menu and roles.
 - unify get code with get reference.
