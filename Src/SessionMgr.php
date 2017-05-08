@@ -93,7 +93,7 @@ class SessionMgr
             echo 'id : '.$this->id;
             echo 'pnew : '.$this->prevSess;
             echo 'pid : '.$this->pid;
-            $hdl->newObj($this->id);
+            $obj=$hdl->newObj($this->id);
             $this->newSess=true;
         }
         $this->sessHdl = $obj;

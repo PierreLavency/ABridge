@@ -13,7 +13,8 @@
 	$Role = 'Role';
 	$Session ='Session';
 	$Distribution = 'Distribution';
-	
+	$Prof = 'Prof';
+	$Page ='Page';
 	
 	// CodeVal
 		
@@ -22,8 +23,7 @@
 	
 	$res = $codeval->addAttr('Name',M_STRING);
 
-	$path='/'.$Code;
-	$res = $codeval->addAttr('ValueOf',M_REF,$path);
+	$res = $codeval->addAttr('ValueOf',M_REF,'/'.$Code);
 	$res=$codeval->setMdtr('ValueOf',true); // Mdtr
 		
 	
@@ -40,8 +40,8 @@
 	$res = $code->addAttr('Name',M_STRING); 
 	$res=$code->setBkey('Name',true);// Unique
 		
-	$path='/'.$CodeVal.'/ValueOf';
-	$res = $code->addAttr('Values',M_CREF,$path);
+
+	$res = $code->addAttr('Values',M_CREF,'/'.$CodeVal.'/ValueOf');
 
 	echo $Code."<br>";	
 	$res = $code->saveMod();
@@ -74,14 +74,14 @@
 	
 	$res = $obj->addAttr('BirthDay',M_DATE);
 	
-	$path='/'.$Code."/$sex_id/Values";
-	$res = $obj->addAttr('Sexe',M_CODE,$path);	
-	
-	$path='/'.$Code."/$country_id/Values";
-	$res = $obj->addAttr('Country',M_CODE,$path);	
 
-	$path='/'.$Inscription.'/De';
-	$res = $obj->addAttr('InscritA',M_CREF,$path);
+	$res = $obj->addAttr('Sexe',M_CODE,'/'.$Code."/$sex_id/Values");	
+	
+
+	$res = $obj->addAttr('Country',M_CODE,'/'.$Code."/$country_id/Values");	
+
+
+	$res = $obj->addAttr('InscritA',M_CREF,'/'.$Inscription.'/De');
 
 	$obj->addAttr('NbrCours',M_INT,M_P_EVAL);
 	$obj->addAttr('NbrCredits',M_INT,M_P_EVALP);
@@ -103,8 +103,7 @@
 
 	$res = $cours->addAttr('Name',M_STRING);
 	
-	$path='/'.$Inscription.'/A';
-	$res = $cours->addAttr('SuivitPar',M_CREF,$path);
+	$res = $cours->addAttr('SuivitPar',M_CREF,'/'.$Inscription.'/A');
 
 	$cours->addAttr('Credits',M_INT);
 	
@@ -121,12 +120,12 @@
 	$inscription = new Model($Inscription);
 	$res= $inscription->deleteMod();
 	
-	$path='/'.$Student;
-	$res = $inscription->addAttr('De',M_REF,$path);
+
+	$res = $inscription->addAttr('De',M_REF,'/'.$Student);
 	$res = $inscription->setMdtr('De',true); // Mdtr
 
-	$path='/'.$Cours;
-	$res = $inscription->addAttr('A',M_REF,$path);
+
+	$res = $inscription->addAttr('A',M_REF,'/'.$Cours);
 	$res = $inscription->setMdtr('A',true); // Mdtr
 
 	$inscription->setCkey(['De','A'],true);
@@ -146,8 +145,8 @@
 	$prof->addAttr('BirthDay',M_DATE);
 
 
-	$path='/Code/1/Values';
-	$prof->addAttr('Sexe',M_CODE,$path);
+
+	$prof->addAttr('Sexe',M_CODE,'/Code/1/Values');
 
 	$prof->addAttr('Donne',M_CREF,'/Charge/Par');
 	$prof->addAttr($User,M_REF,'/'.$User);
@@ -226,12 +225,11 @@
 	$obj = new Model($Distribution);
 	$res= $obj->deleteMod();
 
-	$path='/'.$Role;
-	$res = $obj->addAttr('ofRole',M_REF,$path);
+
+	$res = $obj->addAttr('ofRole',M_REF,'/'.$Role);
 	$res = $obj->setMdtr('ofRole',true); // Mdtr
 
-	$path='/'.$User;
-	$res = $obj->addAttr('toUser',M_REF,$path);
+	$res = $obj->addAttr('toUser',M_REF,'/'.$User);
 	$res = $obj->setMdtr('toUser',true); // Mdtr
 
 	$obj->setCkey(['ofRole','toUser'],true);

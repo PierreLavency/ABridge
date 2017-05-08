@@ -3,9 +3,12 @@ B1 session with API.
 B2 ' in txt fields. 
 B6 refresh menu when role changed.
 B9 Race condition in test suite
-B10
+B10 condition on state handler existence is not related to correct Model (Model)
+B11 selection on class using state handler of another class (Model)
+B12 
 
 DEV
+- split list in (view) CRef nav line and CRef values
 - remove 'custom' class for session management.
 - review logging 
 - link menu and roles.
@@ -13,13 +16,10 @@ DEV
 - extend code/ref to "dot" Cref attributes.
 - handle user preference.
 - increase autorisations rule capability
-	- 1xN
 	- NxN relationship
 	- views
 
-
 - review custom code integration
-- extend to static HTML
 - handle predefine models. 
 - user Jason to save data rather than serilialisation.
 
@@ -33,9 +33,10 @@ DEV
 - delete all object in class /2
 - set up rest services 
 - set up modif logging // node.js ?
+
 - changed DB model independently of class model.
 - implement unique index.
-- support CREF on abstract (?)
+- support CREF on abstract (????)
 
 - Authenthication 
 
@@ -68,6 +69,8 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
+- increase autorisations rule capability (1xN) // 1day
+- unstructured type (HTML Jason etc.) // 1 day
 - review session management (object rather than files) // 1 day
 - fall back on id when V_C_REF view is null.
 - review controller test // 1 day
@@ -79,7 +82,7 @@ B7 "&" in url
 - unify management of param on GET and POST
 B3 selection on unique attributes (move check to save) / 2 hours
 B4 Cref across BaseHandler; /fixed 1 hour
-B5 remove protection when checking action / fixed 2 hours
+B5 remove protection when checking action - conflict on selection/creation / fixed 2 hours
 - review Url vs path and prm in View. // 4 hours
 - clean up errors in access management.
 - B0 - on select / create user in student role // 4 hours

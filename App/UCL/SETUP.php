@@ -14,12 +14,13 @@ require_once 'CstView.php';
 		'Prof'		 => ['fileBase','genealogy',],
 		'Charge'	 => ['fileBase','genealogy',],
 		'User'	 	 => ['dataBase','genealogy',],
+		'UGroup'	 => ['dataBase','genealogy',],		
 		'Role'	 	 => ['dataBase','genealogy',],
 		'Distribution'=> ['dataBase','genealogy',],
 		'Page'		  => ['dataBase','genealogy',],		
 		],
 	'Home' =>
-		['/Session','/User','/Role','/Distribution','/Student','/Cours','/Inscription','/Prof','/Charge',
+		['/Session','/User','/UGroup','/Role','/Distribution','/Student','/Cours','/Inscription','/Prof','/Charge',
 		'/Code','/CodeValue','/Page','/'],
 		
 	'Views' => [
@@ -28,7 +29,7 @@ require_once 'CstView.php';
 			'attrList' => [
 						V_S_READ=> ['id','User','Role','Comment','BKey','vnum','ctstp','utstp'],
 						V_S_UPDT=> ['id','User','Role','Comment'],
-						V_S_CREF=> ['id','User','Role','Comment','BKey','vnum','ctstp','utstp'],									
+						V_S_CREF=> ['id','User','Role','BKey','vnum','ctstp'],									
 			],
 			'attrHtml' => [
 						V_S_UPDT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],
@@ -51,6 +52,11 @@ require_once 'CstView.php';
 				V_S_REF		=> ['SurName','Name'],
 				],
 		],
+		'UGroup' =>[		
+			'attrList' => [
+				V_S_REF		=> ['Name'],
+				],
+		],		
 		'Role' =>[	
 				'attrList' => [
 					V_S_REF		=> ['Name'],

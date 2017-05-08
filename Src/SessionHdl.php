@@ -45,18 +45,15 @@ class SessionHdl
             return;
         }
         $user = $session->getVal('User');
-        if (is_null($user)) {
+        if (is_null($user) or is_null($role)) {
             $this->isRoot = true;
             $this->roleSpec=[['true', 'true', 'true']];
             return;
         }
-        if (! is_null($role)) {
-            $res = $role->getVal('JSpec');
-            $val = json_decode($res, true);
-//					var_dump($val);
-            if (! is_null($val)) {
-                $this->roleSpec= $val;
-            }
+        $res = $role->getVal('JSpec');
+        $val = json_decode($res, true);
+        if (! is_null($val)) {
+            $this->roleSpec= $val;
         }
     }
     
@@ -166,7 +163,7 @@ class SessionHdl
         foreach ($attrObjs as $attrObj) {
             $attr = $attrObj[0];
             $obj = $attrObj[1];
-            $res = $this->checkAttrCond($pathcond, $attr, $obj, $protect);
+            $res = $this->checkAttrCond($action, $pathcond, $attr, $obj, $protect);
             if (!$res) {
                 return false;
             }
@@ -174,20 +171,20 @@ class SessionHdl
         return true;
     }
     
-    protected function checkAttrCond($pathcond, $attr, $obj, $protect)
+    protected function checkAttrCond($action, $pathcond, $attr, $obj, $protect)
     {
         $cond = $this->getCondAttr($pathcond, $attr);
         if ($cond == ['true']) {
             return true;
         }
         foreach ($cond as $attro) {
-            $attra = explode(':', $attro);
+            $attra = explode('<>', $attro);
             $attrs=$attro;
             if (count($attra) > 1) {
                 $attro= $attra[0];
                 $attrs=$attra[1];
             }
-            $res = $this->checkLinkAttr($obj, $attro, $attrs, $protect);
+            $res = $this->checkLinkAttr($action, $obj, $attro, $attrs, $protect);
             if (!$res) {
                 return false;
             }
@@ -195,28 +192,42 @@ class SessionHdl
         return true;
     }
     
-    protected function checkLinkAttr($obj, $attro, $attrs, $protect)
+    protected function checkLinkAttr($action, $obj, $attroExp, $attrsExp, $protect)
     {
         if ($this->isRoot) {
             return true;
         }
-        $sess= $this->session;
+
+        $r = $this->resolvePath($this->session, $attrsExp);
+        if (is_null($r)) {
+            return false;
+        }
+        $sess=$r[0];
+        $attrs=$r[1];
+        
+        $r = $this->resolvePath($obj, $attroExp);
+        if (is_null($r)) {
+            return false;
+        }
+        $obj=$r[0];
+        $attro=$r[1];
+        
         if (is_null($obj)) {
             return false;
         }
         if ((!$obj->existsAttr($attro)) or (!$sess->existsAttr($attrs))) {
-            return false;
+            return false; // exception
         }
         $typ = $obj->getTyp($attro);
         $typs = $sess->getTyp($attrs);
         if (baseType($typ) != baseType($typs)) {
-            return false;
+            return false; // Execption
         }
         if ($typ == M_REF
         and $typs == M_REF
         and ($obj->getModRef($attro) != $sess->getModRef($attrs))
         ) {
-            return false;
+            return false;// Execption
         }
         $id1=$sess->getVal($attrs);
         $id2=$obj->getVal($attro);
@@ -226,7 +237,7 @@ class SessionHdl
             }
             return true;
         }
-        if ($obj->getId()==0 and is_null($id2)) {
+        if (($action == V_S_CREA or $action ==V_S_SLCT) and is_null($id2)) {
             if ($protect) {
                 $obj->setVal($attro, $id1);
                 $obj->protect($attro);
@@ -234,5 +245,30 @@ class SessionHdl
             return true;
         }
         return false;
+    }
+    
+
+    protected function resolvePath($obj, $attrExp)
+    {
+        $attrA=explode(':', $attrExp);
+        return $this->resPath($obj, $attrA);
+    }
+    
+    protected function resPath($obj, $attrA)
+    {
+        if (is_null($obj)) {
+            return null;
+        }
+        $c = count($attrA);
+        if ($c==0) {
+            return null;
+        }
+        $attr = array_shift($attrA);
+        if ($c==1) {
+            return [$obj,$attr];
+        }
+        $obj->protect($attr);
+        $obj=$obj->getRef($attr);
+        return $this->resPath($obj, $attrA);
     }
 }

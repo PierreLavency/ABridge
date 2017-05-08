@@ -91,7 +91,7 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase {
 	{
 		$rolespec =[
 		[[V_S_READ,V_S_SLCT],      		'true',         						'true'],
-        [V_S_UPDT,           			'|Application',                      	['Application'=>'User:User']],
+        [V_S_UPDT,           			'|Application',                      	['Application'=>'User<>User']],
         [[V_S_CREA,V_S_UPDT,V_S_DELT],	['|Application|In','Application|Out'],	['Application'=>'User']],
         [[V_S_CREA,V_S_DELT],    		'|Application|BuiltFrom',            	['Application'=>'User','BuiltFrom'=>'User']],
 		];
