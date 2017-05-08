@@ -2,17 +2,17 @@ BUGS
 B1 session with API.
 B2 ' in txt fields. 
 B6 refresh menu when role changed.
-B9 Race condition in test suite
+B9 Race condition in test suite (connection management)
 B10 condition on state handler existence is not related to correct Model (Model)
 B11 selection on class using state handler of another class (Model)
 B12 
 
 DEV
 - split list in (view) CRef nav line and CRef values
-- remove 'custom' class for session management.
 - review logging 
 - link menu and roles.
 - unify get code with get reference.
+- getBkey method (Model);
 - extend code/ref to "dot" Cref attributes.
 - handle user preference.
 - increase autorisations rule capability
@@ -69,7 +69,8 @@ pear install phpdoc/PhpDocumentor-2.8.1
 phpunit --coverage-html Testcoverage Tests
 
 DONE
-- increase autorisations rule capability (1xN) // 1day
+- remove 'custom' class for session management.// 0.5 day
+- increase autorisations rule capability (1xN) // 1 day
 - unstructured type (HTML Jason etc.) // 1 day
 - review session management (object rather than files) // 1 day
 - fall back on id when V_C_REF view is null.

@@ -19,6 +19,8 @@ require_once 'CstView.php';
 		'Distribution'=> ['dataBase','genealogy',],
 		'Page'		  => ['dataBase','genealogy',],		
 		],
+	'Session' => 
+		['Session'=>'BKey'],
 	'Home' =>
 		['/Session','/User','/UGroup','/Role','/Distribution','/Student','/Cours','/Inscription','/Prof','/Charge',
 		'/Code','/CodeValue','/Page','/'],
@@ -206,35 +208,6 @@ require_once 'CstView.php';
 	];
 
 
-class SessionMeta
-{
-	
-	function newObj($Bkey)
-	{
-		$obj = new Model('Session');
-		$obj->setVal('Comment','/');
-		$obj->setVal('BKey',$Bkey);
-		$obj->save();
-		return $obj;
-	}
-	
-	
-	function getObj($Bkey) 
-	{
-		$obj = new Model('Session');
-		$obj->setCriteria(['BKey'],['='],[$Bkey]);
-		$res = $obj->select();
-		if ($res==[]) {
-			return null;
-		}
-		$id= array_pop($res);
-		$obj= new Model('Session',$id);
-		return $obj;
-	}
-	
-	
-	
-}
 	
 class Cours {
 

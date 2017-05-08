@@ -44,9 +44,15 @@ class Controler
         $bases = [];
         $handlers = [];
         resetHandlers();
-        $config=$spec['Handlers'];
-        $sesMgr = new SessionMgr();
+        
+        $Sess = [];
+        if (isset($spec['Session'])) {
+            $Sess = $spec['Session'];
+        }
+        $sesMgr = new SessionMgr($Sess);
         $this->sessionMgr=$sesMgr;
+
+        $config=$spec['Handlers'];
         foreach ($config as $classN => $handler) {
             if (count($handler) == 1) {
                     $handler[]=$this->bname;
