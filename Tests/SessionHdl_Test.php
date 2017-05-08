@@ -39,7 +39,7 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase {
 		} else {
 			$this->assertFalse($x->checkReq($req));
 		}	
-		
+
 
 	}
 
@@ -79,6 +79,11 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase {
 		$y = new SessionHdl($s,null);
 		$r = $y->getReqCond($req,$c);
 		$this->assertEquals(['true'],$r);
+
+		$y = new SessionHdl(null);
+		$r = $y->getReqCond($req,$c);
+		$this->assertEquals(['true'],$r);
+
 		
 		$this->assertTrue($y->isRoot());
 	}
@@ -87,7 +92,7 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase {
      * @dataProvider Provider2
      */
 	
-	public function testCheck($p, $b, $e1, $e2)
+	public function testCheck($p, $b, $e1, $e2, $e3)
 	{
 		$rolespec =[
 		[[V_S_READ,V_S_SLCT],      		'true',         						'true'],
@@ -99,7 +104,7 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase {
 		$role = new Model('RoleSess');
 		$role->addAttr('JSpec',M_STRING);
 		$js=json_encode($rolespec);
-//		echo $js;
+
 		$role->setVal('JSpec',$js);
 	
 		$y = new Model('TestSess');
@@ -114,30 +119,65 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase {
 
 		$req = new Request($p,$b);
 				
-		$res = $r->checkARight($req, [['Application',$x],['BuiltFrom',$x]]);
+		$res = $r->checkARight($req, [['Application',$x],['BuiltFrom',$x]],true);
 		$this->assertEquals($e1,$res);
 		
 		$x = new Model('TestApp');
 		$x->addAttr('User',M_INT);
 		$x->setVal('User',2);	
 		
-		$res = $r->checkARight($req, [['Application',$x]]);
+		$res = $r->checkARight($req, [['Application',$x]],true);
 		$this->assertEquals($e2,$res);
 		
+		$x = new Model('TestApp');
+		$x->addAttr('User',M_INT);
+		
+		$res = $r->checkARight($req, [['Application',$x]],true);
+		$this->assertEquals($e3,$res);
 	}
 
 	public function Provider2() {
         return [			
-			['/ApplicationA/1',			 	V_S_UPDT, false, false],
-			['/Application',			 	V_S_SLCT, true, true],
-			['/Application/1',			 	V_S_UPDT, true, false],
-			['/Application/1/In',			V_S_CREA, true, false],
-			['/Application/1/BuiltFrom',	V_S_CREA, true, false],			
-			['/Application/1/Ins',		 	V_S_CREA, false,false],
-			['/Application/1/Ins',	 		V_S_SLCT, true, true],			
+			['/ApplicationA/1',			 	V_S_UPDT, false, false, false],
+			['/Application',			 	V_S_SLCT, true, true , true],
+			['/Application/1',			 	V_S_UPDT, true, false, false],
+			['/Application/1/In',			V_S_CREA, true, false, true],
+			['/Application/1/BuiltFrom',	V_S_CREA, true, false, true],			
+			['/Application/1/Ins',		 	V_S_CREA, false,false, false],
+			['/Application/1/Ins',	 		V_S_SLCT, true, true, true],			
  			];
     }
 
+	public function testErr()
+	{
+		$role = new Model('RoleSess');
+		$role->addAttr('JSpec',M_STRING);
+
+//		$role->setVal('JSpec',$js);
+	
+		$y = new Model('TestSess');
+		$y->addAttr('User',M_INT);
+		$y->setVal('User',1);
+		
+		$r = new SessionHdl($y,$role);
+
+		$res = "";
+		try {$x=$r->checkreq(null);} catch (Exception $e) {$res= $e->getMessage();}
+		$this->assertEquals($res,E_ERC012);
+		
+		$res = "";
+		try {$x=$r->checkARight(null,[],true);} catch (Exception $e) {$res= $e->getMessage();}
+		$this->assertEquals($res,E_ERC012);
+		
+		
+		$x = new Model('TestApp');
+		$x->addAttr('User',M_INT);		
+		$x->setVal('User',1);
+
+		
+		
+		
+	}
 	
 	
 }

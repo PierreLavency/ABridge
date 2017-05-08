@@ -27,11 +27,15 @@ class SessionHdl
         $this->construct1($this->session);
     }
  
- 
     protected function construct1($session)
     {
-         $role = $session->getRef('Role');
-         $this->construct2($session, $role);
+        if (is_null($session)) {
+            $this->isRoot = true;
+            $this->roleSpec=[['true', 'true', 'true']];
+            return;
+        }
+        $role = $session->getRef('Role');
+        $this->construct2($session, $role);
     }
  
     protected function construct2($session, $role)
@@ -79,7 +83,7 @@ class SessionHdl
     public function checkReq($req)
     {
         if (is_null($req)) {
-            return false;
+            throw new Exception(E_ERC012);
         }
         $res= $this->getCond($req->getAction(), $req->getModpath());
         if ($res) {
@@ -149,10 +153,10 @@ class SessionHdl
         return $condElm;
     }
 
-    public function checkARight($req, $attrObjs, $protect = true)
+    public function checkARight($req, $attrObjs, $protect)
     {
         if (is_null($req)) {
-            return false;
+            throw new Exception(E_ERC012);
         }
         $action = $req->getAction();
         $modpath=$req->getModpath();
@@ -197,37 +201,34 @@ class SessionHdl
         if ($this->isRoot) {
             return true;
         }
-
         $r = $this->resolvePath($this->session, $attrsExp);
         if (is_null($r)) {
             return false;
         }
         $sess=$r[0];
         $attrs=$r[1];
-        
         $r = $this->resolvePath($obj, $attroExp);
         if (is_null($r)) {
             return false;
         }
         $obj=$r[0];
         $attro=$r[1];
-        
         if (is_null($obj)) {
             return false;
         }
         if ((!$obj->existsAttr($attro)) or (!$sess->existsAttr($attrs))) {
-            return false; // exception
+            throw new Exception(E_ERC050);
         }
         $typ = $obj->getTyp($attro);
         $typs = $sess->getTyp($attrs);
         if (baseType($typ) != baseType($typs)) {
-            return false; // Execption
+            throw new Exception(E_ERC050.':'.$typ.':'.$typs);
         }
         if ($typ == M_REF
         and $typs == M_REF
         and ($obj->getModRef($attro) != $sess->getModRef($attrs))
         ) {
-            return false;// Execption
+            throw new Exception(E_ERC050.':'.$obj->getModRef($attro).':'.$sess->getModRef($attrs));
         }
         $id1=$sess->getVal($attrs);
         $id2=$obj->getVal($attro);

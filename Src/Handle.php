@@ -99,7 +99,7 @@ class Handle
             $this->attrObjs[]=[$mod,$obj];
         }
         $this->obj =$obj;
-        $res = $this->sessionHdl->checkARight($this->request, $this->attrObjs);
+        $res = $this->sessionHdl->checkARight($this->request, $this->attrObjs, true);
         if (!$res) {
             throw new Exception(E_ERC053.':'.$this->request->getUrl());
         }
@@ -167,7 +167,7 @@ class Handle
         if (is_null($req)) {
             return null;
         }
-        $res = $this->sessionHdl->checkARight($req, $this->attrObjs);
+        $res = $this->sessionHdl->checkARight($req, $this->attrObjs, false);
         if (!$res) {
             return null;
         }
