@@ -285,6 +285,11 @@ class Handle
     {
         return $this->obj->getAttrList();
     }
+    
+    public function existsAttr($attr)
+    {
+        return $this->obj->existsAttr($attr);
+    }
 
     public function getModName()
     {

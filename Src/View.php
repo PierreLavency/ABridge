@@ -493,6 +493,18 @@ class View
                 $res=[];
                 $res[H_TYPE]=H_T_LINK;
                 $res[H_NAME]=$x;
+                if ($this->handle->existsAttr('Rowp')) {
+                    $rowp=$this->handle->getVal('Rowp');
+                    if (!is_null($rowp)) {
+                        $tres[H_ROWP]=$rowp;
+                    }
+                }
+                if ($this->handle->existsAttr('Colp')) {
+                    $colp=$this->handle->getVal('Colp');
+                    if (!is_null($colp)) {
+                        $tres[H_COLP]=$colp;
+                    }
+                }
                 $res[H_LABEL]=$tres;
             }
             return $res;

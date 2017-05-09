@@ -59,7 +59,7 @@ APP
 - beef up test apps with relationships tables 
 	- union Ckey + multi surname + frere et soeur
 	- code postal / 3
-	- album / 3
+
 
 INT
 - integrate with drupal ?
@@ -71,8 +71,8 @@ INT
 
 
 DONE
-- split list in (view) CRef nav line and CRef values
-
+- album / 0.5
+- split list in (view) CRef nav line and CRef values // 0.5
 - add exeption in SessionHdl// 0.25
 - remove 'custom' class for session management.// 0.5 day
 - increase autorisations rule capability (1xN) // 1 day

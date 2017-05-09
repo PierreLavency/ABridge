@@ -16,6 +16,8 @@ class Request
     protected $isClassPath=false;
     protected $isObjPath=false;
     protected $isRoot=false;
+    protected $isRelT=false;
+    protected $isT=false;
     protected $action=null;
     protected $method=null;
     protected $getp=null;
@@ -84,8 +86,16 @@ class Request
             $this->modPath='|';
             return;
         }
-        $this->modPath="";
+        if ($pathArr[0] == "~") {
+            $this->isRelT=true;
+            $this->modPath='|~';
+            array_shift($pathArr);
+            if (!count($pathArr)) {
+                $this->isT=true;
+            }
+        }
         $this->isRoot=false;
+        $this->modPath="";
         $c = count($pathArr);
         $r = $c%2;
         $obj = null;
@@ -160,6 +170,11 @@ class Request
     public function isRoot()
     {
         return ($this->isRoot);
+    }
+
+    public function isT()
+    {
+        return ($this->isT);
     }
 
 

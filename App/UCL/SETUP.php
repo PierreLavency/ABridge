@@ -49,7 +49,15 @@ require_once 'CstView.php';
 			],
 
 		],
-		'User' =>[		
+		'User' =>[
+			'lblList' => [
+					'Profile'		=> 'Student',
+					'Play'			=> 'PlayRoles',
+					'ProfProfile'	=> 'Professor',
+				],
+			'attrHtml' => [
+					V_S_READ => ['Play'=>[H_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]]
+				],						
 			'attrList' => [
 				V_S_REF		=> ['SurName','Name'],
 				],
