@@ -11,7 +11,7 @@ define('E_ERC008', "ERC008");  // M_REF must have an associated path
 define('E_ERC009', "ERC009");  // M_REF object does not exists
 define('E_ERC010', "ERC010");  // invalid model name
 define('E_ERC011', "ERC011");  // invalid type for object id
-define('E_ERC012', "ERC012");  // NOT USED ANYMORE
+define('E_ERC012', "ERC012");  // null request
 define('E_ERC013', "ERC013");  // cannot set CREF
 define('E_ERC014', "ERC014");  // type requires statehdlr.
 define('E_ERC015', "ERC015");  // no possible values for this type
@@ -49,7 +49,7 @@ define('E_ERC046', "ERC046");  // type change not supported
 define('E_ERC047', "ERC047");  // not supported at inherited level
 define('E_ERC048', "ERC048");  // illegal action on path type
 define('E_ERC049', "ERC049");  // illegal action on obj
-define('E_ERC050', "ERC050");  // illigal condition in role
+define('E_ERC050', "ERC050");  // illegal condition in role
 define('E_ERC051', "ERC051");  // no sessionMg found
 define('E_ERC052', "ERC052");  // cannot delete - ref integrity
-define('E_ERC053', "ERC053");  // acess denied
+define('E_ERC053', "ERC053");  // access denied

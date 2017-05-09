@@ -22,6 +22,7 @@ define('V_LT', "v_lt"); // list type
 define('V_ALIST', "v_alist");
 define('V_CLIST', "v_clist");
 define('V_VLIST', "v_vlist");
+define('V_CREF_MLIST', "v_cref_mlist");
 
 define('V_ID', "v_id");
 define('V_STRING', "v_string");

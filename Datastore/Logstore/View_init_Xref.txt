@@ -102,7 +102,7 @@ a:7:{i:0;s:1736:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:1;s:3750:"<!DOCTYPE html>
+ </html>";i:1;s:3950:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -172,15 +172,23 @@ a:7:{i:0;s:1736:"<!DOCTYPE html>
 	</tr>
 </table>
 
-FatherOf
-
-11 : 0-10
-
-<a href="/ABridge.php/viewCasesXref/2?FatherOf=0" >Previous</a>
-
-<a href="/ABridge.php/viewCasesXref/2?FatherOf=10" >Next</a>
-
-<a href="/ABridge.php/viewCasesXref/2/FatherOf?Action=Create" >New</a>
+<table > <tr>
+	<td>
+		FatherOf
+	</td>
+	<td>
+		11 : 0-10
+	</td>
+	<td>
+		<a href="/ABridge.php/viewCasesXref/2?FatherOf=0" >Previous</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/viewCasesXref/2?FatherOf=10" >Next</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/viewCasesXref/2/FatherOf?Action=Create" >New</a>
+	</td>
+</tr> </table>
 
 <table >
 	<tr>
@@ -276,15 +284,23 @@ FatherOf
 </table>
 
 
-MotherOf
-
-11 : 0-10
-
-<a href="/ABridge.php/viewCasesXref/2?MotherOf=0" >Previous</a>
-
-<a href="/ABridge.php/viewCasesXref/2?MotherOf=10" >Next</a>
-
-<a href="/ABridge.php/viewCasesXref/2/MotherOf?Action=Create" >New</a>
+<table > <tr>
+	<td>
+		MotherOf
+	</td>
+	<td>
+		11 : 0-10
+	</td>
+	<td>
+		<a href="/ABridge.php/viewCasesXref/2?MotherOf=0" >Previous</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/viewCasesXref/2?MotherOf=10" >Next</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/viewCasesXref/2/MotherOf?Action=Create" >New</a>
+	</td>
+</tr> </table>
 
 <table >
 	<tr>
@@ -509,7 +525,7 @@ MotherOf
 </form>  
 
  </body> 
- </html>";i:4;s:1897:"<!DOCTYPE html>
+ </html>";i:4;s:1955:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -603,9 +619,14 @@ MotherOf
 			</td>
 		</tr>
 	</table>
-Select
-
-0
+<table > <tr>
+	<td>
+		Select
+	</td>
+	<td>
+		0
+	</td>
+</tr> </table>
 
 <table >
 </table>

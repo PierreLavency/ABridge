@@ -1,3 +1,12 @@
+CMD
+/*check code
+phpcs --standard=PSR2 --report=summary -l Src
+phpcbf --standard=PSR2 --no-patch  Src  
+/*install phpdocumentor
+pear install phpdoc/PhpDocumentor-2.8.1
+/* run test suite with coverge
+phpunit --coverage-html Testcoverage Tests
+
 BUGS
 B1 session with API.
 B2 ' in txt fields. 
@@ -8,7 +17,7 @@ B11 selection on class using state handler of another class (Model)
 B12 
 
 DEV
-- split list in (view) CRef nav line and CRef values
+- implement '~' in menus.
 - review logging 
 - link menu and roles.
 - unify get code with get reference.
@@ -17,7 +26,7 @@ DEV
 - handle user preference.
 - increase autorisations rule capability
 	- NxN relationship
-	- views
+	- views and parameters
 
 - review custom code integration
 - handle predefine models. 
@@ -53,23 +62,18 @@ APP
 	- album / 3
 
 INT
+- integrate with drupal ?
 - integrate MongoDB
 - integrate Redhiss
 - set up bug tracking
 - set up a git server
 - set up jenkin
 
-CMD
-/*check code
-phpcs --standard=PSR2 --report=summary -l Src
-phpcbf --standard=PSR2 --no-patch  Src  
-/*install phpdocumentor
-pear install phpdoc/PhpDocumentor-2.8.1
-/* run test suite with coverge
-phpunit --coverage-html Testcoverage Tests
 
 DONE
-- add ecxeption in SessionHdl// 0.25
+- split list in (view) CRef nav line and CRef values
+
+- add exeption in SessionHdl// 0.25
 - remove 'custom' class for session management.// 0.5 day
 - increase autorisations rule capability (1xN) // 1 day
 - unstructured type (HTML Jason etc.) // 1 day

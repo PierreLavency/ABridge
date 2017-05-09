@@ -27,6 +27,7 @@ class View
                 V_ATTR  => H_T_LIST,
                 V_CLIST => H_T_LIST_BR,
                 V_CREF  => H_T_LIST_BR,
+                V_CREF_MLIST => H_T_1TABLE,
                 V_CVAL  => H_T_TABLE,
                 V_S_REF => H_T_CONCAT, // do not change
                 V_S_CREF=> H_T_LIST, // caller or callee ?
@@ -819,20 +820,8 @@ class View
                 }
             }
             if ($typ == M_CREF) {
-                $prm = $this->getAttrHtml($attr, $viewState);
-                $ctyp=$prm[V_CTYP];
                 $list = $this->handle->getVal($attr);
-                $view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL];
-                if ($ctyp == V_C_TYPN or count($list)==0) {
-                    $view[]=[V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_B_NEW];
-                }
-                if ($ctyp == V_C_TYP1 and count($list)>0) {
-                    $view[]=[V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_C_TYP1,V_ID=>$list[0]];
-                }
-                if ($ctyp==V_C_TYPN) {
-                    $view = $this->getSlice($attr, $list, $view, $viewState, $prm);
-                }
-                $specL[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
+                $specL[]=$this->buildList($attr, $list, $viewState);
             }
         }
         if ($viewState == V_S_REF or $viewState == V_S_CREF) {
@@ -855,12 +844,8 @@ class View
         $arg[]= [V_TYPE=>V_LIST,V_LT=>V_OBJACTIONMENU,V_ARG=>$menuObjAction];
         $arg[]= [V_TYPE=>V_LIST,V_LT=>V_ALIST,V_ARG=>$spec];
         if ($viewState == V_S_SLCT) {
-            $view=[];
-            $prm = $this->getAttrHtml(V_S_SLCT, $viewState);
-            $view[]=[V_TYPE=>V_ELEM,V_ATTR => V_S_SLCT, V_PROP => V_P_LBL];
             $list=$this->handle->select();
-            $view = $this->getSlice(V_S_SLCT, $list, $view, $viewState, $prm);
-            $specS[]=[V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$view];
+            $specS[]=$this->buildList(V_S_SLCT, $list, $viewState);
             $arg[] = [V_TYPE=>V_LIST,V_LT=>V_CLIST,V_ARG=>$specS];
         }
         if ($this->handle->isErr()) {
@@ -880,7 +865,34 @@ class View
         $r=$this->subst($speci, $viewState);
         return $r;
     }
-
+    
+    protected function buildList($attr, $list, $viewState)
+    {
+        $view = [];
+        $prm = $this->getAttrHtml($attr, $viewState);
+        $view[]=[V_TYPE=>V_ELEM,V_ATTR => $attr, V_PROP => V_P_LBL];
+        $ctyp=$prm[V_CTYP];
+        if ($ctyp == V_C_TYPN or count($list)==0) {
+            if ($attr != V_S_SLCT) {
+                $view[]=[V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_B_NEW];
+            }
+        }
+        if ($ctyp == V_C_TYP1 and count($list)>0) {
+            $view[]=[V_TYPE=>V_CREFMENU,V_ATTR => $attr,V_P_VAL=>V_C_TYP1,V_ID=>$list[0]];
+        }
+        $valList=[];
+        if ($ctyp==V_C_TYPN) {
+            $res = $this->getSlice($attr, $list, $view, $viewState, $prm);
+            $view = $res[0];
+            $valList=$res[1];
+        }
+        $specElm= [[V_TYPE=>V_LIST,V_LT=>V_CREF_MLIST,V_ARG=>$view]];
+        if ($valList !=[]) {
+            $specElm[]=$valList;
+        }
+        return [V_TYPE=>V_LIST,V_LT=>V_CREF,V_ARG=>$specElm];
+    }
+        
     protected function getSlice($attr, $list, $viewL, $viewState, $prm)
     {
         $view[]=$viewL[0];
@@ -934,8 +946,8 @@ class View
             }
             $first = false;
         }
-        $view[]=[V_TYPE=>V_LIST,V_LT=>V_CVAL,V_ARG=>$viewe];
-        return $view;
+        $res=[$view,[V_TYPE=>V_LIST,V_LT=>V_CVAL,V_ARG=>$viewe]];
+        return $res;
     }
     
     public function viewErr()
