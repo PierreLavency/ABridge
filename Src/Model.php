@@ -426,7 +426,10 @@ class Model
             return $this->refParm[$attr] ;
         }
         $abstr = $this->getInhObj();
-        return $abstr->getParm($attr);
+        if (! is_null($abstr)) {
+            return $abstr->getParm($attr);
+        }
+        return 0;
     }
 
     public function getRef($attr)
@@ -535,10 +538,13 @@ class Model
         $path=$this->getParm($attr);
         $patha=explode('/', $path);
         if ($typ == M_CODE) {
-            if (count($patha) == 4) {
+            $c = count($patha);
+            if ($c == 4) {
                 $m = new Model($patha[1], (int) $patha[2]);
                 $res=$m->getCref($patha[3], $id);
                 return ($res);
+            } elseif ($c == 3) {
+                return $this->getCref($patha[2], $id) ;
             }
             return new Model($patha[1], $id);
         }
@@ -915,21 +921,7 @@ class Model
             $this->errLog->logLine(E_ERC003.':'.$attr);
             return false;
         }
-        if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE) {
-            if (!$path) {
-                $this->errLog->logLine(E_ERC008.':'.$attr.':'.$typ);
-                return false;
-            }
-            if (!$this->stateHdlr) {
-                $this->errLog->logLine(E_ERC014.':'.$attr.':'.$typ);
-                return false;
-            }
-        }
-        if (!isMtype($typ)) {
-            $this->errLog->logLine(E_ERC004.':'.$typ);
-            return false;
-        }
-        if (! $this->checkParm($attr, $typ, $path)) {
+        if (! $this->checkParm($attr, $typ, $path, false)) {
             return false;
         }
         if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE) {
@@ -1186,14 +1178,6 @@ class Model
                 return false;
             }
         }
-        /* BKey -> move to save !!
-        if ($this->isBkey($attr) and $check) {
-            $res = $this->checkBkey($attr, $val);
-            if (! $res) {
-                $this->errLog->logLine(E_ERC018.':'.$attr.':'.$val);
-                return false;
-            }
-        } */
         return ($this->setValNoCheck($attr, $val));
     }
     /**
@@ -1268,8 +1252,36 @@ class Model
         return $res;
     }
 
-    protected function checkParm($attr, $typ, $parm)
+    
+    public function checkMod()
     {
+        $res = true;
+        foreach ($this->getAllAttr() as $attr) {
+            if (! $this->isPredef($attr)) {
+                $res = ($res and $this->checkModAttr($attr));
+            }
+        }
+        if (!$res) {
+    //		$this->getErrLog()->show();
+        }
+        return $res;
+    }
+    
+    
+    protected function checkModAttr($attr)
+    {
+        $typ = $this->getTyp($attr);
+        $parm = $this->getParm($attr);
+        return $this->checkParm($attr, $typ, $parm, true);
+    }
+    
+    protected function checkParm($attr, $typ, $parm, $check)
+    {
+        if (!isMtype($typ)) {
+            $this->errLog->logLine(E_ERC004.':'.$typ);
+            return false;
+        }
+        
         if ($parm === M_P_EVAL or $parm === M_P_EVALP) {
             if (! class_exists($this->getModName())) {
                 $this->errLog->logLine(E_ERC040.':'.$attr.':'.$typ);
@@ -1284,6 +1296,10 @@ class Model
             }
             return true;
         }
+        if (!$parm) {
+            $this->errLog->logLine(E_ERC008.':'.$attr.':'.$typ);
+            return false;
+        }
         $path=explode('/', $parm);
         $root = $path[0];
         if (($root != "" )) {
@@ -1294,23 +1310,87 @@ class Model
 
         switch ($typ) {
             case M_REF:
-                if ($c==1) {
+                if ($c !=1) {
+                    $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+                    return false;
+                }
+                if (! $check) {
                     return true;
+                }
+                /* 				/ClassName 			*/
+                $mod = $path[1];
+                $obj = new Model($mod);
+                if (!$obj->stateHdlr) {
+                    $this->errLog->logLine(E_ERC014.':'.$attr.':'.$typ.':'.$parm);
+                    return false;
                 }
                 break;
             case M_CREF:
-                if ($c==2) {
+                if ($c !=2) {
+                    $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+                    return false;
+                }
+                /* 			/ClassName/RefAttr 		*/
+                if (! $check) {
                     return true;
+                }
+                $obj = new Model($path[1]);
+                if (!$obj->stateHdlr) {
+                    $this->errLog->logLine(E_ERC014.':'.$attr.':'.$typ.':'.$parm);
+                    return false;
+                }
+                $atyp= $obj->getTyp($path[2]);
+                if ($atyp != M_REF) {
+                    $this->errLog->logLine(E_ERC054.':'.$path[2]);
+                    return false;
                 }
                 break;
             case M_CODE:
-                if ($c==3 or $c==1) {
+                if ($c >3 or $c<1) {
+                    $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+                    return false;
+                }
+                if (! $check) {
                     return true;
                 }
-                break;
+                switch ($c) {
+                    case 1:
+                        /* 			/ClassName 			*/
+                        $obj = new Model($path[1]);
+                        if (!$obj->stateHdlr) {
+                            $this->errLog->logLine(E_ERC014.':'.$attr.':'.$typ.':'.$parm);
+                            return false;
+                        }
+                        break;
+                    case 2:
+                        /* 			/./CrefAttr 		*/
+                        if ($path[1] != ".") {
+                            $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+                            return false;
+                        }
+                        $atyp= $this->getTyp($path[2]);
+                        if ($atyp != M_CREF) {
+                            $this->errLog->logLine(E_ERC055.':'.$path[2]);
+                            return false;
+                        }
+                        break;
+                    case 3:
+                        /*		 /ClassName/Id/CRefAttr 	*/
+                        try {
+                            $obj = new Model($path[1], (int) $path[2]);
+                        } catch (Exception $e) {
+                            $this->errLog->logLine($e->getMessage());
+                            return false;
+                        }
+                            $atyp= $obj->getTyp($path[3]);
+                        if ($atyp != M_CREF) {
+                            $this->errLog->logLine(E_ERC055.':'.$path[3]);
+                            return false;
+                        }
+                        break;
+                }
         }
-        $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
-        return false;
+        return true;
     }
  
     public function getModRef($attr)
@@ -1347,12 +1427,18 @@ class Model
         if ($r == M_CODE) {
             $r=$this->getParm($attr);
             $apath = explode('/', $r);
-            if (count($apath) > 2) {
+            $c = count($apath);
+            if ($c > 3) {
                 $mod = new Model($apath[1], (int) $apath[2]);
                 $val = $mod->getVal($apath[3]);
-            } else {
+            } elseif ($c==2) {
                 $obj= new Model($apath[1]);
                 $val=$obj->stateHdlr->findObjWheOp($apath[1], [], [], []);
+            } elseif ($c==3) {
+                $val  = [];
+                if ($this->getid()) {
+                    $val = $this->getVal($apath[2]);
+                }
             }
         }
         if ($r == M_REF) {

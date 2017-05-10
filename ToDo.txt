@@ -12,7 +12,6 @@ B1 session with API.
 B2 ' in txt fields. 
 B6 refresh menu when role changed.
 B9 Race condition in test suite (connection management)
-B10 condition on state handler existence is not related to correct Model (Model)
 B11 selection on class using state handler of another class (Model)
 B12 
 
@@ -22,11 +21,11 @@ DEV
 - link menu and roles.
 - unify get code with get reference.
 - getBkey method (Model);
-- extend code/ref to "dot" Cref attributes.
 - handle user preference.
 - increase autorisations rule capability
 	- NxN relationship
 	- views and parameters
+- image resizing
 
 - review custom code integration
 - handle predefine models. 
@@ -71,6 +70,9 @@ INT
 
 
 DONE
+B10 condition on state handler existence is not related to correct Model (Model
+- extend code/ref to "dot" Cref attributes.
+
 - album / 0.5
 - split list in (view) CRef nav line and CRef values // 0.5
 - add exeption in SessionHdl// 0.25

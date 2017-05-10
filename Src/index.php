@@ -31,7 +31,7 @@ $ctrl = new Controler($config, $conf);
 
 if (isset($init)) {
     $ctrl->beginTrans();
-//	require_once $path.'META.php';
+//	require_once $path.'DELTA.php';
     $path = "App/".$application .'/';
 //	require_once $path.'LOAD.php';
     $ctrl->commit();

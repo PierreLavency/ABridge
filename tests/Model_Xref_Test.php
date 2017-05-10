@@ -11,6 +11,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 	protected $Code;		
 	protected $CodeVal;		
 	protected $Student;
+	protected $Dummy;
 	protected $db;
 	
 	
@@ -47,12 +48,14 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 			$this->Student=get_called_class().'_1';
 			$this->Code=get_called_class().'_2';
 			$this->CodeVal=get_called_class().'_3';
+			$this->Dummy=get_called_class().'_4';
 			} 
 		else {
 			$this->db=self::$db2;
 			$this->Student=get_called_class().'_f_1';
 			$this->Code=get_called_class().'_f_2';
 			$this->CodeVal=get_called_class().'_f_3';
+			$this->Dummy=get_called_class().'_f_4';
 			}
 
 	}
@@ -92,6 +95,8 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$r->show();
 		$this->assertEquals($r->logSize(),0);	
 		
+		$this->assertTrue($codeval->checkMod());
+						
 		// CRef -Code
 		$code = new Model($this->Code);
 		$this->assertNotNull($code);	
@@ -105,6 +110,9 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$path='/'.$this->CodeVal.'/ValueOf';
 		$res = $code->addAttr('Values',M_CREF,$path);
 		$this->assertTrue($res);	
+
+		$res = $code->addAttr('DefaultVal',M_CODE,'/./Values');
+		$this->assertTrue($res);
 		
 		$res = $code->saveMod();	
 		$this->assertTrue($res);	
@@ -133,10 +141,10 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 
 		$res = $student->saveMod();	
 		$this->assertTrue($res);	
-	
-		$r = $student-> getErrLog ();
-		$this->assertEquals($r->logSize(),0);	
-		
+
+		$this->assertFalse($student->checkMod());
+		$this->assertEquals($student->getErrLine(),E_ERC007.':'.$this->Code.':1');	
+				
 		$db->commit();
 
 	}
@@ -157,6 +165,10 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		
 		$code = new Model($this->Code);
 		$this->assertNotNull($code);	
+
+		$code->checkMod();
+		echo $code->getErrLine();
+		$this->assertTrue($code->checkMod());
 		
 		$res = $code->setVal('CodeName','Sexe');
 		$this->assertTrue($res);
@@ -229,7 +241,10 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals($id2,2);	
 
 		$res = $code->getVal('Values');
-		$this->assertEquals($res,[$id1,$id2]);	
+		$this->assertEquals($res,[$id1,$id2]);
+
+		$res = $code->getValues('DefaultVal');
+		$this->assertEquals($res,[$id1,$id2]);			
 
 		$r = $codeval-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);	
@@ -255,6 +270,10 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		
 		$student = new Model($this->Student);
 		$this->assertNotNull($student);	
+
+		$student->checkMod();
+		$student->getErrLog()->show();
+		$this->assertTrue($student->checkMod());
 		
 		$res = $student->getValues('Sexe');
 		$this->assertEquals($res,[1,2]);	
@@ -326,15 +345,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res = $student->addAttr('xxx',M_CODE,'/a/1/b/2');
 		$this->assertFalse($res);	
 		$this->assertEquals($student->getErrLine(),E_ERC020.':xxx:/a/1/b/2');
-		
-		$bb = new Model('bb');
-		$this->assertNotNull($bb);	
-		$logbb = $bb->getErrLog ();
-		
-		$res = $bb->addAttr('xxx',M_CODE,'xxx');
-		$this->assertFalse($res);	
-		$this->assertEquals($logbb->getLine(0),E_ERC014.':xxx:'.M_CODE);
-		
+				
 		$res = $student->addAttr('xxx',M_CODE,'xx');
 		$this->assertFalse($res);	
 		$this->assertEquals($student->getErrLine(),E_ERC020.':xxx:xx');
@@ -355,13 +366,11 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res = $codeval->setVal('ValueOf',1000);
 		$this->assertFalse($res);
 		$this->assertEquals($log->getLine(0),E_ERC007.':'.$this->Code.':1000');
-
 	
 		$log = $student->getErrLog ();
 		$res = $student->setVal('Sexe',1000);
 		$this->assertFalse($res);
-		$this->assertEquals($student->getErrLine(),E_ERC016.':Sexe:1000');
-		
+		$this->assertEquals($student->getErrLine(),E_ERC016.':Sexe:1000');		
 		
 		$res = $student->getModRef('notexists');
 		$this->assertFalse($res);
@@ -411,6 +420,65 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertFalse($res);
 		$this->assertEquals($student->getErrLine(),E_ERC028.':Name');
 		
+		$res = $student->addAttr($this->Dummy,M_REF,'/XXX/CC');
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC020.':'.$this->Dummy.':/XXX/CC');
+
+		$res = $student->addAttr($this->Dummy,M_REF,'/'.$this->Dummy);
+		$this->assertTrue($res);
+		$res=$student->checkMod();
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC014.':'.$this->Dummy.':'.M_REF.':/'.$this->Dummy);
+
+		$res =$student->delAttr($this->Dummy);		
+		$res = $student->addAttr($this->Dummy,M_CODE,'/'.$this->Dummy);
+		$this->assertTrue($res);
+		$res=$student->checkMod();
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC014.':'.$this->Dummy.':'.M_CODE.':/'.$this->Dummy);
+
+		$res =$student->delAttr($this->Dummy);		
+		$res = $student->addAttr($this->Dummy,M_CODE,'/'.$this->Dummy.'/x');
+		$this->assertTrue($res);
+		$res=$student->checkMod();
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC020.':'.$this->Dummy.':/'.$this->Dummy.'/x');
+
+		$res =$student->delAttr($this->Dummy);		
+		$res = $student->addAttr($this->Dummy,M_CODE,'/./Name');
+		$this->assertTrue($res);
+		$res=$student->checkMod();
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC055.':Name');
+
+		$path='/'.$this->Code.'/1/CodeName';		
+		$res =$student->delAttr($this->Dummy);		
+		$res = $student->addAttr($this->Dummy,M_CODE,$path);
+		$this->assertTrue($res);
+		$res=$student->checkMod();
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC055.':CodeName');
+
+		
+		$res =$student->delAttr($this->Dummy);
+		$res = $student->addAttr($this->Dummy,M_CREF,'/XXX/CC/TT');
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC020.':'.$this->Dummy.':/XXX/CC/TT');
+		
+		$res = $student->addAttr($this->Dummy,M_CREF,'/'.$this->Dummy.'/X');
+		$this->assertTrue($res);
+		$res=$student->checkMod();
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC014.':'.$this->Dummy.':'.M_CREF.':/'.$this->Dummy.'/X');
+		
+		
+		$res =$student->delAttr($this->Dummy);		
+		$res = $student->addAttr($this->Dummy,M_CREF,'/'.$this->Code.'/CodeName');	
+		$this->assertTrue($res);
+		$res=$student->checkMod();
+		$this->assertFalse($res);
+		$this->assertEquals($student->getErrLine(),E_ERC054.':CodeName');
+	
 		$db->commit();
 	}
 	
@@ -420,7 +488,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 	/**
     * @depends testErrors
     */
-		public function testDel($typ) 
+	public function testDel($typ) 
 	{
 		$this->setTyp($typ);
 		$db=$this->db;
@@ -434,6 +502,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertFalse($res);
 		$this->assertEquals($student->getErrLine(),E_ERC034.':Sexe');
 
+		
 		$res=$student->delAttr('Sexe');
 		$this->assertTrue($res);
 		$db->commit();

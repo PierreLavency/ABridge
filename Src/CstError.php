@@ -19,7 +19,7 @@ define('E_ERC016', "ERC016");  // invalid value for this code -
 define('E_ERC017', "ERC017");  // Bkey requires state handler -
 define('E_ERC018', "ERC018");  // Bkey violation -
 define('E_ERC019', "ERC019");  // Mdtr violation -
-define('E_ERC020', "ERC020");  // Invalid Path - No Model
+define('E_ERC020', "ERC020");  // Invalid Path - "syntax error"
 define('E_ERC021', "ERC021");  // mysqli errors
 define('E_ERC022', "ERC022");  // Model does not exists
 define('E_ERC023', "ERC023");  // Invalid Path
@@ -53,3 +53,5 @@ define('E_ERC050', "ERC050");  // illegal condition in role
 define('E_ERC051', "ERC051");  // no sessionMg found
 define('E_ERC052', "ERC052");  // cannot delete - ref integrity
 define('E_ERC053', "ERC053");  // access denied
+define('E_ERC054', "ERC054");  // must be a REF attr
+define('E_ERC055', "ERC055");  // must be a CREF attr

@@ -48,7 +48,7 @@ class Model_Err_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($log->getLine(4),"ERC008:x:m_ref");
 		
 		$this->assertFalse($x->addAttr('x',M_REF,'notexists'));
-		$this->assertEquals($log->getLine(5),'ERC014:x:m_ref');
+		$this->assertEquals($log->getLine(5),'ERC020:x:notexists');
 
 		$this->assertFalse($x->isPredef('x'));
 		$this->assertEquals($log->getLine(6),'ERC002:x');

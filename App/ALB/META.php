@@ -50,8 +50,7 @@
 	$res = $obj->addAttr('Description',M_TXT);	
 	$res = $obj->addAttr('Photo',M_STRING);	
 	$res = $obj->addAttr('Rowp',M_INT);	
-	$res = $obj->addAttr('Colp',M_INT);	
-		
+	$res = $obj->addAttr('Colp',M_INT);			
 	$res = $obj->addAttr('De',M_REF,'/'.$Album);
 	
 	$res = $obj->saveMod();			

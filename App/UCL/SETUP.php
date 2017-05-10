@@ -22,8 +22,8 @@ require_once 'CstView.php';
 	'Session' => 
 		['Session'=>'BKey'],
 	'Home' =>
-		['/Session','/User','/UGroup','/Role','/Distribution','/Student','/Cours','/Inscription','/Prof','/Charge',
-		'/Code','/CodeValue','/Page','/'],
+		['/','/Session','/User','/UGroup','/Role','/Distribution','/Student','/Cours','/Inscription','/Prof','/Charge',
+		'/Code','/CodeValue','/Page'],
 		
 	'Views' => [
 	

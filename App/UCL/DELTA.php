@@ -48,7 +48,7 @@
 	$obj = new Model($User);
 
 
-	$res = $obj->addAttr($Group,M_REF,'/'.$Group);
+	$res = $obj->addAttr('RoleDefault',M_CODE,'/./Play');
 	
 	echo "User<br>";		
 	$res = $obj->saveMod();	
@@ -67,18 +67,5 @@
     // Pages
 	
 	// Group
-	
-	$obj = new Model($Group);
-	$res= $obj->deleteMod();
-
- 	$res = $obj->addAttr('Name',M_STRING);
-	$res = $obj->addAttr('Users',M_CREF,'/'.$User.'/'.$Group);
-	
-	echo "$Group<br>";		
-	$res = $obj->saveMod();	
-	$r = $obj->getErrLog ();
-	$r->show();		
-	
-
 	
 	
