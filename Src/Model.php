@@ -1051,12 +1051,7 @@ class Model
         }
 
         $mod=$this->getModName();
-        $result=$this->stateHdlr->findObjWheOp(
-            $mod,
-            $res[0],
-            $res[1],
-            $res[2]
-        );
+        $result=$this->findObjWhe($mod, $res[0], $res[1], $res[2]);
         return $result;
     }
 
@@ -1081,12 +1076,10 @@ class Model
             return $this->obj->getVal($attr);
         }
         $type=$this->getTyp($attr);
-        if ($type == M_CREF) { //will not work if on different Base !!
+        if ($type == M_CREF) {
             $path = $this->getParm($attr);
             $patha=explode('/', $path);
-            $m= new Model($patha[1]);
-            $hdlr=$m->stateHdlr;
-            $res=$hdlr->findObj($patha[1], $patha[2], $this->getId());
+            $res=$this->findObjAttr($patha[1], $patha[2], $this->getId());
             return $res;
         }
         foreach ($this->attrVal as $x => $val) {
@@ -1193,7 +1186,7 @@ class Model
         if (is_null($val)) {
             return true;
         }
-        $res=$this->stateHdlr->findObj($this->getModName(), $attr, $val);
+        $res=$this->findObjAttr($this->getModName(), $attr, $val);
         if ($res == []) {
             return true;
         }
@@ -1204,6 +1197,51 @@ class Model
         return false;
     }
 
+    public function getBkey($attr, $val)
+    {
+        if (!$this->isBkey($attr)) {
+            throw new Exception(E_ERC056.':'.$attr);
+        };
+        $res=$this->findObjAttr($this->getModName(), $attr, $val);
+        if ($res == []) {
+            return null;
+        }
+        $id=array_pop($res);
+        $res = new Model($this->getModName(), $id);
+        return $res;
+    }
+    
+    protected function findObjAttr($mod, $attr, $val)
+    {
+        if ($mod == $this->getModName()) {
+            $hdl = $this->stateHdlr;
+        } else {
+            $obj = new Model($mod);
+            $hdl = $obj->stateHdlr;
+        }
+        if (!$hdl) {
+            throw new exception(E_ERC017.':'.$mod);
+        }
+        $res=$hdl->findObj($mod, $attr, $val);
+        return $res;
+    }
+
+
+    protected function findObjWhe($mod, $attrLst, $opLst, $valLst)
+    {
+        if ($mod == $this->getModName()) {
+            $hdl = $this->stateHdlr;
+        } else {
+            $obj = new Model($mod);
+            $hdl = $obj->stateHdlr;
+        }
+        if (!$hdl) {
+            throw new exception(E_ERC017.':'.$mod);
+        }
+        $res=$hdl->findObjWheOp($mod, $attrLst, $opLst, $valLst);
+        return $res;
+    }
+    
     protected function checkCkey($attrLst)
     {
         $valLst=[];
@@ -1215,12 +1253,7 @@ class Model
             }
             $valLst[]=$val;
         }
-        $res=$this->stateHdlr->findObjWheOp(
-            $this->getModName(),
-            $attrLst,
-            [],
-            $valLst
-        );
+        $res=$this->findObjWhe($this->getModName(), $attrLst, [], $valLst);
         if ($res == []) {
             return true;
         }
@@ -1432,8 +1465,7 @@ class Model
                 $mod = new Model($apath[1], (int) $apath[2]);
                 $val = $mod->getVal($apath[3]);
             } elseif ($c==2) {
-                $obj= new Model($apath[1]);
-                $val=$obj->stateHdlr->findObjWheOp($apath[1], [], [], []);
+                $val=$this->findObjWhe($apath[1], [], [], []);
             } elseif ($c==3) {
                 $val  = [];
                 if ($this->getid()) {
@@ -1443,8 +1475,7 @@ class Model
         }
         if ($r == M_REF) {
             $mod = $this->getModRef($attr);
-            $obj= new Model($mod);
-            $val=$obj->stateHdlr->findObjWheOp($mod, [], [], []);
+            $val=$this->findObjWhe($mod, [], [], []);
         }
         return $val;
     }

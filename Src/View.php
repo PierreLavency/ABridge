@@ -371,7 +371,7 @@ class View
             ($viewState == V_S_SLCT
              and $this->handle->isSelect($attr)))) {
             $res[H_NAME]=$attr;
-            $default=$this->handle->getPrm($attr);
+            $default=$this->handle->getPrm($attr, isRaw($typ));
             if (is_null($default)) {
                 if ($viewState == V_S_UPDT) {
                     $default=$this->handle->getVal($attr);
@@ -382,7 +382,13 @@ class View
             }
             $res[H_DEFAULT]=$default;
             $htyp = $this->getUpAttrHtml($attr, $viewState);
-            $res[H_TYPE]=$htyp;
+            if (is_array($htyp)) {
+                foreach ($htyp as $elmT => $elmV) {
+                    $res[$elmT]=$elmV;
+                }
+            } else {
+                $res[H_TYPE]=$htyp;
+            }
             if ($htyp == H_T_SELECT or $htyp == H_T_RADIO) {
                 $vals=$this->handle->getValues($attr);
                 $values=[];

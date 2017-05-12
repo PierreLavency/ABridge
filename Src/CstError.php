@@ -55,3 +55,4 @@ define('E_ERC052', "ERC052");  // cannot delete - ref integrity
 define('E_ERC053', "ERC053");  // access denied
 define('E_ERC054', "ERC054");  // must be a REF attr
 define('E_ERC055', "ERC055");  // must be a CREF attr
+define('E_ERC056', "ERC056");  // must be a Bkey attr

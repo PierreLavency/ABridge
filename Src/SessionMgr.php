@@ -13,7 +13,7 @@ class SessionMgr
     protected $typ;
     protected $cookieName;
     protected $prevCookieName;
-    protected $timer= 3600; // 1 heure
+    protected $timer= 7200; // 2 heure
     protected $prevtimer=86400; // 1 jour
     protected $sessHdl = null;
     protected $init=false;
@@ -85,8 +85,10 @@ class SessionMgr
         }
         if ($this->prevSess) {
             $pobj=$this->getObj($this->pid);
-            $pobj->delet();
-            echo 'Delete previous Session :'.$this->prevCookieName."<br>";
+            if (!is_null($pobj)) {
+                $pobj->delet();
+                echo 'Delete previous Session :'.$this->prevCookieName."<br>";
+            }
         }
         if ($this->newSess) {
             $this->newObj($this->id);
@@ -103,10 +105,6 @@ class SessionMgr
             $this->newSess=true;
         }
         $this->sessHdl = $obj;
-        $age = $obj->getVal('ctstp');
-        $d = new DateTime($age);
-        $tst= time()-$d->getTimestamp();
- //           echo 'Age :'.$tst;
     }
 
     public function isChanged()

@@ -1,4 +1,3 @@
-
 <?php
 
 require_once 'Request.php';
@@ -149,25 +148,25 @@ class Handle
 
 // Autorize Actions on object
 
-    public function getActionUrl($action, $prm = [])
+    public function getActionUrl($action, $prm)
     {
         // for object menu
         $req = $this->request->getActionReq($action);
-        $res = $this->sessionHdl->checkARight($req, $this->attrObjs, false);
+        $res = $this->sessionHdl->checkARight($req, $this->attrObjs, false, false);
         if (!$res) {
             return null;
         }
         return $req->getUrl($prm);
     }
 
-    public function getCrefUrl($attr, $action, $prm = [])
+    public function getCrefUrl($attr, $action, $prm)
     {
         // for Cref menu
         $req= $this->request->getCrefReq($attr, $action);
         if (is_null($req)) {
             return null;
         }
-        $res = $this->sessionHdl->checkARight($req, $this->attrObjs, false);
+        $res = $this->sessionHdl->checkARight($req, $this->attrObjs, false, false);
         if (!$res) {
             return null;
         }

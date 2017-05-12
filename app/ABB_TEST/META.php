@@ -14,7 +14,7 @@
 	$res = $obj->addAttr('Alias',			M_STRING);
 	$res = $obj->addAttr('ShortDesc',		M_STRING);	
 	$res = $obj->addAttr('LongDesc',		M_TXT);
-	$res = $obj->addAttr('Owner',			M_REF,	"/$User");
+	$res = $obj->addAttr('Owner',			M_REF,	"/$Group");
 	$res = $obj->addAttr('In',				M_CREF,	"/$Interface/Of");
 	$res = $obj->addAttr('Out',				M_CREF,	"/$Exchange/OutOf");	
 	$res = $obj->setAbstr();
@@ -162,3 +162,73 @@
 
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
+	
+	
+/*******************************  User  ************************/
+
+	// User
+		
+	$obj = new Model($User);
+	$res= $obj->deleteMod();
+
+	$res = $obj->addAttr('Name',		M_STRING);
+ 	$res = $obj->addAttr('SurName',		M_STRING);
+	$res = $obj->addAttr($Group,		M_REF,"/$Group");
+	$res = $obj->addAttr('Play',		M_CREF,'/'.$Distribution.'/toUser');
+	
+	$res = $obj->saveMod();			
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
+
+	// Role
+		
+	$obj = new Model($Role);
+	$res= $obj->deleteMod();
+
+	$res = $obj->addAttr('Name',		M_STRING);
+ 	$res = $obj->addAttr('JSpec',		M_JSON);	
+	$res = $obj->addAttr('PlayedBy',	M_CREF,'/'.$Distribution.'/ofRole');
+	
+	$res = $obj->saveMod();			
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
+	
+	// Session
+	
+	$obj = new Model($Session);
+	$res= $obj->deleteMod();
+
+	$res = $obj->addAttr($User,			M_REF,'/'.$User);
+	$res = $obj->addAttr($Role,			M_REF,'/'.$Role);
+	$res = $obj->addAttr('Comment',		M_STRING);
+	$res = $obj->addAttr('BKey',		M_STRING);
+	
+	$res = $obj->setBkey('BKey',true);
+		
+	$res = $obj->saveMod();			
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
+	
+	// Distribution
+
+	$obj = new Model($Distribution);
+	$res= $obj->deleteMod();
+
+	$res = $obj->addAttr('ofRole',		M_REF,'/'.$Role);
+	$res = $obj->addAttr('toUser',		M_REF,'/'.$User);
+	
+	$res = $obj->setMdtr('ofRole',true); // Mdtr
+	$res = $obj->setMdtr('toUser',true); // Mdtr
+
+	$obj->setCkey(['ofRole','toUser'],true);
+	
+	$res = $obj->saveMod();			
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
+ 
+	// Group
+	
+	$obj = new Model($Group);
+	$res= $obj->deleteMod();
+
+ 	$res = $obj->addAttr('Name',		M_STRING);
+	$res = $obj->addAttr('Users',		M_CREF,'/'.$User.'/'.$Group);
+	
+	$res = $obj->saveMod();			
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";	

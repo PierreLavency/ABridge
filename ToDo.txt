@@ -11,16 +11,15 @@ BUGS
 B1 session with API.
 B2 ' in txt fields. 
 B6 refresh menu when role changed.
-B9 Race condition in test suite (connection management)
-B11 selection on class using state handler of another class (Model)
-B12 
+B9 Race condition in test suite (connection management).
+B12 in ABB - txt on application 5.
+B15 
 
 DEV
 - implement '~' in menus.
 - review logging 
 - link menu and roles.
 - unify get code with get reference.
-- getBkey method (Model);
 - handle user preference.
 - increase autorisations rule capability
 	- NxN relationship
@@ -70,9 +69,14 @@ INT
 
 
 DONE
-B10 condition on state handler existence is not related to correct Model (Model
-- extend code/ref to "dot" Cref attributes.
+finalize roles of ABB
+add getBkey method (Model);
+B11 selection on class using state handler of another class (Model).
+B13 in view when specifying textarea size in update mode;
+B14 clean up in text area in case of errors. 
 
+B10 condition on state handler existence is not related to correct Model // 1 day
+- extend code to "dot" Cref attributes. 
 - album / 0.5
 - split list in (view) CRef nav line and CRef values // 0.5
 - add exeption in SessionHdl// 0.25

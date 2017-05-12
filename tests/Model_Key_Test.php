@@ -9,9 +9,10 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 	protected static $db2;
 
 
-	protected $Code='Code';		
-	protected $CodeVal='CodeVal';		
-	protected $Student='Student';
+	protected $Code;		
+	protected $CodeVal;		
+	protected $Student;
+	protected $NoState;
 	protected $db;
 	
 	
@@ -39,6 +40,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		initStateHandler ($CodeVal	,$typ, $name);
 		initStateHandler ($Student	,$typ, $name);
 		
+		
 	}
 	
 	public function setTyp ($typ) 
@@ -56,6 +58,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 			$this->Student=get_called_class().'_f_3';
 			}
 
+		$this->NoState=get_called_class().'_f_4';
 	}
 	
 	public function Provider1() 
@@ -148,6 +151,9 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		$this->assertTrue($code->setVal('CodeName',null));
 
+		$bk = $code->getBkey('CodeName','Sexe'); 
+		$this->assertNull($bk);	
+
 		$res = $code->setVal('CodeName','Sexe');
 		$this->assertTrue($res);
 
@@ -155,12 +161,25 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		$id = $code->save();
 		$this->assertEquals($id,1);	
-		
+				
 		$res = $code->setVal('CodeName','Sexe');
 		$this->assertTrue($res);
 
 		$id = $code->save();
 		$this->assertEquals($id,1);	
+//
+		$res = $code->setVal('CodeName',Null);
+		$this->assertTrue($res);
+
+		$id = $code->save();
+		$this->assertEquals($id,1);	
+
+		$res = $code->setVal('CodeName','Sexe');
+		$this->assertTrue($res);
+
+		$id = $code->save();
+		$this->assertEquals($id,1);
+//
 		
 		$r = $code-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);	
@@ -174,6 +193,11 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		$r = $code-> getErrLog ();
 		$this->assertEquals($r->logSize(),0);	
+
+// 		getBkey
+
+		$bk = $code->getBkey('CodeName','Sexe'); 
+		$this->assertEquals($id, $bk->getId());
 		
 		//  Male
 		$codeval = new Model($this->CodeVal);
@@ -210,12 +234,14 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		
 		$this->assertFalse($code->isDel());
 
-
 		$code->delet();	
 
 		$this->assertEquals($code->getErrLine(),E_ERC052);		
-
+	
+		
 		$db->commit();
+
+
 		
 	}
 	/**
@@ -273,6 +299,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals($id3,3);
 		
 		//errors
+		
 		$codeval = new Model($this->CodeVal);
 		
 		$res = $codeval->setVal('ValueName','Female');
@@ -298,6 +325,10 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$this->assertFalse($res);
 		$n++;
 		$this->assertEquals($r->getLine($n),E_ERC029);	
+
+		try {$res = $codeval->getBkey('Notexist','x');} catch (Exception $e) {$res=$e->getMessage();}
+		$this->assertEquals($res,E_ERC056.':Notexist');
+
 		
 		$db->commit();
 		
@@ -401,6 +432,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 		$res=$m->setCkey(['A','A'],true);
 		$this->assertFalse($res);
 		$this->assertEquals($r->getLine(1),E_ERC017);
+	
 		
 	}
 	/**

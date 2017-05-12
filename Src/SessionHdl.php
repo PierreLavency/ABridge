@@ -153,7 +153,7 @@ class SessionHdl
         return $condElm;
     }
 
-    public function checkARight($req, $attrObjs, $protect)
+    public function checkARight($req, $attrObjs, $protect, $plast = true)
     {
         if (is_null($req)) {
             throw new Exception(E_ERC012);
@@ -164,10 +164,13 @@ class SessionHdl
         if (!$pathcond) {
             return false;
         }
+        $c=count($attrObjs);
         foreach ($attrObjs as $attrObj) {
             $attr = $attrObj[0];
             $obj = $attrObj[1];
-            $res = $this->checkAttrCond($action, $pathcond, $attr, $obj, $protect);
+            $c--;
+            $last = (!$c and $plast);
+            $res = $this->checkAttrCond($action, $pathcond, $attr, $obj, $protect, $last);
             if (!$res) {
                 return false;
             }
@@ -175,7 +178,7 @@ class SessionHdl
         return true;
     }
     
-    protected function checkAttrCond($action, $pathcond, $attr, $obj, $protect)
+    protected function checkAttrCond($action, $pathcond, $attr, $obj, $protect, $last)
     {
         $cond = $this->getCondAttr($pathcond, $attr);
         if ($cond == ['true']) {
@@ -188,7 +191,7 @@ class SessionHdl
                 $attro= $attra[0];
                 $attrs=$attra[1];
             }
-            $res = $this->checkLinkAttr($action, $obj, $attro, $attrs, $protect);
+            $res = $this->checkLinkAttr($action, $obj, $attro, $attrs, $protect, $last);
             if (!$res) {
                 return false;
             }
@@ -196,7 +199,7 @@ class SessionHdl
         return true;
     }
     
-    protected function checkLinkAttr($action, $obj, $attroExp, $attrsExp, $protect)
+    protected function checkLinkAttr($action, $obj, $attroExp, $attrsExp, $protect, $last)
     {
         if ($this->isRoot) {
             return true;
@@ -217,7 +220,7 @@ class SessionHdl
             return false;
         }
         if ((!$obj->existsAttr($attro)) or (!$sess->existsAttr($attrs))) {
-            throw new Exception(E_ERC050);
+            throw new Exception(E_ERC050.":$attro:$attrs");
         }
         $typ = $obj->getTyp($attro);
         $typs = $sess->getTyp($attrs);
@@ -226,8 +229,7 @@ class SessionHdl
         }
         if ($typ == M_REF
         and $typs == M_REF
-        and ($obj->getModRef($attro) != $sess->getModRef($attrs))
-        ) {
+        and ($obj->getModRef($attro) != $sess->getModRef($attrs))) {
             throw new Exception(E_ERC050.':'.$obj->getModRef($attro).':'.$sess->getModRef($attrs));
         }
         $id1=$sess->getVal($attrs);
@@ -238,7 +240,7 @@ class SessionHdl
             }
             return true;
         }
-        if (($action == V_S_CREA or $action ==V_S_SLCT) and is_null($id2)) {
+        if (($action == V_S_CREA or $action ==V_S_SLCT) and is_null($id2) and $last) {
             if ($protect) {
                 $obj->setVal($attro, $id1);
                 $obj->protect($attro);
@@ -248,7 +250,6 @@ class SessionHdl
         return false;
     }
     
-
     protected function resolvePath($obj, $attrExp)
     {
         $attrA=explode(':', $attrExp);

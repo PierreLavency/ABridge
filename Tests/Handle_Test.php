@@ -186,14 +186,14 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$url= $ht->getUrl();
 		$urle= $h->getUrl();
 		$this->assertEquals($urle,$url);		
-		$url= $h1->getActionUrl(V_S_CREA);
+		$url= $h1->getActionUrl(V_S_CREA,[]);
 		$this->assertEquals($urle,$url);
 		
 		$h = new Handle($path0,V_S_SLCT,$ho);
 		$h=$h->getObjId($h1->getId());
 		$this->assertEquals($h1->getUrl(),$h->getUrl());
 
-		$url = $h1->getCrefUrl('CRef',V_S_CREA);
+		$url = $h1->getCrefUrl('CRef',V_S_CREA,[]);
 		$res='"'.$h1->getDocRoot().$path0.'/'.$h1->getId().'/CRef?Action='.V_S_CREA.'"';
 		$this->assertEquals($res,$url);
 		

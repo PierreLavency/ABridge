@@ -15,6 +15,7 @@
 	$Distribution = 'Distribution';
 	$Prof = 'Prof';
 	$Page ='Page';
+	$Group='UGroup';
 	
 	// CodeVal
 		
@@ -179,6 +180,7 @@
 
 	$res = $obj->addAttr('Name',M_STRING);
  	$res = $obj->addAttr('SurName',M_STRING);
+	$res = $obj->addAttr($Group,M_REF,'/'.$Group);
 	$res = $obj->addAttr('Play',M_CREF,'/'.$Distribution.'/toUser');
 	
 	$res = $obj->addAttr('Profile',M_CREF,'/'.$Student.'/'.$User);

@@ -20,11 +20,20 @@ require_once 'CstView.php';
 		$SControl 	 => ['dataBase',$DBDEC,],
 		$ACode	 	 => ['dataBase',$DBDEC,],
 		$User	 	 => ['dataBase',$DBDEC,],
+		$Group		 => ['dataBase',$DBDEC,],		
+		$Role	 	 => ['dataBase',$DBDEC,],
+		$Distribution=> ['dataBase',$DBDEC,],
+		$Session	 => ['dataBase',$DBDEC,],
 		],
 	'Home' =>
-		['/',"/$Application","/$Component","/$Interface","/$Exchange"],
+		['/',
+		"/$Session","/$User","/$Group","/$Role","/$Distribution",
+		"/$Application","/$Component","/$Interface","/$Exchange",
+		"/$IUse"],
+	'Session' => 
+		[$Session=>'BKey'],		
 	'Views' => [
-		"$Application"=> [
+		$Application=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['CodeNm'],
@@ -87,7 +96,7 @@ require_once 'CstView.php';
 				]
 				
 		],			
-		"$Component"=> [
+		$Component=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['CodeNm'],
@@ -127,7 +136,7 @@ require_once 'CstView.php';
 					],				
 				],
 			],	
-		"$Interface"=> [
+		$Interface=> [
 		
 				'attrList' => [
 	//				V_S_REF		=> ['Name'],
@@ -144,55 +153,103 @@ require_once 'CstView.php';
 				],	
 				
 		],
-		"$Exchange"=> [
+		$Exchange=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['CodeNm'],
 				]
 				
 		],
-		"$CType"=> [
+		$CType=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		"$SLevel"=> [
+		$SLevel=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		"$AStyle"=> [
+		$AStyle=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		"$SControl"=> [
+		$SControl=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		"$IType"=> [
+		$IType=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		"$IUse"=> [
+		$IUse=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
-		],				
+		],
+		$User =>[
+			'lblList' => [
+					'Play'			=> 'PlayRoles',
+				],
+			'attrHtml' => [
+					V_S_READ => ['Play'=>[H_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]]
+				],						
+			'attrList' => [
+				V_S_REF		=> ['SurName','Name'],
+				],
+		],
+		$Group =>[		
+			'attrList' => [
+				V_S_REF		=> ['Name'],
+				],
+		],		
+		$Role =>[	
+				'attrList' => [
+					V_S_REF		=> ['Name'],
+				],
+				'attrHtml' => [
+					V_S_UPDT	=> ['JSpec' => [H_TYPE=>H_T_TEXTAREA,H_COL=>160,H_ROW=> 30]],
+					V_S_READ	=> ['JSpec' => [H_TYPE=>H_T_TEXTAREA,H_COL=>160,H_ROW=> 30]],
+					V_S_CREA	=> ['JSpec' => [H_TYPE=>H_T_TEXTAREA,H_COL=>160,H_ROW=> 30]],
+				]
+		],
+		$Session =>[
+			'attrList' => [
+						V_S_READ=> ['id','User','Role','Comment','BKey','vnum','ctstp','utstp'],
+						V_S_UPDT=> ['id','User','Role','Comment'],
+						V_S_CREF=> ['id','User','Role','BKey','vnum','ctstp'],									
+			],
+			'attrHtml' => [
+						V_S_UPDT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],
+						V_S_SLCT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],					
+			],		
+			'navList' => [V_S_READ => [V_S_UPDT,V_S_SLCT,V_S_DELT],
+			],
+
+		],
+		$Distribution =>[
+			'attrHtml' => [
+				V_S_CREA => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
+				V_S_UPDT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
+				V_S_SLCT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
+			],
+
+		],		
 		],
 	];		
 	

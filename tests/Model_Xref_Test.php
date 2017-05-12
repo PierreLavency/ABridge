@@ -408,6 +408,10 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$this->assertEquals($res,E_ERC002.':notexists');
 		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
 
+		try {$res = $student->isOneCref('notexists');} catch (Exception $e) {$r= $e->getMessage();}
+		$this->assertEquals($res,E_ERC002.':notexists');
+		$this->assertEquals($student->getErrLine(),E_ERC002.':notexists');
+		
 		try {$res = $student->getCref('Sexe',1);} catch (Exception $e) {$res=$e->getMessage();}
 		$this->assertEquals($res,E_ERC027.':Sexe');
 		$this->assertEquals($student->getErrLine(),E_ERC027.':Sexe');		
@@ -478,7 +482,19 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
 		$res=$student->checkMod();
 		$this->assertFalse($res);
 		$this->assertEquals($student->getErrLine(),E_ERC054.':CodeName');
-	
+//
+		$res =$student->delAttr($this->Dummy);				
+		$res = $student->addAttr($this->Dummy,M_REF,'/'.$this->Dummy);
+		$this->assertTrue($res);
+		try {$res = $student->getValues($this->Dummy);} catch (Exception $e) {$res=$e->getMessage();}
+		$this->assertEquals($res,E_ERC017.':'.$this->Dummy);
+
+		$res =$student->delAttr($this->Dummy);				
+		$res = $student->addAttr($this->Dummy,M_CREF,'/'.$this->Dummy.'/X');
+		$this->assertTrue($res);
+		try {$res = $student->getVal($this->Dummy);} catch (Exception $e) {$res=$e->getMessage();}
+		$this->assertEquals($res,E_ERC017.':'.$this->Dummy);
+		
 		$db->commit();
 	}
 	
