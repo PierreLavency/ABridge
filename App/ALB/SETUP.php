@@ -51,8 +51,8 @@ require_once 'CstView.php';
 					V_S_CREF	=> ['id','Photo'],					
 				],
 				'attrHtml' => [
-					V_S_READ => ['Photo'=>[H_TYPE=>H_T_IMG,H_ROWP=> 100,H_COLP=> 200]],
-					V_S_CREF => ['Photo'=>[H_TYPE=>H_T_IMG,H_ROWP=> 100,H_COLP=> 200]],
+					V_S_READ => ['Photo'=>[H_TYPE=>H_T_IMG,H_ROWP=> 600,H_COLP=> 400]],
+					V_S_CREF => ['Photo'=>[H_TYPE=>H_T_IMG,H_ROWP=> 300,H_COLP=> 100]],
 
 				],	
 				'lblList'  => [

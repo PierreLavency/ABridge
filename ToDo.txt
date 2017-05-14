@@ -18,13 +18,13 @@ B15
 DEV
 - implement '~' in menus.
 - review logging 
-- link menu and roles.
+- link menu and roles. //
 - unify get code with get reference.
 - handle user preference.
 - increase autorisations rule capability
 	- NxN relationship
 	- views and parameters
-- image resizing
+- clean up pict path
 
 - review custom code integration
 - handle predefine models. 
@@ -45,7 +45,13 @@ DEV
 - implement unique index.
 - support CREF on abstract (????)
 
-- Authenthication 
+- user concurency 
+- database paging
+
+-implement CSS 
+
+- Authenthication
+ get pasw.
 
 TEST
 - Performance -> review logging
@@ -69,14 +75,18 @@ INT
 
 
 DONE
-finalize roles of ABB
+-------// 1  day
+- image resizing
+------// 2 days
+finalize roles of ABB 
 add getBkey method (Model);
 B11 selection on class using state handler of another class (Model).
 B13 in view when specifying textarea size in update mode;
 B14 clean up in text area in case of errors. 
-
-B10 condition on state handler existence is not related to correct Model // 1 day
+------// 1 day
+B10 condition on state handler existence is not related to correct Model 
 - extend code to "dot" Cref attributes. 
+------
 - album / 0.5
 - split list in (view) CRef nav line and CRef values // 0.5
 - add exeption in SessionHdl// 0.25

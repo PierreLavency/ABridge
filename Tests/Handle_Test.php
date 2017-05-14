@@ -219,6 +219,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $this->assertFalse($h->isEval($this->CUser));
         $this->assertTrue($h->isModif($this->CUser));
         $this->assertTrue($h->isSelect($this->CUser));
+	    $this->assertTrue($h->existsAttr($this->CUser));
         $this->assertEquals($id,$h->save());
         $this->assertFalse($h->isErr());
         $this->assertEquals(0,$h->getErrLog()->logSize());

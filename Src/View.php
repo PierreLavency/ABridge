@@ -498,19 +498,26 @@ class View
                 $tres=$res;
                 $res=[];
                 $res[H_TYPE]=H_T_LINK;
+                $pict = 'C:\xampp\htdocs'.$x;
+                list($width, $height, $itype, $iattr) = getimagesize($pict);
                 $res[H_NAME]=$x;
-                if ($this->handle->existsAttr('Rowp')) {
-                    $rowp=$this->handle->getVal('Rowp');
-                    if (!is_null($rowp)) {
-                        $tres[H_ROWP]=$rowp;
+                $rf = 1;
+                if (isset($tres[H_ROWP])) {
+                    $rf= $tres[H_ROWP]/$height;
+                }
+                $cf = 1;
+                if (isset($tres[H_COLP])) {
+                    $cf = $tres[H_COLP]/$width;
+                }
+                if ($rf !=1 or $cf =! 1) {
+                    if ($rf > $cf) {
+                        $cf=$rf;
+                    } else {
+                        $rf=$cf;
                     }
                 }
-                if ($this->handle->existsAttr('Colp')) {
-                    $colp=$this->handle->getVal('Colp');
-                    if (!is_null($colp)) {
-                        $tres[H_COLP]=$colp;
-                    }
-                }
+                $tres[H_ROWP]= round($height * $rf);
+                $tres[H_COLP]= round($width * $cf);
                 $res[H_LABEL]=$tres;
             }
             return $res;
