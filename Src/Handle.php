@@ -78,7 +78,14 @@ class Handle
             $mod = $pathArr[$i];
             $id  = $pathArr[$i+1];
             if (is_null($obj)) {
-                $obj = new Model($mod, $id);
+                if ($this->request->isT()) {
+                    $obj=$this->sessionHdl->getObj($mod);
+                    if (is_null($obj)) {
+                        return;
+                    }
+                } else {
+                    $obj = new Model($mod, $id);
+                }
             } else {
                 $obj = $obj->getCref($mod, $id);
             }

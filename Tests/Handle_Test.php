@@ -153,6 +153,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 // 		
 		$path0= '/'.$this->CName;				
 		$path1 = $path0.'/'.$ho1->getId();
+		$rid = $ho1->getId();
 
 	
 		$h1 = new Handle($path1,V_S_READ,$ho);
@@ -237,6 +238,8 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$res = $h->delet();
 		$this->assertTrue($res);
 		$this->assertEquals(0,$h->getId());
+
+		return $rid;
 		
 		$db->commit();
 	}
@@ -247,12 +250,27 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 	/**
     * @depends testRoot
     */
-	public function estHomeObj($typ) 
+	public function testTilt($typ) 
 	{
 		$this->setTyp($typ);
 		$db=$this->db;
 		$db->beginTrans();
-
+		
+		$rid = 1;
+		
+		$mod = new Model($this->CName,$rid);		
+		
+		$sess = new sessionHdl($mod,null);
+		$he = new Handle('/'.$this->CName.'/~',$sess);
+		
+		$this->assertEquals($rid,$he->getId());
+		
+		
+		$sess = new sessionHdl($mod);
+		
+		$he= new handle('/Ref/~',$sess);
+		$this->assertTrue($he->nullObj());
+		
 		$db->commit();
 	}
 	
@@ -267,7 +285,9 @@ class Handle_Test extends PHPUnit_Framework_TestCase
 		$this->setTyp($typ);
 		$db=$this->db;
 		$db->beginTrans();
-
+		
+		$mod = new Model($this->CName);
+		
 		
 		$db->commit();
 	}		

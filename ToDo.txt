@@ -16,7 +16,6 @@ B12 in ABB - txt on application 5.
 B15 
 
 DEV
-- implement '~' in menus.
 - review logging 
 - link menu and roles. //
 - unify get code with get reference.
@@ -48,7 +47,7 @@ DEV
 - user concurency 
 - database paging
 
--implement CSS 
+- implement CSS 
 
 - Authenthication
  get pasw.
@@ -75,6 +74,9 @@ INT
 
 
 DONE
+
+-------// 1day
+- implement '~' in menus.
 -------// 1  day
 - image resizing
 ------// 2 days

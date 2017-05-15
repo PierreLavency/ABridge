@@ -19,7 +19,7 @@ class Request_Test extends PHPUnit_Framework_TestCase {
      * @dataProvider Provider1
      */
  
-	public function testRequest($a, $b, $c, $e1,$e2,$e3,$e4,$e5,$e6,$e7)
+	public function testRequest($a, $b, $c, $e1,$e2,$e3,$e4,$e5,$e6,$e7,$e8)
     {
 		$_SERVER['PATH_INFO']=$a;
 		$_SERVER['REQUEST_METHOD']=$b;
@@ -41,24 +41,26 @@ class Request_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($e5,$r->ObjN());
 		$this->assertEquals($e6,count($r->pathArr()));
 		$this->assertEquals($e7,$r->getModPath());	
+		$this->assertEquals($e8,$r->isT());	
 	}
  
     public function Provider1() {
         return [
-			['/', 	    'GET',null,		V_S_READ,true,false,false,0,0,'|'],
-			['/X', 	    'GET',null,		V_S_SLCT,false,true,false,0,1,'|X'],
-			['/X/1', 	'GET',null,		V_S_READ,false,false,true,2,2,'|X'],
-            ['/X/1/Y', 	'GET',null,		V_S_SLCT,false,true,false,2,3,'|X|Y'],
-            ['/X/1/X/1','GET',null,		V_S_READ,false,false,true,4,4,'|X|X'],
-			['/X', 	    'GET',V_S_CREA,	V_S_CREA,false,true,false,0,1,'|X'],
-			['/X/1', 	'GET',V_S_UPDT,	V_S_UPDT,false,false,true,2,2,'|X'],
-            ['/X/1/X', 	'GET',V_S_SLCT,	V_S_SLCT,false,true,false,2,3,'|X|X'],
-            ['/X/1/X/1','GET',V_S_DELT,	V_S_DELT,false,false,true,4,4,'|X|X'],	
-			['/X', 	    'POST',null,	V_S_CREA,false,true,false,0,1,'|X'],
-			['/X', 	    'POST',V_S_CREA,V_S_CREA,false,true,false,0,1,'|X'],
-			['/X/1', 	'POST',V_S_UPDT,V_S_UPDT,false,false,true,2,2,'|X'],
-            ['/X/1/X', 	'POST',V_S_SLCT,V_S_SLCT,false,true,false,2,3,'|X|X'],
-            ['/X/1/X/1','POST',V_S_DELT,V_S_DELT,false,false,true,4,4,'|X|X'],
+			['/', 	    'GET',null,		V_S_READ,true,false,false,0,0,'|',		false],
+			['/X', 	    'GET',null,		V_S_SLCT,false,true,false,0,1,'|X',		false],
+			['/X/1', 	'GET',null,		V_S_READ,false,false,true,2,2,'|X',		false],
+			['/X/~', 	'GET',null,		V_S_READ,false,false,true,2,2,'|X',		true],
+            ['/X/1/Y', 	'GET',null,		V_S_SLCT,false,true,false,2,3,'|X|Y',	false],
+            ['/X/1/X/1','GET',null,		V_S_READ,false,false,true,4,4,'|X|X',	false],
+			['/X', 	    'GET',V_S_CREA,	V_S_CREA,false,true,false,0,1,'|X',		false],
+			['/X/1', 	'GET',V_S_UPDT,	V_S_UPDT,false,false,true,2,2,'|X',		false],
+            ['/X/1/X', 	'GET',V_S_SLCT,	V_S_SLCT,false,true,false,2,3,'|X|X',	false],
+            ['/X/1/X/1','GET',V_S_DELT,	V_S_DELT,false,false,true,4,4,'|X|X',	false],	
+			['/X', 	    'POST',null,	V_S_CREA,false,true,false,0,1,'|X',		false],
+			['/X', 	    'POST',V_S_CREA,V_S_CREA,false,true,false,0,1,'|X',		false],
+			['/X/1', 	'POST',V_S_UPDT,V_S_UPDT,false,false,true,2,2,'|X',		false],
+            ['/X/1/X', 	'POST',V_S_SLCT,V_S_SLCT,false,true,false,2,3,'|X|X',	false],
+            ['/X/1/X/1','POST',V_S_DELT,V_S_DELT,false,false,true,4,4,'|X|X',	false],
 	
  			];
     }

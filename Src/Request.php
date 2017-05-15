@@ -16,7 +16,6 @@ class Request
     protected $isClassPath=false;
     protected $isObjPath=false;
     protected $isRoot=false;
-    protected $isRelT=false;
     protected $isT=false;
     protected $action=null;
     protected $method=null;
@@ -86,14 +85,6 @@ class Request
             $this->modPath='|';
             return;
         }
-        if ($pathArr[0] == "~") {
-            $this->isRelT=true;
-            $this->modPath='|~';
-            array_shift($pathArr);
-            if (!count($pathArr)) {
-                $this->isT=true;
-            }
-        }
         $this->isRoot=false;
         $this->modPath="";
         $c = count($pathArr);
@@ -107,13 +98,18 @@ class Request
             if (! checkIdentifier($pathArr[$i])) {
                 throw new Exception(E_ERC036.':'.$pathStrg.':'.$i);
             }
-            if (! ctype_digit($pathArr[$i+1])) {
-                $j=$i+1;
-                throw new Exception(E_ERC036.':'.$pathStrg.':'.$j);
-            }
             $this->pathArr[]=$pathArr[$i];
             $this->modPath=$this->modPath.'|'.$pathArr[$i];
-            $this->pathArr[]=(int) $pathArr[$i+1];
+            if ($i==0 and $pathArr[$i+1] ==  '~') {
+                $this->isT=true;
+                $this->pathArr[]=$pathArr[$i+1];
+            } else {
+                if (! ctype_digit($pathArr[$i+1])) {
+                    $j=$i+1;
+                    throw new Exception(E_ERC036.':'.$pathStrg.':'.$j);
+                }
+                $this->pathArr[]=(int) $pathArr[$i+1];
+            }
         }
         if ($this->isClassPath) {
             if (! checkIdentifier($pathArr[$c-1])) {

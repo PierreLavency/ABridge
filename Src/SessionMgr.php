@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 class SessionMgr
 {
     protected $cleanUp = false;

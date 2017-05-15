@@ -34,7 +34,10 @@ class SessionHdl
             $this->roleSpec=[['true', 'true', 'true']];
             return;
         }
-        $role = $session->getRef('Role');
+        $role = null;
+        if ($session->existsAttr('Role')) {
+            $role = $session->getRef('Role');
+        }
         $this->construct2($session, $role);
     }
  
@@ -48,7 +51,10 @@ class SessionHdl
             $this->roleSpec=[['true', 'true', 'true']];
             return;
         }
-        $user = $session->getVal('User');
+        $user = null;
+        if ($session->existsAttr('User')) {
+            $user = $session->getVal('User');
+        }
         if (is_null($user) or is_null($role)) {
             $this->isRoot = true;
             $this->roleSpec=[['true', 'true', 'true']];
@@ -64,6 +70,17 @@ class SessionHdl
     public function isRoot()
     {
         return ($this->isRoot);
+    }
+    
+    public function getObj($mod)
+    {
+        if ($mod == $this->session->getModName()) {
+            return $this->session;
+        }
+        if ($this->session) {
+            return $this->session->getRef($mod);
+        }
+        return null;
     }
     
     protected function matchEval($elm, $patrn)
