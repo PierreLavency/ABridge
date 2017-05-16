@@ -173,8 +173,10 @@
 
 	$res = $obj->addAttr('Name',		M_STRING);
  	$res = $obj->addAttr('SurName',		M_STRING);
+ 	$res = $obj->addAttr('Password',	M_STRING);	
 	$res = $obj->addAttr($Group,		M_REF,"/$Group");
 	$res = $obj->addAttr('Play',		M_CREF,'/'.$Distribution.'/toUser');
+    $res = $obj->setBkey('Name',true);	
 	
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
@@ -187,6 +189,7 @@
 	$res = $obj->addAttr('Name',		M_STRING);
  	$res = $obj->addAttr('JSpec',		M_JSON);	
 	$res = $obj->addAttr('PlayedBy',	M_CREF,'/'.$Distribution.'/ofRole');
+    $res = $obj->setBkey('Name',true);	
 	
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
@@ -229,6 +232,7 @@
 
  	$res = $obj->addAttr('Name',		M_STRING);
 	$res = $obj->addAttr('Users',		M_CREF,'/'.$User.'/'.$Group);
+    $res = $obj->setBkey('Name',true);	
 	
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";	

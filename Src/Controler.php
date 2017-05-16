@@ -293,6 +293,7 @@ class Controler
             if ($action != V_S_SLCT) {
                 $this->handle->setAction(V_S_READ);
             }
+            $this->sessionHdl->refresh();
         }
         $this->showView($show);
         $this->showLog();
