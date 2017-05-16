@@ -116,8 +116,10 @@
 	
 	// Roles 	
 	
-	
-	$RSpec = '[["true","true","true"]]';
+	$RSpec = 
+'[
+["true","true","true"]
+]';
 
 	$obj=new Model($Role);
 	$obj->setVal('Name','Root');
@@ -127,13 +129,12 @@
 
 	$RSpec = 
 '[
-[["Select"],        ["|Application","|Component","|Interface","|Exchange","|Session"], "true"],
+[["Select"],        ["|Application","|Component","|Interface","|Exchange"], "true"],
 [["Read"],          "true",         "true"],
 [["Read","Update"],  "|Session",    {"Session":"id"}],
 [["Read","Update"],  "|User",       {"User":"id<>User"}]
 ]';
 
-	
 	$obj=new Model($Role);
 	$obj->setVal('Name','Visitor');
 	$obj->setVal('JSpec',$RSpec);
@@ -142,7 +143,7 @@
 	
 		$RSpec = 
 '[
- [["Select"],                      ["|Application","|Component","|Interface","|Exchange","|Session"], "true"],
+ [["Select"],                      ["|Application","|Component","|Interface","|Exchange"], "true"],
  [["Read"],                        "true",                              "true"],
  [["Update"],                      "|Application",                      {"Application":"Owner<>User:UserGroup"}],
  [["Create"],                      "|Application|BuiltFrom",            {"Application":"Owner<>User:UserGroup","BuiltFrom":"Owner<>User:UserGroup"}],
@@ -167,7 +168,7 @@
 
 	$RSpec = 
 '[
- [["Select"],                      ["|Application","|Component","|Interface","|Exchange","|Session"], "true"],
+ [["Select"],                      ["|Application","|Component","|Interface","|Exchange"], "true"],
  [["Read"],                        "true",                              "true"],
  [["Create","Update","Delete"],    "|Application",                      "true"],
  [["Create","Update","Delete"],    "|Component",                        "true"],

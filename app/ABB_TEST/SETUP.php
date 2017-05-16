@@ -27,7 +27,7 @@ require_once 'CstView.php';
 		],
 	'Home' =>
 		['/',
-		"/$Session/~","/$User/~","/$User","/$Group","/$Role","/$Distribution",
+		"/$Session/~","/$User/~","/$Group","/$Role","/$Distribution",
 		"/$Application","/$Component","/$Interface","/$Exchange",
 		"/$IUse"],
 	'Session' => 

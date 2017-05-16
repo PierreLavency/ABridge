@@ -10,10 +10,10 @@ phpunit --coverage-html Testcoverage Tests
 BUGS
 B1 session with API.
 B2 ' in txt fields. 
-B6 refresh menu when role changed.
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
-B15 
+B15 image size zhen null
+B16
 
 DEV
 - review logging 
@@ -74,7 +74,8 @@ INT
 
 
 DONE
-
+-------// 0.5 day
+B6 refresh menu when role changed.
 -------// 1day
 - implement '~' in menus.
 -------// 1  day
