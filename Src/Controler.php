@@ -22,6 +22,7 @@ class Controler
     protected $logLevel = 0;
     protected $sessionMgr ;
     protected $bname ;
+    protected $classList=[];
      
     public function __construct()
     {
@@ -54,18 +55,29 @@ class Controler
 
         $config=$spec['Handlers'];
         foreach ($config as $classN => $handler) {
-            if (count($handler) == 1) {
+            $menu=true;
+            $c = count($handler);
+            if ($c==3) {
+                $menu = array_pop($handler);
+                $c=2;
+            }
+            switch ($c) {
+                case 0:
+                    break;
+                case 1:
                     $handler[]=$this->bname;
+                case 2:
+                    if (! in_array($handler, $handlers)) {
+                        $handlers[] = $handler;
+                        $x = Handler::get()->getBase($handler[0], $handler[1]);
+                        $bases[]=$x;
+                    }
+                    initStateHandler($classN, $handler[0], $handler[1]);
+                    break;
             }
-            if (! in_array($handler, $handlers)) {
-                $handlers[] = $handler;
-                $x = Handler::get()->getBase(
-                    $handler[0],
-                    $handler[1]
-                );
-                $bases[]=$x;
+            if ($menu) {
+                $this->classList[]=$classN;
             }
-            initStateHandler($classN, $handler[0], $handler[1]);
         }
         $this->bases = $bases;
     }
@@ -225,7 +237,9 @@ class Controler
         }
         $v=new View($this->handle);
         $home=$spec['Home'];
-        $v->setTopMenu($home);
+        $selmenu = $this->sessionHdl->getSelMenu($this->classList);
+        $menu = array_unique(array_merge($home, $selmenu));
+        $v->setTopMenu($menu);
         $action = $this->handle->getAction();
         $v->show($action, $show);
         return true;

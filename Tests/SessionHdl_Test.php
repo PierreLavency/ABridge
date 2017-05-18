@@ -48,14 +48,14 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase
             ['/Userr/1',                    V_S_UPDT, 'User'        ,false],
             ['/User',                       V_S_SLCT, 'User'        ,false],
             ['/User/1',                     V_S_READ, 'User'        ,['User']],
-            ['/Application',                V_S_SLCT, 'Application'     ,['true']],
-            ['/Application/1',              V_S_UPDT, 'Application'     ,['User']],
-            ['/Application/1/In',           V_S_CREA, 'Application'     ,['User']],
-            ['/Application/1/BuiltFrom',    V_S_CREA, 'Application'     ,['User']],
+            ['/Application',                V_S_SLCT, 'Application' ,['true']],
+            ['/Application/1',              V_S_UPDT, 'Application' ,['User']],
+            ['/Application/1/In',           V_S_CREA, 'Application' ,['User']],
+            ['/Application/1/BuiltFrom',    V_S_CREA, 'Application' ,['User']],
             ['/Application/1/BuiltFrom',    V_S_CREA, 'BuiltFrom'   ,['User']],
             ['/Application/1/BuiltFrom',    V_S_CREA, 'User'        ,['true']],
-            ['/Application/1/Ins',          V_S_CREA, 'Application'     ,false],
-            ['/Application/1/Ins',          V_S_SLCT, 'Application'     ,['true']],
+            ['/Application/1/Ins',          V_S_CREA, 'Application' ,false],
+            ['/Application/1/Ins',          V_S_SLCT, 'Application' ,['true']],
             ];
     }
 

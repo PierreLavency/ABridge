@@ -5,13 +5,13 @@ require_once 'CstView.php';
 	$config = [
 	'Handlers' =>
 		[
-		'CodeValue'  => ['dataBase'],
-		'Code' 		 => ['dataBase'],
 		'Person'	 => ['dataBase'],
 		'User'	 	 => ['dataBase'],
+		'CodeValue'  => ['dataBase'],
+		'Code' 		 => ['dataBase'],		
 		],
 	'Home' =>
-		['/User','/Person','/Code','/CodeValue','/'],
+		['/',],
 		
 	'Views' => [
 		'User' =>[

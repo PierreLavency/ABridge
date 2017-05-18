@@ -12,12 +12,12 @@ B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
-B15 image size zhen null
+
 B16
 
 DEV
+- remove default db name.
 - review logging 
-- link menu and roles. //
 - unify get code with get reference.
 - handle user preference.
 - increase autorisations rule capability
@@ -25,6 +25,7 @@ DEV
 	- views and parameters
 - clean up pict path
 
+- use static to declare spec
 - review custom code integration
 - handle predefine models. 
 - user Jason to save data rather than serilialisation.
@@ -74,6 +75,9 @@ INT
 
 
 DONE
+-------// 2 days 
+link menu and roles.
+B15 image size when null
 -------// 0.5 day
 B6 refresh menu when role changed.
 -------// 1day

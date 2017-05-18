@@ -7,7 +7,7 @@ require_once 'CstView.php';
 	$config = [
 	'Handlers' =>
 		[
-		$ABB		 => ['dataBase',$DBDEC,],
+		$ABB		 => ['dataBase',$DBDEC,false],
 		$Application => ['dataBase',$DBDEC,],
 		$Component	 => ['dataBase',$DBDEC,],
 		$Interface	 => ['dataBase',$DBDEC,],
@@ -18,7 +18,7 @@ require_once 'CstView.php';
 		$SLevel 	 => ['dataBase',$DBDEC,],
 		$AStyle 	 => ['dataBase',$DBDEC,],
 		$SControl 	 => ['dataBase',$DBDEC,],
-		$ACode	 	 => ['dataBase',$DBDEC,],
+		$ACode	 	 => ['dataBase',$DBDEC,false],
 		$User	 	 => ['dataBase',$DBDEC,],
 		],
 	'Home' =>

@@ -7,7 +7,7 @@ require_once 'CstView.php';
 	$config = [
 	'Handlers' =>
 		[
-		$ABB		 => ['dataBase',$DBDEC,],
+		$ABB		 => ['dataBase',$DBDEC,false],
 		$Application => ['dataBase',$DBDEC,],
 		$Component	 => ['dataBase',$DBDEC,],
 		$Interface	 => ['dataBase',$DBDEC,],
@@ -26,10 +26,7 @@ require_once 'CstView.php';
 		$Session	 => ['dataBase',$DBDEC,],
 		],
 	'Home' =>
-		['/',
-		"/$Session/~","/$User/~","/$Group","/$Role","/$Distribution",
-		"/$Application","/$Component","/$Interface","/$Exchange",
-		"/$IUse"],
+		['/',"/$Session/~","/$User/~",],
 	'Session' => 
 		[$Session=>'BKey'],		
 	'Views' => [
@@ -230,8 +227,8 @@ require_once 'CstView.php';
 		],
 		$Session =>[
 			'attrList' => [
-						V_S_READ=> ['id','User','Role','Comment','BKey','vnum','ctstp','utstp'],
-						V_S_UPDT=> ['id','User','Role','Comment'],
+						V_S_READ=> ['id','User','Password','Role','Comment','BKey','vnum','ctstp','utstp'],
+						V_S_UPDT=> ['id','User','Password','Role','Comment'],
 						V_S_CREF=> ['id','User','Role','BKey','vnum','ctstp'],									
 			],
 			'attrHtml' => [

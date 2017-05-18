@@ -12,14 +12,14 @@ require_once 'CstView.php';
 		'UniteTemps'	=> ['dataBase',],
 		'TypeRecette'	=> ['dataBase',],
 		'NiveauDifficulte' =>['dataBase',],
-		'AbstractCode'	=> ['dataBase',],	
+		'AbstractCode'	=> ['dataBase','CSN',false],	
 		'User'	 	 	=> ['dataBase',],
 		'Role'	 	 	=> ['dataBase',],
 		'Distribution'	=> ['dataBase',],
 		'Session'		=> ['dataBase',],		
 		],
 	'Home' =>
-		['/Recette','/','/UniteMesure','/UniteTemps','/TypeRecette','/NiveauDifficulte','/User','/Role','/Distribution'],
+		['/',],
 	'Views' => [
 		'Recette'=> [
 		

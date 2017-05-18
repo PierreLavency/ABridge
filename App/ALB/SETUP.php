@@ -15,7 +15,7 @@ require_once 'CstView.php';
 		'Session'		=> ['dataBase',],		
 		],
 	'Home' =>
-		['/','/Album','/Photo','/User','/Role','/Distribution'],
+		['/',],
 	'Views' => [
 		'Album'=> [
 		

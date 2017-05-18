@@ -499,7 +499,12 @@ class View
                 $res=[];
                 $res[H_TYPE]=H_T_LINK;
                 $pict = 'C:\xampp\htdocs'.$x;
-                list($width, $height, $itype, $iattr) = getimagesize($pict);
+                if ($x) {
+                    list($width, $height, $itype, $iattr) = getimagesize($pict);
+                } else {
+                    $width = 1;
+                    $height = 1;
+                }
                 $res[H_NAME]=$x;
                 $rf = 1;
                 if (isset($tres[H_ROWP])) {
@@ -509,12 +514,10 @@ class View
                 if (isset($tres[H_COLP])) {
                     $cf = $tres[H_COLP]/$width;
                 }
-                if ($rf !=1 or $cf =! 1) {
-                    if ($rf > $cf) {
-                        $cf=$rf;
-                    } else {
-                        $rf=$cf;
-                    }
+                if ($rf > $cf) {
+                    $cf=$rf;
+                } else {
+                    $rf=$cf;
                 }
                 $tres[H_ROWP]= round($height * $rf);
                 $tres[H_COLP]= round($width * $cf);

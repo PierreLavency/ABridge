@@ -2,13 +2,12 @@
 	require_once 'CLASSDEC.php';
 
 
-	$obj = new Model($Role,20);
+	$obj = new Model($Session);
 
-	
-	
-	
-	
-	echo $obj->getId()."<br>";$obj->getErrLog()->show();echo "<br>";
+	$res = $obj->addAttr('Password',		M_STRING);
+
+	$res = $obj->saveMod();			
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 	
 
 	

@@ -5,6 +5,9 @@ class SessionHdl
     protected $roleSpec = [];
     protected $session = null;
     protected $isRoot = false;
+    protected $roleName = 'Role';
+    protected $userName = 'User';
+    protected $pswName = 'Password';
     
     public function __construct()
     {
@@ -35,8 +38,8 @@ class SessionHdl
             return;
         }
         $role = null;
-        if ($session->existsAttr('Role')) {
-            $role = $session->getRef('Role');
+        if ($session->existsAttr($this->roleName)) {
+            $role = $session->getRef($this->roleName);
         }
         $this->construct2($session, $role);
     }
@@ -52,8 +55,8 @@ class SessionHdl
             return;
         }
         $user = null;
-        if ($session->existsAttr('User')) {
-            $user = $session->getVal('User');
+        if ($session->existsAttr($this->userName)) {
+            $user = $session->getVal($this->userName);
         }
         if (is_null($user) or is_null($role)) {
             $this->isRoot = true;
@@ -83,6 +86,18 @@ class SessionHdl
         return null;
     }
     
+    public function check()
+    {
+        if ($this->session->existsAttr($this->userName)) {
+            $user = $session->getObj($this->userName);
+            if (! is_null($user)) {
+                return true;
+            }
+            $upsw = $user->getVal($this->pswName);
+            $spsw = $this->session->getVal($this->pswName);
+        }
+    }
+    
     protected function matchEval($elm, $patrn)
     {
         if (is_array($patrn)) {
@@ -109,7 +124,20 @@ class SessionHdl
             return false;
         }
     }
-        
+
+    public function getSelMenu($classList)
+    {
+        $rList = [];
+        foreach ($classList as $className) {
+            $modPath = '|'.$className;
+            $res = $this->getCond(V_S_SLCT, $modPath);
+            if ($res == ['true']) {
+                $rList[]= '/'.$className;
+            }
+        }
+        return $rList;
+    }
+    
     protected function getCond($action, $modpath)
     {
 //		echo ' '.$action.':'.$modpath."<br>";

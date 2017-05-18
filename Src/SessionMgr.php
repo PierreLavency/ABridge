@@ -1,78 +1,27 @@
 <?php
 
+require_once 'Cookies.php';
+
 class SessionMgr
 {
-    protected $cleanUp = false;
-    protected $newSess=false;
-    protected $prevSess=false;
-    protected $id=0;
-    protected $pid=0;
-    protected $typ;
-    protected $cookieName;
-    protected $prevCookieName;
-    protected $timer= 7200; // 2 heure
-    protected $prevtimer=86400; // 1 jour
     protected $sessHdl = null;
     protected $init=false;
 
-    protected $sessionClass;
-    protected $classKey;
+    protected $cookies=[];
+    protected $sessions=[];
+    protected $changed = false;
     
-    public function __construct($Sess)
+    public function __construct($sessions)
     {
-        if ($Sess == []) {
-            return;
+        if ($sessions == []) {
+            return ;
         }
-        foreach ($Sess as $sessionClass => $classKey) {
-            $this->cookieName= $sessionClass;
-            $this->prevCookieName=$this->pvs($sessionClass);
-            if ($this->cleanUp) {
-                if (isset($_COOKIE[$this->cookieName])) {
-                    unset($_COOKIE[$this->cookieName]);
-                }
-                if (isset($_COOKIE[$this->prevCookieName])) {
-                    unset($_COOKIE[$this->prevCookieName]);
-                }
-            }
-            $this->sessionClass=$sessionClass;
-            $this->classKey=$classKey;
+        $this->init = true;
+        $this->cookies = [];
+        $this->sessions = $sessions;
+        foreach ($sessions as $sessionClass => $classKey) {
+            $this->cookies[$sessionClass]= new CookieReq($sessionClass);
         }
-        $this->initCookies();
-    }
-    
-    private function pvs($name)
-    {
-        return 'p'.$name;
-    }
-    
-    public function initCookies()
-    {
-
-        $this->init=true;
-
-        $name  = $this->cookieName;
-        $pname = $this->prevCookieName;
-        
-        if (isset($_COOKIE[$name])) {
-            $id=$_COOKIE[$name];
-        } else {
-            $id= uniqid($name);
-            setcookie($name, $id, time() + $this->timer, "/");
-            $this->newSess = true;
-        }
-        $this->id=$id;
-        if (isset($_COOKIE[$pname])) {
-            $pid = $_COOKIE[$pname];
-            if ($pid != $id and !$this->newSess) {
-                $this->prevSess=true;
-                setcookie($pname, $id, time() + $this->prevtimer, "/");
-            }
-        } else {
-            setcookie($pname, $id, time() + $this->prevtimer, "/");
-            $pid = $id;
-        }
-        $this->pid=$pid;
-        return $id;
     }
     
     public function startSessions()
@@ -80,33 +29,44 @@ class SessionMgr
         if (! $this->init) {
             return true;
         }
-        if ($this->prevSess) {
-            $pobj=$this->getObj($this->pid);
+        foreach ($this->sessions as $sessionClass => $classKey) {
+            $this->startSession($sessionClass, $classKey, $this->cookies[$sessionClass]);
+        }
+    }
+
+    public function startSession($sessionClass, $classKey, $cookie)
+    {
+        if ($cookie->isPrev()) {
+            $pobj=$this->getObj($sessionClass, $classKey, $cookie->getPrevId());
             if (!is_null($pobj)) {
                 $pobj->delet();
-                echo 'Delete previous Session :'.$this->prevCookieName."<br>";
+                echo 'Delete previous Session :'.$sessionClass."<br>";
             }
         }
-        if ($this->newSess) {
-            $this->newObj($this->id);
-            echo 'New Session:'. $this->cookieName."<br>";
+        if ($cookie->isNew()) {
+            $this->newObj($sessionClass, $classKey, $cookie->getId());
+            echo 'New Session:'. $sessionClass."<br>";
         }
-        $obj = $this->getObj($this->id);
+        $obj = $this->getObj($sessionClass, $classKey, $cookie->getId());
         if (is_null($obj)) {
             echo 'ERROR !!! ';
-            echo 'new : '.$this->newSess;
-            echo 'id : '.$this->id;
-            echo 'pnew : '.$this->prevSess;
-            echo 'pid : '.$this->pid;
-            $obj=$this->newObj($this->id);
-            $this->newSess=true;
+            echo 'new : '.$cookie->isNew();
+            echo 'id : '.$cookie->getId();
+            echo 'pnew : '.$cookie->isPrev();
+            echo 'pid : '.$cookie->getPrevId();
+            $obj=$this->newObj($sessionClass, $classKey, $cookie->getId());
+            $this->changed=true;
         }
         $this->sessHdl = $obj;
     }
 
     public function isChanged()
     {
-        return ($this->newSess or $this->prevSess);
+        $changed = $this->changed;
+        foreach ($this->cookies as $sessionClass => $cookie) {
+            $changed = $changed or $cookie->isNew() or $cookie->isPrev();
+        }
+        return $changed;
     }
     
     public function getHandle()
@@ -119,25 +79,24 @@ class SessionMgr
         return $res;
     }
     
-    protected function newObj($Bkey)
+    protected function newObj($sessionClass, $classKey, $Bkey)
     {
-        $obj = new Model($this->sessionClass);
-        $obj->setVal($this->classKey, $Bkey);
+        $obj = new Model($sessionClass);
+        $obj->setVal($classKey, $Bkey);
         $obj->save();
         return $obj;
     }
     
-    
-    protected function getObj($Bkey)
+    protected function getObj($sessionClass, $classKey, $Bkey)
     {
-        $obj = new Model($this->sessionClass);
-        $obj->setCriteria([$this->classKey], ['='], [$Bkey]);
+        $obj = new Model($sessionClass);
+        $obj->setCriteria([$classKey], ['='], [$Bkey]);
         $res = $obj->select();
         if ($res==[]) {
             return null;
         }
         $id= array_pop($res);
-        $obj= new Model($this->sessionClass, $id);
+        $obj= new Model($sessionClass, $id);
         return $obj;
     }
 }
