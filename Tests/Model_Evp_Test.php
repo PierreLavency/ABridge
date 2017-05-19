@@ -2,107 +2,90 @@
     
 require_once("Model.php");
 require_once("Handler.php");
+require_once 'CModel.php';
 
-class testevalP
+class testevalP extends CModel
 {
-    private $_mod;
+
     private $_fsave = true;
     protected $_fdel  = true;
     
-    function __construct($mod)
-    {
-        $this->_mod=$mod;
-    }
-    
-    
+      
     public function save()
     {
-        $a = $this->_mod->getVal('a');
-        $b = $this->_mod->getVal('b');
-        $this->_mod->setVal('aplusb', $a+$b);
-        if (!$a and $this->_mod->getId() and $this->_fsave) {
-            $this->_mod->getErrLog()->logLine('wrong');
+        $a = $this->mod->getValN('a');
+        $b = $this->mod->getValN('b');
+        $this->mod->setVal('aplusb', $a+$b);
+        if (!$a and $this->mod->getId() and $this->_fsave) {
+            $this->mod->getErrLog()->logLine('wrong');
             $this->_fsave = false;
             return false;
         }
-        return true;
+		$res =  $this->mod->saveN();
+        if (!$this->_fsave) {
+            $this->mod->getErrLog()->logLine('Awrong');
+			return false;
+        }		
+        return $res;
     }
-    
-    public function afterDelet()
-    {
-        if (!$this->_fdel) {
-            $this->_mod->getErrLog()->logLine('DDwrong');
-        }
-        return  $this->_fdel;
-    }
-
+	
     public function delet()
     {
-        $a = $this->_mod->getVal('a');
-        if (!$a and $this->_mod->getId() and $this->_fdel) {
-            $this->_mod->getErrLog()->logLine('Dwrong');
+        $a = $this->mod->getValN('a');
+        if (!$a and $this->mod->getId() and $this->_fdel) {
+            $this->mod->getErrLog()->logLine('Dwrong');
             $this->_fdel = false;
             return false;
         }
-        return true;
-    }
-    public function afterSave()
-    {
-        if (!$this->_fsave) {
-            $this->_mod->getErrLog()->logLine('Awrong');
+		$res =  $this->mod->deletN();
+        if (!$this->_fdel) {
+            $this->mod->getErrLog()->logLine('DDwrong');
+			return false;
         }
-        return $this->_fsave;
+        return  $res;		
     }
+	
 }
-class testevalPF
+class testevalPF extends CModel
 {
-    private $_mod;
+
     private $_x;
     private $_fsave = true;
     private $_fdel  = true;
-    
-    function __construct($mod)
-    {
-        $this->_mod=$mod;
-    }
-    
+ 
     
     public function save()
     {
-        $a = $this->_mod->getVal('a');
-        $b = $this->_mod->getVal('b');
-        $this->_mod->setVal('aplusb', $a+$b);
-        if (!$a and $this->_mod->getId()and $this->_fsave) {
-            $this->_mod->getErrLog()->logLine('wrong');
+        $a = $this->mod->getValN('a');
+        $b = $this->mod->getValN('b');
+        $this->mod->setVal('aplusb', $a+$b);
+        if (!$a and $this->mod->getId()and $this->_fsave) {
+            $this->mod->getErrLog()->logLine('wrong');
             $this->_fsave = false;
             return false;
         }
-        return true;
+ 		$res =  $this->mod->saveN();
+        if (!$this->_fsave) {
+            $this->mod->getErrLog()->logLine('Awrong');
+			return false;
+        }		
+        return $res;
     }
     
     public function delet()
     {
-        $a = $this->_mod->getVal('a');
-        if (!$a and $this->_mod->getId()and $this->_fdel) {
-            $this->_mod->getErrLog()->logLine('Dwrong');
+        $a = $this->mod->getValN('a');
+        if (!$a and $this->mod->getId()and $this->_fdel) {
+            $this->mod->getErrLog()->logLine('Dwrong');
             $this->_fdel = false;
             return false;
         }
-        return true;
-    }
-    public function afterSave()
-    {
-        if (!$this->_fsave) {
-            $this->_mod->getErrLog()->logLine('Awrong');
-        }
-        return $this->_fsave;
-    }
-    public function afterDelet()
-    {
+        $res= $this->mod->deletN();
         if (!$this->_fdel) {
-            $this->_mod->getErrLog()->logLine('DDwrong');
+            $this->mod->getErrLog()->logLine('DDwrong');
+			return false;
         }
-        return $this->_fdel;
+        return $res;
     }
 }
 class Model_Evp_Test extends PHPUnit_Framework_TestCase

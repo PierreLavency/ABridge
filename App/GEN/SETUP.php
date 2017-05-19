@@ -1,6 +1,7 @@
 <?php
 require_once 'CstMode.php';
 require_once 'CstView.php';
+require_once 'CModel.php';
 
 	$config = [
 	'Handlers' =>
@@ -55,24 +56,18 @@ require_once 'CstView.php';
 	]
 	];
 
-class Person {
+class Person extends CModel
+{
 
-	private $_mod;
-
-	function __construct($mod) 
-	{
-		$this->_mod=$mod;
-		
-	}
 	
 	public function getVal($attr) 
 	{
 		if ($attr == 'Age') {
-			$a = $this->_mod->getVal('BirthDay');
+			$a = $this->mod->getValN('BirthDay');
 			if (is_null($a)) {
 				return null;
 			}
-			$b = $this->_mod->getVal('DeathDate');
+			$b = $this->mod->getValN('DeathDate');
 			if (! is_null($b)) {
 				return null;
 			}
@@ -81,42 +76,25 @@ class Person {
 			$res = date_diff($da, $db);
 			$res = (int) $res->format('%y');
 			return $res;
-
+		} else {
+			return $this->mod->getValN($attr);
 		}
-	}
-	
-	public function delet()
-	{
-		return true;
-	}
-
-	public function afterDelet() 
-	{
-		return true;
 	}
 	
 	public function save()
 	{
-			$a = $this->_mod->getVal('BirthDay');
-			if (is_null($a)) {
-				return true;
+			$a = $this->mod->getValN('BirthDay');
+			$b = $this->mod->getValN('DeathDate');
+			if (!is_null($b) and ! is_null($a)) {				
+				$da= date_create($a);
+				$db= date_create($b);
+				$res = date_diff($da, $db);
+				$res = (int) $res->format('%y');
+				$this->mod->setVal('DeathAge',$res);
 			}
-			$b = $this->_mod->getVal('DeathDate');
-			if (is_null($b)) {
-				return true;
-			}
-			$da= date_create($a);
-			$db= date_create($b);
-			$res = date_diff($da, $db);
-			$res = (int) $res->format('%y');
-			$this->_mod->setVal('DeathAge',$res);
-			return true;
+			return $this->mod->saveN();
 
 	}
 
-	public function afterSave()
-	{
-		return true;
-	}	
 }
 	

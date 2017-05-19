@@ -250,3 +250,39 @@ require_once 'CstView.php';
 		],
 	];		
 	
+class User {
+
+	private $mod;
+
+	function __construct($mod) 
+	{
+		$this->mod=$mod;
+
+	}
+		
+	public function delet()
+	{
+		return true;
+	}
+
+	public function afterDelet() 
+	{
+		return true;
+	}
+	
+	public function save()
+	{
+		$psw = $this->mod->getVal('Password');
+		if (!$this->mod->getId()) {				
+			$psw = password_hash($psw,PASSWORD_DEFAULT);
+			$this->mod->setVal('Password',$psw);
+		}
+		return true;
+	}
+
+	public function afterSave()
+	{
+		return true;
+	}	
+}
+	

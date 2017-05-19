@@ -27,11 +27,13 @@ class SessionMgr
     public function startSessions()
     {
         if (! $this->init) {
-            return true;
+            return null;
         }
+        $obj=null;
         foreach ($this->sessions as $sessionClass => $classKey) {
-            $this->startSession($sessionClass, $classKey, $this->cookies[$sessionClass]);
+            $obj= $this->startSession($sessionClass, $classKey, $this->cookies[$sessionClass]);
         }
+        return $obj; // return last one !!
     }
 
     public function startSession($sessionClass, $classKey, $cookie)
@@ -58,6 +60,7 @@ class SessionMgr
             $this->changed=true;
         }
         $this->sessHdl = $obj;
+        return $obj;
     }
 
     public function isChanged()
@@ -69,15 +72,6 @@ class SessionMgr
         return $changed;
     }
     
-    public function getHandle()
-    {
-        if (! is_null($this->sessHdl)) {
-            $res= new SessionHdl($this->sessHdl);
-        } else {
-            $res= new SessionHdl();
-        }
-        return $res;
-    }
     
     protected function newObj($sessionClass, $classKey, $Bkey)
     {

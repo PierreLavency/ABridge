@@ -66,6 +66,7 @@ class Controler
                     break;
                 case 1:
                     $handler[]=$this->bname;
+                    // default
                 case 2:
                     if (! in_array($handler, $handlers)) {
                         $handlers[] = $handler;
@@ -248,13 +249,13 @@ class Controler
     public function run($show, $logLevel)
     {
         $this->beginTrans();
-        $this->sessionMgr->startSessions();
+        $session = $this->sessionMgr->startSessions();
         if ($this->sessionMgr->isChanged()) {
             $this->commit();
             $this->beginTrans();
         }
         $this->setLogLevl($logLevel);
-        $this->sessionHdl= $this->sessionMgr->getHandle();
+        $this->sessionHdl= new SessionHdl($session);
         $this->handle = new Handle($this->sessionHdl);
         $this->logUrl();
         $method=$this->handle->getMethod();

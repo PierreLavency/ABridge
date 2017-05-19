@@ -51,7 +51,7 @@ class Handle
         $this->initObj();
     }
     
-    protected function construct5($req, $sessionHdl, $objs, $obj, $main)
+    private function construct5($req, $sessionHdl, $objs, $obj, $main)
     {
         $this->request = $req;
         $this->sessionHdl = $sessionHdl;

@@ -1,6 +1,7 @@
 <?php
 require_once 'CstMode.php';
 require_once 'CstView.php';
+require_once 'CModel.php';
 
 	$config = [
 	'Handlers' =>
@@ -216,139 +217,91 @@ require_once 'CstView.php';
 
 
 	
-class Cours {
+class Cours extends CModel 
+{
 
-	private $_mod;
 	private $_credit=0;
 
 	function __construct($mod) 
 	{
-		$this->_mod=$mod;
+		$this->mod=$mod;
 		if ($mod->getId()) {
-			$this->_credit=$mod->getVal('Credits');
+			$this->_credit=$mod->getValN('Credits');
 		}
 	}
 		
-	public function delet()
-	{
-		return true;
-	}
-
-	public function afterDelet() 
-	{
-		return true;
-	}
-	
 	public function save()
 	{
-		return true;
-	}
-
-	public function afterSave()
-	{
-		$ncredit = $this->_mod->getVal('Credits');
+		$res=$this->mod->saveN();
+		$ncredit = $this->mod->getValN('Credits');
 		if ($ncredit != $this->_credit) {
-			$list = $this->_mod->getVal('SuivitPar');
+			$list = $this->mod->getValN('SuivitPar');
 			foreach ($list as $id) {
-				$inscription = $this->_mod->getCref('SuivitPar',$id);
+				$inscription = $this->mod->getCref('SuivitPar',$id);
 				$inscription->save();
 			}
 		}
-		return true;
+		return $res;
 	}	
 }
 	
-class Student {
+class Student extends CModel 
+{
 
-	private $_mod;
-
-	function __construct($mod) 
-	{
-		$this->_mod=$mod;
-		
-	}
 	public function getVal($attr) 
 	{
 		if ($attr == 'NbrCours') {
-			$a = $this->_mod->getVal('InscritA');
+			$a = $this->mod->getValN('InscritA');
 			$res = count($a);
 			return $res;
 		}
 		if ($attr == 'Jason') {
-			$res = genJASON($this->_mod,false,true);
+			$res = genJASON($this->mod,false,true);
 			return $res;
 		}
-	}
-	
-	public function delet()
-	{
-		return true;
-	}	
-
-	public function afterDelet() 
-	{
-		return true;
+		return $this->mod->getValN($attr);
 	}
 	
 	public function save()
 	{
 		$credits = 0;
-		$list = $this->_mod->getVal('InscritA');
+		$list = $this->mod->getValN('InscritA');
 		foreach ($list as $id) {
-			$inscription = $this->_mod->getCref('InscritA',$id);
+			$inscription = $this->mod->getCref('InscritA',$id);
 			$cours = $inscription->getRef('A');
 			$credit = $cours->getVal('Credits');
 			if (!is_null($credit)) {
 				$credits = $credits + $credit;
 			}
 		}
-		$this->_mod->setVal('NbrCredits',$credits);
-		return true;
-	}
-	
-	public function afterSave()
-	{
-		return true;
+		$this->mod->setVal('NbrCredits',$credits);
+		return $this->mod->saveN();
 	}
 }
 
-class Inscription {
+class Inscription extends CModel 
+{
 
-	private $_mod;
 	private $_student;
-
-	function __construct($mod) 
-	{
-		$this->_mod=$mod;
-		
-	}
 	
 	public function delet()
 	{
-		$this->_student = $this->_mod->getRef('De');
-		return true;
-	}	
-
-	public function afterDelet() 
-	{
+		$this->_student = $this->mod->getRef('De');
+		$res=$this->mod->deletN();
 		if (!is_null($this->_student)) {
-			return ($this->_student ->save());
+			$this->_student ->save();
 		}
-		return true;
+		return $res;
 	}
 
 	public function save()
 	{
-
-		return true;
+		$res=$this->mod->saveN();
+		$student = $this->mod->getRef('De');
+		if (! is_null($student)) {
+			$student->save();
+		}
+		return $res;
 	}
 	
-	public function afterSave() 
-	{
-		$student = $this->_mod->getRef('De');
-		if (! is_null($student)) {
-			return ($student->save());
-		}
-		return true;
-	}
 }

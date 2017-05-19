@@ -2,43 +2,23 @@
     
 
 require_once("Model.php");
+require_once 'CModel.php';
 
-class testeval
+class testeval extends CModel
 {
-    private $_mod;
-    function __construct($mod)
-    {
-        $this->_mod=$mod;
-    }
+ 
     
     public function getVal($attr)
     {
         if ($attr == 'aplusb') {
-            $a = $this->_mod->getVal('a');
-            $b = $this->_mod->getVal('b');
+            $a = $this->mod->getVal('a');
+            $b = $this->mod->getVal('b');
             return $a+$b;
         }
+		return $this->mod->getValN($attr);
     }
+   
     
-    public function save()
-    {
-        return true;
-    }
-
-    public function afterSave()
-    {
-        return true;
-    }
-    
-    public function delet()
-    {
-        return true;
-    }
-    
-    public function afterDelet()
-    {
-        return true;
-    }
 }
 
 class Model_Evl_Test extends PHPUnit_Framework_TestCase

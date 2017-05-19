@@ -1064,6 +1064,18 @@ class Model
      */
     public function getVal($attr)
     {
+        if (! is_null($this->obj)) {
+//            $this->custom=true;
+            $res = $this->obj->getVal($attr);
+ //           $this->custom=false;
+            return $res;
+        } else {
+            return $this->getValN($attr);
+        }
+    }
+     
+    public function getValN($attr)
+    {
         if ($attr == 'id') {
             return $this->getId();
         }
@@ -1071,9 +1083,6 @@ class Model
         if (!$x) {
             $this->errLog->logLine(E_ERC002.':'.$attr);
             return false;
-        }
-        if ($this->isEval($attr)) {
-            return $this->obj->getVal($attr);
         }
         $type=$this->getTyp($attr);
         if ($type == M_CREF) {
@@ -1559,7 +1568,20 @@ class Model
      *
      * @return int the id.
      */
+     
     public function save()
+    {
+        if (! is_null($this->obj)) {
+            $this->custom=true;
+            $res = $this->obj->save();
+            $this->custom=false;
+            return $res;
+        } else {
+            return $this->saveN();
+        }
+    }
+     
+    public function saveN()
     {
         if ($this->isAbstr()) {
             $this->errLog->logLine(E_ERC044);
@@ -1610,24 +1632,10 @@ class Model
         $n++;
         $this->setValNoCheck('vnum', $n);
         $this->setValNoCheck('utstp', date(M_FORMAT_T));
-        if (! is_null($this->obj)) {
-            $this->custom=true;
-            $res = $this->obj->save();
-            $this->custom=false;
-            if (!$res) {
-                return false;
-            }
-        }
+
         $res=$this->stateHdlr->saveObj($this);
         $this->id=$res;
-        if (! is_null($this->obj)) {
-            $this->custom=true;
-            $res=$this->obj->afterSave();
-            $this->custom=false;
-            if (!$res) {
-                return false;
-            }
-        }
+        
         return $this->id;
     }
 
@@ -1655,6 +1663,18 @@ class Model
      */
     public function delet()
     {
+        if (! is_null($this->obj)) {
+            $this->custom=true;
+            $res = $this->obj->delet();
+            $this->custom=false;
+            return $res;
+        } else {
+            return $this->deletN();
+        }
+    }
+        
+    public function deletN()
+    {
         if ($this->isAbstr()) {
             $this->errLog->logLine(E_ERC044);
             return false;
@@ -1667,33 +1687,14 @@ class Model
             $this->errLog->logLine(E_ERC052);
             return false;
         }
-        if (! is_null($this->obj)) {
-            $this->custom=true;
-            $res = $this->obj->delet();
-            $this->custom=false;
-            if (!$res) {
-                return false;
-            }
-        }
-
         try {
             $res=$this->stateHdlr->eraseObj($this);
         } catch (Exception $e) {
             $this->errLog->logLine(E_ERC052.':'.$e->getMessage());
             return false;
         }
-
         if ($res) {
             $this->id=0;
-        }
-
-        if (! is_null($this->obj)) {
-            $this->custom=true;
-            $res = $this->obj->afterDelet();
-            $this->custom=false;
-            if (!$res) {
-                return false;
-            }
         }
         return $res;
     }

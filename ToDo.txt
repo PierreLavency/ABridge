@@ -14,8 +14,11 @@ B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 
 B16
-
+phpcs --standard=PSR2  -l Src/CModel.php
 DEV
+
+- back up 
+
 - remove default db name.
 - review logging 
 - unify get code with get reference.
@@ -24,12 +27,8 @@ DEV
 	- NxN relationship
 	- views and parameters
 - clean up pict path
-
 - use static to declare spec
-- review custom code integration
-- handle predefine models. 
-- user Jason to save data rather than serilialisation.
-
+ 
 - order in list query and attr.
 - confirmation on META load / Java Script
 - selection for Ref / Java script 
@@ -43,6 +42,7 @@ DEV
 
 - changed DB model independently of class model.
 - implement unique index.
+- user Jason to save data rather than serilialisation.
 - support CREF on abstract (????)
 
 - user concurency 
@@ -67,6 +67,7 @@ APP
 
 INT
 - integrate with drupal ?
+- eclipse. 
 - integrate MongoDB
 - integrate Redhiss
 - set up bug tracking
@@ -75,6 +76,9 @@ INT
 
 
 DONE
+--------// 1 day
+- review custom code integration
+- handle predefine models.
 -------// 2 days 
 link menu and roles.
 B15 image size when null

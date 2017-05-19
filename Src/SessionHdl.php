@@ -20,9 +20,7 @@ class SessionHdl
 
     protected function construct0()
     {
-        $this->isRoot = true;
-        $this->roleSpec=[['true', 'true', 'true']];
-        $this->session=null;
+        $this->construct2(null, null);
     }
  
     public function refresh()
@@ -32,14 +30,11 @@ class SessionHdl
  
     protected function construct1($session)
     {
-        if (is_null($session)) {
-            $this->isRoot = true;
-            $this->roleSpec=[['true', 'true', 'true']];
-            return;
-        }
         $role = null;
-        if ($session->existsAttr($this->roleName)) {
-            $role = $session->getRef($this->roleName);
+        if (! is_null($session)) {
+            if ($session->existsAttr($this->roleName)) {
+                $role = $session->getRef($this->roleName);
+            }
         }
         $this->construct2($session, $role);
     }
@@ -49,16 +44,7 @@ class SessionHdl
         $this->roleSpec=[];
         $this->session = $session;
         $this->isRoot=false;
-        if (is_null($session)) {
-            $this->isRoot = true;
-            $this->roleSpec=[['true', 'true', 'true']];
-            return;
-        }
-        $user = null;
-        if ($session->existsAttr($this->userName)) {
-            $user = $session->getVal($this->userName);
-        }
-        if (is_null($user) or is_null($role)) {
+        if (is_null($session) or is_null($role)) {
             $this->isRoot = true;
             $this->roleSpec=[['true', 'true', 'true']];
             return;

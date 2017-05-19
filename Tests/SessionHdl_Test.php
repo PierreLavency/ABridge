@@ -154,7 +154,6 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase
         $role = new Model('RoleSess');
         $role->addAttr('JSpec', M_STRING);
 
-//		$role->setVal('JSpec',$js);
     
         $y = new Model('TestSess');
         $y->addAttr('User', M_INT);
