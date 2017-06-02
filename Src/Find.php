@@ -2,9 +2,7 @@
 
 class Find
 {
-    private function __construct()
-    {
-    }
+ //   private function __construct() {}
     
     public static function existsObj($mod)
     {

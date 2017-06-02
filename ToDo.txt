@@ -4,7 +4,7 @@ phpcs --standard=PSR2 --report=summary -l Src
 phpcbf --standard=PSR2 --no-patch  Src  
 /*install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-/* run test suite with coverge
+/* run test suite with coverage
 phpunit --coverage-html Testcoverage Tests
 
 BUGS
@@ -53,7 +53,6 @@ DEV
 
 TEST
 - test temp attribute (model)
-
 - test finder
 - Performance -> review logging
 - test  SessionMngr
@@ -76,6 +75,8 @@ INT
 
 DONE
 
+---------// 0.25
+- test finder
 ---------// 0.25
 - test custom code (with evlp)
 ---------// 10days
