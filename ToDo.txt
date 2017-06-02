@@ -12,23 +12,24 @@ B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
+B17
 
-B16
-phpcs --standard=PSR2  -l Src/CModel.php
 DEV
-
-- back up 
-
+- revisit dot attributes
 - remove default db name.
 - review logging 
-- unify get code with get reference.
 - handle user preference.
 - increase autorisations rule capability
 	- NxN relationship
 	- views and parameters
-- clean up pict path
-- use static to declare spec
- 
+- clean up picture path
+- implement picture galery 
+- use static to declare spec and other functions
+- combine temp/evalp reference. 
+- get META json;
+- review include structure
+
+
 - order in list query and attr.
 - confirmation on META load / Java Script
 - selection for Ref / Java script 
@@ -43,6 +44,8 @@ DEV
 - changed DB model independently of class model.
 - implement unique index.
 - user Jason to save data rather than serilialisation.
+
+- unify get code with get reference. (??)
 - support CREF on abstract (????)
 
 - user concurency 
@@ -50,10 +53,9 @@ DEV
 
 - implement CSS 
 
-- Authenthication
- get pasw.
-
 TEST
+- test temp attribute (model)
+- test custom code
 - Performance -> review logging
 - test cookies -> review session 
 - improve view test coverage - need to separate view show and build // some progress
@@ -64,7 +66,6 @@ APP
 	- union Ckey + multi surname + frere et soeur
 	- code postal / 3
 
-
 INT
 - integrate with drupal ?
 - eclipse. 
@@ -74,8 +75,14 @@ INT
 - set up a git server
 - set up jenkin
 
-
 DONE
+
+---------// 10days
+- Authenthication
+- Finder 
+B16 error when selecting mandatory evalp attribute
+--------// 0.25 day !
+- back up 
 --------// 1 day
 - review custom code integration
 - handle predefine models.

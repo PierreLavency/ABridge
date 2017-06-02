@@ -1,13 +1,12 @@
 
 <?php
 
-// must clean up interface with set up !!
-
 require_once 'View.php';
 require_once 'SessionHdl.php';
 require_once 'Handle.php';
 require_once 'SessionMgr.php';
 require_once 'GenJASON.php';
+require_once 'Find.php';
 
 class Controler
 {
@@ -195,20 +194,14 @@ class Controler
     {
         $c= $this->handle;
         foreach ($c->getAttrList() as $attr) {
-            $cond = false;
-            if ($action == V_S_SLCT) {
-                $cond = $c->isSelect($attr);
-            } else {
-                $cond = $c->isModif($attr);
-            }
             $typ= $c->getTyp($attr);
             $val= $c->getPrm($attr, isRaw($typ));
             if (!is_null($val)) {
                 $valC = convertString($val, $typ);
-                if ($c->isModif($attr)) {
+                if ($action != V_S_SLCT and $c->isModif($attr)) {
                     $c->setVal($attr, $valC);
                 }
-                if (!is_null($valC) and $c->isSelect($attr)) {
+                if ($action == V_S_SLCT and !is_null($valC) and $c->isSelect($attr)) {
                     $this->attrL[]=$attr;
                     $this->valL[]=$valC;
                 }
@@ -237,7 +230,10 @@ class Controler
             }
         }
         $v=new View($this->handle);
-        $home=$spec['Home'];
+        $home = [];
+        if (isset($spec['Home'])) {
+            $home=$spec['Home'];
+        }
         $selmenu = $this->sessionHdl->getSelMenu($this->classList);
         $menu = array_unique(array_merge($home, $selmenu));
         $v->setTopMenu($menu);
@@ -250,13 +246,15 @@ class Controler
     {
         $this->beginTrans();
         $session = $this->sessionMgr->startSessions();
+        $this->sessionHdl= new SessionHdl($session);
         if ($this->sessionMgr->isChanged()) {
             $this->commit();
             $this->beginTrans();
+            $this->handle = new Handle('/Session/~', V_S_UPDT, $this->sessionHdl);
+        } else {
+            $this->handle = new Handle($this->sessionHdl);
         }
         $this->setLogLevl($logLevel);
-        $this->sessionHdl= new SessionHdl($session);
-        $this->handle = new Handle($this->sessionHdl);
         $this->logUrl();
         $method=$this->handle->getMethod();
         

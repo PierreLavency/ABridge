@@ -1,12 +1,12 @@
 <?php
 
-require_once 'Cookies.php';
-
 class SessionMgr
 {
     protected $sessHdl = null;
-    protected $init=false;
-
+    protected $cleanUp = false;
+    protected $timer= 0; // 0 when connected 2 heure
+    protected $Keep = false;
+    
     protected $cookies=[];
     protected $sessions=[];
     protected $changed = false;
@@ -16,81 +16,63 @@ class SessionMgr
         if ($sessions == []) {
             return ;
         }
-        $this->init = true;
-        $this->cookies = [];
         $this->sessions = $sessions;
-        foreach ($sessions as $sessionClass => $classKey) {
-            $this->cookies[$sessionClass]= new CookieReq($sessionClass);
-        }
     }
     
     public function startSessions()
     {
-        if (! $this->init) {
-            return null;
-        }
         $obj=null;
         foreach ($this->sessions as $sessionClass => $classKey) {
-            $obj= $this->startSession($sessionClass, $classKey, $this->cookies[$sessionClass]);
+            $obj= $this->startSession($sessionClass);
         }
         return $obj; // return last one !!
     }
 
-    public function startSession($sessionClass, $classKey, $cookie)
+    public function startSession($sessionClass)
     {
-        if ($cookie->isPrev()) {
-            $pobj=$this->getObj($sessionClass, $classKey, $cookie->getPrevId());
-            if (!is_null($pobj)) {
-                $pobj->delet();
-                echo 'Delete previous Session :'.$sessionClass."<br>";
+        $id=0;
+        if ($this->cleanUp) {
+            if (isset($_COOKIE[$sessionClass])) {
+                unset($_COOKIE[$sessionClass]);
             }
         }
-        if ($cookie->isNew()) {
-            $this->newObj($sessionClass, $classKey, $cookie->getId());
-            echo 'New Session:'. $sessionClass."<br>";
+        if (isset($_COOKIE[$sessionClass])) {
+            $id=$_COOKIE[$sessionClass];
         }
-        $obj = $this->getObj($sessionClass, $classKey, $cookie->getId());
-        if (is_null($obj)) {
-            echo 'ERROR !!! ';
-            echo 'new : '.$cookie->isNew();
-            echo 'id : '.$cookie->getId();
-            echo 'pnew : '.$cookie->isPrev();
-            echo 'pid : '.$cookie->getPrevId();
-            $obj=$this->newObj($sessionClass, $classKey, $cookie->getId());
+        $mod= new Model($sessionClass);
+        $obj=$mod->getCobj();
+        $session = null;
+        $pobj=null;
+        if ($id) {
+            $res = $obj->findValidSession($id);
+            $session = $res[0];
+            $pobj = $res[1];
+        }
+        if (is_null($session)) {
+            $id = $obj->getKey();
+            $end = 0;
+            if ($this->timer) {
+                $end = time() + $this->timer;
+            }
+            setcookie($sessionClass, $id, $end, "/");
+            $mod->save();
+            if ($pobj) {
+                $val = $pobj->getValN('UserId');
+                $mod->setValN('UserId', $val);
+                $val = $pobj->getValN('Role');
+                $mod->setValN('Role', $val);
+                if (!$this->Keep) {
+                    $pobj->delet();
+                }
+            }
+            $session=$mod;
             $this->changed=true;
         }
-        $this->sessHdl = $obj;
-        return $obj;
+        return $session;
     }
 
     public function isChanged()
     {
-        $changed = $this->changed;
-        foreach ($this->cookies as $sessionClass => $cookie) {
-            $changed = $changed or $cookie->isNew() or $cookie->isPrev();
-        }
-        return $changed;
-    }
-    
-    
-    protected function newObj($sessionClass, $classKey, $Bkey)
-    {
-        $obj = new Model($sessionClass);
-        $obj->setVal($classKey, $Bkey);
-        $obj->save();
-        return $obj;
-    }
-    
-    protected function getObj($sessionClass, $classKey, $Bkey)
-    {
-        $obj = new Model($sessionClass);
-        $obj->setCriteria([$classKey], ['='], [$Bkey]);
-        $res = $obj->select();
-        if ($res==[]) {
-            return null;
-        }
-        $id= array_pop($res);
-        $obj= new Model($sessionClass, $id);
-        return $obj;
+        return $this->changed;
     }
 }

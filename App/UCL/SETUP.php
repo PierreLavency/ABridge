@@ -2,45 +2,68 @@
 require_once 'CstMode.php';
 require_once 'CstView.php';
 require_once 'CModel.php';
+require_once 'User.php';
+require_once 'Session.php';
+
+	require_once 'CLASSDEC.php';
 
 	$config = [
 	'Handlers' =>
 		[
-		'Session'  	 => ['fileBase','genealogy',],
-		'CodeValue'  => ['fileBase','genealogy',],
-		'Code' 		 => ['fileBase','genealogy',],
-		'Student'	 => ['fileBase','genealogy',],
-		'Cours'		 => ['fileBase','genealogy',],
-		'Inscription'=> ['fileBase','genealogy',],
-		'Prof'		 => ['fileBase','genealogy',],
-		'Charge'	 => ['fileBase','genealogy',],
-		'User'	 	 => ['dataBase','genealogy',],
-		'UGroup'	 => ['dataBase','genealogy',],		
-		'Role'	 	 => ['dataBase','genealogy',],
-		'Distribution'=> ['dataBase','genealogy',],
-		'Page'		  => ['dataBase','genealogy',],		
+		'Session'  	 	=> ['fileBase',$DBDEC,],
+		'CodeValue'  	=> ['fileBase',$DBDEC,],
+		'Code' 			=> ['fileBase',$DBDEC,],
+		'Student'	 	=> ['fileBase',$DBDEC,],
+		'Cours'		 	=> ['fileBase',$DBDEC,],
+		'Inscription'	=> ['fileBase',$DBDEC,],
+		'Prof'		 	=> ['fileBase',$DBDEC,],
+		'Charge'	 	=> ['fileBase',$DBDEC,],
+		'User'	 	 	=> ['dataBase',$DBDEC,],
+		'UGroup'	 	=> ['dataBase',$DBDEC,],		
+		'Role'	 	 	=> ['dataBase',$DBDEC,],
+		'Distribution'	=> ['dataBase',$DBDEC,],
+		'Page'		  	=> ['dataBase',$DBDEC,],		
 		],
 	'Session' => 
 		['Session'=>'BKey'],
+
 	'Home' =>
-		['/','/Session/~','/User/~'],
-		
+		['/','/Session/~','/User/~'],		
 	'Views' => [
 	
-		'Session' =>[
+		$Session =>[
 			'attrList' => [
-						V_S_READ=> ['id','User','Role','Comment','BKey','vnum','ctstp','utstp'],
-						V_S_UPDT=> ['id','User','Role','Comment'],
-						V_S_CREF=> ['id','User','Role','BKey','vnum','ctstp'],									
+						V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									
 			],
 			'attrHtml' => [
-						V_S_UPDT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],
-						V_S_SLCT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],					
+						V_S_UPDT => ['Role'=>H_T_SELECT],
+						V_S_SLCT => ['Role'=>H_T_SELECT],					
 			],		
-			'navList' => [V_S_READ => [V_S_UPDT,V_S_SLCT,V_S_DELT],
-			],
+			'viewList' => [
+				'Detail'  => [
+					'lblList' => [
+						V_S_UPDT			=> 'LogIn',
+						V_S_DELT			=> 'LogOut',	
+					],				
+					'attrList' => [
+						V_S_READ=> ['id','User','Role'],
+						V_S_DELT=> ['id','User','Role'],
+						V_S_UPDT=> ['id','UserId','Password','Role'],
+					],
+					
+				],
+				'Trace' =>[
+					'attrList' => [
+						V_S_READ=> ['id','ValidStart','BKey','vnum','ctstp','utstp'],
+					],
+					'navList' => [
+						V_S_READ => [],
+					],
+				],
+			]							
 
 		],
+		
 		'Distribution' =>[
 			'attrHtml' => [
 				V_S_CREA => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
@@ -49,22 +72,48 @@ require_once 'CModel.php';
 			],
 
 		],
-		'User' =>[
+		$User =>[
 			'lblList' => [
-					'Profile'		=> 'Student',
 					'Play'			=> 'PlayRoles',
-					'ProfProfile'	=> 'Professor',
 				],
 			'attrHtml' => [
-					V_S_READ => ['Play'=>[H_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]]
+					V_S_READ 	=> ['Play'=>[H_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]],
 				],						
 			'attrList' => [
-				V_S_REF		=> ['SurName','Name'],
+					V_S_REF		=> ['UserId'],
+					V_S_SLCT	=> ['UserId',$Group,'DefaultRole'],
 				],
+			'viewList' => [
+				'Password'  => [
+					'attrList' => [
+						V_S_READ	=> ['UserId',],
+						V_S_CREA	=> ['UserId','NewPassword1','NewPassword2'],
+						V_S_UPDT	=> ['UserId','Password','NewPassword1','NewPassword2'],
+						V_S_DELT	=> ['UserId'],		
+					],
+				],
+				'Role'  => [
+					'attrList' => [
+						V_S_READ	=> ['UserId','Profile','ProfProfile',$Group,'DefaultRole','Play'],
+						V_S_UPDT	=> ['UserId','Password',$Group,'DefaultRole'],
+					],
+					'navList' => [
+						V_S_READ => [V_S_UPDT],
+					],					
+				],
+				'Trace' =>[
+					'attrList' => [
+						V_S_READ=> ['id','vnum','ctstp','utstp'],
+					],
+					'navList' => [
+						V_S_READ => [],
+					],
+				],
+			]				
 		],
 		'UGroup' =>[		
 			'attrList' => [
-				V_S_REF		=> ['Name'],
+					V_S_REF		=> ['Name'],
 				],
 		],		
 		'Role' =>[	
@@ -107,7 +156,8 @@ require_once 'CModel.php';
 							V_S_READ=> ['SurName','Name','BirthDay','Sexe','Country',],
 							V_S_UPDT=> ['SurName','Name','BirthDay','Sexe','Country'],
 						],
-						'navList' => [V_S_READ => [V_S_UPDT],
+						'navList' => [
+							V_S_READ => [V_S_UPDT],
 						],
 					],
 					'Inscription' =>[

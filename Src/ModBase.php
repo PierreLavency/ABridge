@@ -30,6 +30,7 @@ class ModBase
         foreach ($attrLst as $attr) {
             if (($mod->getTyp($attr) !=  M_CREF)
                 and (! $mod->isEval($attr))
+                and (! $mod->isTemp($attr))
                 ) {
                 $res[]=$attr;
             }

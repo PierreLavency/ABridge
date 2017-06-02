@@ -1,71 +1,10 @@
 <?php
 	
-
-
-	$Code = 'Code';	
-	$CodeVal= 'CodeValue';
-	$Student = 'Student';
-	$Inscription = 'Inscription';
-	$Cours = 'Cours';
-	$User ='User';
-	$Role = 'Role';
-	$Session ='Session';
-	$Distribution = 'Distribution';
-	$Prof = 'Prof';
-	$Page ='Page';
-	$Group = 'UGroup';
+	require_once 'CLASSDEC.php';
 	
-	// CodeVal
-		
+	$obj = new Model($Role);
 
+    $res = $obj->setBkey('Name',true);	
 
-	// Code
-	
-
-	// code are created in META
-	
-
-	
-	// Student 
-		
-
-
-	// Cours 
-	
-
-	// Inscription
-
-
-
-	// Prof
-
-	// Charge
-	
-
-
-	// User
-
-	$obj = new Model($User);
-
-
-	$res = $obj->addAttr('RoleDefault',M_CODE,'/./Play');
-	
-	echo "User<br>";		
 	$res = $obj->saveMod();	
-	$r = $obj->getErrLog ();
-	$r->show();
-	
-	
-	// Role
-		
-
-	// Distribution
-
-
-	// Session 
-	
-    // Pages
-	
-	// Group
-	
-	
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";

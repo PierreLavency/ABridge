@@ -59,7 +59,6 @@ require_once 'CModel.php';
 class Person extends CModel
 {
 
-	
 	public function getVal($attr) 
 	{
 		if ($attr == 'Age') {
@@ -90,10 +89,9 @@ class Person extends CModel
 				$db= date_create($b);
 				$res = date_diff($da, $db);
 				$res = (int) $res->format('%y');
-				$this->mod->setVal('DeathAge',$res);
+				$this->mod->setValN('DeathAge',$res);
 			}
 			return $this->mod->saveN();
-
 	}
 
 }

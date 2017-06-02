@@ -1,6 +1,9 @@
 <?php
 require_once 'CstMode.php';
 require_once 'CstView.php';
+require_once 'CModel.php';
+require_once 'User.php';
+require_once 'Session.php';
 
 	require_once 'CLASSDEC.php';
 
@@ -204,11 +207,39 @@ require_once 'CstView.php';
 					'Play'			=> 'PlayRoles',
 				],
 			'attrHtml' => [
-					V_S_READ => ['Play'=>[H_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]]
+					V_S_READ 	=> ['Play'=>[H_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]],
 				],						
 			'attrList' => [
-				V_S_REF		=> ['SurName','Name'],
+					V_S_REF		=> ['UserId'],
+					V_S_SLCT	=> ['UserId',$Group,'DefaultRole'],
 				],
+			'viewList' => [
+				'Password'  => [
+					'attrList' => [
+						V_S_READ	=> ['UserId',],
+						V_S_CREA	=> ['UserId','NewPassword1','NewPassword2'],
+						V_S_UPDT	=> ['UserId','Password','NewPassword1','NewPassword2'],
+						V_S_DELT	=> ['UserId'],		
+					],
+				],
+				'Role'  => [
+					'attrList' => [
+						V_S_READ	=> ['UserId',$Group,'DefaultRole','Play'],
+						V_S_UPDT	=> ['UserId','Password',$Group,'DefaultRole'],
+					],
+					'navList' => [
+						V_S_READ => [V_S_UPDT],
+					],					
+				],
+				'Trace' =>[
+					'attrList' => [
+						V_S_READ=> ['id','vnum','ctstp','utstp'],
+					],
+					'navList' => [
+						V_S_READ => [],
+					],
+				],
+			]				
 		],
 		$Group =>[		
 			'attrList' => [
@@ -227,16 +258,34 @@ require_once 'CstView.php';
 		],
 		$Session =>[
 			'attrList' => [
-						V_S_READ=> ['id','User','Password','Role','Comment','BKey','vnum','ctstp','utstp'],
-						V_S_UPDT=> ['id','User','Password','Role','Comment'],
-						V_S_CREF=> ['id','User','Role','BKey','vnum','ctstp'],									
+						V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									
 			],
 			'attrHtml' => [
-						V_S_UPDT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],
-						V_S_SLCT => ['User'=>H_T_SELECT,'Role'=>H_T_SELECT],					
+						V_S_UPDT => ['Role'=>H_T_SELECT],
+						V_S_SLCT => ['Role'=>H_T_SELECT],					
 			],		
-			'navList' => [V_S_READ => [V_S_UPDT,V_S_SLCT,V_S_DELT],
-			],
+			'viewList' => [
+				'Detail'  => [
+					'lblList' => [
+						V_S_UPDT			=> 'LogIn',
+						V_S_DELT			=> 'LogOut',	
+					],				
+					'attrList' => [
+						V_S_READ=> ['id','User','Role'],
+						V_S_DELT=> ['id','User','Role'],
+						V_S_UPDT=> ['id','UserId','Password','Role'],
+					],
+					
+				],
+				'Trace' =>[
+					'attrList' => [
+						V_S_READ=> ['id','ValidStart','BKey','vnum','ctstp','utstp'],
+					],
+					'navList' => [
+						V_S_READ => [],
+					],
+				],
+			]							
 
 		],
 		$Distribution =>[
@@ -250,39 +299,5 @@ require_once 'CstView.php';
 		],
 	];		
 	
-class User {
 
-	private $mod;
-
-	function __construct($mod) 
-	{
-		$this->mod=$mod;
-
-	}
-		
-	public function delet()
-	{
-		return true;
-	}
-
-	public function afterDelet() 
-	{
-		return true;
-	}
-	
-	public function save()
-	{
-		$psw = $this->mod->getVal('Password');
-		if (!$this->mod->getId()) {				
-			$psw = password_hash($psw,PASSWORD_DEFAULT);
-			$this->mod->setVal('Password',$psw);
-		}
-		return true;
-	}
-
-	public function afterSave()
-	{
-		return true;
-	}	
-}
 	

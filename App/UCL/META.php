@@ -4,18 +4,7 @@
 // when running this data will be lost !!
 
 
-	$Code = 'Code';	
-	$CodeVal= 'CodeValue';
-	$Student = 'Student';
-	$Inscription = 'Inscription';
-	$Cours = 'Cours';
-	$User ='User';
-	$Role = 'Role';
-	$Session ='Session';
-	$Distribution = 'Distribution';
-	$Prof = 'Prof';
-	$Page ='Page';
-	$Group='UGroup';
+	require_once 'CLASSDEC.php';
 	
 	// CodeVal
 		
@@ -179,17 +168,19 @@
 	$res= $obj->deleteMod();
 
 	$res = $obj->addAttr('Name',M_STRING);
- 	$res = $obj->addAttr('SurName',M_STRING);
+	$res = $obj->addAttr('Password',M_STRING);	
+	$res = $obj->addAttr('NewPassword1',M_STRING,M_P_TEMP);
+	$res = $obj->addAttr('NewPassword2',M_STRING,M_P_TEMP);	
+	
 	$res = $obj->addAttr($Group,M_REF,'/'.$Group);
 	$res = $obj->addAttr('Play',M_CREF,'/'.$Distribution.'/toUser');
-	
+
+	$res = $obj->addAttr($Group,M_REF,'/'.$Group);	
 	$res = $obj->addAttr('Profile',M_CREF,'/'.$Student.'/'.$User);
 	$res = $obj->addAttr('ProfProfile',M_CREF,'/'.$Prof.'/'.$User);
-	
-	echo "User<br>";		
+    $res = $obj->setBkey('Name',true);		
 	$res = $obj->saveMod();	
-	$r = $obj->getErrLog ();
-	$r->show();
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 
 	// Role
 		
@@ -199,11 +190,11 @@
 	$res = $obj->addAttr('Name',M_STRING);
  	$res = $obj->addAttr('JSpec',M_JSON);	
 	$res = $obj->addAttr('PlayedBy',M_CREF,'/'.$Distribution.'/ofRole');
-	
-	echo "$Role<br>";		
+
+    $res = $obj->setBkey('Name',true);	
+		
 	$res = $obj->saveMod();	
-	$r = $obj->getErrLog ();
-	$r->show();	
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 	
 	// Session
 	
@@ -211,16 +202,18 @@
 	$res= $obj->deleteMod();
 
 	$res = $obj->addAttr($User,M_REF,'/'.$User);
+	$res = $obj->addAttr('UserName',	M_STRING);	
+	$res = $obj->addAttr('ValidStart',	M_INT	, M_P_EVALP);	
+	$res = $obj->addAttr('Password',	M_STRING, M_P_TEMP);		
 	$res = $obj->addAttr($Role,M_REF,'/'.$Role);
 	$res = $obj->addAttr('Comment',M_STRING);
 	$res = $obj->addAttr('BKey',M_STRING);
+
 	$res = $obj->setBkey('BKey',true);
 		
-	
-	echo "Session<br>";		
+
 	$res = $obj->saveMod();	
-	$r = $obj->getErrLog ();
-	$r->show();
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 	
 	// Distribution
 

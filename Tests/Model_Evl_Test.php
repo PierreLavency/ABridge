@@ -6,19 +6,15 @@ require_once 'CModel.php';
 
 class testeval extends CModel
 {
- 
-    
     public function getVal($attr)
     {
         if ($attr == 'aplusb') {
-            $a = $this->mod->getVal('a');
-            $b = $this->mod->getVal('b');
+            $a = $this->mod->getValN('a');
+            $b = $this->mod->getValN('b');
             return $a+$b;
         }
-		return $this->mod->getValN($attr);
+        return $this->mod->getValN($attr);
     }
-   
-    
 }
 
 class Model_Evl_Test extends PHPUnit_Framework_TestCase

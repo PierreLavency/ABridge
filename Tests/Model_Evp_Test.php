@@ -6,29 +6,27 @@ require_once 'CModel.php';
 
 class testevalP extends CModel
 {
-
     private $_fsave = true;
     protected $_fdel  = true;
     
-      
     public function save()
     {
         $a = $this->mod->getValN('a');
         $b = $this->mod->getValN('b');
-        $this->mod->setVal('aplusb', $a+$b);
+        $this->mod->setValN('aplusb', $a+$b);
         if (!$a and $this->mod->getId() and $this->_fsave) {
             $this->mod->getErrLog()->logLine('wrong');
             $this->_fsave = false;
             return false;
         }
-		$res =  $this->mod->saveN();
+        $res =  $this->mod->saveN();
         if (!$this->_fsave) {
             $this->mod->getErrLog()->logLine('Awrong');
-			return false;
-        }		
+            return false;
+        }
         return $res;
     }
-	
+    
     public function delet()
     {
         $a = $this->mod->getValN('a');
@@ -37,14 +35,13 @@ class testevalP extends CModel
             $this->_fdel = false;
             return false;
         }
-		$res =  $this->mod->deletN();
+        $res =  $this->mod->deletN();
         if (!$this->_fdel) {
             $this->mod->getErrLog()->logLine('DDwrong');
-			return false;
+            return false;
         }
-        return  $res;		
+        return  $res;
     }
-	
 }
 class testevalPF extends CModel
 {
@@ -53,7 +50,6 @@ class testevalPF extends CModel
     private $_fsave = true;
     private $_fdel  = true;
  
-    
     public function save()
     {
         $a = $this->mod->getValN('a');
@@ -64,11 +60,11 @@ class testevalPF extends CModel
             $this->_fsave = false;
             return false;
         }
- 		$res =  $this->mod->saveN();
+        $res =  $this->mod->saveN();
         if (!$this->_fsave) {
             $this->mod->getErrLog()->logLine('Awrong');
-			return false;
-        }		
+            return false;
+        }
         return $res;
     }
     
@@ -83,7 +79,7 @@ class testevalPF extends CModel
         $res= $this->mod->deletN();
         if (!$this->_fdel) {
             $this->mod->getErrLog()->logLine('DDwrong');
-			return false;
+            return false;
         }
         return $res;
     }

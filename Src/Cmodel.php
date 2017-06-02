@@ -9,11 +9,22 @@ abstract class CModel
         $this->mod=$mod;
     }
     
+    public function getValues($attr)
+    {
+        return $this->mod->getValuesN($attr);
+    }
+    
     public function getVal($attr)
     {
         return $this->mod->getValN($attr);
     }
-    
+ 
+
+    public function setVal($attr, $val)
+    {
+        return $this->mod->setValN($attr, $val);
+    }
+ 
     public function delet()
     {
         return $this->mod->deletN();

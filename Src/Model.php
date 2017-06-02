@@ -15,6 +15,7 @@ require_once 'Type.php';
 require_once "Handler.php";
 define('M_P_EVAL', "M_P_EVAL");
 define('M_P_EVALP', "M_P_EVALP");
+define('M_P_TEMP', "M_P_TEMP");
 
 /**
  * Model class
@@ -89,6 +90,7 @@ class Model
     protected $asCriteria;
     protected $attrEval;
     protected $attrEvalP;
+    protected $attrTemp;
     protected $obj; // custom class object
     protected $abstrct;
     protected $inhObj;
@@ -210,6 +212,7 @@ class Model
         $this->attrProtected = [];
         $this->asCriteria = [];
         $this->attrEval=[];
+        $this->attrTemp=[];
         $this->attrEvalP=[];
         $this->abstrct= false;
         $this->inhNme=false;
@@ -261,6 +264,11 @@ class Model
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function getCobj()
+    {
+        return $this->obj;
     }
 
     public function isAbstr()
@@ -348,7 +356,13 @@ class Model
      */
     public function getAllVal()
     {
-        return $this->attrVal;
+        $res=[];
+        foreach ($this->attrVal as $attr => $val) {
+            if (! $this->isTemp($attr)) {
+                $res[$attr]=$val;
+            }
+        }
+        return $res;
     }
     /**
      * Returns the list of all path of a Model.
@@ -704,7 +718,20 @@ class Model
         return $this->isModif($attr);
     }
 
-
+    public function isTemp($attr)
+    {
+        $res = in_array($attr, $this->attrTemp);
+        if ($res) {
+            return $res;
+        }
+        $abstr = $this->getInhObj();
+        if (!is_null($abstr)) {
+            return $abstr->isTemp($attr);
+        }
+        return ($res);
+    }
+    
+    
     public function isEvalP($attr)
     {
         $res = in_array($attr, $this->attrEvalP);
@@ -935,6 +962,10 @@ class Model
             $this->refParm[$attr]=$path;
             $this->attrEvalP[]=$attr;
         }
+        if ($path === M_P_TEMP) {
+            $this->refParm[$attr]=$path;
+            $this->attrTemp[]=$attr;
+        }
         $this->attrLst[]=$attr;
         $this->attrTyp[$attr]=$typ;
 
@@ -990,6 +1021,10 @@ class Model
         $key = array_search($attr, $this->attrProtected);
         if ($key!==false) {
             unset($this->attrProtected[$key]);
+        }
+        $key = array_search($attr, $this->attrTemp);
+        if ($key!==false) {
+            unset($this->attrTemp[$key]);
         }
         $key = array_search($attr, $this->attrEval);
         if ($key!==false) {
@@ -1064,10 +1099,10 @@ class Model
      */
     public function getVal($attr)
     {
-        if (! is_null($this->obj)) {
-//            $this->custom=true;
+        if ((! is_null($this->obj)) and (! $this->custom)) {
+            $this->custom=true;
             $res = $this->obj->getVal($attr);
- //           $this->custom=false;
+            $this->custom=false;
             return $res;
         } else {
             return $this->getValN($attr);
@@ -1121,6 +1156,16 @@ class Model
      * @return boolean
      */
     public function setVal($attr, $val)
+    {
+        if ((! is_null($this->obj))) {
+            $res = $this->obj->setVal($attr, $val);
+            return $res;
+        } else {
+            return $this->setValN($attr, $val);
+        }
+    }
+    
+    public function setValN($attr, $val)
     {
         if (! $this->existsAttr($attr)) {
             $this->errLog->logLine(E_ERC002.':'.$attr);
@@ -1323,7 +1368,9 @@ class Model
             $this->errLog->logLine(E_ERC004.':'.$typ);
             return false;
         }
-        
+        if ($parm === M_P_TEMP) {
+            return true;
+        }
         if ($parm === M_P_EVAL or $parm === M_P_EVALP) {
             if (! class_exists($this->getModName())) {
                 $this->errLog->logLine(E_ERC040.':'.$attr.':'.$typ);
@@ -1458,6 +1505,18 @@ class Model
      */
     public function getValues($attr)
     {
+        if ((! is_null($this->obj)) and (! $this->custom)) {
+            $this->custom=true;
+            $res = $this->obj->getValues($attr);
+            $this->custom=false;
+            return $res;
+        } else {
+            return $this->getValuesN($attr);
+        }
+    }
+     
+    public function getValuesN($attr)
+    {
         $r=$this->getTyp($attr);
         if (!$r) {
             return false;
@@ -1571,7 +1630,7 @@ class Model
      
     public function save()
     {
-        if (! is_null($this->obj)) {
+        if ((! is_null($this->obj)) and (! $this->custom)) {
             $this->custom=true;
             $res = $this->obj->save();
             $this->custom=false;
@@ -1663,7 +1722,7 @@ class Model
      */
     public function delet()
     {
-        if (! is_null($this->obj)) {
+        if ((! is_null($this->obj)) and (! $this->custom)) {
             $this->custom=true;
             $res = $this->obj->delet();
             $this->custom=false;
@@ -1698,6 +1757,7 @@ class Model
         }
         return $res;
     }
+    
     /**
      * Delete the Model of the object.
      *
