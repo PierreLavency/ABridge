@@ -29,7 +29,6 @@ DEV
 - get META json;
 - review include structure
 
-
 - order in list query and attr.
 - confirmation on META load / Java Script
 - selection for Ref / Java script 
@@ -43,21 +42,21 @@ DEV
 
 - changed DB model independently of class model.
 - implement unique index.
+- database paging
 - user Jason to save data rather than serilialisation.
+- user concurency 
 
 - unify get code with get reference. (??)
 - support CREF on abstract (????)
-
-- user concurency 
-- database paging
 
 - implement CSS 
 
 TEST
 - test temp attribute (model)
-- test custom code
+
+- test finder
 - Performance -> review logging
-- test cookies -> review session 
+- test  SessionMngr
 - improve view test coverage - need to separate view show and build // some progress
 - set up unit test for unittest
 
@@ -77,6 +76,8 @@ INT
 
 DONE
 
+---------// 0.25
+- test custom code (with evlp)
 ---------// 10days
 - Authenthication
 - Finder 

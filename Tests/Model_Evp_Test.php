@@ -19,7 +19,7 @@ class testevalP extends CModel
             $this->_fsave = false;
             return false;
         }
-        $res =  $this->mod->saveN();
+        $res =  Parent::save();
         if (!$this->_fsave) {
             $this->mod->getErrLog()->logLine('Awrong');
             return false;
@@ -35,7 +35,7 @@ class testevalP extends CModel
             $this->_fdel = false;
             return false;
         }
-        $res =  $this->mod->deletN();
+        $res =  Parent::delet();
         if (!$this->_fdel) {
             $this->mod->getErrLog()->logLine('DDwrong');
             return false;
@@ -144,6 +144,8 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($x->addAttr('a', M_INT));
         $this->assertTrue($x->addAttr('b', M_INT));
         $this->assertTrue($x->addAttr('aplusb', M_INT, M_P_EVALP));
+        $cname = $this->Student;
+        $this->assertTrue($x->addAttr('c', M_CODE, "/$cname"));
         $this->assertFalse($x->isErr());
 
         $res = $x->saveMod();
@@ -164,6 +166,9 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         $db->beginTrans();
         
         $this->assertNotNull($x = new Model($this->Student));
+        
+        $this->assertEquals([], $x->getValues('c'));
+        
         $res= $x->setVal('a', 1);
         $this->assertTrue($res);
         $this->assertTrue($x->setVal('b', 1));
