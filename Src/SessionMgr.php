@@ -57,10 +57,7 @@ class SessionMgr
             setcookie($sessionClass, $id, $end, "/");
             $mod->save();
             if ($pobj) {
-                $val = $pobj->getValN('UserId');
-                $mod->setValN('UserId', $val);
-                $val = $pobj->getValN('Role');
-                $mod->setValN('Role', $val);
+                $obj->initPrev($pobj);
                 if (!$this->Keep) {
                     $pobj->delet();
                 }

@@ -171,35 +171,19 @@
 	$obj = new Model($User);
 	$res= $obj->deleteMod();
 
-	$res = $obj->addAttr('UserId',		M_STRING);
-	$res = $obj->addAttr('Password',	M_STRING);	
-	$res = $obj->addAttr('NewPassword1',M_STRING,M_P_TEMP);
-	$res = $obj->addAttr('NewPassword2',M_STRING,M_P_TEMP);	
-	$res = $obj->addAttr('DefaultRole',	M_CODE,'/'.$Role);
-	$res = $obj->addAttr($Group,		M_REF,'/'.$Group);		
-	$res = $obj->addAttr('Play',		M_CREF,'/'.$Distribution.'/toUser');
+	$res=$obj->initMod();
 	
-    $res = $obj->setBkey('UserId',true);
+	$res = $obj->addAttr($Group,M_REF,'/'.$Group);	
 	
 	$res = $obj->saveMod();	
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-
 
 	// Session
 	
 	$obj = new Model($Session);
 	$res= $obj->deleteMod();
 
-	$res = $obj->addAttr($User,			M_REF,		'/'.$User);
-	$res = $obj->addAttr($Role,			M_REF,		'/'.$Role);
-	$res = $obj->addAttr('UserId',		M_STRING);	
-	$res = $obj->addAttr('Password',	M_STRING, 	M_P_TEMP);	
-	$res = $obj->addAttr('BKey',		M_STRING, 	M_P_EVALP);
-	$res = $obj->addAttr('ValidStart',	M_INT, 		M_P_EVALP);
-	$res = $obj->addAttr('Prev',		M_REF,		"/$Session");
-	
-	$res = $obj->setBkey('BKey',true);
-	$res = $obj->setMdtr('BKey',true);
+	$obj->initMod();
 	
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";

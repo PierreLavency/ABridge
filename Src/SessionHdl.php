@@ -72,18 +72,7 @@ class SessionHdl
         return null;
     }
     
-    public function check()
-    {
-        if ($this->session->existsAttr($this->userName)) {
-            $user = $session->getObj($this->userName);
-            if (! is_null($user)) {
-                return true;
-            }
-            $upsw = $user->getVal($this->pswName);
-            $spsw = $this->session->getVal($this->pswName);
-        }
-    }
-    
+
     protected function matchEval($elm, $patrn)
     {
         if (is_array($patrn)) {

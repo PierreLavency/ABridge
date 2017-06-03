@@ -84,13 +84,19 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         
         $res= $ABB->deleteMod();
         $this->assertTrue($res);
+        
+        $res = $ABB->addAttr('Bkey', M_STRING);
+        $this->assertTrue($res);
+
+        $res=$ABB->setBkey('Bkey', true); // Mdtr
+        $this->assertTrue($res);
 
         $res = $ABB->addAttr('Name', M_STRING);
         $this->assertTrue($res);
 
         $res=$ABB->setMdtr('Name', true); // Mdtr
         $this->assertTrue($res);
-            
+        
         $res = $ABB->addAttr('SurName', M_STRING);
         $this->assertTrue($res);
         
@@ -203,6 +209,7 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         
         $this->assertEquals($obj->getTyp('Name'), M_STRING);
         $this->assertTrue($obj->isMdtr('Name'));
+        $this->assertTrue($obj->isBkey('Bkey'));
         $this->assertEquals($obj->getTyp('Owner'), M_STRING);
         $this->assertEquals($obj->getTyp('BuiltFrom'), M_CREF);
         $this->assertEquals($obj->getTyp('Outt'), M_CREF);

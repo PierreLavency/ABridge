@@ -52,8 +52,7 @@ DEV
 - implement CSS 
 
 TEST
-- test temp attribute (model)
-- test finder
+
 - Performance -> review logging
 - test  SessionMngr
 - improve view test coverage - need to separate view show and build // some progress
@@ -74,7 +73,9 @@ INT
 - set up jenkin
 
 DONE
-
+---------// 0.5
+- add initMod method on Model 
+- test temp attribute (with evlp)
 ---------// 0.25
 - test finder
 ---------// 0.25

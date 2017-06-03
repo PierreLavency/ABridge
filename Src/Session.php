@@ -5,9 +5,8 @@ class Session extends CModel
 
     protected $timer= 6000;
     protected $Bkey = 0;
-
-
- //   protected $timer= 10;
+    protected $user;
+    protected $role;
 
     public function __construct($mod)
     {
@@ -16,6 +15,34 @@ class Session extends CModel
             $this->Bkey=uniqid();
         }
     }
+
+    public function initMod()
+    {
+        $obj = $this->mod;
+        $user='User';
+        $role='Role';
+        
+        $res = $obj->addAttr($user, M_REF, '/'.$user);
+        $res = $obj->addAttr($role, M_REF, '/'.$role);
+        $res = $obj->addAttr('UserId', M_STRING);
+        $res = $obj->addAttr('Password', M_STRING, M_P_TEMP);
+        $res = $obj->addAttr('BKey', M_STRING);
+        $res = $obj->addAttr('ValidStart', M_INT, M_P_EVALP);
+        $res = $obj->addAttr('ValidFlag', M_INT, M_P_EVALP);
+        
+        $res = $obj->setBkey('BKey', true);
+        $res = $obj->setMdtr('BKey', true);
+        return $obj->isErr();
+    }
+
+    public function initPrev($pobj)
+    {
+        $val = $pobj->getValN('UserId');
+        $this->mod->setValN('UserId', $val);
+        $val = $pobj->getValN('Role');
+        $this->mod->setValN('Role', $val);
+    }
+
     
     public function getKey()
     {
@@ -84,7 +111,6 @@ class Session extends CModel
         return $this->mod->saveN();
     }
     
-
     public function delet()
     {
         $flag = $this->mod->getValN('ValidFlag');

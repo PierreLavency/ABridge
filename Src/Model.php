@@ -217,6 +217,17 @@ class Model
         $this->abstrct= false;
         $this->inhNme=false;
     }
+    
+    public function initMod()
+    {
+        if ($this->obj) {
+            $this->custom=true;
+            $res = $this->obj->initMod();
+            $this->custom=false;
+            return $res;
+        }
+        return true;
+    }
     /**
      * Returns the errorlogger.
      *
@@ -1347,9 +1358,6 @@ class Model
             if (! $this->isPredef($attr)) {
                 $res = ($res and $this->checkModAttr($attr));
             }
-        }
-        if (!$res) {
-    //		$this->getErrLog()->show();
         }
         return $res;
     }

@@ -161,24 +161,30 @@
 	$Charge->saveMod();	
 	$r = $Charge-> getErrLog ();
 	$r->show();
-
+	
+	
+/*******************************  User  ************************/
 	// User
 		
 	$obj = new Model($User);
 	$res= $obj->deleteMod();
 
-	$res = $obj->addAttr('Name',M_STRING);
-	$res = $obj->addAttr('Password',M_STRING);	
-	$res = $obj->addAttr('NewPassword1',M_STRING,M_P_TEMP);
-	$res = $obj->addAttr('NewPassword2',M_STRING,M_P_TEMP);	
+	$res=$obj->initMod();	
 	
-	$res = $obj->addAttr($Group,M_REF,'/'.$Group);
-	$res = $obj->addAttr('Play',M_CREF,'/'.$Distribution.'/toUser');
-
 	$res = $obj->addAttr($Group,M_REF,'/'.$Group);	
 	$res = $obj->addAttr('Profile',M_CREF,'/'.$Student.'/'.$User);
 	$res = $obj->addAttr('ProfProfile',M_CREF,'/'.$Prof.'/'.$User);
-    $res = $obj->setBkey('Name',true);		
+	
+	$res = $obj->saveMod();	
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
+
+	// Session
+	
+	$obj = new Model($Session);
+	$res= $obj->deleteMod();
+
+	$res=$obj->initMod();
+
 	$res = $obj->saveMod();	
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 
@@ -195,26 +201,7 @@
 		
 	$res = $obj->saveMod();	
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-	
-	// Session
-	
-	$obj = new Model($Session);
-	$res= $obj->deleteMod();
-
-	$res = $obj->addAttr($User,M_REF,'/'.$User);
-	$res = $obj->addAttr('UserName',	M_STRING);	
-	$res = $obj->addAttr('ValidStart',	M_INT	, M_P_EVALP);	
-	$res = $obj->addAttr('Password',	M_STRING, M_P_TEMP);		
-	$res = $obj->addAttr($Role,M_REF,'/'.$Role);
-	$res = $obj->addAttr('Comment',M_STRING);
-	$res = $obj->addAttr('BKey',M_STRING);
-
-	$res = $obj->setBkey('BKey',true);
 		
-
-	$res = $obj->saveMod();	
-	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-	
 	// Distribution
 
 	$obj = new Model($Distribution);
@@ -234,6 +221,9 @@
 	$r = $obj->getErrLog ();
 	$r->show();	
  
+ 
+ 
+ /************** end user ***************************/
  // Pages
 	
 	$obj = new Model($Page);

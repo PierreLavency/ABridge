@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Find.php';    
+require_once 'Find.php';
 require_once("Model.php");
 require_once("Handler.php");
 
@@ -60,7 +60,7 @@ class Find_Test extends PHPUnit_Framework_TestCase
         $res= $mod->deleteMod();
         
         $res = $mod->addAttr('name', M_STRING);
-		$res = $mod->setBkey('name',true);
+        $res = $mod->setBkey('name', true);
         
         $res = $mod->saveMod();
     
@@ -82,15 +82,15 @@ class Find_Test extends PHPUnit_Framework_TestCase
         $db->beginTrans();
         
         $this->assertFalse(Find::existsObj($this->Cname));
-        $this->assertEquals([],Find::allId($this->Cname));
-		$this->assertNull(Find::byKey($this->Cname,'name','x'));
+        $this->assertEquals([], Find::allId($this->Cname));
+        $this->assertNull(Find::byKey($this->Cname, 'name', 'x'));
         
-		$x = new Model($this->Cname);
-		$x->setVal('name','x');
-		$x->save();
-		$r = $x-> getErrLog();
-        $this->assertEquals($r->logSize(), 0);	
-		
+        $x = new Model($this->Cname);
+        $x->setVal('name', 'x');
+        $x->save();
+        $r = $x-> getErrLog();
+        $this->assertEquals($r->logSize(), 0);
+        
         $db->commit();
     }
     /**
@@ -107,10 +107,9 @@ class Find_Test extends PHPUnit_Framework_TestCase
         $db->beginTrans();
         
         $this->assertTrue(Find::existsObj($this->Cname));
-        $this->assertEquals([1],Find::allId($this->Cname));
-		$this->assertNotNull(Find::byKey($this->Cname,'name','x'));
+        $this->assertEquals([1], Find::allId($this->Cname));
+        $this->assertNotNull(Find::byKey($this->Cname, 'name', 'x'));
 
         $db->commit();
     }
- 
 }

@@ -42,6 +42,11 @@ class testevalP extends CModel
         }
         return  $res;
     }
+    
+    public function testN()
+    {
+        return 'testevalP';
+    }
 }
 class testevalPF extends CModel
 {
@@ -82,6 +87,11 @@ class testevalPF extends CModel
             return false;
         }
         return $res;
+    }
+    
+    public function testN()
+    {
+        return 'testevalPF';
     }
 }
 class Model_Evp_Test extends PHPUnit_Framework_TestCase
@@ -137,15 +147,17 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         $db=$this->db;
         $db->beginTrans();
         
-        $this->assertNotNull($x = new Model($this->Student));
+        $x = new Model($this->Student);
         $res=$x->deleteMod();
         $this->assertTrue($res);
         
-        $this->assertTrue($x->addAttr('a', M_INT));
-        $this->assertTrue($x->addAttr('b', M_INT));
-        $this->assertTrue($x->addAttr('aplusb', M_INT, M_P_EVALP));
+        $x->addAttr('a', M_INT);
+        $x->addAttr('b', M_INT);
+        $x->addAttr('aplusb', M_INT, M_P_EVALP);
         $cname = $this->Student;
-        $this->assertTrue($x->addAttr('c', M_CODE, "/$cname"));
+        $x->addAttr('c', M_CODE, "/$cname");
+        $x->addAttr('tmp', M_INT, M_P_TEMP);
+        
         $this->assertFalse($x->isErr());
 
         $res = $x->saveMod();
@@ -165,21 +177,18 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         $db=$this->db;
         $db->beginTrans();
         
-        $this->assertNotNull($x = new Model($this->Student));
-        
-        $this->assertEquals([], $x->getValues('c'));
-        
-        $res= $x->setVal('a', 1);
-        $this->assertTrue($res);
-        $this->assertTrue($x->setVal('b', 1));
+        $x = new Model($this->Student);
+
+        $x->setVal('a', 1);
+        $x->setVal('b', 1);
+        $x->setVal('tmp', 1);
         
         $res=$x->save();
         $this->assertEquals(1, $res);
         
-        $this->assertNotNull($x = new Model($this->Student));
-        $res= $x->setVal('a', 1);
-        $this->assertTrue($res);
-        $this->assertTrue($x->setVal('b', 1));
+        $x = new Model($this->Student);
+        $x->setVal('a', 1);
+        $x->setVal('b', 1);
         
         $res=$x->save();
         $this->assertEquals(2, $res);
@@ -200,7 +209,7 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         $db=$this->db;
         $db->beginTrans();
         
-        $this->assertNotNull($x = new Model($this->Student, 1));
+        $x = new Model($this->Student, 1);
         $res= $x->getVal('aplusb');
         $this->assertEquals(2, $res);
         
@@ -209,6 +218,23 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
 
         $res=$x->isSelect('aplusb');
         $this->assertTrue($res);
+
+        $res=$x->isTemp('aplusb');
+        $this->assertFalse($res);
+            
+        $res=$x->isTemp('tmp');
+        $this->assertTrue($res);
+        
+        $res=$x->getVal('tmp');
+        $this->assertNull($res);
+        
+        $this->assertEquals(2, count($x->getValues('c')));
+        $this->assertTrue($x->initMod());
+        $cobj = $x->getCobj();
+        $this->assertEquals($this->Student, $cobj->testN());
+
+        $y= new Model('notExists');
+        $this->assertTrue($y->initMod());
         
         $db->commit();
     }
@@ -289,7 +315,10 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         
         $res= $x->delAttr('aplusb');
         $this->assertTrue($res);
-        
+ 
+        $res= $x->delAttr('tmp');
+        $this->assertTrue($res);
+
         $res= $x->delet();
 
         $this->assertTrue($res);

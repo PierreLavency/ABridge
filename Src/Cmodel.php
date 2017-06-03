@@ -8,6 +8,12 @@ abstract class CModel
     {
         $this->mod=$mod;
     }
+
+    public function initMod()
+    {
+        return true;
+    }
+    
     
     public function getValues($attr)
     {

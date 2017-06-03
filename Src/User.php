@@ -10,6 +10,24 @@ class User extends CModel
         $this->mod=$mod;
         $this->psw = $this->mod->getValN('Password');
     }
+
+    public function initMod()
+    {
+        $obj = $this->mod;
+        $distribution='Distribution';
+        $role='Role';
+        
+        $res = $obj->addAttr('UserId', M_STRING);
+        $res = $obj->addAttr('Password', M_STRING);
+        $res = $obj->addAttr('NewPassword1', M_STRING, M_P_TEMP);
+        $res = $obj->addAttr('NewPassword2', M_STRING, M_P_TEMP);
+        $res = $obj->addAttr('DefaultRole', M_CODE, '/'.$role);
+        $res = $obj->addAttr('Play', M_CREF, '/'.$distribution.'/toUser');
+        
+        $res = $obj->setBkey('UserId', true);
+        
+        return $obj->isErr();
+    }
     
     public function getVal($attr)
     {
