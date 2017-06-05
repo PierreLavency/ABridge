@@ -73,6 +73,8 @@ INT
 - set up jenkin
 
 DONE
+---------// 0.25
+improve abstract tests
 ---------// 0.5
 - add initMod method on Model 
 - test temp attribute (with evlp)

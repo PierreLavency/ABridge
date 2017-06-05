@@ -223,6 +223,7 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
             $this->assertNotNull($obj);
             $name = 'App_'.$j;
             $obj->setVal('Name', $name);
+			$obj->setVal('Bkey', $name);
             $obj->setVal('Owner', 'Me');
             $this->assertEquals($id, $obj->save());
             $this->assertFalse($obj->isErr());
@@ -439,6 +440,15 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $db=$this->db;
         $db->beginTrans();
 
+		$comp = new Model($this->Application);
+
+        $comp->setVal('Name', 'newName');
+        $comp->setVal('Surname', 'same');
+		$comp->setVal('Bkey', 'App_0');
+        $this->assertFalse($comp->save());
+        $this->assertEquals($comp->getErrLine(), E_ERC018.':Bkey:App_0');
+		
+		
         $comp = new Model($this->Component);
 
         $this->assertFalse($comp->save());
@@ -448,7 +458,8 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $comp->setVal('SurName', 'same');
         $this->assertFalse($comp->save());
         $this->assertEquals($comp->getErrLine(), E_ERC031.':Name:SurName');
-        
+  
+		
         $ABB = new Model($this->ABB);
         $this->assertNotNull($ABB);
 
