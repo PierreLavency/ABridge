@@ -4,7 +4,9 @@ require_once 'CstView.php';
 require_once 'CModel.php';
 require_once 'User.php';
 require_once 'Session.php';
-
+require_once 'Role.php';
+require_once 'Distribution.php'; 
+	
 	require_once 'CLASSDEC.php';
 
 	$config = [

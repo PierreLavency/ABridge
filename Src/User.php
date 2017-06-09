@@ -3,43 +3,52 @@
 class User extends CModel
 {
 
-    private $psw;
+    private $psw=null;
    
     public function __construct($mod)
     {
         $this->mod=$mod;
-        $this->psw = $this->mod->getValN('Password');
+        if ($mod->existsAttr('Password')) {
+            $this->psw = $this->mod->getValN('Password');
+        }
     }
 
-    public function initMod()
+    public function initMod($bindings)
     {
         $obj = $this->mod;
-        $distribution='Distribution';
-        $role='Role';
-        
+        $distribution = null;
+        $role = null;
+
         $res = $obj->addAttr('UserId', M_STRING);
         $res = $obj->addAttr('Password', M_STRING);
         $res = $obj->addAttr('NewPassword1', M_STRING, M_P_TEMP);
         $res = $obj->addAttr('NewPassword2', M_STRING, M_P_TEMP);
-        $res = $obj->addAttr('DefaultRole', M_CODE, '/'.$role);
-        $res = $obj->addAttr('Play', M_CREF, '/'.$distribution.'/toUser');
-        
+
         $res = $obj->setBkey('UserId', true);
         
+        if (isset($bindings['Distribution'])) {
+            $distribution=$bindings['Distribution'];
+            $res = $obj->addAttr('Play', M_CREF, '/'.$distribution.'/toUser');
+        }
+        if (isset($bindings['Role'])) {
+            $role = $bindings['Role'];
+            $res = $obj->addAttr('DefaultRole', M_CODE, '/'.$role);
+        }
+       
         return $obj->isErr();
     }
     
     public function getVal($attr)
     {
         if ($attr == 'Password') {
-            return "";
+            return null;
         }
         return $this->mod->getValN($attr);
     }
 
     public function getValues($attr)
     {
-        if ($attr == 'DefaultRole') {
+        if ($attr == 'DefaultRole' and $this->mod->existsAttr('Play')) {
             $res = [];
             $dist=$this->mod->getValN('Play');
             foreach ($dist as $id) {

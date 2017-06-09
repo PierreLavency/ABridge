@@ -17,7 +17,7 @@ class SessionHdl_Test extends PHPUnit_Framework_TestCase
         [V_S_SLCT,                      '|User',                                'false'],
         [V_S_READ,                      '|User',                                ["User"=>"User"]],
         [V_S_UPDT,                      '|Application',                         ["Application"=>"User"]],
-        [[V_S_CREA,V_S_UPDT,V_S_DELT],  ['|Application|In','|Application|Out'],     ["Application"=>"User"]],
+        [[V_S_CREA,V_S_UPDT,V_S_DELT], ['|Application|In','|Application|Out'], ["Application"=>"User"]],
         [[V_S_CREA,V_S_DELT],           '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
         ];
 

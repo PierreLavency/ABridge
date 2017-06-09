@@ -3,7 +3,6 @@
 
 // when running this data will be lost !!
 
-
 	require_once 'CLASSDEC.php';
 	
 	// CodeVal
@@ -81,10 +80,8 @@
 	
 	$res=$obj->setBkey($User,true);
 
-	echo $Student."<br>";	
 	$res = $obj->saveMod();	
-	$r = $obj-> getErrLog ();
-	$r->show();
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";	
 
 	// Cours 
 	
@@ -164,12 +161,14 @@
 	
 	
 /*******************************  User  ************************/
+
+	$bindings = [$Session=>$Session,$User=>$User,$Role=>$Role,$Distribution=>$Distribution];
+	
+	UtilsC::createMods($bindings);
+	
 	// User
 		
 	$obj = new Model($User);
-	$res= $obj->deleteMod();
-
-	$res=$obj->initMod();	
 	
 	$res = $obj->addAttr($Group,M_REF,'/'.$Group);	
 	$res = $obj->addAttr('Profile',M_CREF,'/'.$Student.'/'.$User);
@@ -177,53 +176,22 @@
 	
 	$res = $obj->saveMod();	
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-
-	// Session
-	
-	$obj = new Model($Session);
-	$res= $obj->deleteMod();
-
-	$res=$obj->initMod();
-
-	$res = $obj->saveMod();	
-	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-
-	// Role
-		
-	$obj = new Model($Role);
-	$res= $obj->deleteMod();
-
-	$res = $obj->addAttr('Name',M_STRING);
- 	$res = $obj->addAttr('JSpec',M_JSON);	
-	$res = $obj->addAttr('PlayedBy',M_CREF,'/'.$Distribution.'/ofRole');
-
-    $res = $obj->setBkey('Name',true);	
-		
-	$res = $obj->saveMod();	
-	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-		
-	// Distribution
-
-	$obj = new Model($Distribution);
-	$res= $obj->deleteMod();
-
-
-	$res = $obj->addAttr('ofRole',M_REF,'/'.$Role);
-	$res = $obj->setMdtr('ofRole',true); // Mdtr
-
-	$res = $obj->addAttr('toUser',M_REF,'/'.$User);
-	$res = $obj->setMdtr('toUser',true); // Mdtr
-
-	$obj->setCkey(['ofRole','toUser'],true);
-	
-	echo "$Distribution<br>";		
-	$res = $obj->saveMod();	
-	$r = $obj->getErrLog ();
-	$r->show();	
  
- 
+ 	// Group
+	
+	$obj = new Model($Group);
+	$res= $obj->deleteMod();
+
+ 	$res = $obj->addAttr('Name',M_STRING);
+	$res = $obj->addAttr('Users',M_CREF,'/'.$User.'/'.$Group);
+	
+	$res = $obj->saveMod();	
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";		
+	
  
  /************** end user ***************************/
+ 
+ 
  // Pages
 	
 	$obj = new Model($Page);
@@ -237,18 +205,6 @@
 	$r = $obj->getErrLog ();
 	$r->show();		
 
-	// Group
-	
-	$obj = new Model($Group);
-	$res= $obj->deleteMod();
-
- 	$res = $obj->addAttr('Name',M_STRING);
-	$res = $obj->addAttr('Users',M_CREF,'/'.$User.'/'.$Group);
-	
-	echo "$Group<br>";		
-	$res = $obj->saveMod();	
-	$r = $obj->getErrLog ();
-	$r->show();		
 	
 	
 	

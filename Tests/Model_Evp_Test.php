@@ -106,20 +106,20 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
     
-        resetHandlers();
+        Handler::get()->resetHandlers();
+        
         $typ='dataBase';
         $name='test';
         $Student='testevalP';
         
-        self::$db1=getBaseHandler($typ, $name);
-
-        initStateHandler($Student, $typ, $name);
+        self::$db1=Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($Student, $typ, $name);
+        
         $Student='testevalPF';
         $typ='fileBase';
         
-        self::$db2=getBaseHandler($typ, $name);
-
-        initStateHandler($Student, $typ, $name);
+        self::$db2=Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($Student, $typ, $name);
     }
     
     public function setTyp($typ)
@@ -229,12 +229,12 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         $this->assertNull($res);
         
         $this->assertEquals(2, count($x->getValues('c')));
-        $this->assertTrue($x->initMod());
+        $this->assertTrue($x->initMod([]));
         $cobj = $x->getCobj();
         $this->assertEquals($this->Student, $cobj->testN());
 
         $y= new Model('notExists');
-        $this->assertTrue($y->initMod());
+        $this->assertFalse($y->initMod([]));
         
         $db->commit();
     }

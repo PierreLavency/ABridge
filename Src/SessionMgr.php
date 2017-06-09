@@ -10,36 +10,21 @@ class SessionMgr
     protected $cookies=[];
     protected $sessions=[];
     protected $changed = false;
+    protected $cookieName;
+    protected $session;
     
-    public function __construct($sessions)
-    {
-        if ($sessions == []) {
-            return ;
-        }
-        $this->sessions = $sessions;
-    }
-    
-    public function startSessions()
-    {
-        $obj=null;
-        foreach ($this->sessions as $sessionClass => $classKey) {
-            $obj= $this->startSession($sessionClass);
-        }
-        return $obj; // return last one !!
-    }
-
-    public function startSession($sessionClass)
+    public function __construct($name, $className)
     {
         $id=0;
         if ($this->cleanUp) {
-            if (isset($_COOKIE[$sessionClass])) {
-                unset($_COOKIE[$sessionClass]);
+            if (isset($_COOKIE[$name])) {
+                unset($_COOKIE[$name]);
             }
         }
-        if (isset($_COOKIE[$sessionClass])) {
-            $id=$_COOKIE[$sessionClass];
+        if (isset($_COOKIE[$name])) {
+            $id=$_COOKIE[$name];
         }
-        $mod= new Model($sessionClass);
+        $mod= new Model($className);
         $obj=$mod->getCobj();
         $session = null;
         $pobj=null;
@@ -54,7 +39,11 @@ class SessionMgr
             if ($this->timer) {
                 $end = time() + $this->timer;
             }
-            setcookie($sessionClass, $id, $end, "/");
+            if (php_sapi_name()==='cli') {
+                $_COOKIE[$name]=$id;
+            } else {
+                setcookie($name, $id, $end, "/");
+            }
             $mod->save();
             if ($pobj) {
                 $obj->initPrev($pobj);
@@ -65,11 +54,16 @@ class SessionMgr
             $session=$mod;
             $this->changed=true;
         }
-        return $session;
+        $this->session = $session;
     }
 
     public function isChanged()
     {
         return $this->changed;
+    }
+    
+    public function getSession()
+    {
+        return $this->session;
     }
 }

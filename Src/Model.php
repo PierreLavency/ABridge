@@ -218,19 +218,20 @@ class Model
         $this->inhNme=false;
     }
     
-    public function initMod()
+    public function initMod($bindings)
     {
         if ($this->obj) {
             $this->custom=true;
-            $res = $this->obj->initMod();
+            $res = $this->obj->initMod($bindings);
             $this->custom=false;
             return $res;
         }
-        return true;
+        $this->errLog->logLine(E_ERC061);
+        return false;
     }
     /**
      * Returns the errorlogger.
-     *
+
      * @return Logger
      */
     public function getErrLog()
@@ -1361,7 +1362,6 @@ class Model
         }
         return $res;
     }
-    
     
     protected function checkModAttr($attr)
     {

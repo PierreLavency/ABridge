@@ -19,7 +19,7 @@ class Controler
     protected $valL = [];
     protected $opL = [];
     protected $logLevel = 0;
-    protected $sessionMgr ;
+    protected $sessionMgr = null;
     protected $bname ;
     protected $classList=[];
      
@@ -43,15 +43,8 @@ class Controler
         $this->spec=$spec;
         $bases = [];
         $handlers = [];
-        resetHandlers();
         
-        $Sess = [];
-        if (isset($spec['Session'])) {
-            $Sess = $spec['Session'];
-        }
-        $sesMgr = new SessionMgr($Sess);
-        $this->sessionMgr=$sesMgr;
-
+        resetHandlers();
         $config=$spec['Handlers'];
         foreach ($config as $classN => $handler) {
             $menu=true;
@@ -72,7 +65,7 @@ class Controler
                         $x = Handler::get()->getBase($handler[0], $handler[1]);
                         $bases[]=$x;
                     }
-                    initStateHandler($classN, $handler[0], $handler[1]);
+                    Handler::get()->setStateHandler($classN, $handler[0], $handler[1]);
                     break;
             }
             if ($menu) {
@@ -245,15 +238,22 @@ class Controler
     public function run($show, $logLevel)
     {
         $this->beginTrans();
-        $session = $this->sessionMgr->startSessions();
-        $this->sessionHdl= new SessionHdl($session);
-        if ($this->sessionMgr->isChanged()) {
-            $this->commit();
-            $this->beginTrans();
-            $this->handle = new Handle('/Session/~', V_S_UPDT, $this->sessionHdl);
+        if (isset($this->spec['Session'])) {
+            $mngr = new SessionMgr($this->bname, 'Session');
+            $session = $mngr->getSession();
+            $this->sessionHdl= new SessionHdl($session);
+            if ($mngr->isChanged()) {
+                $this->commit();
+                $this->beginTrans();
+                $this->handle = new Handle('/Session/~', V_S_UPDT, $this->sessionHdl);
+            } else {
+                $this->handle = new Handle($this->sessionHdl);
+            }
         } else {
+            $this->sessionHdl= new SessionHdl();
             $this->handle = new Handle($this->sessionHdl);
         }
+        
         $this->setLogLevl($logLevel);
         $this->logUrl();
         $method=$this->handle->getMethod();

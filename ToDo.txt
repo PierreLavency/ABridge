@@ -12,7 +12,9 @@ B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
-B17
+B17 no foreign key on default role attribute of user (i.e attribute name is not the role !).
+
+B18
 
 DEV
 - revisit dot attributes
@@ -37,6 +39,7 @@ DEV
 - multi language /2
 - handle error messages /2
 - delete all object in class /2
+
 - set up rest services 
 - set up modif logging // node.js ?
 
@@ -46,15 +49,14 @@ DEV
 - user Jason to save data rather than serilialisation.
 - user concurency 
 
+- implement CSS 
+
 - unify get code with get reference. (??)
 - support CREF on abstract (????)
-
-- implement CSS 
 
 TEST
 
 - Performance -> review logging
-- test  SessionMngr
 - improve view test coverage - need to separate view show and build // some progress
 - set up unit test for unittest
 
@@ -73,6 +75,8 @@ INT
 - set up jenkin
 
 DONE
+---------// 
+- test  SessionMngr and custom classes 
 ---------// 0.25
 improve abstract tests
 ---------// 0.5

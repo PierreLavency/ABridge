@@ -71,7 +71,6 @@ class SessionHdl
         }
         return null;
     }
-    
 
     protected function matchEval($elm, $patrn)
     {

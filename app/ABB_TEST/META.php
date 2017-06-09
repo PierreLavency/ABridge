@@ -3,6 +3,7 @@
 // when running this data will be lost !!
 
 	require_once 'CLASSDEC.php';
+	require_once 'UtilsC.php'; 
 	
 	// Architecture building block 
 			
@@ -166,57 +167,18 @@
 	
 /*******************************  User  ************************/
 
-	// User
-		
+	$bindings = [$Session=>$Session,$User=>$User,$Role=>$Role,$Distribution=>$Distribution];
+	
+	UtilsC::createMods($bindings);	
+	
+	// User	
 	$obj = new Model($User);
-	$res= $obj->deleteMod();
-
-	$res=$obj->initMod();
 	
 	$res = $obj->addAttr($Group,M_REF,'/'.$Group);	
 	
 	$res = $obj->saveMod();	
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 
-	// Session
-	
-	$obj = new Model($Session);
-	$res= $obj->deleteMod();
-
-	$obj->initMod();
-	
-	$res = $obj->saveMod();			
-	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-
-	// Role
-		
-	$obj = new Model($Role);
-	$res= $obj->deleteMod();
-
-	$res = $obj->addAttr('Name',		M_STRING);
- 	$res = $obj->addAttr('JSpec',		M_JSON);	
-	$res = $obj->addAttr('PlayedBy',	M_CREF,'/'.$Distribution.'/ofRole');
-    $res = $obj->setBkey('Name',true);	
-	
-	$res = $obj->saveMod();			
-	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-	
-	// Distribution
-
-	$obj = new Model($Distribution);
-	$res= $obj->deleteMod();
-
-	$res = $obj->addAttr('ofRole',		M_REF,'/'.$Role);
-	$res = $obj->addAttr('toUser',		M_REF,'/'.$User);
-	
-	$res = $obj->setMdtr('ofRole',true); // Mdtr
-	$res = $obj->setMdtr('toUser',true); // Mdtr
-
-	$obj->setCkey(['ofRole','toUser'],true);
-	
-	$res = $obj->saveMod();			
-	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
- 
 	// Group
 	
 	$obj = new Model($Group);

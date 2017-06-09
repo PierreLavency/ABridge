@@ -1,24 +1,30 @@
 <?php
 	require_once 'CLASSDEC.php';
+	require_once 'UtilsC.php'; 
+
+	$bindings = [$Role=>$Role,$User=>$User,$Distribution=>$Distribution,$Session=>$Session];
 	
+	UtilsC::createMods($bindings);	
+
 	
-	$obj = new Model($Session);
+	// User	
+	$obj = new Model($User);
+	
+	$res = $obj->addAttr($Group,M_REF,'/'.$Group);	
+	
+	$res = $obj->saveMod();	
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
+
+	// Group
+	
+	$obj = new Model($Group);
 	$res= $obj->deleteMod();
 
-	$res = $obj->addAttr($User,			M_REF,		'/'.$User);
-	$res = $obj->addAttr($Role,			M_REF,		'/'.$Role);
-	$res = $obj->addAttr('UserId',		M_STRING);	
-	$res = $obj->addAttr('Password',	M_STRING, 	M_P_TEMP);	
-	$res = $obj->addAttr('BKey',		M_STRING, 	M_P_EVALP);
-	$res = $obj->addAttr('ValidStart',	M_INT, 		M_P_EVALP);
-	$res = $obj->addAttr('ValidFlag',	M_INT, 		M_P_EVALP);
-		
-	$res = $obj->setBkey('BKey',true);
-	$res = $obj->setMdtr('BKey',true);
-	
-	$res = $obj->setMdtr('ValidStart',true);
-	$res = $obj->setMdtr('ValidFlag', true);
+ 	$res = $obj->addAttr('Name',		M_STRING);
+	$res = $obj->addAttr('Users',		M_CREF,'/'.$User.'/'.$Group);
+    $res = $obj->setBkey('Name',true);	
 	
 	$res = $obj->saveMod();			
-	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
+	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";	
 	
+

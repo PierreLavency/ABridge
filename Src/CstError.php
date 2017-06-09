@@ -56,7 +56,10 @@ define('E_ERC053', "ERC053");  // access denied
 define('E_ERC054', "ERC054");  // must be a REF attr
 define('E_ERC055', "ERC055");  // must be a CREF attr
 define('E_ERC056', "ERC056");  // must be a Bkey attr
+
 define('E_ERC057', "ERC057");  // wrong psw
 define('E_ERC058', "ERC058");  //  psw1 != psw2
 define('E_ERC059', "ERC059");  // usr does not exist
 define('E_ERC060', "ERC060");  // role not allowed
+
+define('E_ERC061', "ERC061");  // no custom class defined
