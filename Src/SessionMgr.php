@@ -4,7 +4,7 @@ class SessionMgr
 {
     protected $sessHdl = null;
     protected $cleanUp = false;
-    protected $timer= 0; // 0 when connected 2 heure
+    protected $timer= 0; // 0 when connected
     protected $Keep = false;
     
     protected $cookies=[];

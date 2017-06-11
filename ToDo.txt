@@ -2,8 +2,13 @@ CMD
 /*check code
 phpcs --standard=PSR2 --report=summary -l Src
 phpcbf --standard=PSR2 --no-patch  Src  
-/*install phpdocumentor
+/
+*install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
+
+/* dependency 
+pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg SRC
+
 /* run test suite with coverage
 phpunit --coverage-html Testcoverage Tests
 
@@ -14,10 +19,11 @@ B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B17 no foreign key on default role attribute of user (i.e attribute name is not the role !).
 
-B18
+B18 delete session when not valid anymore
+
+B19
 
 DEV
-- revisit dot attributes
 - remove default db name.
 - review logging 
 - handle user preference.
@@ -51,6 +57,7 @@ DEV
 
 - implement CSS 
 
+- revisit dot attributes (?)
 - unify get code with get reference. (??)
 - support CREF on abstract (????)
 
@@ -75,7 +82,9 @@ INT
 - set up jenkin
 
 DONE
----------// 
+----------// 0.5 day
+B18 delete session when not valid anymore
+---------// 4 days
 - test  SessionMngr and custom classes 
 ---------// 0.25
 improve abstract tests

@@ -170,7 +170,7 @@ class Session extends CModel
         }
         $valid = $obj->getValN('ValidStart')+$this->timer;
         if ($valid < time()) {
-            $obj->setValN('ValidFlag', 0);
+            $obj->delet();
             return [null,$obj];
         }
         return  [$obj,$obj];
