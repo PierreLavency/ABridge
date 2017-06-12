@@ -6,8 +6,7 @@ class SessionHdl
     protected $session = null;
     protected $isRoot = false;
     protected $roleName = 'Role';
-    protected $userName = 'User';
-    protected $pswName = 'Password';
+
     
     public function __construct()
     {

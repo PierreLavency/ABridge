@@ -988,6 +988,7 @@ class View
         $result=[];
         for ($i=0; $i<$c; $i++) {
             $r = $log->getLine($i);
+            $r = CstError::subst($r);
             $result[$i]=[V_TYPE=>V_ERROR,V_STRING=>$r];
         }
         $result = [V_TYPE =>V_LIST,V_LT=>V_ERROR,V_ARG=>$result];

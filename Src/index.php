@@ -24,23 +24,30 @@ if ($application == 'UnitTest') {
     return;
 }
 
+require_once 'CstError.php';
 
-$path = "App/".$application .'/';
-require_once $path.'SETUP.php' ;
-$ctrl = new Controler($config, $conf);
-
-if (isset($init)) {
-    $ctrl->beginTrans();
-//	require_once $path.'DELTA.php';
+try {
     $path = "App/".$application .'/';
-//	require_once $path.'LOAD.php';
-    $ctrl->commit();
+    require_once $path.'SETUP.php' ;
+
+    $ctrl = new Controler($config, $conf);
+
+    if (isset($init)) {
+        $ctrl->beginTrans();
+    //	require_once $path.'DELTA.php';
+        $path = "App/".$application .'/';
+    //	require_once $path.'LOAD.php';
+        $ctrl->commit();
+        $ctrl->close();
+        return;
+    }
+
+    //require_once("testAPI.php");
+
+    $ctrl->run(true, 0);
     $ctrl->close();
     return;
+} catch (Exception $e) {
+    $mes = CstError::subst($e->getmessage());
+    throw new Exception($mes);
 }
-
-//require_once("testAPI.php");
-
-$ctrl->run(true, 0);
-$ctrl->close();
-return;

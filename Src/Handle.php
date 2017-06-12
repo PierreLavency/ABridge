@@ -44,7 +44,7 @@ class Handle
     {
         $this->request = $request;
         $this->sessionHdl = $sessionHdl;
-        $res = $sessionHdl->checkReq($this->request);
+        $res= $this->checkReq($this->request);
         if (!$res) {
             throw new Exception(E_ERC049.':'.$this->request->getUrl());
         }
@@ -105,7 +105,7 @@ class Handle
             $this->attrObjs[]=[$mod,$obj];
         }
         $this->obj =$obj;
-        $res = $this->sessionHdl->checkARight($this->request, $this->attrObjs, true, true);
+        $res = $this->checkARight($this->request, $this->attrObjs, true, true);
         if (!$res) {
             throw new Exception(E_ERC053.':'.$this->request->getUrl());
         }
@@ -153,13 +153,35 @@ class Handle
         return false;
     }
 
+// session handle dependency 
+
+    protected function checkReq($request)
+    {
+        if ($this->sessionHdl) {
+            $res = $this->sessionHdl->checkReq($this->request);
+            return $res;
+        }
+        return true;
+    }
+    
+    protected function checkARight($request, $attrObjs, $protect, $last)
+    {
+        if ($this->sessionHdl) {
+            $res = $this->sessionHdl->checkARight($request, $attrObjs, $protect, $last);
+            return $res;
+        }
+        return true;
+    }
+    
+
+    
 // Autorize Actions on object
 
     public function getActionUrl($action, $prm)
     {
         // for object menu
         $req = $this->request->getActionReq($action);
-        $res = $this->sessionHdl->checkARight($req, $this->attrObjs, false, false);
+        $res = $this->checkARight($req, $this->attrObjs, false, false);
         if (!$res) {
             return null;
         }
@@ -173,7 +195,7 @@ class Handle
         if (is_null($req)) {
             return null;
         }
-        $res = $this->sessionHdl->checkARight($req, $this->attrObjs, false, false);
+        $res = $this->checkARight($req, $this->attrObjs, false, false);
         if (!$res) {
             return null;
         }
@@ -184,7 +206,7 @@ class Handle
 
     protected function newHdl($req, $sessionHdl, $objs, $obj, $robj)
     {
-        $res = $this->sessionHdl->checkARight($req, $objs, false, true); // all access in read so false
+        $res = $this->checkARight($req, $objs, false, true); // all access in read so false
         if (!$res) {
             return null;
         }
@@ -213,7 +235,7 @@ class Handle
     {
          // in selection list
         $req = $this->request->getObjReq($id, V_S_READ);
-        $res = $this->sessionHdl->checkReq($req);
+        $res = $this->checkReq($req);
         if (!$res) {
             return null;
         }
@@ -229,7 +251,7 @@ class Handle
     {
          // in cref list
         $req = $this->request->getCrefReq($attr, V_S_READ, $id);
-        $res = $this->sessionHdl->checkReq($req);
+        $res = $this->checkReq($req);
         if (!$res) {
             return null;
         }

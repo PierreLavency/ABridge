@@ -227,7 +227,14 @@ class Controler
         if (isset($spec['Home'])) {
             $home=$spec['Home'];
         }
-        $selmenu = $this->sessionHdl->getSelMenu($this->classList);
+        if ($this->sessionHdl) {
+            $selmenu = $this->sessionHdl->getSelMenu($this->classList);
+        } else {
+            $selmenu = [];
+            foreach ($this->classList as $classElm) {
+                    $selmenu[]='/'.$classElm;
+            }
+        }
         $menu = array_unique(array_merge($home, $selmenu));
         $v->setTopMenu($menu);
         $action = $this->handle->getAction();
@@ -250,8 +257,7 @@ class Controler
                 $this->handle = new Handle($this->sessionHdl);
             }
         } else {
-            $this->sessionHdl= new SessionHdl();
-            $this->handle = new Handle($this->sessionHdl);
+            $this->handle = new Handle(null);
         }
         
         $this->setLogLevl($logLevel);
@@ -306,7 +312,9 @@ class Controler
             if ($action != V_S_SLCT) {
                 $this->handle->setAction(V_S_READ);
             }
-            $this->sessionHdl->refresh();
+            if ($this->sessionHdl) {
+                $this->sessionHdl->refresh();
+            }
         }
         $this->showView($show);
         $this->showLog();

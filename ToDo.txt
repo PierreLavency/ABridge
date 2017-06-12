@@ -19,8 +19,6 @@ B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B17 no foreign key on default role attribute of user (i.e attribute name is not the role !).
 
-B18 delete session when not valid anymore
-
 B19
 
 DEV
@@ -43,7 +41,7 @@ DEV
 - graphics : include svg bit in view. /2
 - view sort out persistence/2
 - multi language /2
-- handle error messages /2
+
 - delete all object in class /2
 
 - set up rest services 
@@ -82,6 +80,8 @@ INT
 - set up jenkin
 
 DONE
+----------// 1 day
+- handle error messages
 ----------// 0.5 day
 B18 delete session when not valid anymore
 ---------// 4 days
