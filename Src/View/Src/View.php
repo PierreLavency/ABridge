@@ -2,7 +2,7 @@
 <?php
 
 require_once 'Handle.php';
-require_once 'GenHTML.php';
+require_once '/View/Src/GenHTML.php';
 require_once 'CstView.php';
 require_once 'CstMode.php';
 

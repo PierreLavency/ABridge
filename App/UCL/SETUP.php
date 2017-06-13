@@ -2,10 +2,15 @@
 require_once 'CstMode.php';
 require_once 'CstView.php';
 require_once 'CModel.php';
-require_once 'User.php';
-require_once 'Session.php';
-require_once 'Role.php';
-require_once 'Distribution.php'; 
+
+require_once '/User/Src/User.php';
+require_once '/User/Src/Session.php';
+require_once '/User/Src/Role.php';
+require_once '/User/Src/Distribution.php'; 
+
+require_once 'Cours.php';
+require_once 'Student.php';
+require_once 'Inscription.php';   
 
 	require_once 'CLASSDEC.php';
 
@@ -267,93 +272,3 @@ require_once 'Distribution.php';
 	]
 	];
 
-
-	
-class Cours extends CModel 
-{
-
-	private $_credit=0;
-
-	function __construct($mod) 
-	{
-		$this->mod=$mod;
-		if ($mod->getId()) {
-			$this->_credit=$mod->getValN('Credits');
-		}
-	}
-		
-	public function save()
-	{
-		$res=$this->mod->saveN();
-		$ncredit = $this->mod->getValN('Credits');
-		if ($ncredit != $this->_credit) {
-			$list = $this->mod->getValN('SuivitPar');
-			foreach ($list as $id) {
-				$inscription = $this->mod->getCref('SuivitPar',$id);
-				$inscription->save();
-			}
-		}
-		return $res;
-	}	
-}
-	
-class Student extends CModel 
-{
-
-	public function getVal($attr) 
-	{
-		if ($attr == 'NbrCours') {
-			$a = $this->mod->getValN('InscritA');
-			$res = count($a);
-			return $res;
-		}
-		if ($attr == 'Jason') {
-			$res = genJASON($this->mod,false,true);
-			return $res;
-		}
-		return $this->mod->getValN($attr);
-	}
-	
-	public function save()
-	{
-		$credits = 0;
-		$list = $this->mod->getValN('InscritA');
-		foreach ($list as $id) {
-			$inscription = $this->mod->getCref('InscritA',$id);
-			$cours = $inscription->getRef('A');
-			$credit = $cours->getVal('Credits');
-			if (!is_null($credit)) {
-				$credits = $credits + $credit;
-			}
-		}
-		$this->mod->setVal('NbrCredits',$credits);
-		return $this->mod->saveN();
-	}
-}
-
-class Inscription extends CModel 
-{
-
-	private $_student;
-	
-	public function delet()
-	{
-		$this->_student = $this->mod->getRef('De');
-		$res=$this->mod->deletN();
-		if (!is_null($this->_student)) {
-			$this->_student ->save();
-		}
-		return $res;
-	}
-
-	public function save()
-	{
-		$res=$this->mod->saveN();
-		$student = $this->mod->getRef('De');
-		if (! is_null($student)) {
-			$student->save();
-		}
-		return $res;
-	}
-	
-}

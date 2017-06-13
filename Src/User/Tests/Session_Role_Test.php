@@ -1,51 +1,34 @@
 <?php
+
 require_once 'UtilsC.php';
-    
 require_once("Model.php");
 require_once("Handler.php");
 require_once 'CModel.php';
-require_once 'User.php';
-require_once 'Role.php';
-require_once 'Distribution.php';
-require_once 'Session.php';
+require_once '/User/Src/Role.php';
+require_once '/User/Src/Session.php';
 
-class Session_User_Test_dataBase_2 extends User
+class Session_Role_Test_dataBase_2 extends Role
 {
 };
-class Session_User_Test_fileBase_2 extends User
+class Session_Role_Test_fileBase_2 extends Role
 {
 };
 
-class Session_User_Test_dataBase_3 extends Role
+class Session_Role_Test_dataBase_1 extends Session
 {
 };
-class Session_User_Test_fileBase_3 extends Role
-{
-};
-
-class Session_User_Test_dataBase_4 extends Distribution
-{
-};
-class Session_User_Test_fileBase_4 extends Distribution
-{
-};
-
-class Session_User_Test_dataBase_1 extends Session
-{
-};
-class Session_User_Test_fileBase_1 extends Session
+class Session_Role_Test_fileBase_1 extends Session
 {
 };
 
 
-class Session_User_Test extends PHPUnit_Framework_TestCase
+class Session_Role_Test extends PHPUnit_Framework_TestCase
 {
-
-    
+   
     public function testInit()
     {
         $name = 'test';
-        $classes = ['Session','User'];
+        $classes = ['Session','Role'];
         $bsname = get_called_class();
         $bases= UtilsC::initHandlers($name, $classes, $bsname);
         $res = UtilsC::initClasses($bases);
@@ -62,11 +45,8 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
 
-            $x = new Model($bd['User']);
-            $x->setVal('UserId', 'test');
-            $x->setVal('Password', 'Password');
-            $x->setVal('NewPassword1', 'Password');
-            $x->setVal('NewPassword2', 'Password');
+            $x = new Model($bd['Role']);
+            $x->setVal('Name', 'Default');
 
             $res=$x->save();
             $this->assertEquals(1, $res);
@@ -86,7 +66,7 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
     * @depends  testsave
     */
     
-    public function testUpdt($bases)
+    public function testGet($bases)
     {
 
         foreach ($bases as $base) {
@@ -96,12 +76,9 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['Session'], 1);
 
-            $x->setVal('UserId', 'test');
-            $x->setVal('Password', 'Password');
+            $res= $x->getVal('Role');
             
-            $x->save();
-            
-            $this->assertFalse($x->isErr());
+            $this->assertEquals(1, $res);
             
             $db->commit();
         }
@@ -113,7 +90,7 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
     * @depends  testUpdt
     */
 
-    public function testErr($bases)
+    public function itestErr($bases)
     {
         
         foreach ($bases as $base) {

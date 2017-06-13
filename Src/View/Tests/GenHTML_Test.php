@@ -1,7 +1,7 @@
 <?php
     
 require_once('Logger.php');
-require_once('GenHTML.php');
+require_once('/View/Src/GenHTML.php');
 require_once('GenHTML_case.php');
 
 class GenHTML_Test extends PHPUnit_Framework_TestCase

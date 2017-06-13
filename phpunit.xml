@@ -2,7 +2,9 @@
 <phpunit bootstrap="Src/ABridge_test.php">
   <testsuites>
     <testsuite name="ABridge">
-      <directory>Tests</directory>
+		<directory>Tests</directory>
+		<directory>Src/View/Tests</directory>
+		<directory>Src/User/Tests</directory>
     </testsuite>
   </testsuites>
 </phpunit>

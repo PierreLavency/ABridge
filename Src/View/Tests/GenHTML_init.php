@@ -1,5 +1,5 @@
 <?php
-require_once("GenHTML.php");
+require_once '/View/Src/GenHTML.php';
 require_once("GenHTML_case.php");
 require_once("UnitTest.php");
 

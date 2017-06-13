@@ -1,7 +1,7 @@
 <?php
 require_once("Request.php");
 require_once("Handle.php");
-require_once("View.php");
+require_once '/View/Src/View.php';
 
 function viewCasesXref()
 {

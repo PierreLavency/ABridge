@@ -5,10 +5,10 @@ require_once 'UtilsC.php';
 require_once("Model.php");
 require_once("Handler.php");
 require_once 'CModel.php';
-require_once 'User.php';
-require_once 'Role.php';
-require_once 'Distribution.php';
-require_once 'Session.php';
+require_once '/User/Src/User.php';
+require_once '/User/Src/Role.php';
+require_once '/User/Src/Distribution.php';
+require_once '/User/Src/Session.php';
 
 class Session_All_Test_dataBase_2 extends User
 {

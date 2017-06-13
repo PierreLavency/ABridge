@@ -5,7 +5,7 @@ require_once 'Model.php';
 require_once 'Handler.php';
 require_once 'CModel.php';
 
-require_once 'Session.php';
+require_once '/User/Src/Session.php';
 
 
 class SessionMgr_Test_dataBase_1 extends Session

@@ -3,7 +3,7 @@ require_once 'UtilsC.php';
 require_once("Model.php");
 require_once("Handler.php");
 require_once 'CModel.php';
-require_once 'User.php';
+require_once '/User/Src/User.php';
 
 class User_Test_dataBase_1 extends User
 {

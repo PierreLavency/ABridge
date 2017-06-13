@@ -1,36 +1,50 @@
 <?php
-
 require_once 'UtilsC.php';
+    
 require_once("Model.php");
 require_once("Handler.php");
 require_once 'CModel.php';
-require_once 'User.php';
-require_once 'Role.php';
-require_once 'Distribution.php';
-require_once 'Session.php';
+require_once '/User/Src/Role.php';
+require_once '/User/Src/Distribution.php';
+require_once '/User/Src/Session.php';
 
-class Session_Role_Test_dataBase_2 extends Role
+class Session_User_Test_dataBase_2 extends User
 {
 };
-class Session_Role_Test_fileBase_2 extends Role
-{
-};
-
-class Session_Role_Test_dataBase_1 extends Session
-{
-};
-class Session_Role_Test_fileBase_1 extends Session
+class Session_User_Test_fileBase_2 extends User
 {
 };
 
-
-class Session_Role_Test extends PHPUnit_Framework_TestCase
+class Session_User_Test_dataBase_3 extends Role
 {
-   
+};
+class Session_User_Test_fileBase_3 extends Role
+{
+};
+
+class Session_User_Test_dataBase_4 extends Distribution
+{
+};
+class Session_User_Test_fileBase_4 extends Distribution
+{
+};
+
+class Session_User_Test_dataBase_1 extends Session
+{
+};
+class Session_User_Test_fileBase_1 extends Session
+{
+};
+
+
+class Session_User_Test extends PHPUnit_Framework_TestCase
+{
+
+    
     public function testInit()
     {
         $name = 'test';
-        $classes = ['Session','Role'];
+        $classes = ['Session','User'];
         $bsname = get_called_class();
         $bases= UtilsC::initHandlers($name, $classes, $bsname);
         $res = UtilsC::initClasses($bases);
@@ -47,8 +61,11 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
 
-            $x = new Model($bd['Role']);
-            $x->setVal('Name', 'Default');
+            $x = new Model($bd['User']);
+            $x->setVal('UserId', 'test');
+            $x->setVal('Password', 'Password');
+            $x->setVal('NewPassword1', 'Password');
+            $x->setVal('NewPassword2', 'Password');
 
             $res=$x->save();
             $this->assertEquals(1, $res);
@@ -68,7 +85,7 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
     * @depends  testsave
     */
     
-    public function testGet($bases)
+    public function testUpdt($bases)
     {
 
         foreach ($bases as $base) {
@@ -78,9 +95,12 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['Session'], 1);
 
-            $res= $x->getVal('Role');
+            $x->setVal('UserId', 'test');
+            $x->setVal('Password', 'Password');
             
-            $this->assertEquals(1, $res);
+            $x->save();
+            
+            $this->assertFalse($x->isErr());
             
             $db->commit();
         }
@@ -92,7 +112,7 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
     * @depends  testUpdt
     */
 
-    public function itestErr($bases)
+    public function testErr($bases)
     {
         
         foreach ($bases as $base) {
