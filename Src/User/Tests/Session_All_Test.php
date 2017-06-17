@@ -108,11 +108,11 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
             $db->beginTrans();
             
             $x = new Model($bd['Session'], 1);
-			$sessionHdl = $x->getCobj();
-			
+            $sessionHdl = $x->getCobj();
+            
             $res = $x->getVal('Role');
             $this->assertEquals(1, $res);
-			
+            
             $x->save();
             $this->assertFalse($x->isErr());
             $db->commit();

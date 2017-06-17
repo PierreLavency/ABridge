@@ -13,7 +13,7 @@ abstract class CModel
     {
         return $this->mod;
     }
-	
+    
     public function initMod($bindings)
     {
         return true;

@@ -80,6 +80,8 @@ INT
 - set up jenkin
 
 DONE
+----------// 4 days
+session and view as separate packages.
 ----------// 1 day 
 reviewed directory structure
 ----------// 1 day

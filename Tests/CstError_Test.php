@@ -20,14 +20,9 @@ class CstError_Test extends PHPUnit_Framework_TestCase
     {
         return [
             [E_ERC001.':X','Illegal operation on predefined attribute'.':'.E_ERC001.':X'],
-            [':X',':X'],         
-			['y:X','y:X'],
-			['yX','yX'],
+            [':X',':X'],
+            ['y:X','y:X'],
+            ['yX','yX'],
             ];
     }
-
-  
-    
-    
- 
 }

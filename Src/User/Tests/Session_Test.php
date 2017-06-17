@@ -38,7 +38,7 @@ class Session_Test extends PHPUnit_Framework_TestCase
             list($db,$bd) = $base;
             
             $db->beginTrans();
-			$obj=$bd['Session']::getSession(0);     
+            $obj=$bd['Session']::getSession(0);
             $x = $obj->getMod();
 
             $idl[] = $obj->getKey();
@@ -66,9 +66,9 @@ class Session_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
             
-			$obj = $bd['Session']::getSession($idl[$i]);
+            $obj = $bd['Session']::getSession($idl[$i]);
 
-		
+        
             $this->assertEquals($idl[$i], $obj->getKey());
             
             $i++;
@@ -93,8 +93,8 @@ class Session_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
         
-			$obj = $bd['Session']::getSession($idl[$i]);
-			$mod= $obj->getMod();
+            $obj = $bd['Session']::getSession($idl[$i]);
+            $mod= $obj->getMod();
         
             $mod->delet();
             
@@ -121,24 +121,23 @@ class Session_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
 
-			$obj = $bd['Session']::getSession($idl[$i]);
-			$mod= $obj->getMod();
+            $obj = $bd['Session']::getSession($idl[$i]);
+            $mod= $obj->getMod();
   
-            $this->assertTrue($obj->isNew());  
-			$res=$mod->save();
-			
-            $this->assertEquals(2, $res); 
-			
-			$mod->delet();
+            $this->assertTrue($obj->isNew());
+            $res=$mod->save();
+            
+            $this->assertEquals(2, $res);
+            
+            $mod->delet();
 
-	        $x = Find::byKey($bd['Session'],'BKey',$idl[$i]);		
+            $x = Find::byKey($bd['Session'], 'BKey', $idl[$i]);
             $this->assertNull($x);
-			
+            
             $i++;
             $db->commit();
         }
         
         return $basesId;
     }
-
 }

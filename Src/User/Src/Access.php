@@ -21,12 +21,12 @@ class Access
         return false;
     }
 
-    public static function checkReq($session,$req)
+    public static function checkReq($session, $req)
     {
         if (is_null($req)) {
             throw new Exception(E_ERC012);
         }
-        $res= self::getCond($session,$req->getAction(), $req->getModpath());
+        $res= self::getCond($session, $req->getAction(), $req->getModpath());
         if ($res) {
             return true;
         } else {
@@ -34,12 +34,12 @@ class Access
         }
     }
 
-    public static function getSelMenu($session,$classList)
+    public static function getSelMenu($session, $classList)
     {
         $rList = [];
         foreach ($classList as $className) {
             $modPath = '|'.$className;
-            $res = self::getCond($session,V_S_SLCT, $modPath);
+            $res = self::getCond($session, V_S_SLCT, $modPath);
             if ($res == ['true']) {
                 $rList[]= '/'.$className;
             }
@@ -50,10 +50,10 @@ class Access
     protected static function getCond($session, $action, $modpath)
     {
         $obj = $session->getCobj();
-		$roleSpec=$obj->getRSpec();
-		if (!$roleSpec) {
-			return true;
-		}
+        $roleSpec=$obj->getRSpec();
+        if (!$roleSpec) {
+            return true;
+        }
         $cond = [];
         foreach ($roleSpec as $elm) {
             if (self::matchEval($action, $elm[0]) and self::matchEval($modpath, $elm[1])) {
@@ -100,14 +100,14 @@ class Access
         return $condElm;
     }
 
-    public static function checkARight($session,$req, $attrObjs, $protect, $plast = true)
+    public static function checkARight($session, $req, $attrObjs, $protect, $plast = true)
     {
         if (is_null($req)) {
             throw new Exception(E_ERC012);
         }
         $action = $req->getAction();
         $modpath=$req->getModpath();
-        $pathcond = self::getCond($session,$action, $modpath);
+        $pathcond = self::getCond($session, $action, $modpath);
         if (!$pathcond) {
             return false;
         }
@@ -138,7 +138,7 @@ class Access
                 $attro= $attra[0];
                 $attrs=$attra[1];
             }
-            $res = self::checkLinkAttr($session,$action, $obj, $attro, $attrs, $protect, $last);
+            $res = self::checkLinkAttr($session, $action, $obj, $attro, $attrs, $protect, $last);
             if (!$res) {
                 return false;
             }

@@ -7,16 +7,16 @@ class Session extends CModel
     protected $bkey = 0;
     protected $user;
     protected $role;
-	protected $isNew=false;
+    protected $isNew=false;
     protected $Keep = false;
-	protected $hdl = null;
-	
+    protected $hdl = null;
+    
     public function __construct($mod)
     {
         $this->mod=$mod;
         if (!$mod->getId()) {
             $this->bkey=uniqid();
-			$this->isNew = true;
+            $this->isNew = true;
         }
     }
 
@@ -53,20 +53,20 @@ class Session extends CModel
         return $this->mod->getValN('BKey');
     }
  
-	public function getRSpec() 
-	{
-		$role = $this->mod->getRef('Role');
-		if (! $role) {
-			return null;
-		}
-		$res = $role->getVal('JSpec');
-		if (!$res) {
-			return null;
-		}
+    public function getRSpec()
+    {
+        $role = $this->mod->getRef('Role');
+        if (! $role) {
+            return null;
+        }
+        $res = $role->getVal('JSpec');
+        if (!$res) {
+            return null;
+        }
         $val = json_decode($res, true);
-		return $val;		
-	}
-	
+        return $val;
+    }
+    
     public function getVal($attr)
     {
         if ($attr == 'Password') {
@@ -164,31 +164,31 @@ class Session extends CModel
         }
     }
 
-	public static function getSession($id)
-	{
-		$mod = new Model(get_called_class());
-		$sessionHdl=$mod->getCObj();
-		$obj= $mod->getBkey('BKey', $id);
-		if (is_null($obj)) {
-			$mod->save();
-			return $sessionHdl;
-		}
-		$flag = $obj->getValN('ValidFlag');
-		$valid = $obj->getValN('ValidStart')+self::$timer;
-		if ($flag and ($valid > time())) {
-			$sessionHdl=$obj->getCObj();
-			return $sessionHdl;
+    public static function getSession($id)
+    {
+        $mod = new Model(get_called_class());
+        $sessionHdl=$mod->getCObj();
+        $obj= $mod->getBkey('BKey', $id);
+        if (is_null($obj)) {
+            $mod->save();
+            return $sessionHdl;
         }
-		if ($flag) {
-			$obj->delet();
-		}
-		$sessionHdl->initPrev($obj);
-		$mod->save();
-		$obj->delet();
-		return $sessionHdl;
-	}
-	
-	public function initPrev($pobj)
+        $flag = $obj->getValN('ValidFlag');
+        $valid = $obj->getValN('ValidStart')+self::$timer;
+        if ($flag and ($valid > time())) {
+            $sessionHdl=$obj->getCObj();
+            return $sessionHdl;
+        }
+        if ($flag) {
+            $obj->delet();
+        }
+        $sessionHdl->initPrev($obj);
+        $mod->save();
+        $obj->delet();
+        return $sessionHdl;
+    }
+    
+    public function initPrev($pobj)
     {
         if ($this->mod->existsAttr('UserId')) {
             $val = $pobj->getValN('UserId');
@@ -198,35 +198,33 @@ class Session extends CModel
             $val = $pobj->getValN('Role');
             $this->mod->setValN('Role', $val);
         }
-    }	
-	
-	public function isNew()
-	{
-		return $this->isNew;
-	}
-	
-	public function getObj($mod)
+    }
+    
+    public function isNew()
+    {
+        return $this->isNew;
+    }
+    
+    public function getObj($mod)
     {
         if ($mod == $this->mod->getModName()) {
             return $this->mod;
         }
         return $this->mod->getRef($mod);
-
-    }	
-	
-	public function checkReq($req)
-	{
-		return Access::checkReq($this->mod, $req);
-	}
-	
-	public function getSelMenu($classList)
+    }
+    
+    public function checkReq($req)
     {
-		return Access::getSelMenu($this->mod, $classList);
-	}
-	
-	public function checkARight($req, $attrObjs, $protect, $plast = true)
-	{
-		return Access::checkARight($this->mod, $req, $attrObjs, $protect, $plast );
-	}
-	
+        return Access::checkReq($this->mod, $req);
+    }
+    
+    public function getSelMenu($classList)
+    {
+        return Access::getSelMenu($this->mod, $classList);
+    }
+    
+    public function checkARight($req, $attrObjs, $protect, $plast = true)
+    {
+        return Access::checkARight($this->mod, $req, $attrObjs, $protect, $plast);
+    }
 }

@@ -24,7 +24,7 @@ class SessionMgr
         if (isset($_COOKIE[$name])) {
             $id=$_COOKIE[$name];
         }
-		$sessionHdl = $className::getSession($id);
+        $sessionHdl = $className::getSession($id);
         if ($sessionHdl->isNew()) {
             $id = $sessionHdl->getKey();
             $end = 0;

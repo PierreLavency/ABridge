@@ -51,7 +51,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($res);
         return $bases;
     }
-	
+    
     /**
     * @depends testInit
     */
@@ -80,8 +80,8 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $x = new Model($bd['User']);
             $x->setVal('UserId', 'test2');
             $res=$x->save();
-            $this->assertEquals(2, $res);			
-					
+            $this->assertEquals(2, $res);
+                    
             $x = new Model($bd['Distribution']);
             $x->setVal('ofRole', 1);
             $x->setVal('toUser', 1);
@@ -93,16 +93,16 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $x->setVal('toUser', 2);
             $res=$x->save();
             $this->assertEquals(2, $res);
-			
+            
             $x = new Model($bd['Session']);
-			$x->setVal('UserId','test');
-			$x->setVal('Role',1);
+            $x->setVal('UserId', 'test');
+            $x->setVal('Role', 1);
             $res=$x->save();
             $this->assertEquals(1, $res);
   
             $x = new Model($bd['Session']);
-			$x->setVal('UserId','test2');
-			$x->setVal('Role',2);
+            $x->setVal('UserId', 'test2');
+            $x->setVal('Role', 2);
             $res=$x->save();
             $this->assertEquals(2, $res);
   
@@ -114,11 +114,11 @@ class Access_Test extends PHPUnit_Framework_TestCase
     
     /**
      * @dataProvider Provider1
-     * @depends testsave	 
+     * @depends testsave
      */
     public function testCond($p, $b, $c, $e1, $bases)
     {
-		
+        
         $rolespec =[
         [[V_S_READ,V_S_SLCT],           'true',                                 'true'],
         [V_S_SLCT,                      '|User',                                'false'],
@@ -128,28 +128,28 @@ class Access_Test extends PHPUnit_Framework_TestCase
         [[V_S_CREA,V_S_DELT],           '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
         ];
 
-		foreach ($bases as $base) {
+        foreach ($bases as $base) {
             list($db,$bd) = $base;
             
             $db->beginTrans();
-		
-			$role = new Model($bd['Role'],1);
-			$res = json_encode($rolespec);
-			$role->setVal('JSpec', $res);
-			$role->save();
+        
+            $role = new Model($bd['Role'], 1);
+            $res = json_encode($rolespec);
+            $role->setVal('JSpec', $res);
+            $role->save();
 
-			$y = new Model($bd['Session'],1);        
-			$x = $y->getCobj();
+            $y = new Model($bd['Session'], 1);
+            $x = $y->getCobj();
 
-			$req= new Request($p, $b);
+            $req= new Request($p, $b);
      
-			if ($e1) {
-				$this->assertTrue($x->checkReq($req));
-			} else {
-				$this->assertFalse($x->checkReq($req));
-			}
-			
-		    $db->commit();
+            if ($e1) {
+                $this->assertTrue($x->checkReq($req));
+            } else {
+                $this->assertFalse($x->checkReq($req));
+            }
+            
+            $db->commit();
         }
         return $bases;
     }
@@ -173,57 +173,57 @@ class Access_Test extends PHPUnit_Framework_TestCase
     
     /**
      * @dataProvider Provider2
-     * @depends testsave	 
+     * @depends testsave
      */
     
     public function testCheck($p, $b, $e1, $e2, $e3, $bases)
     {
-		
+        
         $rolespec =[
         [[V_S_READ,V_S_SLCT],           'true',                                 'true'],
         [V_S_UPDT,                      '|Application',                         ['Application'=>'User<>User']],
         [[V_S_CREA,V_S_UPDT,V_S_DELT],  ['|Application|In','Application|Out'],  ['Application'=>'User']],
         [[V_S_CREA,V_S_DELT],           '|Application|BuiltFrom',               ['Application'=>'User','BuiltFrom'=>'User']],
         ];
-		
+        
         foreach ($bases as $base) {
             list($db,$bd) = $base;
             
             $db->beginTrans();
 
-			$role = new Model($bd['Role'],2);
-			$res = json_encode($rolespec);
-			$role->setVal('JSpec', $res);
-			$role->save();
+            $role = new Model($bd['Role'], 2);
+            $res = json_encode($rolespec);
+            $role->setVal('JSpec', $res);
+            $role->save();
 
-			$y = new Model($bd['Session'],2);        
-			$r = $y->getCobj();
+            $y = new Model($bd['Session'], 2);
+            $r = $y->getCobj();
                 
-			$x = new Model('TestApp');
-			$x->addAttr('User', M_INTP);
-			$x->setVal('User', 2);
+            $x = new Model('TestApp');
+            $x->addAttr('User', M_INTP);
+            $x->setVal('User', 2);
 
-			$req = new Request($p, $b);
+            $req = new Request($p, $b);
                 
-			$res = $r->checkARight($req, [['Application',$x],['BuiltFrom',$x]], true);
-			$this->assertEquals($e1, $res);
+            $res = $r->checkARight($req, [['Application',$x],['BuiltFrom',$x]], true);
+            $this->assertEquals($e1, $res);
         
-			$x = new Model('TestApp');
-			$x->addAttr('User', M_INTP);
-			$x->setVal('User', 1);
+            $x = new Model('TestApp');
+            $x->addAttr('User', M_INTP);
+            $x->setVal('User', 1);
         
-			$res = $r->checkARight($req, [['Application',$x]], true);
-			$this->assertEquals($e2, $res);
+            $res = $r->checkARight($req, [['Application',$x]], true);
+            $this->assertEquals($e2, $res);
         
-			$x = new Model('TestApp');
-			$x->addAttr('User', M_INTP);
-			
-			$res = $r->checkARight($req, [['Application',$x]], true);
-			$this->assertEquals($e3, $res);
-			
-			$db->commit();
+            $x = new Model('TestApp');
+            $x->addAttr('User', M_INTP);
+            
+            $res = $r->checkARight($req, [['Application',$x]], true);
+            $this->assertEquals($e3, $res);
+            
+            $db->commit();
         }
-		return $bases;
+        return $bases;
     }
 
     public function Provider2()
@@ -240,9 +240,9 @@ class Access_Test extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testsave		 
+     * @depends testsave
      */
-    	
+        
     public function testErr($bases)
     {
  
@@ -250,33 +250,33 @@ class Access_Test extends PHPUnit_Framework_TestCase
             list($db,$bd) = $base;
             
             $db->beginTrans();
-		
-			$y = new Model($bd['Session'],1);        
-			$r = $y->getCobj();
+        
+            $y = new Model($bd['Session'], 1);
+            $r = $y->getCobj();
 
-			$res = "";
-			try {
-				$x=$r->checkreq(null);
-			} catch (Exception $e) {
-				$res= $e->getMessage();
-			}
-			$this->assertEquals($res, E_ERC012);
-			
-			$res = "";
-			try {
-				$x=$r->checkARight(null, [], true);
-			} catch (Exception $e) {
-				$res= $e->getMessage();
-			}
-			$this->assertEquals($res, E_ERC012);
+            $res = "";
+            try {
+                $x=$r->checkreq(null);
+            } catch (Exception $e) {
+                $res= $e->getMessage();
+            }
+            $this->assertEquals($res, E_ERC012);
+            
+            $res = "";
+            try {
+                $x=$r->checkARight(null, [], true);
+            } catch (Exception $e) {
+                $res= $e->getMessage();
+            }
+            $this->assertEquals($res, E_ERC012);
 
-		
-			$db->commit();
-        }		
-		return $bases;
+        
+            $db->commit();
+        }
+        return $bases;
     }
-	
-	/**
+    
+    /**
      * @dataProvider Provider1
      */
     public function itestRoot($p, $b, $c, $e1)

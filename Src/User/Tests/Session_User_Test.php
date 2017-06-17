@@ -82,7 +82,7 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
             $db->beginTrans();
             
             $x = new Model($bd['Session'], 1);
-			
+            
             $x->setVal('UserId', 'test');
             $x->setVal('Password', 'Password');
             
