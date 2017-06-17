@@ -35,6 +35,7 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($res);
         return $bases;
     }
+
     /**
     * @depends testInit
     */
@@ -52,10 +53,24 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(1, $res);
             
             $x = new Model($bd['Session']);
-            
+ 
+			$sesshdl = $x->getCobj();
+			$this->assertNotNull($sesshdl->getKey());
+ 
             $res=$x->save();
             $this->assertEquals(1, $res);
-     
+ 
+            $x = new Model($bd['Role'],1);
+            $x->setVal('Name', 'Defaults');
+
+            $res=$x->save();
+			
+            $x = new Model($bd['Session']);
+            
+            $res=$x->save();
+            $this->assertEquals(2, $res);
+ 
+ 
             $db->commit();
         }
         
@@ -68,7 +83,15 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
     
     public function testGet($bases)
     {
-
+        $rolespec =[
+        [[V_S_READ,V_S_SLCT],           'true',                                 'true'],
+        [V_S_SLCT,                      '|User',                                'false'],
+        [V_S_READ,                      '|User',                                ["User"=>"User"]],
+        [V_S_UPDT,                      '|Application',                         ["Application"=>"User"]],
+        [[V_S_CREA,V_S_UPDT,V_S_DELT], ['|Application|In','|Application|Out'], ["Application"=>"User"]],
+        [[V_S_CREA,V_S_DELT],           '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
+        ];
+		
         foreach ($bases as $base) {
             list($db,$bd) = $base;
             
@@ -79,46 +102,52 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
             $res= $x->getVal('Role');
             
             $this->assertEquals(1, $res);
-            
+
+			$sessionHdl = $x->getCobj();
+			$this->assertNull($sessionHdl->getRSpec());
+
+			$res = $sessionHdl->getObj('Role');
+			$this->assertEquals(1,$res->getId());
+
+            $x = new Model($bd['Role'], 1);
+			$x->setVal('JSpec',json_encode($rolespec));
+			$x->save();
+
+			
+            $x = new Model($bd['Session'], 2);
+            $res= $x->getVal('Role');
+            $this->assertNull($res);
+
+			$sessionHdl = $x->getCobj();
+			$this->assertNull($sessionHdl->getRSpec());
+
+			$res = $sessionHdl->getObj($bd['Session']);
+			$this->assertEquals(2,$res->getId());
+			
             $db->commit();
         }
         
         return $bases;
     }
  
-    /**
-    * @depends  testUpdt
+     /**
+    * @depends  testGet
     */
-
-    public function itestErr($bases)
+    
+    public function testMenu($bases)
     {
-        
-        foreach ($bases as $base) {
+         foreach ($bases as $base) {
             list($db,$bd) = $base;
             
             $db->beginTrans();
-        
-            $x = new Model($bd['Session'], 1);
-            
-            $res= $x->getVal('Password');
-            $this->assertNull($res);
-            
-            $res= $x->getVal('UserId');
-            $this->assertEquals('test', $res);
-            
-            $x->setVal('UserId', 'testtt');
-            
-            $x->save();
-            $this->assertEquals($x->getErrLine(), E_ERC059.":testtt");
-            
-            $x->setVal('UserId', 'test');
-            $x->setVal('Password', 'Password2');
 
-            $x->save();
-            $this->assertEquals($x->getErrLine(), E_ERC057);
+            $x = new Model($bd['Session'], 1);
+			$sessionHdl = $x->getCobj();
+			$res= $sessionHdl->getSelMenu(['User','Application']);
+			$this->assertEquals(['/Application'],$res);
+			
             $db->commit();
         }
-        
         return $bases;
     }
 }

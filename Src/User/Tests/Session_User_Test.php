@@ -15,19 +15,6 @@ class Session_User_Test_fileBase_2 extends User
 {
 };
 
-class Session_User_Test_dataBase_3 extends Role
-{
-};
-class Session_User_Test_fileBase_3 extends Role
-{
-};
-
-class Session_User_Test_dataBase_4 extends Distribution
-{
-};
-class Session_User_Test_fileBase_4 extends Distribution
-{
-};
 
 class Session_User_Test_dataBase_1 extends Session
 {
@@ -74,7 +61,8 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
             
             $res=$x->save();
             $this->assertEquals(1, $res);
-     
+ 
+
             $db->commit();
         }
         
@@ -94,7 +82,7 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
             $db->beginTrans();
             
             $x = new Model($bd['Session'], 1);
-
+			
             $x->setVal('UserId', 'test');
             $x->setVal('Password', 'Password');
             

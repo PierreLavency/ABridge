@@ -3,7 +3,9 @@
   <testsuites>
     <testsuite name="ABridge">
 		<directory>Tests</directory>
-		<directory>Src/View/Tests</directory>
+		<directory>Src/View/Tests</directory>		
+    </testsuite>
+	<testsuite name="User">
 		<directory>Src/User/Tests</directory>
     </testsuite>
   </testsuites>

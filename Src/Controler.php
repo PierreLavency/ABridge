@@ -2,7 +2,6 @@
 <?php
 
 require_once '/View/Src/View.php';
-require_once 'SessionHdl.php';
 require_once 'Handle.php';
 require_once 'SessionMgr.php';
 require_once 'GenJASON.php';
@@ -247,9 +246,9 @@ class Controler
         $this->beginTrans();
         if (isset($this->spec['Session'])) {
             $mngr = new SessionMgr($this->bname, 'Session');
-            $session = $mngr->getSession();
-            $this->sessionHdl= new SessionHdl($session);
-            if ($mngr->isChanged()) {
+            $sessionHdl = $mngr->getSession();
+            $this->sessionHdl= $sessionHdl;
+            if ($sessionHdl->isNew()) {
                 $this->commit();
                 $this->beginTrans();
                 $this->handle = new Handle('/Session/~', V_S_UPDT, $this->sessionHdl);
@@ -311,9 +310,6 @@ class Controler
             }
             if ($action != V_S_SLCT) {
                 $this->handle->setAction(V_S_READ);
-            }
-            if ($this->sessionHdl) {
-                $this->sessionHdl->refresh();
             }
         }
         $this->showView($show);

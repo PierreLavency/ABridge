@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Request.php';
-require_once 'SessionHdl.php';
 require_once 'Model.php';
 
 class Handle

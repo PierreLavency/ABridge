@@ -1,77 +1,13 @@
 <?php
 
-class SessionHdl
+class Access
 {
-    protected $roleSpec = [];
-    protected $session = null;
-    protected $isRoot = false;
-    protected $roleName = 'Role';
-
-    
-    public function __construct()
+    protected static function isRoot($session)
     {
-        $a = func_get_args();
-        $i = func_num_args();
-        if (method_exists($this, $f = 'construct'.$i)) {
-            call_user_func_array(array($this, $f), $a);
-        }
+        return (is_null($session->getVal('Role')));
     }
 
-    protected function construct0()
-    {
-        $this->construct2(null, null);
-    }
- 
-    public function refresh()
-    {
-        $this->construct1($this->session);
-    }
- 
-    protected function construct1($session)
-    {
-        $role = null;
-        if (! is_null($session)) {
-            if ($session->existsAttr($this->roleName)) {
-                $role = $session->getRef($this->roleName);
-            }
-        }
-        $this->construct2($session, $role);
-    }
- 
-    protected function construct2($session, $role)
-    {
-        $this->roleSpec=[];
-        $this->session = $session;
-        $this->isRoot=false;
-        if (is_null($session) or is_null($role)) {
-            $this->isRoot = true;
-            $this->roleSpec=[['true', 'true', 'true']];
-            return;
-        }
-        $res = $role->getVal('JSpec');
-        $val = json_decode($res, true);
-        if (! is_null($val)) {
-            $this->roleSpec= $val;
-        }
-    }
-    
-    public function isRoot()
-    {
-        return ($this->isRoot);
-    }
-    
-    public function getObj($mod)
-    {
-        if ($mod == $this->session->getModName()) {
-            return $this->session;
-        }
-        if ($this->session) {
-            return $this->session->getRef($mod);
-        }
-        return null;
-    }
-
-    protected function matchEval($elm, $patrn)
+    protected static function matchEval($elm, $patrn)
     {
         if (is_array($patrn)) {
             return in_array($elm, $patrn, true);
@@ -85,12 +21,12 @@ class SessionHdl
         return false;
     }
 
-    public function checkReq($req)
+    public static function checkReq($session,$req)
     {
         if (is_null($req)) {
             throw new Exception(E_ERC012);
         }
-        $res= $this->getCond($req->getAction(), $req->getModpath());
+        $res= self::getCond($session,$req->getAction(), $req->getModpath());
         if ($res) {
             return true;
         } else {
@@ -98,12 +34,12 @@ class SessionHdl
         }
     }
 
-    public function getSelMenu($classList)
+    public static function getSelMenu($session,$classList)
     {
         $rList = [];
         foreach ($classList as $className) {
             $modPath = '|'.$className;
-            $res = $this->getCond(V_S_SLCT, $modPath);
+            $res = self::getCond($session,V_S_SLCT, $modPath);
             if ($res == ['true']) {
                 $rList[]= '/'.$className;
             }
@@ -111,13 +47,16 @@ class SessionHdl
         return $rList;
     }
     
-    protected function getCond($action, $modpath)
+    protected static function getCond($session, $action, $modpath)
     {
-//		echo ' '.$action.':'.$modpath."<br>";
-        $roleSpec = $this->roleSpec;
+        $obj = $session->getCobj();
+		$roleSpec=$obj->getRSpec();
+		if (!$roleSpec) {
+			return true;
+		}
         $cond = [];
         foreach ($roleSpec as $elm) {
-            if ($this->matchEval($action, $elm[0]) and $this->matchEval($modpath, $elm[1])) {
+            if (self::matchEval($action, $elm[0]) and self::matchEval($modpath, $elm[1])) {
                 $ncond = $elm[2];
                 switch ($ncond) {
                     case 'true':
@@ -126,7 +65,6 @@ class SessionHdl
                         }
                         break;
                     case 'false':
-                        $this->cond = [];
                         return false;
                         break;
                     default:
@@ -145,16 +83,7 @@ class SessionHdl
         return $cond;
     }
 
-    public function getReqCond($req, $attr)
-    {
-        $cond=$this->getCond($req->getAction(), $req->getModpath());
-        if (! $cond) {
-            return false;
-        }
-        return $this->getCondAttr($cond, $attr);
-    }
-    
-    protected function getCondAttr($cond, $attr)
+    protected static function getCondAttr($cond, $attr)
     {
         $condElm = [];
         if ($cond === ['true']) {
@@ -171,14 +100,14 @@ class SessionHdl
         return $condElm;
     }
 
-    public function checkARight($req, $attrObjs, $protect, $plast = true)
+    public static function checkARight($session,$req, $attrObjs, $protect, $plast = true)
     {
         if (is_null($req)) {
             throw new Exception(E_ERC012);
         }
         $action = $req->getAction();
         $modpath=$req->getModpath();
-        $pathcond = $this->getCond($action, $modpath);
+        $pathcond = self::getCond($session,$action, $modpath);
         if (!$pathcond) {
             return false;
         }
@@ -188,7 +117,7 @@ class SessionHdl
             $obj = $attrObj[1];
             $c--;
             $last = (!$c and $plast);
-            $res = $this->checkAttrCond($action, $pathcond, $attr, $obj, $protect, $last);
+            $res = self::checkAttrCond($session, $action, $pathcond, $attr, $obj, $protect, $last);
             if (!$res) {
                 return false;
             }
@@ -196,9 +125,9 @@ class SessionHdl
         return true;
     }
     
-    protected function checkAttrCond($action, $pathcond, $attr, $obj, $protect, $last)
+    protected static function checkAttrCond($session, $action, $pathcond, $attr, $obj, $protect, $last)
     {
-        $cond = $this->getCondAttr($pathcond, $attr);
+        $cond = self::getCondAttr($pathcond, $attr);
         if ($cond == ['true']) {
             return true;
         }
@@ -209,7 +138,7 @@ class SessionHdl
                 $attro= $attra[0];
                 $attrs=$attra[1];
             }
-            $res = $this->checkLinkAttr($action, $obj, $attro, $attrs, $protect, $last);
+            $res = self::checkLinkAttr($session,$action, $obj, $attro, $attrs, $protect, $last);
             if (!$res) {
                 return false;
             }
@@ -217,18 +146,18 @@ class SessionHdl
         return true;
     }
     
-    protected function checkLinkAttr($action, $obj, $attroExp, $attrsExp, $protect, $last)
+    protected static function checkLinkAttr($session, $action, $obj, $attroExp, $attrsExp, $protect, $last)
     {
-        if ($this->isRoot) {
+        if (self::isRoot($session)) {
             return true;
         }
-        $r = $this->resolvePath($this->session, $attrsExp);
+        $r = self::resolvePath($session, $attrsExp);
         if (is_null($r)) {
             return false;
         }
         $sess=$r[0];
         $attrs=$r[1];
-        $r = $this->resolvePath($obj, $attroExp);
+        $r = self::resolvePath($obj, $attroExp);
         if (is_null($r)) {
             return false;
         }
@@ -268,13 +197,13 @@ class SessionHdl
         return false;
     }
     
-    protected function resolvePath($obj, $attrExp)
+    protected static function resolvePath($obj, $attrExp)
     {
         $attrA=explode(':', $attrExp);
-        return $this->resPath($obj, $attrA);
+        return self::resPath($obj, $attrA);
     }
     
-    protected function resPath($obj, $attrA)
+    protected static function resPath($obj, $attrA)
     {
         if (is_null($obj)) {
             return null;
@@ -289,6 +218,6 @@ class SessionHdl
         }
         $obj->protect($attr);
         $obj=$obj->getRef($attr);
-        return $this->resPath($obj, $attrA);
+        return self::resPath($obj, $attrA);
     }
 }

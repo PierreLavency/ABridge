@@ -1,13 +1,13 @@
 CMD
 /*check code
-phpcs --standard=PSR2 --report=summary -l Src
-phpcbf --standard=PSR2 --no-patch  Src  
+phpcs --standard=PSR2 --report=summary -l Src Src/User/Src Src/View/Src 
+phpcbf --standard=PSR2 --no-patch  Src  Src/User/Src Src/View/Src
 /
 *install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
 
 /* dependency 
-pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg SRC
+pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg SRC 
 
 /* run test suite with coverage
 phpunit --coverage-html Testcoverage Tests
@@ -80,6 +80,8 @@ INT
 - set up jenkin
 
 DONE
+----------// 1 day 
+reviewed directory structure
 ----------// 1 day
 - handle error messages
 ----------// 0.5 day

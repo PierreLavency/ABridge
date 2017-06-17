@@ -9,6 +9,11 @@ abstract class CModel
         $this->mod=$mod;
     }
 
+    public function getMod()
+    {
+        return $this->mod;
+    }
+	
     public function initMod($bindings)
     {
         return true;

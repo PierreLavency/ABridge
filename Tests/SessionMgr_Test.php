@@ -42,9 +42,11 @@ class SessionMgr_Test extends PHPUnit_Framework_TestCase
             $db->beginTrans();
         
             $x = new SessionMgr($bd['Session'], $bd['Session']);
+			$cobj = $x->getSession();
+			$session = $cobj->getMod();
 
-            $this->assertTrue($x->isChanged());
-            $this->assertEquals(1, $x->getSession()->getId());
+            $this->assertTrue($cobj->isNew());
+            $this->assertEquals(1, $session->getId());
      
             $db->commit();
         }
@@ -64,8 +66,10 @@ class SessionMgr_Test extends PHPUnit_Framework_TestCase
             $_COOKIE[$bd['Session']]= $x->getVal('BKey');
             
             $x = new SessionMgr($bd['Session'], $bd['Session']);
+			$cobj = $x->getSession();
+			$session = $cobj->getMod();
 
-            $this->assertFalse($x->isChanged());
+            $this->assertFalse($cobj->isNew());
      
             $db->commit();
         }
@@ -85,10 +89,13 @@ class SessionMgr_Test extends PHPUnit_Framework_TestCase
             $_COOKIE[$bd['Session']]= $x->getVal('BKey');
             $x->delet();
             
+             
             $x = new SessionMgr($bd['Session'], $bd['Session']);
+			$cobj = $x->getSession();
+			$session = $cobj->getMod();
 
-            $this->assertTrue($x->isChanged());
-            $this->assertEquals(2, $x->getSession()->getId());
+            $this->assertTrue($cobj->isNew());
+			$this->assertEquals(2, $session->getId());
             
             $db->commit();
         }

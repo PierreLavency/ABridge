@@ -167,8 +167,7 @@
 	
 /*******************************  User  ************************/
 
-	$bindings = [$Session=>$Session,$User=>$User,$Role=>$Role,$Distribution=>$Distribution];
-	
+	$bindings = [$Session=>$Session,$User=>$User,$Role=>$Role,$Distribution=>$Distribution];	
 	UtilsC::createMods($bindings);	
 	
 	// User	

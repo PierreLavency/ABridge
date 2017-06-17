@@ -24,17 +24,9 @@ class SessionMgr
         if (isset($_COOKIE[$name])) {
             $id=$_COOKIE[$name];
         }
-        $mod= new Model($className);
-        $obj=$mod->getCobj();
-        $session = null;
-        $pobj=null;
-        if ($id) {
-            $res = $obj->findValidSession($id);
-            $session = $res[0];
-            $pobj = $res[1];
-        }
-        if (is_null($session)) {
-            $id = $obj->getKey();
+		$sessionHdl = $className::getSession($id);
+        if ($sessionHdl->isNew()) {
+            $id = $sessionHdl->getKey();
             $end = 0;
             if ($this->timer) {
                 $end = time() + $this->timer;
@@ -44,26 +36,12 @@ class SessionMgr
             } else {
                 setcookie($name, $id, $end, "/");
             }
-            $mod->save();
-            if ($pobj) {
-                $obj->initPrev($pobj);
-                if (!$this->Keep) {
-                    $pobj->delet();
-                }
-            }
-            $session=$mod;
-            $this->changed=true;
         }
-        $this->session = $session;
-    }
-
-    public function isChanged()
-    {
-        return $this->changed;
+        $this->sessHdl = $sessionHdl;
     }
     
     public function getSession()
     {
-        return $this->session;
+        return $this->sessHdl;
     }
 }

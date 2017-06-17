@@ -18,7 +18,6 @@ class Session_Test_fileBase_1 extends Session
 class Session_Test extends PHPUnit_Framework_TestCase
 {
 
-
     public function testInit()
     {
         $name = 'test';
@@ -39,10 +38,9 @@ class Session_Test extends PHPUnit_Framework_TestCase
             list($db,$bd) = $base;
             
             $db->beginTrans();
-        
-            $x = new Model($bd['Session']);
+			$obj=$bd['Session']::getSession(0);     
+            $x = $obj->getMod();
 
-            $obj=$x->getCobj();
             $idl[] = $obj->getKey();
             
             $res=$x->save();
@@ -68,21 +66,10 @@ class Session_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
             
-            $x = new Model($bd['Session']);
-            $x = $x->getCobj();
-            
-            $res = $x->findValidSession($idl[$i]);
+			$obj = $bd['Session']::getSession($idl[$i]);
 
-            list($obj,$pobj) = $res;
-    
-            $this->assertNotNull($obj);
-            $this->assertNotNull($pobj);
-        
-            $cobj = $obj->getCobj();
-            $cpobj = $pobj->getCobj();
-        
-            $this->assertEquals($idl[$i], $cobj->getKey());
-            $this->assertEquals($idl[$i], $cpobj->getKey());
+		
+            $this->assertEquals($idl[$i], $obj->getKey());
             
             $i++;
             $db->commit();
@@ -106,16 +93,12 @@ class Session_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
         
-            $x = new Model($bd['Session']);
-            $x = $x->getCobj();
-            
-            $res = $x->findValidSession($idl[$i]);
-
-            list($obj,$pobj) = $res;
+			$obj = $bd['Session']::getSession($idl[$i]);
+			$mod= $obj->getMod();
         
-            $obj->delet();
+            $mod->delet();
             
-            $this->assertEquals(0, $obj->getValN('ValidFlag'));
+            $this->assertEquals(0, $mod->getValN('ValidFlag'));
             
             $i++;
             $db->commit();
@@ -127,42 +110,6 @@ class Session_Test extends PHPUnit_Framework_TestCase
     /**
     * @depends  testdel
     */
-    public function testKey2($basesId)
-    {
-        
-        list($bases,$idl) = $basesId;
-        $i=0;
-        
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
-
-            $x = new Model($bd['Session']);
-            $x = $x->getCobj();
-            
-            $res = $x->findValidSession($idl[$i]);
-
-            list($obj,$pobj) = $res;
-    
-            $this->assertNull($obj);
-            $this->assertNotNull($pobj);
-        
-            $cpobj = $pobj->getCobj();
-        
-            $this->assertEquals($idl[$i], $cpobj->getKey());
-            
-            $i++;
-            $db->commit();
-        }
-        
-        return $basesId;
-    }
-
-    /**
-    * @depends  testKey2
-    */
-
     public function testdel2($basesId)
     {
         
@@ -173,56 +120,25 @@ class Session_Test extends PHPUnit_Framework_TestCase
             list($db,$bd) = $base;
             
             $db->beginTrans();
-        
-            $x = new Model($bd['Session']);
-            $x = $x->getCobj();
-            
-            $res = $x->findValidSession($idl[$i]);
 
-            list($obj,$pobj) = $res;
-        
-            $this->assertNotNull($pobj);
-            
-            $res = $pobj->delet();
-            
-            $this->assertTrue($res);
-                    
+			$obj = $bd['Session']::getSession($idl[$i]);
+			$mod= $obj->getMod();
+  
+            $this->assertTrue($obj->isNew());  
+			$res=$mod->save();
+			
+            $this->assertEquals(2, $res); 
+			
+			$mod->delet();
+
+	        $x = Find::byKey($bd['Session'],'BKey',$idl[$i]);		
+            $this->assertNull($x);
+			
             $i++;
             $db->commit();
         }
         
         return $basesId;
     }
-    
-    /**
-    * @depends  testdel2
-    */
-    public function testKey3($basesId)
-    {
-        
-        list($bases,$idl) = $basesId;
-        $i=0;
-        
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
 
-            $x = new Model($bd['Session']);
-            $x = $x->getCobj();
-            
-            $res = $x->findValidSession($idl[$i]);
-
-            list($obj,$pobj) = $res;
-    
-            $this->assertNull($obj);
-            $this->assertNull($pobj);
-        
-            
-            $i++;
-            $db->commit();
-        }
-        
-        return $basesId;
-    }
 }

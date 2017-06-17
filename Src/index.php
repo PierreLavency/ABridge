@@ -34,9 +34,9 @@ try {
 
     if (isset($init)) {
         $ctrl->beginTrans();
-    //	require_once $path.'DELTA.php';
+    	require_once $path.'META.php';
         $path = "App/".$application .'/';
-    //	require_once $path.'LOAD.php';
+    	require_once $path.'LOAD.php';
         $ctrl->commit();
         $ctrl->close();
         return;

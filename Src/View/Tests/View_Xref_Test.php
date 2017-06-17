@@ -2,7 +2,6 @@
     
 require_once('Logger.php');
 require_once('View_case_Xref.php');
-require_once 'SessionHdl.php';
 
 class View_Xref_Test extends PHPUnit_Framework_TestCase
 {
@@ -25,9 +24,9 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
         $p = $test[0][1];
         $s = $test[0][2];
         self::$db->beginTrans();
-        $home= new SessionHdl();
+
         $request = new Request($p, V_S_READ);
-        $handle = new Handle($p, V_S_READ, $home);
+        $handle = new Handle($p, V_S_READ, null);
         $v = new View($handle);
         $v->setTopMenu(['/dir']);
         $v->setAttrList(['Name'], V_S_REF);
@@ -48,7 +47,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
 
         self::$db->beginTrans();
     
-        $home= new SessionHdl();
+        $home= null;
         $request = new Request($p, V_S_READ);
         $handle = new Handle($p, V_S_READ, $home);
         $v = new View($handle);

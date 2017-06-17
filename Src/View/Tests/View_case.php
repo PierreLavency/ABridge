@@ -1,7 +1,6 @@
 <?php
 
 require_once("Request.php");
-require_once("SessionHdl.php");
 require_once("Handle.php");
 require_once("Model.php");
 require_once '/View/Src/View.php';
@@ -30,9 +29,9 @@ function viewCases()
     $x->setVal('A4', 'ceci est un texte');
     
 
-    $home= new sessionHdl();
+
     $request = new Request('/', V_S_READ);
-    $handle = new Handle('/', V_S_READ, $home);
+    $handle = new Handle('/', V_S_READ, null);
     $v = new View($handle);
 
     $v->setTopMenu(['/test']);
@@ -45,7 +44,7 @@ function viewCases()
     $path = '/test/1';
     $request = new Request('/test/1', V_S_READ);
     $objs=[['test',$x]];
-    $handle = new Handle($request, $home, $objs, $x, null);
+    $handle = new Handle($request, null, $objs, $x, null);
     $v = new View($handle);
     
     $v->setTopMenu(['/test']);
