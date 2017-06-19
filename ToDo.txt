@@ -2,6 +2,9 @@ CMD
 /*check code
 phpcs --standard=PSR2 --report=summary -l Src Src/User/Src Src/View/Src 
 phpcbf --standard=PSR2 --no-patch  Src  Src/User/Src Src/View/Src
+
+phpcbf --standard=PSR2 --no-patch  Tests  Src/User/Tests Src/View/Tests
+
 /
 *install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
@@ -22,6 +25,8 @@ B17 no foreign key on default role attribute of user (i.e attribute name is not 
 B19
 
 DEV
+- iniMod rather than fileBase.
+
 - remove default db name.
 - review logging 
 - handle user preference.
@@ -29,7 +34,6 @@ DEV
 	- NxN relationship
 	- views and parameters
 - clean up picture path
-- implement picture galery 
 - use static to declare spec and other functions
 - combine temp/evalp reference. 
 - get META json;
@@ -80,6 +84,8 @@ INT
 - set up jenkin
 
 DONE
+----------// 2days
+- implement picture galery 
 ----------// 4 days
 session and view as separate packages.
 ----------// 1 day 

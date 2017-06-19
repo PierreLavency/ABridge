@@ -52,5 +52,8 @@ function GenHTLMCases()
     $n++;
     $test[$n] = [[H_NAME=>'A',H_DEFAULT=>"a1"],$n];
     
+    $n++;
+    $test[$n] = [[H_TYPE=>H_T_NTABLE,H_TABLEN=>2,H_ARG=>[$test[1][0],$test[1][0],$test[1][0]]],$n];
+    
     return $test;
 }

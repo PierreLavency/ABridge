@@ -1,7 +1,7 @@
 <?php
 
 require_once("UnitTest.php");
-require_once('View_case_Xref.php');
+require_once 'Src/View/Tests/View_case_Xref.php';
 
 $logName = basename(__FILE__, ".php");
 
@@ -10,7 +10,7 @@ $log=new UnitTest($logName, 1);
 /**************************************/
 
 require_once("Model.php");
-require_once("View.php");
+require_once 'Src/View/Src/View.php';
 
 
 $show = false;
@@ -29,7 +29,7 @@ for ($i=0; $i<count($test); $i++) {
     $p = $test[$i][1];
     $s = $test[$i][2];
 
-    $home= new SessionHdl();
+    $home= null;
     $request = new Request($p, V_S_READ);
     $handle = new Handle($p, V_S_READ, $home);
     $v = new View($handle);

@@ -1,6 +1,6 @@
 <?php
 require_once 'CstMode.php';
-require_once 'CstView.php';
+require_once '/View/Src/CstView.php';
 
 	require_once 'CLASSDEC.php';
 

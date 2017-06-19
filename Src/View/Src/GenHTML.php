@@ -24,6 +24,44 @@ function genFormL($action, $url, $hidden, $dspecL, $level)
     return $result;
 }
 
+function genNTableL($tablen, $dspecL, $level)
+{
+    $tableS = '<table >';
+    $tableSE = '</table>';
+    $elementS   = '<tr>'  ;
+    $elementES   = '</tr>'  ;
+    $tab = getTab($level);
+    $nl  = getNl($level);
+    $tabn=getTab($level+1);
+    
+    $c=array_chunk($dspecL, $tablen);
+    
+    $result= $tab.$tableS;
+    
+    foreach ($c as $dspec) {
+        $result=$result . $nl . $tabn. $elementS. $nl;
+        $result=$result .genLineNL($dspec, $level+1).$tabn.$elementES;
+    }
+    $result = $result.$nl.$tab.$tableSE.$nl;
+    return $result;
+}
+
+function genLineNL($dspecL, $level)
+{
+    $elementS   = '<td>'  ;
+    $elementES   = '</td>'  ;
+    $result = "";
+    $tab = getTab($level);
+    $nl  = getNl($level);
+    
+    foreach ($dspecL as $elm) {
+        $result=$result.$tab.$elementS.$nl;
+        $result=$result.genFormElemL($elm, $level+1);
+        $result=$result.$tab.$elementES.$nl;
+    }
+ 
+    return $result;
+}
 
 function gen1TableL($dspecL, $level)
 {
@@ -33,7 +71,7 @@ function gen1TableL($dspecL, $level)
     $elementES   = '</td>'  ;
     $tab = getTab($level);
     $nl  = getNl($level);
-    $tabn=getTab($level+1);
+    $tabn= getTab($level+1);
     
     $result= $tab.$tableS;
     foreach ($dspecL as $dspec) {
@@ -158,6 +196,7 @@ function genFormElemL($dspec, $level)
     $action="";
     $url="";
     $arg = [];
+    $tablen=2;
     $col = 90;
     $row = 20;
     $colp = 70;
@@ -187,6 +226,9 @@ function genFormElemL($dspec, $level)
                 break;
             case H_DEFAULT:
                 $default = $v;
+                break;
+            case H_TABLEN:
+                $tabeln = $v;
                 break;
             case H_COL:
                 $col = $v;
@@ -255,6 +297,9 @@ function genFormElemL($dspec, $level)
             break;
         case H_T_1TABLE:
             $result = gen1TableL($arg, $level);
+            break;
+        case H_T_NTABLE:
+            $result = genNTableL($tablen, $arg, $level);
             break;
         case H_T_CONCAT:
             $result = $tab;

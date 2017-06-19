@@ -413,14 +413,10 @@ a:8:{i:0;s:186:"<!DOCTYPE html>
  </body> 
  </html>";i:6;s:6:"5
  aa
-";i:7;s:94:"<ul>
-	<li>
-		<a href="/ABridge.php/test/1" >5
+";i:7;s:55:"<a href="/ABridge.php/test/1" >5
  aa
 </a>
-	</li>
-	<li>
-		2016-12-08
-	</li>
-</ul>
+
+2016-12-08
+
 ";}

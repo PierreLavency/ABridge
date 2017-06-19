@@ -636,18 +636,13 @@ a:7:{i:0;s:1736:"<!DOCTYPE html>
 
  </body> 
  </html>";i:5;s:7:"Name_2
-";i:6;s:202:"<ul>
-	<li>
-		<a href="/ABridge.php/viewCasesXref/2" >Name_2
+";i:6;s:149:"<a href="/ABridge.php/viewCasesXref/2" >Name_2
 </a>
-	</li>
-	<li>
-		<a href="/ABridge.php/viewCasesXref/1" >1
+
+<a href="/ABridge.php/viewCasesXref/1" >1
 </a>
-	</li>
-	<li>
-		<a href="/ABridge.php/viewCasesXref/1" >1
+
+<a href="/ABridge.php/viewCasesXref/1" >1
 </a>
-	</li>
-</ul>
+
 ";}

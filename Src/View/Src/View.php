@@ -18,20 +18,20 @@ class View
                 
     protected $attrList;
     
-    protected $listHtml = [
-                V_VLIST => H_T_1TABLE,
-                V_OBJ   => H_T_LIST_BR,
-                V_TOPMENU  => H_T_1TABLE,
-                V_OBJACTIONMENU   => H_T_1TABLE,
-                V_ALIST => H_T_TABLE,
-                V_ATTR  => H_T_LIST,
-                V_CLIST => H_T_LIST_BR,
-                V_CREF  => H_T_LIST_BR,
-                V_CREF_MLIST => H_T_1TABLE,
-                V_CVAL  => H_T_TABLE,
-                V_S_REF => H_T_CONCAT, // do not change
-                V_S_CREF=> H_T_LIST, // caller or callee ?
-                V_ERROR => H_T_LIST,
+    protected $htmlList = [
+                V_VLIST         => H_T_1TABLE,
+                V_OBJ           => H_T_LIST_BR,
+                V_TOPMENU       => H_T_1TABLE,
+                V_OBJACTIONMENU => H_T_1TABLE,
+                V_ALIST         => H_T_TABLE,
+                V_ATTR          => H_T_LIST,
+                V_CLIST         => H_T_LIST_BR,
+                V_CREF          => H_T_LIST_BR,
+                V_CREF_MLIST    => H_T_1TABLE,
+                V_CVAL          => H_T_TABLE,
+                V_S_REF         => H_T_CONCAT, // do not change
+                V_S_CREF        => H_T_LIST_BR, // caller or callee ?
+                V_ERROR         => H_T_LIST,
                 ];
 
     protected $nav=[
@@ -141,16 +141,16 @@ class View
         }
     }
     
-    public function setListHtml($dspec)
+    public function setHtmlList($dspec)
     {
-        $this->listHtml= $dspec;
+        $this->htmlList= $dspec;
         return true;
     }
 
-    public function getListHtml($listType)
+    public function getHtmlList($listType, $viewState)
     {
-        if (isset($this->listHtml[$listType])) {
-            return $this->listHtml[$listType];
+        if (isset($this->htmlList[$listType])) {
+            return $this->htmlList[$listType];
         }
         return H_T_LIST;
     }
@@ -299,7 +299,7 @@ class View
             if ($attr!= V_S_SLCT and $this->handle->isOneCref($attr)) {
                 return [V_CTYP=>V_C_TYP1];
             }
-            return [H_SLICE=>10,V_COUNTF=>true,V_CTYP=>V_C_TYPN];
+            return [H_SLICE=>10,V_COUNTF=>true,V_CTYP=>V_C_TYPN,V_CVAL=>H_T_TABLE];
         }
         if ($typ == M_HTML) {
             return H_T_PLAIN;
@@ -676,8 +676,19 @@ class View
                 if (isset($spec[V_LT])) {
                     $lt=$spec[V_LT];
                 }
-                $result[H_TYPE]=$this->getListHtml($lt);
+                $result[H_TYPE]=$this->getHtmlList($lt, $viewState);
                 $result[H_SEPARATOR]= ' ';
+                if (isset($spec[V_ATTR])) {
+                    $attr = $spec[V_ATTR];
+                    $aspec = $this->getAttrHtml($attr, $viewState);
+                    if (is_array($aspec) and isset($aspec[$lt])) {
+                        if (is_array($aspec[$lt])) {
+                            $result=$aspec[$lt];
+                        } else {
+                            $result[H_TYPE]=$aspec[$lt];
+                        }
+                    }
+                }
                 $arg=[];
                 foreach ($spec[V_ARG] as $elem) {
                     $r=$this->subst($elem, $viewState);
@@ -974,7 +985,7 @@ class View
             }
             $first = false;
         }
-        $res=[$view,[V_TYPE=>V_LIST,V_LT=>V_CVAL,V_ARG=>$viewe]];
+        $res=[$view,[V_TYPE=>V_LIST,V_LT=>V_CVAL,V_ATTR => $attr,V_ARG=>$viewe]];
         return $res;
     }
     

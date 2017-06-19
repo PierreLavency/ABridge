@@ -69,12 +69,14 @@ define('H_T_FORM', "form");
 define('H_T_LIST_BR', "listbr");
 define('H_T_TABLE', "table");
 define('H_T_1TABLE', "1table");
+define('H_T_NTABLE', "Ntable");
 define('H_T_IMG', "img");
 
 define('H_NAME', "name");
 define('H_BACTION', "baction");
 define('H_LABEL', "label");
 define('H_DEFAULT', "default");
+define('H_TABLEN', "tablen");
 define('H_COL', "col");
 define('H_ROWP', "rowp");
 define('H_COLP', "colp");

@@ -17,10 +17,10 @@ require_once "Controler.php";
 
 if ($application == 'UnitTest') {
     $ctrl = new Controler($conf);
-//require_once("Tests/GenHTML_init.php");  
-//require_once("Tests/GenJASON_init.php");  
-//require_once("Tests/View_init.php");     
-//require_once("Tests/View_init_Xref.php"); 
+//require_once("Src/View/Tests/GenHTML_init.php");  
+//require_once("Src/View/Tests/GenJASON_init.php");  
+//require_once("Src/View/Tests/View_init.php");     
+//require_once("Src/View/Tests/View_init_Xref.php"); 
     return;
 }
 

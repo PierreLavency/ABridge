@@ -1,4 +1,4 @@
-a:20:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br/>
+a:21:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br/>
 <input type = "radio" name = "A"  value = "a2"  >a2<br/>
 ";i:1;s:48:"<input type = "text" name = "A" value = "a1"  >
 ";i:2;s:116:"<select name = "A"  >
@@ -93,4 +93,19 @@ a:20:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br
 	</select>
 	<input type="submit" value = Submit >
 </form>  
-";i:19;s:16:" Unknown H_TYPE ";}
+";i:19;s:16:" Unknown H_TYPE ";i:20;s:233:"<table >
+	<tr>
+	<td>
+		<input type = "text" name = "A" value = "a1"  >
+	</td>
+	<td>
+		<input type = "text" name = "A" value = "a1"  >
+	</td>
+	</tr>
+	<tr>
+	<td>
+		<input type = "text" name = "A" value = "a1"  >
+	</td>
+	</tr>
+</table>
+";}

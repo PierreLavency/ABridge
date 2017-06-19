@@ -3,9 +3,11 @@
   <testsuites>
     <testsuite name="ABridge">
 		<directory>Tests</directory>
+    </testsuite>
+	<testsuite name="Vew">
 		<directory>Src/View/Tests</directory>		
     </testsuite>
-	<testsuite name="User">
+	<testsuite name="Usr">
 		<directory>Src/User/Tests</directory>
     </testsuite>
   </testsuites>

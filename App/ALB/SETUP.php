@@ -1,7 +1,5 @@
 <?php
 require_once 'CstMode.php';
-require_once 'CstView.php';
-
 
 	$config = [
 	'Handlers' =>
@@ -21,20 +19,21 @@ require_once 'CstView.php';
 		
 				'attrList' => [
 					V_S_REF	=> ['Nom'],
-				],
-				'attrHtml' => [
-					V_S_READ => ['Photos'=>[H_SLICE=>1,V_COUNTF=>true,V_CTYP=>V_C_TYPN]],
-				],				
+				],			
 				'lblList'  => [
-
 				],
 				'viewList' => [
 					'Photos'  => [
 						'attrList' => [
 							V_S_READ=> ['Photos',],
 						],
-						'navList' => [V_S_READ => [],
+						'navList' => [
+							V_S_READ => [],
 						],
+						'attrHtml' => [
+							V_S_READ => ['Photos'=>[H_SLICE=>4,V_COUNTF=>true,V_CTYP=>V_C_TYPN,
+										 V_CVAL=>[H_TYPE=>H_T_NTABLE,H_TABLEN=>2]]],
+						],							
 					],
 					'Descritpion'  => [
 						'attrList' => [
