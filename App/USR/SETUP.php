@@ -55,7 +55,7 @@ require_once '/User/Src/Distribution.php';
 				],
 				'Trace' =>[
 					'attrList' => [
-						V_S_READ=> ['id','vnum','ctstp','utstp'],
+						V_S_READ=> ['id','vnum','ctstp','utstp','MetaData'],
 					],
 					'navList' => [
 						V_S_READ => [],

@@ -23,7 +23,8 @@ class User extends CModel
         $res = $obj->addAttr('Password', M_STRING);
         $res = $obj->addAttr('NewPassword1', M_STRING, M_P_TEMP);
         $res = $obj->addAttr('NewPassword2', M_STRING, M_P_TEMP);
-
+        $res = $obj->addAttr('MetaData', M_TXT, M_P_EVAL);
+        
         $res = $obj->setBkey('UserId', true);
         
         if (isset($bindings['Distribution'])) {
@@ -42,6 +43,9 @@ class User extends CModel
     {
         if ($attr == 'Password') {
             return null;
+        }
+        if ($attr == 'MetaData') {
+            return $this->mod->getMeta();
         }
         return $this->mod->getValN($attr);
     }

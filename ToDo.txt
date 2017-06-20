@@ -36,7 +36,6 @@ DEV
 - clean up picture path
 - use static to declare spec and other functions
 - combine temp/evalp reference. 
-- get META json;
 - review include structure
 
 - order in list query and attr.
@@ -84,6 +83,8 @@ INT
 - set up jenkin
 
 DONE
+----------// 1 day
+- get META json;
 ----------// 2days
 - implement picture galery 
 ----------// 4 days
