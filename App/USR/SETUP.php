@@ -29,11 +29,13 @@ require_once '/User/Src/Distribution.php';
 					'Play'			=> 'PlayRoles',
 				],
 			'attrHtml' => [
-					V_S_READ 	=> ['Play'=>[H_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]],
+					V_S_READ => ['Play'=>[H_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]],
+					V_S_UPDT => ['DefaultRole'=>H_T_SELECT],
+					V_S_SLCT => ['DefaultRole'=>H_T_SELECT],					
 				],						
 			'attrList' => [
 					V_S_REF		=> ['UserId'],
-					V_S_SLCT	=> ['UserId',$Group,'DefaultRole'],
+					V_S_SLCT	=> ['UserId',$Group],
 				],
 			'viewList' => [
 				'Password'  => [

@@ -20,12 +20,13 @@ B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
-B17 no foreign key on default role attribute of user (i.e attribute name is not the role !).
+
 
 B19
 
 DEV
-- iniMod rather than fileBase.
+- iniMod rather than fileBase (?)
+- improve LC support (test/ dev Data Base etc.)
 
 - remove default db name.
 - review logging 
@@ -83,6 +84,8 @@ INT
 - set up jenkin
 
 DONE
+-----------// 0.25 day
+B17 no foreign key on default role attribute of user NOBUG defined as code.
 ----------// 1 day
 - get META json;
 ----------// 2days

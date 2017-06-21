@@ -33,7 +33,7 @@ class User extends CModel
         }
         if (isset($bindings['Role'])) {
             $role = $bindings['Role'];
-            $res = $obj->addAttr('DefaultRole', M_CODE, '/'.$role);
+            $res = $obj->addAttr('DefaultRole', M_REF, '/'.$role);
         }
        
         return $obj->isErr();
