@@ -166,7 +166,7 @@ class Request_Test extends PHPUnit_Framework_TestCase
             
             $_SERVER['PATH_INFO']='/X/1';
             $_SERVER['REQUEST_METHOD']='GET';
-            $_SERVER['PHP_SELF']='/API.php';
+            $_SERVER['REQUEST_URI']='/API.php';
             $_GET['Name']='X';
             
             $r=new Request();
@@ -178,7 +178,7 @@ class Request_Test extends PHPUnit_Framework_TestCase
             unset($_GET['Name']);
             $_SERVER['PATH_INFO']='/X/1';
             $_SERVER['REQUEST_METHOD']='POST';
-            $_SERVER['PHP_SELF']='/ABridge.php';
+            $_SERVER['REQUEST_URI']='/ABridge.php';
             $_POST['Name']='X';
             
         try {
@@ -272,7 +272,7 @@ class Request_Test extends PHPUnit_Framework_TestCase
      */
     public function testPrm($p1, $p2, $p3, $p4, $e)
     {
-            $_SERVER['PHP_SELF']='/ABridge.php';
+            $_SERVER['REQUEST_URI']='/ABridge.php';
             $_SERVER['PATH_INFO']=$p1;
             $_SERVER['REQUEST_METHOD']=$p2;
             $_GET['Action']=$p3;

@@ -26,28 +26,31 @@ if ($application == 'UnitTest') {
 
 require_once 'CstError.php';
 
-try {
+ //try {
+    
     $path = "App/".$application .'/';
     require_once $path.'SETUP.php' ;
 
     $ctrl = new Controler($config, $conf);
 
-    if (isset($init)) {
-        $ctrl->beginTrans();
-        require_once $path.'META.php';
-        $path = "App/".$application .'/';
-        require_once $path.'LOAD.php';
-        $ctrl->commit();
-        $ctrl->close();
-        return;
-    }
+if (isset($init)) {
+    $ctrl->beginTrans();
+    require_once $path.'META.php';
+    $path = "App/".$application .'/';
+    require_once $path.'LOAD.php';
+    $ctrl->commit();
+    $ctrl->close();
+    return;
+}
 
     //require_once("testAPI.php");
 
     $ctrl->run(true, 0);
     $ctrl->close();
     return;
+/*    
 } catch (Exception $e) {
     $mes = CstError::subst($e->getmessage());
     throw new Exception($mes);
 }
+*/

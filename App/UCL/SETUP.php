@@ -3,10 +3,6 @@ require_once 'CstMode.php';
 require_once '/View/Src/CstView.php';
 require_once 'CModel.php';
 
-require_once '/User/Src/User.php';
-require_once '/User/Src/Session.php';
-require_once '/User/Src/Role.php';
-require_once '/User/Src/Distribution.php'; 
 
 require_once 'Cours.php';
 require_once 'Student.php';
@@ -31,13 +27,24 @@ require_once 'Inscription.php';
 		'Distribution'	=> ['dataBase',$DBDEC,],
 		'Page'		  	=> ['dataBase',$DBDEC,],		
 		],
-	'Session' => 
+	'Usr' => 
 		['Session'=>'BKey'],
 
 	'Home' =>
 		['/','/Session/~','/User/~'],		
+
 	'Views' => [
-	
+		$adm =>[
+				'attrList' => [
+						V_S_REF		=> ['id'],
+				],
+				'lblList'  => [
+						V_S_UPDT => 'Load',
+				],
+				'navList' => [
+						V_S_READ => [V_S_UPDT],
+				],
+		],		
 		$Session =>[
 			'attrList' => [
 						V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									

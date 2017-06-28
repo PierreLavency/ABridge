@@ -59,11 +59,12 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_GET['Action']=V_S_READ;
         
         $resc = $ctrl->run($this->show, 2);
+
         $this->expectOutputString(
             "uri is /ABridge.php<br>path is /<br>method is GET<br><br>LINE:0<br> **************  <br><br><br>LINE:0<br> **************  <br><br>"
         );
 
-        
+
         $this->assertTrue($resc->nullobj());
  
         $path='/'.$this->CName;

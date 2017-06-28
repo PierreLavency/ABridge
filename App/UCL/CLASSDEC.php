@@ -14,3 +14,5 @@
 	$Prof = 'Prof';
 	$Page ='Page';
 	$Group='UGroup';
+	
+	$Adm ='Admin';

@@ -2,8 +2,19 @@
 	
 // when running this data will be lost !!
 
-	require_once 'CLASSDEC.php';
 	require_once 'UtilsC.php'; 
+
+	
+	$DBDEC = 'USR';
+	
+	$User ='User';
+	$Role = 'Role';
+	$Session ='Session';
+	$Distribution = 'Distribution';
+	$Group = 'UserGroup';
+	
+	$Adm ='Admin';
+	
 	
 /*******************************  User  ************************/
 

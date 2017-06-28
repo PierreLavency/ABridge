@@ -4,10 +4,10 @@ require_once 'UtilsC.php';
 require_once 'CModel.php';
 require_once 'Model.php';
 require_once 'Handler.php';
-require_once '/User/Src/User.php';
-require_once '/User/Src/Role.php';
-require_once '/User/Src/Distribution.php';
-require_once '/User/Src/Session.php';
+require_once '/Usr/Src/User.php';
+require_once '/Usr/Src/Role.php';
+require_once '/Usr/Src/Distribution.php';
+require_once '/Usr/Src/Session.php';
 
     
 class Access_Test_dataBase_2 extends User

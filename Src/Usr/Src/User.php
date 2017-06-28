@@ -38,6 +38,21 @@ class User extends CModel
        
         return $obj->isErr();
     }
+
+    public function setVal($attr, $val)
+    {
+        if ($attr == 'DefaultRole' and !is_null($val)) {
+            $vals= $this->getValues('DefaultRole');
+            $res = in_array($val, $vals);
+            if (!$res) {
+                $this->mod->getErrLog()->logLine(E_ERC016.':'.$attr.':'.$val);
+                return false;
+            }
+        }
+        return $this->mod->setValN($attr, $val);
+    }
+    
+    
     
     public function getVal($attr)
     {

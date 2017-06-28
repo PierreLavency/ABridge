@@ -1,7 +1,7 @@
 CMD
 /*check code
-phpcs --standard=PSR2 --report=summary -l Src Src/User/Src Src/View/Src 
-phpcbf --standard=PSR2 --no-patch  Src  Src/User/Src Src/View/Src
+phpcs --standard=PSR2 --report=summary -l Src Src/Usr/Src Src/View/Src Src/Adm/Src
+phpcbf --standard=PSR2 --no-patch  Src  Src/Usr/Src Src/View/Src Src/Adm/Src
 
 phpcbf --standard=PSR2 --no-patch  Tests  Src/User/Tests Src/View/Tests
 
@@ -15,19 +15,21 @@ pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview
 /* run test suite with coverage
 phpunit --coverage-html Testcoverage Tests
 
+/* run with profiling
+php -d xdebug.profiler_enable=1  -d xdebug.profiler_output_dir=./tmp tests/Controler_Perf.ph
+
 BUGS
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
+B19 cststp not set in admin class
 
-
-B19
+B20
 
 DEV
-- iniMod rather than fileBase (?)
-- improve LC support (test/ dev Data Base etc.)
 
+- improve LC support (test/ dev Data Base etc.)
 - remove default db name.
 - review logging 
 - handle user preference.
@@ -59,6 +61,7 @@ DEV
 
 - implement CSS 
 
+- iniMod rather than fileBase (?)
 - revisit dot attributes (?)
 - unify get code with get reference. (??)
 - support CREF on abstract (????)
@@ -76,7 +79,6 @@ APP
 
 INT
 - integrate with drupal ?
-- eclipse. 
 - integrate MongoDB
 - integrate Redhiss
 - set up bug tracking
@@ -84,6 +86,10 @@ INT
 - set up jenkin
 
 DONE
+-----------// 5 days
+set up profiling infrastructure
+-----------// 2days 
+- eclipse and debug  
 -----------// 0.25 day
 B17 no foreign key on default role attribute of user NOBUG defined as code.
 ----------// 1 day

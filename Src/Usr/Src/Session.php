@@ -1,5 +1,5 @@
 <?php
-require_once 'User/Src/Access.php';
+require_once 'Access.php';
 
 class Session extends CModel
 {

@@ -1,14 +1,20 @@
 
 <phpunit bootstrap="Src/ABridge_test.php">
+	<php>
+	  <ini name="xdebug.collect_params" value="2"/>
+	</php>
   <testsuites>
-    <testsuite name="ABridge">
+	<testsuite name="ABridge">
 		<directory>Tests</directory>
-    </testsuite>
+	</testsuite>
 	<testsuite name="Vew">
 		<directory>Src/View/Tests</directory>		
-    </testsuite>
+	</testsuite>
 	<testsuite name="Usr">
-		<directory>Src/User/Tests</directory>
-    </testsuite>
+		<directory>Src/Usr/Tests</directory>
+	</testsuite>
+	<testsuite name="Adm">
+		<directory>Src/Adm/Tests</directory>
+	</testsuite>	
   </testsuites>
 </phpunit>

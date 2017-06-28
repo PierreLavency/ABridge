@@ -145,7 +145,7 @@ class Model
         if (! checkIdentifier($name)) {
             throw new Exception(E_ERC010.':'.$name.':'.M_ALPHA);
         }
-		$this->name=$name;
+        $this->name=$name;
         $this->initattr();
         $this->id=$id;
         $logname = $name.'errLog';
@@ -160,7 +160,7 @@ class Model
      */
     protected function initattr()
     {
-		$this->meta['modname'] = $this->getModName();
+        $this->meta['modname'] = $this->getModName();
         $this->meta['predef'] = array('id','vnum','ctstp','utstp');
         $this->meta['attr'] = array('id','vnum','ctstp','utstp');
         $this->meta['type'] = array(
@@ -1621,10 +1621,13 @@ class Model
             $this->custom=true;
             $res = $this->obj->save();
             $this->custom=false;
-            return $res;
         } else {
-            return $this->saveN();
+            $res= $this->saveN();
         }
+        if ($res) {
+            $this->id=$res;
+        }
+        return $res;
     }
      
     public function saveN()
@@ -1680,9 +1683,8 @@ class Model
         $this->setValNoCheck('utstp', date(M_FORMAT_T));
 
         $res=$this->stateHdlr->saveObj($this);
-        $this->id=$res;
         
-        return $this->id;
+        return $res;
     }
 
     public function isDel()
@@ -1758,6 +1760,7 @@ class Model
         }
         $res=$this->stateHdlr->eraseMod($this);
         $this->initattr();
+        $this->id=0;
         return $res;
     }
     /**

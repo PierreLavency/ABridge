@@ -2,10 +2,8 @@
 require_once 'CstMode.php';
 require_once '/View/Src/CstView.php';
 require_once 'CModel.php';
-require_once '/User/Src/User.php';
-require_once '/User/Src/Session.php';
-require_once '/User/Src/Role.php';
-require_once '/User/Src/Distribution.php'; 
+
+require_once '/Usr/Src/Usr.php';
 	
 	require_once 'CLASSDEC.php';
 
@@ -17,13 +15,26 @@ require_once '/User/Src/Distribution.php';
 		$Role	 	 => ['dataBase',$DBDEC,],
 		$Distribution=> ['dataBase',$DBDEC,],
 		$Session	 => ['dataBase',$DBDEC,],
+		$Adm   		 => ['dataBase',$DBDEC,false],
 		],
 	'Home' =>
-		['/',"/$Session/~","/$User/~",],
-	'Session' => 
+			['/',"/$Session/~","/$User/~",'/Admin/1'],
+	'Adm' => [],
+	'Usr' => 
 		[$Session=>'BKey'],		
 	'Views' => [
-
+			
+		$Adm =>[
+				'attrList' => [
+						V_S_REF		=> ['id'],
+				],
+				'lblList'  => [
+						V_S_UPDT => 'Load',
+				],
+				'navList' => [
+						V_S_READ => [V_S_UPDT],
+				],
+		],		
 		$User =>[
 			'lblList' => [
 					'Play'			=> 'PlayRoles',

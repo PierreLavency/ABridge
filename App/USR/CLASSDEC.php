@@ -8,3 +8,4 @@
 	$Distribution = 'Distribution';
 	$Group = 'UserGroup';
 	
+	$Adm ='Admin';

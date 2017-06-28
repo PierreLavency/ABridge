@@ -2,10 +2,6 @@
 require_once 'CstMode.php';
 require_once '/View/Src/CstView.php';
 require_once 'CModel.php';
-require_once '/User/Src/User.php';
-require_once '/User/Src/Session.php';
-require_once '/User/Src/Role.php';
-require_once '/User/Src/Distribution.php'; 
 	
 	require_once 'CLASSDEC.php';
 
@@ -32,7 +28,7 @@ require_once '/User/Src/Distribution.php';
 		],
 	'Home' =>
 		['/',"/$Session/~","/$User/~",],
-	'Session' => 
+	'Usr' => 
 		[$Session=>'BKey'],		
 	'Views' => [
 		$Application=> [

@@ -19,7 +19,7 @@ class Controler
     protected $opL = [];
     protected $logLevel = 0;
     protected $sessionMgr = null;
-    protected $bname ;
+    protected $appName ;
     protected $classList=[];
      
     public function __construct()
@@ -56,7 +56,7 @@ class Controler
                 case 0:
                     break;
                 case 1:
-                    $handler[]=$this->bname;
+                    $handler[]=$this->appName;
                     // default
                 case 2:
                     if (! in_array($handler, $handlers)) {
@@ -95,8 +95,8 @@ class Controler
             $psw= $ini['pass'];
         }
         SQLBase::setDB($host, $usr, $psw);
-        $bname = $ini['name'];
-        $this->bname = $bname;
+        $appName = $ini['name'];
+        $this->appName = $appName;
     }
  
     public function beginTrans()
@@ -244,8 +244,19 @@ class Controler
     public function run($show, $logLevel)
     {
         $this->beginTrans();
-        if (isset($this->spec['Session'])) {
-            $mngr = new SessionMgr($this->bname, 'Session');
+        if (isset($this->spec['Adm'])) {
+            require_once 'Adm/Src/Adm.php';
+            
+            Adm::init([$this->appName]);
+            if (Adm::isNew()) {
+                $this->commit();
+                $this->beginTrans();
+            }
+        }
+        if (isset($this->spec['Usr'])) {
+            require_once 'Usr/Src/Usr.php';
+            
+            $mngr = new SessionMgr($this->appName, 'Session');
             $sessionHdl = $mngr->getSession();
             $this->sessionHdl= $sessionHdl;
             if ($sessionHdl->isNew()) {

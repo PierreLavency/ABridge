@@ -36,8 +36,8 @@ class Request
  
     protected function construct0()
     {
-        if (isset($_SERVER['PHP_SELF'])) {
-            $uri = explode('/', $_SERVER['PHP_SELF']);
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $uri = explode('/', $_SERVER['REQUEST_URI']);
             if (count($uri) > 1) {
                 self::$docRoot='/'.$uri[1];
             }
