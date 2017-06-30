@@ -6,13 +6,13 @@ class Adm
 {
     protected static $isNew=false;
     
-    public static function init($app)
+    public static function init($app,$prm)
     {
         $res = Find::AllId('Admin');
         
         if (count($res)==0) {
             $x=new Model('Admin');
-            $x->setVal('Application', $app[0]);
+            $x->setVal('Application', $app);
             $x->setVal('Init', true);
             $x->save();
             self::$isNew=true;

@@ -25,11 +25,16 @@ require_once 'CModel.php';
 		$Role	 	 => ['dataBase',$DBDEC,],
 		$Distribution=> ['dataBase',$DBDEC,],
 		$Session	 => ['dataBase',$DBDEC,],
+		'Admin'		 => ['dataBase',$DBDEC,],
 		],
 	'Home' =>
 		['/',"/$Session/~","/$User/~",],
-	'Usr' => 
-		[$Session=>'BKey'],		
+	'Adm' => [
+			
+	],
+	'Usr' => [
+			
+	],		
 	'Views' => [
 		$Application=> [
 		

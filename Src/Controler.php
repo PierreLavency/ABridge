@@ -3,7 +3,6 @@
 
 require_once '/View/Src/View.php';
 require_once 'Handle.php';
-require_once 'SessionMgr.php';
 require_once 'GenJASON.php';
 require_once 'Find.php';
 
@@ -244,22 +243,23 @@ class Controler
     public function run($show, $logLevel)
     {
         $this->beginTrans();
+        
         if (isset($this->spec['Adm'])) {
             require_once 'Adm/Src/Adm.php';
             
-            Adm::init([$this->appName]);
+            Adm::init($this->appName,$this->spec['Adm']);
             if (Adm::isNew()) {
                 $this->commit();
                 $this->beginTrans();
             }
         }
+        
         if (isset($this->spec['Usr'])) {
             require_once 'Usr/Src/Usr.php';
             
-            $mngr = new SessionMgr($this->appName, 'Session');
-            $sessionHdl = $mngr->getSession();
+            $sessionHdl= Usr::init($this->appName, ['Session']);
             $this->sessionHdl= $sessionHdl;
-            if ($sessionHdl->isNew()) {
+            if (Usr::isNew()) {
                 $this->commit();
                 $this->beginTrans();
                 $this->handle = new Handle('/Session/~', V_S_UPDT, $this->sessionHdl);

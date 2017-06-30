@@ -6,17 +6,17 @@ require_once 'Handler.php';
 require_once 'CModel.php';
 
 require_once '/Usr/Src/Session.php';
+require_once '/Usr/Src/Usr.php';
 
-
-class SessionMgr_Test_dataBase_1 extends Session
+class Usr_Test_dataBase_1 extends Session
 {
 }
-class SessionMgr_Test_fileBase_1 extends Session
+class Usr_Test_fileBase_1 extends Session
 {
 }
 
 
-class SessionMgr_Test extends PHPUnit_Framework_TestCase
+class Usr_Test extends PHPUnit_Framework_TestCase
 {
 
 
@@ -41,11 +41,11 @@ class SessionMgr_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
         
-            $x = new SessionMgr($bd['Session'], $bd['Session']);
-            $cobj = $x->getSession();
+            $cobj = Usr::init($bd['Session'], [$bd['Session']]);
             $session = $cobj->getMod();
 
             $this->assertTrue($cobj->isNew());
+            $this->assertTrue(Usr::isNew());
             $this->assertEquals(1, $session->getId());
      
             $db->commit();
@@ -65,11 +65,11 @@ class SessionMgr_Test extends PHPUnit_Framework_TestCase
             $x =  new Model($bd['Session'], 1);
             $_COOKIE[$bd['Session']]= $x->getVal('BKey');
             
-            $x = new SessionMgr($bd['Session'], $bd['Session']);
-            $cobj = $x->getSession();
+            $cobj = Usr::init($bd['Session'], [$bd['Session']]);
             $session = $cobj->getMod();
 
             $this->assertFalse($cobj->isNew());
+            $this->assertFalse(Usr::isNew());
      
             $db->commit();
         }
@@ -90,10 +90,10 @@ class SessionMgr_Test extends PHPUnit_Framework_TestCase
             $x->delet();
             
              
-            $x = new SessionMgr($bd['Session'], $bd['Session']);
-            $cobj = $x->getSession();
+            $cobj = Usr::init($bd['Session'], [$bd['Session']]);
             $session = $cobj->getMod();
 
+            $this->assertTrue(Usr::isNew());
             $this->assertTrue($cobj->isNew());
             $this->assertEquals(2, $session->getId());
             

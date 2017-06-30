@@ -13,7 +13,7 @@ pear install phpdoc/PhpDocumentor-2.8.1
 pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg SRC 
 
 /* run test suite with coverage
-phpunit --coverage-html Testcoverage Tests
+phpunit --coverage-html Testcoverage
 
 /* run with profiling
 php -d xdebug.profiler_enable=1  -d xdebug.profiler_output_dir=./tmp tests/Controler_Perf.ph
@@ -37,9 +37,11 @@ DEV
 	- NxN relationship
 	- views and parameters
 - clean up picture path
-- use static to declare spec and other functions
+
 - combine temp/evalp reference. 
+
 - review include structure
+- use static to declare spec and other functions
 
 - order in list query and attr.
 - confirmation on META load / Java Script
@@ -86,6 +88,8 @@ INT
 - set up jenkin
 
 DONE
+-----------// 2days
+admin service and include structure 
 -----------// 5 days
 set up profiling infrastructure
 -----------// 2days 
