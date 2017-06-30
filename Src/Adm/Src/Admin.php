@@ -7,6 +7,7 @@ class Admin extends CModel
         $this->mod=$mod;
         if (! $mod->existsAttr('Init')) {
             $this->initMod([]);
+            $this->mod->saveMod();
         }
     }
     

@@ -1,7 +1,7 @@
 CMD
 /*check code
-phpcs --standard=PSR2 --report=summary -l Src Src/Usr/Src Src/View/Src Src/Adm/Src
-phpcbf --standard=PSR2 --no-patch  Src  Src/Usr/Src Src/View/Src Src/Adm/Src
+phpcs --standard=PSR2 --report=summary  -l Src  Src/Usr/Src Src/View/Src Src/Adm/Src
+phpcbf --standard=PSR2 --no-patch  -l Src  Src/Usr/Src Src/View/Src Src/Adm/Src
 
 phpcbf --standard=PSR2 --no-patch  Tests  Src/User/Tests Src/View/Tests
 
@@ -10,7 +10,7 @@ phpcbf --standard=PSR2 --no-patch  Tests  Src/User/Tests Src/View/Tests
 pear install phpdoc/PhpDocumentor-2.8.1
 
 /* dependency 
-pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg SRC 
+pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg Src Src/Adm Src/Usr Src/Vew 
 
 /* run test suite with coverage
 phpunit --coverage-html Testcoverage
@@ -25,12 +25,12 @@ B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B19 cststp not set in admin class
 
-B20
+B21
 
 DEV
 
 - improve LC support (test/ dev Data Base etc.)
-- remove default db name.
+- remove default db name  (?)
 - review logging 
 - handle user preference.
 - increase autorisations rule capability
@@ -40,7 +40,7 @@ DEV
 
 - combine temp/evalp reference. 
 
-- review include structure
+- review include structure and align  with PSR4
 - use static to declare spec and other functions
 
 - order in list query and attr.
@@ -88,6 +88,10 @@ INT
 - set up jenkin
 
 DONE
+-----------// 1 day
+B20 exception in selection view of admin
+-----------// 1 day
+mv SessionMgr to Usr
 -----------// 2days
 admin service and include structure 
 -----------// 5 days

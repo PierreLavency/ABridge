@@ -10,6 +10,7 @@ require_once 'Inscription.php';
 
 	require_once 'CLASSDEC.php';
 
+
 	$config = [
 	'Handlers' =>
 		[
@@ -25,16 +26,20 @@ require_once 'Inscription.php';
 		'UGroup'	 	=> ['dataBase',$DBDEC,],		
 		'Role'	 	 	=> ['dataBase',$DBDEC,],
 		'Distribution'	=> ['dataBase',$DBDEC,],
-		'Page'		  	=> ['dataBase',$DBDEC,],		
+		'Page'		  	=> ['dataBase',$DBDEC,],	
+		'Admin'		  	=> ['dataBase',$DBDEC,],	
 		],
-	'Usr' => 
-		['Session'=>'BKey'],
-
+	'Usr' => [
+			
+	],
+	'Adm'	=> [
+			
+	],
 	'Home' =>
 		['/','/Session/~','/User/~'],		
 
 	'Views' => [
-		$adm =>[
+		'Admin'	=>[
 				'attrList' => [
 						V_S_REF		=> ['id'],
 				],

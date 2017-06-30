@@ -247,7 +247,7 @@ class Controler
         if (isset($this->spec['Adm'])) {
             require_once 'Adm/Src/Adm.php';
             
-            Adm::init($this->appName,$this->spec['Adm']);
+            Adm::init($this->appName, $this->spec['Adm']);
             if (Adm::isNew()) {
                 $this->commit();
                 $this->beginTrans();
@@ -269,7 +269,8 @@ class Controler
         } else {
             $this->handle = new Handle(null);
         }
-        
+
+
         $this->setLogLevl($logLevel);
         $this->logUrl();
         $method=$this->handle->getMethod();

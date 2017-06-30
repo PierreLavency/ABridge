@@ -16,7 +16,7 @@ echo xdebug_time_index(), "\n";
 $x->depthBreadthNew($res->getRPath(), 2, 20);
 echo xdebug_time_index(), "\n";
 
-class Controler_Perf 
+class Controler_Perf
 {
     
     protected $config =  [
@@ -39,11 +39,11 @@ class Controler_Perf
     ];
     
     protected $ini = [
-    		'name'=>'UnitTest',
-    		'path'=>'C:/Users/pierr/ABridge/Datastore/',
-    		'host'=>'localhost',
-    		'user'=>'cl822',
-    		'pass'=>'cl822',
+            'name'=>'UnitTest',
+            'path'=>'C:/Users/pierr/ABridge/Datastore/',
+            'host'=>'localhost',
+            'user'=>'cl822',
+            'pass'=>'cl822',
     ];
     
     protected $show = false;
@@ -53,19 +53,18 @@ class Controler_Perf
     
     protected function ctrlrun()
     {
-    	$ctrl = new Controler($this->config, $this->ini);
-    	$resc = $ctrl->run($this->show, 0);
+        $ctrl = new Controler($this->config, $this->ini);
+        $resc = $ctrl->run($this->show, 0);
 //    	$resc->getErrLog()->show();
-    	$ctrl->close();
-    	return $resc;
-    	
+        $ctrl->close();
+        return $resc;
     }
         
     public function initMod()
     {
-    	$ctrl = new Controler($this->config, $this->ini);
-    	$ctrl->beginTrans();
-    	
+        $ctrl = new Controler($this->config, $this->ini);
+        $ctrl->beginTrans();
+        
         $x=new Model($this->CName);
         $x->deleteMod();
         $x=new Model($this->CName);
@@ -78,14 +77,14 @@ class Controler_Perf
         $ctrl->close();
     }
     
-    public  function  initRoot()
-    {        
+    public function initRoot()
+    {
         $path = '/';
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=V_S_READ;
         
-		$this->ctrlrun();
+        $this->ctrlrun();
         
         $path='/'.$this->CName;
 
@@ -101,38 +100,36 @@ class Controler_Perf
         $res=$this->ctrlrun();
         
         return $res;
-       
     }
 
     /**
     * @depends testRoot
     */
     
-    public function select($path,$i)
+    public function select($path, $i)
     {
-    	$_SERVER['REQUEST_METHOD']='GET';
-    	$_SERVER['PATH_INFO']=$path;
-    	$_GET['Action']=V_S_SLCT;
+        $_SERVER['REQUEST_METHOD']='GET';
+        $_SERVER['PATH_INFO']=$path;
+        $_GET['Action']=V_S_SLCT;
 
-    	$this->ctrlrun();
-    	
-    	
+        $this->ctrlrun();
+        
+        
         $_SERVER['REQUEST_METHOD']='POST';
         $_POST['Ref']=$i;
 
         $this->ctrlrun();
-
     }
 
  
-    protected function createSon($path,$i)
+    protected function createSon($path, $i)
     {
-    	$_SERVER['REQUEST_METHOD']='GET';
-    	$_SERVER['PATH_INFO']=$path;
-    	$_GET['Action']=V_S_READ;
-    	
-    	$this->ctrlrun();
-    	
+        $_SERVER['REQUEST_METHOD']='GET';
+        $_SERVER['PATH_INFO']=$path;
+        $_GET['Action']=V_S_READ;
+        
+        $this->ctrlrun();
+        
         $fpath = $path.'/Cref';
         $_SERVER['PATH_INFO']=$fpath;
         $_GET['Action']=V_S_CREA;
@@ -147,75 +144,75 @@ class Controler_Perf
         return $res;
     }
      
-    public function depthNew($path,$n)
+    public function depthNew($path, $n)
     {
         $x=$path;
         for ($i = 1; $i <= $n; $i++) {
-            $x=$this->createSon($x,$i);
+            $x=$this->createSon($x, $i);
             $x=$x->getRPath();
         }
         return $x;
     }
 
-    public function breadthNew($path,$n)
+    public function breadthNew($path, $n)
     {
-    	$x=$path;
-    	for ($i = 1; $i <= $n; $i++) {
-    		$this->createSon($x,$i);
-    	}
-    	return $x;
+        $x=$path;
+        for ($i = 1; $i <= $n; $i++) {
+            $this->createSon($x, $i);
+        }
+        return $x;
     }
     
-    public  function  depthBreadthNew($path,$n,$f)
+    public function depthBreadthNew($path, $n, $f)
     {
-    	if ($n==0) {
-    		return;
-    	}
-    	for ($i = 1; $i <= $f; $i++) {
-    		$name=$path.'_'.$i;
-    		$x=$this->createSon($path,$name);
-    		$this->depthBreadthNew($x->getRPath(),$n-1,$f);
-    	}
-    	return;
+        if ($n==0) {
+            return;
+        }
+        for ($i = 1; $i <= $f; $i++) {
+            $name=$path.'_'.$i;
+            $x=$this->createSon($path, $name);
+            $this->depthBreadthNew($x->getRPath(), $n-1, $f);
+        }
+        return;
     }
     
-    protected function Upd($path,$i)
+    protected function Upd($path, $i)
     {
-    	
-    	$_SERVER['REQUEST_METHOD']='GET';
-    	$_SERVER['PATH_INFO']=$path;
-    	$_GET['Action']=V_S_READ;
-    	
-    	$this->ctrlrun();
-    	
-    	$_GET['Action']=V_S_UPDT;
-    	
-    	$this->ctrlrun();
-    	
-    	$_SERVER['REQUEST_METHOD']='POST';
-    	$_POST['Name']=$i;
-    	
-    	$res=$this->ctrlrun();
-    	
-    	return $res;
+        
+        $_SERVER['REQUEST_METHOD']='GET';
+        $_SERVER['PATH_INFO']=$path;
+        $_GET['Action']=V_S_READ;
+        
+        $this->ctrlrun();
+        
+        $_GET['Action']=V_S_UPDT;
+        
+        $this->ctrlrun();
+        
+        $_SERVER['REQUEST_METHOD']='POST';
+        $_POST['Name']=$i;
+        
+        $res=$this->ctrlrun();
+        
+        return $res;
     }
     
     
     protected function del($path)
     {
-    	
-    	$_SERVER['REQUEST_METHOD']='GET';
-    	$_SERVER['PATH_INFO']=$path;
-    	$_GET['Action']=V_S_READ;
-    	
-    	$this->ctrlrun();
-    	
-    	$_GET['Action']=V_S_DELT;
-    	
-    	$this->ctrlrun();
-    	
-    	$_SERVER['REQUEST_METHOD']='POST';
-    	
-    	$this->ctrlrun();
+        
+        $_SERVER['REQUEST_METHOD']='GET';
+        $_SERVER['PATH_INFO']=$path;
+        $_GET['Action']=V_S_READ;
+        
+        $this->ctrlrun();
+        
+        $_GET['Action']=V_S_DELT;
+        
+        $this->ctrlrun();
+        
+        $_SERVER['REQUEST_METHOD']='POST';
+        
+        $this->ctrlrun();
     }
 }

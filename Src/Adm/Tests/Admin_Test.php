@@ -44,7 +44,7 @@ class Admin_Test extends PHPUnit_Framework_TestCase
             $x->setVal('Application', '../Src/Adm/Tests');
             $x->setVal('Init', true);
             $res=$x->save();
-            $this->assertequals(1,$res);
+            $this->assertequals(1, $res);
      
             $db->commit();
         }
@@ -64,7 +64,7 @@ class Admin_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['Admin'], 1);
             $res= $x->getVal('Application');
-            $this->assertEquals('../Src/Adm/Tests',$res);
+            $this->assertEquals('../Src/Adm/Tests', $res);
             $x->save();
             
             $this->assertFalse($x->isErr());
@@ -86,11 +86,11 @@ class Admin_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['Admin'], 1);
             $res= $x->getVal('Application');
-            $this->assertEquals('../Src/Adm/Tests',$res);
+            $this->assertEquals('../Src/Adm/Tests', $res);
             
             $x = new Model($bd['Admin']);
             $res=$x->save();
-            $this->assertEquals(1,$res);
+            $this->assertEquals(1, $res);
             
             $res=$x->delet();
             $this->assertFalse($res);
@@ -112,15 +112,15 @@ class Admin_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['Admin'], 1);
             $res= $x->getVal('Application');
-            $this->assertEquals('../Src/Adm/Tests',$res);
+            $this->assertEquals('../Src/Adm/Tests', $res);
             
             $x->setVal('Meta', true);
             $x->setVal('Load', true);
-            $x->setVal('Delta',true);
+            $x->setVal('Delta', true);
             
             $res=$x->save();
             
-            $this->assertEquals(1,$res);
+            $this->assertEquals(1, $res);
             $x->getErrLog()->show();
             $this->assertFalse($x->isErr());
             $db->commit();

@@ -6,7 +6,7 @@ class Adm
 {
     protected static $isNew=false;
     
-    public static function init($app,$prm)
+    public static function init($app, $prm)
     {
         $res = Find::AllId('Admin');
         
