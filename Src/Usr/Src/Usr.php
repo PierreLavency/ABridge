@@ -9,9 +9,9 @@ require_once 'Distribution.php';
 class Usr
 {
 
-    protected static $cleanUp = false;
+    public static $cleanUp = false;
     protected static $isNew = false;
-    protected static $timer= 0; // 0 when connected
+    public static $timer= 0; // 0 when connected
     protected $Keep = false;
     
     protected $cookies=[];

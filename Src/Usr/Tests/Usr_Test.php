@@ -101,4 +101,32 @@ class Usr_Test extends PHPUnit_Framework_TestCase
         }
         return $bases;
     }
+    
+    /**
+     * @depends testExistsNew
+     */
+    public function testCleanUp($bases)
+    {
+    	foreach ($bases as $base) {
+    		list($db,$bd) = $base;
+    		
+    		$db->beginTrans();
+    		$x =  new Model($bd['Session'], 2);
+    		$_COOKIE[$bd['Session']]= $x->getVal('BKey');
+    		
+    		Usr::$cleanUp=true;
+    		
+    		
+    		$cobj = Usr::init($bd['Session'], [$bd['Session']]);
+    		$session = $cobj->getMod();
+    		
+    		$this->assertTrue(Usr::isNew());
+    		$this->assertTrue($cobj->isNew());
+    		$this->assertEquals(3, $session->getId());
+    		
+    		Usr::$cleanUp=false;
+    		$db->commit();
+    	}
+    	return $bases;
+    }
 }
