@@ -192,6 +192,9 @@ class Controler
                 if ($action != V_S_SLCT and $c->isModif($attr)) {
                     $c->setVal($attr, $valC);
                 }
+                if ($action != V_S_SLCT and  $attr=='vnum') {
+                    $c->checkVers((int) $valC);
+                }
                 if ($action == V_S_SLCT and !is_null($valC) and $c->isSelect($attr)) {
                     $this->attrL[]=$attr;
                     $this->valL[]=$valC;

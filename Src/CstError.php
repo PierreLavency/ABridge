@@ -62,7 +62,7 @@ define('E_ERC059', "ERC059");  // usr does not exist
 define('E_ERC060', "ERC060");  // role not allowed
 
 define('E_ERC061', "ERC061");  // no custom class defined
-
+define('E_ERC062', "ERC062");  // no custom class defined
 
 class CstError
 {
@@ -135,7 +135,7 @@ class CstError
 
         E_ERC060 => 'Role is not allowed',
         E_ERC061 => 'Init Mod called without custom class',
-    
+        E_ERC062 => 'Object has been changed',
     ];
         
     public static function subst($mes)

@@ -59,6 +59,7 @@ class Model
     protected $abstrct;
     protected $inhObj;
     protected $inhNme;
+    protected $vnum;
     
     protected $meta = [];
 
@@ -84,7 +85,8 @@ class Model
     {
         $this->init($name, 0);
         $this->setValNoCheck("ctstp", date(M_FORMAT_T));
-        $this->setValNoCheck("vnum", 1);
+        $this->vnum =0;
+        $this->setValNoCheck("vnum", 0);
         $x = $this->stateHdlr;
         if ($x) {
             $x->restoreMod($this);
@@ -118,6 +120,7 @@ class Model
             };
         }
         $this->modChgd=false;
+        $this->vnum=$this->getVal('vnum');
         $this->initObj($name);
     }
 
@@ -256,6 +259,10 @@ class Model
         return $this->id;
     }
     
+    public function getVnum()
+    {
+        return $this->vnum;
+    }
     public function getCobj()
     {
         return $this->obj;
@@ -1626,6 +1633,17 @@ class Model
         }
         if ($res) {
             $this->id=$res;
+            $this->vnum++;
+        }
+        return $res;
+    }
+    
+    public function checkVers($vnum)
+    {
+        $n=$this->vnum;
+        $res=($vnum === $n);
+        if (!$res) {
+            $this->errLog->logLine(E_ERC062);
         }
         return $res;
     }
@@ -1677,12 +1695,16 @@ class Model
             }
         }
 
-        $n=$this->getVal('vnum');
+        $n=$this->vnum;
         $n++;
         $this->setValNoCheck('vnum', $n);
         $this->setValNoCheck('utstp', date(M_FORMAT_T));
 
         $res=$this->stateHdlr->saveObj($this);
+        
+        if (!$res and $this->getId()) {
+            $this->errLog->logLine(E_ERC062);
+        }
         
         return $res;
     }

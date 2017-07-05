@@ -307,6 +307,13 @@ class Handle
     }
      
 // obj  : access should be controlled here 
+
+    
+    public function checkVers($vnum)
+    {
+        return $this->obj->checkVers($vnum);
+    }
+    
     
     public function getAttrList()
     {

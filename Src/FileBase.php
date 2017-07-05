@@ -100,7 +100,7 @@ class FileBase extends Base
         return $this->objects[$model][$id];
     }
 
-    public function putObj($model, $id, $values)
+    public function putObj($model, $id, $vnum, $values)
     {
         if (! $this->isConnected()) {
             throw new Exception(E_ERC025);

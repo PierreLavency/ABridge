@@ -24,8 +24,9 @@ B2 ' in txt fields.
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B19 cststp not set in admin class
+B21 default values in session log in 
 
-B21
+B22
 
 DEV
 
@@ -56,10 +57,10 @@ DEV
 - set up modif logging // node.js ?
 
 - changed DB model independently of class model.
+- user Jason to save data rather than serilialisation.
 - implement unique index.
 - database paging
-- user Jason to save data rather than serilialisation.
-- user concurency 
+
 
 - implement CSS 
 
@@ -87,7 +88,11 @@ INT
 - set up a git server
 - set up jenkin
 
-DONE
+DONE 
+-----------// 2
+- user concurency 
+-----------// 0.25
+improve coverage of Usr
 -----------// 1 day
 B20 exception in selection view of admin
 -----------// 1 day

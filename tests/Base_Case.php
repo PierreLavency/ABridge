@@ -7,9 +7,9 @@ require_once("SQLBase.php");
 class Base_Case extends PHPUnit_Framework_TestCase
 {
 
-    protected $test1 =['CODE'=> '001', 'SEVERITY'=> 1];
-    protected $test2 =['CODE'=> '002', 'SEVERITY'=> 2];
-    protected $test3 =['CODE'=> '001', 'CODE'=> 0];
+    protected $test1 =['CODE'=> '001', 'SEVERITY'=> 1, 'vnum'=>1];
+    protected $test2 =['CODE'=> '002', 'SEVERITY'=> 2,'vnum'=>1];
+    protected $test3 =['CODE'=> '001', 'CODE'=> 0,'vnum'=>1];
     protected $meta=[
                         'attr_lst'=>['vnum','ctstp','utstp','CODE','SEVERITY',],
                         'attr_plst'=>['vnum','ctstp','utstp','CODE','SEVERITY',],
@@ -106,8 +106,8 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $x->beginTrans();
         $this->assertEquals($this->test1, $x->getObj(self::$CName, $this->id1));
         $this->assertEquals($this->test2, $x->getObj(self::$CName, $this->id2));
-        $this->assertEquals($this->id1, $x->putObj(self::$CName, $this->id1, $this->test2));
-        $this->assertEquals($this->id2, $x->putObj(self::$CName, $this->id2, $this->test1));
+        $this->assertEquals($this->id1, $x->putObj(self::$CName, $this->id1, 1, $this->test2));
+        $this->assertEquals($this->id2, $x->putObj(self::$CName, $this->id2, 1, $this->test1));
         $x->commit();
     }
     /**
@@ -190,13 +190,13 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $this->assertTrue($x->delObj(self::$CName, 0));
         $this->assertTrue($x->delObj(self::$CName, 10000));
         $this->assertFalse($x->getObj(self::$CName, 10000));
-        $this->assertFalse($x->putObj(self::$CName, 0, $this->test2));
-        $this->assertFalse($x->putObj(self::$CName, 10000, $this->test2));
+        $this->assertFalse($x->putObj(self::$CName, 0, 1, $this->test2));
+        $this->assertFalse($x->putObj(self::$CName, 10000, 1, $this->test2));
         $this->assertFalse($x->putMod('NOTEXISTS', [], [], $this->meta));
         $this->assertFalse($x->getObj('NOTEXISTS', $this->id2));
         $this->assertFalse($x->newObj('NOTEXISTS', $this->id2));
         $this->assertFalse($x->delObj('NOTEXISTS', $this->id2));
-        $this->assertFalse($x->putObj('NOTEXISTS', $this->id1, $this->test2));
+        $this->assertFalse($x->putObj('NOTEXISTS', $this->id1, 1, $this->test2));
         $this->assertFalse($x->findObj('NOTEXISTS', 'CODE', '01'));
         $this->assertFalse($x->findObjWheOp('NOTEXISTS', ['CODE'], [], ['01']));
         $this->assertFalse($x->findObjWheOp('NOTEXISTS', ['CODE'], ['='], ['01']));

@@ -318,7 +318,7 @@ class SQLBase extends Base
         }
     }
     
-    public function putObj($model, $id, $values)
+    public function putObj($model, $id, $vnum, $values)
     {
         if (! $this->existsMod($model)) {
             return false;
@@ -341,7 +341,7 @@ class SQLBase extends Base
                 $lv = $lv . ',';
             }
         }
-        $sql = "\n UPDATE $model SET $lv WHERE id= $id \n" ;
+        $sql = "\n UPDATE $model SET $lv WHERE id= $id and vnum= $vnum \n" ;
         $this->logLine(1, $sql);
         if (! $this->mysqli->query($sql)) {
             throw new Exception(E_ERC021. ':' . $this->mysqli->error);

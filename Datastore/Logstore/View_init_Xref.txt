@@ -1,10 +1,10 @@
-a:7:{i:0;s:1736:"<!DOCTYPE html>
+a:7:{i:0;s:1780:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= "/ABridge.php/viewCasesXref/2" >
+ <form method=POST action= "/ABridge.php/viewCasesXref/2" ><input type='hidden' name='vnum' value='1' >
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -399,13 +399,13 @@ a:7:{i:0;s:1736:"<!DOCTYPE html>
 
 
  </body> 
- </html>";i:2;s:907:"<!DOCTYPE html>
+ </html>";i:2;s:951:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= "/ABridge.php/viewCasesXref/2" >
+ <form method=POST action= "/ABridge.php/viewCasesXref/2" ><input type='hidden' name='vnum' value='1' >
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -461,13 +461,13 @@ a:7:{i:0;s:1736:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:3;s:849:"<!DOCTYPE html>
+ </html>";i:3;s:893:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= "/ABridge.php/viewCasesXref/2" >
+ <form method=POST action= "/ABridge.php/viewCasesXref/2" ><input type='hidden' name='vnum' value='1' >
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -525,13 +525,13 @@ a:7:{i:0;s:1736:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:4;s:1955:"<!DOCTYPE html>
+ </html>";i:4;s:1999:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= "/ABridge.php/viewCasesXref/2" >
+ <form method=POST action= "/ABridge.php/viewCasesXref/2" ><input type='hidden' name='vnum' value='1' >
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>

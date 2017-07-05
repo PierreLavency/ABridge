@@ -189,7 +189,7 @@ function genFormElemL($dspec, $level)
     
     $type="";
     $default="";
-    $hidden="";
+    $hidden=[];
     $separator="";
     $disabled="";
     $name="";

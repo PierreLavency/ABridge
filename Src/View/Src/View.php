@@ -706,7 +706,10 @@ class View
                     $hid['View']=$this->_name;
                 }
                 $path = $this->handle->getUrl($hid);
-                $result[H_HIDDEN]=$hid;
+                $result[H_HIDDEN]=['vnum'=>$this->handle->getVal('vnum')];
+                if ($vn = $this->handle->getPrm('vnum', false)) {
+                    $result[H_HIDDEN]=['vnum'=>$vn];
+                }
                 $result[H_URL]=$path;
                 $arg=[];
                 foreach ($spec[V_ARG] as $elem) {

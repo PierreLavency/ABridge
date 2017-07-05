@@ -224,6 +224,7 @@ class ModBase
         $name = $mod->getModName();
         $values =$mod->getAllVal();
         $id = $mod->getId();
+        $vnum=$mod->getVnum();
         if ($id == 0) {
             $abstr = $mod->getInhNme();
             if ($abstr) {
@@ -233,7 +234,7 @@ class ModBase
                 return ($this->base->newObj($name, $values));
             }
         }
-        return ($this->base->putObj($name, $id, $values));
+        return ($this->base->putObj($name, $id, $vnum, $values));
     }
 
     public function restoreObj($mod)

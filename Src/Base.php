@@ -214,7 +214,7 @@ abstract class Base
 
     abstract protected function getObj($model, $id);
 
-    abstract protected function putObj($model, $id, $values);
+    abstract protected function putObj($model, $id, $vnum, $values);
 
     abstract protected function delObj($model, $id);
     
