@@ -1,4 +1,8 @@
 <?php
+namespace ABridge\ABridge\Usr;
+
+use ABridge\ABridge\CModel;
+use ABridge\ABridge\CstError;
 
 class User extends CModel
 {
@@ -45,7 +49,7 @@ class User extends CModel
             $vals= $this->getValues('DefaultRole');
             $res = in_array($val, $vals);
             if (!$res) {
-                $this->mod->getErrLog()->logLine(E_ERC016.':'.$attr.':'.$val);
+                $this->mod->getErrLog()->logLine(CstError::E_ERC016.':'.$attr.':'.$val);
                 return false;
             }
         }
@@ -91,14 +95,14 @@ class User extends CModel
         if (! is_null($this->psw)) {
             $res= password_verify($psw, $this->psw);
             if (!$res) {
-                $this->mod->getErrLog()->logLine(E_ERC057);
+                $this->mod->getErrLog()->logLine(CstError::E_ERC057);
                 return false;
             }
         }
         $psw1=$this->mod->getValN('NewPassword1');
         $psw2=$this->mod->getValN('NewPassword2');
         if ($psw1 != $psw2) {
-                $this->mod->getErrLog()->logLine(E_ERC058);
+            $this->mod->getErrLog()->logLine(CstError::E_ERC058);
                 return false;
         }
         if (! is_null($psw1)) {

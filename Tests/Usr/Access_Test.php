@@ -1,15 +1,17 @@
 <?php
 
-require_once 'UtilsC.php';
-require_once 'CModel.php';
-require_once 'Model.php';
-require_once 'Handler.php';
-require_once '/Usr/Src/User.php';
-require_once '/Usr/Src/Role.php';
-require_once '/Usr/Src/Distribution.php';
-require_once '/Usr/Src/Session.php';
+use ABridge\ABridge\UtilsC;
+use ABridge\ABridge\CModel;
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\Request;
+use ABridge\ABridge\CstError;
 
-    
+use ABridge\ABridge\Usr\User;
+use ABridge\ABridge\Usr\Role;
+use ABridge\ABridge\Usr\Distribution;
+use ABridge\ABridge\Usr\Session;
+
 class Access_Test_dataBase_2 extends User
 {
 }
@@ -260,7 +262,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
             } catch (Exception $e) {
                 $res= $e->getMessage();
             }
-            $this->assertEquals($res, E_ERC012);
+            $this->assertEquals($res, CstError::E_ERC012);
             
             $res = "";
             try {
@@ -268,7 +270,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
             } catch (Exception $e) {
                 $res= $e->getMessage();
             }
-            $this->assertEquals($res, E_ERC012);
+            $this->assertEquals($res, CstError::E_ERC012);
 
         
             $db->commit();

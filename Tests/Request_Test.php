@@ -1,7 +1,8 @@
 <?php
     
+use ABridge\ABridge\CstError;
+use ABridge\ABridge\Request;
 
-require_once 'Request.php';
 require_once 'CstMode.php';
 
 class Request_Test extends PHPUnit_Framework_TestCase
@@ -162,7 +163,7 @@ class Request_Test extends PHPUnit_Framework_TestCase
         } catch (Exception $e) {
             $r= $e->getMessage();
         }
-            $this->assertEquals($r, E_ERC037);
+            $this->assertEquals($r, CstError::E_ERC037);
             
             $_SERVER['PATH_INFO']='/X/1';
             $_SERVER['REQUEST_METHOD']='GET';
@@ -186,7 +187,7 @@ class Request_Test extends PHPUnit_Framework_TestCase
         } catch (Exception $e) {
             $r= $e->getMessage();
         }
-            $this->assertEquals($r, E_ERC048);
+            $this->assertEquals($r, CstError::E_ERC048);
             
             $_SERVER['PATH_INFO']='/X';
             $r=new Request();
@@ -198,13 +199,13 @@ class Request_Test extends PHPUnit_Framework_TestCase
     public function testPathErr()
     {
         $tc = [
-            ['1',       V_S_READ,   E_ERC036.':1'],
-            ['/*/1',    V_S_READ,   E_ERC036.':/*/1:0'],
-            ['/a/$',    V_S_READ,   E_ERC036.':/a/$:1'],
-            ['/a/1/$',  V_S_READ,   E_ERC036.':/a/1/$:2'],
-            ['/X',      V_S_READ,   E_ERC048.':'.V_S_READ.':/X'],
-            ['/X/1',    V_S_SLCT,   E_ERC048.':'.V_S_SLCT.':/X/1'],
-            ['/',       V_S_SLCT,   E_ERC048.':'.V_S_SLCT.':/'],
+            ['1',       V_S_READ,   CstError::E_ERC036.':1'],
+            ['/*/1',    V_S_READ,   CstError::E_ERC036.':/*/1:0'],
+            ['/a/$',    V_S_READ,   CstError::E_ERC036.':/a/$:1'],
+            ['/a/1/$',  V_S_READ,   CstError::E_ERC036.':/a/1/$:2'],
+            ['/X',      V_S_READ,   CstError::E_ERC048.':'.V_S_READ.':/X'],
+            ['/X/1',    V_S_SLCT,   CstError::E_ERC048.':'.V_S_SLCT.':/X/1'],
+            ['/',       V_S_SLCT,   CstError::E_ERC048.':'.V_S_SLCT.':/'],
             
         ];
     

@@ -1,4 +1,6 @@
 <?php
+namespace ABridge\ABridge;
+
 /**
  * Model class file
  *
@@ -9,10 +11,14 @@
  * @author   Pierre Lavency <pierrelavency@hotmail.com>
  * @link     No
  */
-require_once 'Logger.php';
-require_once 'CstError.php';
+use ABridge\ABridge\Logger;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\CstError;
+
+use Exception;
+ 
 require_once 'Type.php';
-require_once "Handler.php";
+
 define('M_P_EVAL', "M_P_EVAL");
 define('M_P_EVALP', "M_P_EVALP");
 define('M_P_TEMP', "M_P_TEMP");
@@ -105,7 +111,7 @@ class Model
     public function construct2($name, $id)
     {
         if (! checkType($id, M_INTP)) {
-            throw new Exception(E_ERC011.':'.$id.':'.M_INTP);
+            throw new Exception(CstError::E_ERC011.':'.$id.':'.M_INTP);
         }
         $this->init($name, $id);
         $idr=0;
@@ -116,7 +122,7 @@ class Model
             $idr =$x->restoreObj($this);
             $this->trusted = false;
             if ($id != $idr) {
-                throw new exception(E_ERC007.':'.$name.':'.$id);
+                throw new exception(CstError::E_ERC007.':'.$name.':'.$id);
             };
         }
         $this->modChgd=false;
@@ -126,12 +132,13 @@ class Model
 
     protected function initObj($name)
     {
-        if (! class_exists($name)) {
+        $cmodName = Handler::get()->getCmod($name);
+        if (is_null($cmodName)) {
             $this->obj= null;
             return null;
         }
         $this->custom=true;
-        $this->obj = new $name($this);
+        $this->obj = new $cmodName($this);
         $this->custom=false;
         return $this->obj;
     }
@@ -146,7 +153,7 @@ class Model
     protected function init($name, $id)
     {
         if (! checkIdentifier($name)) {
-            throw new Exception(E_ERC010.':'.$name.':'.M_ALPHA);
+            throw new Exception(CstError::E_ERC010.':'.$name.':'.M_ALPHA);
         }
         $this->name=$name;
         $this->initattr();
@@ -154,7 +161,7 @@ class Model
         $logname = $name.'errLog';
         $this->errLog= new Logger($logname);
         $this->obj=null;
-        $this->stateHdlr=getStateHandler($name);
+        $this->stateHdlr=Handler::get()->getStateHandler($name);
     }
     /**
      * Re/Initialise the attributes and their properties
@@ -207,7 +214,7 @@ class Model
             $this->custom=false;
             return $res;
         }
-        $this->errLog->logLine(E_ERC061);
+        $this->errLog->logLine(CstError::E_ERC061.':'.$this->getModName());
         return false;
     }
     /**
@@ -413,7 +420,7 @@ class Model
     public function getTyp($attr)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         if (isset($this->meta['type'][$attr])) {
@@ -465,7 +472,7 @@ class Model
         if ($modA != $modN) {
             $abstr = $mod->getInhObj();
             if (is_null($abstr) or $modA != $abstr->getModName()) {
-                throw new Exception(E_ERC033.':'.$attr.':'.$modA.':'.$modN);
+                throw new Exception(CstError::E_ERC033.':'.$attr.':'.$modA.':'.$modN);
             }
         }
         $id = $mod->getId();
@@ -486,11 +493,11 @@ class Model
     private function getCrefMod($attr)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         if ($this->getTyp($attr)!= M_CREF) {
-            $this->errLog->logLine(E_ERC027.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC027.':'.$attr);
             return false;
         }
         $path=$this->getParm($attr);
@@ -530,7 +537,7 @@ class Model
         $res=new Model($patha[1], $id);
         $rid=$res->getVal($patha[2]);
         if ($rid != $this->getId()) {
-            throw new Exception(E_ERC032.':'.$attr.':'.$id);
+            throw new Exception(CstError::E_ERC032.':'.$attr.':'.$id);
         }
         $res->protect($patha[2]);
         return ($res);
@@ -539,12 +546,12 @@ class Model
     public function getCode($attr, $id)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         $typ = $this->getTyp($attr);
         if ($typ != M_CODE and $typ != M_REF) {
-            $this->errLog->logLine(E_ERC028.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC028.':'.$attr);
             return false;
         }
         $path=$this->getParm($attr);
@@ -586,7 +593,7 @@ class Model
     public function isProtected($attr)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         $res = in_array($attr, $this->meta['protected']);
@@ -602,7 +609,7 @@ class Model
     public function isBkey($attr)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         $res = in_array($attr, $this->meta['bkey']);
@@ -625,7 +632,7 @@ class Model
     public function isMdtr($attr)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         $res =in_array($attr, $this->meta['mdtr']);
@@ -648,7 +655,7 @@ class Model
     public function isPredef($attr)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         return (in_array($attr, $this->meta['predef']));
@@ -663,7 +670,7 @@ class Model
     public function isOptl($attr)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         if ($this->isPredef($attr)) {
@@ -688,7 +695,7 @@ class Model
     public function isModif($attr)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         $res = false;
@@ -704,7 +711,7 @@ class Model
     public function isSelect($attr)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         if ($attr == 'id') {
@@ -795,7 +802,7 @@ class Model
     public function setDflt($attr, $val)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         };
         $this->meta['dflt'][$attr]=$val;
@@ -812,7 +819,7 @@ class Model
     public function protect($attr)
     {
         if (! $x= $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         };
         if (!in_array($attr, $this->meta['protected'])) {
@@ -831,11 +838,11 @@ class Model
     public function setBkey($attr, $val)
     {
         if (! $x= $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         };
         if (!$this->stateHdlr) {
-            $this->errLog->logLine(E_ERC017.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC017.':'.$attr);
             return false;
         }
         if ($val) {
@@ -855,17 +862,17 @@ class Model
     public function setCkey($attrLst, $val)
     {
         if (! is_array($attrLst)) {
-            $this->errLog->logLine(E_ERC029);
+            $this->errLog->logLine(CstError::E_ERC029);
             return false;
         }
         foreach ($attrLst as $attr) {
             if (! $x= $this->existsAttr($attr)) {
-                $this->errLog->logLine(E_ERC002.':'.$attr);
+                $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
                 return false;
             };
         }
         if (!$this->stateHdlr) {
-            $this->errLog->logLine(E_ERC017);
+            $this->errLog->logLine(CstError::E_ERC017);
             return false;
         }
         if ($val) {
@@ -893,7 +900,7 @@ class Model
     public function setMdtr($attr, $val)
     {
         if (! $x= $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         };
         if ($val) {
@@ -923,7 +930,7 @@ class Model
     {
         foreach ($attrL as $attr) {
             if (! $x= $this->existsAttr($attr)) {
-                $this->errLog->logLine(E_ERC002.':'.$attr);
+                $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
                 return false;
             };
         }
@@ -943,7 +950,7 @@ class Model
     {
         $x= $this->existsAttr($attr);
         if ($x) {
-            $this->errLog->logLine(E_ERC003.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC003.':'.$attr);
             return false;
         }
         if (! $this->checkParm($attr, $typ, $path, false)) {
@@ -981,17 +988,17 @@ class Model
     {
         $x= $this->existsAttrLocal($attr);
         if (!$x) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
 
         if (in_array($attr, $this->meta['predef'])) {
-            $this->errLog->logLine(E_ERC001.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC001.':'.$attr);
             return false;
         }
         foreach ($this->meta['ckey'] as $attrLst) {
             if (in_array($attr, $attrLst)) {
-                $this->errLog->logLine(E_ERC030.':'.$attr);
+                $this->errLog->logLine(CstError::E_ERC030.':'.$attr);
                 return false;
             }
         }
@@ -1046,7 +1053,7 @@ class Model
     {
         $x= $this->existsAttr($attr);
         if (!$x) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         foreach ($this->meta['dflt'] as $x => $val) {
@@ -1114,7 +1121,7 @@ class Model
         }
         $x= $this->existsAttr($attr);
         if (!$x) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         $type=$this->getTyp($attr);
@@ -1166,46 +1173,46 @@ class Model
     public function setValN($attr, $val)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         if ($this->isAbstr()) {
-            $this->errLog->logLine(E_ERC045);
+            $this->errLog->logLine(CstError::E_ERC045);
             return false;
         }
         $check=!($this->trusted);
         if (in_array($attr, $this->meta['predef']) and $check) {
-            $this->errLog->logLine(E_ERC001.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC001.':'.$attr);
             return false;
         };
         $check= ($check or $this->checkTrusted);
         // Eval
         if ($this->isEval($attr)) {
-            $this->errLog->logLine(E_ERC039.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC039.':'.$attr);
             return false;
         }
         // EvalP
         if ($this->isEvalP($attr)
             and (! $this->custom)
             and !($this->trusted)) {
-            $this->errLog->logLine(E_ERC042.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC042.':'.$attr);
             return false;
         }
         // protected
         if ($this->isProtected($attr)) {
-            $this->errLog->logLine(E_ERC034.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC034.':'.$attr);
             return false;
         }
         // type checking
         $type=$this->getTyp($attr);
         if ($type ==M_CREF) {
-            $this->errLog->logLine(E_ERC013.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC013.':'.$attr);
             return false;
         }
         $btype=baseType($type);
         $res =checkType($val, $btype);
         if (! $res) {
-            $this->errLog->logLine(E_ERC005.':'.$attr.':'.$val.':'.$btype);
+            $this->errLog->logLine(CstError::E_ERC005.':'.$attr.':'.$val.':'.$btype);
             return false;
         }
         // ref checking
@@ -1219,7 +1226,7 @@ class Model
         if ($type == M_CODE and $check) {
             $res = $this-> checkCode($attr, $val);
             if (! $res) {
-                $this->errLog->logLine(E_ERC016.':'.$attr.':'.$val);
+                $this->errLog->logLine(CstError::E_ERC016.':'.$attr.':'.$val);
                 return false;
             }
         }
@@ -1252,7 +1259,7 @@ class Model
     public function getBkey($attr, $val)
     {
         if (!$this->isBkey($attr)) {
-            throw new Exception(E_ERC056.':'.$attr);
+            throw new Exception(CstError::E_ERC056.':'.$attr);
         };
         $res=$this->findObjAttr($this->getModName(), $attr, $val);
         if ($res == []) {
@@ -1272,7 +1279,7 @@ class Model
             $hdl = $obj->stateHdlr;
         }
         if (!$hdl) {
-            throw new exception(E_ERC017.':'.$mod);
+            throw new exception(CstError::E_ERC017.':'.$mod);
         }
         $res=$hdl->findObj($mod, $attr, $val);
         return $res;
@@ -1288,7 +1295,7 @@ class Model
             $hdl = $obj->stateHdlr;
         }
         if (!$hdl) {
-            throw new exception(E_ERC017.':'.$mod);
+            throw new exception(CstError::E_ERC017.':'.$mod);
         }
         $res=$hdl->findObjWheOp($mod, $attrLst, $opLst, $valLst);
         return $res;
@@ -1359,34 +1366,35 @@ class Model
     protected function checkParm($attr, $typ, $parm, $check)
     {
         if (!isMtype($typ)) {
-            $this->errLog->logLine(E_ERC004.':'.$typ);
+            $this->errLog->logLine(CstError::E_ERC004.':'.$typ);
             return false;
         }
         if ($parm === M_P_TEMP) {
             return true;
         }
         if ($parm === M_P_EVAL or $parm === M_P_EVALP) {
-            if (! class_exists($this->getModName())) {
-                $this->errLog->logLine(E_ERC040.':'.$attr.':'.$typ);
+            $cmodName = Handler::get()->getCmod($this->getModName());
+            if (is_null($cmodName)) {
+                $this->errLog->logLine(CstError::E_ERC040.':'.$attr.':'.$typ);
                 return false;
             }
             return true;
         }
         if ($typ != M_REF and $typ != M_CREF and $typ != M_CODE) {
             if ($parm) {
-                $this->errLog->logLine(E_ERC041.':'.$attr.':'.$typ.':'.$parm);
+                $this->errLog->logLine(CstError::E_ERC041.':'.$attr.':'.$typ.':'.$parm);
                 return false;
             }
             return true;
         }
         if (!$parm) {
-            $this->errLog->logLine(E_ERC008.':'.$attr.':'.$typ);
+            $this->errLog->logLine(CstError::E_ERC008.':'.$attr.':'.$typ);
             return false;
         }
         $path=explode('/', $parm);
         $root = $path[0];
         if (($root != "" )) {
-            $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+            $this->errLog->logLine(CstError::E_ERC020.':'.$attr.':'.$parm);
             return false;
         }
         $c = count($path)-1;
@@ -1394,7 +1402,7 @@ class Model
         switch ($typ) {
             case M_REF:
                 if ($c !=1) {
-                    $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+                    $this->errLog->logLine(CstError::E_ERC020.':'.$attr.':'.$parm);
                     return false;
                 }
                 if (! $check) {
@@ -1404,13 +1412,13 @@ class Model
                 $mod = $path[1];
                 $obj = new Model($mod);
                 if (!$obj->stateHdlr) {
-                    $this->errLog->logLine(E_ERC014.':'.$attr.':'.$typ.':'.$parm);
+                    $this->errLog->logLine(CstError::E_ERC014.':'.$attr.':'.$typ.':'.$parm);
                     return false;
                 }
                 break;
             case M_CREF:
                 if ($c !=2) {
-                    $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+                    $this->errLog->logLine(CstError::E_ERC020.':'.$attr.':'.$parm);
                     return false;
                 }
                 /* 			/ClassName/RefAttr 		*/
@@ -1419,18 +1427,18 @@ class Model
                 }
                 $obj = new Model($path[1]);
                 if (!$obj->stateHdlr) {
-                    $this->errLog->logLine(E_ERC014.':'.$attr.':'.$typ.':'.$parm);
+                    $this->errLog->logLine(CstError::E_ERC014.':'.$attr.':'.$typ.':'.$parm);
                     return false;
                 }
                 $atyp= $obj->getTyp($path[2]);
                 if ($atyp != M_REF) {
-                    $this->errLog->logLine(E_ERC054.':'.$path[2]);
+                    $this->errLog->logLine(CstError::E_ERC054.':'.$path[2]);
                     return false;
                 }
                 break;
             case M_CODE:
                 if ($c >3 or $c<1) {
-                    $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+                    $this->errLog->logLine(CstError::E_ERC020.':'.$attr.':'.$parm);
                     return false;
                 }
                 if (! $check) {
@@ -1441,19 +1449,19 @@ class Model
                         /* 			/ClassName 			*/
                         $obj = new Model($path[1]);
                         if (!$obj->stateHdlr) {
-                            $this->errLog->logLine(E_ERC014.':'.$attr.':'.$typ.':'.$parm);
+                            $this->errLog->logLine(CstError::E_ERC014.':'.$attr.':'.$typ.':'.$parm);
                             return false;
                         }
                         break;
                     case 2:
                         /* 			/./CrefAttr 		*/
                         if ($path[1] != ".") {
-                            $this->errLog->logLine(E_ERC020.':'.$attr.':'.$parm);
+                            $this->errLog->logLine(CstError::E_ERC020.':'.$attr.':'.$parm);
                             return false;
                         }
                         $atyp= $this->getTyp($path[2]);
                         if ($atyp != M_CREF) {
-                            $this->errLog->logLine(E_ERC055.':'.$path[2]);
+                            $this->errLog->logLine(CstError::E_ERC055.':'.$path[2]);
                             return false;
                         }
                         break;
@@ -1467,7 +1475,7 @@ class Model
                         }
                             $atyp= $obj->getTyp($path[3]);
                         if ($atyp != M_CREF) {
-                            $this->errLog->logLine(E_ERC055.':'.$path[3]);
+                            $this->errLog->logLine(CstError::E_ERC055.':'.$path[3]);
                             return false;
                         }
                         break;
@@ -1479,11 +1487,11 @@ class Model
     public function getModRef($attr)
     {
         if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(E_ERC002.':'.$attr);
+            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
         if ($this->getTyp($attr)!= M_REF) {
-             $this->errLog->logLine(E_ERC026.':'.$attr);
+             $this->errLog->logLine(CstError::E_ERC026.':'.$attr);
             return false;
         }
         $path=$this->getParm($attr);
@@ -1516,7 +1524,7 @@ class Model
             return false;
         }
         if ($r != M_CODE and $r != M_REF) {
-            $this->errLog->logLine(E_ERC015.':'.$attr.':'.$r);
+            $this->errLog->logLine(CstError::E_ERC015.':'.$attr.':'.$r);
             return false;
         }
         if ($r == M_CODE) {
@@ -1578,11 +1586,11 @@ class Model
             if (array_key_exists($attr, $this->attrVal)) {
                 $val = $this->getVal($attr);
                 if (is_null($val)) {
-                    $this->errLog->logLine(E_ERC019.':'.$attr);
+                    $this->errLog->logLine(CstError::E_ERC019.':'.$attr);
                     return false;
                 }
             } else {
-                $this->errLog->logLine(E_ERC019.':'.$attr);
+                $this->errLog->logLine(CstError::E_ERC019.':'.$attr);
                 return false;
             }
         }
@@ -1595,7 +1603,7 @@ class Model
             $val =$this->getVal($attr);
             $res=$this->checkBkey($attr, $val);
             if (! $res) {
-                $this->errLog->logLine(E_ERC018.':'.$attr.':'.$val);
+                $this->errLog->logLine(CstError::E_ERC018.':'.$attr.':'.$val);
                 return false;
             }
         }
@@ -1608,7 +1616,7 @@ class Model
             $res=$this->checkCkey($attrLst);
             if (!$res) {
                 $l=implode(':', $attrLst);
-                $this->errLog->logLine(E_ERC031.':'.$l);
+                $this->errLog->logLine(CstError::E_ERC031.':'.$l);
                 return false;
             }
         }
@@ -1643,7 +1651,7 @@ class Model
         $n=$this->vnum;
         $res=($vnum === $n);
         if (!$res) {
-            $this->errLog->logLine(E_ERC062);
+            $this->errLog->logLine(CstError::E_ERC062);
         }
         return $res;
     }
@@ -1651,15 +1659,15 @@ class Model
     public function saveN()
     {
         if ($this->isAbstr()) {
-            $this->errLog->logLine(E_ERC044);
+            $this->errLog->logLine(CstError::E_ERC044);
             return false;
         }
         if (! $this->stateHdlr) {
-            $this->errLog->logLine(E_ERC006);
+            $this->errLog->logLine(CstError::E_ERC006);
             return false;
         }
         if ($this->modChgd) {
-            $this->errLog->logLine(E_ERC024);
+            $this->errLog->logLine(CstError::E_ERC024);
             return false;
         }
 
@@ -1703,7 +1711,7 @@ class Model
         $res=$this->stateHdlr->saveObj($this);
         
         if (!$res and $this->getId()) {
-            $this->errLog->logLine(E_ERC062);
+            $this->errLog->logLine(CstError::E_ERC062);
         }
         
         return $res;
@@ -1746,21 +1754,21 @@ class Model
     public function deletN()
     {
         if ($this->isAbstr()) {
-            $this->errLog->logLine(E_ERC044);
+            $this->errLog->logLine(CstError::E_ERC044);
             return false;
         }
         if (! $this->stateHdlr) {
-            $this->errLog->logLine(E_ERC006);
+            $this->errLog->logLine(CstError::E_ERC006);
             return false;
         }
         if (!$this->isDel()) {
-            $this->errLog->logLine(E_ERC052);
+            $this->errLog->logLine(CstError::E_ERC052);
             return false;
         }
         try {
             $res=$this->stateHdlr->eraseObj($this);
         } catch (Exception $e) {
-            $this->errLog->logLine(E_ERC052.':'.$e->getMessage());
+            $this->errLog->logLine(CstError::E_ERC052.':'.$e->getMessage());
             return false;
         }
         if ($res) {
@@ -1777,7 +1785,7 @@ class Model
     public function deleteMod()
     {
         if (! $this->stateHdlr) {
-            $this->errLog->logLine(E_ERC006);
+            $this->errLog->logLine(CstError::E_ERC006);
             return false;
         }
         $res=$this->stateHdlr->eraseMod($this);
@@ -1793,7 +1801,7 @@ class Model
     public function saveMod()
     {
         if (! $this->stateHdlr) {
-            $this->errLog->logLine(E_ERC006);
+            $this->errLog->logLine(CstError::E_ERC006);
             return false;
         }
         $res=$this->stateHdlr->saveMod($this);

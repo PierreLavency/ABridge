@@ -1,8 +1,7 @@
 <?php
     
 
-require_once("Model.php");
-
+use ABridge\ABridge\Model;
 
 class Model_Test extends PHPUnit_Framework_TestCase
 {

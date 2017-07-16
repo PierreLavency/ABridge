@@ -1,115 +1,117 @@
 <?php
-		
-	require_once 'CLASSDEC.php';	
-				
+
+use ABridge\ABridge\Model; 
+
+require_once 'SETUP.php';
+
 	// Ctype
 	
-	$obj=new Model($CType);
+	$obj=new Model(Config::CType);
 	$obj->setVal('Value','Message');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($CType);
+	$obj=new Model(Config::CType);
 	$obj->setVal('Value','Batch');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($CType);
+	$obj=new Model(Config::CType);
 	$obj->setVal('Value','GUI');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
 	// SLevel
 	
-	$obj=new Model($SLevel);
+	$obj=new Model(Config::SLevel);
 	$obj->setVal('Value','Critical');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($SLevel);
+	$obj=new Model(Config::SLevel);
 	$obj->setVal('Value','Major');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($SLevel);
+	$obj=new Model(Config::SLevel);
 	$obj->setVal('Value','Minor');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($SLevel);
+	$obj=new Model(Config::SLevel);
 	$obj->setVal('Value','None');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
 	// A style
 
-	$obj=new Model($AStyle);
+	$obj=new Model(Config::AStyle);
 	$obj->setVal('Value','Recoverable Transactions');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($AStyle);
+	$obj=new Model(Config::AStyle);
 	$obj->setVal('Value','Low Latency, High Capacity');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($AStyle);
+	$obj=new Model(Config::AStyle);
 	$obj->setVal('Value','Data Warehousing, Reporting & Analytics');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($AStyle);
+	$obj=new Model(Config::AStyle);
 	$obj->setVal('Value','Data Broadcast & Streaming');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($AStyle);
+	$obj=new Model(Config::AStyle);
 	$obj->setVal('Value','GUI Applications');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
 	// Source control
 
-	$obj=new Model($SControl);
+	$obj=new Model(Config::SControl);
 	$obj->setVal('Value','Internal');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($SControl);
+	$obj=new Model(Config::SControl);
 	$obj->setVal('Value','External');
 	$obj->save();	
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
 	// Interface type
 	
-	$obj=new Model($IType);
+	$obj=new Model(Config::IType);
 	$obj->setVal('Value','Message');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($IType);
+	$obj=new Model(Config::IType);
 	$obj->setVal('Value','Noticiation');
 	$obj->save();	
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($IType);
+	$obj=new Model(Config::IType);
 	$obj->setVal('Value','Batch');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($IType);
+	$obj=new Model(Config::IType);
 	$obj->setVal('Value','DataBase');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
 	// interface usage
 	
-	$obj=new Model($IUse);
+	$obj=new Model(Config::IUse);
 	$obj->setVal('Value','Internal');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 	
-	$obj=new Model($IUse);
+	$obj=new Model(Config::IUse);
 	$obj->setVal('Value','External');
 	$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";	
@@ -121,7 +123,7 @@
 ["true","true","true"]
 ]';
 
-	$obj=new Model($Role);
+	$obj=new Model(Config::Role);
 	$obj->setVal('Name','Root');
 	$obj->setVal('JSpec',$RSpec);
 	$RootRole=$obj->save();
@@ -135,7 +137,7 @@
 [["Read","Update"],  "|User",       {"User":"id<>User"}]
 ]';
 
-	$obj=new Model($Role);
+	$obj=new Model(Config::Role);
 	$obj->setVal('Name','Default');
 	$obj->setVal('JSpec',$RSpec);
 	$obj->save();
@@ -157,7 +159,7 @@
 ]';
 
 		
-	$obj=new Model($Role);
+	$obj=new Model(Config::Role);
 	$obj->setVal('Name','AppOwner');
 	$obj->setVal('JSpec',$RSpec);
 	$obj->save();
@@ -176,7 +178,7 @@
 ]';
 
 	
-	$obj=new Model($Role);
+	$obj=new Model(Config::Role);
 	$obj->setVal('Name','ArchOwner');
 	$obj->setVal('JSpec',$RSpec);
 	$obj->save();
@@ -185,14 +187,14 @@
 	
 	// User
 	
-	$obj=new Model($User);
+	$obj=new Model(Config::User);
 	$obj->setVal('UserId','Root');
 	$RootUser=$obj->save();
 	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
 
 	// Distribution
 	
-	$obj=new Model($Distribution);
+	$obj=new Model(Config::Distribution);
 	$obj->setVal('ofRole',$RootRole);
 	$obj->setVal('toUser',$RootUser);		
 	$res=$obj->save();

@@ -1,8 +1,7 @@
 <?php
     
 
-require_once('Logger.php');
-
+use ABridge\ABridge\Logger;
 
 class Logger_Test extends PHPUnit_Framework_TestCase
 {

@@ -1,8 +1,8 @@
 <?php
-    
 
-require_once("Model.php");
-require_once 'CModel.php';
+use ABridge\ABridge\CModel;
+use ABridge\ABridge\Model;
+use ABridge\ABridge\CstError;
 
 class testeval extends CModel
 {
@@ -61,15 +61,15 @@ class Model_Evl_Test extends PHPUnit_Framework_TestCase
     {
     
         $this->assertFalse($x->setVal('aplusb', 1));
-        $this->assertEquals($x->getErrLine(), E_ERC039.':aplusb');
+        $this->assertEquals($x->getErrLine(), CstError::E_ERC039.':aplusb');
         
         $this->assertTrue($x->delAttr('aplusb'));
         
         $this->assertNotNull(($y = new Model('toto')));
         $this->assertFalse($y->addAttr('aplusb', M_INT, M_P_EVAL));
-        $this->assertEquals($y->getErrLine(), E_ERC040.':aplusb:'.M_INT);
+        $this->assertEquals($y->getErrLine(), CstError::E_ERC040.':aplusb:'.M_INT);
         
         $this->assertFalse($y->addAttr('aplusb', M_INT, '/xx'));
-        $this->assertEquals($y->getErrLine(), E_ERC041.':aplusb:'.M_INT.':/xx');
+        $this->assertEquals($y->getErrLine(), CstError::E_ERC041.':aplusb:'.M_INT.':/xx');
     }
 }

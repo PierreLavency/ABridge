@@ -2,7 +2,8 @@
     
 /* */
 
-require_once("FileBase.php");
+use ABridge\ABridge\FileBase;
+
 require_once("Base_Case.php");
 
 class FileBase_Test extends Base_Case

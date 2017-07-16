@@ -1,13 +1,13 @@
 <?php
-require_once("Request.php");
-require_once("Handle.php");
-require_once '/View/Src/View.php';
+
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Handler;
 
 function viewCasesXref()
 {
-    $db = getBaseHandler('dataBase', 'test');
+    $db = Handler::get()->getBase('dataBase', 'test');
     $db->setLogLevl(0);
-    initStateHandler('viewCasesXref', 'dataBase', 'test');
+    Handler::get()->setStateHandler('viewCasesXref', 'dataBase', 'test');
     
     $db->beginTrans();
     $x=new Model('viewCasesXref');

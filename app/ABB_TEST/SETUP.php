@@ -1,34 +1,60 @@
 <?php
 require_once 'CstMode.php';
-require_once '/View/Src/CstView.php';
-require_once 'CModel.php';
-	
-	require_once 'CLASSDEC.php';
+require_once 'View/CstView.php';
 
-	$config = [
+
+class Config 
+{
+	
+	const DBDEC = 'abb';
+	
+	const ABB = 'ABB';
+	const Application = 'Application';
+	const Component='Component';
+	const Interfaces ='Interface';
+	const Exchange='Exchange';
+	
+	const ACode = 'ACode';
+	const CType='CType';
+	const SLevel='SLevel';
+	const AStyle='AStyle';
+	const SControl='SControl';
+	const IType='IType';
+	const IUse='IUse';
+	
+	const User ='User';
+	const Role = 'Role';
+	const Session ='Session';
+	const Distribution = 'Distribution';
+	const Group = 'UserGroup';
+	
+	const Adm ='Admin';
+
+
+	static $config = [
 	'Handlers' =>
 		[
-		$ABB		 => ['dataBase',$DBDEC,false],
-		$Application => ['dataBase',$DBDEC,],
-		$Component	 => ['dataBase',$DBDEC,],
-		$Interface	 => ['dataBase',$DBDEC,],
-		$Exchange	 => ['dataBase',$DBDEC,],
-		$IUse	 	 => ['dataBase',$DBDEC,],			
-		$IType	 	 => ['dataBase',$DBDEC,],		
-		$CType	 	 => ['dataBase',$DBDEC,],
-		$SLevel 	 => ['dataBase',$DBDEC,],
-		$AStyle 	 => ['dataBase',$DBDEC,],
-		$SControl 	 => ['dataBase',$DBDEC,],
-		$ACode	 	 => ['dataBase',$DBDEC,],
-		$User	 	 => ['dataBase',$DBDEC,],
-		$Group		 => ['dataBase',$DBDEC,],		
-		$Role	 	 => ['dataBase',$DBDEC,],
-		$Distribution=> ['dataBase',$DBDEC,],
-		$Session	 => ['dataBase',$DBDEC,],
-		'Admin'		 => ['dataBase',$DBDEC,],
+		self::ABB		 => 	['dataBase',self::DBDEC,false],
+		self::Application=> 	['dataBase',self::DBDEC,],
+		self::Component	 => 	['dataBase',self::DBDEC,],
+		self::Interfaces => 	['dataBase',self::DBDEC,],
+		self::Exchange	 => 	['dataBase',self::DBDEC,],
+		self::IUse	 	 => 	['dataBase',self::DBDEC,],			
+		self::IType	 	 => 	['dataBase',self::DBDEC,],		
+		self::CType	 	 =>		['dataBase',self::DBDEC,],
+		self::SLevel 	 => 	['dataBase',self::DBDEC,],
+		self::AStyle 	 =>		['dataBase',self::DBDEC,],
+		self::SControl 	 => 	['dataBase',self::DBDEC,],
+		self::ACode	 	 => 	['dataBase',self::DBDEC,],
+		self::User	 	 => 	['dataBase',self::DBDEC,],
+		self::Group		 => 	['dataBase',self::DBDEC,],		
+		self::Role	 	 => 	['dataBase',self::DBDEC,],
+		self::Distribution=> 	['dataBase',self::DBDEC,],
+		self::Session	 => 	['dataBase',self::DBDEC,],
+		self::Adm	     => 	['dataBase',self::DBDEC,],
 		],
 	'Home' =>
-		['/',"/$Session/~","/$User/~",],
+		['/','/'.self::Session.'/~','/'.self::User.'/~',],
 	'Adm' => [
 			
 	],
@@ -36,7 +62,7 @@ require_once 'CModel.php';
 			
 	],		
 	'Views' => [
-		$Application=> [
+		self::Application=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['CodeNm'],
@@ -99,7 +125,7 @@ require_once 'CModel.php';
 				]
 				
 		],			
-		$Component=> [
+		self::Component=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['CodeNm'],
@@ -139,7 +165,7 @@ require_once 'CModel.php';
 					],				
 				],
 			],	
-		$Interface=> [
+		self::Interfaces=> [
 		
 				'attrList' => [
 	//				V_S_REF		=> ['Name'],
@@ -156,56 +182,56 @@ require_once 'CModel.php';
 				],	
 				
 		],
-		$Exchange=> [
+		self::Exchange=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['CodeNm'],
 				]
 				
 		],
-		$CType=> [
+		self::CType=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		$SLevel=> [
+		self::SLevel=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		$AStyle=> [
+		self::AStyle=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		$SControl=> [
+		self::SControl=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		$IType=> [
+		self::IType=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		$IUse=> [
+		self::IUse=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		$User =>[
+		self::User =>[
 			'lblList' => [
 					'Play'			=> 'PlayRoles',
 				],
@@ -214,7 +240,7 @@ require_once 'CModel.php';
 				],						
 			'attrList' => [
 					V_S_REF		=> ['UserId'],
-					V_S_SLCT	=> ['UserId',$Group,'DefaultRole'],
+					V_S_SLCT	=> ['UserId',self::Group,'DefaultRole'],
 				],
 			'viewList' => [
 				'Password'  => [
@@ -227,8 +253,8 @@ require_once 'CModel.php';
 				],
 				'Role'  => [
 					'attrList' => [
-						V_S_READ	=> ['UserId',$Group,'DefaultRole','Play'],
-						V_S_UPDT	=> ['UserId','Password',$Group,'DefaultRole'],
+						V_S_READ	=> ['UserId',self::Group,'DefaultRole','Play'],
+						V_S_UPDT	=> ['UserId','Password',self::Group,'DefaultRole'],
 					],
 					'navList' => [
 						V_S_READ => [V_S_UPDT],
@@ -244,12 +270,12 @@ require_once 'CModel.php';
 				],
 			]				
 		],
-		$Group =>[		
+		self::Group =>[		
 			'attrList' => [
 				V_S_REF		=> ['Name'],
 				],
 		],		
-		$Role =>[	
+		self::Role =>[	
 				'attrList' => [
 					V_S_REF		=> ['Name'],
 				],
@@ -259,7 +285,7 @@ require_once 'CModel.php';
 					V_S_CREA	=> ['JSpec' => [H_TYPE=>H_T_TEXTAREA,H_COL=>160,H_ROW=> 30]],
 				]
 		],
-		$Session =>[
+		self::Session =>[
 			'attrList' => [
 						V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									
 			],
@@ -291,7 +317,7 @@ require_once 'CModel.php';
 			]							
 
 		],
-		$Distribution =>[
+		self::Distribution =>[
 			'attrHtml' => [
 				V_S_CREA => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
 				V_S_UPDT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
@@ -302,5 +328,5 @@ require_once 'CModel.php';
 		],
 	];		
 	
-
+}
 	

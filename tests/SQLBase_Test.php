@@ -2,7 +2,8 @@
     
 /* */
 
-require_once("SQLBase.php");
+use ABridge\ABridge\SQLBase;
+
 require_once("Base_Case.php");
 
 class SQLBase_Test extends Base_Case

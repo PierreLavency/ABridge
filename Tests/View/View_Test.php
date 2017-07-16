@@ -1,7 +1,8 @@
 <?php
     
-require_once('Logger.php');
-require_once('View_case.php');
+use ABridge\ABridge\Logger;
+
+require_once 'View_case.php';
 
 class View_Test extends PHPUnit_Framework_TestCase
 {

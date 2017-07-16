@@ -7,14 +7,14 @@
 	<testsuite name="ABridge">
 		<directory>Tests</directory>
 	</testsuite>
-	<testsuite name="Vew">
-		<directory>Src/View/Tests</directory>		
+	<testsuite name="View">
+		<directory>Tests/View</directory>		
 	</testsuite>
 	<testsuite name="Usr">
-		<directory>Src/Usr/Tests</directory>
+		<directory>Tests/Usr</directory>
 	</testsuite>
 	<testsuite name="Adm">
-		<directory>Src/Adm/Tests</directory>
+		<directory>Tests/Adm</directory>
 	</testsuite>	
   </testsuites>
 </phpunit>

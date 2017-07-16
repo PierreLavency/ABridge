@@ -1,4 +1,5 @@
 <?php
+use ABridge\ABridge\CModel;
 
 class Student extends CModel 
 {

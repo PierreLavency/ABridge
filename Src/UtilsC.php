@@ -1,5 +1,5 @@
-
 <?php
+namespace ABridge\ABridge;
 
 class UtilsC
 {

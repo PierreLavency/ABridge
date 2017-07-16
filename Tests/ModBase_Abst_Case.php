@@ -1,8 +1,8 @@
 <?php
     
 /* */
-require_once("Model.php");
-require_once("ModBase.php");
+use ABridge\ABridge\Model;
+use ABridge\ABridge\ModBase;
 
 class ModBase_Abst_Case extends PHPUnit_Framework_TestCase
 {

@@ -1,12 +1,11 @@
 <?php
-require_once 'UtilsC.php';
-    
-require_once 'Model.php';
-require_once 'Handler.php';
-require_once 'CModel.php';
+use ABridge\ABridge\UtilsC;
 
-require_once '/Usr/Src/Session.php';
-require_once '/Usr/Src/Usr.php';
+use ABridge\ABridge\Model;
+
+
+use ABridge\ABridge\Usr\Session;
+use ABridge\ABridge\Usr\Usr;
 
 class Usr_Test_dataBase_1 extends Session
 {
@@ -107,26 +106,26 @@ class Usr_Test extends PHPUnit_Framework_TestCase
      */
     public function testCleanUp($bases)
     {
-    	foreach ($bases as $base) {
-    		list($db,$bd) = $base;
-    		
-    		$db->beginTrans();
-    		$x =  new Model($bd['Session'], 2);
-    		$_COOKIE[$bd['Session']]= $x->getVal('BKey');
-    		
-    		Usr::$cleanUp=true;
-    		
-    		
-    		$cobj = Usr::init($bd['Session'], [$bd['Session']]);
-    		$session = $cobj->getMod();
-    		
-    		$this->assertTrue(Usr::isNew());
-    		$this->assertTrue($cobj->isNew());
-    		$this->assertEquals(3, $session->getId());
-    		
-    		Usr::$cleanUp=false;
-    		$db->commit();
-    	}
-    	return $bases;
+        foreach ($bases as $base) {
+            list($db,$bd) = $base;
+            
+            $db->beginTrans();
+            $x =  new Model($bd['Session'], 2);
+            $_COOKIE[$bd['Session']]= $x->getVal('BKey');
+            
+            Usr::$cleanUp=true;
+            
+            
+            $cobj = Usr::init($bd['Session'], [$bd['Session']]);
+            $session = $cobj->getMod();
+            
+            $this->assertTrue(Usr::isNew());
+            $this->assertTrue($cobj->isNew());
+            $this->assertEquals(3, $session->getId());
+            
+            Usr::$cleanUp=false;
+            $db->commit();
+        }
+        return $bases;
     }
 }

@@ -1,11 +1,13 @@
 <?php
 
-require_once 'UtilsC.php';
-require_once("Model.php");
-require_once("Handler.php");
-require_once 'CModel.php';
-require_once '/Usr/Src/Role.php';
-require_once '/Usr/Src/Session.php';
+use ABridge\ABridge\UtilsC;
+
+use ABridge\ABridge\Model;
+
+
+use ABridge\ABridge\Usr\User;
+use ABridge\ABridge\Usr\Role;
+use ABridge\ABridge\Usr\Session;
 
 class Session_Role_Test_dataBase_2 extends Role
 {

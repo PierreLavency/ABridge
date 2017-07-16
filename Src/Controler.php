@@ -1,10 +1,18 @@
-
 <?php
+namespace ABridge\ABridge;
 
-require_once '/View/Src/View.php';
-require_once 'Handle.php';
+use ABridge\ABridge\Logger;
+use ABridge\ABridge\Base;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\Handle;
+
+use ABridge\ABridge\Adm\Adm;
+use ABridge\ABridge\View\View;
+use ABridge\ABridge\Usr\Usr;
+
 require_once 'GenJASON.php';
-require_once 'Find.php';
+require_once 'View/CstView.php';
+require_once 'CstMode.php';
 
 class Controler
 {
@@ -42,7 +50,7 @@ class Controler
         $bases = [];
         $handlers = [];
         
-        resetHandlers();
+        Handler::get()->resetHandlers();
         $config=$spec['Handlers'];
         foreach ($config as $classN => $handler) {
             $menu=true;
@@ -248,7 +256,7 @@ class Controler
         $this->beginTrans();
         
         if (isset($this->spec['Adm'])) {
-            require_once 'Adm/Src/Adm.php';
+//            require_once 'Adm/Src/Adm.php';
             
             Adm::init($this->appName, $this->spec['Adm']);
             if (Adm::isNew()) {
@@ -258,11 +266,11 @@ class Controler
         }
         
         if (isset($this->spec['Usr'])) {
-            require_once 'Usr/Src/Usr.php';
+//            require_once 'Usr/Src/Usr.php';
             
-            $sessionHdl= Usr::init($this->appName, ['Session']);
+            $sessionHdl= Usr::init($this->appName, ['ABridge\ABridge\Usr\Session']);
             $this->sessionHdl= $sessionHdl;
-            if (Usr::isNew()) {
+            if ($sessionHdl->isNew()) {
                 $this->commit();
                 $this->beginTrans();
                 $this->handle = new Handle('/Session/~', V_S_UPDT, $this->sessionHdl);

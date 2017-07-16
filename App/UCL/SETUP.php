@@ -1,33 +1,37 @@
 <?php
-require_once 'CstMode.php';
-require_once '/View/Src/CstView.php';
-require_once 'CModel.php';
 
 
 require_once 'Cours.php';
 require_once 'Student.php';
 require_once 'Inscription.php';   
 
-	require_once 'CLASSDEC.php';
+require_once 'CstMode.php';
+require_once 'View/CstView.php';
 
-
-	$config = [
+class Config
+{
+	const DBDEC = 'genealogy';
+	const Session = 'Session';
+	const User = 'User';
+	const Group = 'UGroup';
+	
+	static $config = [
 	'Handlers' =>
 		[
-		'Session'  	 	=> ['fileBase',$DBDEC,],
-		'CodeValue'  	=> ['fileBase',$DBDEC,],
-		'Code' 			=> ['fileBase',$DBDEC,],
-		'Student'	 	=> ['fileBase',$DBDEC,],
-		'Cours'		 	=> ['fileBase',$DBDEC,],
-		'Inscription'	=> ['fileBase',$DBDEC,],
-		'Prof'		 	=> ['fileBase',$DBDEC,],
-		'Charge'	 	=> ['fileBase',$DBDEC,],
-		'User'	 	 	=> ['dataBase',$DBDEC,],
-		'UGroup'	 	=> ['dataBase',$DBDEC,],		
-		'Role'	 	 	=> ['dataBase',$DBDEC,],
-		'Distribution'	=> ['dataBase',$DBDEC,],
-		'Page'		  	=> ['dataBase',$DBDEC,],	
-		'Admin'		  	=> ['dataBase',$DBDEC,],	
+		'Session'  	 	=> ['fileBase',self::DBDEC,],
+		'CodeValue'  	=> ['fileBase',self::DBDEC,],
+		'Code' 			=> ['fileBase',self::DBDEC,],
+		'Student'	 	=> ['fileBase',self::DBDEC,],
+		'Cours'		 	=> ['fileBase',self::DBDEC,],
+		'Inscription'	=> ['fileBase',self::DBDEC,],
+		'Prof'		 	=> ['fileBase',self::DBDEC,],
+		'Charge'	 	=> ['fileBase',self::DBDEC,],
+		'User'	 	 	=> ['dataBase',self::DBDEC,],
+		'UGroup'	 	=> ['dataBase',self::DBDEC,],		
+		'Role'	 	 	=> ['dataBase',self::DBDEC,],
+		'Distribution'	=> ['dataBase',self::DBDEC,],
+		'Page'		  	=> ['dataBase',self::DBDEC,],	
+		'Admin'		  	=> ['dataBase',self::DBDEC,],	
 		],
 	'Usr' => [
 			
@@ -50,7 +54,7 @@ require_once 'Inscription.php';
 						V_S_READ => [V_S_UPDT],
 				],
 		],		
-		$Session =>[
+		self::Session =>[
 			'attrList' => [
 						V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									
 			],
@@ -91,7 +95,7 @@ require_once 'Inscription.php';
 			],
 
 		],
-		$User =>[
+		self::User =>[
 			'lblList' => [
 					'Play'			=> 'PlayRoles',
 				],
@@ -100,7 +104,7 @@ require_once 'Inscription.php';
 				],						
 			'attrList' => [
 					V_S_REF		=> ['UserId'],
-					V_S_SLCT	=> ['UserId',$Group,'DefaultRole'],
+					V_S_SLCT	=> ['UserId',self::Group,'DefaultRole'],
 				],
 			'viewList' => [
 				'Password'  => [
@@ -113,8 +117,8 @@ require_once 'Inscription.php';
 				],
 				'Role'  => [
 					'attrList' => [
-						V_S_READ	=> ['UserId','Profile','ProfProfile',$Group,'DefaultRole','Play'],
-						V_S_UPDT	=> ['UserId','Password',$Group,'DefaultRole'],
+						V_S_READ	=> ['UserId','Profile','ProfProfile',self::Group,'DefaultRole','Play'],
+						V_S_UPDT	=> ['UserId','Password',self::Group,'DefaultRole'],
 					],
 					'navList' => [
 						V_S_READ => [V_S_UPDT],
@@ -284,3 +288,4 @@ require_once 'Inscription.php';
 	]
 	];
 
+}

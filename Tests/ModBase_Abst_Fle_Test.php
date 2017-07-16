@@ -1,6 +1,7 @@
 <?php
     
-require_once("FileBase.php");
+use ABridge\ABridge\FileBase;
+
 require_once("ModBase_Abst_Case.php");
 
 class ModBase_Abst_Fle_Test extends ModBase_Abst_Case

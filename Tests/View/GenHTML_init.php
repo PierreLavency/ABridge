@@ -1,11 +1,10 @@
 <?php
-require_once '/View/Src/GenHTML.php';
-require_once("GenHTML_case.php");
+require_once '/View/GenHTML.php';
 require_once("UnitTest.php");
 
 $logName = basename(__FILE__, ".php");
 
-$log=new UnitTest($logName,1);
+$log=new UnitTest($logName, 1);
 
 
 /**************************************/

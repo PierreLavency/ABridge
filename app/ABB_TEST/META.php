@@ -1,13 +1,14 @@
 <?php
-	
+use ABridge\ABridge\UtilsC;
+use ABridge\ABridge\Model; 
+
 // when running this data will be lost !!
 
-	require_once 'CLASSDEC.php';
-	require_once 'UtilsC.php'; 
+	require_once 'SETUP.php';
 	
 	// Architecture building block 
 			
-	$obj = new Model($ABB);
+	$obj = new Model(Config::ABB);
 	$res= $obj->deleteMod();
 
 	$res = $obj->addAttr('Name',			M_STRING);
@@ -15,9 +16,9 @@
 	$res = $obj->addAttr('Alias',			M_STRING);
 	$res = $obj->addAttr('ShortDesc',		M_STRING);	
 	$res = $obj->addAttr('LongDesc',		M_TXT);
-	$res = $obj->addAttr('Owner',			M_REF,	"/$Group");
-	$res = $obj->addAttr('In',				M_CREF,	"/$Interface/Of");
-	$res = $obj->addAttr('Out',				M_CREF,	"/$Exchange/OutOf");	
+	$res = $obj->addAttr('Owner',			M_REF,	"/".Config::Group);
+	$res = $obj->addAttr('In',				M_CREF,	"/".Config::Interfaces."/Of");
+	$res = $obj->addAttr('Out',				M_CREF,	"/".Config::Exchange."/OutOf");	
 	$res = $obj->setAbstr();
  	
 	$res = $obj->saveMod();			
@@ -25,29 +26,29 @@
 	
 	// Application
 
-	$obj = new Model($Application);
+	$obj = new Model(Config::Application);
 	$res= $obj->deleteMod();
 
-	$res = $obj->setInhNme($ABB);	
-	$res = $obj->addAttr('Style',			M_REF,	"/$AStyle");
-	$res = $obj->addAttr('Authenticity',	M_REF,	"/$SLevel");
-	$res = $obj->addAttr('Availability',	M_REF,	"/$SLevel");
-	$res = $obj->addAttr('Confidentiality',	M_REF,	"/$SLevel");	
-	$res = $obj->addAttr('Integrity',		M_REF,	"/$SLevel");	
-	$res = $obj->addAttr('BuiltFrom',		M_CREF,	"/$Component/Of"); 
+	$res = $obj->setInhNme(Config::ABB);	
+	$res = $obj->addAttr('Style',			M_REF,	"/".Config::AStyle);
+	$res = $obj->addAttr('Authenticity',	M_REF,	"/".Config::SLevel);
+	$res = $obj->addAttr('Availability',	M_REF,	"/".Config::SLevel);
+	$res = $obj->addAttr('Confidentiality',	M_REF,	"/".Config::SLevel);	
+	$res = $obj->addAttr('Integrity',		M_REF,	"/".Config::SLevel);	
+	$res = $obj->addAttr('BuiltFrom',		M_CREF,	"/".Config::Component."/Of"); 
 	
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 	
 	// Component 
 	
-	$obj = new Model($Component);	
+	$obj = new Model(Config::Component);	
 	$res= $obj->deleteMod();
 	
-	$res = $obj->setInhNme($ABB);
-	$res = $obj->addAttr($CType,			M_REF,	"/$CType"); 	
-	$res = $obj->addAttr('Of',				M_REF,	"/$Application"); 
-	$res = $obj->addAttr('SourceControl',	M_REF,	"/$SControl");
+	$res = $obj->setInhNme(Config::ABB);
+	$res = $obj->addAttr(Config::CType,		M_REF,	"/".Config::CType); 	
+	$res = $obj->addAttr('Of',				M_REF,	"/".Config::Application); 
+	$res = $obj->addAttr('SourceControl',	M_REF,	"/".Config::SControl);
 	$res = $obj->addAttr('Url',				M_STRING);
 	$res = $obj->addAttr('Queue',			M_STRING);
 	$res = $obj->addAttr('OutQueue',		M_STRING);
@@ -59,29 +60,29 @@
 	
 	// $Interface
 
-	$obj = new Model($Interface);
+	$obj = new Model(Config::Interfaces);
 	$res= $obj->deleteMod();
 
 	$res = $obj->addAttr('Name',			M_STRING);	
-	$res = $obj->addAttr('Of',				M_REF,	"/$ABB");
-	$res = $obj->addAttr($IType,			M_REF,	"/$IType");
-	$res = $obj->addAttr($IUse,				M_REF,	"/$IUse");	
+	$res = $obj->addAttr('Of',				M_REF,	"/".Config::ABB);
+	$res = $obj->addAttr(Config::IType,		M_REF,	"/".Config::IType);
+	$res = $obj->addAttr(Config::IUse,		M_REF,	"/".Config::IUse);	
 	$res = $obj->addAttr('Streaming',		M_STRING);
 	$res = $obj->addAttr('LongDesc',		M_TXT);
 	$res = $obj->addAttr('Content',			M_STRING);	
-	$res = $obj->addAttr('UsedBy',			M_CREF,"/$Exchange/Through");
+	$res = $obj->addAttr('UsedBy',			M_CREF,"/".Config::Exchange."/Through");
 		
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";	
 
 	// Exchange
 	
-	$obj = new Model($Exchange);
+	$obj = new Model(Config::Exchange);
 	$res= $obj->deleteMod();
 
 	$res = $obj->addAttr('CodeNm',			M_STRING);
-	$res = $obj->addAttr('Through',			M_REF,"/$Interface");
-	$res = $obj->addAttr('OutOf',			M_REF,"/$ABB");
+	$res = $obj->addAttr('Through',			M_REF,"/".Config::Interfaces);
+	$res = $obj->addAttr('OutOf',			M_REF,"/".Config::ABB);
 	$obj->setCkey(['OutOf','Through'],true);	
 	
 	$res = $obj->saveMod();			
@@ -92,7 +93,7 @@
 	
 	// Abstract 
 	
-	$obj = new Model($ACode);
+	$obj = new Model(Config::ACode);
 	$res= $obj->deleteMod();
 
 	$res = $obj->addAttr('Value',M_STRING);
@@ -105,30 +106,30 @@
 
 	// Ctype
 	
-	$obj = new Model($CType);
+	$obj = new Model(Config::CType);
 	$res= $obj->deleteMod();
 
-	$res = $obj->setInhNme($ACode);	
+	$res = $obj->setInhNme(Config::ACode);	
 
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 
 	// SLevel
 	
-	$obj = new Model($SLevel);
+	$obj = new Model(Config::SLevel);
 	$res= $obj->deleteMod();
 
-	$res = $obj->setInhNme($ACode);	
+	$res = $obj->setInhNme(Config::ACode);	
 
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 
 	// A style
 
-	$obj = new Model($AStyle);
+	$obj = new Model(Config::AStyle);
 	$res= $obj->deleteMod();
 	
-	$res = $obj->setInhNme($ACode);	
+	$res = $obj->setInhNme(Config::ACode);	
 
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
@@ -136,30 +137,30 @@
 
 	// Source control
 
-	$obj = new Model($SControl);
+	$obj = new Model(Config::SControl);
 	$res= $obj->deleteMod();
 	
-	$res = $obj->setInhNme($ACode);	
+	$res = $obj->setInhNme(Config::ACode);	
 
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 
 	// Interface type
 		
-	$obj = new Model($IType);
+	$obj = new Model(Config::IType);
 	$res= $obj->deleteMod();
 	
-	$res = $obj->setInhNme($ACode);	
+	$res = $obj->setInhNme(Config::ACode);	
 
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 
 	// interface usage
 	
-	$obj = new Model($IUse);
+	$obj = new Model(Config::IUse);
 	$res= $obj->deleteMod();
 	
-	$res = $obj->setInhNme($ACode);	
+	$res = $obj->setInhNme(Config::ACode);	
 
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
@@ -167,24 +168,30 @@
 	
 /*******************************  User  ************************/
 
-	$bindings = [$Session=>$Session,$User=>$User,$Role=>$Role,$Distribution=>$Distribution];	
+	$bindings = [
+			Config::Session=>Config::Session,
+			Config::User=>Config::User,
+			Config::Role=>Config::Role,
+			Config::Distribution=>Config::Distribution
+	];	
+	
 	UtilsC::createMods($bindings);	
 	
 	// User	
-	$obj = new Model($User);
+	$obj = new Model(Config::User);
 	
-	$res = $obj->addAttr($Group,M_REF,'/'.$Group);	
+	$res = $obj->addAttr(Config::Group,M_REF,'/'.Config::Group);	
 	
 	$res = $obj->saveMod();	
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 
 	// Group
 	
-	$obj = new Model($Group);
+	$obj = new Model(Config::Group);
 	$res= $obj->deleteMod();
 
  	$res = $obj->addAttr('Name',		M_STRING);
-	$res = $obj->addAttr('Users',		M_CREF,'/'.$User.'/'.$Group);
+	$res = $obj->addAttr('Users',		M_CREF,'/'.Config::User.'/'.Config::Group);
     $res = $obj->setBkey('Name',true);	
 	
 	$res = $obj->saveMod();			

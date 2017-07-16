@@ -1,14 +1,15 @@
 <?php
 
+use ABridge\ABridge\UtilsC;
+use ABridge\ABridge\CModel;
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\CstError;
 
-require_once 'UtilsC.php';
-require_once 'Model.php';
-require_once 'Handler.php';
-require_once 'CModel.php';
-require_once '/Usr/Src/User.php';
-require_once '/Usr/Src/Role.php';
-require_once '/Usr/Src/Distribution.php';
-require_once '/Usr/Src/Session.php';
+use ABridge\ABridge\Usr\User;
+use ABridge\ABridge\Usr\Role;
+use ABridge\ABridge\Usr\Distribution;
+use ABridge\ABridge\Usr\Session;
 
 class Session_All_Test_dataBase_2 extends User
 {
@@ -139,11 +140,11 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
             $x->setVal('Role', null);
 
             $x->save();
-            $this->assertEquals(E_ERC060.":", $x->getErrLine());
+            $this->assertEquals(CstError::E_ERC060.":", $x->getErrLine());
             
             $x->setVal('Role', 2);
             $x->save();
-            $this->assertEquals(E_ERC060.":2", $x->getErrLine());
+            $this->assertEquals(CstError::E_ERC060.":2", $x->getErrLine());
             $db->commit();
         }
         
@@ -234,7 +235,7 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
             $x->setVal('Role', 2);
             
             $x->save();
-            $this->assertEquals(E_ERC060.":2", $x->getErrLine());
+            $this->assertEquals(CstError::E_ERC060.":2", $x->getErrLine());
             
             $db->commit();
         }

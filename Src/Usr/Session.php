@@ -1,4 +1,11 @@
 <?php
+namespace ABridge\ABridge\Usr;
+
+use ABridge\ABridge\CModel;
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Find;
+use ABridge\ABridge\CstError;
+
 require_once 'Access.php';
 
 class Session extends CModel
@@ -95,13 +102,13 @@ class Session extends CModel
             if (! is_null($usrn)) {
                 $usrobj= Find::byKey($usrCN, 'UserId', $usrn);
                 if (is_null($usrobj)) {
-                    $this->mod->getErrLog()->logLine(E_ERC059.":$usrn");
+                    $this->mod->getErrLog()->logLine(CstError::E_ERC059.":$usrn");
                     return false;
                 }
                 $usrcobj = $usrobj->getCobj();
                 $sespsw = $this->mod->getValN('Password');
                 if (!$usrcobj->authenticate($usrn, $sespsw)) {
-                    $this->mod->getErrLog()->logLine(E_ERC057);
+                    $this->mod->getErrLog()->logLine(CstError::E_ERC057);
                     return false;
                 }
                 $this->mod->setValN('User', $usrobj->getId());
@@ -125,21 +132,21 @@ class Session extends CModel
             if (!$role and $usrobj) {
                 $role = $usrobj->getVal('DefaultRole');
                 if (!$role) {
-                    $this->mod->getErrLog()->logLine(E_ERC060.":$role");
+                    $this->mod->getErrLog()->logLine(CstError::E_ERC060.":$role");
                     return false;
                 }
                 $this->mod->setValN('Role', $role);
             }
             if ($role and $usrcobj) {
                 if (! $usrcobj->checkRole($role)) {
-                    $this->mod->getErrLog()->logLine(E_ERC060.":$role");
+                    $this->mod->getErrLog()->logLine(CstError::E_ERC060.":$role");
                     return false;
                 }
             }
             if ($role and !$usrobj) {
                 $roleobj= Find::byKey($roleCN, 'Name', 'Default');
                 if (!$roleobj or $roleobj->getId() != $role) {
-                    $this->mod->getErrLog()->logLine(E_ERC060.":$role");
+                    $this->mod->getErrLog()->logLine(CstError::E_ERC060.":$role");
                     return false;
                 }
             }
@@ -166,7 +173,11 @@ class Session extends CModel
 
     public static function getSession($id)
     {
-        $mod = new Model(get_called_class());
+        $modName=  get_called_class();
+        if ($name =substr(strrchr($modName, '\\'), 1)) {
+            $modName = $name;
+        }
+        $mod = new Model($modName);
         $sessionHdl=$mod->getCObj();
         $obj= $mod->getBkey('BKey', $id);
         if (is_null($obj)) {

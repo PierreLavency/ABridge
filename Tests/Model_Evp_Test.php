@@ -1,8 +1,8 @@
 <?php
-    
-require_once("Model.php");
-require_once("Handler.php");
-require_once 'CModel.php';
+use ABridge\ABridge\Model;
+use ABridge\ABridge\CModel;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\CstError;
 
 class testevalP extends CModel
 {
@@ -257,15 +257,15 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         $res= $x->setVal('a', 1);
         $this->assertTrue($res);
         
-        $this->assertEquals($x->getErrLine(), E_ERC042.':'.'aplusb');
+        $this->assertEquals($x->getErrLine(), CstError::E_ERC042.':'.'aplusb');
         
         $res=$x->isSelect('xx');
         $this->assertFalse($res);
-        $this->assertEquals($x->getErrLine(), E_ERC002.':'.'xx');
+        $this->assertEquals($x->getErrLine(), CstError::E_ERC002.':'.'xx');
 
         $res=$x->isModif('xx');
         $this->assertFalse($res);
-        $this->assertEquals($x->getErrLine(), E_ERC002.':'.'xx');
+        $this->assertEquals($x->getErrLine(), CstError::E_ERC002.':'.'xx');
         
         $res= $x->setVal('a', 0);
         $this->assertTrue($res);

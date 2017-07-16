@@ -1,9 +1,12 @@
-
 <?php
+namespace ABridge\ABridge;
+
+use ABridge\ABridge\Base;
+use Exception;
+use Mysqli;
 
 require_once 'Type.php';
 require_once 'CstError.php';
-require_once 'Base.php';
 
 class SQLBase extends Base
 {

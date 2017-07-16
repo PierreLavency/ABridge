@@ -1,6 +1,7 @@
 <?php
 
-require_once("Handle.php");
+use ABridge\ABridge\Handle;
+
 require_once("FormatLib.php");
 
 

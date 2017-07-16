@@ -1,9 +1,8 @@
 <?php
-require_once 'UtilsC.php';
-require_once 'Model.php';
-require_once 'Handler.php';
-require_once 'CModel.php';
-require_once '/Adm/Src/Admin.php';
+
+use ABridge\ABridge\Adm\Admin;
+use ABridge\ABridge\UtilsC;
+use ABridge\ABridge\Model;
 
 class Admin_Test_dataBase_1 extends Admin
 {
@@ -12,14 +11,14 @@ class Admin_Test_fileBase_1 extends Admin
 {
 }
 
-class Admin_Test extends PHPUnit_Framework_TestCase
+class Admin_Test extends \PHPUnit_Framework_TestCase
 {
 
     public function testInit()
     {
         $name = 'atest';
         $classes = ['Admin'];
-        $bsname = get_called_class();
+        $bsname = end(explode('\\', get_called_class()));
         $bases= UtilsC::initHandlers($name, $classes, $bsname);
         $res = UtilsC::initClasses($bases);
         $this->assertTrue($res);
@@ -41,7 +40,7 @@ class Admin_Test extends PHPUnit_Framework_TestCase
             $this->assertTrue($res);
             
             $x = new Model($bd['Admin']);
-            $x->setVal('Application', '../Src/Adm/Tests');
+            $x->setVal('Application', '../Tests/Adm');
             $x->setVal('Init', true);
             $res=$x->save();
             $this->assertequals(1, $res);
@@ -64,7 +63,7 @@ class Admin_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['Admin'], 1);
             $res= $x->getVal('Application');
-            $this->assertEquals('../Src/Adm/Tests', $res);
+            $this->assertEquals('../Tests/Adm', $res);
             $x->save();
             
             $this->assertFalse($x->isErr());
@@ -86,7 +85,7 @@ class Admin_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['Admin'], 1);
             $res= $x->getVal('Application');
-            $this->assertEquals('../Src/Adm/Tests', $res);
+            $this->assertEquals('../Tests/Adm', $res);
             
             $x = new Model($bd['Admin']);
             $res=$x->save();
@@ -112,7 +111,7 @@ class Admin_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['Admin'], 1);
             $res= $x->getVal('Application');
-            $this->assertEquals('../Src/Adm/Tests', $res);
+            $this->assertEquals('../Tests/Adm', $res);
             
             $x->setVal('Meta', true);
             $x->setVal('Load', true);

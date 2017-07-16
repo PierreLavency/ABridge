@@ -1,7 +1,8 @@
 <?php
     
-require_once("Model.php");
-require_once("Handler.php");
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\CstError;
 
 class Model_Bse_Test extends PHPUnit_Framework_TestCase
 {
@@ -15,18 +16,18 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
     
-        resetHandlers();
+        Handler::get()->resetHandlers();
         $typ='dataBase';
         $name='test';
         $Cname=get_called_class().'_1';
-        self::$db1=getBaseHandler($typ, $name);
-        initStateHandler($Cname, $typ, $name);
+        self::$db1=Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($Cname, $typ, $name);
         
         $typ='fileBase';
         $name=$name.'_f';
         $Cname=get_called_class().'_f_1';
-        self::$db2=getBaseHandler($typ, $name);
-        initStateHandler($Cname, $typ, $name);
+        self::$db2=Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($Cname, $typ, $name);
     }
     
     public function setTyp($typ)
@@ -227,7 +228,7 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
         
         $db->beginTrans();
 
-        $hdl =getStateHandler($this->Cname);
+        $hdl = Handler::get()->getStateHandler($this->Cname);
         $res=$hdl->findObj($this->Cname, 'id', 1);
         $this->assertEquals($res, []);
         
@@ -280,7 +281,7 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
         $this->assertFalse($id);
     
         $r = $mod-> getErrLog();
-        $this->assertEquals($r->getLine(0), E_ERC024);
+        $this->assertEquals($r->getLine(0), CstError::E_ERC024);
         
         $db->commit();
     }

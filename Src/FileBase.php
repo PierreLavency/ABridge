@@ -1,7 +1,8 @@
-
 <?php
+namespace ABridge\ABridge;
 
-require_once 'Base.php';
+use Exception;
+use ABridge\ABridge\Base;
 
 class FileBase extends Base
 {

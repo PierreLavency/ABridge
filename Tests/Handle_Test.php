@@ -1,7 +1,9 @@
 <?php
 
-require_once 'Handler.php';
-require_once 'Handle.php';
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\Handle;
+use ABridge\ABridge\Model;
+
 require_once 'CstMode.php';
 
 class Handle_Test extends PHPUnit_Framework_TestCase
@@ -19,17 +21,17 @@ class Handle_Test extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
     
-        resetHandlers();
+        Handler::get()->resetHandlers();
     
         $typ='dataBase';
         $CName=get_called_class().'_1';
         $CUser=get_called_class().'_2';
         $CCode=get_called_class().'_3';
         $name = 'test';
-        self::$db1=getBaseHandler($typ, $name);
-        initStateHandler($CName, $typ, $name);
-        initStateHandler($CUser, $typ, $name);
-        initStateHandler($CCode, $typ, $name);
+        self::$db1= Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($CName, $typ, $name);
+        Handler::get()->setStateHandler($CUser, $typ, $name);
+        Handler::get()->setStateHandler($CCode, $typ, $name);
         
         $typ='fileBase';
         $name=$name.'_f';
@@ -37,10 +39,10 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $CUser=get_called_class().'_f_2';
         $CCode=get_called_class().'_f_3';
         
-        self::$db2=getBaseHandler($typ, $name);
-        initStateHandler($CName, $typ, $name);
-        initStateHandler($CUser, $typ, $name);
-        initStateHandler($CCode, $typ, $name);
+        self::$db2= Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($CName, $typ, $name);
+        Handler::get()->setStateHandler($CUser, $typ, $name);
+        Handler::get()->setStateHandler($CCode, $typ, $name);
     }
     
     public function setTyp($typ)
@@ -78,8 +80,8 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $mod = new Model($this->CCode);
         $res = $mod->deleteMod();
         $res = $mod->saveMod();
-//        $r = $mod-> getErrLog ();
-//		  $r->show();
+        $r = $mod-> getErrLog();
+        $r->show();
         $this->assertfalse($mod->isErr());
 
         $hc1 = new Handle('/'.$this->CCode, V_S_CREA, $ho);

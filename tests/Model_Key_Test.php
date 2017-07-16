@@ -1,7 +1,8 @@
 <?php
     
-require_once("Model.php");
-require_once("Handler.php");
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\CstError;
 
 class Model_Key_Test extends PHPUnit_Framework_TestCase
 {
@@ -19,26 +20,26 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
     
-        resetHandlers();
+        Handler::get()->resetHandlers();
         $typ='dataBase';
         $name='test';
         $Code=get_called_class().'_1';
         $CodeVal=get_called_class().'_2';
         $Student=get_called_class().'_3';
-        self::$db1=getBaseHandler($typ, $name);
-        initStateHandler($Code, $typ, $name);
-        initStateHandler($CodeVal, $typ, $name);
-        initStateHandler($Student, $typ, $name);
+        self::$db1=Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($Code, $typ, $name);
+        Handler::get()->setStateHandler($CodeVal, $typ, $name);
+        Handler::get()->setStateHandler($Student, $typ, $name);
         
         $typ='fileBase';
         $name=$name.'_f';
         $Code=get_called_class().'_f_1';
         $CodeVal=get_called_class().'_f_2';
         $Student=get_called_class().'_f_3';
-        self::$db2=getBaseHandler($typ, $name);
-        initStateHandler($Code, $typ, $name);
-        initStateHandler($CodeVal, $typ, $name);
-        initStateHandler($Student, $typ, $name);
+        self::$db2=Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($Code, $typ, $name);
+        Handler::get()->setStateHandler($CodeVal, $typ, $name);
+        Handler::get()->setStateHandler($Student, $typ, $name);
     }
     
     public function setTyp($typ)
@@ -233,7 +234,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 
         $code->delet();
 
-        $this->assertEquals($code->getErrLine(), E_ERC052);
+        $this->assertEquals($code->getErrLine(), CstError::E_ERC052);
     
         
         $db->commit();
@@ -304,28 +305,28 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         
         $n = 0;
         $r = $codeval-> getErrLog();
-        $this->assertEquals($r->getLine($n), E_ERC031.':'.$l);
+        $this->assertEquals($r->getLine($n), CstError::E_ERC031.':'.$l);
 
         $this->assertFalse($codeval->delAttr('ValueOf'));
         $n++;
-        $this->assertEquals($r->getLine($n), E_ERC030.':ValueOf');
+        $this->assertEquals($r->getLine($n), CstError::E_ERC030.':ValueOf');
         
         $res=$codeval->setCkey(['ValueName','Notexist'], true);
         $this->assertFalse($res);
         $n++;
-        $this->assertEquals($r->getLine($n), E_ERC002.':Notexist');
+        $this->assertEquals($r->getLine($n), CstError::E_ERC002.':Notexist');
         
         $res=$codeval->setCkey('ValueName', true);
         $this->assertFalse($res);
         $n++;
-        $this->assertEquals($r->getLine($n), E_ERC029);
+        $this->assertEquals($r->getLine($n), CstError::E_ERC029);
 
         try {
             $res = $codeval->getBkey('Notexist', 'x');
         } catch (Exception $e) {
             $res=$e->getMessage();
         }
-        $this->assertEquals($res, E_ERC056.':Notexist');
+        $this->assertEquals($res, CstError::E_ERC056.':Notexist');
 
         
         $db->commit();
@@ -360,7 +361,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $res = $code->setVal('CodeName', 'Sexe');
         $this->asserttrue($res);
         $code->save();
-        $this->assertEquals($log->getLine(0), E_ERC018.':CodeName:Sexe');
+        $this->assertEquals($log->getLine(0), CstError::E_ERC018.':CodeName:Sexe');
         
                         
         $codeval = new Model($this->CodeVal);
@@ -371,48 +372,48 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($id1, 0);
         
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(0), E_ERC019.':ValueOf');
+        $this->assertEquals($log->getLine(0), CstError::E_ERC019.':ValueOf');
         
         $res = $codeval->setVal('ValueOf', null);
         $id1= $codeval->save();
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(1), E_ERC019.':ValueOf');
+        $this->assertEquals($log->getLine(1), CstError::E_ERC019.':ValueOf');
 
         $res = $codeval->isBkey('notexists');
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(2), E_ERC002.':notexists');
+        $this->assertEquals($log->getLine(2), CstError::E_ERC002.':notexists');
     
         $res = $codeval->isMdtr('notexists');
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(3), E_ERC002.':notexists');
+        $this->assertEquals($log->getLine(3), CstError::E_ERC002.':notexists');
         
         $res = $codeval->isOptl('notexists');
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(4), E_ERC002.':notexists');
+        $this->assertEquals($log->getLine(4), CstError::E_ERC002.':notexists');
         
         $res = $codeval->setMdtr('notexists', false);
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(5), E_ERC002.':notexists');
+        $this->assertEquals($log->getLine(5), CstError::E_ERC002.':notexists');
         
         $res = $codeval->setDflt('notexists', false);
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(6), E_ERC002.':notexists');
+        $this->assertEquals($log->getLine(6), CstError::E_ERC002.':notexists');
         
         $res = $codeval->getDflt('notexists');
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(7), E_ERC002.':notexists');
+        $this->assertEquals($log->getLine(7), CstError::E_ERC002.':notexists');
 
         $res = $codeval->setBkey('notexists', false);
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(8), E_ERC002.':notexists');
+        $this->assertEquals($log->getLine(8), CstError::E_ERC002.':notexists');
         
         $this->assertFalse($codeval->isOptl('id'));
         
@@ -425,11 +426,11 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         
         $res=$m->setBkey('A', true);
         $this->assertFalse($res);
-        $this->assertEquals($r->getLine(0), E_ERC017.':A');
+        $this->assertEquals($r->getLine(0), CstError::E_ERC017.':A');
         
         $res=$m->setCkey(['A','A'], true);
         $this->assertFalse($res);
-        $this->assertEquals($r->getLine(1), E_ERC017);
+        $this->assertEquals($r->getLine(1), CstError::E_ERC017);
     }
     /**
      * @dataProvider Provider1

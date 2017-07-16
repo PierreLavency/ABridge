@@ -1,6 +1,8 @@
 <?php
-require_once 'Handler.php';
-require_once 'Model.php';
+namespace ABridge\ABridge;
+
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\Model;
 
 class ModBase
 {

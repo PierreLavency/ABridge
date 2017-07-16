@@ -1,7 +1,11 @@
 <?php
 require_once 'CstMode.php';
+require_once 'View/CstView.php';
 
-	$config = [
+class Config
+{
+	
+	static $config = [
 	'Handlers' =>
 		[
 		'Album'		=> ['dataBase',],
@@ -81,3 +85,4 @@ require_once 'CstMode.php';
 		],
 	];		
 	
+}

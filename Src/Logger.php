@@ -1,5 +1,6 @@
-
 <?php
+namespace ABridge\ABridge;
+
 /**
  * Logger  class file
  *

@@ -1,34 +1,10 @@
 <?php
+namespace ABridge\ABridge;
 
-require_once("ModBase.php");
-require_once("FileBase.php");
-require_once("SQLBase.php");
+use ABridge\ABridge\FileBase;
+use ABridge\ABridge\SQLBase;
+use ABridge\ABridge\ModBase;
 
-function initStateHandler($modName, $base, $instance)
-{
-    $y = Handler::get()->setStateHandler($modName, $base, $instance);
-    return ($y);
-}
-
-function getStateHandler($modName)
-{
-    $y = Handler::get()->getStateHandler($modName);
-    return ($y);
-}
-
-function getBaseHandler($base, $instance)
-{
-    $y = Handler::get()->getBase($base, $instance);
-    return ($y);
-}
-
-
-function resetHandlers()
-{
-    $y = Handler::get()->resetHandlers();
-    return true;
-}
-    
 class Handler
 {
 /**
@@ -39,10 +15,11 @@ class Handler
     private static $instance = null;
     private $filePath;
     private $bases = []; //'fileBase'=> [name => class],
-    private $basesClasses =['fileBase'=>'FileBase','fileSession'=>'FileBase','dataBase'=>'SQLBase'];
+    private $basesClasses =['fileBase'=>'ABridge\ABridge\FileBase','dataBase'=>'ABridge\ABridge\SQLBase'];
     private $modHandler= [];
-    private $modBase =['fileBase' =>'ModBase','fileSession' =>'ModBase','dataBase'=>'ModBase'];
+    private $modBase =['fileBase' =>'ABridge\ABridge\ModBase','dataBase'=>'ABridge\ABridge\ModBase'];
     private $viewHandler=[]; // mod => spec
+    private $cmod=[]; //mod=> Cmodclass
     
 /**
 * Constructeur de la classe
@@ -54,7 +31,7 @@ class Handler
     {
     }
 /**
-* Méthode qui crée l'unique instance de la classe
+* Methode qui cree l'unique instance de la classe
 * si elle n'existe pas encore puis la retourne.
 *
 * @param void
@@ -74,6 +51,7 @@ class Handler
         $this->modHandler=[];
         $this->viewHandler=[];
         self::$instance =null;
+        return true;
     }
 
     public function getBase($base, $instance)
@@ -101,21 +79,6 @@ class Handler
         return $x;
     }
     
-    
-    public function getViewHandler($modName)
-    {
-        if (isset($this->viewHandler[$modName])) {
-            return ($this->viewHandler[$modName]);
-        }
-        return null;
-    }
-    
-    public function setViewHandler($modName, $spec)
-    {
-        $this->viewHandler[$modName]=$spec;
-        return true;
-    }
-    
     public function getStateHandler($modName)
     {
         if (array_key_exists($modName, $this->modHandler)) {
@@ -135,5 +98,37 @@ class Handler
         $y= new $classN($x);
         $this->modHandler[$modName]=$y;
         return $y;
+    }
+        
+    public function getViewHandler($modName)
+    {
+        if (isset($this->viewHandler[$modName])) {
+            return ($this->viewHandler[$modName]);
+        }
+        return null;
+    }
+    
+    public function setViewHandler($modName, $spec)
+    {
+        $this->viewHandler[$modName]=$spec;
+        return true;
+    }
+    
+    
+    public function getCmod($modName)
+    {
+        if (isset($this->cmod[$modName])) {
+            return ($this->cmod[$modName]);
+        }
+        if (class_exists($modName)) {
+            return $modName;
+        }
+        return null;
+    }
+    
+    public function setCmod($modName, $spec)
+    {
+        $this->cmod[$modName]=$spec;
+        return true;
     }
 }

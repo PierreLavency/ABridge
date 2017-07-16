@@ -1,4 +1,7 @@
 <?php
+namespace ABridge\ABridge\Adm;
+
+use ABridge\ABridge\CModel;
 
 class Admin extends CModel
 {

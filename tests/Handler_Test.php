@@ -1,8 +1,6 @@
 <?php
     
-
-require_once 'Handler.php';
-
+use ABridge\ABridge\Handler;
 
 class Handler_Test extends PHPUnit_Framework_TestCase
 {
@@ -10,42 +8,42 @@ class Handler_Test extends PHPUnit_Framework_TestCase
  
     public function testBaseHandler1()
     {
-        $this->assertTrue(resetHandlers());
-        $this->assertNotNull($db1 = getBaseHandler('dataBase', 'test'));
-        $this->assertNotNull($db2 = getBaseHandler('dataBase', 'test'));
+        $this->assertTrue(Handler::get()->resetHandlers());
+        $this->assertNotNull($db1 = Handler::get()->getBase('dataBase', 'test'));
+        $this->assertNotNull($db2 = Handler::get()->getBase('dataBase', 'test'));
         $this->assertEquals($db1, $db2);
     }
     
     public function testBaseHandler2()
     {
-        $this->assertTrue(resetHandlers());
-        $this->assertNotNull($db1 = getBaseHandler('dataBase', 'test'));
-        $this->assertNotNull($db2 = getBaseHandler('fileBase', 'test'));
+        $this->assertTrue(Handler::get()->resetHandlers());
+        $this->assertNotNull($db1 = Handler::get()->getBase('dataBase', 'test'));
+        $this->assertNotNull($db2 = Handler::get()->getBase('fileBase', 'test'));
         $this->assertNotEquals($db1, $db2);
     }
     
     public function testBaseHandler3()
     {
-        $this->assertTrue(resetHandlers());
-        $this->assertNotNull($db1 = getBaseHandler('fileBase', 'test'));
-        $this->assertNotNull($db2 = getBaseHandler('fileBase', 'test1'));
-        $this->assertFalse($db2 = getBaseHandler('NOTEXISTS', 'NOTEXISTS'));
+        $this->assertTrue(Handler::get()->resetHandlers());
+        $this->assertNotNull($db1 = Handler::get()->getBase('fileBase', 'test'));
+        $this->assertNotNull($db2 = Handler::get()->getBase('fileBase', 'test1'));
+        $this->assertFalse($db2 = Handler::get()->getBase('NOTEXISTS', 'NOTEXISTS'));
         $this->assertNotEquals($db1, $db2);
     }
     
     public function testStateHandler()
     {
-        $this->assertTrue(resetHandlers());
-        $this->assertNotNull($db = initStateHandler('CLass', 'fileBase', 'test'));
-        $this->assertNotNull($db = initStateHandler('CLass', 'fileBase', 'test'));
-        $this->assertNotNull($c1 = getStateHandler('CLass'));
-        $this->assertNotNull($c2 = getStateHandler('CLass'));
+        $this->assertTrue(Handler::get()->resetHandlers());
+        $this->assertNotNull($db = Handler::get()->setStateHandler('CLass', 'fileBase', 'test'));
+        $this->assertNotNull($db = Handler::get()->setStateHandler('CLass', 'fileBase', 'test'));
+        $this->assertNotNull($c1 = Handler::get()->getStateHandler('CLass'));
+        $this->assertNotNull($c2 = Handler::get()->getStateHandler('CLass'));
         $this->assertEquals($c1, $c2);
     }
  
     public function testViewHandler()
     {
-        $this->assertTrue(resetHandlers());
+        $this->assertTrue(Handler::get()->resetHandlers());
         $x = 'x';
         Handler::get()->setViewHandler($x, $x);
         $y = Handler::get()->getViewHandler($x);

@@ -1,9 +1,9 @@
 <?php
     
 /* */
-
-require_once("FileBase.php");
-require_once("SqlBase.php");
+use ABridge\ABridge\Base;
+use ABridge\ABridge\FileBase;
+use ABridge\ABridge\SqlBase;
 
 class Base_Mta_Test extends PHPUnit_Framework_TestCase
 {

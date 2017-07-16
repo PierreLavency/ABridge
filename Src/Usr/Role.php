@@ -1,4 +1,7 @@
 <?php
+namespace ABridge\ABridge\Usr;
+
+use ABridge\ABridge\CModel;
 
 class Role extends CModel
 {

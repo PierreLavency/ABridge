@@ -1,30 +1,47 @@
 <?php
 require_once 'CstMode.php';
-require_once '/View/Src/CstView.php';
-
-	require_once 'CLASSDEC.php';
-
-	$config = [
+require_once 'View/CstView.php';
+	
+class Config
+{
+	const DBDEC = 'abbtest';
+	
+	const ABB = 'ABB';
+	const Application = 'Application';
+	const Component='Component';
+	const Interfaces='Interface';
+	const Exchange='Exchange';
+	const User ='user';
+	
+	const ACode = 'ACode';
+	const CType='CType';
+	const SLevel='SLevel';
+	const AStyle='AStyle';
+	const SControl='SControl';
+	const IType='IType';
+	const IUse='IUse';
+	
+	static $config = [
 	'Handlers' =>
 		[
-		$ABB		 => ['dataBase',$DBDEC,false],
-		$Application => ['dataBase',$DBDEC,],
-		$Component	 => ['dataBase',$DBDEC,],
-		$Interface	 => ['dataBase',$DBDEC,],
-		$Exchange	 => ['dataBase',$DBDEC,],
-		$IUse	 	 => ['dataBase',$DBDEC,],			
-		$IType	 	 => ['dataBase',$DBDEC,],		
-		$CType	 	 => ['dataBase',$DBDEC,],
-		$SLevel 	 => ['dataBase',$DBDEC,],
-		$AStyle 	 => ['dataBase',$DBDEC,],
-		$SControl 	 => ['dataBase',$DBDEC,],
-		$ACode	 	 => ['dataBase',$DBDEC,false],
-		$User	 	 => ['dataBase',$DBDEC,],
+		self::ABB		 => ['dataBase',self::DBDEC,false],
+		self::Application => ['dataBase',self::DBDEC,],
+		self::Component	 => ['dataBase',self::DBDEC,],
+		self::Interfaces	 => ['dataBase',self::DBDEC,],
+		self::Exchange	 => ['dataBase',self::DBDEC,],
+		self::IUse	 	 => ['dataBase',self::DBDEC,],			
+		self::IType	 	 => ['dataBase',self::DBDEC,],		
+		self::CType	 	 => ['dataBase',self::DBDEC,],
+		self::SLevel 	 => ['dataBase',self::DBDEC,],
+		self::AStyle 	 => ['dataBase',self::DBDEC,],
+		self::SControl 	 => ['dataBase',self::DBDEC,],
+		self::ACode	 	 => ['dataBase',self::DBDEC,false],
+		self::User	 	 => ['dataBase',self::DBDEC,],
 		],
 	'Home' =>
-		['/',"/$Application","/$Component","/$Interface","/$Exchange"],
+		['/',"/".self::Application,"/".self::Component,"/".self::Interfaces,"/".self::Exchange],
 	'Views' => [
-		"$Application"=> [
+		self::Application=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['CodeNm'],
@@ -87,7 +104,7 @@ require_once '/View/Src/CstView.php';
 				]
 				
 		],			
-		"$Component"=> [
+		self::Component=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['CodeNm'],
@@ -127,7 +144,7 @@ require_once '/View/Src/CstView.php';
 					],				
 				],
 			],	
-		"$Interface"=> [
+		self::Interfaces=> [
 		
 				'attrList' => [
 	//				V_S_REF		=> ['Name'],
@@ -144,49 +161,49 @@ require_once '/View/Src/CstView.php';
 				],	
 				
 		],
-		"$Exchange"=> [
+		self::Exchange=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['CodeNm'],
 				]
 				
 		],
-		"$CType"=> [
+		self::CType=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		"$SLevel"=> [
+		self::SLevel=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		"$AStyle"=> [
+		self::AStyle=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		"$SControl"=> [
+		self::SControl=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		"$IType"=> [
+		self::IType=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
 				]
 				
 		],
-		"$IUse"=> [
+		self::IUse=> [
 		
 				'attrList' => [
 					V_S_REF		=> ['Value'],
@@ -196,3 +213,4 @@ require_once '/View/Src/CstView.php';
 		],
 	];		
 	
+}

@@ -1,7 +1,8 @@
 <?php
+namespace ABridge\ABridge;
 
-require_once 'Request.php';
-require_once 'Model.php';
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Request;
 
 class Handle
 {

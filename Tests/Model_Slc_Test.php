@@ -1,8 +1,9 @@
 <?php
     
-require_once("Model.php");
-require_once("Handler.php");
 
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\CstError;
 
 class Model_Slc_Test extends PHPUnit_Framework_TestCase
 {
@@ -16,20 +17,20 @@ class Model_Slc_Test extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
     
-        resetHandlers();
+        Handler::get()->resetHandlers();
         $typ='dataBase';
         $name='test';
         $Student=get_called_class().'_1';
         
-        self::$db1=getBaseHandler($typ, $name);
+        self::$db1=Handler::get()->getBase($typ, $name);
 
-        initStateHandler($Student, $typ, $name);
+        Handler::get()->setStateHandler($Student, $typ, $name);
         $Student=get_called_class().'_f_1';
         $typ='fileBase';
         
-        self::$db2=getBaseHandler($typ, $name);
+        self::$db2=Handler::get()->getBase($typ, $name);
 
-        initStateHandler($Student, $typ, $name);
+        Handler::get()->setStateHandler($Student, $typ, $name);
     }
     
     public function setTyp($typ)
@@ -113,7 +114,7 @@ class Model_Slc_Test extends PHPUnit_Framework_TestCase
         
         $x = new Model($this->Student, 1);
         $this->assertFalse($x->setCriteria(['a','b','xx'], [], ['Name_1',1,'1959-05-26']));
-        $this->assertEquals($x->getErrLine(), E_ERC002.':'.'xx');
+        $this->assertEquals($x->getErrLine(), CstError::E_ERC002.':'.'xx');
         
         $db->commit();
     }

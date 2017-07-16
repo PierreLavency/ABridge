@@ -1,6 +1,7 @@
 <?php
 require_once("GenJASON.php");
-require_once("Model.php");
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Handler;
 
 function GenJasonCasesData($id, $B, $D)
 {
@@ -23,12 +24,12 @@ function GenJasonCasesData($id, $B, $D)
 
 function GenJasonCases()
 {
-    $db = getBaseHandler('dataBase', 'test');
+    $db = Handler::get()->getBase('dataBase', 'test');
     $db->setLogLevl(0);
-    initStateHandler('TestDir', 'dataBase', 'test');
-    initStateHandler('TestFle', 'dataBase', 'test');
-    initStateHandler('Code', 'dataBase', 'test');
-    initStateHandler('CodeValue', 'dataBase', 'test');
+    Handler::get()->setStateHandler('TestDir', 'dataBase', 'test');
+    Handler::get()->setStateHandler('TestFle', 'dataBase', 'test');
+    Handler::get()->setStateHandler('Code', 'dataBase', 'test');
+    Handler::get()->setStateHandler('CodeValue', 'dataBase', 'test');
     
     $db->beginTrans();
 

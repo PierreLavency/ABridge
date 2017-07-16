@@ -1,6 +1,9 @@
 <?php
     
-require_once('Logger.php');
+use ABridge\ABridge\Logger;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\Model;
+
 require_once('GenJason.php');
 require_once('GenJason_case.php');
 
@@ -14,11 +17,11 @@ class GenJASON_Test extends PHPUnit_Framework_TestCase
     {
         self::$log=new Logger('GenJASON_init');
         self::$log->load();
-        $db = getBaseHandler('dataBase', 'test');
+        $db =Handler::get()->getBase('dataBase', 'test');
         $db->setLogLevl(0);
         self::$db=$db;
-        initStateHandler('TestDir', 'dataBase', 'test');
-        initStateHandler('TestFle', 'dataBase', 'test');
+        Handler::get()->setStateHandler('TestDir', 'dataBase', 'test');
+        Handler::get()->setStateHandler('TestFle', 'dataBase', 'test');
     }
     
 
@@ -31,7 +34,7 @@ class GenJASON_Test extends PHPUnit_Framework_TestCase
         $h= new Model($test[0][0], $test[0][1]);
         
         $this->expectOutputString(self::$log->getLine(0));
-        $this->assertNotNull(genJason($h, true, false, $test[0][2]));
+        $this->assertNotNull(genJASON($h, true, false, $test[0][2]));
         
         self::$db->commit();
     }

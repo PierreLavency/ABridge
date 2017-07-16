@@ -5,8 +5,7 @@ phpcbf --standard=PSR2 --no-patch  -l Src  Src/Usr/Src Src/View/Src Src/Adm/Src
 
 phpcbf --standard=PSR2 --no-patch  Tests  Src/User/Tests Src/View/Tests
 
-/
-*install phpdocumentor
+/* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
 
 /* dependency 
@@ -19,6 +18,7 @@ phpunit --coverage-html Testcoverage
 php -d xdebug.profiler_enable=1  -d xdebug.profiler_output_dir=./tmp tests/Controler_Perf.ph
 
 BUGS
+
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).

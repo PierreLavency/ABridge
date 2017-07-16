@@ -1,7 +1,8 @@
 <?php
     
-require_once("Model.php");
-require_once("Handler.php");
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\CstError;
 
 class Model_Abst_Test extends PHPUnit_Framework_TestCase
 {
@@ -21,7 +22,7 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
     
-        resetHandlers();
+        Handler::get()->resetHandlers();
         $typ='dataBase';
         $name='atest';
         $Application=get_called_class().'_1';
@@ -29,11 +30,11 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $ABB=get_called_class().'_3';
         $Exchange=get_called_class().'_4';
         
-        self::$db1=getBaseHandler($typ, $name);
-        initStateHandler($Application, $typ, $name);
-        initStateHandler($Component, $typ, $name);
-        initStateHandler($ABB, $typ, $name);
-        initStateHandler($Exchange, $typ, $name);
+        self::$db1=Handler::get()->getBase($typ, $name);
+         Handler::get()->setStateHandler($Application, $typ, $name);
+         Handler::get()->setStateHandler($Component, $typ, $name);
+         Handler::get()->setStateHandler($ABB, $typ, $name);
+         Handler::get()->setStateHandler($Exchange, $typ, $name);
         
         $typ='fileBase';
         $name=$name.'_f';
@@ -41,11 +42,11 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $Component=get_called_class().'_f_2';
         $ABB=get_called_class().'_f_3';
         $Exchange=get_called_class().'_f_4';
-        self::$db2=getBaseHandler($typ, $name);
-        initStateHandler($Application, $typ, $name);
-        initStateHandler($Component, $typ, $name);
-        initStateHandler($ABB, $typ, $name);
-        initStateHandler($Exchange, $typ, $name);
+        self::$db2=Handler::get()->getBase($typ, $name);
+         Handler::get()->setStateHandler($Application, $typ, $name);
+         Handler::get()->setStateHandler($Component, $typ, $name);
+         Handler::get()->setStateHandler($ABB, $typ, $name);
+         Handler::get()->setStateHandler($Exchange, $typ, $name);
     }
     
     public function setTyp($typ)
@@ -446,31 +447,31 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $comp->setVal('Surname', 'same');
         $comp->setVal('Bkey', 'App_0');
         $this->assertFalse($comp->save());
-        $this->assertEquals($comp->getErrLine(), E_ERC018.':Bkey:App_0');
+        $this->assertEquals($comp->getErrLine(), CstError::E_ERC018.':Bkey:App_0');
         
         
         $comp = new Model($this->Component);
 
         $this->assertFalse($comp->save());
-        $this->assertEquals($comp->getErrLine(), E_ERC019.':Name');
+        $this->assertEquals($comp->getErrLine(), CstError::E_ERC019.':Name');
 
         $comp->setVal('Name', 'Name_0_0');
         $comp->setVal('SurName', 'same');
         $this->assertFalse($comp->save());
-        $this->assertEquals($comp->getErrLine(), E_ERC031.':Name:SurName');
+        $this->assertEquals($comp->getErrLine(), CstError::E_ERC031.':Name:SurName');
   
         
         $ABB = new Model($this->ABB);
         $this->assertNotNull($ABB);
 
         $ABB->save();
-        $this->assertEquals($ABB->getErrLine(), E_ERC044);
+        $this->assertEquals($ABB->getErrLine(), CstError::E_ERC044);
 
         $ABB->setVal('Name', 'XX');
-        $this->assertEquals($ABB->getErrLine(), E_ERC045);
+        $this->assertEquals($ABB->getErrLine(), CstError::E_ERC045);
         
         $ABB->delet();
-        $this->assertEquals($ABB->getErrLine(), E_ERC044);
+        $this->assertEquals($ABB->getErrLine(), CstError::E_ERC044);
 
         $db->commit();
     }

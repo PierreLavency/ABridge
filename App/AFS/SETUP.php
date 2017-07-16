@@ -1,8 +1,11 @@
 <?php
 require_once 'CstMode.php';
-require_once '/View/Src/CstView.php';
+require_once 'View/CstView.php';
 
-	$config = [
+class Config
+{
+
+	static $config = [
 	'Handlers' =>
 		[
 		'Afs'  => ['dataBase'],
@@ -13,3 +16,4 @@ require_once '/View/Src/CstView.php';
 		['/Dir','/Fle'],
 	];
 	
+}

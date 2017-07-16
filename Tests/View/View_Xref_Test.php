@@ -1,7 +1,12 @@
 <?php
     
-require_once('Logger.php');
-require_once('View_case_Xref.php');
+use ABridge\ABridge\Logger;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\Request;
+use ABridge\ABridge\Handle;
+use ABridge\ABridge\View\View;
+
+require_once 'View_case_Xref.php';
 
 class View_Xref_Test extends PHPUnit_Framework_TestCase
 {
@@ -12,8 +17,8 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
     {
         self::$log=new Logger('View_init_Xref');
         self::$log->load();
-        self::$db = getBaseHandler('dataBase', 'test');
-        initStateHandler('dir', 'dataBase', 'test');
+        self::$db = Handler::get()->getBase('dataBase', 'test');
+        Handler::get()->setStateHandler('dir', 'dataBase', 'test');
     }
     
     

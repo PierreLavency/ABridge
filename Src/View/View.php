@@ -1,10 +1,17 @@
-
 <?php
+namespace ABridge\ABridge\View;
 
-require_once 'Handle.php';
+use ABridge\ABridge\Handle;
+use ABridge\ABridge\Handler;
+use ABridge\ABridge\CstError;
+
+use Exception;
+
 require_once 'GenHTML.php';
 require_once 'CstView.php';
 require_once 'CstMode.php';
+
+
 
 class View
 {

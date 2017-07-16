@@ -1,7 +1,8 @@
-
 <?php
+namespace ABridge\ABridge;
 
-require_once 'Logger.php';
+use Exception;
+use ABridge\ABridge\Logger;
 
 abstract class Base
 {

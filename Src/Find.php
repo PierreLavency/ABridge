@@ -1,4 +1,7 @@
 <?php
+namespace ABridge\ABridge;
+
+use ABridge\ABridge\Model;
 
 class Find
 {

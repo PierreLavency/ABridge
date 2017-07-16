@@ -1,12 +1,13 @@
 <?php
-require_once 'UtilsC.php';
-    
-require_once("Model.php");
-require_once("Handler.php");
-require_once 'CModel.php';
-require_once '/Usr/Src/Role.php';
-require_once '/Usr/Src/Distribution.php';
-require_once '/Usr/Src/Session.php';
+
+use ABridge\ABridge\UtilsC;
+
+use ABridge\ABridge\Model;
+use ABridge\ABridge\CstError;
+
+use ABridge\ABridge\Usr\User;
+
+use ABridge\ABridge\Usr\Session;
 
 class Session_User_Test_dataBase_2 extends User
 {
@@ -119,13 +120,13 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
             $x->setVal('UserId', 'testtt');
             
             $x->save();
-            $this->assertEquals($x->getErrLine(), E_ERC059.":testtt");
+            $this->assertEquals($x->getErrLine(), CstError::E_ERC059.":testtt");
             
             $x->setVal('UserId', 'test');
             $x->setVal('Password', 'Password2');
 
             $x->save();
-            $this->assertEquals($x->getErrLine(), E_ERC057);
+            $this->assertEquals($x->getErrLine(), CstError::E_ERC057);
             $db->commit();
         }
         

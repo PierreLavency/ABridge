@@ -1,10 +1,8 @@
 <?php
+namespace ABridge\ABridge\Usr;
 
-require_once 'User.php';
-require_once 'Session.php';
-require_once 'Role.php';
-require_once 'Distribution.php';
-
+use ABridge\ABridge\Usr\Session;
+use ABridge\ABridge\Handler;
 
 class Usr
 {
@@ -24,6 +22,11 @@ class Usr
     {
         $className=$prm[0];
         $id=0;
+        handler::get()->setCmod('Session', 'ABridge\ABridge\Usr\Session');
+        handler::get()->setCmod('User', 'ABridge\ABridge\Usr\User');
+        handler::get()->setCmod('Role', 'ABridge\ABridge\Usr\Role');
+        handler::get()->setCmod('Distribution', 'ABridge\ABridge\Usr\Distribution');
+        
         if (self::$cleanUp) {
             if (isset($_COOKIE[$name])) {
                 unset($_COOKIE[$name]);
@@ -32,6 +35,7 @@ class Usr
         if (isset($_COOKIE[$name])) {
             $id=$_COOKIE[$name];
         }
+        
         $sessionHdl = $className::getSession($id);
         self::$isNew=false;
         if ($sessionHdl->isNew()) {

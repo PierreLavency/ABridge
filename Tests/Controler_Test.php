@@ -1,7 +1,7 @@
 <?php
 
-require_once("Model.php");
-require_once("Controler.php");
+use ABridge\ABridge\Controler;
+use ABridge\ABridge\Model;
 
 class Controler_Test extends PHPUnit_Framework_TestCase
 {
@@ -57,6 +57,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=V_S_READ;
+
         
         $resc = $ctrl->run($this->show, 2);
 
@@ -66,7 +67,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
 
         $this->assertTrue($resc->nullobj());
- 
+
         $path='/'.$this->CName;
 
         $_SERVER['REQUEST_METHOD']='GET';

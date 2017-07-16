@@ -1,8 +1,8 @@
 <?php
 
-require_once 'Find.php';
-require_once("Model.php");
-require_once("Handler.php");
+use ABridge\ABridge\Find;
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Handler;
 
 class Find_Test extends PHPUnit_Framework_TestCase
 {
@@ -16,18 +16,18 @@ class Find_Test extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
     
-        resetHandlers();
+        Handler::get()->resetHandlers();
         $typ='dataBase';
         $name='test';
         $Cname=get_called_class().'_1';
-        self::$db1=getBaseHandler($typ, $name);
-        initStateHandler($Cname, $typ, $name);
+        self::$db1=Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($Cname, $typ, $name);
         
         $typ='fileBase';
         $name=$name.'_f';
         $Cname=get_called_class().'_f_1';
-        self::$db2=getBaseHandler($typ, $name);
-        initStateHandler($Cname, $typ, $name);
+        self::$db2=Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($Cname, $typ, $name);
     }
     
     public function setTyp($typ)

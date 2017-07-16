@@ -1,8 +1,7 @@
 <?php
     
 
-require_once 'CstError.php';
-
+use ABridge\ABridge\CstError;
 
 class CstError_Test extends PHPUnit_Framework_TestCase
 {
@@ -19,7 +18,7 @@ class CstError_Test extends PHPUnit_Framework_TestCase
     public function Provider1()
     {
         return [
-            [E_ERC001.':X','Illegal operation on predefined attribute'.':'.E_ERC001.':X'],
+            [CstError::E_ERC001.':X','Illegal operation on predefined attribute'.':'.CstError::E_ERC001.':X'],
             [':X',':X'],
             ['y:X','y:X'],
             ['yX','yX'],

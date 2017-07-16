@@ -1,9 +1,11 @@
 <?php
-require_once 'UtilsC.php';
-require_once 'Model.php';
-require_once 'Handler.php';
-require_once 'CModel.php';
-require_once '/Usr/Src/User.php';
+use ABridge\ABridge\UtilsC;
+
+use ABridge\ABridge\Model;
+
+use ABridge\ABridge\CstError;
+
+use ABridge\ABridge\Usr\User;
 
 class User_Test_dataBase_1 extends User
 {
@@ -132,7 +134,7 @@ class User_Test extends PHPUnit_Framework_TestCase
             $x->setVal('Password', 'Password2');
             $x->save();
             
-            $this->assertEquals($x->getErrLine(), E_ERC057);
+            $this->assertEquals($x->getErrLine(), CstError::E_ERC057);
            
             $x->setVal('Password', 'Password');
 
@@ -141,7 +143,7 @@ class User_Test extends PHPUnit_Framework_TestCase
             
             $x->save();
             
-            $this->assertEquals($x->getErrLine(), E_ERC058);
+            $this->assertEquals($x->getErrLine(), CstError::E_ERC058);
             
             $db->commit();
         }

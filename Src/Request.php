@@ -1,6 +1,9 @@
-
 <?php
-require_once 'CstError.php';
+namespace ABridge\ABridge;
+
+use Exception;
+use ABridge\ABridge\CstError;
+
 require_once 'CstMode.php';
 
 class Request
@@ -77,7 +80,7 @@ class Request
         $pathArr = explode('/', $pathStrg);
         $this->path=$pathStrg;
         if ($pathArr[0] != "") { // not starting with /  ?
-            throw new Exception(E_ERC036.':'.$pathStrg);
+            throw new Exception(CstError::E_ERC036.':'.$pathStrg);
         }
         array_shift($pathArr);
         if ($pathArr[0] == "") { // '/' alones
@@ -96,7 +99,7 @@ class Request
         $this->objN = $c-$r;
         for ($i=0; $i < $this->objN; $i=$i+2) {
             if (! checkIdentifier($pathArr[$i])) {
-                throw new Exception(E_ERC036.':'.$pathStrg.':'.$i);
+                throw new Exception(CstError::E_ERC036.':'.$pathStrg.':'.$i);
             }
             $this->pathArr[]=$pathArr[$i];
             $this->modPath=$this->modPath.'|'.$pathArr[$i];
@@ -106,7 +109,7 @@ class Request
             } else {
                 if (! ctype_digit($pathArr[$i+1])) {
                     $j=$i+1;
-                    throw new Exception(E_ERC036.':'.$pathStrg.':'.$j);
+                    throw new Exception(CstError::E_ERC036.':'.$pathStrg.':'.$j);
                 }
                 $this->pathArr[]=(int) $pathArr[$i+1];
             }
@@ -114,7 +117,7 @@ class Request
         if ($this->isClassPath) {
             if (! checkIdentifier($pathArr[$c-1])) {
                 $j = $c-1;
-                throw new Exception(E_ERC036.':'.$pathStrg.':'.$j);
+                throw new Exception(CstError::E_ERC036.':'.$pathStrg.':'.$j);
             }
             $this->pathArr[$c-1]=$pathArr[$c-1];
             $this->modPath=$this->modPath.'|'.$pathArr[$c-1];
@@ -237,7 +240,7 @@ class Request
     public function pushId($id)
     {
         if (! $this->isClassPath()) {
-            throw new Exception(E_ERC037);
+            throw new Exception(CstError::E_ERC037);
         }
         $path = $this->path.'/'.$id;
         $this->construct2($path, V_S_READ);
@@ -267,7 +270,7 @@ class Request
                 return $this->action;
             }
         }
-        throw new Exception(E_ERC048);
+        throw new Exception(CstError::E_ERC048);
     }
     
     protected function cleanInputs($data)
@@ -339,7 +342,7 @@ class Request
                 return true;
             }
         }
-        throw new Exception(E_ERC048.':'.$action.':'.$this->getRPath());
+        throw new Exception(CstError::E_ERC048.':'.$action.':'.$this->getRPath());
     }
 
     public function getActionReq($action)

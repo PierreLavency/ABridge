@@ -1,9 +1,10 @@
 <?php
 
-require_once("Request.php");
-require_once("Handle.php");
-require_once("Model.php");
-require_once '/View/Src/View.php';
+use ABridge\ABridge\Request;
+use ABridge\ABridge\Handle;
+use ABridge\ABridge\Model;
+
+use ABridge\ABridge\View\View;
 
 function viewCases()
 {

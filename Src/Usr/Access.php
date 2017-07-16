@@ -1,4 +1,8 @@
 <?php
+namespace ABridge\ABridge\Usr;
+
+use ABridge\ABridge\CstError;
+use Exception;
 
 class Access
 {
@@ -24,7 +28,7 @@ class Access
     public static function checkReq($session, $req)
     {
         if (is_null($req)) {
-            throw new Exception(E_ERC012);
+            throw new Exception(CstError::E_ERC012);
         }
         $res= self::getCond($session, $req->getAction(), $req->getModpath());
         if ($res) {
@@ -103,7 +107,7 @@ class Access
     public static function checkARight($session, $req, $attrObjs, $protect, $plast = true)
     {
         if (is_null($req)) {
-            throw new Exception(E_ERC012);
+            throw new Exception(CstError::E_ERC012);
         }
         $action = $req->getAction();
         $modpath=$req->getModpath();
@@ -167,17 +171,17 @@ class Access
             return false;
         }
         if ((!$obj->existsAttr($attro)) or (!$sess->existsAttr($attrs))) {
-            throw new Exception(E_ERC050.":$attro:$attrs");
+            throw new Exception(CstError::E_ERC050.":$attro:$attrs");
         }
         $typ = $obj->getTyp($attro);
         $typs = $sess->getTyp($attrs);
         if (baseType($typ) != baseType($typs)) {
-            throw new Exception(E_ERC050.':'.$typ.':'.$typs);
+            throw new Exception(CstError::E_ERC050.':'.$typ.':'.$typs);
         }
         if ($typ == M_REF
         and $typs == M_REF
         and ($obj->getModRef($attro) != $sess->getModRef($attrs))) {
-            throw new Exception(E_ERC050.':'.$obj->getModRef($attro).':'.$sess->getModRef($attrs));
+            throw new Exception(CstError::E_ERC050.':'.$obj->getModRef($attro).':'.$sess->getModRef($attrs));
         }
         $id1=$sess->getVal($attrs);
         $id2=$obj->getVal($attro);

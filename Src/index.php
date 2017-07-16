@@ -3,9 +3,11 @@
 $path = $home.'/Src'. PATH_SEPARATOR.$home;
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 
+require_once 'vendor/autoload.php';
+use ABridge\ABridge\Controler;
+
 //phpinfo();
 //$conf['name']='UnitTest';
-
 
 if (isset($conf['name'])) {
     $application= $conf['name'];
@@ -13,10 +15,10 @@ if (isset($conf['name'])) {
     throw new exception('No Application Defined');
 }
 
-require_once "Controler.php";
+include "Controler.php";
 
 if ($application == 'UnitTest') {
-    $ctrl = new Controler($conf);
+    $ctrl = new ABridge\ABridge\Controler($conf);
 //require_once("Src/View/Tests/GenHTML_init.php");  
 //require_once("Tests/GenJASON_init.php");  
 //require_once("Src/View/Tests/View_init.php");     
@@ -31,7 +33,7 @@ require_once 'CstError.php';
     $path = "App/".$application .'/';
     require_once $path.'SETUP.php' ;
 
-    $ctrl = new Controler($config, $conf);
+    $ctrl = new ABridge\ABridge\Controler(Config::$config, $conf);
 
 if (isset($init)) {
     $ctrl->beginTrans();

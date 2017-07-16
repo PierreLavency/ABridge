@@ -1,14 +1,16 @@
 <?php
 require_once 'CstMode.php';
-require_once '/View/Src/CstView.php';
-require_once 'CModel.php';
+require_once 'View/CstView.php';
 
+class Config
+{
+	const DBDEC = 'ADM';
 	
-	require_once 'CLASSDEC.php';
-
-	$config = [
+	const Adm ='Admin';
+	
+	static $config = [
 	'Handlers' => [
-		$Adm => ['dataBase',$DBDEC,false],
+		self::Adm => ['dataBase',self::DBDEC,false],
 	],
 	'Home' => [
 		'/','/Admin/1',
@@ -18,7 +20,7 @@ require_once 'CModel.php';
 	],
 	'Views' => [
 
-		$Adm =>[		
+		self::Adm =>[		
 			'attrList' => [
 				V_S_REF		=> ['id'],
 			],
@@ -33,5 +35,5 @@ require_once 'CModel.php';
 		],
 	];		
 	
-
+}
 	

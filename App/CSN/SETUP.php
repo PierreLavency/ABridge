@@ -1,9 +1,12 @@
 <?php
 require_once 'CstMode.php';
-require_once 'CstView.php';
+require_once 'View/CstView.php';
 
+class Config
+{
+	
 
-	$config = [
+	static $config = [
 	'Handlers' =>
 		[
 		'Recette'		=> ['dataBase',],
@@ -127,3 +130,4 @@ require_once 'CstView.php';
 		],
 	];		
 	
+}

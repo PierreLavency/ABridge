@@ -1,7 +1,7 @@
 <?php
     
-require_once("Model.php");
-require_once("Handler.php");
+use ABridge\ABridge\Model;
+use ABridge\ABridge\Handler;
 
 class Model_Rig_Test extends PHPUnit_Framework_TestCase
 {
@@ -21,7 +21,7 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
     
-        resetHandlers();
+        Handler::get()->resetHandlers();
         $typ='dataBase';
         $name='test';
         $Application=get_called_class().'_1';
@@ -29,11 +29,11 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
         $Code=get_called_class().'_3';
         $Exchange=get_called_class().'_4';
         
-        self::$db1=getBaseHandler($typ, $name);
-        initStateHandler($Application, $typ, $name);
-        initStateHandler($AbstrApp, $typ, $name);
-        initStateHandler($Code, $typ, $name);
-        initStateHandler($Exchange, $typ, $name);
+        self::$db1=Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($Application, $typ, $name);
+        Handler::get()->setStateHandler($AbstrApp, $typ, $name);
+        Handler::get()->setStateHandler($Code, $typ, $name);
+        Handler::get()->setStateHandler($Exchange, $typ, $name);
         
         $typ='fileBase';
         $name=$name.'_f';
@@ -42,11 +42,11 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
         $Code=get_called_class().'_f_3';
         $Exchange=get_called_class().'_f_4';
         
-        self::$db2=getBaseHandler($typ, $name);
-        initStateHandler($Application, $typ, $name);
-        initStateHandler($AbstrApp, $typ, $name);
-        initStateHandler($Code, $typ, $name);
-        initStateHandler($Exchange, $typ, $name);
+        self::$db2=Handler::get()->getBase($typ, $name);
+        Handler::get()->setStateHandler($Application, $typ, $name);
+        Handler::get()->setStateHandler($AbstrApp, $typ, $name);
+        Handler::get()->setStateHandler($Code, $typ, $name);
+        Handler::get()->setStateHandler($Exchange, $typ, $name);
     }
     
     public function setTyp($typ)

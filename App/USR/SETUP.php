@@ -1,30 +1,40 @@
 <?php
 require_once 'CstMode.php';
-require_once '/View/Src/CstView.php';
-require_once 'CModel.php';
+require_once 'View/CstView.php';
 
-require_once '/Usr/Src/Usr.php';
+class Config
+{
+	const DBDEC = 'USR';
 	
-	require_once 'CLASSDEC.php';
+	const User ='User';
+	const Role = 'Role';
+	const Session ='Session';
+	const Distribution = 'Distribution';
+	const Group = 'UserGroup';
+	const Adm ='Admin';
+	
+	static $cmod = [
+		self::Session	 	=> 'ABridge\ABridge\Usr\\'.self::Session,
+	];
 
-	$config = [
+	static $config = [
 	'Handlers' =>
 		[
-		$User	 	 => ['dataBase',$DBDEC,],
-		$Group		 => ['dataBase',$DBDEC,],		
-		$Role	 	 => ['dataBase',$DBDEC,],
-		$Distribution=> ['dataBase',$DBDEC,],
-		$Session	 => ['dataBase',$DBDEC,],
-		$Adm   		 => ['dataBase',$DBDEC,false],
+		self::User	 	 	=> ['dataBase',self::DBDEC,],
+		self::Group		 	=> ['dataBase',self::DBDEC,],		
+		self::Role	 	 	=> ['dataBase',self::DBDEC,],
+		self::Distribution	=> ['dataBase',self::DBDEC,],
+		self::Session	 	=> ['dataBase',self::DBDEC,],
+		self::Adm   		=> ['dataBase',self::DBDEC,false],
 		],
 	'Home' =>
-			['/',"/$Session/~","/$User/~",'/Admin/1'],
+			['/',"/".self::Session."/~","/".self::User."/~","/".self::Adm."/1"],
 	'Adm' => [],
 	'Usr' => 
-		[$Session=>'BKey'],		
+		[self::Session=>'BKey'],		
 	'Views' => [
 			
-		$Adm =>[
+		self::Adm =>[
 				'attrList' => [
 						V_S_REF		=> ['id'],
 				],
@@ -35,7 +45,7 @@ require_once '/Usr/Src/Usr.php';
 						V_S_READ => [V_S_UPDT],
 				],
 		],		
-		$User =>[
+		self::User =>[
 			'lblList' => [
 					'Play'			=> 'PlayRoles',
 				],
@@ -46,7 +56,7 @@ require_once '/Usr/Src/Usr.php';
 				],						
 			'attrList' => [
 					V_S_REF		=> ['UserId'],
-					V_S_SLCT	=> ['UserId',$Group],
+					V_S_SLCT	=> ['UserId',self::Group],
 				],
 			'viewList' => [
 				'Password'  => [
@@ -59,8 +69,8 @@ require_once '/Usr/Src/Usr.php';
 				],
 				'Role'  => [
 					'attrList' => [
-						V_S_READ	=> ['UserId',$Group,'DefaultRole','Play'],
-						V_S_UPDT	=> ['UserId','Password',$Group,'DefaultRole'],
+						V_S_READ	=> ['UserId',self::Group,'DefaultRole','Play'],
+						V_S_UPDT	=> ['UserId','Password',self::Group,'DefaultRole'],
 					],
 					'navList' => [
 						V_S_READ => [V_S_UPDT],
@@ -76,12 +86,12 @@ require_once '/Usr/Src/Usr.php';
 				],
 			]				
 		],
-		$Group =>[		
+		self::Group =>[		
 			'attrList' => [
 				V_S_REF		=> ['Name'],
 				],
 		],		
-		$Role =>[	
+		self::Role =>[	
 				'attrList' => [
 					V_S_REF		=> ['Name'],
 				],
@@ -91,7 +101,7 @@ require_once '/Usr/Src/Usr.php';
 					V_S_CREA	=> ['JSpec' => [H_TYPE=>H_T_TEXTAREA,H_COL=>160,H_ROW=> 30]],
 				]
 		],
-		$Session =>[
+		self::Session =>[
 			'attrList' => [
 						V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									
 			],
@@ -123,7 +133,7 @@ require_once '/Usr/Src/Usr.php';
 			]							
 
 		],
-		$Distribution =>[
+		self::Distribution =>[
 			'attrHtml' => [
 				V_S_CREA => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
 				V_S_UPDT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
@@ -134,5 +144,5 @@ require_once '/Usr/Src/Usr.php';
 		],
 	];		
 	
-
+}
 	

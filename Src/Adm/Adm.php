@@ -1,6 +1,9 @@
 <?php
+namespace ABridge\ABridge\Adm;
 
-require_once 'Admin.php';
+use ABridge\ABridge\Adm\Admin;
+use ABridge\ABridge\Find;
+use ABridge\ABridge\Handler;
 
 class Adm
 {
@@ -8,6 +11,7 @@ class Adm
     
     public static function init($app, $prm)
     {
+        handler::get()->setCmod('Admin', 'ABridge\ABridge\Adm\Admin');
         $res = Find::AllId('Admin');
         
         if (count($res)==0) {
