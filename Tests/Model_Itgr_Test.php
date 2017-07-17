@@ -2,6 +2,7 @@
     
 use ABridge\ABridge\Model;
 use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mtype;
 
 class Model_Rig_Test extends PHPUnit_Framework_TestCase
 {
@@ -92,7 +93,7 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($res);
         $res = $AbstrApp->saveMod();
             
-        $res = $Code->addAttr('CodeVal', M_STRING);
+        $res = $Code->addAttr('CodeVal', Mtype::M_STRING);
         $res = $Code->saveMod();
         $res = $Code->setVal('CodeVal', 'V1');
         $v1 = $Code->save();
@@ -107,8 +108,8 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
         $res= $Application->deleteMod();
 
         $res = $Application->setInhNme($this->AbstrApp);
-        $res = $Application->addAttr('Name', M_STRING);
-        $res = $Application->addAttr('Code', M_REF, '/'.$this->Code);
+        $res = $Application->addAttr('Name', Mtype::M_STRING);
+        $res = $Application->addAttr('Code', Mtype::M_REF, '/'.$this->Code);
         $res = $Application->saveMod();
         $res = $Application->setVal('Code', $v1);
         $res = $Application->setVal('Name', 'App');
@@ -179,8 +180,8 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
             
         $Application = new Model($this->Application);
         
-        $res = $Application->addAttr('Code2', M_REF, '/'.$this->Code);
-        $res = $Application->addAttr('Code3', M_REF, '/'.$this->Code);
+        $res = $Application->addAttr('Code2', Mtype::M_REF, '/'.$this->Code);
+        $res = $Application->addAttr('Code3', Mtype::M_REF, '/'.$this->Code);
         $res = $Application->saveMod();
         
         $this->assertFalse($Application->isErr());

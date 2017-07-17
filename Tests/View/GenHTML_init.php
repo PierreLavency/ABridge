@@ -1,6 +1,8 @@
 <?php
-require_once '/View/GenHTML.php';
-require_once("UnitTest.php");
+
+use  ABridge\ABridge\UnitTest;
+use ABridge\ABridge\View\GenHTML;
+
 
 $logName = basename(__FILE__, ".php");
 
@@ -18,7 +20,7 @@ for ($i=0; $i<count($test); $i++) {
         echo "<br/>\n";
     }
     $case = $test[$i];
-    $r=genFormElem($case[0], $show);
+    $r=GenHTML::genFormElem($case[0], $show);
     $log->logLine($r);
 }
     

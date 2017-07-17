@@ -3,6 +3,7 @@ namespace ABridge\ABridge;
 
 use ABridge\ABridge\Model;
 use ABridge\ABridge\Request;
+use ABridge\ABridge\CstMode;
 
 class Handle
 {
@@ -234,7 +235,7 @@ class Handle
     public function getObjId($id)
     {
          // in selection list
-        $req = $this->request->getObjReq($id, V_S_READ);
+        $req = $this->request->getObjReq($id, CstMode::V_S_READ);
         $res = $this->checkReq($req);
         if (!$res) {
             return null;
@@ -250,7 +251,7 @@ class Handle
     public function getCref($attr, $id)
     {
          // in cref list
-        $req = $this->request->getCrefReq($attr, V_S_READ, $id);
+        $req = $this->request->getCrefReq($attr, CstMode::V_S_READ, $id);
         $res = $this->checkReq($req);
         if (!$res) {
             return null;
@@ -303,7 +304,7 @@ class Handle
             $path ='/'.$mod.'/'.$id;
             $objs[]=[$mod,$obj];
         }
-        $req = new Request($path, V_S_READ);
+        $req = new Request($path, CstMode::V_S_READ);
         return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
     }
      

@@ -3,6 +3,7 @@
 use ABridge\ABridge\Model;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mtype;
 
 class Model_Abst_Test extends PHPUnit_Framework_TestCase
 {
@@ -86,34 +87,34 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $res= $ABB->deleteMod();
         $this->assertTrue($res);
         
-        $res = $ABB->addAttr('Bkey', M_STRING);
+        $res = $ABB->addAttr('Bkey', Mtype::M_STRING);
         $this->assertTrue($res);
 
         $res=$ABB->setBkey('Bkey', true); // Mdtr
         $this->assertTrue($res);
 
-        $res = $ABB->addAttr('Name', M_STRING);
+        $res = $ABB->addAttr('Name', Mtype::M_STRING);
         $this->assertTrue($res);
 
         $res=$ABB->setMdtr('Name', true); // Mdtr
         $this->assertTrue($res);
         
-        $res = $ABB->addAttr('SurName', M_STRING);
+        $res = $ABB->addAttr('SurName', Mtype::M_STRING);
         $this->assertTrue($res);
         
         $res=$ABB->setCkey(['Name','SurName'], true);
         $this->assertTrue($res);
 
-        $res = $ABB->addAttr('CDate', M_DATE);
+        $res = $ABB->addAttr('CDate', Mtype::M_DATE);
         $this->assertTrue($res);
 
         $res = $ABB->setDflt('CDate', '1959-05-26'); //default
         $this->assertTrue($res);
         
-        $res = $ABB->addAttr('Inn', M_CREF, '/'.$this->Exchange.'/Inn');
+        $res = $ABB->addAttr('Inn', Mtype::M_CREF, '/'.$this->Exchange.'/Inn');
         $this->assertTrue($res);
         
-        $res = $ABB->addAttr('Outt', M_CREF, '/'.$this->Exchange.'/Outt');
+        $res = $ABB->addAttr('Outt', Mtype::M_CREF, '/'.$this->Exchange.'/Outt');
         $this->assertTrue($res);
         
         $res = $ABB->setAbstr();
@@ -132,10 +133,10 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $res= $Application->deleteMod();
         $this->assertTrue($res);
 
-        $res = $Application->addAttr('Owner', M_STRING);
+        $res = $Application->addAttr('Owner', Mtype::M_STRING);
         $this->assertTrue($res);
 
-        $res = $Application->addAttr('BuiltFrom', M_CREF, '/'.$this->Component.'/Of');
+        $res = $Application->addAttr('BuiltFrom', Mtype::M_CREF, '/'.$this->Component.'/Of');
         $this->assertTrue($res);
         
         $res = $Application->setInhNme($this->ABB);
@@ -151,10 +152,10 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $res= $Component->deleteMod();
         $this->assertTrue($res);
         
-        $res = $Component->addAttr('Type', M_STRING);
+        $res = $Component->addAttr('Type', Mtype::M_STRING);
         $this->assertTrue($res);
         
-        $res = $Component->addAttr('Of', M_REF, '/'.$this->Application);
+        $res = $Component->addAttr('Of', Mtype::M_REF, '/'.$this->Application);
         $this->assertTrue($res);
 
         $res = $Component->setInhNme($this->ABB);
@@ -169,16 +170,16 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $res= $Exchange->deleteMod();
         $this->assertTrue($res);
 
-        $res = $Exchange->addAttr('Inn', M_REF, '/'.$this->ABB);
+        $res = $Exchange->addAttr('Inn', Mtype::M_REF, '/'.$this->ABB);
         $this->assertTrue($res);
 
-        $res = $Exchange->addAttr('Outt', M_REF, '/'.$this->ABB);
+        $res = $Exchange->addAttr('Outt', Mtype::M_REF, '/'.$this->ABB);
         $this->assertTrue($res);
 
         $res=$Exchange->setCkey(['Inn','Outt'], true);
         $this->assertTrue($res);
         
-        $res = $Exchange->addAttr('Object', M_STRING);
+        $res = $Exchange->addAttr('Object', Mtype::M_STRING);
         $this->assertTrue($res);
 
         $res = $Exchange->saveMod();
@@ -208,12 +209,12 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($obj->existsAttr('BuiltFrom'));
         $this->assertTrue($obj->existsAttr('Outt'));
         
-        $this->assertEquals($obj->getTyp('Name'), M_STRING);
+        $this->assertEquals($obj->getTyp('Name'), Mtype::M_STRING);
         $this->assertTrue($obj->isMdtr('Name'));
         $this->assertTrue($obj->isBkey('Bkey'));
-        $this->assertEquals($obj->getTyp('Owner'), M_STRING);
-        $this->assertEquals($obj->getTyp('BuiltFrom'), M_CREF);
-        $this->assertEquals($obj->getTyp('Outt'), M_CREF);
+        $this->assertEquals($obj->getTyp('Owner'), Mtype::M_STRING);
+        $this->assertEquals($obj->getTyp('BuiltFrom'), Mtype::M_CREF);
+        $this->assertEquals($obj->getTyp('Outt'), Mtype::M_CREF);
         $this->assertEquals($obj->getDflt('CDate'), '1959-05-26');
             
         $id = 1;
@@ -400,7 +401,7 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $ABB = new Model($this->ABB);
         $this->assertNotNull($ABB);
         
-        $res = $ABB->addAttr('NewAttr', M_STRING);
+        $res = $ABB->addAttr('NewAttr', Mtype::M_STRING);
         $this->assertTrue($res);
 
         $res= $ABB->saveMod();

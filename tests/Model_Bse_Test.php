@@ -3,6 +3,7 @@
 use ABridge\ABridge\Model;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mtype;
 
 class Model_Bse_Test extends PHPUnit_Framework_TestCase
 {
@@ -61,13 +62,13 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
         $res= $mod->deleteMod();
         $this->assertTrue($res);
         
-        $res = $mod->addAttr('name', M_STRING);
+        $res = $mod->addAttr('name', Mtype::M_STRING);
         $this->assertTrue($res);
 
-        $res = $mod->addAttr('XXX', M_STRING);
+        $res = $mod->addAttr('XXX', Mtype::M_STRING);
         $this->assertTrue($res);
 
-        $res = $mod->addAttr('tel', M_INT);
+        $res = $mod->addAttr('tel', Mtype::M_INT);
         $this->assertTrue($res);
         
         $res = $mod->saveMod();
@@ -98,7 +99,7 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
         $res = $mod->delAttr('XXX');
         $this->assertTrue($res);
     
-        $res = $mod->addAttr('surname', M_STRING);
+        $res = $mod->addAttr('surname', Mtype::M_STRING);
         $this->assertTrue($res);
     
         $res = $mod->saveMod();
@@ -265,7 +266,7 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
         $mod = new Model($this->Cname);
         $this->assertNotNull($mod);
         
-        $res = $mod->addAttr('name', M_STRING);
+        $res = $mod->addAttr('name', Mtype::M_STRING);
         $this->assertTrue($res);
         
         $res = $mod->saveMod();
@@ -274,7 +275,7 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
         $res = $mod->setVal('name', 'Lavency');
         $this->assertTrue($res);
 
-        $res = $mod->addAttr('XXX', M_STRING);
+        $res = $mod->addAttr('XXX', Mtype::M_STRING);
         $this->assertTrue($res);
 
         $id = $mod->save();

@@ -3,7 +3,7 @@
 use ABridge\ABridge\UtilsC;
 
 use ABridge\ABridge\Model;
-
+use ABridge\ABridge\CstMode;
 
 use ABridge\ABridge\Usr\User;
 use ABridge\ABridge\Usr\Role;
@@ -86,12 +86,12 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
     public function testGet($bases)
     {
         $rolespec =[
-        [[V_S_READ,V_S_SLCT],           'true',                                 'true'],
-        [V_S_SLCT,                      '|User',                                'false'],
-        [V_S_READ,                      '|User',                                ["User"=>"User"]],
-        [V_S_UPDT,                      '|Application',                         ["Application"=>"User"]],
-        [[V_S_CREA,V_S_UPDT,V_S_DELT], ['|Application|In','|Application|Out'], ["Application"=>"User"]],
-        [[V_S_CREA,V_S_DELT],           '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
+        [[CstMode::V_S_READ,CstMode::V_S_SLCT],           'true',                                 'true'],
+        [CstMode::V_S_SLCT,                      '|User',                                'false'],
+        [CstMode::V_S_READ,                      '|User',                                ["User"=>"User"]],
+        [CstMode::V_S_UPDT,                      '|Application',                         ["Application"=>"User"]],
+        [[CstMode::V_S_CREA,CstMode::V_S_UPDT,CstMode::V_S_DELT], ['|Application|In','|Application|Out'], ["Application"=>"User"]],
+        [[CstMode::V_S_CREA,CstMode::V_S_DELT],           '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
         ];
         
         foreach ($bases as $base) {

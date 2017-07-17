@@ -3,6 +3,7 @@
 use ABridge\ABridge\Model;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mtype;
 
 class Model_Key_Test extends PHPUnit_Framework_TestCase
 {
@@ -80,14 +81,14 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $res= $codeval->deleteMod();
         $this->assertTrue($res);
         
-        $res = $codeval->addAttr('ValueName', M_STRING);
+        $res = $codeval->addAttr('ValueName', Mtype::M_STRING);
         $this->assertTrue($res);
         
         $res = $codeval->setDflt('ValueName', 'Male'); //default
         $this->assertTrue($res);
                 
         $path='/'.$this->Code;
-        $res = $codeval->addAttr('ValueOf', M_REF, $path);
+        $res = $codeval->addAttr('ValueOf', Mtype::M_REF, $path);
         $this->assertTrue($res);
 
         $res=$codeval->setMdtr('ValueOf', true); // Mdtr
@@ -106,14 +107,14 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $res= $code->deleteMod();
         $this->assertTrue($res);
         
-        $res = $code->addAttr('CodeName', M_STRING);
+        $res = $code->addAttr('CodeName', Mtype::M_STRING);
         $this->assertTrue($res);
         
         $res=$code->setBkey('CodeName', true);// unique
         $this->assertTrue($res);
         
         $path='/'.$this->CodeVal.'/ValueOf';
-        $res = $code->addAttr('Values', M_CREF, $path);
+        $res = $code->addAttr('Values', Mtype::M_CREF, $path);
         $this->assertTrue($res);
         
         $res = $code->saveMod();
@@ -422,7 +423,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $m = new Model('NoState');
         $r = $m-> getErrLog();
         
-        $this->assertTrue($m->addAttr('A', M_STRING));
+        $this->assertTrue($m->addAttr('A', Mtype::M_STRING));
         
         $res=$m->setBkey('A', true);
         $this->assertFalse($res);

@@ -2,6 +2,7 @@
 namespace ABridge\ABridge\Adm;
 
 use ABridge\ABridge\CModel;
+use ABridge\ABridge\Mtype;
 
 class Admin extends CModel
 {
@@ -18,11 +19,11 @@ class Admin extends CModel
     {
         $obj = $this->mod;
         
-        $res = $obj->addAttr('Application', M_STRING);
-        $res = $obj->addAttr('Init', M_BOOL, M_P_TEMP);
-        $res = $obj->addAttr('Meta', M_BOOL, M_P_TEMP);
-        $res = $obj->addAttr('Load', M_BOOL, M_P_TEMP);
-        $res = $obj->addAttr('Delta', M_BOOL, M_P_TEMP);
+        $res = $obj->addAttr('Application', Mtype::M_STRING);
+        $res = $obj->addAttr('Init', Mtype::M_BOOL, M_P_TEMP);
+        $res = $obj->addAttr('Meta', Mtype::M_BOOL, M_P_TEMP);
+        $res = $obj->addAttr('Load', Mtype::M_BOOL, M_P_TEMP);
+        $res = $obj->addAttr('Delta', Mtype::M_BOOL, M_P_TEMP);
         
         return $obj->isErr();
     }

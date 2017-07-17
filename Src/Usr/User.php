@@ -3,6 +3,7 @@ namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\CModel;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mtype;
 
 class User extends CModel
 {
@@ -23,21 +24,21 @@ class User extends CModel
         $distribution = null;
         $role = null;
 
-        $res = $obj->addAttr('UserId', M_STRING);
-        $res = $obj->addAttr('Password', M_STRING);
-        $res = $obj->addAttr('NewPassword1', M_STRING, M_P_TEMP);
-        $res = $obj->addAttr('NewPassword2', M_STRING, M_P_TEMP);
-        $res = $obj->addAttr('MetaData', M_TXT, M_P_EVAL);
+        $res = $obj->addAttr('UserId', Mtype::M_STRING);
+        $res = $obj->addAttr('Password', Mtype::M_STRING);
+        $res = $obj->addAttr('NewPassword1', Mtype::M_STRING, M_P_TEMP);
+        $res = $obj->addAttr('NewPassword2', Mtype::M_STRING, M_P_TEMP);
+        $res = $obj->addAttr('MetaData', Mtype::M_TXT, M_P_EVAL);
         
         $res = $obj->setBkey('UserId', true);
         
         if (isset($bindings['Distribution'])) {
             $distribution=$bindings['Distribution'];
-            $res = $obj->addAttr('Play', M_CREF, '/'.$distribution.'/toUser');
+            $res = $obj->addAttr('Play', Mtype::M_CREF, '/'.$distribution.'/toUser');
         }
         if (isset($bindings['Role'])) {
             $role = $bindings['Role'];
-            $res = $obj->addAttr('DefaultRole', M_REF, '/'.$role);
+            $res = $obj->addAttr('DefaultRole', Mtype::M_REF, '/'.$role);
         }
        
         return $obj->isErr();

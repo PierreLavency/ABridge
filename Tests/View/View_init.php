@@ -1,16 +1,15 @@
 <?php
 
-require_once("UnitTest.php");
-require_once 'Src/View/Tests/View_case.php';
+use  ABridge\ABridge\UnitTest;
+use ABridge\ABridge\View\View;
+
+require_once 'View_case.php';
 
 $logName = basename(__FILE__, ".php");
 
 $log=new UnitTest($logName, 1);
 
 /**************************************/
-
-require_once("Model.php");
-require_once 'Src/View/Src/View.php';
 
 $show = false;
 $test = viewCases();

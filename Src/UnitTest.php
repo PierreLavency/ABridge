@@ -1,6 +1,7 @@
-
 <?php
-require_once 'Logger.php';
+namespace ABridge\ABridge;
+
+use ABridge\ABridge\Logger;
 
 class UnitTest
 {

@@ -2,6 +2,11 @@
 
 use ABridge\ABridge\Model;
 use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\CstMode;
+
+use ABridge\ABridge\View\CstView;
+
 
 function viewCasesXref()
 {
@@ -13,11 +18,11 @@ function viewCasesXref()
     $x=new Model('viewCasesXref');
     $x->deleteMod();
 
-    $x->addAttr('Name', M_STRING);
-    $x->addAttr('Father', M_REF, '/viewCasesXref');
-    $x->addAttr('FatherOf', M_CREF, '/viewCasesXref/Father');
-    $x->addAttr('Mother', M_REF, '/viewCasesXref');
-    $x->addAttr('MotherOf', M_CREF, '/viewCasesXref/Mother');
+    $x->addAttr('Name', Mtype::M_STRING);
+    $x->addAttr('Father', Mtype::M_REF, '/viewCasesXref');
+    $x->addAttr('FatherOf', Mtype::M_CREF, '/viewCasesXref/Father');
+    $x->addAttr('Mother', Mtype::M_REF, '/viewCasesXref');
+    $x->addAttr('MotherOf', Mtype::M_CREF, '/viewCasesXref/Mother');
     $x->saveMod();
 
     $x=new Model('viewCasesXref');
@@ -54,19 +59,19 @@ function viewCasesXref()
     
     $test=[];
     $n=0;
-    $test[$n]=[$v,$path,V_S_CREA,$n];
+    $test[$n]=[$v,$path,CstMode::V_S_CREA,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_READ,$n];
+    $test[$n]=[$v,$path,CstMode::V_S_READ,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_UPDT,$n];
+    $test[$n]=[$v,$path,CstMode::V_S_UPDT,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_DELT,$n];
+    $test[$n]=[$v,$path,CstMode::V_S_DELT,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_SLCT,$n];
+    $test[$n]=[$v,$path,CstMode::V_S_SLCT,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_REF,$n];
+    $test[$n]=[$v,$path,CstView::V_S_REF,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_CREF,$n];
+    $test[$n]=[$v,$path,CstView::V_S_CREF,$n];
     
 
     return $test;

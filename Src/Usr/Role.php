@@ -2,6 +2,7 @@
 namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\CModel;
+use ABridge\ABridge\Mtype;
 
 class Role extends CModel
 {
@@ -11,14 +12,14 @@ class Role extends CModel
         $distribution = null;
         $role = null;
 
-        $res = $obj->addAttr('Name', M_STRING);
-        $res = $obj->addAttr('JSpec', M_JSON);
+        $res = $obj->addAttr('Name', Mtype::M_STRING);
+        $res = $obj->addAttr('JSpec', Mtype::M_JSON);
 
         $res = $obj->setBkey('Name', true);
         
         if (isset($bindings['Distribution'])) {
             $distribution=$bindings['Distribution'];
-            $res = $obj->addAttr('PlayedBy', M_CREF, '/'.$distribution.'/ofRole');
+            $res = $obj->addAttr('PlayedBy', Mtype::M_CREF, '/'.$distribution.'/ofRole');
         }
         
         return $obj->isErr();

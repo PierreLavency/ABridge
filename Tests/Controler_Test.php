@@ -2,6 +2,11 @@
 
 use ABridge\ABridge\Controler;
 use ABridge\ABridge\Model;
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\CstMode;
+
+use ABridge\ABridge\View\CstHTML;
+use ABridge\ABridge\View\CstView;
 
 class Controler_Test extends PHPUnit_Framework_TestCase
 {
@@ -15,15 +20,15 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     'Views' => [
         'Controler_Test_1' =>[
                 'attrList' => [
-                    V_S_REF         => ['id'],
+                    CstView::V_S_REF => ['id'],
                     ],
                 'attrHtml' => [
-                    V_S_READ => ['Name'=>H_T_PLAIN],
+                    CstMode::V_S_READ => ['Name'=>CstHTML::H_T_PLAIN],
                 ],
                 'attrProp' => [
-                    V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
+                    CstMode::V_S_SLCT =>[CstView::V_P_LBL,CstView::V_P_OP,CstView::V_P_VAL],
                 ],
-                'navList' => [V_S_READ => [V_S_UPDT,V_S_SLCT],
+                'navList' => [CstMode::V_S_READ => [CstMode::V_S_UPDT,CstMode::V_S_SLCT],
                 ],
                 'lblList' => [
                     'id'        => 'Noma',
@@ -48,15 +53,15 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $x=new Model($this->CName);
         $x->deleteMod();
         $x=new Model($this->CName);
-        $x->addAttr('Name', M_INT);
-        $x->addAttr('Ref', M_REF, '/'.$this->CName);
-        $x->addAttr('Cref', M_CREF, '/'.$this->CName.'/Ref');
+        $x->addAttr('Name', Mtype::M_INT);
+        $x->addAttr('Ref', Mtype::M_REF, '/'.$this->CName);
+        $x->addAttr('Cref', Mtype::M_CREF, '/'.$this->CName.'/Ref');
         $x->saveMod();
         
         $path = '/';
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_READ;
+        $_GET['Action']=CstMode::V_S_READ;
 
         
         $resc = $ctrl->run($this->show, 2);
@@ -72,12 +77,12 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_CREA;
+        $_GET['Action']=CstMode::V_S_CREA;
         
         $resc = $ctrl->run($this->show, 0);
  
         $this->assertFalse($resc->isErr());
-        $this->assertEquals(V_S_CREA, $resc->getAction());
+        $this->assertEquals(CstMode::V_S_CREA, $resc->getAction());
         $this->assertEquals($resc->getId(), 0);
         
         $_SERVER['REQUEST_METHOD']='POST';
@@ -87,7 +92,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($res->getId(), 1);
         $this->assertFalse($res->isErr());
-        $this->assertEquals(V_S_READ, $res->getAction());
+        $this->assertEquals(CstMode::V_S_READ, $res->getAction());
         
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$res->getRPath();
@@ -97,7 +102,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $this->assertEquals($res->getUrl(), $reso->getUrl());
         $this->assertFalse($res->isErr());
-        $this->assertEquals(V_S_READ, $reso->getAction());
+        $this->assertEquals(CstMode::V_S_READ, $reso->getAction());
         $this->assertEquals($reso->getId(), 1);
 
         return $reso->getRPath();
@@ -115,7 +120,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_UPDT;
+        $_GET['Action']=CstMode::V_S_UPDT;
         $_POST['Name']='a';
 
 
@@ -124,7 +129,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($res->getVal('Name'), 0);
         $this->assertTrue($res->isErr());
-        $this->assertEquals(V_S_UPDT, $res->getAction());
+        $this->assertEquals(CstMode::V_S_UPDT, $res->getAction());
     }
     /**
     * @depends testRootErr
@@ -136,7 +141,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']='/'.$this->CName;
-        $_GET['Action']=V_S_SLCT;
+        $_GET['Action']=CstMode::V_S_SLCT;
         $_POST['Name']=0;
         $_POST['Name_OP']='=';
         
@@ -155,7 +160,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $this->assertEquals($res->getVal('Name'), 1);
         $this->assertFalse($res->isErr());
-        $this->assertEquals(V_S_READ, $res->getAction());
+        $this->assertEquals(CstMode::V_S_READ, $res->getAction());
   
         return $res->getRpath();
     }
@@ -168,7 +173,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$fpath;
-        $_GET['Action']=V_S_CREA;
+        $_GET['Action']=CstMode::V_S_CREA;
         
         $res = $ctrl->run($this->show, 0);
 
@@ -191,21 +196,21 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_READ;
+        $_GET['Action']=CstMode::V_S_READ;
 
         $res = $ctrl->run($this->show, 0);
         
         $this->assertFalse($res->isErr());
-        $this->assertEquals(V_S_READ, $res->getAction());
+        $this->assertEquals(CstMode::V_S_READ, $res->getAction());
     
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_UPDT;
+        $_GET['Action']=CstMode::V_S_UPDT;
         
         $res = $ctrl->run($this->show, 0);
         
         $this->assertFalse($res->isErr());
-        $this->assertEquals(V_S_UPDT, $res->getAction());
+        $this->assertEquals(CstMode::V_S_UPDT, $res->getAction());
  
         $_SERVER['REQUEST_METHOD']='POST';
         $_POST['Name']=2;
@@ -214,7 +219,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($res->getVal('Name'), 2);
         $this->assertFalse($res->isErr());
-        $this->assertEquals(V_S_READ, $res->getAction());
+        $this->assertEquals(CstMode::V_S_READ, $res->getAction());
 
         $ctrl->close();
         return $res->getRPath();
@@ -232,7 +237,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $this->assertEquals($x, $res->getRpath());
         $this->assertFalse($res->isErr());
-        $this->assertEquals(V_S_READ, $res->getAction());
+        $this->assertEquals(CstMode::V_S_READ, $res->getAction());
         
         return $x;
     }
@@ -243,13 +248,13 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_READ;
+        $_GET['Action']=CstMode::V_S_READ;
 
         $res = $ctrl->run($this->show, 0);
         
         $x=$res->getDD()->getRPath();
             
-        $_GET['Action']=V_S_DELT;
+        $_GET['Action']=CstMode::V_S_DELT;
 
         $res = $ctrl->run($this->show, 0);
             

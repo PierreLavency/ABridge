@@ -1,6 +1,6 @@
 <?php
     
-/* */
+use ABridge\ABridge\Mtype;
 
 require_once("SQLBase.php");
 
@@ -13,7 +13,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
     protected $meta=[
                         'attr_lst'=>['vnum','ctstp','utstp','CODE','SEVERITY',],
                         'attr_plst'=>['vnum','ctstp','utstp','CODE','SEVERITY',],
-                        'attr_typ'=> ["vnum"=>M_INT,"ctstp"=>M_TMSTP,"utstp"=>M_TMSTP,'CODE'=>M_STRING,'SEVERITY'=>M_INT,],
+                        'attr_typ'=> ["vnum"=>Mtype::M_INT,"ctstp"=>Mtype::M_TMSTP,"utstp"=>Mtype::M_TMSTP,'CODE'=>Mtype::M_STRING,'SEVERITY'=>Mtype::M_INT,],
                     ];
     
     protected $id1=1;
@@ -366,7 +366,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
         if (get_class($x)=='SQLBase') {
             $this->assertTrue($x->connect());
             
-            $err=['attr_lst'=>["NULL"],'attr_plst'=>['NULL'],'attr_typ'=> ["NULL"=>M_INT]];
+            $err=['attr_lst'=>["NULL"],'attr_plst'=>['NULL'],'attr_typ'=> ["NULL"=>Mtype::M_INT]];
             
             $r=false;
             $x->delMod('test');

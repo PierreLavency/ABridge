@@ -1,11 +1,12 @@
 <?php
 
+use ABridge\ABridge\CstMode;
+use ABridge\ABridge\View\CstHTML;
 
 require_once 'Cours.php';
 require_once 'Student.php';
 require_once 'Inscription.php';   
 
-require_once 'CstMode.php';
 require_once 'View/CstView.php';
 
 class Config
@@ -45,42 +46,42 @@ class Config
 	'Views' => [
 		'Admin'	=>[
 				'attrList' => [
-						V_S_REF		=> ['id'],
+						CstView::V_S_REF		=> ['id'],
 				],
 				'lblList'  => [
-						V_S_UPDT => 'Load',
+						CstMode::V_S_UPDT => 'Load',
 				],
 				'navList' => [
-						V_S_READ => [V_S_UPDT],
+						CstMode::V_S_READ => [CstMode::V_S_UPDT],
 				],
 		],		
 		self::Session =>[
 			'attrList' => [
-						V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									
+						CstView::V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									
 			],
 			'attrHtml' => [
-						V_S_UPDT => ['Role'=>H_T_SELECT],
-						V_S_SLCT => ['Role'=>H_T_SELECT],					
+						CstMode::V_S_UPDT => ['Role'=>CstHTML::H_T_SELECT],
+						CstMode::V_S_SLCT => ['Role'=>CstHTML::H_T_SELECT],					
 			],		
 			'viewList' => [
 				'Detail'  => [
 					'lblList' => [
-						V_S_UPDT			=> 'LogIn',
-						V_S_DELT			=> 'LogOut',	
+						CstMode::V_S_UPDT			=> 'LogIn',
+						CstMode::V_S_DELT			=> 'LogOut',	
 					],				
 					'attrList' => [
-						V_S_READ=> ['id','User','Role'],
-						V_S_DELT=> ['id','User','Role'],
-						V_S_UPDT=> ['id','UserId','Password','Role'],
+						CstMode::V_S_READ=> ['id','User','Role'],
+						CstMode::V_S_DELT=> ['id','User','Role'],
+						CstMode::V_S_UPDT=> ['id','UserId','Password','Role'],
 					],
 					
 				],
 				'Trace' =>[
 					'attrList' => [
-						V_S_READ=> ['id','ValidStart','BKey','vnum','ctstp','utstp'],
+						CstMode::V_S_READ=> ['id','ValidStart','BKey','vnum','ctstp','utstp'],
 					],
 					'navList' => [
-						V_S_READ => [],
+						CstMode::V_S_READ => [],
 					],
 				],
 			]							
@@ -89,9 +90,9 @@ class Config
 		
 		'Distribution' =>[
 			'attrHtml' => [
-				V_S_CREA => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
-				V_S_UPDT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
-				V_S_SLCT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
+				CstMode::V_S_CREA => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
+				CstMode::V_S_UPDT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
+				CstMode::V_S_SLCT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
 			],
 
 		],
@@ -100,64 +101,64 @@ class Config
 					'Play'			=> 'PlayRoles',
 				],
 			'attrHtml' => [
-					V_S_READ 	=> ['Play'=>[H_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]],
+					CstMode::V_S_READ 	=> ['Play'=>[V_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]],
 				],						
 			'attrList' => [
-					V_S_REF		=> ['UserId'],
-					V_S_SLCT	=> ['UserId',self::Group,'DefaultRole'],
+					CstView::V_S_REF		=> ['UserId'],
+					CstMode::V_S_SLCT	=> ['UserId',self::Group,'DefaultRole'],
 				],
 			'viewList' => [
 				'Password'  => [
 					'attrList' => [
-						V_S_READ	=> ['UserId',],
-						V_S_CREA	=> ['UserId','NewPassword1','NewPassword2'],
-						V_S_UPDT	=> ['UserId','Password','NewPassword1','NewPassword2'],
-						V_S_DELT	=> ['UserId'],		
+						CstMode::V_S_READ	=> ['UserId',],
+						CstMode::V_S_CREA	=> ['UserId','NewPassword1','NewPassword2'],
+						CstMode::V_S_UPDT	=> ['UserId','Password','NewPassword1','NewPassword2'],
+						CstMode::V_S_DELT	=> ['UserId'],		
 					],
 				],
 				'Role'  => [
 					'attrList' => [
-						V_S_READ	=> ['UserId','Profile','ProfProfile',self::Group,'DefaultRole','Play'],
-						V_S_UPDT	=> ['UserId','Password',self::Group,'DefaultRole'],
+						CstMode::V_S_READ	=> ['UserId','Profile','ProfProfile',self::Group,'DefaultRole','Play'],
+						CstMode::V_S_UPDT	=> ['UserId','Password',self::Group,'DefaultRole'],
 					],
 					'navList' => [
-						V_S_READ => [V_S_UPDT],
+						CstMode::V_S_READ => [CstMode::V_S_UPDT],
 					],					
 				],
 				'Trace' =>[
 					'attrList' => [
-						V_S_READ=> ['id','vnum','ctstp','utstp'],
+						CstMode::V_S_READ=> ['id','vnum','ctstp','utstp'],
 					],
 					'navList' => [
-						V_S_READ => [],
+						CstMode::V_S_READ => [],
 					],
 				],
 			]				
 		],
 		'UGroup' =>[		
 			'attrList' => [
-					V_S_REF		=> ['Name'],
+					CstView::V_S_REF		=> ['Name'],
 				],
 		],		
 		'Role' =>[	
 				'attrList' => [
-					V_S_REF		=> ['Name'],
+					CstView::V_S_REF		=> ['Name'],
 				]
 
 		],
 		'Student' => [
 		
 				'attrList' => [
-					V_S_REF		=> ['SurName','Name'],
+					CstView::V_S_REF		=> ['SurName','Name'],
 				],
 				'attrHtml' => [
-					V_S_CREA => ['Sexe'=>H_T_RADIO],
-					V_S_UPDT => ['Sexe'=>H_T_RADIO],
-					V_S_SLCT => ['Sexe'=>H_T_RADIO],
-					V_S_READ => ['InscritA'=>[H_SLICE=>5,V_COUNTF=>true,V_CTYP=>V_C_TYPN]]	
+					CstMode::V_S_CREA => ['Sexe'=>CstHTML::H_T_RADIO],
+					CstMode::V_S_UPDT => ['Sexe'=>CstHTML::H_T_RADIO],
+					CstMode::V_S_SLCT => ['Sexe'=>CstHTML::H_T_RADIO],
+					CstMode::V_S_READ => ['InscritA'=>[V_SLICE=>5,V_COUNTF=>true,V_CTYP=>V_C_TYPN]]	
 				],
 				'attrProp' => [
-					V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
+					CstMode::V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
 				],			
 				'lblList' => [
 					'id'		=> 'Noma',
@@ -168,64 +169,64 @@ class Config
 				'viewList' => [
 					'Resume'  => [
 						'attrList' => [
-							V_S_READ=> ['id','SurName','Name','NbrCours','NbrCredits'],
-							V_S_UPDT=> ['SurName','Name'],
-							V_S_CREA=> ['SurName','Name'],
-							V_S_DELT=> ['SurName','Name'],							
+							CstMode::V_S_READ=> ['id','SurName','Name','NbrCours','NbrCredits'],
+							CstMode::V_S_UPDT=> ['SurName','Name'],
+							CstMode::V_S_CREA=> ['SurName','Name'],
+							CstMode::V_S_DELT=> ['SurName','Name'],							
 						],
 					],
 					'Detail'  => [
 						'attrList' => [
-							V_S_READ=> ['SurName','Name','BirthDay','Sexe','Country',],
-							V_S_UPDT=> ['SurName','Name','BirthDay','Sexe','Country'],
+							CstMode::V_S_READ=> ['SurName','Name','BirthDay','Sexe','Country',],
+							CstMode::V_S_UPDT=> ['SurName','Name','BirthDay','Sexe','Country'],
 						],
 						'navList' => [
-							V_S_READ => [V_S_UPDT],
+							CstMode::V_S_READ => [CstMode::V_S_UPDT],
 						],
 					],
 					'Inscription' =>[
 						'attrList' => [
-							V_S_READ=> ['SurName','Name','InscritA'],
+							CstMode::V_S_READ=> ['SurName','Name','InscritA'],
 						],
-						'navList' => [V_S_READ => []
+						'navList' => [CstMode::V_S_READ => []
 						],	
 					],
 					'Image' =>[
 						'attrProp' => [
-							V_S_READ =>[V_P_VAL],
+							CstMode::V_S_READ =>[V_P_VAL],
 						],				
 						'attrList' => [
-							V_S_READ=> ['Image'],
-							V_S_UPDT=> ['Image'],
+							CstMode::V_S_READ=> ['Image'],
+							CstMode::V_S_UPDT=> ['Image'],
 						],
 						'attrHtml' => [
-							V_S_READ => ['Image'=>[H_TYPE=>H_T_IMG,H_ROWP=> 80]],
+							CstMode::V_S_READ => ['Image'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 80]],
 						],						
-						'navList' => [V_S_READ => [V_S_UPDT]
+						'navList' => [CstMode::V_S_READ => [CstMode::V_S_UPDT]
 						],	
 					],						
 					'Jason' =>[
 						'attrProp' => [
-							V_S_READ =>[V_P_VAL],
+							CstMode::V_S_READ =>[V_P_VAL],
 						],	
 						'attrList' => [
-							V_S_READ=> ['Jason'],
+							CstMode::V_S_READ=> ['Jason'],
 						],
 						'attrHtml' => [
-							V_S_READ => ['Jason'=>[H_TYPE=>H_T_TEXTAREA,H_COL=>90,H_ROW=> 40]],
+							CstMode::V_S_READ => ['Jason'=>[CstHTML::H_TYPE=>CstHTML::H_T_TEXTAREA,CstHTML::H_COL=>90,CstHTML::H_ROW=> 40]],
 						],					
-						'navList' => [V_S_READ => []
+						'navList' => [CstMode::V_S_READ => []
 						],	
 					],						
 					'Trace' =>[
 						'attrList' => [
-							V_S_READ=> ['id','vnum','ctstp','utstp','User'],
-							V_S_UPDT=> ['User'],
+							CstMode::V_S_READ=> ['id','vnum','ctstp','utstp','User'],
+							CstMode::V_S_UPDT=> ['User'],
 						],
-						'navList' => [V_S_READ => [V_S_UPDT]
+						'navList' => [CstMode::V_S_READ => [CstMode::V_S_UPDT]
 						],
 						'attrHtml' => [
-							V_S_UPDT => ['User'=>H_T_SELECT],
+							CstMode::V_S_UPDT => ['User'=>CstHTML::H_T_SELECT],
 						]
 					],					
 				],
@@ -234,53 +235,53 @@ class Config
 		'Cours' => [
 
 				'attrList' => [
-					V_S_REF		=> ['SurName','Name'],
-					V_S_CREF	=> ['id','Credits','User'],
+					CstView::V_S_REF		=> ['SurName','Name'],
+					CstView::V_S_CREF	=> ['id','Credits','User'],
 				],
 				'attrHtml' => [
-							V_S_UPDT => ['User'=>H_T_SELECT],
-							V_S_SLCT => [V_S_SLCT=>[H_SLICE=>15,V_COUNTF=>true,V_CTYP=>V_C_TYPN]]
+							CstMode::V_S_UPDT => ['User'=>CstHTML::H_T_SELECT],
+							CstMode::V_S_SLCT => [CstMode::V_S_SLCT=>[V_SLICE=>15,V_COUNTF=>true,V_CTYP=>V_C_TYPN]]
 				]				
 		],
 		'Prof' => [
 		
 				'attrList' => [
-					V_S_REF		=> ['SurName','Name'],
-					V_S_CREF	=> ['id','User'],
+					CstView::V_S_REF		=> ['SurName','Name'],
+					CstView::V_S_CREF	=> ['id','User'],
 				]
 				
 		],
 		'Code' => [
 		
 				'attrList' => [
-					V_S_REF		=> ['Name'],
+					CstView::V_S_REF		=> ['Name'],
 				]
 				
 		],
 		'CodeValue' =>[
 		
 				'attrList' => [
-					V_S_REF		=> ['Name'],
+					CstView::V_S_REF		=> ['Name'],
 				]
 
 		],
 		'Inscription' =>[
 		
 				'attrHtml' => [
-					V_S_CREA => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
-//					V_S_READ => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
-					V_S_READ => ['De'=>'Resume'],
-					V_S_UPDT => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
-					V_S_SLCT => ['A'=>H_T_SELECT,'De'=>H_T_SELECT],
+					CstMode::V_S_CREA => ['A'=>CstHTML::H_T_SELECT,'De'=>CstHTML::H_T_SELECT],
+//					CstMode::V_S_READ => ['A'=>CstHTML::H_T_SELECT,'De'=>CstHTML::H_T_SELECT],
+					CstMode::V_S_READ => ['De'=>'Resume'],
+					CstMode::V_S_UPDT => ['A'=>CstHTML::H_T_SELECT,'De'=>CstHTML::H_T_SELECT],
+					CstMode::V_S_SLCT => ['A'=>CstHTML::H_T_SELECT,'De'=>CstHTML::H_T_SELECT],
 				],
 
 		],
 		'Charge' =>[
 		
 				'attrHtml' => [
-					V_S_CREA => ['Par'=>H_T_SELECT,'De'=>H_T_SELECT],
-					V_S_UPDT => ['Par'=>H_T_SELECT,'De'=>H_T_SELECT],
-					V_S_SLCT => ['Par'=>H_T_SELECT,'De'=>H_T_SELECT],
+					CstMode::V_S_CREA => ['Par'=>CstHTML::H_T_SELECT,'De'=>CstHTML::H_T_SELECT],
+					CstMode::V_S_UPDT => ['Par'=>CstHTML::H_T_SELECT,'De'=>CstHTML::H_T_SELECT],
+					CstMode::V_S_SLCT => ['Par'=>CstHTML::H_T_SELECT,'De'=>CstHTML::H_T_SELECT],
 				],
 				
 		],

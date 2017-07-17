@@ -3,8 +3,8 @@
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\Handle;
 use ABridge\ABridge\Model;
-
-require_once 'CstMode.php';
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\CstMode;
 
 class Handle_Test extends PHPUnit_Framework_TestCase
 {
@@ -84,11 +84,11 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $r->show();
         $this->assertfalse($mod->isErr());
 
-        $hc1 = new Handle('/'.$this->CCode, V_S_CREA, $ho);
+        $hc1 = new Handle('/'.$this->CCode, CstMode::V_S_CREA, $ho);
         $hc1->save();
         $this->assertfalse($hc1->isErr());
         
-        $hc2 = new Handle('/'.$this->CCode, V_S_CREA, $ho);
+        $hc2 = new Handle('/'.$this->CCode, CstMode::V_S_CREA, $ho);
         $hc2->save();
         $this->assertfalse($hc2->isErr());
 
@@ -99,11 +99,11 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $res = $mod->saveMod();
         $this->assertfalse($mod->isErr());
 
-        $hu1 = new Handle('/'.$this->CUser, V_S_CREA, $ho);
+        $hu1 = new Handle('/'.$this->CUser, CstMode::V_S_CREA, $ho);
         $hu1->save();
         $this->assertfalse($hu1->isErr());
         
-        $hu2 = new Handle('/'.$this->CUser, V_S_CREA, $ho);
+        $hu2 = new Handle('/'.$this->CUser, CstMode::V_S_CREA, $ho);
         $hu2->save();
         $this->assertfalse($hu2->isErr());
 
@@ -112,36 +112,36 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         
         $mod = new Model($this->CName);
         $res= $mod->deleteMod();
-        $res = $mod->addAttr('Ref', M_REF, '/'.$this->CName);
-        $res = $mod->addAttr('CRef', M_CREF, '/'.$this->CName.'/Ref');
-        $res = $mod->addAttr('Code', M_CODE, '/'.$this->CCode);
-        $res = $mod->addAttr($this->CUser, M_REF, '/'.$this->CUser);
+        $res = $mod->addAttr('Ref', Mtype::M_REF, '/'.$this->CName);
+        $res = $mod->addAttr('CRef', Mtype::M_CREF, '/'.$this->CName.'/Ref');
+        $res = $mod->addAttr('Code', Mtype::M_CODE, '/'.$this->CCode);
+        $res = $mod->addAttr($this->CUser, Mtype::M_REF, '/'.$this->CUser);
         $res = $mod->setDflt($this->CUser, 1);
         $res = $mod->saveMod();
         $this->assertfalse($mod->isErr());
         
-        $ho1 = new Handle('/'.$this->CName, V_S_CREA, $ho);
+        $ho1 = new Handle('/'.$this->CName, CstMode::V_S_CREA, $ho);
         $res=$ho1->setVal($this->CUser, $hu1->getId());
         $res=$ho1->setVal('Code', $hc2->getId());
         $id1 = $ho1->save();
         $obj1 = $ho1;
         $this->assertfalse($ho1->isErr());
         
-        $ho2 = new Handle('/'.$this->CName, V_S_CREA, $ho);
+        $ho2 = new Handle('/'.$this->CName, CstMode::V_S_CREA, $ho);
         $res=$ho2->setVal($this->CUser, $hu2->getId());
         $res=$ho2->setVal('Code', $hc2->getid());
         $res=$ho2->setVal('Ref', $ho1->getId());
         $id2 = $ho2->save();
         $this->assertfalse($ho2->isErr());
 
-        $ho3 = new Handle('/'.$this->CName, V_S_CREA, $ho);
+        $ho3 = new Handle('/'.$this->CName, CstMode::V_S_CREA, $ho);
         $res=$ho3->setVal($this->CUser, $hu1->getId());
         $res=$ho3->setVal('Code', $hc2->getId());
         $res=$ho3->setVal('Ref', $ho2->getId());
         $id3 = $ho3->save();
         $this->assertfalse($ho3->isErr());
 
-        $ho4 = new Handle('/'.$this->CName, V_S_CREA, $ho);
+        $ho4 = new Handle('/'.$this->CName, CstMode::V_S_CREA, $ho);
         $res=$ho4->setVal($this->CUser, $hu1->getId());
         $res=$ho4->setVal('Code', $hc2->getId());
         $res=$ho4->setVal('Ref', $ho3->getId());
@@ -154,7 +154,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $rid = $ho1->getId();
 
     
-        $h1 = new Handle($path1, V_S_READ, $ho);
+        $h1 = new Handle($path1, CstMode::V_S_READ, $ho);
         $this->assertNotNull($h1);
         $this->assertTrue($h1->isMain());
         $this->assertEquals($path1, $h1->getRPath());
@@ -169,7 +169,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($h2->isMainRef('Ref'));
         
         $path3=$path2.'/CRef/'.$ho3->getId();
-        $h3 = new Handle($path3, V_S_READ, $ho);
+        $h3 = new Handle($path3, CstMode::V_S_READ, $ho);
         $this->assertNotNull($h3);
         $this->assertEquals($ho3->getId(), $h3->getId());
         $this->assertEquals($path3, $h3->getRpath());
@@ -179,21 +179,21 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($h2->getId(), $h2r->getId());
         $this->assertEquals($h2->getRPath(), $h2r->getRPath());
         
-        $h = new Handle($path0, V_S_CREA, $ho);
+        $h = new Handle($path0, CstMode::V_S_CREA, $ho);
         $ht = new Handle($path0, $ho);
-        $ht->setAction(V_S_CREA);
+        $ht->setAction(CstMode::V_S_CREA);
         $url= $ht->getUrl();
         $urle= $h->getUrl();
         $this->assertEquals($urle, $url);
-        $url= $h1->getActionUrl(V_S_CREA, []);
+        $url= $h1->getActionUrl(CstMode::V_S_CREA, []);
         $this->assertEquals($urle, $url);
         
-        $h = new Handle($path0, V_S_SLCT, $ho);
+        $h = new Handle($path0, CstMode::V_S_SLCT, $ho);
         $h=$h->getObjId($h1->getId());
         $this->assertEquals($h1->getUrl(), $h->getUrl());
 
-        $url = $h1->getCrefUrl('CRef', V_S_CREA, []);
-        $res='"'.$h1->getDocRoot().$path0.'/'.$h1->getId().'/CRef?Action='.V_S_CREA.'"';
+        $url = $h1->getCrefUrl('CRef', CstMode::V_S_CREA, []);
+        $res='"'.$h1->getDocRoot().$path0.'/'.$h1->getId().'/CRef?Action='.CstMode::V_S_CREA.'"';
         $this->assertEquals($res, $url);
         
         $id = $h1->getVal('Code');
@@ -209,7 +209,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $aList = $h->getAttrList();
         $id= $h->getId();
         $this->assertEquals(8, count($aList));
-        $this->assertEquals(M_REF, $h->getTyp('Ref'));
+        $this->assertEquals(Mtype::M_REF, $h->getTyp('Ref'));
         $this->assertEquals($hu1->getId(), $h->getDflt($this->CUser));
         $this->assertEquals($id, $h->getVal('id'));
         $this->assertEquals(2, count($h->getValues($this->CUser)));
@@ -226,11 +226,11 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($h->select()));
         
         
-        $h = new Handle('/', V_S_READ, $ho);
+        $h = new Handle('/', CstMode::V_S_READ, $ho);
         $this->assertTrue($h->nullObj());
 
         $path= '/'.$this->CName.'/'.$h1->getId().'/CRef';
-        $h = new Handle($path, V_S_CREA, $ho);
+        $h = new Handle($path, CstMode::V_S_CREA, $ho);
         $id = $h ->save();
         $this->assertNotNull($id);
         $res = $h->delet();

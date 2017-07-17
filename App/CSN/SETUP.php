@@ -1,5 +1,8 @@
 <?php
-require_once 'CstMode.php';
+
+use ABridge\ABridge\CstMode;
+use ABridge\ABridge\View\CstHTML;
+
 require_once 'View/CstView.php';
 
 class Config
@@ -42,34 +45,34 @@ class Config
 				'viewList' => [
 					'Resume'  => [
 						'attrList' => [
-							V_S_READ=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],
-							V_S_UPDT=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],
-							V_S_CREA=> ['Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],
-							V_S_DELT=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],							
+							CstMode::V_S_READ=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],
+							CstMode::V_S_UPDT=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],
+							CstMode::V_S_CREA=> ['Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],
+							CstMode::V_S_DELT=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],							
 						],
 						'attrHtml' => [
-							V_S_READ => ['Photo'=>[H_TYPE=>H_T_IMG,H_ROWP=> 80],0],
+							CstMode::V_S_READ => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 80],0],
 						],	
 					],
 					'Description'  => [
 						'attrList' => [
-							V_S_READ=> ['Nom','Ingredients','Description',],
-							V_S_UPDT=> ['Nom','Description',],							
+							CstMode::V_S_READ=> ['Nom','Ingredients','Description',],
+							CstMode::V_S_UPDT=> ['Nom','Description',],							
 						],
 						'attrProp' => [
-							V_S_READ =>[V_P_VAL],
+							CstMode::V_S_READ =>[V_P_VAL],
 						],		
 						'attrHtml' => [
-							V_S_READ => ['Ingredients'=>[H_SLICE=>20,V_COUNTF=>false,V_CTYP=>V_C_TYPN]]
+							CstMode::V_S_READ => ['Ingredients'=>[V_SLICE=>20,V_COUNTF=>false,V_CTYP=>V_C_TYPN]]
 						],	
-						'navList' => [V_S_READ => [V_S_UPDT],
+						'navList' => [CstMode::V_S_READ => [CstMode::V_S_UPDT],
 						],
 					],
 					'Ingredients' => [
 						'attrList' => [
-							V_S_READ=> ['Nom','Ingredients'],							
+							CstMode::V_S_READ=> ['Nom','Ingredients'],							
 						],
-						'navList' => [V_S_READ => []
+						'navList' => [CstMode::V_S_READ => []
 						],
 					],
 				]
@@ -121,9 +124,9 @@ class Config
 		],
 		'Distribution' =>[
 			'attrHtml' => [
-				V_S_CREA => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
-				V_S_UPDT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
-				V_S_SLCT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
+				CstMode::V_S_CREA => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
+				CstMode::V_S_UPDT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
+				CstMode::V_S_SLCT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
 			],
 
 		],

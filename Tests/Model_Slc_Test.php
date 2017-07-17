@@ -4,6 +4,7 @@
 use ABridge\ABridge\Model;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mtype;
 
 class Model_Slc_Test extends PHPUnit_Framework_TestCase
 {
@@ -63,9 +64,9 @@ class Model_Slc_Test extends PHPUnit_Framework_TestCase
             $x->getErrLog()->show();
         $this->assertTrue($res);
 
-        $x->addAttr('a', M_STRING);
-        $x->addAttr('b', M_INT);
-        $x->addAttr('c', M_DATE);
+        $x->addAttr('a', Mtype::M_STRING);
+        $x->addAttr('b', Mtype::M_INT);
+        $x->addAttr('c', Mtype::M_DATE);
         
         $x->getErrLog()->show();
         $this->assertFalse($x->isErr());

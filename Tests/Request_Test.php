@@ -2,8 +2,7 @@
     
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Request;
-
-require_once 'CstMode.php';
+use ABridge\ABridge\CstMode;
 
 class Request_Test extends PHPUnit_Framework_TestCase
 {
@@ -49,21 +48,21 @@ class Request_Test extends PHPUnit_Framework_TestCase
     public function Provider1()
     {
         return [
-            ['/',       'GET',null,         V_S_READ,true,false,false,0,0,'|',      false],
-            ['/X',      'GET',null,         V_S_SLCT,false,true,false,0,1,'|X',         false],
-            ['/X/1',    'GET',null,         V_S_READ,false,false,true,2,2,'|X',         false],
-            ['/X/~',    'GET',null,         V_S_READ,false,false,true,2,2,'|X',         true],
-            ['/X/1/Y',  'GET',null,         V_S_SLCT,false,true,false,2,3,'|X|Y',   false],
-            ['/X/1/X/1','GET',null,         V_S_READ,false,false,true,4,4,'|X|X',   false],
-            ['/X',      'GET',V_S_CREA,     V_S_CREA,false,true,false,0,1,'|X',         false],
-            ['/X/1',    'GET',V_S_UPDT,     V_S_UPDT,false,false,true,2,2,'|X',         false],
-            ['/X/1/X',  'GET',V_S_SLCT,     V_S_SLCT,false,true,false,2,3,'|X|X',   false],
-            ['/X/1/X/1','GET',V_S_DELT,     V_S_DELT,false,false,true,4,4,'|X|X',   false],
-            ['/X',      'POST',null,    V_S_CREA,false,true,false,0,1,'|X',         false],
-            ['/X',      'POST',V_S_CREA,V_S_CREA,false,true,false,0,1,'|X',         false],
-            ['/X/1',    'POST',V_S_UPDT,V_S_UPDT,false,false,true,2,2,'|X',         false],
-            ['/X/1/X',  'POST',V_S_SLCT,V_S_SLCT,false,true,false,2,3,'|X|X',   false],
-            ['/X/1/X/1','POST',V_S_DELT,V_S_DELT,false,false,true,4,4,'|X|X',   false],
+            ['/',       'GET',null,         CstMode::V_S_READ,true,false,false,0,0,'|',      false],
+            ['/X',      'GET',null,         CstMode::V_S_SLCT,false,true,false,0,1,'|X',         false],
+            ['/X/1',    'GET',null,         CstMode::V_S_READ,false,false,true,2,2,'|X',         false],
+            ['/X/~',    'GET',null,         CstMode::V_S_READ,false,false,true,2,2,'|X',         true],
+            ['/X/1/Y',  'GET',null,         CstMode::V_S_SLCT,false,true,false,2,3,'|X|Y',   false],
+            ['/X/1/X/1','GET',null,         CstMode::V_S_READ,false,false,true,4,4,'|X|X',   false],
+            ['/X',      'GET',CstMode::V_S_CREA,     CstMode::V_S_CREA,false,true,false,0,1,'|X',         false],
+            ['/X/1',    'GET',CstMode::V_S_UPDT,     CstMode::V_S_UPDT,false,false,true,2,2,'|X',         false],
+            ['/X/1/X',  'GET',CstMode::V_S_SLCT,     CstMode::V_S_SLCT,false,true,false,2,3,'|X|X',   false],
+            ['/X/1/X/1','GET',CstMode::V_S_DELT,     CstMode::V_S_DELT,false,false,true,4,4,'|X|X',   false],
+            ['/X',      'POST',null,    CstMode::V_S_CREA,false,true,false,0,1,'|X',         false],
+            ['/X',      'POST',CstMode::V_S_CREA,CstMode::V_S_CREA,false,true,false,0,1,'|X',         false],
+            ['/X/1',    'POST',CstMode::V_S_UPDT,CstMode::V_S_UPDT,false,false,true,2,2,'|X',         false],
+            ['/X/1/X',  'POST',CstMode::V_S_SLCT,CstMode::V_S_SLCT,false,true,false,2,3,'|X|X',   false],
+            ['/X/1/X/1','POST',CstMode::V_S_DELT,CstMode::V_S_DELT,false,false,true,4,4,'|X|X',   false],
     
             ];
     }
@@ -82,11 +81,11 @@ class Request_Test extends PHPUnit_Framework_TestCase
     public function Prov_testRequest1()
     {
         return [
-            ['/',       V_S_READ, ['X'=>'x'], '/?X=x"'],
-            ['/X',      V_S_SLCT, ['X'=>'x'], '/X?Action='.V_S_SLCT.' & X=x"'],
-            ['/X/1',    V_S_READ, ['X'=>'x','Y'=>'y'], '/X/1?X=x & Y=y"'],
-            ['/X/1/X',  V_S_SLCT, ['X'=>'x','Y'=>'y'], '/X/1/X?Action='.V_S_SLCT.' & X=x & Y=y"'],
-            ['/X/1/X/2',V_S_READ, [], '/X/1/X/2"'],
+            ['/',       CstMode::V_S_READ, ['X'=>'x'], '/?X=x"'],
+            ['/X',      CstMode::V_S_SLCT, ['X'=>'x'], '/X?Action='.CstMode::V_S_SLCT.' & X=x"'],
+            ['/X/1',    CstMode::V_S_READ, ['X'=>'x','Y'=>'y'], '/X/1?X=x & Y=y"'],
+            ['/X/1/X',  CstMode::V_S_SLCT, ['X'=>'x','Y'=>'y'], '/X/1/X?Action='.CstMode::V_S_SLCT.' & X=x & Y=y"'],
+            ['/X/1/X/2',CstMode::V_S_READ, [], '/X/1/X/2"'],
             ];
     }
     
@@ -132,31 +131,31 @@ class Request_Test extends PHPUnit_Framework_TestCase
     public function Provider2()
     {
         return [
-            ['/',       'GET',null,V_S_READ,        V_S_READ,'/'],
-            ['/X',      'GET',null,V_S_SLCT,        V_S_SLCT,'/X?Action='.V_S_SLCT],
-            ['/X',      'GET',null,V_S_SLCT,        V_S_READ,'/'],
-            ['/X/1',    'GET',null,V_S_READ,        V_S_READ,'/X/1'],
-            ['/X/1',    'GET',null,V_S_READ,        V_S_SLCT,'/X?Action='.V_S_SLCT],
-            ['/X/1/X',  'GET',null,V_S_SLCT,        V_S_CREA,'/X/1/X?Action='.V_S_CREA],
-            ['/X/1/X',  'GET',null,V_S_SLCT,        V_S_READ,'/X/1'],
-            ['/X/1/X',  'GET',null,V_S_SLCT,        V_S_UPDT,null],
-            ['/',       'GET',null,V_S_READ,        V_S_DELT,null],
-            ['/X/1',    'GET',null,V_S_READ,        'X'         ,null],
-            ['/X/1/X/1','GET',null,V_S_READ,        V_S_DELT,'/X/1/X/1?Action='.V_S_DELT],
+            ['/',       'GET',null,CstMode::V_S_READ,        CstMode::V_S_READ,'/'],
+            ['/X',      'GET',null,CstMode::V_S_SLCT,        CstMode::V_S_SLCT,'/X?Action='.CstMode::V_S_SLCT],
+            ['/X',      'GET',null,CstMode::V_S_SLCT,        CstMode::V_S_READ,'/'],
+            ['/X/1',    'GET',null,CstMode::V_S_READ,        CstMode::V_S_READ,'/X/1'],
+            ['/X/1',    'GET',null,CstMode::V_S_READ,        CstMode::V_S_SLCT,'/X?Action='.CstMode::V_S_SLCT],
+            ['/X/1/X',  'GET',null,CstMode::V_S_SLCT,        CstMode::V_S_CREA,'/X/1/X?Action='.CstMode::V_S_CREA],
+            ['/X/1/X',  'GET',null,CstMode::V_S_SLCT,        CstMode::V_S_READ,'/X/1'],
+            ['/X/1/X',  'GET',null,CstMode::V_S_SLCT,        CstMode::V_S_UPDT,null],
+            ['/',       'GET',null,CstMode::V_S_READ,        CstMode::V_S_DELT,null],
+            ['/X/1',    'GET',null,CstMode::V_S_READ,        'X'         ,null],
+            ['/X/1/X/1','GET',null,CstMode::V_S_READ,        CstMode::V_S_DELT,'/X/1/X/1?Action='.CstMode::V_S_DELT],
             ];
     }
 
     public function testMethods()
     {
     
-            $p1 = new Request('/X', V_S_CREA);
+            $p1 = new Request('/X', CstMode::V_S_CREA);
             $this->assertNotNull($p1);
 
-            $p1 = new Request('/X/1', V_S_READ);
+            $p1 = new Request('/X/1', CstMode::V_S_READ);
             $this->assertNotNull($p1);
             
-            $p1->setAction(V_S_UPDT);
-            $this->assertEquals(V_S_UPDT, $p1->getAction());
+            $p1->setAction(CstMode::V_S_UPDT);
+            $this->assertEquals(CstMode::V_S_UPDT, $p1->getAction());
         
         try {
             $x=$p1->pushId(1);
@@ -199,13 +198,13 @@ class Request_Test extends PHPUnit_Framework_TestCase
     public function testPathErr()
     {
         $tc = [
-            ['1',       V_S_READ,   CstError::E_ERC036.':1'],
-            ['/*/1',    V_S_READ,   CstError::E_ERC036.':/*/1:0'],
-            ['/a/$',    V_S_READ,   CstError::E_ERC036.':/a/$:1'],
-            ['/a/1/$',  V_S_READ,   CstError::E_ERC036.':/a/1/$:2'],
-            ['/X',      V_S_READ,   CstError::E_ERC048.':'.V_S_READ.':/X'],
-            ['/X/1',    V_S_SLCT,   CstError::E_ERC048.':'.V_S_SLCT.':/X/1'],
-            ['/',       V_S_SLCT,   CstError::E_ERC048.':'.V_S_SLCT.':/'],
+            ['1',       CstMode::V_S_READ,   CstError::E_ERC036.':1'],
+            ['/*/1',    CstMode::V_S_READ,   CstError::E_ERC036.':/*/1:0'],
+            ['/a/$',    CstMode::V_S_READ,   CstError::E_ERC036.':/a/$:1'],
+            ['/a/1/$',  CstMode::V_S_READ,   CstError::E_ERC036.':/a/1/$:2'],
+            ['/X',      CstMode::V_S_READ,   CstError::E_ERC048.':'.CstMode::V_S_READ.':/X'],
+            ['/X/1',    CstMode::V_S_SLCT,   CstError::E_ERC048.':'.CstMode::V_S_SLCT.':/X/1'],
+            ['/',       CstMode::V_S_SLCT,   CstError::E_ERC048.':'.CstMode::V_S_SLCT.':/'],
             
         ];
     
@@ -247,7 +246,7 @@ class Request_Test extends PHPUnit_Framework_TestCase
      */
     public function testpushId($p, $e, $attr, $act, $e2)
     {
-            $r=new Request($p, V_S_CREA);
+            $r=new Request($p, CstMode::V_S_CREA);
         
             $res = $r->pushId(1);
             $this->assertEquals($e, $res);
@@ -263,8 +262,8 @@ class Request_Test extends PHPUnit_Framework_TestCase
     public function Provider_push()
     {
         return [
-                ['/X',      '/X/1',         'A',V_S_CREA,   '/X/1/A'],
-                ['/X/1/Y',  '/X/1/Y/1',     'B',V_S_CREA,   '/X/1/Y/1/B'],
+                ['/X',      '/X/1',         'A',CstMode::V_S_CREA,   '/X/1/A'],
+                ['/X/1/Y',  '/X/1/Y/1',     'B',CstMode::V_S_CREA,   '/X/1/Y/1/B'],
             ];
     }
     
@@ -293,11 +292,11 @@ class Request_Test extends PHPUnit_Framework_TestCase
     public function Provider_prm()
     {
         return [
-                ['/X/1',        'GET' , V_S_READ,'param_value',         'param_value'],
-                ['/X/1',        'GET' , V_S_READ,'param <br> value','param  value'],
-                ['/X/1/Y/1',    'POST',     V_S_UPDT,'param_value',         'param_value'],
-                ['/X/1/Y/1',    'POST',     V_S_UPDT,'param_value<>',   'param_value'],
-                ['/X/1/Y/1',    'POST',     V_S_UPDT,null,  null],
+                ['/X/1',        'GET' , CstMode::V_S_READ,'param_value',         'param_value'],
+                ['/X/1',        'GET' , CstMode::V_S_READ,'param <br> value','param  value'],
+                ['/X/1/Y/1',    'POST',     CstMode::V_S_UPDT,'param_value',         'param_value'],
+                ['/X/1/Y/1',    'POST',     CstMode::V_S_UPDT,'param_value<>',   'param_value'],
+                ['/X/1/Y/1',    'POST',     CstMode::V_S_UPDT,null,  null],
             ];
     }
 }

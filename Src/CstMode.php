@@ -1,7 +1,11 @@
 <?php
+namespace ABridge\ABridge;
 
-define('V_S_CREA', "Create"); // object view types
-define('V_S_UPDT', "Update");
-define('V_S_READ', "Read");
-define('V_S_DELT', "Delete");
-define('V_S_SLCT', "Select");
+class CstMode
+{
+    const V_S_CREA = "Create";
+    const V_S_UPDT = "Update";
+    const V_S_READ = "Read";
+    const V_S_DELT = "Delete";
+    const V_S_SLCT = "Select";
+}

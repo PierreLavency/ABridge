@@ -1,5 +1,8 @@
 <?php
-require_once 'CstMode.php';
+
+use ABridge\ABridge\CstMode;
+use ABridge\ABridge\View\CstHTML;
+
 require_once 'View/CstView.php';
 
 class Config
@@ -36,13 +39,13 @@ class Config
 			
 		self::Adm =>[
 				'attrList' => [
-						V_S_REF		=> ['id'],
+						CstView::V_S_REF		=> ['id'],
 				],
 				'lblList'  => [
-						V_S_UPDT => 'Load',
+						CstMode::V_S_UPDT => 'Load',
 				],
 				'navList' => [
-						V_S_READ => [V_S_UPDT],
+						CstMode::V_S_READ => [CstMode::V_S_UPDT],
 				],
 		],		
 		self::User =>[
@@ -50,84 +53,84 @@ class Config
 					'Play'			=> 'PlayRoles',
 				],
 			'attrHtml' => [
-					V_S_READ => ['Play'=>[H_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]],
-					V_S_UPDT => ['DefaultRole'=>H_T_SELECT],
-					V_S_SLCT => ['DefaultRole'=>H_T_SELECT],					
+					CstMode::V_S_READ => ['Play'=>[V_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]],
+					CstMode::V_S_UPDT => ['DefaultRole'=>CstHTML::H_T_SELECT],
+					CstMode::V_S_SLCT => ['DefaultRole'=>CstHTML::H_T_SELECT],					
 				],						
 			'attrList' => [
-					V_S_REF		=> ['UserId'],
-					V_S_SLCT	=> ['UserId',self::Group],
+					CstView::V_S_REF		=> ['UserId'],
+					CstMode::V_S_SLCT	=> ['UserId',self::Group],
 				],
 			'viewList' => [
 				'Password'  => [
 					'attrList' => [
-						V_S_READ	=> ['UserId',],
-						V_S_CREA	=> ['UserId','NewPassword1','NewPassword2'],
-						V_S_UPDT	=> ['UserId','Password','NewPassword1','NewPassword2'],
-						V_S_DELT	=> ['UserId'],		
+						CstMode::V_S_READ	=> ['UserId',],
+						CstMode::V_S_CREA	=> ['UserId','NewPassword1','NewPassword2'],
+						CstMode::V_S_UPDT	=> ['UserId','Password','NewPassword1','NewPassword2'],
+						CstMode::V_S_DELT	=> ['UserId'],		
 					],
 				],
 				'Role'  => [
 					'attrList' => [
-						V_S_READ	=> ['UserId',self::Group,'DefaultRole','Play'],
-						V_S_UPDT	=> ['UserId','Password',self::Group,'DefaultRole'],
+						CstMode::V_S_READ	=> ['UserId',self::Group,'DefaultRole','Play'],
+						CstMode::V_S_UPDT	=> ['UserId','Password',self::Group,'DefaultRole'],
 					],
 					'navList' => [
-						V_S_READ => [V_S_UPDT],
+						CstMode::V_S_READ => [CstMode::V_S_UPDT],
 					],					
 				],
 				'Trace' =>[
 					'attrList' => [
-						V_S_READ=> ['id','vnum','ctstp','utstp','MetaData'],
+						CstMode::V_S_READ=> ['id','vnum','ctstp','utstp','MetaData'],
 					],
 					'navList' => [
-						V_S_READ => [],
+						CstMode::V_S_READ => [],
 					],
 				],
 			]				
 		],
 		self::Group =>[		
 			'attrList' => [
-				V_S_REF		=> ['Name'],
+				CstView::V_S_REF		=> ['Name'],
 				],
 		],		
 		self::Role =>[	
 				'attrList' => [
-					V_S_REF		=> ['Name'],
+					CstView::V_S_REF		=> ['Name'],
 				],
 				'attrHtml' => [
-					V_S_UPDT	=> ['JSpec' => [H_TYPE=>H_T_TEXTAREA,H_COL=>160,H_ROW=> 30]],
-					V_S_READ	=> ['JSpec' => [H_TYPE=>H_T_TEXTAREA,H_COL=>160,H_ROW=> 30]],
-					V_S_CREA	=> ['JSpec' => [H_TYPE=>H_T_TEXTAREA,H_COL=>160,H_ROW=> 30]],
+					CstMode::V_S_UPDT	=> ['JSpec' => [CstHTML::H_TYPE=>CstHTML::H_T_TEXTAREA,CstHTML::H_COL=>160,CstHTML::H_ROW=> 30]],
+					CstMode::V_S_READ	=> ['JSpec' => [CstHTML::H_TYPE=>CstHTML::H_T_TEXTAREA,CstHTML::H_COL=>160,CstHTML::H_ROW=> 30]],
+					CstMode::V_S_CREA	=> ['JSpec' => [CstHTML::H_TYPE=>CstHTML::H_T_TEXTAREA,CstHTML::H_COL=>160,CstHTML::H_ROW=> 30]],
 				]
 		],
 		self::Session =>[
 			'attrList' => [
-						V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									
+						CstView::V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									
 			],
 			'attrHtml' => [
-						V_S_UPDT => ['Role'=>H_T_SELECT],
-						V_S_SLCT => ['Role'=>H_T_SELECT],					
+						CstMode::V_S_UPDT => ['Role'=>CstHTML::H_T_SELECT],
+						CstMode::V_S_SLCT => ['Role'=>CstHTML::H_T_SELECT],					
 			],		
 			'viewList' => [
 				'Detail'  => [
 					'lblList' => [
-						V_S_UPDT			=> 'LogIn',
-						V_S_DELT			=> 'LogOut',	
+						CstMode::V_S_UPDT			=> 'LogIn',
+						CstMode::V_S_DELT			=> 'LogOut',	
 					],				
 					'attrList' => [
-						V_S_READ=> ['id','User','Role'],
-						V_S_DELT=> ['id','User','Role'],
-						V_S_UPDT=> ['id','UserId','Password','Role'],
+						CstMode::V_S_READ=> ['id','User','Role'],
+						CstMode::V_S_DELT=> ['id','User','Role'],
+						CstMode::V_S_UPDT=> ['id','UserId','Password','Role'],
 					],
 					
 				],
 				'Trace' =>[
 					'attrList' => [
-						V_S_READ=> ['id','ValidStart','BKey','vnum','ctstp','utstp'],
+						CstMode::V_S_READ=> ['id','ValidStart','BKey','vnum','ctstp','utstp'],
 					],
 					'navList' => [
-						V_S_READ => [],
+						CstMode::V_S_READ => [],
 					],
 				],
 			]							
@@ -135,9 +138,9 @@ class Config
 		],
 		self::Distribution =>[
 			'attrHtml' => [
-				V_S_CREA => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
-				V_S_UPDT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
-				V_S_SLCT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
+				CstMode::V_S_CREA => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
+				CstMode::V_S_UPDT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
+				CstMode::V_S_SLCT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
 			],
 
 		],		

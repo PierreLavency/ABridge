@@ -3,8 +3,8 @@
 use ABridge\ABridge\Logger;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\Model;
+use ABridge\ABridge\GenJASON;
 
-require_once('GenJason.php');
 require_once('GenJason_case.php');
 
 class GenJASON_Test extends PHPUnit_Framework_TestCase
@@ -34,7 +34,7 @@ class GenJASON_Test extends PHPUnit_Framework_TestCase
         $h= new Model($test[0][0], $test[0][1]);
         
         $this->expectOutputString(self::$log->getLine(0));
-        $this->assertNotNull(genJASON($h, true, false, $test[0][2]));
+        $this->assertNotNull(GenJASON::genJASON($h, true, false, $test[0][2]));
         
         self::$db->commit();
     }
@@ -52,7 +52,7 @@ class GenJASON_Test extends PHPUnit_Framework_TestCase
         
         $h= new Model($a, $b);
 
-        $this->assertEquals(self::$log->getLine($expected), genJASON($h, false, false, $c));
+        $this->assertEquals(self::$log->getLine($expected), GenJASON::genJASON($h, false, false, $c));
 
         self::$db->commit();
     }

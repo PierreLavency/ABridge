@@ -1,5 +1,8 @@
 <?php
-require_once 'CstMode.php';
+
+use ABridge\ABridge\CstMode;
+use ABridge\ABridge\View\CstHTML;
+
 require_once 'View/CstView.php';
 
 class Config
@@ -22,40 +25,40 @@ class Config
 		'Album'=> [
 		
 				'attrList' => [
-					V_S_REF	=> ['Nom'],
+					CstView::V_S_REF	=> ['Nom'],
 				],			
 				'lblList'  => [
 				],
 				'viewList' => [
 					'Photos'  => [
 						'attrList' => [
-							V_S_READ=> ['Photos',],
+							CstMode::V_S_READ=> ['Photos',],
 						],
 						'navList' => [
-							V_S_READ => [],
+							CstMode::V_S_READ => [],
 						],
 						'attrHtml' => [
-							V_S_READ => ['Photos'=>[H_SLICE=>4,V_COUNTF=>true,V_CTYP=>V_C_TYPN,
-										 V_CVAL=>[H_TYPE=>H_T_NTABLE,H_TABLEN=>2]]],
+							CstMode::V_S_READ => ['Photos'=>[V_SLICE=>4,V_COUNTF=>true,V_CTYP=>V_C_TYPN,
+										 V_CVAL=>[CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,CstHTML::H_TABLEN=>2]]],
 						],							
 					],
 					'Descritpion'  => [
 						'attrList' => [
-							V_S_READ=> ['Nom','Description'],
-							V_S_UPDT=> ['id','Nom','Description'],
-							V_S_CREA=> ['id','Nom','Description'],
-							V_S_DELT=> ['id','Nom','Description'],							
+							CstMode::V_S_READ=> ['Nom','Description'],
+							CstMode::V_S_UPDT=> ['id','Nom','Description'],
+							CstMode::V_S_CREA=> ['id','Nom','Description'],
+							CstMode::V_S_DELT=> ['id','Nom','Description'],							
 						],
 					],					
 				]	
 		],
 		'Photo'=> [		
 				'attrList' => [			
-					V_S_CREF	=> ['id','Photo'],					
+					CstView::V_S_CREF	=> ['id','Photo'],					
 				],
 				'attrHtml' => [
-					V_S_READ => ['Photo'=>[H_TYPE=>H_T_IMG,H_ROWP=> 600,H_COLP=> 400]],
-					V_S_CREF => ['Photo'=>[H_TYPE=>H_T_IMG,H_ROWP=> 300,H_COLP=> 100]],
+					CstMode::V_S_READ => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 600,CstHTML::H_COLP=> 400]],
+					CstView::V_S_CREF => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 300,CstHTML::H_COLP=> 100]],
 
 				],	
 				'lblList'  => [
@@ -65,20 +68,20 @@ class Config
 
 		'User' =>[		
 			'attrList' => [
-				V_S_REF		=> ['SurName','Name'],
+				CstView::V_S_REF		=> ['SurName','Name'],
 				],
 		],
 		'Role' =>[	
 				'attrList' => [
-					V_S_REF		=> ['Name'],
+					CstView::V_S_REF		=> ['Name'],
 				]
 
 		],
 		'Distribution' =>[
 			'attrHtml' => [
-				V_S_CREA => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
-				V_S_UPDT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
-				V_S_SLCT => ['ofRole'=>H_T_SELECT,'toUser'=>H_T_SELECT],
+				CstMode::V_S_CREA => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
+				CstMode::V_S_UPDT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
+				CstMode::V_S_SLCT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
 			],
 
 		],

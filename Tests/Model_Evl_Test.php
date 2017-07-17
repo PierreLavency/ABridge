@@ -3,6 +3,7 @@
 use ABridge\ABridge\CModel;
 use ABridge\ABridge\Model;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mtype;
 
 class testeval extends CModel
 {
@@ -26,9 +27,9 @@ class Model_Evl_Test extends PHPUnit_Framework_TestCase
 
         $this->assertNotNull(($x = new Model($CName)));
 
-        $this->assertTrue($x->addAttr('a', M_INT));
-        $this->assertTrue($x->addAttr('b', M_INT));
-        $this->assertTrue($x->addAttr('aplusb', M_INT, M_P_EVAL));
+        $this->assertTrue($x->addAttr('a', Mtype::M_INT));
+        $this->assertTrue($x->addAttr('b', Mtype::M_INT));
+        $this->assertTrue($x->addAttr('aplusb', Mtype::M_INT, M_P_EVAL));
         $this->assertFalse($x->isErr());
         
         return $x;
@@ -66,10 +67,10 @@ class Model_Evl_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($x->delAttr('aplusb'));
         
         $this->assertNotNull(($y = new Model('toto')));
-        $this->assertFalse($y->addAttr('aplusb', M_INT, M_P_EVAL));
-        $this->assertEquals($y->getErrLine(), CstError::E_ERC040.':aplusb:'.M_INT);
+        $this->assertFalse($y->addAttr('aplusb', Mtype::M_INT, M_P_EVAL));
+        $this->assertEquals($y->getErrLine(), CstError::E_ERC040.':aplusb:'.Mtype::M_INT);
         
-        $this->assertFalse($y->addAttr('aplusb', M_INT, '/xx'));
-        $this->assertEquals($y->getErrLine(), CstError::E_ERC041.':aplusb:'.M_INT.':/xx');
+        $this->assertFalse($y->addAttr('aplusb', Mtype::M_INT, '/xx'));
+        $this->assertEquals($y->getErrLine(), CstError::E_ERC041.':aplusb:'.Mtype::M_INT.':/xx');
     }
 }

@@ -10,7 +10,7 @@ class ModBase
     private $abstr = [
         'attr_lst' => ['CName'],
         'attr_plst'=> ['CName'],
-        'attr_typ' => ['CName'=>M_STRING,],
+        'attr_typ' => ['CName'=>Mtype::M_STRING,],
         'abstract' => true,
     ];
     
@@ -30,7 +30,7 @@ class ModBase
         $attrLst = $mod->getAllAttr();
         $res= [];
         foreach ($attrLst as $attr) {
-            if (($mod->getTyp($attr) !=  M_CREF)
+            if (($mod->getTyp($attr) !=  Mtype::M_CREF)
                 and (! $mod->isEval($attr))
                 and (! $mod->isTemp($attr))
                 ) {
@@ -82,7 +82,7 @@ class ModBase
         }
         
         foreach ($plst as $pattr) {
-            if ($mod->getTyp($pattr) == M_REF) {
+            if ($mod->getTyp($pattr) == Mtype::M_REF) {
                 $frg[$pattr] = $mod->getModRef($pattr);
             }
         }
@@ -111,7 +111,7 @@ class ModBase
         $delList['attr_typ'] = $values['attr_typ'];
 
         foreach ($delList['attr_plst'] as $pattr) {
-            if ($delList['attr_typ'][$pattr] == M_REF) {
+            if ($delList['attr_typ'][$pattr] == Mtype::M_REF) {
                 $frg[$pattr] = 'XX';
             }
         }
@@ -258,7 +258,7 @@ class ModBase
         foreach ($values as $attr => $val) {
             if ($mod->existsAttr($attr)) {
                 $typ=$mod->getTyp($attr);
-                $valn=convertString($val, $typ);
+                $valn=Mtype::convertString($val, $typ);
                 $mod->setVal($attr, $valn);
             }
         };

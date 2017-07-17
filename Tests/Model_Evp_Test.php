@@ -3,6 +3,7 @@ use ABridge\ABridge\Model;
 use ABridge\ABridge\CModel;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mtype;
 
 class testevalP extends CModel
 {
@@ -151,12 +152,12 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         $res=$x->deleteMod();
         $this->assertTrue($res);
         
-        $x->addAttr('a', M_INT);
-        $x->addAttr('b', M_INT);
-        $x->addAttr('aplusb', M_INT, M_P_EVALP);
+        $x->addAttr('a', Mtype::M_INT);
+        $x->addAttr('b', Mtype::M_INT);
+        $x->addAttr('aplusb', Mtype::M_INT, M_P_EVALP);
         $cname = $this->Student;
-        $x->addAttr('c', M_CODE, "/$cname");
-        $x->addAttr('tmp', M_INT, M_P_TEMP);
+        $x->addAttr('c', Mtype::M_CODE, "/$cname");
+        $x->addAttr('tmp', Mtype::M_INT, M_P_TEMP);
         
         $this->assertFalse($x->isErr());
 

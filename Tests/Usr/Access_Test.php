@@ -6,6 +6,8 @@ use ABridge\ABridge\Model;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\Request;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\CstMode;
 
 use ABridge\ABridge\Usr\User;
 use ABridge\ABridge\Usr\Role;
@@ -122,12 +124,12 @@ class Access_Test extends PHPUnit_Framework_TestCase
     {
         
         $rolespec =[
-        [[V_S_READ,V_S_SLCT],           'true',                                 'true'],
-        [V_S_SLCT,                      '|User',                                'false'],
-        [V_S_READ,                      '|User',                                ["User"=>"User"]],
-        [V_S_UPDT,                      '|Application',                         ["Application"=>"User"]],
-        [[V_S_CREA,V_S_UPDT,V_S_DELT], ['|Application|In','|Application|Out'], ["Application"=>"User"]],
-        [[V_S_CREA,V_S_DELT],           '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
+        [[CstMode::V_S_READ,CstMode::V_S_SLCT],      'true',                                 'true'],
+        [CstMode::V_S_SLCT,                      	'|User',                                'false'],
+        [CstMode::V_S_READ,                     	'|User',                                ["User"=>"User"]],
+        [CstMode::V_S_UPDT,                      	'|Application',                         ["Application"=>"User"]],
+        [[CstMode::V_S_CREA,CstMode::V_S_UPDT,CstMode::V_S_DELT], ['|Application|In','|Application|Out'], ["Application"=>"User"]],
+        [[CstMode::V_S_CREA,CstMode::V_S_DELT],      '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
         ];
 
         foreach ($bases as $base) {
@@ -159,17 +161,17 @@ class Access_Test extends PHPUnit_Framework_TestCase
     public function Provider1()
     {
         return [
-            ['/Userr/1',                    V_S_UPDT, 'User'        ,false],
-            ['/User',                       V_S_SLCT, 'User'        ,false],
-            ['/User/1',                     V_S_READ, 'User'        ,['User']],
-            ['/Application',                V_S_SLCT, 'Application' ,['true']],
-            ['/Application/1',              V_S_UPDT, 'Application' ,['User']],
-            ['/Application/1/In',           V_S_CREA, 'Application' ,['User']],
-            ['/Application/1/BuiltFrom',    V_S_CREA, 'Application' ,['User']],
-            ['/Application/1/BuiltFrom',    V_S_CREA, 'BuiltFrom'   ,['User']],
-            ['/Application/1/BuiltFrom',    V_S_CREA, 'User'        ,['true']],
-            ['/Application/1/Ins',          V_S_CREA, 'Application' ,false],
-            ['/Application/1/Ins',          V_S_SLCT, 'Application' ,['true']],
+            ['/Userr/1',                    CstMode::V_S_UPDT, 'User'        ,false],
+            ['/User',                       CstMode::V_S_SLCT, 'User'        ,false],
+            ['/User/1',                     CstMode::V_S_READ, 'User'        ,['User']],
+            ['/Application',                CstMode::V_S_SLCT, 'Application' ,['true']],
+            ['/Application/1',              CstMode::V_S_UPDT, 'Application' ,['User']],
+            ['/Application/1/In',           CstMode::V_S_CREA, 'Application' ,['User']],
+            ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'Application' ,['User']],
+            ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'BuiltFrom'   ,['User']],
+            ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'User'        ,['true']],
+            ['/Application/1/Ins',          CstMode::V_S_CREA, 'Application' ,false],
+            ['/Application/1/Ins',          CstMode::V_S_SLCT, 'Application' ,['true']],
             ];
     }
     
@@ -182,10 +184,10 @@ class Access_Test extends PHPUnit_Framework_TestCase
     {
         
         $rolespec =[
-        [[V_S_READ,V_S_SLCT],           'true',                                 'true'],
-        [V_S_UPDT,                      '|Application',                         ['Application'=>'User<>User']],
-        [[V_S_CREA,V_S_UPDT,V_S_DELT],  ['|Application|In','Application|Out'],  ['Application'=>'User']],
-        [[V_S_CREA,V_S_DELT],           '|Application|BuiltFrom',               ['Application'=>'User','BuiltFrom'=>'User']],
+        [[CstMode::V_S_READ,CstMode::V_S_SLCT],           'true',                                 'true'],
+        [CstMode::V_S_UPDT,                      '|Application',                         ['Application'=>'User<>User']],
+        [[CstMode::V_S_CREA,CstMode::V_S_UPDT,CstMode::V_S_DELT],  ['|Application|In','Application|Out'],  ['Application'=>'User']],
+        [[CstMode::V_S_CREA,CstMode::V_S_DELT],           '|Application|BuiltFrom',               ['Application'=>'User','BuiltFrom'=>'User']],
         ];
         
         foreach ($bases as $base) {
@@ -202,7 +204,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $r = $y->getCobj();
                 
             $x = new Model('TestApp');
-            $x->addAttr('User', M_INTP);
+            $x->addAttr('User', Mtype::M_INTP);
             $x->setVal('User', 2);
 
             $req = new Request($p, $b);
@@ -211,14 +213,14 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals($e1, $res);
         
             $x = new Model('TestApp');
-            $x->addAttr('User', M_INTP);
+            $x->addAttr('User', Mtype::M_INTP);
             $x->setVal('User', 1);
         
             $res = $r->checkARight($req, [['Application',$x]], true);
             $this->assertEquals($e2, $res);
         
             $x = new Model('TestApp');
-            $x->addAttr('User', M_INTP);
+            $x->addAttr('User', Mtype::M_INTP);
             
             $res = $r->checkARight($req, [['Application',$x]], true);
             $this->assertEquals($e3, $res);
@@ -231,13 +233,13 @@ class Access_Test extends PHPUnit_Framework_TestCase
     public function Provider2()
     {
         return [
-            ['/ApplicationA/1',             V_S_UPDT, false, false, false],
-            ['/Application',                V_S_SLCT, true, true , true],
-            ['/Application/1',              V_S_UPDT, true, false, false],
-            ['/Application/1/In',           V_S_CREA, true, false, true],
-            ['/Application/1/BuiltFrom',    V_S_CREA, true, false, true],
-            ['/Application/1/Ins',          V_S_CREA, false,false, false],
-            ['/Application/1/Ins',          V_S_SLCT, true, true, true],
+            ['/ApplicationA/1',             CstMode::V_S_UPDT, false, false, false],
+            ['/Application',                CstMode::V_S_SLCT, true, true , true],
+            ['/Application/1',              CstMode::V_S_UPDT, true, false, false],
+            ['/Application/1/In',           CstMode::V_S_CREA, true, false, true],
+            ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, true, false, true],
+            ['/Application/1/Ins',          CstMode::V_S_CREA, false,false, false],
+            ['/Application/1/Ins',          CstMode::V_S_SLCT, true, true, true],
             ];
     }
 
@@ -293,7 +295,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals(['true'], $r);
         
         $s = new Model('TestSess');
-        $s->addAttr('User', M_INT);
+        $s->addAttr('User', Mtype::M_INT);
         
         $y = new SessionHdl($s, null);
         $r = $y->getReqCond($req, $c);

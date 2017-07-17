@@ -1,5 +1,6 @@
 <?php
-require_once 'CstMode.php';
+use ABridge\ABridge\View\CstHTML;
+
 require_once 'View/CstView.php';
 
 class Config

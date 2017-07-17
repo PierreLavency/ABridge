@@ -2,6 +2,9 @@
 namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\CstMode;
+
 use Exception;
 
 class Access
@@ -43,7 +46,7 @@ class Access
         $rList = [];
         foreach ($classList as $className) {
             $modPath = '|'.$className;
-            $res = self::getCond($session, V_S_SLCT, $modPath);
+            $res = self::getCond($session, CstMode::V_S_SLCT, $modPath);
             if ($res == ['true']) {
                 $rList[]= '/'.$className;
             }
@@ -175,11 +178,11 @@ class Access
         }
         $typ = $obj->getTyp($attro);
         $typs = $sess->getTyp($attrs);
-        if (baseType($typ) != baseType($typs)) {
+        if (Mtype::baseType($typ) != Mtype::baseType($typs)) {
             throw new Exception(CstError::E_ERC050.':'.$typ.':'.$typs);
         }
-        if ($typ == M_REF
-        and $typs == M_REF
+        if ($typ == Mtype::M_REF
+        and $typs == Mtype::M_REF
         and ($obj->getModRef($attro) != $sess->getModRef($attrs))) {
             throw new Exception(CstError::E_ERC050.':'.$obj->getModRef($attro).':'.$sess->getModRef($attrs));
         }
@@ -191,7 +194,7 @@ class Access
             }
             return true;
         }
-        if (($action == V_S_CREA or $action ==V_S_SLCT) and is_null($id2) and $last) {
+        if (($action == CstMode::V_S_CREA or $action ==CstMode::V_S_SLCT) and is_null($id2) and $last) {
             if ($protect) {
                 $obj->setVal($attro, $id1);
                 $obj->protect($attro);

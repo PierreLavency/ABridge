@@ -1,8 +1,8 @@
 <?php
     
 use ABridge\ABridge\Logger;
+use ABridge\ABridge\View\GenHTML;
 
-require_once '/View/GenHTML.php';
 require_once 'GenHTML_case.php';
 
 class GenHTML_Test extends PHPUnit_Framework_TestCase
@@ -20,7 +20,7 @@ class GenHTML_Test extends PHPUnit_Framework_TestCase
     {
         $test= GenHTLMCases();
         $this->expectOutputString(self::$log->getLine(0));
-        $this->assertNotNull(genFormElem($test[0][0], true));
+        $this->assertNotNull(GenHTML::genFormElem($test[0][0], true));
     }
     
     /**
@@ -29,7 +29,7 @@ class GenHTML_Test extends PHPUnit_Framework_TestCase
  
     public function testFormElm($a, $expected)
     {
-        $this->assertEquals(self::$log->getLine($expected), genFormElem($a, false));
+    	$this->assertEquals(self::$log->getLine($expected), GenHTML::genFormElem($a, false));
     }
  
     public function Provider1()

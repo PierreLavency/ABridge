@@ -3,6 +3,7 @@
 /* all errors that does not need persistency 001 -> 006*/
 
 use ABridge\ABridge\Model;
+use ABridge\ABridge\Mtype;
 
 class Model_Err_Test extends PHPUnit_Framework_TestCase
 {
@@ -38,16 +39,16 @@ class Model_Err_Test extends PHPUnit_Framework_TestCase
         $this->assertFalse($x->delAttr('x'));
         $this->assertEquals($log->getLine(1), 'ERC002:x');
         
-        $this->assertFalse($x->addAttr('id', M_STRING));
+        $this->assertFalse($x->addAttr('id', Mtype::M_STRING));
         $this->assertEquals($log->getLine(2), 'ERC003:id');
         
         $this->assertFalse($x->addAttr('x', 'notexists'));
         $this->assertEquals($log->getLine(3), 'ERC004:notexists');
         
-        $this->assertFalse($x->addAttr('x', M_REF));
+        $this->assertFalse($x->addAttr('x', Mtype::M_REF));
         $this->assertEquals($log->getLine(4), "ERC008:x:m_ref");
         
-        $this->assertFalse($x->addAttr('x', M_REF, 'notexists'));
+        $this->assertFalse($x->addAttr('x', Mtype::M_REF, 'notexists'));
         $this->assertEquals($log->getLine(5), 'ERC020:x:notexists');
 
         $this->assertFalse($x->isPredef('x'));
@@ -76,7 +77,7 @@ class Model_Err_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($log->getLine($n), 'ERC001:id');
         
         $n++;
-        $this->assertTrue($x->addAttr('y', M_INT));
+        $this->assertTrue($x->addAttr('y', Mtype::M_INT));
         $this->assertFalse($x->setVal('y', 'A'));
         $this->assertEquals($log->getLine($n), 'ERC005:y:A:m_int');
         

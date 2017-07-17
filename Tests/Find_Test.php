@@ -3,6 +3,7 @@
 use ABridge\ABridge\Find;
 use ABridge\ABridge\Model;
 use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mtype;
 
 class Find_Test extends PHPUnit_Framework_TestCase
 {
@@ -59,7 +60,7 @@ class Find_Test extends PHPUnit_Framework_TestCase
         
         $res= $mod->deleteMod();
         
-        $res = $mod->addAttr('name', M_STRING);
+        $res = $mod->addAttr('name', Mtype::M_STRING);
         $res = $mod->setBkey('name', true);
         
         $res = $mod->saveMod();

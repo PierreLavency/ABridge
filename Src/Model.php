@@ -14,11 +14,10 @@ namespace ABridge\ABridge;
 use ABridge\ABridge\Logger;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mtype;
 
 use Exception;
  
-require_once 'Type.php';
-
 define('M_P_EVAL', "M_P_EVAL");
 define('M_P_EVALP', "M_P_EVALP");
 define('M_P_TEMP', "M_P_TEMP");
@@ -90,7 +89,7 @@ class Model
     public function construct1($name)
     {
         $this->init($name, 0);
-        $this->setValNoCheck("ctstp", date(M_FORMAT_T));
+        $this->setValNoCheck("ctstp", date(Mtype::M_FORMAT_T));
         $this->vnum =0;
         $this->setValNoCheck("vnum", 0);
         $x = $this->stateHdlr;
@@ -110,8 +109,8 @@ class Model
      */
     public function construct2($name, $id)
     {
-        if (! checkType($id, M_INTP)) {
-            throw new Exception(CstError::E_ERC011.':'.$id.':'.M_INTP);
+        if (! Mtype::checkType($id, Mtype::M_INTP)) {
+            throw new Exception(CstError::E_ERC011.':'.$id.':'.Mtype::M_INTP);
         }
         $this->init($name, $id);
         $idr=0;
@@ -152,8 +151,8 @@ class Model
      */
     protected function init($name, $id)
     {
-        if (! checkIdentifier($name)) {
-            throw new Exception(CstError::E_ERC010.':'.$name.':'.M_ALPHA);
+        if (! Mtype::checkIdentifier($name)) {
+            throw new Exception(CstError::E_ERC010.':'.$name.':'.Mtype::M_ALPHA);
         }
         $this->name=$name;
         $this->initattr();
@@ -174,10 +173,10 @@ class Model
         $this->meta['predef'] = array('id','vnum','ctstp','utstp');
         $this->meta['attr'] = array('id','vnum','ctstp','utstp');
         $this->meta['type'] = array(
-            "id"=>M_ID,
-            "vnum"=>M_INT,
-            "ctstp"=>M_TMSTP,
-            "utstp"=>M_TMSTP,
+            "id"=>Mtype::M_ID,
+            "vnum"=>Mtype::M_INT,
+            "ctstp"=>Mtype::M_TMSTP,
+            "utstp"=>Mtype::M_TMSTP,
         );
         $this->attrVal = array('vnum' => 0);
         $this->meta['dflt'] = [];
@@ -496,7 +495,7 @@ class Model
             $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
-        if ($this->getTyp($attr)!= M_CREF) {
+        if ($this->getTyp($attr)!= Mtype::M_CREF) {
             $this->errLog->logLine(CstError::E_ERC027.':'.$attr);
             return false;
         }
@@ -550,13 +549,13 @@ class Model
             return false;
         }
         $typ = $this->getTyp($attr);
-        if ($typ != M_CODE and $typ != M_REF) {
+        if ($typ != Mtype::M_CODE and $typ != Mtype::M_REF) {
             $this->errLog->logLine(CstError::E_ERC028.':'.$attr);
             return false;
         }
         $path=$this->getParm($attr);
         $patha=explode('/', $path);
-        if ($typ == M_CODE) {
+        if ($typ == Mtype::M_CODE) {
             $c = count($patha);
             if ($c == 4) {
                 $m = new Model($patha[1], (int) $patha[2]);
@@ -686,7 +685,7 @@ class Model
             return false;
         }
         $typ = $this->getTyp($attr);
-        if ($typ == M_CREF) {
+        if ($typ == Mtype::M_CREF) {
             return false;
         }
         return true;
@@ -956,7 +955,7 @@ class Model
         if (! $this->checkParm($attr, $typ, $path, false)) {
             return false;
         }
-        if ($typ == M_REF or $typ == M_CREF or $typ == M_CODE) {
+        if ($typ == Mtype::M_REF or $typ == Mtype::M_CREF or $typ == Mtype::M_CODE) {
             $this->meta['param'][$attr]=$path;
         }
         if ($path === M_P_EVAL) {
@@ -1125,7 +1124,7 @@ class Model
             return false;
         }
         $type=$this->getTyp($attr);
-        if ($type == M_CREF) {
+        if ($type == Mtype::M_CREF) {
             $path = $this->getParm($attr);
             $patha=explode('/', $path);
             $res=$this->findObjAttr($patha[1], $patha[2], $this->getId());
@@ -1205,25 +1204,25 @@ class Model
         }
         // type checking
         $type=$this->getTyp($attr);
-        if ($type ==M_CREF) {
+        if ($type ==Mtype::M_CREF) {
             $this->errLog->logLine(CstError::E_ERC013.':'.$attr);
             return false;
         }
-        $btype=baseType($type);
-        $res =checkType($val, $btype);
+        $btype=Mtype::baseType($type);
+        $res=Mtype::checkType($val, $btype);
         if (! $res) {
             $this->errLog->logLine(CstError::E_ERC005.':'.$attr.':'.$val.':'.$btype);
             return false;
         }
         // ref checking
-        if ($type == M_REF and $check) {
+        if ($type == Mtype::M_REF and $check) {
             $res = $this-> checkRef($attr, $val);
             if (! $res) {
                 return false;
             }
         }
         // code values
-        if ($type == M_CODE and $check) {
+        if ($type == Mtype::M_CODE and $check) {
             $res = $this-> checkCode($attr, $val);
             if (! $res) {
                 $this->errLog->logLine(CstError::E_ERC016.':'.$attr.':'.$val);
@@ -1365,7 +1364,7 @@ class Model
     
     protected function checkParm($attr, $typ, $parm, $check)
     {
-        if (!isMtype($typ)) {
+        if (!Mtype::isMtype($typ)) {
             $this->errLog->logLine(CstError::E_ERC004.':'.$typ);
             return false;
         }
@@ -1380,7 +1379,7 @@ class Model
             }
             return true;
         }
-        if ($typ != M_REF and $typ != M_CREF and $typ != M_CODE) {
+        if ($typ != Mtype::M_REF and $typ != Mtype::M_CREF and $typ != Mtype::M_CODE) {
             if ($parm) {
                 $this->errLog->logLine(CstError::E_ERC041.':'.$attr.':'.$typ.':'.$parm);
                 return false;
@@ -1400,7 +1399,7 @@ class Model
         $c = count($path)-1;
 
         switch ($typ) {
-            case M_REF:
+            case Mtype::M_REF:
                 if ($c !=1) {
                     $this->errLog->logLine(CstError::E_ERC020.':'.$attr.':'.$parm);
                     return false;
@@ -1416,7 +1415,7 @@ class Model
                     return false;
                 }
                 break;
-            case M_CREF:
+            case Mtype::M_CREF:
                 if ($c !=2) {
                     $this->errLog->logLine(CstError::E_ERC020.':'.$attr.':'.$parm);
                     return false;
@@ -1431,12 +1430,12 @@ class Model
                     return false;
                 }
                 $atyp= $obj->getTyp($path[2]);
-                if ($atyp != M_REF) {
+                if ($atyp != Mtype::M_REF) {
                     $this->errLog->logLine(CstError::E_ERC054.':'.$path[2]);
                     return false;
                 }
                 break;
-            case M_CODE:
+            case Mtype::M_CODE:
                 if ($c >3 or $c<1) {
                     $this->errLog->logLine(CstError::E_ERC020.':'.$attr.':'.$parm);
                     return false;
@@ -1460,7 +1459,7 @@ class Model
                             return false;
                         }
                         $atyp= $this->getTyp($path[2]);
-                        if ($atyp != M_CREF) {
+                        if ($atyp != Mtype::M_CREF) {
                             $this->errLog->logLine(CstError::E_ERC055.':'.$path[2]);
                             return false;
                         }
@@ -1474,7 +1473,7 @@ class Model
                             return false;
                         }
                             $atyp= $obj->getTyp($path[3]);
-                        if ($atyp != M_CREF) {
+                        if ($atyp != Mtype::M_CREF) {
                             $this->errLog->logLine(CstError::E_ERC055.':'.$path[3]);
                             return false;
                         }
@@ -1490,7 +1489,7 @@ class Model
             $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
-        if ($this->getTyp($attr)!= M_REF) {
+        if ($this->getTyp($attr)!= Mtype::M_REF) {
              $this->errLog->logLine(CstError::E_ERC026.':'.$attr);
             return false;
         }
@@ -1523,11 +1522,11 @@ class Model
         if (!$r) {
             return false;
         }
-        if ($r != M_CODE and $r != M_REF) {
+        if ($r != Mtype::M_CODE and $r != Mtype::M_REF) {
             $this->errLog->logLine(CstError::E_ERC015.':'.$attr.':'.$r);
             return false;
         }
-        if ($r == M_CODE) {
+        if ($r == Mtype::M_CODE) {
             $r=$this->getParm($attr);
             $apath = explode('/', $r);
             $c = count($apath);
@@ -1543,7 +1542,7 @@ class Model
                 }
             }
         }
-        if ($r == M_REF) {
+        if ($r == Mtype::M_REF) {
             $mod = $this->getModRef($attr);
             $val=$this->findObjWhe($mod, [], [], []);
         }
@@ -1706,7 +1705,7 @@ class Model
         $n=$this->vnum;
         $n++;
         $this->setValNoCheck('vnum', $n);
-        $this->setValNoCheck('utstp', date(M_FORMAT_T));
+        $this->setValNoCheck('utstp', date(Mtype::M_FORMAT_T));
 
         $res=$this->stateHdlr->saveObj($this);
         
@@ -1724,7 +1723,7 @@ class Model
         }
         foreach ($this->getAllAttr() as $attr) {
             $typ = $this->getTyp($attr);
-            if ($typ == M_CREF) {
+            if ($typ == Mtype::M_CREF) {
                 $res=$this->getVal($attr);
                 if (count($res)) {
                     return false;

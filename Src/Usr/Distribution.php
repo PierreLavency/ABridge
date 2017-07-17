@@ -2,6 +2,7 @@
 namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\CModel;
+use ABridge\ABridge\Mtype;
 
 class Distribution extends CModel
 {
@@ -15,8 +16,8 @@ class Distribution extends CModel
 
         $role = $bindings['Role'];
         $user = $bindings['User'];
-        $res = $obj->addAttr('ofRole', M_REF, '/'.$role);
-        $res = $obj->addAttr('toUser', M_REF, '/'.$user);
+        $res = $obj->addAttr('ofRole', Mtype::M_REF, '/'.$role);
+        $res = $obj->addAttr('toUser', Mtype::M_REF, '/'.$user);
         
         $res = $obj->setMdtr('ofRole', true); // Mdtr
         $res = $obj->setMdtr('toUser', true); // Mdtr

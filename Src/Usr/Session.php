@@ -5,8 +5,7 @@ use ABridge\ABridge\CModel;
 use ABridge\ABridge\Model;
 use ABridge\ABridge\Find;
 use ABridge\ABridge\CstError;
-
-require_once 'Access.php';
+use ABridge\ABridge\Mtype;
 
 class Session extends CModel
 {
@@ -31,22 +30,22 @@ class Session extends CModel
     {
         $obj = $this->mod;
 
-        $res = $obj->addAttr('BKey', M_STRING);
-        $res = $obj->addAttr('ValidStart', M_INT, M_P_EVALP);
-        $res = $obj->addAttr('ValidFlag', M_INT, M_P_EVALP);
+        $res = $obj->addAttr('BKey', Mtype::M_STRING);
+        $res = $obj->addAttr('ValidStart', Mtype::M_INT, M_P_EVALP);
+        $res = $obj->addAttr('ValidFlag', Mtype::M_INT, M_P_EVALP);
         $res = $obj->setBkey('BKey', true);
         $res = $obj->setMdtr('BKey', true);
 
         if (isset($bindings['User'])) {
             $user = $bindings['User'];
-            $res = $obj->addAttr('User', M_REF, '/'.$user);
-            $res = $obj->addAttr('UserId', M_STRING);
-            $res = $obj->addAttr('Password', M_STRING, M_P_TEMP);
+            $res = $obj->addAttr('User', Mtype::M_REF, '/'.$user);
+            $res = $obj->addAttr('UserId', Mtype::M_STRING);
+            $res = $obj->addAttr('Password', Mtype::M_STRING, M_P_TEMP);
         }
         
         if (isset($bindings['Role'])) {
             $role = $bindings['Role'];
-            $res = $obj->addAttr('Role', M_REF, '/'.$role);
+            $res = $obj->addAttr('Role', Mtype::M_REF, '/'.$role);
         }
 
         return $obj->isErr();

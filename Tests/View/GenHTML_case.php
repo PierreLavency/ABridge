@@ -1,59 +1,59 @@
 <?php
-
+use ABridge\ABridge\View\CstHTML;
 
 function GenHTLMCases()
 {
         
     $test=[];
     $n=0;
-    $test[$n] = [[H_TYPE=>H_T_RADIO,   H_NAME=>'A',H_DEFAULT=>"a1",H_VALUES=>[['a1','a1'],['a2','a2']], H_SEPARATOR => "<br/>" ],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_RADIO,   CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1",CstHTML::H_VALUES=>[['a1','a1'],['a2','a2']], CstHTML::H_SEPARATOR => "<br/>" ],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_TEXT,    H_NAME=>'A',H_DEFAULT=>"a1"],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_TEXT,    CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1"],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_SELECT,  H_NAME=>'A',H_DEFAULT=>"a1",H_VALUES=>[['a1','a1'],['a2','a2']]],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_SELECT,  CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1",CstHTML::H_VALUES=>[['a1','a1'],['a2','a2']]],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_SUBMIT              ,H_LABEL=>'Submit'],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_SUBMIT              ,CstHTML::H_LABEL=>'Submit'],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_SUBMIT              ,H_LABEL=>'Submit',H_BACTION=>'ABridge.php/code/1'],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_SUBMIT              ,CstHTML::H_LABEL=>'Submit',CstHTML::H_BACTION=>'ABridge.php/code/1'],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_TEXTAREA,H_NAME=>'A',H_DEFAULT=>"a1"],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_TEXTAREA,CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1"],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_TEXTAREA,H_NAME=>'A',H_DEFAULT=>"a1",H_COL=>50,H_ROW=>10,H_DISABLED=>true],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_TEXTAREA,CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1",CstHTML::H_COL=>50,CstHTML::H_ROW=>10,CstHTML::H_DISABLED=>true],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_PASSWORD,H_NAME=>'A',H_DEFAULT=>"a1"],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_PASSWORD,CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1"],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_PLAIN,               H_DEFAULT=>"this is a text string"],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_PLAIN,               CstHTML::H_DEFAULT=>"this is a text string"],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_PLAIN,               H_DEFAULT=>"this is another text string"],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_PLAIN,               CstHTML::H_DEFAULT=>"this is another text string"],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_LINK,    H_NAME=>'ABridge.php/code/1',H_LABEL=>'testSuite'],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_LINK,    CstHTML::H_NAME=>'ABridge.php/code/1',CstHTML::H_LABEL=>'testSuite'],$n];
 
     //n=10;
 
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_TABLE ,H_ARG=>[$test[0][0],$test[1][0]]],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_TABLE ,CstHTML::H_ARG=>[$test[0][0],$test[1][0]]],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_LIST  ,H_ARG=>[$test[0][0],$test[1][0]]],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_LIST  ,CstHTML::H_ARG=>[$test[0][0],$test[1][0]]],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_LIST_BR  ,H_ARG=>[$test[0][0],$test[1][0]]],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_LIST_BR  ,CstHTML::H_ARG=>[$test[0][0],$test[1][0]]],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_CONCAT  ,H_ARG=>[$test[1][0],$test[1][0]]],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_CONCAT  ,CstHTML::H_ARG=>[$test[1][0],$test[1][0]]],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_LIST  ,H_ARG=>[[H_TYPE=>H_T_LIST,H_ARG=>[$test[7][0],$test[8][0]]]]],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_LIST  ,CstHTML::H_ARG=>[[CstHTML::H_TYPE=>CstHTML::H_T_LIST,CstHTML::H_ARG=>[$test[7][0],$test[8][0]]]]],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_TABLE ,H_ARG=>[[H_TYPE=>H_T_LIST,H_ARG=>[$test[7][0],$test[8][0]]]]],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_TABLE ,CstHTML::H_ARG=>[[CstHTML::H_TYPE=>CstHTML::H_T_LIST,CstHTML::H_ARG=>[$test[7][0],$test[8][0]]]]],$n];
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_LIST ,H_ARG=>[[H_TYPE=>H_T_LIST,H_ARG=>[$test[7][0],$test[7][0]]],
-                    [H_TYPE=>H_T_LIST,H_ARG=>[$test[8][0],$test[8][0]]]]],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_LIST ,CstHTML::H_ARG=>[[CstHTML::H_TYPE=>CstHTML::H_T_LIST,CstHTML::H_ARG=>[$test[7][0],$test[7][0]]],
+                    [CstHTML::H_TYPE=>CstHTML::H_T_LIST,CstHTML::H_ARG=>[$test[8][0],$test[8][0]]]]],$n];
 
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_FORM ,H_ACTION=>'POST',H_HIDDEN=>['Action'=>'toto'],H_URL=>'testSuite',H_ARG=>[$test[2][0],$test[3][0]]],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_FORM ,CstHTML::H_ACTION=>'POST',CstHTML::H_HIDDEN=>['Action'=>'toto'],CstHTML::H_URL=>'testSuite',CstHTML::H_ARG=>[$test[2][0],$test[3][0]]],$n];
 
     $n++;
-    $test[$n] = [[H_NAME=>'A',H_DEFAULT=>"a1"],$n];
+    $test[$n] = [[CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1"],$n];
     
     $n++;
-    $test[$n] = [[H_TYPE=>H_T_NTABLE,H_TABLEN=>2,H_ARG=>[$test[1][0],$test[1][0],$test[1][0]]],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,CstHTML::H_TABLEN=>2,CstHTML::H_ARG=>[$test[1][0],$test[1][0],$test[1][0]]],$n];
     
     return $test;
 }

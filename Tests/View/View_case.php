@@ -3,8 +3,11 @@
 use ABridge\ABridge\Request;
 use ABridge\ABridge\Handle;
 use ABridge\ABridge\Model;
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\CstMode;
 
 use ABridge\ABridge\View\View;
+use ABridge\ABridge\View\CstView;
 
 function viewCases()
 {
@@ -13,13 +16,13 @@ function viewCases()
 
     $x=new Model('test');
     
-    $x->addAttr('A1', M_INT);
+    $x->addAttr('A1', Mtype::M_INT);
 
-    $x->addAttr('A2', M_STRING);
+    $x->addAttr('A2', Mtype::M_STRING);
 
-    $x->addAttr('A3', M_DATE);
+    $x->addAttr('A3', Mtype::M_DATE);
 
-    $x->addAttr('A4', M_TXT);
+    $x->addAttr('A4', Mtype::M_TXT);
 
     $x->setVal('A1', 5);
 
@@ -30,9 +33,8 @@ function viewCases()
     $x->setVal('A4', 'ceci est un texte');
     
 
-
-    $request = new Request('/', V_S_READ);
-    $handle = new Handle('/', V_S_READ, null);
+    $request = new Request('/', CstMode::V_S_READ);
+    $handle = new Handle('/', CstMode::V_S_READ, null);
     $v = new View($handle);
 
     $v->setTopMenu(['/test']);
@@ -40,34 +42,34 @@ function viewCases()
     $path = '/';
     
     $test = [];
-    $test[0]=[$v,$path,V_S_CREA,0];
+    $test[0]=[$v,$path,CstMode::V_S_CREA,0];
 
     $path = '/test/1';
-    $request = new Request('/test/1', V_S_READ);
+    $request = new Request('/test/1', CstMode::V_S_READ);
     $objs=[['test',$x]];
     $handle = new Handle($request, null, $objs, $x, null);
     $v = new View($handle);
     
     $v->setTopMenu(['/test']);
 
-    $v->setAttrList(['A1','A2'], V_S_REF);
+    $v->setAttrList(['A1','A2'], CstView::V_S_REF);
     $v->setLblList(['A1'=>'A1','A2'=>'A2']);
     
     
     $n=1;
-    $test[$n]=[$v,$path,V_S_CREA,$n];
+    $test[$n]=[$v,$path,CstMode::V_S_CREA,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_READ,$n];
+    $test[$n]=[$v,$path,CstMode::V_S_READ,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_UPDT,$n];
+    $test[$n]=[$v,$path,CstMode::V_S_UPDT,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_DELT,$n];
+    $test[$n]=[$v,$path,CstMode::V_S_DELT,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_SLCT,$n];
+    $test[$n]=[$v,$path,CstMode::V_S_SLCT,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_REF,$n];
+    $test[$n]=[$v,$path,CstView::V_S_REF,$n];
     $n++;
-    $test[$n]=[$v,$path,V_S_CREF,$n];
+    $test[$n]=[$v,$path,CstView::V_S_CREF,$n];
     
     return $test;
 }

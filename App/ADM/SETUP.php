@@ -1,5 +1,7 @@
 <?php
-require_once 'CstMode.php';
+use ABridge\ABridge\CstMode;
+use ABridge\ABridge\View\CstHTML;
+
 require_once 'View/CstView.php';
 
 class Config
@@ -22,13 +24,13 @@ class Config
 
 		self::Adm =>[		
 			'attrList' => [
-				V_S_REF		=> ['id'],
+				CstView::V_S_REF		=> ['id'],
 			],
 			'lblList'  => [
-				V_S_UPDT => 'Load',
+				CstMode::V_S_UPDT => 'Load',
 			],
 			'navList' => [
-				V_S_READ => [V_S_UPDT],
+				CstMode::V_S_READ => [CstMode::V_S_UPDT],
 			],
 		],		
 

@@ -2,11 +2,11 @@
 namespace ABridge\ABridge;
 
 use ABridge\ABridge\Base;
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\CstError;
+
 use Exception;
 use Mysqli;
-
-require_once 'Type.php';
-require_once 'CstError.php';
 
 class SQLBase extends Base
 {
@@ -52,13 +52,13 @@ class SQLBase extends Base
             );
         } catch (Exception $e) {
             throw
-            new Exception(E_ERC021. ':' . $e->getMessage());
+            new Exception(CstError::E_ERC021. ':' . $e->getMessage());
         }
         $this->mysqli->autocommit(false);
         if (! $this->mysqli->select_db($this->dbname)) {
             $sql = "CREATE DATABASE $this->dbname";
             if (! $this->mysqli->query($sql)) {
-                throw new Exception(E_ERC021. ':' . $this->mysqli->error);
+                throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
             };
             $this->mysqli->select_db($this->dbname);
         }
@@ -97,7 +97,7 @@ class SQLBase extends Base
             $this->mysqli->begin_transaction();
         } catch (Exception $e) {
             throw
-            new Exception(E_ERC021. ':' . $e->getMessage());
+            new Exception(CstError::E_ERC021. ':' . $e->getMessage());
         }
         return (parent::beginTrans());
     }
@@ -108,7 +108,7 @@ class SQLBase extends Base
             $this->mysqli->commit();
         } catch (Exception $e) {
             throw
-            new Exception(E_ERC021. ':' . $e->getMessage());
+            new Exception(CstError::E_ERC021. ':' . $e->getMessage());
         }
         return (parent::commit());
     }
@@ -119,7 +119,7 @@ class SQLBase extends Base
             $this->mysqli->rollback();
         } catch (Exception $e) {
             throw
-            new Exception(E_ERC021. ':' . $e->getMessage());
+            new Exception(CstError::E_ERC021. ':' . $e->getMessage());
         }
         return (parent::rollback());
     }
@@ -130,7 +130,7 @@ class SQLBase extends Base
             $this->mysqli->close();
         } catch (Exception $e) {
             throw
-            new Exception(E_ERC021. ':' . $e->getMessage());
+            new Exception(CstError::E_ERC021. ':' . $e->getMessage());
         }
         return (parent::close());
     }
@@ -176,7 +176,7 @@ class SQLBase extends Base
             if ($attrLst[$i] != 'id') {
                 $attr = $attrLst[$i];
                 $typ=$attrTyp[$attr];
-                $typ = convertSqlType($typ);
+                $typ = Mtype::convertSqlType($typ);
                 $s = $s.", \n $attr $typ NULL";
                 if (isset($attrFrg[$attr])) {
                     $cName= $model.'_'.$attr;
@@ -188,7 +188,7 @@ class SQLBase extends Base
         $sql=$s. " ) \n";
         $this->logLine(1, $sql);
         if (! $this->mysqli->query($sql)) {
-            throw new Exception(E_ERC021. ':' . $this->mysqli->error);
+            throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
         };
         $r = parent::newModId($model, $meta, $idF);
         parent::commit(); //DML always autocommited!!
@@ -210,7 +210,7 @@ class SQLBase extends Base
             $sqlDrop=$sql.$sqlDrop;
             $this->logLine(1, $sqlDrop);
             if (! $this->mysqli->query($sqlDrop)) {
-                throw new Exception(E_ERC021. ':' . $this->mysqli->error);
+                throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
             }
         }
         $sql = "\n ALTER TABLE $model ";
@@ -219,7 +219,7 @@ class SQLBase extends Base
             $sqlAdd=$sql.$sqlAdd;
             $this->logLine(1, $sqlAdd);
             if (! $this->mysqli->query($sqlAdd)) {
-                throw new Exception(E_ERC021. ':' . $this->mysqli->error);
+                throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
             }
         }
         $r = parent::putModel($model, $meta);
@@ -274,7 +274,7 @@ class SQLBase extends Base
             if ($i > 0) {
                 $sql = $sql . ",";
             }
-            $typ = convertSqlType($typ);
+            $typ = Mtype::convertSqlType($typ);
             $sql = $sql."\n ADD $attr $typ NULL" ;
             if (isset($attrFrg[$attr])) {
                 $cName= $model.'_'.$attr;
@@ -347,7 +347,7 @@ class SQLBase extends Base
         $sql = "\n UPDATE $model SET $lv WHERE id= $id and vnum= $vnum \n" ;
         $this->logLine(1, $sql);
         if (! $this->mysqli->query($sql)) {
-            throw new Exception(E_ERC021. ':' . $this->mysqli->error);
+            throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
         };
         if ($this->mysqli->affected_rows == 1) {
             return $id; /* -> true*/
@@ -363,7 +363,7 @@ class SQLBase extends Base
         $sql = "\n DELETE FROM $model WHERE id=$id \n";
         $this->logLine(1, $sql);
         if (! $this->mysqli->query($sql)) {
-            throw new Exception(E_ERC021. ':' . $this->mysqli->error);
+            throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
         };
 
         return true;
@@ -411,14 +411,14 @@ class SQLBase extends Base
         $sql = "\n INSERT INTO $model \n $la \n VALUES \n $lv \n";
         $this->logLine(1, $sql);
         if (! $this->mysqli->query($sql)) {
-            throw new Exception(E_ERC021. ':' . $this->mysqli->error);
+            throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
         };
         if ($id) {
             return $id;
         }
         $id = $this->mysqli->insert_id;
         if (!$id) {
-            throw new Exception(E_ERC043.':'.$id);
+            throw new Exception(CstError::E_ERC043.':'.$id);
         }
         return $id;
     }

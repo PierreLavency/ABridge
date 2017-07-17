@@ -3,6 +3,7 @@
 /* */
 use ABridge\ABridge\Model;
 use ABridge\ABridge\ModBase;
+use ABridge\ABridge\Mtype;
 
 class ModBase_Case extends PHPUnit_Framework_TestCase
 {
@@ -21,8 +22,8 @@ class ModBase_Case extends PHPUnit_Framework_TestCase
         $this->assertNotNull($sh = new ModBase($db));
         $this->assertNotNull($mod = new Model(self::$CName));
         $this->assertTrue($sh->eraseMod($mod));
-        $this->assertTrue($mod->addAttr('Name', M_STRING));
-        $this->assertTrue($mod->addAttr('Surname', M_STRING));
+        $this->assertTrue($mod->addAttr('Name', Mtype::M_STRING));
+        $this->assertTrue($mod->addAttr('Surname', Mtype::M_STRING));
         $this->assertTrue($sh->saveMod($mod));
 
         $this->hdlr = $sh;
@@ -47,7 +48,7 @@ class ModBase_Case extends PHPUnit_Framework_TestCase
 
 
         $this->assertTrue($mod->delAttr('Surname'));
-        $this->assertTrue($mod->addAttr('Age', M_STRING));
+        $this->assertTrue($mod->addAttr('Age', Mtype::M_STRING));
         $this->assertTrue($sh->saveMod($mod));
 
 
@@ -69,7 +70,7 @@ class ModBase_Case extends PHPUnit_Framework_TestCase
         $this->assertFalse($mod->existsAttr('Surname'));
         $this->assertTrue($mod->existsAttr('Age'));
         
-        $this->assertTrue($mod->addAttr('Surname', M_STRING));
+        $this->assertTrue($mod->addAttr('Surname', Mtype::M_STRING));
         $this->assertTrue($mod->delAttr('Age'));
         $this->assertTrue($sh->saveMod($mod));
 

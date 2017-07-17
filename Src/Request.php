@@ -3,8 +3,8 @@ namespace ABridge\ABridge;
 
 use Exception;
 use ABridge\ABridge\CstError;
-
-require_once 'CstMode.php';
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\CstMode;
 
 class Request
 {
@@ -98,7 +98,7 @@ class Request
         $this->isClassPath = $r;
         $this->objN = $c-$r;
         for ($i=0; $i < $this->objN; $i=$i+2) {
-            if (! checkIdentifier($pathArr[$i])) {
+            if (! Mtype::checkIdentifier($pathArr[$i])) {
                 throw new Exception(CstError::E_ERC036.':'.$pathStrg.':'.$i);
             }
             $this->pathArr[]=$pathArr[$i];
@@ -115,7 +115,7 @@ class Request
             }
         }
         if ($this->isClassPath) {
-            if (! checkIdentifier($pathArr[$c-1])) {
+            if (! Mtype::checkIdentifier($pathArr[$c-1])) {
                 $j = $c-1;
                 throw new Exception(CstError::E_ERC036.':'.$pathStrg.':'.$j);
             }
@@ -140,7 +140,7 @@ class Request
         $url= self::$docRoot.$this->path;
         $action =$this->getAction();
         $first = true;
-        if ($action != V_S_READ) {
+        if ($action != CstMode::V_S_READ) {
             $url=$url.'?Action='.$action;
             $first = false;
         }
@@ -234,7 +234,7 @@ class Request
             array_pop($res);
         }
         $path = $this->arrToPath($res);
-        return new Request($path, V_S_READ);
+        return new Request($path, CstMode::V_S_READ);
     }
 
     public function pushId($id)
@@ -243,7 +243,7 @@ class Request
             throw new Exception(CstError::E_ERC037);
         }
         $path = $this->path.'/'.$id;
-        $this->construct2($path, V_S_READ);
+        $this->construct2($path, CstMode::V_S_READ);
         return $path;
     }
     
@@ -257,16 +257,16 @@ class Request
             return $this->action;
         }
         if ($this->method == 'GET') {
-            $this->action = V_S_READ;
+            $this->action = CstMode::V_S_READ;
             if ($this->isClassPath()) {
-                $this->action = V_S_SLCT;
+                $this->action = CstMode::V_S_SLCT;
                 return $this->action;
             }
             return $this->action;
         }
         if ($this->method =='POST') {
             if ($this->isClassPath()) {
-                $this->action = V_S_CREA;
+                $this->action = CstMode::V_S_CREA;
                 return $this->action;
             }
         }
@@ -326,19 +326,19 @@ class Request
     protected function checkActionPath($action)
     {
         if ($this->isClassPath()) {
-            if ($action == V_S_SLCT or $action == V_S_CREA) {
+            if ($action == CstMode::V_S_SLCT or $action == CstMode::V_S_CREA) {
                 return true;
             }
         }
         if ($this->isObjPath()) {
-            if ($action == V_S_READ or
-            $action == V_S_UPDT or
-            $action ==V_S_DELT  ) {
+            if ($action == CstMode::V_S_READ or
+            $action == CstMode::V_S_UPDT or
+            $action ==CstMode::V_S_DELT  ) {
                 return true;
             }
         }
         if ($this->isRoot()) {
-            if ($action == V_S_READ) {
+            if ($action == CstMode::V_S_READ) {
                 return true;
             }
         }
@@ -348,19 +348,19 @@ class Request
     public function getActionReq($action)
     {
         if ($this->isRoot()) {
-            if ($action == V_S_READ) {
+            if ($action == CstMode::V_S_READ) {
                 return new request($this->getRPath(), $action);
             }
             return null;
         }
         if ($this->isObjPath()) {
-            if ($action == V_S_READ) {
+            if ($action == CstMode::V_S_READ) {
                 return new request($this->getRPath(), $action);
             }
-            if ($action == V_S_UPDT or $action == V_S_DELT) {
+            if ($action == CstMode::V_S_UPDT or $action == CstMode::V_S_DELT) {
                 return new request($this->getRPath(), $action);
             }
-            if ($action == V_S_SLCT or $action == V_S_CREA) {
+            if ($action == CstMode::V_S_SLCT or $action == CstMode::V_S_CREA) {
                 $res = $this->pathArr;
                 array_pop($res);
                 $path = $this->arrToPath($res);
@@ -368,7 +368,7 @@ class Request
             }
         }
         if ($this->isClassPath()) {
-            if ($action == V_S_READ) {
+            if ($action == CstMode::V_S_READ) {
                 $res = $this->pathArr;
                 array_pop($res);
                 if (count($res)==0) {
@@ -378,7 +378,7 @@ class Request
                 }
                 return new request($path, $action);
             }
-            if ($action == V_S_SLCT or $action == V_S_CREA) {
+            if ($action == CstMode::V_S_SLCT or $action == CstMode::V_S_CREA) {
                 return new request($this->getRPath(), $action);
             }
         }

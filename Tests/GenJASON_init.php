@@ -1,7 +1,9 @@
 <?php
-require_once("GenJASON.php");
+use ABridge\ABridge\GenJASON;
+use ABridge\ABridge\UnitTest;
+
 require_once("GenJASON_case.php");
-require_once("UnitTest.php");
+
 
 $logName = basename(__FILE__, ".php");
 

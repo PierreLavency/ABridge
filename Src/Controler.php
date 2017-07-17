@@ -5,14 +5,17 @@ use ABridge\ABridge\Logger;
 use ABridge\ABridge\Base;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\Handle;
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\CstMode;
 
 use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\View\View;
 use ABridge\ABridge\Usr\Usr;
 
-require_once 'GenJASON.php';
-require_once 'View/CstView.php';
-require_once 'CstMode.php';
+use ABridge\ABridge\GenJASON;
+
+//require_once 'View/CstView.php';
+
 
 class Controler
 {
@@ -194,16 +197,16 @@ class Controler
         $c= $this->handle;
         foreach ($c->getAttrList() as $attr) {
             $typ= $c->getTyp($attr);
-            $val= $c->getPrm($attr, isRaw($typ));
+            $val= $c->getPrm($attr, Mtype::isRaw($typ));
             if (!is_null($val)) {
-                $valC = convertString($val, $typ);
-                if ($action != V_S_SLCT and $c->isModif($attr)) {
+                $valC = Mtype::convertString($val, $typ);
+                if ($action != CstMode::V_S_SLCT and $c->isModif($attr)) {
                     $c->setVal($attr, $valC);
                 }
-                if ($action != V_S_SLCT and  $attr=='vnum') {
+                if ($action != CstMode::V_S_SLCT and  $attr=='vnum') {
                     $c->checkVers((int) $valC);
                 }
-                if ($action == V_S_SLCT and !is_null($valC) and $c->isSelect($attr)) {
+                if ($action == CstMode::V_S_SLCT and !is_null($valC) and $c->isSelect($attr)) {
                     $this->attrL[]=$attr;
                     $this->valL[]=$valC;
                 }
@@ -273,7 +276,7 @@ class Controler
             if ($sessionHdl->isNew()) {
                 $this->commit();
                 $this->beginTrans();
-                $this->handle = new Handle('/Session/~', V_S_UPDT, $this->sessionHdl);
+                $this->handle = new Handle('/Session/~', CstMode::V_S_UPDT, $this->sessionHdl);
             } else {
                 $this->handle = new Handle($this->sessionHdl);
             }
@@ -287,7 +290,7 @@ class Controler
         $method=$this->handle->getMethod();
         
         if ($this->handle->getDocRoot() == '/ABridgeAPI.php') {
-            genJASON($this->handle, true, true);
+            GenJASON::genJASON($this->handle, true, true);
             $this->showLog();
             return $this->handle;
         }
@@ -299,19 +302,19 @@ class Controler
         $action = $this->handle->getAction();
         $actionExec = false;
         if ($method =='POST') {
-            if ($action == V_S_UPDT
-            or  $action == V_S_CREA
-            or  $action == V_S_SLCT) {
+            if ($action == CstMode::V_S_UPDT
+            or  $action == CstMode::V_S_CREA
+            or  $action == CstMode::V_S_SLCT) {
                 $res = $this->setVal($action);
             }
             if (!$this->handle->isErr()) {
-                if ($action == V_S_DELT) {
+                if ($action == CstMode::V_S_DELT) {
                     $this->handle->delet();
                 }
-                if ($action == V_S_UPDT or $action == V_S_CREA) {
+                if ($action == CstMode::V_S_UPDT or $action == CstMode::V_S_CREA) {
                     $this->handle->save();
                 }
-                if ($action == V_S_SLCT) {
+                if ($action == CstMode::V_S_SLCT) {
                     $valL=$this->valL;
                     $attrL=$this->attrL;
                     $opL=$this->opL;
@@ -328,11 +331,11 @@ class Controler
             }
         }
         if ($actionExec) {
-            if ($action == V_S_DELT) {
+            if ($action == CstMode::V_S_DELT) {
                 $this->handle=$this->handle->getDD();
             }
-            if ($action != V_S_SLCT) {
-                $this->handle->setAction(V_S_READ);
+            if ($action != CstMode::V_S_SLCT) {
+                $this->handle->setAction(CstMode::V_S_READ);
             }
         }
         $this->showView($show);

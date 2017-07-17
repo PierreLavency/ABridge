@@ -1,7 +1,9 @@
 <?php
-require_once("GenJASON.php");
+
 use ABridge\ABridge\Model;
 use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\GenJASON;
 
 function GenJasonCasesData($id, $B, $D)
 {
@@ -40,17 +42,17 @@ function GenJasonCases()
     $codeval = new Model($CodeVal);
     $res= $codeval->deleteMod();
     
-    $res = $codeval->addAttr('Name', M_STRING);
+    $res = $codeval->addAttr('Name', Mtype::M_STRING);
     $path='/'.$Code;
-    $res = $codeval->addAttr('ValueOf', M_REF, $path);
+    $res = $codeval->addAttr('ValueOf', Mtype::M_REF, $path);
     $res = $codeval->saveMod();
     
     $code = new Model($Code);
     $res= $code->deleteMod();
     
-    $res = $code->addAttr('Name', M_STRING);
+    $res = $code->addAttr('Name', Mtype::M_STRING);
     $path='/'.$CodeVal.'/ValueOf';
-    $res = $code->addAttr('Values', M_CREF, $path);
+    $res = $code->addAttr('Values', Mtype::M_CREF, $path);
     $res = $code->saveMod();
     
     $sex = new Model($Code);
@@ -66,20 +68,20 @@ function GenJasonCases()
     
     $x=new Model('TestDir');
     $x->deleteMod();
-    $x->addAttr('Name', M_STRING);
+    $x->addAttr('Name', Mtype::M_STRING);
 
-    $res = $x->addAttr('Sexe', M_CODE, "/Code/1/Values");
-    $x->addAttr('Father', M_REF, '/TestDir');
-    $x->addAttr('FatherOfD', M_CREF, '/TestDir/Father');
-    $x->addAttr('FatherOfF', M_CREF, '/TestFle/Father');
+    $res = $x->addAttr('Sexe', Mtype::M_CODE, "/Code/1/Values");
+    $x->addAttr('Father', Mtype::M_REF, '/TestDir');
+    $x->addAttr('FatherOfD', Mtype::M_CREF, '/TestDir/Father');
+    $x->addAttr('FatherOfF', Mtype::M_CREF, '/TestFle/Father');
     $x->saveMod();
     $r = $x-> getErrLog();
     $r->show();
         
     $x=new Model('TestFle');
     $x->deleteMod();
-    $x->addAttr('Name', M_STRING);
-    $x->addAttr('Father', M_REF, '/TestDir');
+    $x->addAttr('Name', Mtype::M_STRING);
+    $x->addAttr('Father', Mtype::M_REF, '/TestDir');
     $x->saveMod();
     $r = $x-> getErrLog();
     $r->show();

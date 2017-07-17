@@ -1,5 +1,8 @@
 <?php
 
+use ABridge\ABridge\Mtype;
+use ABridge\ABridge\CstMode;
+
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
 
@@ -32,7 +35,7 @@ class Controler_Perf
                     ],
 
                 'attrProp' => [
-                    V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
+                    CstMode::V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
                 ],
             ],
         ]
@@ -68,9 +71,9 @@ class Controler_Perf
         $x=new Model($this->CName);
         $x->deleteMod();
         $x=new Model($this->CName);
-        $x->addAttr('Name', M_STRING);
-        $x->addAttr('Ref', M_REF, '/'.$this->CName);
-        $x->addAttr('Cref', M_CREF, '/'.$this->CName.'/Ref');
+        $x->addAttr('Name', Mtype::M_STRING);
+        $x->addAttr('Ref', Mtype::M_REF, '/'.$this->CName);
+        $x->addAttr('Cref', Mtype::M_CREF, '/'.$this->CName.'/Ref');
         $x->saveMod();
  
         $ctrl->commit();
@@ -82,7 +85,7 @@ class Controler_Perf
         $path = '/';
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_READ;
+        $_GET['Action']=CstMode::V_S_READ;
         
         $this->ctrlrun();
         
@@ -90,7 +93,7 @@ class Controler_Perf
 
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_CREA;
+        $_GET['Action']=CstMode::V_S_CREA;
         
         $this->ctrlrun();
         
@@ -110,7 +113,7 @@ class Controler_Perf
     {
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_SLCT;
+        $_GET['Action']=CstMode::V_S_SLCT;
 
         $this->ctrlrun();
         
@@ -126,13 +129,13 @@ class Controler_Perf
     {
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_READ;
+        $_GET['Action']=CstMode::V_S_READ;
         
         $this->ctrlrun();
         
         $fpath = $path.'/Cref';
         $_SERVER['PATH_INFO']=$fpath;
-        $_GET['Action']=V_S_CREA;
+        $_GET['Action']=CstMode::V_S_CREA;
         
         $this->ctrlrun();
 
@@ -181,11 +184,11 @@ class Controler_Perf
         
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_READ;
+        $_GET['Action']=CstMode::V_S_READ;
         
         $this->ctrlrun();
         
-        $_GET['Action']=V_S_UPDT;
+        $_GET['Action']=CstMode::V_S_UPDT;
         
         $this->ctrlrun();
         
@@ -203,11 +206,11 @@ class Controler_Perf
         
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=V_S_READ;
+        $_GET['Action']=CstMode::V_S_READ;
         
         $this->ctrlrun();
         
-        $_GET['Action']=V_S_DELT;
+        $_GET['Action']=CstMode::V_S_DELT;
         
         $this->ctrlrun();
         

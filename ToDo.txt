@@ -38,10 +38,10 @@ DEV
 	- NxN relationship
 	- views and parameters
 - clean up picture path
+- introduction of name space in Tests
 
 - combine temp/evalp reference. 
 
-- review include structure and align  with PSR4
 - use static to declare spec and other functions
 
 - order in list query and attr.
@@ -89,6 +89,9 @@ INT
 - set up jenkin
 
 DONE 
+-----------// 10
+introduction of name space in Src
+review include structure and align  with PSR4
 -----------// 2
 - user concurency 
 -----------// 0.25
