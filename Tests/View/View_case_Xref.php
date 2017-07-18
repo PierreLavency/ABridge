@@ -1,12 +1,13 @@
 <?php
 
-use ABridge\ABridge\Model;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Handler;
-use ABridge\ABridge\Mtype;
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Mod\Mtype;
+
+use ABridge\ABridge\Hdl\CstMode;
+
 
 use ABridge\ABridge\View\CstView;
-
 
 function viewCasesXref()
 {

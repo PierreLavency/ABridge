@@ -1,11 +1,11 @@
 <?php
 namespace ABridge\ABridge\Usr;
 
-use ABridge\ABridge\CModel;
-use ABridge\ABridge\Model;
-use ABridge\ABridge\Find;
+use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Find;
 use ABridge\ABridge\CstError;
-use ABridge\ABridge\Mtype;
+use ABridge\ABridge\Mod\Mtype;
 
 class Session extends CModel
 {

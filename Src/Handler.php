@@ -1,10 +1,9 @@
 <?php
 namespace ABridge\ABridge;
 
-use ABridge\ABridge\FileBase;
-use ABridge\ABridge\SQLBase;
-use ABridge\ABridge\ModBase;
-use ABridge\ABridge\Mtype;
+use ABridge\ABridge\Mod\FileBase;
+use ABridge\ABridge\Mod\SQLBase;
+use ABridge\ABridge\Mod\ModBase;
 
 class Handler
 {
@@ -16,9 +15,9 @@ class Handler
     private static $instance = null;
     private $filePath;
     private $bases = []; //'fileBase'=> [name => class],
-    private $basesClasses =['fileBase'=>'ABridge\ABridge\FileBase','dataBase'=>'ABridge\ABridge\SQLBase'];
+    private $basesClasses =['fileBase'=>'ABridge\ABridge\Mod\FileBase','dataBase'=>'ABridge\ABridge\Mod\SQLBase'];
     private $modHandler= [];
-    private $modBase =['fileBase' =>'ABridge\ABridge\ModBase','dataBase'=>'ABridge\ABridge\ModBase'];
+    private $modBase =['fileBase' =>'ABridge\ABridge\Mod\ModBase','dataBase'=>'ABridge\ABridge\Mod\ModBase'];
     private $viewHandler=[]; // mod => spec
     private $cmod=[]; //mod=> Cmodclass
     

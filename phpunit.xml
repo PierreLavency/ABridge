@@ -15,6 +15,10 @@
 	</testsuite>
 	<testsuite name="Adm">
 		<directory>Tests/Adm</directory>
-	</testsuite>	
+	</testsuite>
+	<testsuite name="Hdl">
+		<directory>Tests/Hdl</directory></testsuite>
+	<testsuite name="Mod">
+		<directory>Tests/Mod</directory></testsuite>
   </testsuites>
 </phpunit>

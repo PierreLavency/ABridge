@@ -6,7 +6,8 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 require_once 'vendor/autoload.php';
 
 use ABridge\ABridge\Controler;
-use ABridge\ABridge\CstError;
+
+//use ABridge\ABridge\CstError;
 
 //phpinfo();
 //$conf['name']='UnitTest';

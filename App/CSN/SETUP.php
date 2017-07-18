@@ -1,9 +1,9 @@
 <?php
 
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
+use ABridge\ABridge\View\CstView;
 
-require_once 'View/CstView.php';
 
 class Config
 {
@@ -30,8 +30,8 @@ class Config
 		'Recette'=> [
 		
 				'attrList' => [
-					V_S_REF		=> ['Nom'],
-					V_S_CREF	=> ['id','TypeRecette','NiveauDifficulte','Minutes'],
+					CstView::V_S_REF		=> ['Nom'],
+					CstView::V_S_CREF	=> ['id','TypeRecette','NiveauDifficulte','Minutes'],
 				],
 				'attrHtml' => [
 
@@ -60,10 +60,10 @@ class Config
 							CstMode::V_S_UPDT=> ['Nom','Description',],							
 						],
 						'attrProp' => [
-							CstMode::V_S_READ =>[V_P_VAL],
+								CstMode::V_S_READ =>[CstView::V_P_VAL],
 						],		
 						'attrHtml' => [
-							CstMode::V_S_READ => ['Ingredients'=>[V_SLICE=>20,V_COUNTF=>false,V_CTYP=>V_C_TYPN]]
+								CstMode::V_S_READ => ['Ingredients'=>[CstView::V_SLICE=>20,CstView::V_COUNTF=>false,CstView::V_CTYP=>CstView::V_C_TYPN]]
 						],	
 						'navList' => [CstMode::V_S_READ => [CstMode::V_S_UPDT],
 						],
@@ -93,32 +93,32 @@ class Config
 		'UniteMesure'=> [
 		
 				'attrList' => [
-					V_S_REF		=> ['Value'],
+					CstView::V_S_REF		=> ['Value'],
 				]
 				
 		],
 		'TypeRecette'=> [
 		
 				'attrList' => [
-					V_S_REF		=> ['Value'],
+						CstView::V_S_REF		=> ['Value'],
 				]
 				
 		],
 		'NiveauDifficulte'=> [
 		
 				'attrList' => [
-					V_S_REF		=> ['Value'],
+						CstView::V_S_REF		=> ['Value'],
 				]
 				
 		],
 		'User' =>[		
 			'attrList' => [
-				V_S_REF		=> ['SurName','Name'],
+					CstView::V_S_REF		=> ['SurName','Name'],
 				],
 		],
 		'Role' =>[	
 				'attrList' => [
-					V_S_REF		=> ['Name'],
+						CstView::V_S_REF		=> ['Name'],
 				]
 
 		],

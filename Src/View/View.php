@@ -1,11 +1,12 @@
 <?php
 namespace ABridge\ABridge\View;
 
-use ABridge\ABridge\Handle;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\CstError;
-use ABridge\ABridge\Mtype;
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Mod\Mtype;
+
+use ABridge\ABridge\Hdl\Handle;
+use ABridge\ABridge\Hdl\CstMode;
 
 use ABridge\ABridge\View\GenHTML;
 use ABridge\ABridge\View\CstHTML;

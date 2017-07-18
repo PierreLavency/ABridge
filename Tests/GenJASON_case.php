@@ -1,9 +1,9 @@
 <?php
 
-use ABridge\ABridge\Model;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Handler;
-use ABridge\ABridge\Mtype;
-use ABridge\ABridge\GenJASON;
+use ABridge\ABridge\Mod\Mtype;
+
 
 function GenJasonCasesData($id, $B, $D)
 {

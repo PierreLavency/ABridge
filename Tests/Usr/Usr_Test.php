@@ -1,7 +1,7 @@
 <?php
 use ABridge\ABridge\UtilsC;
 
-use ABridge\ABridge\Model;
+use ABridge\ABridge\Mod\Model;
 
 
 use ABridge\ABridge\Usr\Session;

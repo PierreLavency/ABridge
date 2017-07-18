@@ -1,7 +1,10 @@
 <?php
 
-use ABridge\ABridge\Mtype;
+use ABridge\ABridge\Controler;
+use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\CstMode;
+use ABridge\ABridge\View\CstView;
 
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
@@ -31,11 +34,11 @@ class Controler_Perf
     'Views' => [
         'Controler_Test_1' =>[
                 'attrList' => [
-                    V_S_REF         => ['id'],
+                    CstView::V_S_REF         => ['id'],
                     ],
 
                 'attrProp' => [
-                    CstMode::V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
+                    CstMode::V_S_SLCT =>[CstView::V_P_LBL,CstView::V_P_OP,CstView::V_P_VAL],
                 ],
             ],
         ]

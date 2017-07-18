@@ -1,8 +1,8 @@
 <?php
 namespace ABridge\ABridge\Adm;
 
-use ABridge\ABridge\CModel;
-use ABridge\ABridge\Mtype;
+use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\Mod\Mtype;
 
 class Admin extends CModel
 {

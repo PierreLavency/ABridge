@@ -2,7 +2,7 @@
     
 use ABridge\ABridge\Logger;
 use ABridge\ABridge\Handler;
-use ABridge\ABridge\Model;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\GenJASON;
 
 require_once('GenJason_case.php');

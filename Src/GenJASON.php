@@ -1,7 +1,7 @@
 <?php
 namespace ABridge\ABridge;
 
-use ABridge\ABridge\Mtype;
+use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\FormatLib;
 
 class GenJason

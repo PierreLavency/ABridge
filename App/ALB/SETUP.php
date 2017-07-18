@@ -1,9 +1,9 @@
 <?php
 
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
+use ABridge\ABridge\View\CstView;
 
-require_once 'View/CstView.php';
 
 class Config
 {
@@ -38,8 +38,14 @@ class Config
 							CstMode::V_S_READ => [],
 						],
 						'attrHtml' => [
-							CstMode::V_S_READ => ['Photos'=>[V_SLICE=>4,V_COUNTF=>true,V_CTYP=>V_C_TYPN,
-										 V_CVAL=>[CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,CstHTML::H_TABLEN=>2]]],
+								CstMode::V_S_READ => [
+										'Photos'=>[
+												CstView::V_SLICE=>4,
+												CstView::V_COUNTF=>true,
+												CstView::V_CTYP=>CstView::V_C_TYPN,
+												CstView::V_CVAL=>[CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,CstHTML::H_TABLEN=>2]
+												
+										]],
 						],							
 					],
 					'Descritpion'  => [

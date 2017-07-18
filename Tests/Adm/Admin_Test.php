@@ -2,7 +2,7 @@
 
 use ABridge\ABridge\Adm\Admin;
 use ABridge\ABridge\UtilsC;
-use ABridge\ABridge\Model;
+use ABridge\ABridge\Mod\Model;
 
 class Admin_Test_dataBase_1 extends Admin
 {

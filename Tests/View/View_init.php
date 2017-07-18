@@ -1,7 +1,6 @@
 <?php
 
-use  ABridge\ABridge\UnitTest;
-use ABridge\ABridge\View\View;
+use ABridge\ABridge\UnitTest;
 
 require_once 'View_case.php';
 

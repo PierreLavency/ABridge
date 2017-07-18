@@ -1,10 +1,11 @@
 <?php
 
-use ABridge\ABridge\Request;
-use ABridge\ABridge\Handle;
-use ABridge\ABridge\Model;
-use ABridge\ABridge\Mtype;
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Hdl\Request;
+use ABridge\ABridge\Hdl\Handle;
+use ABridge\ABridge\Hdl\CstMode;
+
+use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mtype;
 
 use ABridge\ABridge\View\View;
 use ABridge\ABridge\View\CstView;

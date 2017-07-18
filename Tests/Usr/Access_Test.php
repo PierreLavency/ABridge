@@ -1,13 +1,15 @@
 <?php
 
 use ABridge\ABridge\UtilsC;
-use ABridge\ABridge\CModel;
-use ABridge\ABridge\Model;
-use ABridge\ABridge\Handler;
-use ABridge\ABridge\Request;
+
+use ABridge\ABridge\Mod\Model;
+
 use ABridge\ABridge\CstError;
-use ABridge\ABridge\Mtype;
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Mod\Mtype;
+
+use ABridge\ABridge\Hdl\Request;
+use ABridge\ABridge\Hdl\CstMode;
+
 
 use ABridge\ABridge\Usr\User;
 use ABridge\ABridge\Usr\Role;
@@ -125,9 +127,9 @@ class Access_Test extends PHPUnit_Framework_TestCase
         
         $rolespec =[
         [[CstMode::V_S_READ,CstMode::V_S_SLCT],      'true',                                 'true'],
-        [CstMode::V_S_SLCT,                      	'|User',                                'false'],
-        [CstMode::V_S_READ,                     	'|User',                                ["User"=>"User"]],
-        [CstMode::V_S_UPDT,                      	'|Application',                         ["Application"=>"User"]],
+        [CstMode::V_S_SLCT,                         '|User',                                'false'],
+        [CstMode::V_S_READ,                         '|User',                                ["User"=>"User"]],
+        [CstMode::V_S_UPDT,                         '|Application',                         ["Application"=>"User"]],
         [[CstMode::V_S_CREA,CstMode::V_S_UPDT,CstMode::V_S_DELT], ['|Application|In','|Application|Out'], ["Application"=>"User"]],
         [[CstMode::V_S_CREA,CstMode::V_S_DELT],      '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
         ];

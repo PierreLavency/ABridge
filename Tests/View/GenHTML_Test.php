@@ -29,7 +29,7 @@ class GenHTML_Test extends PHPUnit_Framework_TestCase
  
     public function testFormElm($a, $expected)
     {
-    	$this->assertEquals(self::$log->getLine($expected), GenHTML::genFormElem($a, false));
+        $this->assertEquals(self::$log->getLine($expected), GenHTML::genFormElem($a, false));
     }
  
     public function Provider1()

@@ -1,6 +1,8 @@
 <?php
 namespace ABridge\ABridge;
 
+use ABridge\ABridge\Mod\Model;
+
 class UtilsC
 {
    

@@ -1,5 +1,5 @@
 <?php
-use ABridge\ABridge\CModel;
+use ABridge\ABridge\Mod\CModel;
 
 class Inscription extends CModel 
 {

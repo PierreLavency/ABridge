@@ -1,7 +1,6 @@
 <?php
 use ABridge\ABridge\View\CstHTML;
-
-require_once 'View/CstView.php';
+use ABridge\ABridge\View\CstView;
 
 class Config
 {

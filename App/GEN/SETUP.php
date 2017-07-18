@@ -1,9 +1,9 @@
 <?php
 
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
+use ABridge\ABridge\View\CstView;
 
-require_once 'View/CstView.php';
 require_once 'Person.php';
 
 class Config
@@ -40,7 +40,7 @@ class Config
 					CstView::V_S_REF		=> ['SurName','Name'],
 				],
 				'attrProp' => [
-					CstMode::V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
+					CstMode::V_S_SLCT =>[CstView::V_P_LBL,CstView::V_P_OP,CstView::V_P_VAL],
 				]
 				
 		],

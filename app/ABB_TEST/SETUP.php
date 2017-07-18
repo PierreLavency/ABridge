@@ -1,9 +1,8 @@
 <?php
 
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
-
-require_once 'View/CstView.php';
+use ABridge\ABridge\View\CstView;
 
 
 class Config 
@@ -239,7 +238,7 @@ class Config
 					'Play'			=> 'PlayRoles',
 				],
 			'attrHtml' => [
-					CstMode::V_S_READ 	=> ['Play'=>[V_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]],
+					CstMode::V_S_READ 	=> ['Play'=>[CstView::V_SLICE=>15,CstView::V_COUNTF=>false,CstView::V_CTYP=>CstView::V_C_TYPN]],
 				],						
 			'attrList' => [
 					CstView::V_S_REF		=> ['UserId'],

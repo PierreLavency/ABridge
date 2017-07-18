@@ -2,7 +2,7 @@
 namespace ABridge\ABridge\Adm;
 
 use ABridge\ABridge\Adm\Admin;
-use ABridge\ABridge\Find;
+use ABridge\ABridge\Mod\Find;
 use ABridge\ABridge\Handler;
 
 class Adm

@@ -1,8 +1,8 @@
 <?php
 
 use ABridge\ABridge\UtilsC;
-use ABridge\ABridge\CModel;
-use ABridge\ABridge\Model;
+use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\CstError;
 

@@ -1,21 +1,22 @@
 CMD
 /*check code
-phpcs --standard=PSR2 --report=summary  -l Src  Src/Usr/Src Src/View/Src Src/Adm/Src
-phpcbf --standard=PSR2 --no-patch  -l Src  Src/Usr/Src Src/View/Src Src/Adm/Src
+phpcs --standard=PSR2 --report=summary  Src 
+phpcbf --standard=PSR2 --no-patch  Src  
 
-phpcbf --standard=PSR2 --no-patch  Tests  Src/User/Tests Src/View/Tests
+phpcbf --standard=PSR2 --no-patch  Tests  
 
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
 
 /* dependency 
-pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg Src Src/Adm Src/Usr Src/Vew 
+pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg Src
+pdepend --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg Src
 
 /* run test suite with coverage
 phpunit --coverage-html Testcoverage
 
 /* run with profiling
-php -d xdebug.profiler_enable=1  -d xdebug.profiler_output_dir=./tmp tests/Controler_Perf.ph
+php -d xdebug.profiler_enable=1  -d xdebug.profiler_output_dir=./tmp tests/Controler_Perf.php
 
 BUGS
 
@@ -38,22 +39,23 @@ DEV
 	- NxN relationship
 	- views and parameters
 - clean up picture path
-- introduction of name space in Tests
 
 - combine temp/evalp reference. 
 
-- use static to declare spec and other functions
+- move Access apck control to handle
+- create Ctr Pack
 
 - order in list query and attr.
 - confirmation on META load / Java Script
+- set up rest services 
 - selection for Ref / Java script 
-- graphics : include svg bit in view. /2
+
 - view sort out persistence/2
 - multi language /2
 
 - delete all object in class /2
+- introduction of name space in Tests /2
 
-- set up rest services 
 - set up modif logging // node.js ?
 
 - changed DB model independently of class model.
@@ -61,9 +63,9 @@ DEV
 - implement unique index.
 - database paging
 
-
 - implement CSS 
 
+- graphics : include svg bit in view. /2
 - iniMod rather than fileBase (?)
 - revisit dot attributes (?)
 - unify get code with get reference. (??)
@@ -88,7 +90,14 @@ INT
 - set up a git server
 - set up jenkin
 
-DONE 
+DONE
+-----------// 1
+Hdl/Mod packages
+clean up perf test
+rollback change on model identifier
+-----------// 1 
+align src with PSR
+- use static to declare spec and other functions
 -----------// 10
 introduction of name space in Src
 review include structure and align  with PSR4

@@ -1,8 +1,7 @@
 <?php
 
-use  ABridge\ABridge\UnitTest;
+use ABridge\ABridge\UnitTest;
 use ABridge\ABridge\View\GenHTML;
-
 
 $logName = basename(__FILE__, ".php");
 

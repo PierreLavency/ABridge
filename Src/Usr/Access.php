@@ -2,8 +2,10 @@
 namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\CstError;
-use ABridge\ABridge\Mtype;
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Mod\Mtype;
+
+use ABridge\ABridge\Hdl\CstMode;
+
 
 use Exception;
 

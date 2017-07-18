@@ -1,13 +1,13 @@
 <?php
 
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
+use ABridge\ABridge\View\CstView;
 
 require_once 'Cours.php';
 require_once 'Student.php';
 require_once 'Inscription.php';   
 
-require_once 'View/CstView.php';
 
 class Config
 {
@@ -101,7 +101,7 @@ class Config
 					'Play'			=> 'PlayRoles',
 				],
 			'attrHtml' => [
-					CstMode::V_S_READ 	=> ['Play'=>[V_SLICE=>15,V_COUNTF=>false,V_CTYP=>V_C_TYPN]],
+					CstMode::V_S_READ 	=> ['Play'=>[CstView::V_SLICE=>15,CstView::V_COUNTF=>false,CstView::V_CTYP=>CstView::V_C_TYPN]],
 				],						
 			'attrList' => [
 					CstView::V_S_REF		=> ['UserId'],
@@ -155,10 +155,10 @@ class Config
 					CstMode::V_S_CREA => ['Sexe'=>CstHTML::H_T_RADIO],
 					CstMode::V_S_UPDT => ['Sexe'=>CstHTML::H_T_RADIO],
 					CstMode::V_S_SLCT => ['Sexe'=>CstHTML::H_T_RADIO],
-					CstMode::V_S_READ => ['InscritA'=>[V_SLICE=>5,V_COUNTF=>true,V_CTYP=>V_C_TYPN]]	
+					CstMode::V_S_READ => ['InscritA'=>[CstView::V_SLICE=>5,CstView::V_COUNTF=>true,CstView::V_CTYP=>CstView::V_C_TYPN]]	
 				],
 				'attrProp' => [
-					CstMode::V_S_SLCT =>[V_P_LBL,V_P_OP,V_P_VAL],
+					CstMode::V_S_SLCT =>[CstView::V_P_LBL,CstView::V_P_OP,CstView::V_P_VAL],
 				],			
 				'lblList' => [
 					'id'		=> 'Noma',
@@ -193,7 +193,7 @@ class Config
 					],
 					'Image' =>[
 						'attrProp' => [
-							CstMode::V_S_READ =>[V_P_VAL],
+							CstMode::V_S_READ =>[CstView::V_P_VAL],
 						],				
 						'attrList' => [
 							CstMode::V_S_READ=> ['Image'],
@@ -207,7 +207,7 @@ class Config
 					],						
 					'Jason' =>[
 						'attrProp' => [
-							CstMode::V_S_READ =>[V_P_VAL],
+							CstMode::V_S_READ =>[CstView::V_P_VAL],
 						],	
 						'attrList' => [
 							CstMode::V_S_READ=> ['Jason'],
@@ -240,7 +240,7 @@ class Config
 				],
 				'attrHtml' => [
 							CstMode::V_S_UPDT => ['User'=>CstHTML::H_T_SELECT],
-							CstMode::V_S_SLCT => [CstMode::V_S_SLCT=>[V_SLICE=>15,V_COUNTF=>true,V_CTYP=>V_C_TYPN]]
+							CstMode::V_S_SLCT => [CstMode::V_S_SLCT=>[CstView::V_SLICE=>15,CstView::V_COUNTF=>true,CstView::V_CTYP=>CstView::V_C_TYPN]]
 				]				
 		],
 		'Prof' => [
