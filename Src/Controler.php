@@ -4,6 +4,7 @@ namespace ABridge\ABridge;
 use ABridge\ABridge\Logger;
 use ABridge\ABridge\Mod\Base;
 use ABridge\ABridge\Mod\SQLBase;
+use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\Mod\Mtype;
@@ -19,15 +20,11 @@ use ABridge\ABridge\Usr\Usr;
 
 use ABridge\ABridge\GenJASON;
 
-//require_once 'View/CstView.php';
-
-
 class Controler
 {
     protected $bases=[];
 
     protected $handle=null;
-    protected $sessionHdl= null;
     protected $spec = [];
     protected $attrL = [];
     protected $valL = [];
@@ -35,7 +32,6 @@ class Controler
     protected $logLevel = 0;
     protected $sessionMgr = null;
     protected $appName ;
-    protected $classList=[];
      
     public function __construct()
     {
@@ -56,37 +52,20 @@ class Controler
         $this->init($ini);
         $this->spec=$spec;
         $bases = [];
-        $handlers = [];
         
         Handler::get()->resetHandlers();
-        $config=$spec['Handlers'];
-        foreach ($config as $classN => $handler) {
-            $menu=true;
-            $c = count($handler);
-            if ($c==3) {
-                $menu = array_pop($handler);
-                $c=2;
-            }
-            switch ($c) {
-                case 0:
-                    break;
-                case 1:
-                    $handler[]=$this->appName;
-                    // default
-                case 2:
-                    if (! in_array($handler, $handlers)) {
-                        $handlers[] = $handler;
-                        $x = Handler::get()->getBase($handler[0], $handler[1]);
-                        $bases[]=$x;
-                    }
-                    Handler::get()->setStateHandler($classN, $handler[0], $handler[1]);
-                    break;
-            }
-            if ($menu) {
-                $this->classList[]=$classN;
-            }
+        
+        if (isset($spec['Handlers'])) {
+            $config=$spec['Handlers'];
+            Mod::init($this->appName, $config);
         }
-        $this->bases = $bases;
+ 
+        if (isset($spec['View'])) {
+            $specv = $spec['View'];
+            View::init($specv);
+        }
+        
+        $this->bases = Handler::get()->getBaseClasses();
     }
  
     private function init($ini)
@@ -233,25 +212,22 @@ class Controler
     {
         $this->logStartView();
         $spec = $this->spec;
-        if (isset($spec['Views'])) {
-            $specv = $spec['Views'];
-            foreach ($specv as $mod => $specm) {
-                Handler::get()->setViewHandler($mod, $specm);
-            }
+        $specv=[];
+        if (isset($spec['View'])) {
+            $specv = $spec['View'];
         }
         $v=new View($this->handle);
         $home = [];
-        if (isset($spec['Home'])) {
-            $home=$spec['Home'];
+        if (isset($specv['Home'])) {
+            $home=$specv['Home'];
         }
-        if ($this->sessionHdl) {
-            $selmenu = $this->sessionHdl->getSelMenu($this->classList);
-        } else {
-            $selmenu = [];
-            foreach ($this->classList as $classElm) {
-                    $selmenu[]='/'.$classElm;
-            }
+        $classL=Handler::get()->getMods();
+        $selmenu = $this->handle->getSelPath($classL);
+        $rmenu=[];
+        if (isset($specv['MenuExcl'])) {
+            $rmenu=$specv['MenuExcl'];
         }
+        $selmenu= array_diff($selmenu, $rmenu);
         $menu = array_unique(array_merge($home, $selmenu));
         $v->setTopMenu($menu);
         $action = $this->handle->getAction();
@@ -262,10 +238,8 @@ class Controler
     public function run($show, $logLevel)
     {
         $this->beginTrans();
-        
+              
         if (isset($this->spec['Adm'])) {
-//            require_once 'Adm/Src/Adm.php';
-            
             Adm::init($this->appName, $this->spec['Adm']);
             if (Adm::isNew()) {
                 $this->commit();
@@ -274,16 +248,13 @@ class Controler
         }
         
         if (isset($this->spec['Usr'])) {
-//            require_once 'Usr/Src/Usr.php';
-            
             $sessionHdl= Usr::init($this->appName, ['ABridge\ABridge\Usr\Session']);
-            $this->sessionHdl= $sessionHdl;
             if ($sessionHdl->isNew()) {
                 $this->commit();
                 $this->beginTrans();
-                $this->handle = new Handle('/Session/~', CstMode::V_S_UPDT, $this->sessionHdl);
+                $this->handle = new Handle('/Session/~', CstMode::V_S_UPDT, $sessionHdl);
             } else {
-                $this->handle = new Handle($this->sessionHdl);
+                $this->handle = new Handle($sessionHdl);
             }
         } else {
             $this->handle = new Handle(null);

@@ -6,7 +6,6 @@ use ABridge\ABridge\Mod\Mtype;
 
 use ABridge\ABridge\Hdl\CstMode;
 
-
 use ABridge\ABridge\View\CstView;
 
 function viewCasesXref()

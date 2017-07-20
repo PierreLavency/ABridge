@@ -18,15 +18,16 @@ class Config
 		'UniteTemps'	=> ['dataBase',],
 		'TypeRecette'	=> ['dataBase',],
 		'NiveauDifficulte' =>['dataBase',],
-		'AbstractCode'	=> ['dataBase','CSN',false],	
+		'AbstractCode'	=> ['dataBase','CSN'],	
 		'User'	 	 	=> ['dataBase',],
 		'Role'	 	 	=> ['dataBase',],
 		'Distribution'	=> ['dataBase',],
 		'Session'		=> ['dataBase',],		
 		],
-	'Home' =>
-		['/',],
-	'Views' => [
+
+	'View' => [
+		'Home' => ['/',],
+		'MenuExcl' =>["/AbstractCode"],
 		'Recette'=> [
 		
 				'attrList' => [

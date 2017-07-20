@@ -27,23 +27,27 @@ class Config
 	static $config = [
 	'Handlers' =>
 		[
-		self::ABB		 => ['dataBase',self::DBDEC,false],
-		self::Application => ['dataBase',self::DBDEC,],
-		self::Component	 => ['dataBase',self::DBDEC,],
-		self::Interfaces	 => ['dataBase',self::DBDEC,],
-		self::Exchange	 => ['dataBase',self::DBDEC,],
-		self::IUse	 	 => ['dataBase',self::DBDEC,],			
-		self::IType	 	 => ['dataBase',self::DBDEC,],		
-		self::CType	 	 => ['dataBase',self::DBDEC,],
-		self::SLevel 	 => ['dataBase',self::DBDEC,],
-		self::AStyle 	 => ['dataBase',self::DBDEC,],
-		self::SControl 	 => ['dataBase',self::DBDEC,],
-		self::ACode	 	 => ['dataBase',self::DBDEC,false],
-		self::User	 	 => ['dataBase',self::DBDEC,],
+		self::ABB		 	=> ['dataBase',self::DBDEC],
+		self::Application 	=> ['dataBase',self::DBDEC],
+		self::Component	 	=> ['dataBase',self::DBDEC],
+		self::Interfaces	=> ['dataBase',self::DBDEC],
+		self::Exchange	 	=> ['dataBase',self::DBDEC],
+		self::IUse	 		=> ['dataBase',self::DBDEC],			
+		self::IType	 	 	=> ['dataBase',self::DBDEC],		
+		self::CType	 	 	=> ['dataBase',self::DBDEC],
+		self::SLevel 	 	=> ['dataBase',self::DBDEC],
+		self::AStyle 	 	=> ['dataBase',self::DBDEC],
+		self::SControl 	 	=> ['dataBase',self::DBDEC],
+		self::ACode	 	 	=> ['dataBase',self::DBDEC],
+		self::User	 	 	=> ['dataBase',self::DBDEC],
 		],
-	'Home' =>
-		['/',"/".self::Application,"/".self::Component,"/".self::Interfaces,"/".self::Exchange],
-	'Views' => [
+
+	'View' => [
+		'Home' =>
+			['/',"/".self::Application,"/".self::Component,"/".self::Interfaces,"/".self::Exchange],
+		'MenuExcl' =>
+			["/".self::ACode,"/".self::ABB],
+			
 		self::Application=> [
 		
 				'attrList' => [

@@ -9,7 +9,7 @@ class Admin extends CModel
     public function __construct($mod)
     {
         $this->mod=$mod;
-        if (! $mod->existsAttr('Init')) {
+        if (! $mod->existsAttr('Application')) {
             $this->initMod([]);
             $this->mod->saveMod();
         }

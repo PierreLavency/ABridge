@@ -635,8 +635,22 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:5;s:7:"Name_2
-";i:6;s:149:"<a href="/ABridge.php/viewCasesXref/2" >Name_2
+ </html>";i:5;s:96:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ Name_2
+
+ </body> 
+ </html>";i:6;s:238:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ <a href="/ABridge.php/viewCasesXref/2" >Name_2
 </a>
 
 <a href="/ABridge.php/viewCasesXref/1" >1
@@ -645,4 +659,6 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 <a href="/ABridge.php/viewCasesXref/1" >1
 </a>
 
-";}
+
+ </body> 
+ </html>";}

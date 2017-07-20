@@ -19,8 +19,9 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     'Controler_Test_1'=>['dataBase','testb'],
     'Controler_Test_2'=>['fileBase'],
     ],
-    'Home'=>['Controler_Test_1'],
-    'Views' => [
+
+    'View' => [
+        'Home'=>['Controler_Test_1'],
         'Controler_Test_1' =>[
                 'attrList' => [
                     CstView::V_S_REF => ['id'],

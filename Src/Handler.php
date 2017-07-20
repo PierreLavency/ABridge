@@ -18,6 +18,7 @@ class Handler
     private $basesClasses =['fileBase'=>'ABridge\ABridge\Mod\FileBase','dataBase'=>'ABridge\ABridge\Mod\SQLBase'];
     private $modHandler= [];
     private $modBase =['fileBase' =>'ABridge\ABridge\Mod\ModBase','dataBase'=>'ABridge\ABridge\Mod\ModBase'];
+
     private $viewHandler=[]; // mod => spec
     private $cmod=[]; //mod=> Cmodclass
     
@@ -54,13 +55,25 @@ class Handler
         return true;
     }
 
-    public function getBase($base, $instance)
+    public function getMods()
     {
-
-        return $this->getBaseNm($base, $instance, $instance);
+        $res= array_keys($this->modHandler);
+        return $res;
     }
-
-    public function getBaseNm($base, $instance, $name)
+    
+    
+    public function getBaseClasses()
+    {
+        $res=[];
+        foreach ($this->bases as $base => $baseClasses) {
+            foreach ($baseClasses as $name => $baseClass) {
+                $res[]=$baseClass;
+            }
+        }
+        return $res;
+    }
+    
+    public function getBase($base, $instance)
     {
         if (! array_key_exists($base, $this->basesClasses)) {
             return false;
@@ -73,7 +86,7 @@ class Handler
             }
         };
         $classN = $this->basesClasses[$base];
-        $x = new $classN($name,'cl822','cl822');
+        $x = new $classN($instance);
         $instances[$instance]=$x;
         $this->bases[$base]=$instances;
         return $x;

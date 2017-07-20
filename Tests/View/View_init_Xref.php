@@ -10,6 +10,7 @@ use ABridge\ABridge\Hdl\CstMode;
 
 
 use ABridge\ABridge\View\View;
+use ABridge\ABridge\View\CstView;
 use ABridge\ABridge\View\CstHTML;
 
 require_once 'View_case_Xref.php';
@@ -44,7 +45,7 @@ for ($i=0; $i<count($test); $i++) {
 
     $v->setTopMenu(['/dir']);
     $v->setAttrListHtml(['Mother'=>CstHTML::H_T_SELECT], CstMode::V_S_CREA);
-    $v->setAttrList(['Name'], V_S_REF);
+    $v->setAttrList(['Name'], CstView::V_S_REF);
     $res = $v->show($s, $show);
     $log->logLine($res);
 }

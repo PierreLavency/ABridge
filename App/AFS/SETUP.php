@@ -12,8 +12,10 @@ class Config
 		'Dir'  => ['dataBase'],
 		'Fle'  => ['dataBase'],
 		],
-	'Home' =>
-		['/Dir','/Fle'],
+	'View'=> [
+		'Home' =>
+			['/Dir','/Fle'],
+		]
 	];
 	
 }

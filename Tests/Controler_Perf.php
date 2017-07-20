@@ -30,8 +30,8 @@ class Controler_Perf
     'Controler_Test_1'=>['dataBase','test_perf'],
     'Controler_Test_2'=>['fileBase'],
     ],
-    'Home'=>['Controler_Test_1'],
     'Views' => [
+        'Home'=>['Controler_Test_1'],
         'Controler_Test_1' =>[
                 'attrList' => [
                     CstView::V_S_REF         => ['id'],

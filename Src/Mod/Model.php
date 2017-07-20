@@ -90,7 +90,6 @@ class Model
     public function construct1($name)
     {
         $this->init($name, 0);
-        $this->setValNoCheck("ctstp", date(Mtype::M_FORMAT_T));
         $this->vnum =0;
         $this->setValNoCheck("vnum", 0);
         $x = $this->stateHdlr;
@@ -1651,7 +1650,7 @@ class Model
         $n=$this->vnum;
         $res=($vnum === $n);
         if (!$res) {
-            $this->errLog->logLine(CstError::E_ERC062);
+            $this->errLog->logLine(CstError::E_ERC062.":$n");
         }
         return $res;
     }
@@ -1706,6 +1705,9 @@ class Model
         $n=$this->vnum;
         $n++;
         $this->setValNoCheck('vnum', $n);
+        if (! $this->getId()) {
+            $this->setValNoCheck('ctstp', date(Mtype::M_FORMAT_T));
+        }
         $this->setValNoCheck('utstp', date(Mtype::M_FORMAT_T));
 
         $res=$this->stateHdlr->saveObj($this);
@@ -1791,6 +1793,7 @@ class Model
         $res=$this->stateHdlr->eraseMod($this);
         $this->initattr();
         $this->id=0;
+        $this->vnum=0;
         return $res;
     }
     /**

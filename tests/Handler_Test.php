@@ -34,10 +34,12 @@ class Handler_Test extends PHPUnit_Framework_TestCase
     public function testStateHandler()
     {
         $this->assertTrue(Handler::get()->resetHandlers());
-        $this->assertNotNull($db = Handler::get()->setStateHandler('CLass', 'fileBase', 'test'));
-        $this->assertNotNull($db = Handler::get()->setStateHandler('CLass', 'fileBase', 'test'));
-        $this->assertNotNull($c1 = Handler::get()->getStateHandler('CLass'));
-        $this->assertNotNull($c2 = Handler::get()->getStateHandler('CLass'));
+        $this->assertNotNull($db = Handler::get()->setStateHandler('CLassA', 'fileBase', 'test'));
+        $this->assertNotNull($db = Handler::get()->setStateHandler('CLassB', 'fileBase', 'test'));
+        $this->assertNotNull($c1 = Handler::get()->getStateHandler('CLassA'));
+        $this->assertNotNull($c2 = Handler::get()->getStateHandler('CLassB'));
+        $this->assertEquals(['CLassA','CLassB'], Handler::get()->getMods());
+//        $this->assertEquals(2,count(Handler::get()->getBaseClasses()));
         $this->assertEquals($c1, $c2);
     }
  

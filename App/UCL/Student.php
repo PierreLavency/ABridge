@@ -1,5 +1,6 @@
 <?php
 use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\GenJason;
 
 class Student extends CModel 
 {
@@ -12,7 +13,7 @@ class Student extends CModel
 			return $res;
 		}
 		if ($attr == 'Jason') {
-			$res = genJASON($this->mod,false,true);
+			$res = GenJason::genJASON($this->mod,false,true);
 			return $res;
 		}
 		return $this->mod->getValN($attr);

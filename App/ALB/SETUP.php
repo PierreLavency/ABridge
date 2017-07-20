@@ -19,9 +19,9 @@ class Config
 		'Distribution'	=> ['dataBase',],
 		'Session'		=> ['dataBase',],		
 		],
-	'Home' =>
-		['/',],
-	'Views' => [
+	'View' => [
+		'Home' =>
+			['/',],
 		'Album'=> [
 		
 				'attrList' => [

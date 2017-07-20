@@ -84,6 +84,18 @@ class View
               
     protected $attrLbl = [];
 
+    
+    public static function init($specv)
+    {
+        foreach ($specv as $mod => $specm) {
+            if ($specm != 'Home' and $specm !='MenuExcl') {
+                Handler::get()->setViewHandler($mod, $specm);
+            }
+        }
+    }
+    
+    
+    
     // constructors
 
     public function __construct($handle)
@@ -414,7 +426,7 @@ class View
                     $m = $this->handle->getCode($attr, (int) $v);
                     if (! is_null($m)) {
                         $vw = new View($m);
-                        $l = $vw->show(CstView::V_S_REF, false);
+                        $l = $vw->showRec(CstView::V_S_REF);
                         $r = [$v,$l];
                         $values[]=$r;
                     }
@@ -435,7 +447,7 @@ class View
         if ($prop==CstView::V_P_VAL) {
             if ($attr == 'id' and $viewState == CstView::V_S_CREF) {
                 $res[CstHTML::H_TYPE]=CstHTML::H_T_LINK;
-                $res[CstHTML::H_LABEL]=$this->show(CstView::V_S_REF, false);
+                $res[CstHTML::H_LABEL]=$this->showRec(CstView::V_S_REF);
                 $res[CstHTML::H_NAME]=$this->handle->getUrl();
                 return $res;
             }
@@ -490,7 +502,7 @@ class View
             if ($typ==Mtype::M_CODE and (!is_null($x))) {
                 $nh=$this->handle->getCode($attr, (int) $x);
                 $v = new View($nh);
-                $x = $v->show(CstView::V_S_REF, false);
+                $x = $v->showRec(CstView::V_S_REF);
             }
         }
         if ($prop==CstView::V_P_VAL) {
@@ -595,9 +607,8 @@ class View
         $nav=$spec[CstView::V_P_VAL];
         $path=$spec[CstView::V_OBJ];
         $res[CstHTML::H_TYPE]=CstHTML::H_T_LINK;
-        $sessHdl = $this->handle->getSessionHdl();
         try {
-            $hdl = new Handle($path, $sessHdl);
+            $hdl = $this->handle->getNewHdl($path);
         } catch (Exception $e) {
             return false;
         }
@@ -748,14 +759,7 @@ class View
     public function show($viewState, $show = true)
     {
         $r = $this->buildView($viewState, false);
-        if ($viewState != CstView::V_S_REF and $viewState != CstView::V_S_CREF) {
-            $r=GenHTML::genHTML($r, $show);
-        } else {
-            $r=GenHTML::genFormElem($r, $show);
-            if ($viewState == CstView::V_S_REF and ctype_space($r)) {
-                $r=$this->handle->getid();
-            }
-        }
+        $r=GenHTML::genHTML($r, $show);
         return $r;
     }
   
@@ -903,6 +907,7 @@ class View
                 CstView::V_TYPE=>CstView::V_LIST,
                 CstView::V_LT=>CstView::V_VLIST,
                 CstView::V_ARG=>$menuObjView];
+        
         $menuObjAction = $this->getMenuObjAction($viewState);
         $arg[]= [
                 CstView::V_TYPE=>CstView::V_LIST,

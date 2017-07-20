@@ -36,34 +36,37 @@ class Config
 	static $config = [
 	'Handlers' =>
 		[
-		self::ABB		 => 	['dataBase',self::DBDEC,false],
-		self::Application=> 	['dataBase',self::DBDEC,],
-		self::Component	 => 	['dataBase',self::DBDEC,],
-		self::Interfaces => 	['dataBase',self::DBDEC,],
-		self::Exchange	 => 	['dataBase',self::DBDEC,],
-		self::IUse	 	 => 	['dataBase',self::DBDEC,],			
-		self::IType	 	 => 	['dataBase',self::DBDEC,],		
-		self::CType	 	 =>		['dataBase',self::DBDEC,],
-		self::SLevel 	 => 	['dataBase',self::DBDEC,],
-		self::AStyle 	 =>		['dataBase',self::DBDEC,],
-		self::SControl 	 => 	['dataBase',self::DBDEC,],
-		self::ACode	 	 => 	['dataBase',self::DBDEC,],
-		self::User	 	 => 	['dataBase',self::DBDEC,],
-		self::Group		 => 	['dataBase',self::DBDEC,],		
-		self::Role	 	 => 	['dataBase',self::DBDEC,],
-		self::Distribution=> 	['dataBase',self::DBDEC,],
-		self::Session	 => 	['dataBase',self::DBDEC,],
-		self::Adm	     => 	['dataBase',self::DBDEC,],
+		self::ABB		 => 	['dataBase',self::DBDEC],
+		self::Application=> 	['dataBase',self::DBDEC],
+		self::Component	 => 	['dataBase',self::DBDEC],
+		self::Interfaces => 	['dataBase',self::DBDEC],
+		self::Exchange	 => 	['dataBase',self::DBDEC],
+		self::IUse	 	 => 	['dataBase',self::DBDEC],			
+		self::IType	 	 => 	['dataBase',self::DBDEC],		
+		self::CType	 	 =>		['dataBase',self::DBDEC],
+		self::SLevel 	 => 	['dataBase',self::DBDEC],
+		self::AStyle 	 =>		['dataBase',self::DBDEC],
+		self::SControl 	 => 	['dataBase',self::DBDEC],
+		self::ACode	 	 => 	['dataBase',self::DBDEC],
+		self::User	 	 => 	['dataBase',self::DBDEC],
+		self::Group		 => 	['dataBase',self::DBDEC],		
+		self::Role	 	 => 	['dataBase',self::DBDEC],
+		self::Distribution=> 	['dataBase',self::DBDEC],
+		self::Session	 => 	['dataBase',self::DBDEC],
+		self::Adm	     => 	['dataBase',self::DBDEC],
 		],
-	'Home' =>
-		['/','/'.self::Session.'/~','/'.self::User.'/~',],
+
 	'Adm' => [
 			
 	],
 	'Usr' => [
 			
 	],		
-	'Views' => [
+	'View' => [			
+		'Home' =>
+			['/','/'.self::Session.'/~','/'.self::User.'/~',],
+		'MenuExcl' =>
+			["/".self::ABB],			
 		self::Application=> [
 		
 				'attrList' => [

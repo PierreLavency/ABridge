@@ -23,20 +23,20 @@ class Config
 	static $config = [
 	'Handlers' =>
 		[
-		self::User	 	 	=> ['dataBase',self::DBDEC,],
-		self::Group		 	=> ['dataBase',self::DBDEC,],		
-		self::Role	 	 	=> ['dataBase',self::DBDEC,],
-		self::Distribution	=> ['dataBase',self::DBDEC,],
-		self::Session	 	=> ['dataBase',self::DBDEC,],
-		self::Adm   		=> ['dataBase',self::DBDEC,false],
-		],
-	'Home' =>
+		self::User	 	 	=> ['dataBase',self::DBDEC],
+		self::Group		 	=> ['dataBase',self::DBDEC],		
+		self::Role	 	 	=> ['dataBase',self::DBDEC],
+		self::Distribution	=> ['dataBase',self::DBDEC],
+		self::Session	 	=> ['dataBase',self::DBDEC],
+		self::Adm   		=> ['dataBase',self::DBDEC],
+		],		
+	'Adm' 	=> [],
+	'Usr' 	=> [self::Session=>'BKey'],			
+	'View' => [
+		'Home' =>
 			['/',"/".self::Session."/~","/".self::User."/~","/".self::Adm."/1"],
-	'Adm' => [],
-	'Usr' => 
-		[self::Session=>'BKey'],		
-	'Views' => [
-			
+		'MenuExcl' =>
+			["/Admin"],
 		self::Adm =>[
 				'attrList' => [
 						CstView::V_S_REF		=> ['id'],
@@ -145,7 +145,7 @@ class Config
 
 		],		
 		],
-	];		
+	];
 	
 }
 	

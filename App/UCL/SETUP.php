@@ -19,20 +19,20 @@ class Config
 	static $config = [
 	'Handlers' =>
 		[
-		'Session'  	 	=> ['fileBase',self::DBDEC,],
-		'CodeValue'  	=> ['fileBase',self::DBDEC,],
-		'Code' 			=> ['fileBase',self::DBDEC,],
-		'Student'	 	=> ['fileBase',self::DBDEC,],
-		'Cours'		 	=> ['fileBase',self::DBDEC,],
-		'Inscription'	=> ['fileBase',self::DBDEC,],
-		'Prof'		 	=> ['fileBase',self::DBDEC,],
-		'Charge'	 	=> ['fileBase',self::DBDEC,],
-		'User'	 	 	=> ['dataBase',self::DBDEC,],
-		'UGroup'	 	=> ['dataBase',self::DBDEC,],		
-		'Role'	 	 	=> ['dataBase',self::DBDEC,],
-		'Distribution'	=> ['dataBase',self::DBDEC,],
-		'Page'		  	=> ['dataBase',self::DBDEC,],	
-		'Admin'		  	=> ['dataBase',self::DBDEC,],	
+		'Session'  	 	=> ['fileBase',self::DBDEC],
+		'CodeValue'  	=> ['fileBase',self::DBDEC],
+		'Code' 			=> ['fileBase',self::DBDEC],
+		'Student'	 	=> ['fileBase',self::DBDEC],
+		'Cours'		 	=> ['fileBase',self::DBDEC],
+		'Inscription'	=> ['fileBase',self::DBDEC],
+		'Prof'		 	=> ['fileBase',self::DBDEC],
+		'Charge'	 	=> ['fileBase',self::DBDEC],
+		'User'	 	 	=> ['dataBase',self::DBDEC],
+		'UGroup'	 	=> ['dataBase',self::DBDEC],		
+		'Role'	 	 	=> ['dataBase',self::DBDEC],
+		'Distribution'	=> ['dataBase',self::DBDEC],
+		'Page'		  	=> ['dataBase',self::DBDEC],	
+		'Admin'		  	=> ['dataBase',self::DBDEC],	
 		],
 	'Usr' => [
 			
@@ -40,10 +40,11 @@ class Config
 	'Adm'	=> [
 			
 	],
-	'Home' =>
-		['/','/Session/~','/User/~'],		
-
-	'Views' => [
+	
+	'View' => [			
+		'Home' =>
+			['/','/Session/~','/User/~'],
+			
 		'Admin'	=>[
 				'attrList' => [
 						CstView::V_S_REF		=> ['id'],

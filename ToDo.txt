@@ -2,7 +2,6 @@ CMD
 /*check code
 phpcs --standard=PSR2 --report=summary  Src 
 phpcbf --standard=PSR2 --no-patch  Src  
-
 phpcbf --standard=PSR2 --no-patch  Tests  
 
 /* install phpdocumentor
@@ -24,7 +23,7 @@ B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
-B19 cststp not set in admin class
+
 B21 default values in session log in 
 
 B22
@@ -42,7 +41,7 @@ DEV
 
 - combine temp/evalp reference. 
 
-- move Access apck control to handle
+- move Access pack control to handle
 - create Ctr Pack
 
 - order in list query and attr.
@@ -83,6 +82,7 @@ APP
 	- code postal / 3
 
 INT
+- migrate to 7 and upgrade phpunit etc.  
 - integrate with drupal ?
 - integrate MongoDB
 - integrate Redhiss
@@ -91,6 +91,9 @@ INT
 - set up jenkin
 
 DONE
+------------//2
+initialize classes for view and Mod
+B19 cststp not set in admin class
 -----------// 1
 Hdl/Mod packages
 clean up perf test

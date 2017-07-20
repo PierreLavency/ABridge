@@ -411,12 +411,28 @@ a:8:{i:0;s:186:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:6;s:6:"5
+ </html>";i:6;s:95:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ 5
  aa
-";i:7;s:55:"<a href="/ABridge.php/test/1" >5
+
+ </body> 
+ </html>";i:7;s:144:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ <a href="/ABridge.php/test/1" >5
  aa
 </a>
 
 2016-12-08
 
-";}
+
+ </body> 
+ </html>";}

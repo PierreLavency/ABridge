@@ -4,7 +4,6 @@ use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\Mod\Mtype;
 
-
 function GenJasonCasesData($id, $B, $D)
 {
     for ($i=1; $i<$B; $i++) {

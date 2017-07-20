@@ -16,10 +16,9 @@ class Config
 		'CodeValue'  => ['dataBase'],
 		'Code' 		 => ['dataBase'],		
 		],
-	'Home' =>
-		['/',],
-		
-	'Views' => [
+	
+	'View' => [
+		'Home' => ['/',],
 		'User' =>[
 		
 				'attrList' => [

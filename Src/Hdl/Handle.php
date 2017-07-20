@@ -113,9 +113,23 @@ class Handle
         }
     }
  
-    public function getSessionHdl()
+    public function getNewHdl($path)
     {
-        return $this->sessionHdl;
+        $res = new Handle($path, $this->sessionHdl);
+        return $res;
+    }
+    
+    public function getSelPath($classL)
+    {
+        if ($this->sessionHdl) {
+            $selmenu = $this->sessionHdl->getSelMenu($classL);
+        } else {
+            $selmenu = [];
+            foreach ($classL as $classElm) {
+                $selmenu[]='/'.$classElm;
+            }
+        }
+        return $selmenu;
     }
     
     public function nullObj()

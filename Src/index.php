@@ -21,10 +21,10 @@ if (isset($conf['name'])) {
 
 if ($application == 'UnitTest') {
     $ctrl = new ABridge\ABridge\Controler($conf);
-//require_once("Src/View/Tests/GenHTML_init.php");  
+//require_once("Tests/View/GenHTML_init.php");  
 //require_once("Tests/GenJASON_init.php");  
-//require_once("Src/View/Tests/View_init.php");     
-//require_once("Src/View/Tests/View_init_Xref.php"); 
+//require_once("Tests/View/View_init.php");     
+//require_once("Tests/View/View_init_Xref.php"); 
     return;
 }
 
