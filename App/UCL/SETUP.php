@@ -34,8 +34,8 @@ class Config
 		'Page'		  	=> ['dataBase',self::DBDEC],	
 		'Admin'		  	=> ['dataBase',self::DBDEC],	
 		],
-	'Usr' => [
-			
+	'Hdl' 	=> [
+			'Usr'   => [],
 	],
 	'Adm'	=> [
 			
@@ -43,7 +43,7 @@ class Config
 	
 	'View' => [			
 		'Home' =>
-			['/','/Session/~','/User/~'],
+			['/','/Session/~','/Admin/1','/User/~'],
 			
 		'Admin'	=>[
 				'attrList' => [

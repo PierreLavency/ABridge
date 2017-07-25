@@ -12,7 +12,9 @@ class Config
 	'Adm' => [
 			
 	],
-			
+	'Hdl' 	=> [
+
+	],
 	'View' => [
 		'Home' => [
 				'/',"/".self::Admin."/1",

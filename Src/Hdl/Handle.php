@@ -324,7 +324,11 @@ class Handle
     }
      
 // obj  : access should be controlled here 
-
+ 
+    public function isNew()
+    {
+        return $this->obj->isNew();
+    }
     
     public function checkVers($vnum)
     {

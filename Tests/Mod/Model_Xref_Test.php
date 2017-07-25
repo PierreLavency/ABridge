@@ -205,7 +205,8 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($res);
 
         $res = $codeval->getRef('ValueOf');
-        $this->assertEquals($res, $code);
+        $this->assertEquals($res->getId(), $code->getId());
+        $this->assertEquals($res->getModName(), $code->getModName());
         
         $res = $codeval->getModRef('ValueOf');
         $this->assertEquals($res, $this->Code);

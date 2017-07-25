@@ -25,12 +25,9 @@ class Adm
             $obj->setVal('Application', $app);
             $obj->setVal('Init', true);
             $obj->save();
-            self::$isNew=true;
+        } else {
+            $obj = new Model($mod, $res[0]);
         }
-    }
-    
-    public static function isNew()
-    {
-        return self::$isNew;
+        return [$obj->isNew(),$obj];
     }
 }

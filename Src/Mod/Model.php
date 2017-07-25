@@ -66,6 +66,7 @@ class Model
     protected $inhObj;
     protected $inhNme;
     protected $vnum;
+    protected $isNew;
     
     protected $meta = [];
 
@@ -157,6 +158,7 @@ class Model
         $this->name=$name;
         $this->initattr();
         $this->id=$id;
+        $this->isNew = false;
         $logname = $name.'errLog';
         $this->errLog= new Logger($logname);
         $this->obj=null;
@@ -263,6 +265,11 @@ class Model
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function isNew()
+    {
+        return $this->isNew;
     }
     
     public function getVnum()
@@ -1639,6 +1646,9 @@ class Model
             $res= $this->saveN();
         }
         if ($res) {
+            if (! $this->getId()) {
+                $this->isNew=true;
+            }
             $this->id=$res;
             $this->vnum++;
         }
@@ -1775,6 +1785,8 @@ class Model
         }
         if ($res) {
             $this->id=0;
+            $this->vnum=0;
+            $this->isNew=false;
         }
         return $res;
     }
@@ -1794,6 +1806,7 @@ class Model
         $this->initattr();
         $this->id=0;
         $this->vnum=0;
+        $this->isNew=false;
         return $res;
     }
     /**

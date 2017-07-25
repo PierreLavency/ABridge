@@ -24,7 +24,9 @@ class Usr
                     self::DISTRIBUTION  => ['dataBase',],
                     self::SESSION       => ['dataBase',],
             ],
-            'Usr'   => [self::SESSION=>'BKey'],
+            'Hdl'   => [
+                    'Usr'   => [self::SESSION=>'BKey'],
+            ],
             'View' => [
                     self::USER =>[
                             'lblList' => [

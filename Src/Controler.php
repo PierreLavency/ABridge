@@ -9,6 +9,7 @@ use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Handler;
 use ABridge\ABridge\Mod\Mtype;
 
+use ABridge\ABridge\Hdl\Hdl;
 use ABridge\ABridge\Hdl\Handle;
 use ABridge\ABridge\Hdl\CstMode;
 
@@ -16,7 +17,8 @@ use ABridge\ABridge\Adm\Adm;
 
 use ABridge\ABridge\View\View;
 
-use ABridge\ABridge\Usr\Usr;
+//use ABridge\ABridge\Usr\Usr;
+
 
 use ABridge\ABridge\GenJASON;
 
@@ -54,8 +56,12 @@ class Controler
         $bases = [];
         
         Handler::get()->resetHandlers();
-        
+
         $this->initConf($spec);
+        
+        if (! isset($this->spec['Hdl'])) {
+            $this->spec['Hdl']=[];
+        }
         
         $this->bases = Handler::get()->getBaseClasses();
     }
@@ -66,6 +72,14 @@ class Controler
             $config=$spec['Handlers'];
             Mod::init($this->appName, $config);
         }
+        if (isset($spec['Apps'])) {
+            $specv = $spec['Apps'];
+            foreach ($specv as $name) {
+                $className = 'ABridge\ABridge\Apps\\'.$name;
+                $spece=$className::$config;
+                $this->initConf($spece);
+            }
+        }
         if (isset($spec['View'])) {
             $specv = $spec['View'];
             View::init($this->appName, $specv);
@@ -75,18 +89,10 @@ class Controler
             Adm::init($this->appName, $config);
             $this->spec['Adm']=$config;
         }
-        if (isset($spec['Usr'])) {
-            $config=$spec['Usr'];
-            Usr::init($this->appName, $config);
-            $this->spec['Usr']=$config;
-        }
-        if (isset($spec['Apps'])) {
-            $specv = $spec['Apps'];
-            foreach ($specv as $name) {
-                $className = 'ABridge\ABridge\Apps\\'.$name;
-                $spece=$className::$config;
-                $this->initConf($spece);
-            }
+        if (isset($spec['Hdl'])) {
+            $config=$spec['Hdl'];
+            Hdl::init($this->appName, $config);
+            $this->spec['Hdl']=$config;
         }
     }
     
@@ -261,28 +267,24 @@ class Controler
     public function run($show, $logLevel)
     {
         $this->beginTrans();
+        
+        $frccommit=false;
               
         if (isset($this->spec['Adm'])) {
-            Adm::begin($this->appName, $this->spec['Adm']);
-            if (Adm::isNew()) {
-                $this->commit();
-                $this->beginTrans();
+            $adm=Adm::begin($this->appName, $this->spec['Adm']);
+            if ($adm[0]) {
+                $frccommit=true;
             }
         }
-        
-        if (isset($this->spec['Usr'])) {
-            $sessionHdl= Usr::begin($this->appName, ['ABridge\ABridge\Usr\Session']);
-            if ($sessionHdl->isNew()) {
-                $this->commit();
-                $this->beginTrans();
-                $this->handle = new Handle('/Session/~', CstMode::V_S_UPDT, $sessionHdl);
-            } else {
-                $this->handle = new Handle($sessionHdl);
+ 
+        if (isset($this->spec['Hdl'])) {
+            $hres= Hdl::begin($this->appName, $this->spec['Hdl']);
+            if ($hres[0]) {
+                $frccommit=true;
             }
+            $this->handle=$hres[1];
         } else {
-            $this->handle = new Handle(null);
         }
-
 
         $this->setLogLevl($logLevel);
         $this->logUrl();
@@ -293,11 +295,16 @@ class Controler
             $this->showLog();
             return $this->handle;
         }
+        
         if ($this->handle->nullobj()) {
             $this->showView($show);
             $this->showLog();
+            if ($frccommit) {
+                $this->commit();
+            }
             return $this->handle;
         }
+        
         $action = $this->handle->getAction();
         $actionExec = false;
         if ($method =='POST') {
@@ -322,6 +329,7 @@ class Controler
             }
             if (!$this->handle->isErr()) {
                 $res=$this->commit();
+                $frccommit=false;
                 if ($res) {
                     $actionExec=true;
                 }
@@ -337,6 +345,11 @@ class Controler
                 $this->handle->setAction(CstMode::V_S_READ);
             }
         }
+        
+        if ($frccommit) {
+            $this->commit();
+        }
+        
         $this->showView($show);
         $this->showLog();
         return $this->handle;

@@ -58,9 +58,4 @@ class Usr
         }
         return $sessionHdl;
     }
-    
-    public static function isNew()
-    {
-        return self::$isNew;
-    }
 }
