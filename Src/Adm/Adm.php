@@ -13,6 +13,11 @@ class Adm
     {
         $mod = 'Admin';
         handler::get()->setCmod($mod, 'ABridge\ABridge\Adm\Admin');
+    }
+    
+    public static function begin($app, $prm)
+    {
+        $mod = 'Admin';
         $obj = new Model($mod);
         $obj->setCriteria([], [], []);
         $res = $obj->select();

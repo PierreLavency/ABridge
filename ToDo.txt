@@ -1,21 +1,6 @@
 CMD
-/*check code
-phpcs --standard=PSR2 --report=summary  Src 
-phpcbf --standard=PSR2 --no-patch  Src  
-phpcbf --standard=PSR2 --no-patch  Tests  
-
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-
-/* dependency 
-pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg Src
-pdepend --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg Src
-
-/* run test suite with coverage
-phpunit --coverage-html Testcoverage
-
-/* run with profiling
-php -d xdebug.profiler_enable=1  -d xdebug.profiler_output_dir=./tmp tests/Controler_Perf.php
 
 BUGS
 
@@ -23,7 +8,6 @@ B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
-
 B21 default values in session log in 
 
 B22
@@ -31,7 +15,7 @@ B22
 DEV
 
 - improve LC support (test/ dev Data Base etc.)
-- remove default db name  (?)
+- change default db name management (?)
 - review logging 
 - handle user preference.
 - increase autorisations rule capability
@@ -39,6 +23,7 @@ DEV
 	- views and parameters
 - clean up picture path
 
+- review property management in Model
 - combine temp/evalp reference. 
 
 - move Access pack control to handle
@@ -86,11 +71,15 @@ INT
 - integrate with drupal ?
 - integrate MongoDB
 - integrate Redhiss
+- start up python
 - set up bug tracking
 - set up a git server
 - set up jenkin
 
 DONE
+------------//2
+reusable apps
+check script
 ------------//2
 initialize classes for view and Mod
 B19 cststp not set in admin class

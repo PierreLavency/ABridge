@@ -44,31 +44,54 @@ class Controler
  
     public function construct1($ini)
     {
-        $this->init($ini);
+        $this->initPrm($ini);
     }
  
     public function construct2($spec, $ini)
     {
-        $this->init($ini);
+        $this->initPrm($ini);
         $this->spec=$spec;
         $bases = [];
         
         Handler::get()->resetHandlers();
         
-        if (isset($spec['Handlers'])) {
-            $config=$spec['Handlers'];
-            Mod::init($this->appName, $config);
-        }
- 
-        if (isset($spec['View'])) {
-            $specv = $spec['View'];
-            View::init($specv);
-        }
+        $this->initConf($spec);
         
         $this->bases = Handler::get()->getBaseClasses();
     }
  
-    private function init($ini)
+    protected function initConf($spec)
+    {
+        if (isset($spec['Handlers'])) {
+            $config=$spec['Handlers'];
+            Mod::init($this->appName, $config);
+        }
+        if (isset($spec['View'])) {
+            $specv = $spec['View'];
+            View::init($this->appName, $specv);
+        }
+        if (isset($spec['Adm'])) {
+            $config=$spec['Adm'];
+            Adm::init($this->appName, $config);
+            $this->spec['Adm']=$config;
+        }
+        if (isset($spec['Usr'])) {
+            $config=$spec['Usr'];
+            Usr::init($this->appName, $config);
+            $this->spec['Usr']=$config;
+        }
+        if (isset($spec['Apps'])) {
+            $specv = $spec['Apps'];
+            foreach ($specv as $name) {
+                $className = 'ABridge\ABridge\Apps\\'.$name;
+                $spece=$className::$config;
+                $this->initConf($spece);
+            }
+        }
+    }
+    
+   
+    private function initPrm($ini)
     {
         $fpath= 'C:/Users/pierr/ABridge/Datastore/';
         if (isset($ini['path'])) {
@@ -240,7 +263,7 @@ class Controler
         $this->beginTrans();
               
         if (isset($this->spec['Adm'])) {
-            Adm::init($this->appName, $this->spec['Adm']);
+            Adm::begin($this->appName, $this->spec['Adm']);
             if (Adm::isNew()) {
                 $this->commit();
                 $this->beginTrans();
@@ -248,7 +271,7 @@ class Controler
         }
         
         if (isset($this->spec['Usr'])) {
-            $sessionHdl= Usr::init($this->appName, ['ABridge\ABridge\Usr\Session']);
+            $sessionHdl= Usr::begin($this->appName, ['ABridge\ABridge\Usr\Session']);
             if ($sessionHdl->isNew()) {
                 $this->commit();
                 $this->beginTrans();

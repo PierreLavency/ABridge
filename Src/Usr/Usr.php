@@ -17,15 +17,20 @@ class Usr
     protected $changed = false;
     protected $cookieName;
     protected $session;
-    
+
     public static function init($name, $prm)
     {
-        $className=$prm[0];
-        $id=0;
+
         handler::get()->setCmod('Session', 'ABridge\ABridge\Usr\Session');
         handler::get()->setCmod('User', 'ABridge\ABridge\Usr\User');
         handler::get()->setCmod('Role', 'ABridge\ABridge\Usr\Role');
         handler::get()->setCmod('Distribution', 'ABridge\ABridge\Usr\Distribution');
+    }
+    
+    public static function begin($name, $prm)
+    {
+        $className=$prm[0];
+        $id=0;
         
         if (self::$cleanUp) {
             if (isset($_COOKIE[$name])) {

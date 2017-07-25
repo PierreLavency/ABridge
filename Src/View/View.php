@@ -85,7 +85,7 @@ class View
     protected $attrLbl = [];
 
     
-    public static function init($specv)
+    public static function init($app, $specv)
     {
         foreach ($specv as $mod => $specm) {
             if ($specm != 'Home' and $specm !='MenuExcl') {

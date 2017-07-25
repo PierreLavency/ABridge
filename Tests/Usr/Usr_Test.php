@@ -40,7 +40,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
         
-            $cobj = Usr::init($bd['Session'], [$bd['Session']]);
+            $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
             $session = $cobj->getMod();
 
             $this->assertTrue($cobj->isNew());
@@ -64,7 +64,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             $x =  new Model($bd['Session'], 1);
             $_COOKIE[$bd['Session']]= $x->getVal('BKey');
             
-            $cobj = Usr::init($bd['Session'], [$bd['Session']]);
+            $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
             $session = $cobj->getMod();
 
             $this->assertFalse($cobj->isNew());
@@ -89,7 +89,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             $x->delet();
             
              
-            $cobj = Usr::init($bd['Session'], [$bd['Session']]);
+            $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
             $session = $cobj->getMod();
 
             $this->assertTrue(Usr::isNew());
@@ -116,7 +116,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             Usr::$cleanUp=true;
             
             
-            $cobj = Usr::init($bd['Session'], [$bd['Session']]);
+            $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
             $session = $cobj->getMod();
             
             $this->assertTrue(Usr::isNew());

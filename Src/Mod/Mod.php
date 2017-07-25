@@ -12,20 +12,15 @@ class Mod
         foreach ($config as $classN => $handler) {
             $c = count($handler);
             switch ($c) {
-                case 0:
-                    break;
                 case 1:
                     $handler[]=$app;
                     // default
                 case 2:
                     Handler::get()->setStateHandler($classN, $handler[0], $handler[1]);
                     break;
+                default:
+                    throw new Exception(CstError::E_ERC063);
             }
         }
-    }
-    
-    public static function isNew()
-    {
-        return self::$isNew;
     }
 }

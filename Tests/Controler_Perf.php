@@ -3,7 +3,7 @@
 use ABridge\ABridge\Controler;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
-use ABridge\ABridge\CstMode;
+use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstView;
 
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
