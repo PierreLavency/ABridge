@@ -20,7 +20,12 @@ class Handle_Test extends PHPUnit_Framework_TestCase
     
     public static function setUpBeforeClass()
     {
-    
+    	$prm=[
+    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
+    			'host'=>'localhost',
+    			'user'=>'cl822',
+    			'pass'=>'cl822'
+    	];
         Handler::get()->resetHandlers();
     
         $typ='dataBase';
@@ -28,7 +33,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $CUser=get_called_class().'_2';
         $CCode=get_called_class().'_3';
         $name = 'test';
-        self::$db1= Handler::get()->getBase($typ, $name);
+        self::$db1= Handler::get()->setBase($typ, $name,$prm);
         Handler::get()->setStateHandler($CName, $typ, $name);
         Handler::get()->setStateHandler($CUser, $typ, $name);
         Handler::get()->setStateHandler($CCode, $typ, $name);
@@ -39,7 +44,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $CUser=get_called_class().'_f_2';
         $CCode=get_called_class().'_f_3';
         
-        self::$db2= Handler::get()->getBase($typ, $name);
+        self::$db2= Handler::get()->setBase($typ, $name,$prm);
         Handler::get()->setStateHandler($CName, $typ, $name);
         Handler::get()->setStateHandler($CUser, $typ, $name);
         Handler::get()->setStateHandler($CCode, $typ, $name);

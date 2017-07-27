@@ -20,7 +20,8 @@ if (isset($conf['name'])) {
 
 
 if ($application == 'UnitTest') {
-    $ctrl = new ABridge\ABridge\Controler($conf);
+//	var_dump($conf);
+    $ctrl = new Controler($conf);
 //require_once("Tests/View/GenHTML_init.php");  
 //require_once("Tests/GenJASON_init.php");  
 //require_once("Tests/View/View_init.php");     
@@ -34,7 +35,7 @@ if ($application == 'UnitTest') {
     $path = "App/".$application .'/';
     require_once $path.'SETUP.php' ;
 
-    $ctrl = new ABridge\ABridge\Controler(Config::$config, $conf);
+    $ctrl = new Controler(Config::$config, $conf);
 
 if (isset($init)) {
     $ctrl->beginTrans();

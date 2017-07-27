@@ -2,8 +2,7 @@
 namespace ABridge\ABridge;
 
 use ABridge\ABridge\Logger;
-use ABridge\ABridge\Mod\Base;
-use ABridge\ABridge\Mod\SQLBase;
+//use ABridge\ABridge\Mod\Base;
 use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Handler;
@@ -17,7 +16,6 @@ use ABridge\ABridge\Adm\Adm;
 
 use ABridge\ABridge\View\View;
 
-//use ABridge\ABridge\Usr\Usr;
 
 
 use ABridge\ABridge\GenJASON;
@@ -32,8 +30,8 @@ class Controler
     protected $valL = [];
     protected $opL = [];
     protected $logLevel = 0;
-    protected $sessionMgr = null;
     protected $appName ;
+    protected $defVal=[];
      
     public function __construct()
     {
@@ -51,6 +49,10 @@ class Controler
  
     public function construct2($spec, $ini)
     {
+        if (isset($spec['Default'])) {
+            $this->defVal=$spec['Default'];
+        }
+        
         $this->initPrm($ini);
         $this->spec=$spec;
         $bases = [];
@@ -70,7 +72,7 @@ class Controler
     {
         if (isset($spec['Handlers'])) {
             $config=$spec['Handlers'];
-            Mod::init($this->appName, $config);
+            Mod::init($this->defVal, $config);
         }
         if (isset($spec['Apps'])) {
             $specv = $spec['Apps'];
@@ -96,32 +98,59 @@ class Controler
         }
     }
     
-   
     private function initPrm($ini)
     {
-        $fpath= 'C:/Users/pierr/ABridge/Datastore/';
-        if (isset($ini['path'])) {
-            $fpath= $ini['path'];
-        }
-        Logger::setPath($fpath);
-        Base::setPath($fpath);
-        $host = 'localhost';
-        if (isset($ini['host'])) {
-            $host= $ini['host'];
-        }
-        $usr = 'cl822';
-        if (isset($ini['user'])) {
-            $usr= $ini['user'];
-        }
-        $psw = 'cl822';
-        if (isset($ini['pass'])) {
-            $psw= $ini['pass'];
-        }
-        SQLBase::setDB($host, $usr, $psw);
         $appName = $ini['name'];
         $this->appName = $appName;
+        $this->defVal['name']=$appName;
+        
+        if (isset($ini['path'])) {
+            $this->defVal['path']= $ini['path'];
+        }
+        if (!isset($this->defVal['path'])) {
+            $this->defVal['path']='C:/Users/pierr/ABridge/Datastore/';
+        }
+
+        if (isset($ini['dbnm'])) {
+            $this->defVal['dbnm']=$ini['dbnm'];
+        }
+        if (!isset($this->defVal['dbnm'])) {
+            $this->defVal['dbnm']=$appName;
+        }
+ 
+        if (isset($ini['flnm'])) {
+            $this->defVal['flnm']=$ini['flnm'];
+        }
+        if (!isset($this->defVal['flnm'])) {
+            $this->defVal['flnm']=$appName;
+        }
+        
+        if (isset($ini['host'])) {
+            $this->defVal['host']= $ini['host'];
+        }
+        if (!isset($this->defVal['host'])) {
+            $this->defVal['host']='localhost';
+        }
+        
+        if (isset($ini['user'])) {
+            $this->defVal['user']=$ini['user'];
+        }
+        if (!isset($this->defVal['user'])) {
+            $this->defVal['user']=$appName;
+        }
+                
+        if (isset($ini['pass'])) {
+            $this->defVal['pass']= $ini['pass'];
+        }
+        if (!isset($this->defVal['pass'])) {
+            $this->defVal['pass']=$this->defVal['user'];
+        }
+        
+        Logger::setPath($this->defVal['path']);
     }
  
+    
+    
     public function beginTrans()
     {
         foreach ($this->bases as $base) {

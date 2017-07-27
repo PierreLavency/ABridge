@@ -3,27 +3,29 @@ namespace ABridge\ABridge\Mod;
 
 use Exception;
 use ABridge\ABridge\Logger;
+use ABridge\ABridge\CstError;
 
 abstract class Base
 {
-    protected static $filePath ="";
+    protected $filePath;
     protected $objects=[];
     protected $fileN;
     protected $fileName;
     protected $logLevl;
     protected $logger;
     protected $connected;
-     
-    protected function __construct($id)
+
+    protected function __construct($path, $id)
     {
-        $this->fileN = self::$filePath . $id;
+        $this->filePath=$path;
+        $this->fileN = $path . $id;
         $this->fileName = $this->fileN.'.txt';
         $this->logLevl=0;
         $this->logger=null;
         $this->connected=true;
         $this->load();
     }
-
+    
     protected function erase()
     {
         if (file_exists($this->fileName)) {
@@ -32,7 +34,7 @@ abstract class Base
         $this->objects = [];
         return true;
     }
-    
+/*    
     public static function setPath($path)
     {
         self::$filePath =$path;
@@ -44,10 +46,10 @@ abstract class Base
     {
         return self::$filePath;
     }
-    
-    protected static function existsBase($id)
+*/
+    protected static function existsBase($path, $id)
     {
-        $f = self::$filePath . $id.'.txt';
+        $f = $path . $id.'.txt';
         return file_exists($f);
     }
     
@@ -60,7 +62,7 @@ abstract class Base
     public function close()
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         $this->connected = false;
         return true;
@@ -85,7 +87,7 @@ abstract class Base
     public function beginTrans()
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         $this->_transOpen=true;
         return true;
@@ -94,7 +96,7 @@ abstract class Base
     public function commit()
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         $file = serialize($this->objects);
         $r=file_put_contents($this->fileName, $file, FILE_USE_INCLUDE_PATH);
@@ -104,7 +106,7 @@ abstract class Base
     public function rollback()
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         $this->load();
         return true;
@@ -113,7 +115,7 @@ abstract class Base
     public function existsMod($model)
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         return(array_key_exists($model, $this->objects));
     }
@@ -139,7 +141,7 @@ abstract class Base
     public function getAllMod()
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         return array_keys($this->objects);
     }
@@ -205,7 +207,7 @@ abstract class Base
  
     abstract protected function remove();
 
-    abstract protected static function exists($name);
+    abstract protected static function exists($path, $name);
 
     abstract protected function putMod($model, $meta, $addList, $delList);
     

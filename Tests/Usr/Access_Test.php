@@ -49,10 +49,16 @@ class Access_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
+    	$prm=[
+    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
+    			'host'=>'localhost',
+    			'user'=>'cl822',
+    			'pass'=>'cl822'
+    	];
         $name = 'test';
         $classes = ['Session','User','Role','Distribution'];
         $bsname = get_called_class();
-        $bases = UtilsC::initHandlers($name, $classes, $bsname);
+        $bases = UtilsC::initHandlers($name, $classes, $bsname, $prm);
         $res = UtilsC::initClasses($bases);
         $this->assertTrue($res);
         return $bases;

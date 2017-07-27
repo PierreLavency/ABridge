@@ -21,10 +21,16 @@ class Usr_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
+    	$prm=[
+    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
+    			'host'=>'localhost',
+    			'user'=>'cl822',
+    			'pass'=>'cl822'
+    	];
         $name = 'test';
         $classes = ['Session'];
         $bsname = get_called_class();
-        $bases= UtilsC::initHandlers($name, $classes, $bsname);
+        $bases= UtilsC::initHandlers($name, $classes, $bsname, $prm);
         $res = UtilsC::initClasses($bases);
         $this->assertTrue($res);
         
@@ -44,7 +50,6 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             $session = $cobj->getMod();
 
             $this->assertTrue($cobj->isNew());
-//            $this->assertTrue(Usr::isNew());
             $this->assertEquals(1, $session->getId());
      
             $db->commit();
@@ -68,7 +73,6 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             $session = $cobj->getMod();
 
             $this->assertFalse($cobj->isNew());
-//            $this->assertFalse(Usr::isNew());
      
             $db->commit();
         }
@@ -92,7 +96,6 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
             $session = $cobj->getMod();
 
- //           $this->assertTrue(Usr::isNew());
             $this->assertTrue($cobj->isNew());
             $this->assertEquals(2, $session->getId());
             
@@ -119,7 +122,6 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
             $session = $cobj->getMod();
             
- //           $this->assertTrue(Usr::isNew());
             $this->assertTrue($cobj->isNew());
             $this->assertEquals(3, $session->getId());
             

@@ -13,12 +13,12 @@ B21 default values in session log in
 B22
 
 DEV
-
+- implement memBase
 - improve LC support (test/ dev Data Base etc.)
-- change default db name management (?)
 - review logging 
 - handle user preference.
 - increase autorisations rule capability
+	- add user group class 
 	- NxN relationship
 	- views and parameters
 - clean up picture path
@@ -26,7 +26,7 @@ DEV
 - review property management in Model
 - combine temp/evalp reference. 
 
-
+- abstract pack interface
 - create Ctr Pack
 
 - order in list query and attr.
@@ -76,6 +76,9 @@ INT
 - set up jenkin
 
 DONE
+-------------//2
+- change default db name management
+- remove most of statics and some race condition in tests (B9)
 -------------//1
 - move Usr inside to Hdl
 - check script

@@ -24,8 +24,13 @@ $log=new UnitTest($logName, 1);
 
 $show = false;
 $test = viewCasesXref();
-
-$db = handler::get()->getBase('dataBase', 'test');
+$prm=[
+		'path'=>'C:/Users/pierr/ABridge/Datastore/',
+		'host'=>'localhost',
+		'user'=>'cl822',
+		'pass'=>'cl822'
+];
+$db = handler::get()->setBase('dataBase', 'test', $prm);
 handler::get()->setStateHandler('dir', 'dataBase', 'test');
 
 $db->beginTrans();

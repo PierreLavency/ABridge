@@ -6,13 +6,13 @@ use ABridge\ABridge\Mod\Model;
 class UtilsC
 {
    
-    public static function initHandlers($name, $classes, $bsname)
+    public static function initHandlers($name, $classes, $bsname, $prm)
     {
         $typs = ['dataBase','fileBase'];
         $bases = [];
         Handler::get()->resetHandlers();
         foreach ($typs as $typ) {
-            $db = Handler::get()->getBase($typ, $name);
+            $db = Handler::get()->setBase($typ, $name, $prm);
             $i=1;
             $bindings=[];
             foreach ($classes as $cname) {

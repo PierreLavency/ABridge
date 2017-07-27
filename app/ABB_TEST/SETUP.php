@@ -34,7 +34,16 @@ class Config
 
 
 	static $config = [
-	'Apps'	=>['Usr','Adm'],
+			
+	'Default'	=> [
+			'dbnm'=>self::DBDEC,
+	],
+			
+	'Apps'	=>[
+			'Usr',
+			'Adm',
+			
+	],
 			
 	'Handlers' =>
 		[
@@ -50,12 +59,12 @@ class Config
 		self::AStyle 	 =>		['dataBase',self::DBDEC],
 		self::SControl 	 => 	['dataBase',self::DBDEC],
 		self::ACode	 	 => 	['dataBase',self::DBDEC],
-		self::User	 	 => 	['dataBase',self::DBDEC],
+//		self::User	 	 => 	['dataBase',self::DBDEC],
 		self::Group		 => 	['dataBase',self::DBDEC],		
-		self::Role	 	 => 	['dataBase',self::DBDEC],
-		self::Distribution=> 	['dataBase',self::DBDEC],
-		self::Session	 => 	['dataBase',self::DBDEC],
-		self::Adm	     => 	['dataBase',self::DBDEC],
+//		self::Role	 	 => 	['dataBase',self::DBDEC],
+//		self::Distribution=> 	['dataBase',self::DBDEC],
+//		self::Session	 => 	['dataBase',self::DBDEC],
+//		self::Adm	     => 	['dataBase',self::DBDEC],
 		],
 
 				

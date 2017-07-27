@@ -120,7 +120,12 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     public function testRootErr($path)
     {
-        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
+        $ctrl = new Controler(
+            $this->config,
+            ['name'=>'UnitTest',
+                 'user'=>'cl822',
+                'pass'=>'cl822']
+        );
 
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$path;
@@ -141,7 +146,11 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     public function testSelect()
     {
-        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
+        $ctrl = new Controler($this->config, [
+                'name'=>'UnitTest',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ]);
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']='/'.$this->CName;
@@ -172,7 +181,11 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     private function newSon($path)
     {
-        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
+        $ctrl = new Controler($this->config, [
+                'name'=>'UnitTest',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ]);
         $fpath = $path.'/Cref';
 
         $_SERVER['REQUEST_METHOD']='GET';
@@ -196,7 +209,11 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     public function testUpdSon($path)
     {
-        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
+        $ctrl = new Controler($this->config, [
+                'name'=>'UnitTest',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ]);
 
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
@@ -248,7 +265,11 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     private function delSon($path)
     {
-        $ctrl = new Controler($this->config, ['name'=>'UnitTest']);
+        $ctrl = new Controler($this->config, [
+                'name'=>'UnitTest',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ]);
         
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;

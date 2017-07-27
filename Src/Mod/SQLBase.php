@@ -11,22 +11,31 @@ use Mysqli;
 
 class SQLBase extends Base
 {
-
+/*
+    protected static $filepath;
     protected static $servername;
     protected static $username;
     protected static $password;
+    */
+    protected $server;
+    protected $usr;
+    protected $psw;
     protected $dbname;
     protected $mysqli;
-    
-    public function __construct($dbname)
+
+    public function __construct($path, $server, $usr, $psw, $dbname)
     {
         $this->dbname =$dbname;
+        $this->server= $server;
+        $this->usr=$usr;
+        $this->psw=$psw;
         $this->connect();
-        parent::__construct('sqlBase/'.$dbname);
+        parent::__construct($path, 'sqlBase/'.$dbname);
     }
-
-    public static function setDB($server, $usr, $psw)
+ /*
+    public static function setDB($filepath, $server, $usr, $psw)
     {
+        self::$filepath=$filepath;
         self::$servername=$server;
         self::$username=$usr;
         self::$password=$psw;
@@ -36,20 +45,21 @@ class SQLBase extends Base
     public static function getDB()
     {
         $res=[];
+        $res[]=self::$filepath;
         $res[]=self::$servername;
         $res[]=self::$username;
         $res[]=self::$password;
         return $res;
     }
-    
+*/
     
     public function connect()
     {
         try {
             $this->mysqli = new mysqli(
-                self::$servername,
-                self::$username,
-                self::$password
+                $this->server,
+                $this->usr,
+                $this->psw
             );
         } catch (Exception $e) {
             throw
@@ -87,9 +97,9 @@ class SQLBase extends Base
         return $this->close();
     }
 
-    public static function exists($id)
+    public static function exists($path, $id)
     {
-        return parent::existsBase('sqlBase\\'.$id);
+        return parent::existsBase($path, 'sqlBase\\'.$id);
     }
     
     public function beginTrans()

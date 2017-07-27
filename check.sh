@@ -24,7 +24,7 @@ then
 	echo "pchpcbf"
 	phpcbf --standard=PSR2 --no-patch  Src
 	echo "phpcs"
-	phpcs --standard=PSR2 --report=summary  Src
+	phpcs -p --standard=PSR2 --report=summary  Src
 	echo "phpunit"
 	phpunit --coverage-html Testcoverage
 exit
@@ -37,7 +37,7 @@ phpcbf --standard=PSR2 --no-patch  Tests
 echo "pdepend"
 pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg Src
 echo "phpcs"
-phpcs --standard=PSR2 --report=summary  Src
+phpcs -p --standard=PSR2 --report=summary  Src
 echo "phpunit"
 phpunit --coverage-html Testcoverage
 echo "performance"

@@ -17,19 +17,24 @@ class Model_Slc_Test extends PHPUnit_Framework_TestCase
     
     public static function setUpBeforeClass()
     {
-    
+    	$prm=[
+    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
+    			'host'=>'localhost',
+    			'user'=>'cl822',
+    			'pass'=>'cl822'
+    	];
         Handler::get()->resetHandlers();
         $typ='dataBase';
         $name='test';
         $Student=get_called_class().'_1';
         
-        self::$db1=Handler::get()->getBase($typ, $name);
+        self::$db1=Handler::get()->setBase($typ, $name,$prm);
 
         Handler::get()->setStateHandler($Student, $typ, $name);
         $Student=get_called_class().'_f_1';
         $typ='fileBase';
         
-        self::$db2=Handler::get()->getBase($typ, $name);
+        self::$db2=Handler::get()->setBase($typ, $name,$prm);
 
         Handler::get()->setStateHandler($Student, $typ, $name);
     }

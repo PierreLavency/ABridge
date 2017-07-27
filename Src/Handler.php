@@ -15,9 +15,17 @@ class Handler
     private static $instance = null;
     private $filePath;
     private $bases = []; //'fileBase'=> [name => class],
-    private $basesClasses =['fileBase'=>'ABridge\ABridge\Mod\FileBase','dataBase'=>'ABridge\ABridge\Mod\SQLBase'];
+    private $basesClasses =[
+            'fileBase'=>'ABridge\ABridge\Mod\FileBase',
+            'dataBase'=>'ABridge\ABridge\Mod\SQLBase',
+            
+    ];
     private $modHandler= [];
-    private $modBase =['fileBase' =>'ABridge\ABridge\Mod\ModBase','dataBase'=>'ABridge\ABridge\Mod\ModBase'];
+    private $modBase =[
+            'fileBase' =>'ABridge\ABridge\Mod\ModBase',
+            'dataBase'=>'ABridge\ABridge\Mod\ModBase',
+            
+    ];
 
     private $viewHandler=[]; // mod => spec
     private $cmod=[]; //mod=> Cmodclass
@@ -72,8 +80,8 @@ class Handler
         }
         return $res;
     }
-    
-    public function getBase($base, $instance)
+
+    public function setBase($base, $instance, $prm)
     {
         if (! array_key_exists($base, $this->basesClasses)) {
             return false;
@@ -86,10 +94,28 @@ class Handler
             }
         };
         $classN = $this->basesClasses[$base];
-        $x = new $classN($instance);
+        $path = $prm['path'];
+        if ($base === 'fileBase') {
+            $x = new $classN($path,$instance);
+        }
+        if ($base == 'dataBase') {
+            $x = new $classN($path, $prm['host'],$prm['user'],$prm['pass'],$instance);
+        }
         $instances[$instance]=$x;
         $this->bases[$base]=$instances;
         return $x;
+    }
+    
+    
+    public function getBase($base, $instance)
+    {
+        if (array_key_exists($base, $this->bases)) {
+            $instances=$this->bases[$base];
+            if (array_key_exists($instance, $instances)) {
+                return $instances[$instance];
+            }
+        };
+        return false;
     }
     
     public function getStateHandler($modName)

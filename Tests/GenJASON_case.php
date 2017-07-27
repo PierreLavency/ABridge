@@ -25,7 +25,13 @@ function GenJasonCasesData($id, $B, $D)
 
 function GenJasonCases()
 {
-    $db = Handler::get()->getBase('dataBase', 'test');
+	$prm=[
+			'path'=>'C:/Users/pierr/ABridge/Datastore/',
+			'host'=>'localhost',
+			'user'=>'cl822',
+			'pass'=>'cl822'
+	];
+    $db = Handler::get()->setBase('dataBase', 'test',$prm);
     $db->setLogLevl(0);
     Handler::get()->setStateHandler('TestDir', 'dataBase', 'test');
     Handler::get()->setStateHandler('TestFle', 'dataBase', 'test');

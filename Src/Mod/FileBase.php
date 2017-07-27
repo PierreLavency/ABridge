@@ -3,13 +3,14 @@ namespace ABridge\ABridge\Mod;
 
 use Exception;
 use ABridge\ABridge\Mod\Base;
+use ABridge\ABridge\CstError;
 
 class FileBase extends Base
 {
 
-    public function __construct($id)
+    public function __construct($path, $id)
     {
-        parent::__construct('fileBase/'.$id);
+        parent::__construct($path, 'fileBase/'.$id);
     }
     
     public function checkFKey($flag)
@@ -24,9 +25,9 @@ class FileBase extends Base
         return $this->close();
     }
     
-    public static function exists($id)
+    public static function exists($path, $id)
     {
-        return parent::existsBase('fileBase/'.$id);
+        return parent::existsBase($path, 'fileBase/'.$id);
     }
     
     public function putMod($model, $meta, $addList, $delList)
@@ -59,7 +60,7 @@ class FileBase extends Base
     public function newObjId($model, $values, $id)
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         if (! $this->existsMod($model)) {
             return false;
@@ -68,11 +69,11 @@ class FileBase extends Base
         if (!$id) {
             $id = $meta["lastId"];
             if (!$id) {
-                throw new Exception(E_ERC043.':'.$id);
+                throw new Exception(CstError::E_ERC043.':'.$id);
             }
         }
         if (isset($this->objects[$model][$id])) {
-            throw new Exception(E_ERC043.':'.$id);
+            throw new Exception(CstError::E_ERC043.':'.$id);
         }
         $this->objects[$model][$id] = $values;
         if ($meta["lastId"]) {
@@ -86,7 +87,7 @@ class FileBase extends Base
     public function getObj($model, $id)
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         if (! $this->existsMod($model)) {
             return false;
@@ -104,7 +105,7 @@ class FileBase extends Base
     public function putObj($model, $id, $vnum, $values)
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         if (! $this->existsMod($model)) {
             return false;
@@ -123,7 +124,7 @@ class FileBase extends Base
     public function delObj($model, $id)
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         if (! $this->existsMod($model)) {
             return false;
@@ -143,7 +144,7 @@ class FileBase extends Base
     public function findObj($model, $attr, $val)
     {
         if (! $this->isConnected()) {
-            throw new Exception(E_ERC025);
+            throw new Exception(CstError::E_ERC025);
         }
         if (! $this->existsMod($model)) {
             return false;

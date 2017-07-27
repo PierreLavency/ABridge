@@ -25,7 +25,10 @@ class Config
 	const IUse='IUse';
 	
 	static $config = [
-	'Handlers' =>
+	'Default'	=> [
+			'dbnm'=>self::DBDEC,
+	],
+	'Handlers' 	=>
 		[
 		self::ABB		 	=> ['dataBase',self::DBDEC],
 		self::Application 	=> ['dataBase',self::DBDEC],
