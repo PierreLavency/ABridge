@@ -16,12 +16,12 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-    	$prm=[
-    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
-    			'host'=>'localhost',
-    			'user'=>'cl822',
-    			'pass'=>'cl822'
-    	];
+        $prm=[
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'host'=>'localhost',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ];
         $name = 'atest';
         $classes = ['Admin'];
         $bsname = end(explode('\\', get_called_class()));

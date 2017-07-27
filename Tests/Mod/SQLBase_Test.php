@@ -17,7 +17,7 @@ class SQLBase_Test extends Base_Case
         self::$DBName= 'test';
         $fpath='C:/Users/pierr/ABridge/Datastore/';
         
-        self::$db = new SQLBase($fpath,'localhost','cl822','cl822',self::$DBName);
+        self::$db = new SQLBase($fpath, 'localhost', 'cl822', 'cl822', self::$DBName);
         
         self::$db ->delMod(self::$CName);
         self::$db ->delMod(self::$CName2);

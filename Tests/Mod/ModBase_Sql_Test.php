@@ -12,16 +12,17 @@ class ModBase_Sql_Test extends ModBase_Case
         ;
             self::$DBName= 'test';
             $prm=[
-            		'path'=>'C:/Users/pierr/ABridge/Datastore/',
-            		'host'=>'localhost',
-            		'user'=>'cl822',
-            		'pass'=>'cl822'
+                    'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                    'host'=>'localhost',
+                    'user'=>'cl822',
+                    'pass'=>'cl822'
             ];
             self::$db = new SQLBase(
-            		$prm['path'],
-            		$prm['host'],
-            		$prm['user'],
-            		$prm['pass'],
-            		self::$DBName);
+                $prm['path'],
+                $prm['host'],
+                $prm['user'],
+                $prm['pass'],
+                self::$DBName
+            );
     }
 }

@@ -23,13 +23,13 @@ class Find_Test extends PHPUnit_Framework_TestCase
         $Cname=get_called_class().'_1';
         
         $prm=[
-        		'path'=>'C:/Users/pierr/ABridge/Datastore/',
-        		'host'=>'localhost',
-        		'user'=>'cl822',
-				'pass'=>'cl822'       		
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'host'=>'localhost',
+                'user'=>'cl822',
+                'pass'=>'cl822'
         ];
         
-        self::$db1=Handler::get()->setBase($typ, $name,$prm);
+        self::$db1=Handler::get()->setBase($typ, $name, $prm);
         Handler::get()->setStateHandler($Cname, $typ, $name);
         
         $typ='fileBase';

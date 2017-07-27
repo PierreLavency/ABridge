@@ -4,6 +4,9 @@ namespace ABridge\ABridge;
 use ABridge\ABridge\Mod\FileBase;
 use ABridge\ABridge\Mod\SQLBase;
 use ABridge\ABridge\Mod\ModBase;
+use ABridge\ABridge\CstError;
+
+use Exception;
 
 class Handler
 {
@@ -84,7 +87,7 @@ class Handler
     public function setBase($base, $instance, $prm)
     {
         if (! array_key_exists($base, $this->basesClasses)) {
-            return false;
+            throw new Exception(CstError::E_ERC063.':'.$base);
         }
         $instances=[];
         if (array_key_exists($base, $this->bases)) {
@@ -115,7 +118,7 @@ class Handler
                 return $instances[$instance];
             }
         };
-        return false;
+        return null;
     }
     
     public function getStateHandler($modName)

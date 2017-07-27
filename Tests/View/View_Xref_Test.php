@@ -20,12 +20,12 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
     protected static $db;
     public static function setUpBeforeClass()
     {
-    	$prm=[
-    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
-    			'host'=>'localhost',
-    			'user'=>'cl822',
-    			'pass'=>'cl822'
-    	];
+        $prm=[
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'host'=>'localhost',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ];
         self::$log=new Logger('View_init_Xref');
         self::$log->load();
         self::$db = Handler::get()->setBase('dataBase', 'test', $prm);

@@ -25,10 +25,10 @@ $log=new UnitTest($logName, 1);
 $show = false;
 $test = viewCasesXref();
 $prm=[
-		'path'=>'C:/Users/pierr/ABridge/Datastore/',
-		'host'=>'localhost',
-		'user'=>'cl822',
-		'pass'=>'cl822'
+        'path'=>'C:/Users/pierr/ABridge/Datastore/',
+        'host'=>'localhost',
+        'user'=>'cl822',
+        'pass'=>'cl822'
 ];
 $db = handler::get()->setBase('dataBase', 'test', $prm);
 handler::get()->setStateHandler('dir', 'dataBase', 'test');

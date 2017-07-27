@@ -15,15 +15,15 @@ class GenJASON_Test extends PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-    	$prm=[
-    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
-    			'host'=>'localhost',
-    			'user'=>'cl822',
-    			'pass'=>'cl822'
-    	];
+        $prm=[
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'host'=>'localhost',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ];
         self::$log=new Logger('GenJASON_init');
         self::$log->load();
-        $db =Handler::get()->setBase('dataBase', 'test',$prm);
+        $db =Handler::get()->setBase('dataBase', 'test', $prm);
         $db->setLogLevl(0);
         self::$db=$db;
         Handler::get()->setStateHandler('TestDir', 'dataBase', 'test');

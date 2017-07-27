@@ -21,12 +21,12 @@ class Usr_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-    	$prm=[
-    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
-    			'host'=>'localhost',
-    			'user'=>'cl822',
-    			'pass'=>'cl822'
-    	];
+        $prm=[
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'host'=>'localhost',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ];
         $name = 'test';
         $classes = ['Session'];
         $bsname = get_called_class();

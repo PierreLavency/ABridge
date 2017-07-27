@@ -31,12 +31,12 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $ABB=get_called_class().'_3';
         $Exchange=get_called_class().'_4';
         $prm=[
-        		'path'=>'C:/Users/pierr/ABridge/Datastore/',
-        		'host'=>'localhost',
-        		'user'=>'cl822',
-        		'pass'=>'cl822'
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'host'=>'localhost',
+                'user'=>'cl822',
+                'pass'=>'cl822'
         ];
-        self::$db1=Handler::get()->setBase($typ, $name,$prm);
+        self::$db1=Handler::get()->setBase($typ, $name, $prm);
          Handler::get()->setStateHandler($Application, $typ, $name);
          Handler::get()->setStateHandler($Component, $typ, $name);
          Handler::get()->setStateHandler($ABB, $typ, $name);
@@ -48,7 +48,7 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $Component=get_called_class().'_f_2';
         $ABB=get_called_class().'_f_3';
         $Exchange=get_called_class().'_f_4';
-        self::$db2=Handler::get()->setBase($typ, $name,$prm);
+        self::$db2=Handler::get()->setBase($typ, $name, $prm);
          Handler::get()->setStateHandler($Application, $typ, $name);
          Handler::get()->setStateHandler($Component, $typ, $name);
          Handler::get()->setStateHandler($ABB, $typ, $name);

@@ -16,7 +16,7 @@ class FileBase_Test extends Base_Case
         self::$CName2=get_called_class().'_f_2';
         self::$DBName= 'atest';
         $fpath='C:/Users/pierr/ABridge/Datastore/';
-        self::$db = new FileBase($fpath,self::$DBName);
+        self::$db = new FileBase($fpath, self::$DBName);
         
         if (self::$db->existsMod(self::$CName)) {
             self::$db ->delMod(self::$CName);

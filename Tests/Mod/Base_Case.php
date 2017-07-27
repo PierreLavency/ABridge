@@ -335,7 +335,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $this->assertTrue($r);
         $r=false;
         try {
-            $x->putObj(self::$CName, 1, []);
+            $x->putObj(self::$CName, 1, 0, []);
         } catch (Exception $e) {
             $r = true;
         }

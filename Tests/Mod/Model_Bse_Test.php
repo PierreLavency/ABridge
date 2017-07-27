@@ -16,23 +16,23 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
     
     public static function setUpBeforeClass()
     {
-    	$prm=[
-    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
-    			'host'=>'localhost',
-    			'user'=>'cl822',
-    			'pass'=>'cl822'
-    	];
+        $prm=[
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'host'=>'localhost',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ];
         Handler::get()->resetHandlers();
         $typ='dataBase';
         $name='test';
         $Cname=get_called_class().'_1';
-        self::$db1=Handler::get()->setBase($typ, $name,$prm);
+        self::$db1=Handler::get()->setBase($typ, $name, $prm);
         Handler::get()->setStateHandler($Cname, $typ, $name);
         
         $typ='fileBase';
         $name=$name.'_f';
         $Cname=get_called_class().'_f_1';
-        self::$db2=Handler::get()->setBase($typ, $name,$prm);
+        self::$db2=Handler::get()->setBase($typ, $name, $prm);
         Handler::get()->setStateHandler($Cname, $typ, $name);
     }
     

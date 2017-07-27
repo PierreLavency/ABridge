@@ -9,14 +9,14 @@ use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstView;
 
 function viewCasesXref()
-{           
-	$prm=[
-		'path'=>'C:/Users/pierr/ABridge/Datastore/',
-		'host'=>'localhost',
-		'user'=>'cl822',
-		'pass'=>'cl822'
-	];
-    $db = Handler::get()->setBase('dataBase', 'test',$prm);
+{
+    $prm=[
+        'path'=>'C:/Users/pierr/ABridge/Datastore/',
+        'host'=>'localhost',
+        'user'=>'cl822',
+        'pass'=>'cl822'
+    ];
+    $db = Handler::get()->setBase('dataBase', 'test', $prm);
     $db->setLogLevl(0);
     Handler::get()->setStateHandler('viewCasesXref', 'dataBase', 'test');
     

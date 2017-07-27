@@ -76,6 +76,8 @@ INT
 - set up jenkin
 
 DONE
+-------------//0.5
+- dataBase as default base type and exception in Handler.
 -------------//2
 - change default db name management
 - remove most of statics and some race condition in tests (B9)

@@ -13,11 +13,11 @@ class ModBase_Abst_Fle_Test extends ModBase_Abst_Case
         self::$HName=get_called_class().'_f_2';
         self::$DBName= 'atest';
         $prm=[
-        		'path'=>'C:/Users/pierr/ABridge/Datastore/',
-        		'host'=>'localhost',
-        		'user'=>'cl822',
-        		'pass'=>'cl822'
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'host'=>'localhost',
+                'user'=>'cl822',
+                'pass'=>'cl822'
         ];
-        self::$db = new FileBase($prm['path'],self::$DBName);
+        self::$db = new FileBase($prm['path'], self::$DBName);
     }
 }

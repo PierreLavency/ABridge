@@ -66,7 +66,7 @@ class CstError
     
     const E_ERC061 = 'ERC061';  // no custom class defined
     const E_ERC062 = 'ERC062';  // no custom class defined
-    const E_ERC063 = 'ERC063';  // invalid Mod config
+    const E_ERC063 = 'ERC063';
     
     protected static $disp =
     [
@@ -138,7 +138,7 @@ class CstError
         self::E_ERC060 => 'Role is not allowed',
         self::E_ERC061 => 'Init Mod called without custom class',
         self::E_ERC062 => 'Object has been changed',
-        self::E_ERC063 => 'invalid config for Model',
+        self::E_ERC063 => 'Invalid Base type',
     ];
         
     public static function subst($mes)
