@@ -75,9 +75,9 @@
 	$obj->addAttr('NbrCours',M_INT,M_P_EVAL);
 	$obj->addAttr('NbrCredits',M_INT,M_P_EVALP);
 	$obj->addAttr('Jason',M_TXT,M_P_EVAL);
-	$obj->addAttr('Image',M_STRING);	
-	$obj->addAttr($User,M_REF,'/'.$User);
+	$obj->addAttr('Image',M_STRING);
 	
+	$obj->addAttr($User,M_REF,'/'.$User);
 	$res=$obj->setBkey($User,true);
 
 	$res = $obj->saveMod();	
@@ -89,12 +89,10 @@
 	$res= $cours->deleteMod();
 
 	$res = $cours->addAttr('Name',M_STRING);
-	
 	$res = $cours->addAttr('SuivitPar',M_CREF,'/'.$Inscription.'/A');
-
 	$cours->addAttr('Credits',M_INT);
-	
 	$cours->addAttr('Par',M_CREF,'/Charge/De');
+	
 	$cours->addAttr($User,M_REF,'/'.$User);
 
 	echo $Cours."<br>";	
@@ -110,11 +108,8 @@
 
 	$res = $inscription->addAttr('De',M_REF,'/'.$Student);
 	$res = $inscription->setMdtr('De',true); // Mdtr
-
-
 	$res = $inscription->addAttr('A',M_REF,'/'.$Cours);
 	$res = $inscription->setMdtr('A',true); // Mdtr
-
 	$inscription->setCkey(['De','A'],true);
 
 	echo $Inscription."<br>";	
@@ -130,12 +125,10 @@
 	$prof->addAttr('Name',M_STRING);
 	$prof->addAttr('SurName',M_STRING);
 	$prof->addAttr('BirthDay',M_DATE);
-
-
-
 	$prof->addAttr('Sexe',M_CODE,'/Code/1/Values');
-
 	$prof->addAttr('Donne',M_CREF,'/Charge/Par');
+	
+	
 	$prof->addAttr($User,M_REF,'/'.$User);
 	$res=$prof->setBkey($User,true);
 	

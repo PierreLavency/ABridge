@@ -13,7 +13,7 @@ class Mod
             $c = count($handler);
             switch ($c) {
                 case 0:
-                    $handler[0]='dataBase';
+                    $handler[0]=$prm['base'];
                     // default set
                 case 1:
                     if ($handler[0]=='dataBase') {

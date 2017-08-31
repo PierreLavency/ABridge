@@ -44,16 +44,14 @@ class Controler
  
     public function construct1($ini)
     {
-        $this->initPrm($ini);
+        $this->initPrm([], $ini);
     }
  
     public function construct2($spec, $ini)
     {
-        if (isset($spec['Default'])) {
-            $this->defVal=$spec['Default'];
-        }
+            
+        $this->initPrm($spec, $ini);
         
-        $this->initPrm($ini);
         $this->spec=$spec;
         $bases = [];
         
@@ -98,8 +96,14 @@ class Controler
         }
     }
     
-    private function initPrm($ini)
+    private function initPrm($spec, $ini)
     {
+        // priority : init - spec[Default] - default
+        
+        if (isset($spec['Default'])) {
+            $this->defVal=$spec['Default'];
+        }
+        
         $appName = $ini['name'];
         $this->appName = $appName;
         $this->defVal['name']=$appName;
@@ -111,6 +115,13 @@ class Controler
             $this->defVal['path']='C:/Users/pierr/ABridge/Datastore/';
         }
 
+        if (isset($ini['base'])) {
+            $this->defVal['base']=$ini['base'];
+        }
+        if (!isset($this->defVal['base'])) {
+            $this->defVal['base']='dataBase';
+        }
+        
         if (isset($ini['dbnm'])) {
             $this->defVal['dbnm']=$ini['dbnm'];
         }

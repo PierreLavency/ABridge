@@ -82,7 +82,8 @@ INT
 - set up jenkin
 
 DONE
-
+-------------// 0.25 
+possibility to default base
 -------------//5 days
 - increase autorisations rule capability
 	- add user group class 

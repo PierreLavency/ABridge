@@ -287,7 +287,7 @@ class Usr
     
     public static function loadData()
     {
-        $RSpec = '[["true","true","true"]]';
+        $RSpec ='[["true","true","true"]]';
         
         $obj=new Model(self::ROLE);
         $obj->setVal('Name', 'Root');
@@ -296,8 +296,7 @@ class Usr
         echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
         echo "<br>";
         
-        $RSpec =
-        '[
+        $RSpec ='[
 [["Read"],"true", "true"],
 [["Read","Update","Delete"],"|Session",{"Session":"id"}],
 [["Read","Update"],"|User",{"User":"id<>User"}]

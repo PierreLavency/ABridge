@@ -41,13 +41,12 @@ class Config
 			
 	'Apps'	=>[
 			'Usr',
-			'Adm',
-			
+			'Adm',		
 	],
 			
 	'Handlers' =>
 		[
-		self::ABB		 => 	['dataBase',self::DBDEC],
+		self::ABB		 => 	[],
 		self::Application=> 	['dataBase',self::DBDEC],
 		self::Component	 => 	['dataBase',self::DBDEC],
 		self::Interfaces => 	['dataBase',self::DBDEC],
