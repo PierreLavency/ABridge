@@ -1,10 +1,14 @@
 <?php
 namespace ABridge\ABridge\Hdl;
 
+use ABridge\ABridge\Handler;
+
 use ABridge\ABridge\Mod\Model;
 
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\Hdl\Request;
+use ABridge\ABridge\CstError;
+use Exception;
 
 class Handle
 {
@@ -48,7 +52,7 @@ class Handle
         $this->sessionHdl = $sessionHdl;
         $res= $this->checkReq($this->request);
         if (!$res) {
-            throw new Exception(E_ERC049.':'.$this->request->getUrl());
+            throw new Exception(CstError::E_ERC049.':'.$this->request->getUrl());
         }
         $this->initObj();
     }
@@ -81,6 +85,9 @@ class Handle
             $id  = $pathArr[$i+1];
             if (is_null($obj)) {
                 if ($this->request->isT()) {
+                    if (is_null($this->sessionHdl)) {
+                        return;
+                    }
                     $obj=$this->sessionHdl->getObj($mod);
                     if (is_null($obj)) {
                         return;
@@ -109,7 +116,7 @@ class Handle
         $this->obj =$obj;
         $res = $this->checkARight($this->request, $this->attrObjs, true, true);
         if (!$res) {
-            throw new Exception(E_ERC053.':'.$this->request->getUrl());
+            throw new Exception(CstError::E_ERC053.':'.$this->request->getUrl());
         }
     }
  
@@ -119,8 +126,9 @@ class Handle
         return $res;
     }
     
-    public function getSelPath($classL)
+    public function getSelPath()
     {
+        $classL=Handler::get()->getMods();
         if ($this->sessionHdl) {
             $selmenu = $this->sessionHdl->getSelMenu($classL);
         } else {

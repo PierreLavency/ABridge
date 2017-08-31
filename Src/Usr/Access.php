@@ -13,7 +13,7 @@ class Access
 {
     protected static function isRoot($session)
     {
-        return (is_null($session->getVal('Role')));
+        return (is_null($session->getVal('ActiveRole')));
     }
 
     protected static function matchEval($elm, $patrn)
@@ -49,10 +49,11 @@ class Access
         foreach ($classList as $className) {
             $modPath = '|'.$className;
             $res = self::getCond($session, CstMode::V_S_SLCT, $modPath);
-            if ($res == ['true']) {
+            if ($res === ['true']) {
                 $rList[]= '/'.$className;
             }
         }
+
         return $rList;
     }
     
@@ -60,8 +61,12 @@ class Access
     {
         $obj = $session->getCobj();
         $roleSpec=$obj->getRSpec();
-        if (!$roleSpec) {
-            return true;
+        if (!$roleSpec || !$session->getVal('Checked') || !$session->getVal('ValidFlag')) {
+            $roleSpec=[
+                    [CstMode::V_S_READ,'|','true'],
+                    [[CstMode::V_S_UPDT,CstMode::V_S_READ],'|Session',['Session'=>'id']],
+                    
+            ];
         }
         $cond = [];
         foreach ($roleSpec as $elm) {

@@ -5,23 +5,23 @@ use ABridge\ABridge\Mod\Model;
 
 
 use ABridge\ABridge\Usr\User;
-use ABridge\ABridge\Usr\Role;
+use ABridge\ABridge\Usr\UserGroup;
 
-class User_Role_Test_dataBase_1 extends User
+class User_Group_Test_dataBase_1 extends User
 {
 }
-class User_Role_Test_fileBase_1 extends User
-{
-}
-
-class User_Role_Test_dataBase_2 extends Role
-{
-}
-class User_Role_Test_fileBase_2 extends Role
+class User_Group_Test_fileBase_1 extends User
 {
 }
 
-class User_Role_Test extends PHPUnit_Framework_TestCase
+class User_Group_Test_dataBase_2 extends UserGroup
+{
+}
+class User_Group_Test_fileBase_2 extends UserGroup
+{
+}
+
+class User_Group_Test extends PHPUnit_Framework_TestCase
 {
     
     public function testInit()
@@ -33,7 +33,7 @@ class User_Role_Test extends PHPUnit_Framework_TestCase
                 'pass'=>'cl822'
         ];
         $name = 'test';
-        $classes = ['User','Role'];
+        $classes = ['User','UserGroup'];
         $bsname = get_called_class();
         $bases= UtilsC::initHandlers($name, $classes, $bsname, $prm);
         $res = UtilsC::initClasses($bases);
@@ -54,11 +54,11 @@ class User_Role_Test extends PHPUnit_Framework_TestCase
             $res=$x->save();
             $this->assertEquals(1, $res);
      
-            $x = new Model($bd['Role']);
+            $x = new Model($bd['UserGroup']);
             $res=$x->save();
             $this->assertEquals(1, $res);
      
-            $x = new Model($bd['Role']);
+            $x = new Model($bd['UserGroup']);
             $res=$x->save();
             $this->assertEquals(2, $res);
      
@@ -78,24 +78,23 @@ class User_Role_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
             
-            $x = new Model($bd['Role'], 1);
+            $x = new Model($bd['UserGroup'], 1);
             $res= $x->setVal('Name', 'test1');
             $x->save();
             $this->assertFalse($x->isErr());
 
             $x = new Model($bd['User'], 1);
-            $res= $x->getValues('Role');
+            $res= $x->getValues('UserGroup');
             $this->assertEquals([1,2], $res);
             
             $obj=$x->getCobj();
-            $res = $obj->checkAttr('Role', 3);
+            $res = $obj->checkAttr('UserGroup', 3);
             $this->assertFalse($res);
 
-            $obj=$x->getCobj();
-            $res = $obj->checkAttr('Role', 2);
+            $res = $obj->checkAttr('UserGroup', 2);
             $this->assertTrue($res);
             
-            $x->setVal('Role', 1);
+            $x->setVal('UserGroup', 1);
             $x->save();
             $this->assertFalse($x->isErr());
             
@@ -108,23 +107,22 @@ class User_Role_Test extends PHPUnit_Framework_TestCase
     * @depends  testset
     */
 
-    public function testsetRole($bases)
+    public function testgetMeta($bases)
     {
         foreach ($bases as $base) {
             list($db,$bd) = $base;
 
             $db->beginTrans();
             
-            $x = new Model($bd['Role'], 1);
-            $obj=$x->getCobj();
+            $x = new Model($bd['User'], 1);
+            $y = $x->getRef('UserGroup');
+            $res=$y->getVal('MetaData');
             
-            $this->assertNull($obj->getSpec());
-                
-            $spec = [["true", "true", "true"]];
-            $val = json_encode($spec);
-            $x->setVal('JSpec', $val);
-            $obj=$x->getCobj();
-            $this->assertEquals($spec, $obj->getSpec());
+            $this->assertNotNull($res);
+
+            $res=$y->getVal('Name');
+            
+            $this->assertNotNull($res);
             
             $db->commit();
         }

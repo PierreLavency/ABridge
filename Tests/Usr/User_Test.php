@@ -102,6 +102,8 @@ class User_Test extends PHPUnit_Framework_TestCase
             $res= $x->getVal('UserId');
             $this->assertEquals('test', $res);
 
+            $res= $x->getVal('MetaData');
+            $this->assertNotNull($res);
             
             $x->setVal('UserId', 'test2');
             $x->setVal('Password', 'Password');

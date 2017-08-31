@@ -126,7 +126,7 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
             $x->setVal('UserId', 'testtt');
             
             $x->save();
-            $this->assertEquals($x->getErrLine(), CstError::E_ERC059.":testtt");
+            $this->assertEquals($x->getErrLine(), CstError::E_ERC059.":".$bd['User'].":testtt");
             
             $x->setVal('UserId', 'test');
             $x->setVal('Password', 'Password2');

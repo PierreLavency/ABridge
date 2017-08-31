@@ -21,10 +21,13 @@ class Usr
     public static function init($name, $prm)
     {
 
-        handler::get()->setCmod('Session', 'ABridge\ABridge\Usr\Session');
-        handler::get()->setCmod('User', 'ABridge\ABridge\Usr\User');
-        handler::get()->setCmod('Role', 'ABridge\ABridge\Usr\Role');
-        handler::get()->setCmod('Distribution', 'ABridge\ABridge\Usr\Distribution');
+        foreach ($prm as $mod => $cname) {
+            if (is_numeric($mod)) {
+                $mod = $cname;
+                $cname = __NAMESPACE__.'\\'.$mod;
+            }
+            handler::get()->setCmod($mod, $cname);
+        }
     }
     
     public static function begin($name, $prm)

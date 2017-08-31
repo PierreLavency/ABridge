@@ -95,29 +95,33 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(2, $res);
                     
             $x = new Model($bd['Distribution']);
-            $x->setVal('ofRole', 1);
-            $x->setVal('toUser', 1);
+            $x->setVal('Role', 1);
+            $x->setVal('User', 1);
             $res=$x->save();
             $this->assertEquals(1, $res);
 
             $x = new Model($bd['Distribution']);
-            $x->setVal('ofRole', 2);
-            $x->setVal('toUser', 2);
+            $x->setVal('Role', 2);
+            $x->setVal('User', 2);
             $res=$x->save();
             $this->assertEquals(2, $res);
             
             $x = new Model($bd['Session']);
             $x->setVal('UserId', 'test');
-            $x->setVal('Role', 1);
+            $x->setVal('RoleName', 'Default');
             $res=$x->save();
             $this->assertEquals(1, $res);
-  
+            $res=$x->save();
+            $this->assertFalse($x->isErr());
+                        
             $x = new Model($bd['Session']);
             $x->setVal('UserId', 'test2');
-            $x->setVal('Role', 2);
+            $x->setVal('RoleName', 'Defaults');
             $res=$x->save();
             $this->assertEquals(2, $res);
-  
+            $res=$x->save();
+            $this->assertFalse($x->isErr());
+            
             $db->commit();
         }
         

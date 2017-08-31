@@ -31,8 +31,10 @@ class Session extends CModel
         $obj = $this->mod;
 
         $res = $obj->addAttr('BKey', Mtype::M_STRING);
+        $res = $obj->addAttr('Checked', Mtype::M_INT, M_P_EVALP);
         $res = $obj->addAttr('ValidStart', Mtype::M_INT, M_P_EVALP);
         $res = $obj->addAttr('ValidFlag', Mtype::M_INT, M_P_EVALP);
+
         $res = $obj->setBkey('BKey', true);
         $res = $obj->setMdtr('BKey', true);
 
@@ -45,9 +47,16 @@ class Session extends CModel
         
         if (isset($bindings['Role'])) {
             $role = $bindings['Role'];
-            $res = $obj->addAttr('Role', Mtype::M_REF, '/'.$role);
+            $res = $obj->addAttr('RoleName', Mtype::M_STRING);
+            $res = $obj->addAttr('ActiveRole', Mtype::M_REF, '/'.$role);
         }
 
+        if (isset($bindings['UserGroup'])) {
+            $usergroup= $bindings['UserGroup'];
+            $res = $obj->addAttr('GroupName', Mtype::M_STRING);
+            $res = $obj->addAttr('ActiveGroup', Mtype::M_REF, '/'.$usergroup);
+        }
+        
         return $obj->isErr();
     }
  
@@ -61,12 +70,12 @@ class Session extends CModel
  
     public function getRSpec()
     {
-        $role = $this->mod->getRef('Role');
+        $role = $this->mod->getRef('ActiveRole');
         if (! $role) {
             return null;
         }
         $res = $role->getVal('JSpec');
-        if (!$res) {
+        if (! $res) {
             return null;
         }
         $val = json_decode($res, true);
@@ -88,74 +97,121 @@ class Session extends CModel
             $this->mod->setVal('ValidStart', time());
             $this->mod->setVal('ValidFlag', 1);
             $this->mod->setVal('BKey', $this->bkey);
+            $this->mod->setVal('Checked', 0);
+            return $this->mod->saveN();
         }
 
-        $usrn = null;
-        $usrobj=null;
-        $usrcobj=null;
-                
+        $usrName =null;
+        $usrMobj =null;
+        $usrCobj =null;
+        $usrClassName =null;
+              
         if ($this->mod->existsAttr('UserId')) {
-            $usrn = $this->mod->getValN('UserId');
+            $usrName = $this->mod->getValN('UserId');
             $this->mod->setValN('User', null);
-            $usrCN = $this->mod->getModRef('User');
-            if (! is_null($usrn)) {
-                $usrobj= Find::byKey($usrCN, 'UserId', $usrn);
-                if (is_null($usrobj)) {
-                    $this->mod->getErrLog()->logLine(CstError::E_ERC059.":$usrn");
+            $usrClassName = $this->mod->getModRef('User');
+            if (! is_null($usrName)) {
+                $usrMobj= Find::byKey($usrClassName, 'UserId', $usrName);
+                if (is_null($usrMobj)) {
+                    $this->mod->getErrLog()->logLine(CstError::E_ERC059.":$usrClassName:$usrName");
                     return false;
                 }
-                $usrcobj = $usrobj->getCobj();
+                $usrCobj = $usrMobj->getCobj();
                 $sespsw = $this->mod->getValN('Password');
-                if (!$usrcobj->authenticate($usrn, $sespsw)) {
+                if (!$usrCobj->authenticate($usrName, $sespsw)) {
                     $this->mod->getErrLog()->logLine(CstError::E_ERC057);
                     return false;
                 }
-                $this->mod->setValN('User', $usrobj->getId());
+                $this->mod->setValN('User', $usrMobj->getId());
             }
         }
-
-        if ($this->mod->existsAttr('Role') and ! $this->mod->existsAttr('UserId')) {
-            $role = $this->mod->getValN('Role');
-            $roleCN = $this->mod->getModRef('Role');
-            if (!$role) {
-                $roleobj= Find::byKey($roleCN, 'Name', 'Default');
-                if ($roleobj) {
-                    $this->mod->setValN('Role', $roleobj->getId());
+               
+        $roleName = null;
+        $roleMobj = null;
+        $roleClassName = null;
+        
+        if ($this->mod->existsAttr('RoleName')) {
+            $roleName = $this->mod->getValN('RoleName');
+            $this->mod->setValN('ActiveRole', null);
+            $roleClassName = $this->mod->getModRef('ActiveRole');
+            if (! is_null($roleName)) {
+                $roleMobj= Find::byKey($roleClassName, 'Name', $roleName);
+                if (is_null($roleMobj)) {
+                    $this->mod->getErrLog()->logLine(CstError::E_ERC059.":$roleClassName:$roleName");
+                    return false;
                 }
+            }
+            
+            if (! $this->mod->existsAttr('UserId')) {
+                if (!$roleMobj) {
+                    $roleMobj= Find::byKey($roleClassName, 'Name', 'Default');
+                }
+            }
+            
+            if ($this->mod->existsAttr('UserId')) {
+                if (!$roleMobj and $usrMobj) {
+                    $roleMobj = $usrMobj->getRef('Role');
+                }
+                if ($roleMobj and $usrCobj) {
+                    if (! $usrCobj->checkAttr('Role', $roleMobj->getId())) {
+                        $this->mod->getErrLog()->logLine(CstError::E_ERC060.":".$roleMobj->getVal('Name'));
+                        return false;
+                    }
+                }
+                if ($roleMobj and !$usrMobj) {
+                    $roleDef= Find::byKey($roleClassName, 'Name', 'Default');
+                    if (!$roleDef or $roleMobj->getId() != $roleDef->getId()) {
+                        $this->mod->getErrLog()->logLine(CstError::E_ERC060.":".$roleMobj->getVal('Name'));
+                        return false;
+                    }
+                }
+                if (!$roleMobj and !$usrMobj) {
+                    $roleMobj= Find::byKey($roleClassName, 'Name', 'Default');
+                }
+            }
+            
+            if (! $roleMobj) {
+                $this->mod->getErrLog()->logLine(CstError::E_ERC064.":$roleClassName");
+                return false;
+            }
+            $this->mod->setValN('ActiveRole', $roleMobj->getId());
+            $this->mod->setValN('RoleName', $roleMobj->getVal('Name'));
+        }
+
+        $groupName = null;
+        $groupMobj = null;
+        $groupClassName = null;
+        
+        if ($this->mod->existsAttr('GroupName')) {
+            $groupName = $this->mod->getValN('GroupName');
+            $this->mod->setValN('ActiveGroup', null);
+            $groupClassName = $this->mod->getModRef('ActiveGroup');
+            if (! is_null($groupName)) {
+                $groupMobj= Find::byKey($groupClassName, 'Name', $groupName);
+                if (is_null($groupMobj)) {
+                    $this->mod->getErrLog()->logLine(CstError::E_ERC059.":$groupClassName:$groupName");
+                    return false;
+                }
+            }
+
+            if (!$groupMobj and $usrMobj) {
+                $groupMobj = $usrMobj->getRef('UserGroup');
+            }
+            
+            if ($groupMobj and $usrMobj) {
+                if (! $usrCobj->checkAttr('UserGroup', $groupMobj->getId())) {
+                    $this->mod->getErrLog()->logLine(CstError::E_ERC060.":".$groupMobj->getVal('Name'));
+                    return false;
+                }
+            }
+            
+            if ($groupMobj) {
+                $this->mod->setValN('ActiveGroup', $groupMobj->getId());
+                $this->mod->setValN('GroupName', $groupMobj->getVal('Name'));
             }
         }
         
-        if ($this->mod->existsAttr('Role') and $this->mod->existsAttr('UserId')) {
-            $role = $this->mod->getValN('Role');
-            $roleCN = $this->mod->getModRef('Role');
-            if (!$role and $usrobj) {
-                $role = $usrobj->getVal('DefaultRole');
-                if (!$role) {
-                    $this->mod->getErrLog()->logLine(CstError::E_ERC060.":$role");
-                    return false;
-                }
-                $this->mod->setValN('Role', $role);
-            }
-            if ($role and $usrcobj) {
-                if (! $usrcobj->checkRole($role)) {
-                    $this->mod->getErrLog()->logLine(CstError::E_ERC060.":$role");
-                    return false;
-                }
-            }
-            if ($role and !$usrobj) {
-                $roleobj= Find::byKey($roleCN, 'Name', 'Default');
-                if (!$roleobj or $roleobj->getId() != $role) {
-                    $this->mod->getErrLog()->logLine(CstError::E_ERC060.":$role");
-                    return false;
-                }
-            }
-            if (!$role and !$usrobj) {
-                $roleobj= Find::byKey($roleCN, 'Name', 'Default');
-                if ($roleobj) {
-                    $this->mod->setValN('Role', $roleobj->getId());
-                }
-            }
-        }
+        $this->mod->setVal('Checked', 1);
         return $this->mod->saveN();
     }
     
@@ -204,15 +260,23 @@ class Session extends CModel
             $val = $pobj->getValN('UserId');
             $this->mod->setValN('UserId', $val);
         }
-        if ($this->mod->existsAttr('Role')) {
-            $val = $pobj->getValN('Role');
-            $this->mod->setValN('Role', $val);
+        if ($this->mod->existsAttr('RoleName')) {
+            $roleMobj=$pobj->getRef('ActiveRole');
+            if ($roleMobj) {
+                $this->mod->setValN('RoleName', $roleMobj->getVal('Name'));
+            }
+        }
+        if ($this->mod->existsAttr('GroupName')) {
+            $groupMobj=$pobj->getRef('ActiveGroup');
+            if ($groupMobj) {
+                $this->mod->setValN('GroupName', $groupMobj->getVal('Name'));
+            }
         }
     }
     
     public function isNew()
     {
-        return $this->isNew;
+        return ($this->isNew);
     }
     
     public function getObj($mod)

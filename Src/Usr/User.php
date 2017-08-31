@@ -23,7 +23,7 @@ class User extends CModel
         $obj = $this->mod;
         $distribution = null;
         $role = null;
-
+        
         $res = $obj->addAttr('UserId', Mtype::M_STRING);
         $res = $obj->addAttr('Password', Mtype::M_STRING);
         $res = $obj->addAttr('NewPassword1', Mtype::M_STRING, M_P_TEMP);
@@ -31,34 +31,29 @@ class User extends CModel
         $res = $obj->addAttr('MetaData', Mtype::M_TXT, M_P_EVAL);
         
         $res = $obj->setBkey('UserId', true);
-        
-        if (isset($bindings['Distribution'])) {
-            $distribution=$bindings['Distribution'];
-            $res = $obj->addAttr('Play', Mtype::M_CREF, '/'.$distribution.'/toUser');
+ 
+        if (isset($bindings['UserGroup'])) {
+            $usergroup = $bindings['UserGroup'];
+            $res = $obj->addAttr('UserGroup', Mtype::M_REF, '/'.$usergroup);
         }
+
+        if (isset($bindings['GroupUser'])) {
+            $groupuser=$bindings['GroupUser'];
+            $res = $obj->addAttr('UserGroups', Mtype::M_CREF, '/'.$groupuser.'/User');
+        }
+        
         if (isset($bindings['Role'])) {
             $role = $bindings['Role'];
-            $res = $obj->addAttr('DefaultRole', Mtype::M_REF, '/'.$role);
+            $res = $obj->addAttr('Role', Mtype::M_REF, '/'.$role);
+        }
+        if (isset($bindings['Distribution'])) {
+            $distribution=$bindings['Distribution'];
+            $res = $obj->addAttr('Roles', Mtype::M_CREF, '/'.$distribution.'/User');
         }
        
         return $obj->isErr();
     }
 
-    public function setVal($attr, $val)
-    {
-        if ($attr == 'DefaultRole' and !is_null($val)) {
-            $vals= $this->getValues('DefaultRole');
-            $res = in_array($val, $vals);
-            if (!$res) {
-                $this->mod->getErrLog()->logLine(CstError::E_ERC016.':'.$attr.':'.$val);
-                return false;
-            }
-        }
-        return $this->mod->setValN($attr, $val);
-    }
-    
-    
-    
     public function getVal($attr)
     {
         if ($attr == 'Password') {
@@ -69,25 +64,53 @@ class User extends CModel
         }
         return $this->mod->getValN($attr);
     }
-
+    
+    public function setVal($attr, $val)
+    {
+        $res=$this->checkAttr($attr, $val);
+        if (!$res) {
+            $this->mod->getErrLog()->logLine(CstError::E_ERC016.':'.$attr.':'.$val);
+            return false;
+        }
+        return $this->mod->setValN($attr, $val);
+    }
+    
     public function getValues($attr)
     {
-        if ($attr == 'DefaultRole' and $this->mod->existsAttr('Play')) {
+        if ($attr == 'Role' and $this->mod->existsAttr('Roles')) {
             $res = [];
-            $dist=$this->mod->getValN('Play');
+            $dist=$this->mod->getValN('Roles');
             foreach ($dist as $id) {
-                $obj = $this->mod->getCref('Play', $id);
-                $res[]=$obj->getValN('ofRole');
+                $obj = $this->mod->getCref('Roles', $id);
+                $res[]=$obj->getVal('Role');
+            }
+            return $res;
+        }
+        if ($attr=='UserGroup' and $this->mod->existsAttr('UserGroups')) {
+            $res = [];
+            $groups = $this->mod->getVal('UserGroups');
+            foreach ($groups as $id) {
+                $obj = $this->mod->getCref('UserGroups', $id);
+                $res[]=$obj->getVal('UserGroup');
             }
             return $res;
         }
         return $this->mod->getValuesN($attr);
     }
 
-    public function checkRole($id)
+    public function checkAttr($attr, $val)
     {
-        $res= $this->getValues('DefaultRole');
-        return in_array($id, $res);
+        if ($attr == 'Role' and !is_null($val)) {
+            $vals= $this->getValues('Role');
+            $res = in_array($val, $vals);
+            return $res;
+        }
+        if ($attr == 'UserGroup' and !is_null($val)) {
+            $vals= $this->getValues('UserGroup');
+            $res = in_array($val, $vals);
+            return $res;
+        }
+        return true;
     }
     
     public function save()

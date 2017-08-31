@@ -46,6 +46,8 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             
             $db->beginTrans();
         
+            Usr::init($bd['Session'], [$bd['Session']=>$bd['Session']]);
+            
             $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
             $session = $cobj->getMod();
 

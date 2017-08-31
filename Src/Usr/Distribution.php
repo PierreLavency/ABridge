@@ -16,13 +16,13 @@ class Distribution extends CModel
 
         $role = $bindings['Role'];
         $user = $bindings['User'];
-        $res = $obj->addAttr('ofRole', Mtype::M_REF, '/'.$role);
-        $res = $obj->addAttr('toUser', Mtype::M_REF, '/'.$user);
+        $res = $obj->addAttr('Role', Mtype::M_REF, '/'.$role);
+        $res = $obj->addAttr('User', Mtype::M_REF, '/'.$user);
         
-        $res = $obj->setMdtr('ofRole', true); // Mdtr
-        $res = $obj->setMdtr('toUser', true); // Mdtr
+        $res = $obj->setMdtr('Role', true); // Mdtr
+        $res = $obj->setMdtr('User', true); // Mdtr
 
-        $obj->setCkey(['ofRole','toUser'], true);
+        $obj->setCkey(['Role','User'], true);
         
         return $obj->isErr();
     }

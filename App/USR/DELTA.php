@@ -1,5 +1,9 @@
 <?php
-	require_once 'CLASSDEC.php';
-	require_once 'UtilsC.php'; 
 
+use ABridge\ABridge\UtilsC;
 
+	$bindings = [
+			'GroupUser'	=> 'GroupUser',
+			'UserGroup'	=> 'UserGroup',
+	];
+	UtilsC::createMods($bindings);

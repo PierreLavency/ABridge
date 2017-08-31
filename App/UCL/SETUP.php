@@ -35,7 +35,14 @@ class Config
 		'Admin'		  	=> ['dataBase',self::DBDEC],	
 		],
 	'Hdl' 	=> [
-			'Usr'   => [],
+/*
+			'Usr'   => [
+					'User'          ,
+					'Role'          ,
+					'Distribution'  ,
+					'Session'       ,
+			],
+			*/
 	],
 	'Adm'	=> [
 			
@@ -43,7 +50,11 @@ class Config
 	
 	'View' => [			
 		'Home' =>
-			['/','/Session/~','/Admin/1','/User/~'],
+			['/',
+//					'/Session/~',
+					'/Admin/1',
+//					'/User/~'
+			],
 			
 		'Admin'	=>[
 				'attrList' => [
@@ -58,11 +69,11 @@ class Config
 		],		
 		self::Session =>[
 			'attrList' => [
-						CstView::V_S_CREF=> ['id','User','Role','ValidFlag','BKey','vnum','ctstp'],									
+						CstView::V_S_CREF=> ['id','User','ActiveRole','ValidFlag','BKey','vnum','ctstp'],									
 			],
 			'attrHtml' => [
-						CstMode::V_S_UPDT => ['Role'=>CstHTML::H_T_SELECT],
-						CstMode::V_S_SLCT => ['Role'=>CstHTML::H_T_SELECT],					
+						CstMode::V_S_UPDT => ['ActiveRole'=>CstHTML::H_T_SELECT],
+						CstMode::V_S_SLCT => ['ActiveRole'=>CstHTML::H_T_SELECT],					
 			],		
 			'viewList' => [
 				'Detail'  => [
@@ -71,9 +82,9 @@ class Config
 						CstMode::V_S_DELT			=> 'LogOut',	
 					],				
 					'attrList' => [
-						CstMode::V_S_READ=> ['id','User','Role'],
-						CstMode::V_S_DELT=> ['id','User','Role'],
-						CstMode::V_S_UPDT=> ['id','UserId','Password','Role'],
+						CstMode::V_S_READ=> ['id','User','ActiveRole'],
+						CstMode::V_S_DELT=> ['id','User','ActiveRole'],
+						CstMode::V_S_UPDT=> ['id','UserId','Password','RoleName'],
 					],
 					
 				],

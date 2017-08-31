@@ -42,8 +42,16 @@ class UtilsC
         return true;
     }
     
-    public static function createMods($bd)
+    public static function createMods($bdp)
     {
+        $bd=[];
+        foreach ($bdp as $CName => $PName) {
+            if (is_numeric($CName)) {
+                $bd[$PName]=$PName;
+            } else {
+                $bd[$CName]=$PName;
+            }
+        }
         foreach ($bd as $CName => $PName) {
             $res = self::createMod($PName, $bd);
             if (!$res) {
@@ -62,6 +70,7 @@ class UtilsC
         $x->initMod($bd);
         $x->saveMod();
         if ($x->isErr()) {
+            echo  $name ;
             $log = $x->getErrLog();
             $log->show();
             return false;

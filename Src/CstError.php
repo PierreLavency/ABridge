@@ -67,6 +67,7 @@ class CstError
     const E_ERC061 = 'ERC061';  // no custom class defined
     const E_ERC062 = 'ERC062';  // no custom class defined
     const E_ERC063 = 'ERC063';
+    const E_ERC064 = 'ERC064';
     
     protected static $disp =
     [
@@ -133,12 +134,16 @@ class CstError
         self::E_ERC056 => 'Parameter must be a BKEY attribute',
         self::E_ERC057 => 'Wrong passsword',
         self::E_ERC058 => 'New password do not match confirmed new password',
-        self::E_ERC059 => 'User does not exists',
 
+        self::E_ERC059 => 'Object not found',
         self::E_ERC060 => 'Role is not allowed',
+        
         self::E_ERC061 => 'Init Mod called without custom class',
         self::E_ERC062 => 'Object has been changed',
         self::E_ERC063 => 'Invalid Base type',
+        
+        self::E_ERC064 => 'Object cannot be determined',
+        
     ];
         
     public static function subst($mes)

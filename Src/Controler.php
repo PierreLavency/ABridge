@@ -279,8 +279,7 @@ class Controler
         if (isset($specv['Home'])) {
             $home=$specv['Home'];
         }
-        $classL=Handler::get()->getMods();
-        $selmenu = $this->handle->getSelPath($classL);
+        $selmenu = $this->handle->getSelPath();
         $rmenu=[];
         if (isset($specv['MenuExcl'])) {
             $rmenu=$specv['MenuExcl'];

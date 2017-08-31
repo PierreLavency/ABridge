@@ -59,12 +59,6 @@ class Config
 		self::AStyle 	 =>		['dataBase',self::DBDEC],
 		self::SControl 	 => 	['dataBase',self::DBDEC],
 		self::ACode	 	 => 	['dataBase',self::DBDEC],
-//		self::User	 	 => 	['dataBase',self::DBDEC],
-		self::Group		 => 	['dataBase',self::DBDEC],		
-//		self::Role	 	 => 	['dataBase',self::DBDEC],
-//		self::Distribution=> 	['dataBase',self::DBDEC],
-//		self::Session	 => 	['dataBase',self::DBDEC],
-//		self::Adm	     => 	['dataBase',self::DBDEC],
 		],
 
 				
@@ -242,12 +236,6 @@ class Config
 				]
 				
 		],
-
-		self::Group =>[		
-			'attrList' => [
-				CstView::V_S_REF		=> ['Name'],
-				],
-		],		
 
 	]
 	];		

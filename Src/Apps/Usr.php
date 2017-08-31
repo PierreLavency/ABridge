@@ -14,27 +14,44 @@ class Usr
     const ROLE = 'Role';
     const SESSION ='Session';
     const DISTRIBUTION = 'Distribution';
-    const GROUP ='UserGroup';
+    const USERGROUP ='UserGroup';
+    const GROUPUSER ='GroupUser';
+    
+    public static function loadMeta()
+    {
+        UtilsC::createMods(self::$config['Hdl']['Usr']);
+    }
     
     static public $config = [
             'Handlers' =>
             [
-                    self::USER          => ['dataBase',],
-                    self::ROLE          => ['dataBase',],
-                    self::DISTRIBUTION  => ['dataBase',],
-                    self::SESSION       => ['dataBase',],
+                    self::USER          => [],
+                    self::ROLE          => [],
+                    self::DISTRIBUTION  => [],
+                    self::USERGROUP     => [],
+                    self::GROUPUSER     => [],
+                    self::SESSION       => [],
             ],
             'Hdl'   => [
-                    'Usr'   => [self::SESSION=>'BKey'],
+                    'Usr'   => [
+                            self::USER          ,
+                            self::ROLE          ,
+                            self::DISTRIBUTION  ,
+                            self::SESSION       ,
+                            self::USERGROUP     ,
+                            self::GROUPUSER     ,
+                    ],
             ],
             'View' => [
-                    self::USER =>[
-                            'lblList' => [
-                                    'Play'          => 'PlayRoles',
+                    self::USERGROUP => [
+                            'attrList' => [
+                                    CstView::V_S_REF        => ['Name'],
                             ],
+                    ],
+                    self::USER =>[
                             'attrHtml' => [
                                     CstMode::V_S_READ => [
-                                            'Play'=>[
+                                            'Roles'=>[
                                                     CstView::V_SLICE=>15,
                                                     CstView::V_COUNTF=>false,
                                                     CstView::V_CTYP=>CstView::V_C_TYPN
@@ -42,13 +59,17 @@ class Usr
                                             ]
                                     ],
                                     CstMode::V_S_UPDT => [
-                                            'DefaultRole'=>CstHTML::H_T_SELECT],
+                                            'Role'      =>CstHTML::H_T_SELECT,
+                                            'UserGroup'     =>CstHTML::H_T_SELECT,
+                                    ],
                                     CstMode::V_S_SLCT => [
-                                            'DefaultRole'=>CstHTML::H_T_SELECT],
+                                            'Role'      =>CstHTML::H_T_SELECT,
+                                            'UserGroup'     =>CstHTML::H_T_SELECT,
+                                    ],
                             ],
                             'attrList' => [
                                     CstView::V_S_REF        => ['UserId'],
-//									CstMode::V_S_SLCT	=> ['UserId',self::GROUP],
+                                    CstMode::V_S_SLCT       => ['UserId'],
                             ],
                             'viewList' => [
                                     'Password'  => [
@@ -68,20 +89,21 @@ class Usr
                                                             'NewPassword2'
                                                     ],
                                                     CstMode::V_S_DELT   => [
-                                                            
-                                                    'UserId'],
+                                                            'UserId'
+                                                    ],
                                             ],
                                     ],
                                     'Role'  => [
                                             'attrList' => [
                                                     CstMode::V_S_READ   => [
-                                                            'UserId',self::GROUP,
-                                                            'DefaultRole',
-                                                            'Play'
+                                                            'UserId',
+                                                            'Role',
+                                                            'Roles',
                                                     ],
-                                                    CstMode::V_S_UPDT   => ['UserId',
-                                                            'Password',self::GROUP,
-                                                            'DefaultRole'
+                                                    CstMode::V_S_UPDT   => [
+                                                            'UserId',
+                                                            'Password',
+                                                            'Role',
                                                     ],
                                             ],
                                             'navList' => [
@@ -90,6 +112,26 @@ class Usr
                                                     ],
                                             ],
                                     ],
+                                    'Group'  => [
+                                            'attrList' => [
+                                                    CstMode::V_S_READ   => [
+                                                            'UserId',
+                                                            'UserGroup',
+                                                            'UserGroups',
+                                                    ],
+                                                    CstMode::V_S_UPDT   => [
+                                                            'UserId',
+                                                            'Password',
+                                                            'UserGroup',
+                                                    ],
+                                            ],
+                                            'navList' => [
+                                                    CstMode::V_S_READ => [
+                                                            CstMode::V_S_UPDT
+                                                    ],
+                                            ],
+                                    ],
+                                    
                                     'Trace' =>[
                                             'attrList' => [
                                                     CstMode::V_S_READ=> [
@@ -103,7 +145,7 @@ class Usr
                                                     CstMode::V_S_READ => [],
                                             ],
                                     ],
-                            ]
+                            ],
                     ],
                     self::ROLE =>[
                             'attrList' => [
@@ -132,7 +174,8 @@ class Usr
                                     CstView::V_S_CREF=> [
                                             'id',
                                             'User',
-                                            'Role',
+                                            'ActiveRole',
+                                            'ActiveGroup',
                                             'ValidFlag',
                                             'BKey',
                                             'vnum',
@@ -141,10 +184,12 @@ class Usr
                             ],
                             'attrHtml' => [
                                     CstMode::V_S_UPDT => [
-                                            'Role'=>CstHTML::H_T_SELECT
+                                            'ActiveRole'=>CstHTML::H_T_SELECT,
+                                            'ActiveGroup'=>CstHTML::H_T_SELECT,
                                     ],
                                     CstMode::V_S_SLCT => [
-                                            'Role'=>CstHTML::H_T_SELECT
+                                            'ActiveRole'=>CstHTML::H_T_SELECT,
+                                            'ActiveGroup'=>CstHTML::H_T_SELECT,
                                     ],
                             ],
                             'viewList' => [
@@ -157,18 +202,21 @@ class Usr
                                                     CstMode::V_S_READ=> [
                                                             'id',
                                                             'User',
-                                                            'Role'
+                                                            'ActiveRole',
+                                                            'ActiveGroup',
                                                     ],
                                                     CstMode::V_S_DELT=> [
                                                             'id',
                                                             'User',
-                                                            'Role'
+                                                            'ActiveRole',
+                                                            'ActiveGroup',
                                                     ],
                                                     CstMode::V_S_UPDT=> [
                                                             'id',
                                                             'UserId',
                                                             'Password',
-                                                            'Role'
+                                                            'RoleName',
+                                                            'GroupName',
                                                     ],
                                             ],
                                             
@@ -192,32 +240,50 @@ class Usr
                             
                     ],
                     self::DISTRIBUTION =>[
+                            'attrList' => [
+                                    CstView::V_S_CREF=> [
+                                            'id',
+                                            'User',
+                                            'Role',
+                                    ],
+                            ],
                             'attrHtml' => [
                                     CstMode::V_S_CREA => [
-                                            'ofRole'=>CstHTML::H_T_SELECT,
-                                            'toUser'=>CstHTML::H_T_SELECT],
+                                            'Role'=>CstHTML::H_T_SELECT,
+                                            'User'=>CstHTML::H_T_SELECT,
+                                    ],
                                     CstMode::V_S_UPDT => [
-                                            'ofRole'=>CstHTML::H_T_SELECT,
-                                            'toUser'=>CstHTML::H_T_SELECT],
+                                            'Role'=>CstHTML::H_T_SELECT,
+                                            'User'=>CstHTML::H_T_SELECT,
+                                    ],
                                     CstMode::V_S_SLCT => [
-                                            'ofRole'=>CstHTML::H_T_SELECT,
-                                            'toUser'=>CstHTML::H_T_SELECT],
+                                            'User'=>CstHTML::H_T_SELECT,
+                                            'Role'=>CstHTML::H_T_SELECT,
+                                    ],
+                            ],
+                            
+                    ],
+                    self::GROUPUSER =>[
+                            'attrHtml' => [
+                                    CstMode::V_S_CREA => [
+                                            'User'=>CstHTML::H_T_SELECT,
+                                            'UserGroup'=>CstHTML::H_T_SELECT,
+                                    ],
+                                    CstMode::V_S_UPDT => [
+                                            'User'=>CstHTML::H_T_SELECT,
+                                            'UserGroup'=>CstHTML::H_T_SELECT,
+                                    ],
+                                    CstMode::V_S_SLCT => [
+                                            'User'=>CstHTML::H_T_SELECT,
+                                            'UserGroup'=>CstHTML::H_T_SELECT,
+                                    ],
                             ],
                             
                     ],
             ],
     ];
         
-    public static function loadMeta()
-    {
-        $bindings = [
-                self::USER=>self::USER,
-                self::ROLE=>self::ROLE,
-                self::DISTRIBUTION=>self::DISTRIBUTION,
-                self::SESSION=>self::SESSION,
-        ];
-        UtilsC::createMods($bindings);
-    }
+
     
     public static function loadData()
     {
@@ -230,10 +296,12 @@ class Usr
         echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
         echo "<br>";
         
-        $RSpec = '[[["Read"],          	"true",         "true"],
-		[["Read","Update","Delete"],  	"|Session",    {"Session":"id"}],
-		[["Read","Update"],  			"|User",       {"User":"id<>User"}]
-		]';
+        $RSpec =
+        '[
+[["Read"],"true", "true"],
+[["Read","Update","Delete"],"|Session",{"Session":"id"}],
+[["Read","Update"],"|User",{"User":"id<>User"}]
+]';
         
         $obj=new Model(self::ROLE);
         $obj->setVal('Name', 'Default');
@@ -253,8 +321,8 @@ class Usr
         // Distribution
         
         $obj=new Model(self::DISTRIBUTION);
-        $obj->setVal('ofRole', $RootRole);
-        $obj->setVal('toUser', $RootUser);
+        $obj->setVal('Role', $RootRole);
+        $obj->setVal('User', $RootUser);
         $res=$obj->save();
         echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
         echo "<br>";

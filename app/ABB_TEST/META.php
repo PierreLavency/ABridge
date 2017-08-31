@@ -1,24 +1,29 @@
 <?php
-use ABridge\ABridge\UtilsC;
-use ABridge\ABridge\Model; 
+
+use ABridge\ABridge\Mod\Model; 
+use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Apps\Usr;
 
 // when running this data will be lost !!
 
 	require_once 'SETUP.php';
+
+
+	Usr::loadMeta();
 	
 	// Architecture building block 
 			
 	$obj = new Model(Config::ABB);
 	$res= $obj->deleteMod();
 
-	$res = $obj->addAttr('Name',			M_STRING);
-	$res = $obj->addAttr('CodeNm',			M_STRING);
-	$res = $obj->addAttr('Alias',			M_STRING);
-	$res = $obj->addAttr('ShortDesc',		M_STRING);	
-	$res = $obj->addAttr('LongDesc',		M_TXT);
-	$res = $obj->addAttr('Owner',			M_REF,	"/".Config::Group);
-	$res = $obj->addAttr('In',				M_CREF,	"/".Config::Interfaces."/Of");
-	$res = $obj->addAttr('Out',				M_CREF,	"/".Config::Exchange."/OutOf");	
+	$res = $obj->addAttr('Name',			Mtype::M_STRING);
+	$res = $obj->addAttr('CodeNm',			Mtype::M_STRING);
+	$res = $obj->addAttr('Alias',			Mtype::M_STRING);
+	$res = $obj->addAttr('ShortDesc',		Mtype::M_STRING);	
+	$res = $obj->addAttr('LongDesc',		Mtype::M_TXT);
+	$res = $obj->addAttr('Owner',			Mtype::M_REF,	"/".Config::Group);
+	$res = $obj->addAttr('In',				Mtype::M_CREF,	"/".Config::Interfaces."/Of");
+	$res = $obj->addAttr('Out',				Mtype::M_CREF,	"/".Config::Exchange."/OutOf");	
 	$res = $obj->setAbstr();
  	
 	$res = $obj->saveMod();			
@@ -30,12 +35,12 @@ use ABridge\ABridge\Model;
 	$res= $obj->deleteMod();
 
 	$res = $obj->setInhNme(Config::ABB);	
-	$res = $obj->addAttr('Style',			M_REF,	"/".Config::AStyle);
-	$res = $obj->addAttr('Authenticity',	M_REF,	"/".Config::SLevel);
-	$res = $obj->addAttr('Availability',	M_REF,	"/".Config::SLevel);
-	$res = $obj->addAttr('Confidentiality',	M_REF,	"/".Config::SLevel);	
-	$res = $obj->addAttr('Integrity',		M_REF,	"/".Config::SLevel);	
-	$res = $obj->addAttr('BuiltFrom',		M_CREF,	"/".Config::Component."/Of"); 
+	$res = $obj->addAttr('Style',			Mtype::M_REF,	"/".Config::AStyle);
+	$res = $obj->addAttr('Authenticity',	Mtype::M_REF,	"/".Config::SLevel);
+	$res = $obj->addAttr('Availability',	Mtype::M_REF,	"/".Config::SLevel);
+	$res = $obj->addAttr('Confidentiality',	Mtype::M_REF,	"/".Config::SLevel);	
+	$res = $obj->addAttr('Integrity',		Mtype::M_REF,	"/".Config::SLevel);	
+	$res = $obj->addAttr('BuiltFrom',		Mtype::M_CREF,	"/".Config::Component."/Of"); 
 	
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
@@ -46,14 +51,14 @@ use ABridge\ABridge\Model;
 	$res= $obj->deleteMod();
 	
 	$res = $obj->setInhNme(Config::ABB);
-	$res = $obj->addAttr(Config::CType,		M_REF,	"/".Config::CType); 	
-	$res = $obj->addAttr('Of',				M_REF,	"/".Config::Application); 
-	$res = $obj->addAttr('SourceControl',	M_REF,	"/".Config::SControl);
-	$res = $obj->addAttr('Url',				M_STRING);
-	$res = $obj->addAttr('Queue',			M_STRING);
-	$res = $obj->addAttr('OutQueue',		M_STRING);
-	$res = $obj->addAttr('BatchNme',		M_STRING);
-	$res = $obj->addAttr('Frequency',		M_STRING);
+	$res = $obj->addAttr(Config::CType,		Mtype::M_REF,	"/".Config::CType); 	
+	$res = $obj->addAttr('Of',				Mtype::M_REF,	"/".Config::Application); 
+	$res = $obj->addAttr('SourceControl',	Mtype::M_REF,	"/".Config::SControl);
+	$res = $obj->addAttr('Url',				Mtype::M_STRING);
+	$res = $obj->addAttr('Queue',			Mtype::M_STRING);
+	$res = $obj->addAttr('OutQueue',		Mtype::M_STRING);
+	$res = $obj->addAttr('BatchNme',		Mtype::M_STRING);
+	$res = $obj->addAttr('Frequency',		Mtype::M_STRING);
 	
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
@@ -63,14 +68,14 @@ use ABridge\ABridge\Model;
 	$obj = new Model(Config::Interfaces);
 	$res= $obj->deleteMod();
 
-	$res = $obj->addAttr('Name',			M_STRING);	
-	$res = $obj->addAttr('Of',				M_REF,	"/".Config::ABB);
-	$res = $obj->addAttr(Config::IType,		M_REF,	"/".Config::IType);
-	$res = $obj->addAttr(Config::IUse,		M_REF,	"/".Config::IUse);	
-	$res = $obj->addAttr('Streaming',		M_STRING);
-	$res = $obj->addAttr('LongDesc',		M_TXT);
-	$res = $obj->addAttr('Content',			M_STRING);	
-	$res = $obj->addAttr('UsedBy',			M_CREF,"/".Config::Exchange."/Through");
+	$res = $obj->addAttr('Name',			Mtype::M_STRING);	
+	$res = $obj->addAttr('Of',				Mtype::M_REF,	"/".Config::ABB);
+	$res = $obj->addAttr(Config::IType,		Mtype::M_REF,	"/".Config::IType);
+	$res = $obj->addAttr(Config::IUse,		Mtype::M_REF,	"/".Config::IUse);	
+	$res = $obj->addAttr('Streaming',		Mtype::M_STRING);
+	$res = $obj->addAttr('LongDesc',		Mtype::M_TXT);
+	$res = $obj->addAttr('Content',			Mtype::M_STRING);	
+	$res = $obj->addAttr('UsedBy',			Mtype::M_CREF,"/".Config::Exchange."/Through");
 		
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";	
@@ -80,9 +85,9 @@ use ABridge\ABridge\Model;
 	$obj = new Model(Config::Exchange);
 	$res= $obj->deleteMod();
 
-	$res = $obj->addAttr('CodeNm',			M_STRING);
-	$res = $obj->addAttr('Through',			M_REF,"/".Config::Interfaces);
-	$res = $obj->addAttr('OutOf',			M_REF,"/".Config::ABB);
+	$res = $obj->addAttr('CodeNm',			Mtype::M_STRING);
+	$res = $obj->addAttr('Through',			Mtype::M_REF,"/".Config::Interfaces);
+	$res = $obj->addAttr('OutOf',			Mtype::M_REF,"/".Config::ABB);
 	$obj->setCkey(['OutOf','Through'],true);	
 	
 	$res = $obj->saveMod();			
@@ -96,7 +101,7 @@ use ABridge\ABridge\Model;
 	$obj = new Model(Config::ACode);
 	$res= $obj->deleteMod();
 
-	$res = $obj->addAttr('Value',M_STRING);
+	$res = $obj->addAttr('Value',Mtype::M_STRING);
 	$res = $obj->setMdtr('Value',true);
     $res = $obj->setBkey('Value',true);	
 	$res = $obj->setAbstr();	
@@ -165,34 +170,3 @@ use ABridge\ABridge\Model;
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 	
-	
-/*******************************  User  ************************/
-
-	$bindings = [
-			Config::Session=>Config::Session,
-			Config::User=>Config::User,
-			Config::Role=>Config::Role,
-			Config::Distribution=>Config::Distribution
-	];	
-	
-	UtilsC::createMods($bindings);	
-	
-	// User	
-	$obj = new Model(Config::User);
-	
-	$res = $obj->addAttr(Config::Group,M_REF,'/'.Config::Group);	
-	
-	$res = $obj->saveMod();	
-	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-
-	// Group
-	
-	$obj = new Model(Config::Group);
-	$res= $obj->deleteMod();
-
- 	$res = $obj->addAttr('Name',		M_STRING);
-	$res = $obj->addAttr('Users',		M_CREF,'/'.Config::User.'/'.Config::Group);
-    $res = $obj->setBkey('Name',true);	
-	
-	$res = $obj->saveMod();			
-	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";	

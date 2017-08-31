@@ -6,6 +6,7 @@ use ABridge\ABridge\Mod\Model;
 
 use ABridge\ABridge\Hdl\CstMode;
 
+use ABridge\ABridge\CstError;
 
 use ABridge\ABridge\Usr\User;
 use ABridge\ABridge\Usr\Role;
@@ -69,7 +70,10 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
  
             $res=$x->save();
             $this->assertEquals(1, $res);
- 
+            $res=$x->save();
+            $this->assertFalse($x->isErr());
+            
+            
             $x = new Model($bd['Role'], 1);
             $x->setVal('Name', 'Defaults');
 
@@ -79,7 +83,13 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
             
             $res=$x->save();
             $this->assertEquals(2, $res);
- 
+            $res=$x->save();
+            $this->assertEquals(CstError::E_ERC064.":".$bd['Role'], $x->getErrLine());
+            
+            $x->setVal('RoleName', 'NotExists');
+            $x->save();
+            $this->assertEquals(CstError::E_ERC059.":".$bd['Role'].":NotExists", $x->getErrLine());
+            
  
             $db->commit();
         }
@@ -109,14 +119,14 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['Session'], 1);
 
-            $res= $x->getVal('Role');
+            $res= $x->getVal('ActiveRole');
             
             $this->assertEquals(1, $res);
 
             $sessionHdl = $x->getCobj();
             $this->assertNull($sessionHdl->getRSpec());
 
-            $res = $sessionHdl->getObj('Role');
+            $res = $sessionHdl->getObj('ActiveRole');
             $this->assertEquals(1, $res->getId());
 
             $x = new Model($bd['Role'], 1);
@@ -125,7 +135,7 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
 
             
             $x = new Model($bd['Session'], 2);
-            $res= $x->getVal('Role');
+            $res= $x->getVal('ActiveRole');
             $this->assertNull($res);
 
             $sessionHdl = $x->getCobj();

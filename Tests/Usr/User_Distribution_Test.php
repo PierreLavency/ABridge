@@ -74,8 +74,8 @@ class User_Distribution_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(2, $res);
 
             $x = new Model($bd['Distribution']);
-            $x->setVal('ofRole', 1);
-            $x->setVal('toUser', 1);
+            $x->setVal('Role', 1);
+            $x->setVal('User', 1);
             $res=$x->save();
             $this->assertEquals(1, $res);
 
@@ -101,22 +101,22 @@ class User_Distribution_Test extends PHPUnit_Framework_TestCase
             $db->beginTrans();
             
             $x = new Model($bd['User'], 1);
-            $res= $x->getValues('DefaultRole');
+            $res= $x->getValues('Role');
             $this->assertEquals([1], $res);
             
             $obj=$x->getCobj();
-            $res = $obj->checkRole(2);
+            $res = $obj->checkAttr('Role', 2);
             $this->assertFalse($res);
 
-            $res = $obj->checkRole(1);
+            $res = $obj->checkAttr('Role', 1);
             $this->assertTrue($res);
             
-            $x->setVal('DefaultRole', 1);
+            $x->setVal('Role', 1);
             $x->save();
             $this->assertFalse($x->isErr());
 
             
-            $res= $x->setVal('DefaultRole', 2);
+            $res= $x->setVal('Role', 2);
             $this->assertFalse($res);
             
             $db->commit();
