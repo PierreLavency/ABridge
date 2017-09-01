@@ -1,9 +1,5 @@
 <?php
 
-use ABridge\ABridge\UtilsC;
+require_once 'SETUP.php';
 
-	$bindings = [
-			'GroupUser'	=> 'GroupUser',
-			'UserGroup'	=> 'UserGroup',
-	];
-	UtilsC::createMods($bindings);
+config::loadMeta();

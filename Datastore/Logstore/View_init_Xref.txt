@@ -186,7 +186,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 		<a href="/ABridge.php/viewCasesXref/2?FatherOf=10" >Next</a>
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref/2/FatherOf?Action=Create" >New</a>
+		<a href="/ABridge.php/viewCasesXref/2/FatherOf?Action=Create" >Add</a>
 	</td>
 </tr> </table>
 
@@ -298,7 +298,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 		<a href="/ABridge.php/viewCasesXref/2?MotherOf=10" >Next</a>
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref/2/MotherOf?Action=Create" >New</a>
+		<a href="/ABridge.php/viewCasesXref/2/MotherOf?Action=Create" >Add</a>
 	</td>
 </tr> </table>
 

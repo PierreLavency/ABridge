@@ -218,12 +218,11 @@ class Session extends CModel
     public function delet()
     {
         $flag = $this->mod->getValN('ValidFlag');
-        if (!$flag and !$this->Keep) {
+        if (!$flag and ! $this->Keep) {
             return $this->mod->deletN();
-        } else {
-            $this->mod->setValN('ValidFlag', 0);
-            return $this->mod->saveN();
         }
+        $this->mod->setValN('ValidFlag', 0);
+        return $this->mod->saveN();
     }
 
     public static function getSession($id)

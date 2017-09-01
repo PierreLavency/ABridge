@@ -49,7 +49,7 @@ class CstView
     const V_B_RFCH =  "Refresh";
     const V_B_NXT =  "Next";
     const V_B_PRV =  "Previous";
-    const V_B_NEW =  "New";
+    const V_B_NEW =  "Add";
     const V_COUNTF =  "v_countf";
     const V_CTYP =  "v_ctyp";
     const V_C_TYP1 =  "v_c_typ1";

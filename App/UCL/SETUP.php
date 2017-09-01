@@ -60,9 +60,9 @@ class Config
 	'View' => [			
 		'Home' =>
 			['/',
-//					'/Session/~',
+					'/Session/~',
 					'/Admin/1',
-//					'/User/~'
+					'/User/~'
 			],
 			
 		'Admin'	=>[

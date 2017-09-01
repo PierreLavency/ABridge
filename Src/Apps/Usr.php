@@ -49,6 +49,10 @@ class Usr
                             ],
                     ],
                     self::USER =>[
+                            'lblList'  => [
+                                    'Role'          => 'Default Role',
+                                    'UserGroup'     =>'Default Group',
+                            ],
                             'attrHtml' => [
                                     CstMode::V_S_READ => [
                                             'Roles'=>[
@@ -72,6 +76,21 @@ class Usr
                                     CstMode::V_S_SLCT       => ['UserId'],
                             ],
                             'viewList' => [
+                                    'Profile' => [
+                                            'attrList' => [
+                                                    CstMode::V_S_READ=> [
+                                                            'id',
+                                                            'UserId',
+                                                            'Role',
+                                                            'UserGroup',
+                                                    ],
+                                            ],
+                                            'navList' => [
+                                                    CstMode::V_S_READ => [
+                                                            CstMode::V_S_SLCT,CstMode::V_S_CREA,CstMode::V_S_DELT,
+                                                    ],
+                                            ],
+                                    ],
                                     'Password'  => [
                                             'attrList' => [
                                                     CstMode::V_S_READ   => [
@@ -92,8 +111,13 @@ class Usr
                                                             'UserId'
                                                     ],
                                             ],
+                                            'navList' => [
+                                                    CstMode::V_S_READ => [
+                                                            CstMode::V_S_UPDT
+                                                    ],
+                                            ],
                                     ],
-                                    'Role'  => [
+                                    'Roles'  => [
                                             'attrList' => [
                                                     CstMode::V_S_READ   => [
                                                             'UserId',
@@ -112,7 +136,7 @@ class Usr
                                                     ],
                                             ],
                                     ],
-                                    'Group'  => [
+                                    'Groups'  => [
                                             'attrList' => [
                                                     CstMode::V_S_READ   => [
                                                             'UserId',
@@ -145,6 +169,7 @@ class Usr
                                                     CstMode::V_S_READ => [],
                                             ],
                                     ],
+
                             ],
                     ],
                     self::ROLE =>[
@@ -287,6 +312,8 @@ class Usr
     
     public static function loadData()
     {
+        // Role
+        
         $RSpec ='[["true","true","true"]]';
         
         $obj=new Model(self::ROLE);
@@ -295,20 +322,15 @@ class Usr
         $RootRole=$obj->save();
         echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
         echo "<br>";
+ 
+        // Group
         
-        $RSpec ='[
-[["Read"],"true", "true"],
-[["Read","Update","Delete"],"|Session",{"Session":"id"}],
-[["Read","Update"],"|User",{"User":"id<>User"}]
-]';
-        
-        $obj=new Model(self::ROLE);
-        $obj->setVal('Name', 'Default');
-        $obj->setVal('JSpec', $RSpec);
-        $obj->save();
+        $obj=new Model(self::USERGROUP);
+        $obj->setVal('Name', 'RootGroup');
+        $RootGroup=$obj->save();
         echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
         echo "<br>";
-                
+        
         // User
         
         $obj=new Model(self::USER);
@@ -321,6 +343,15 @@ class Usr
         
         $obj=new Model(self::DISTRIBUTION);
         $obj->setVal('Role', $RootRole);
+        $obj->setVal('User', $RootUser);
+        $res=$obj->save();
+        echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
+        echo "<br>";
+        
+        // GroupUser
+        
+        $obj=new Model(self::GROUPUSER);
+        $obj->setVal('UserGroup', $RootGroup);
         $obj->setVal('User', $RootUser);
         $res=$obj->save();
         echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();

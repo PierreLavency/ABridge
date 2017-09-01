@@ -1,11 +1,6 @@
 <?php
 	
-// when running this data will be lost !!
 
-use ABridge\ABridge\Apps\Usr;
+require_once 'SETUP.php';
 
-	
-/*******************************  User  ************************/
-
-	Usr::loadMeta();
-	
+config::loadMeta();

@@ -1,4 +1,5 @@
 <?php
-		
-use ABridge\ABridge\Apps\Usr;
-Usr::loadData();
+
+require_once 'SETUP.php';
+
+config::loadData();

@@ -89,7 +89,22 @@ class View
     {
         foreach ($specv as $mod => $specm) {
             if ($specm != 'Home' and $specm !='MenuExcl') {
-                Handler::get()->setViewHandler($mod, $specm);
+                $speci = Handler::get()->getViewHandler($mod);
+                if ($speci) {
+                    $speciV = [];
+                    if (isset($speci['viewList'])) {
+                        $speciV= $speci['viewList'];
+                    }
+                    $specmV = [];
+                    if (isset($specm['viewList'])) {
+                        $specmV= $specm['viewList'];
+                    }
+                    $speci['viewList']=array_merge($speciV, $specmV);
+                } else {
+                    $speci=$specm;
+                }
+                
+                Handler::get()->setViewHandler($mod, $speci);
             }
         }
     }

@@ -87,4 +87,61 @@ require_once("genealogy_SETUP.php");
 	$res=$p7->setVal('Father',$id3);	
 	$id7 = $p7->save();	
 
+	$RSpec =
+'[
+ [["Read"],                    "true",                        "true"],
+ [["Select"],                 ["|Student","|Cours","|Prof"],  "true"],
+ [["Update","Delete"],         "|Student",                   {"Student":"User"}],
+ [["Create","Update","Delete"],"|Student|InscritA",          {"Student":"User"}],
+ [["Create","Update","Delete"],"|User|Profile",              {"User":"id<>User"}],
+ [["Create","Update","Delete"],"|User|Profile|InscritA",     {"User":"id<>User"}],
+ [ "Select",                   "|User|Profile",               "false"],
+ [["Read","Update"],           "|Session",                   {"Session":"id"}],
+ [["Read","Update"],           "|User",                      {"User":"id<>User"}]
+]';
+	
+	$obj=new Model(Config::Role);
+	$obj->setVal('Name','Student');
+	$obj->setVal('JSpec',$RSpec);
+	$obj->save();
+	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
+	
+	$RSpec =
+'[
+ [["Read"],                    "true",                               "true"],
+ [["Select"],                 ["|Student","|Cours","|Prof"],         "true"],
+ [["Update","Delete"],         "|Prof",                             {"Prof":"User"}],
+ [["Create","Update","Delete"],"|User|ProfProfile",                 {"User":"id<>User"}],
+ [["Read","Update"],           "|Session",                          {"Session":"id"}],
+ [["Read","Update"],           "|User",                             {"User":"id<>User"}]
+]';
+	
+	
+	$obj=new Model(Config::Role);
+	$obj->setVal('Name','Professor');
+	$obj->setVal('JSpec',$RSpec);
+	$obj->save();
+	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
+	
+	$RSpec =
+'[
+ [["Read"],                    "true",              "true"],
+ [["Select"],  ["|Student","|Cours","|Prof","|Inscription","|Charge"],        "true"],
+ [ "Create",                   "|Cours",            {"Cours":"User"}],
+ [["Update","Delete"],         "|Cours",            {"Cours":"User:UGroup"}],
+ [["Create","Update","Delete"],"|Cours|Par",        {"Cours":"User:UGroup"}],
+ [["Create","Update","Delete"],"|Cours|SuivitPar",  {"Cours":"User:UGroup"}],
+ [["Update","Read"],           "|Session",          {"Session":"id"}],
+ ["Update",                    "|User",             {"User":"id<>User"}],
+ ["Read",                      "|User",             {"User":"UGroup<>User:UGroup"}]
+]';
+	
+	
+	$obj=new Model(Config::Role);
+	$obj->setVal('Name','Gestionaire');
+	$obj->setVal('JSpec',$RSpec);
+	$obj->save();
+	echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();echo "<br>";
+		
+	
 	$ctrl->commit();	
