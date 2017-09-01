@@ -633,7 +633,7 @@ class View
         } else {
             $mod=$hdl->getModName();
         }
-        $res[CstHTML::H_LABEL]=$this->getLbl($mod);
+        $res[CstHTML::H_LABEL]=$mod; // see B23 $this->getLbl($mod);
         return $res;
     }
     

@@ -64,6 +64,7 @@ class Config
 	public static function loadMeta()
 	{
 		Usr::loadMeta();
+		Adm::loadMeta();
 		
 		$obj = new Model(Usr::USER);		
 		$res = $obj->addAttr('Of',Mtype::M_CREF,'/'.self::PDATA.'/'.Usr::USER);		
@@ -93,6 +94,7 @@ class Config
 	public static function loadData()
 	{
 		Usr::loadData();
+		Adm::loadData();
 		
 		$RSpec ='[
 [["Read"],"true", "true"],

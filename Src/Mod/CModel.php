@@ -20,6 +20,7 @@ abstract class CModel
     {
         return true;
     }
+
     
     public function getValues($attr)
     {
