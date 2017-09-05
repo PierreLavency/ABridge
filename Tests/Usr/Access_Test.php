@@ -121,6 +121,12 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(2, $res);
             $res=$x->save();
             $this->assertFalse($x->isErr());
+
+            
+            $x = new Model($bd['Session']);
+            $res=$x->save();
+            $this->assertEquals(3, $res);
+            $this->assertFalse($x->isErr());
             
             $db->commit();
         }
@@ -256,6 +262,45 @@ class Access_Test extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider Provider3
+     * @depends testsave
+     */
+    
+    public function testDefault($p, $b, $e1, $bases)
+    {
+    	
+    	
+    	foreach ($bases as $base) {
+    		list($db,$bd) = $base;
+    		
+    		$db->beginTrans();
+    				
+    		$y = new Model($bd['Session'], 3);
+    		$r = $y->getCobj();
+  		    		
+    		$req = new Request($p, $b);
+    		
+    		$res = $r->checkARight($req, [['Session',$y]], true);
+    		$this->assertEquals($e1, $res);
+    		
+    		
+    		$db->commit();
+    	}
+    	return $bases;
+    }
+    
+    public function Provider3()
+    {
+    	return [
+    			['/',             CstMode::V_S_READ, true],
+    			['/Session/3',    CstMode::V_S_READ, true],
+    			['/Session/3',    CstMode::V_S_UPDT, true],
+    			['/Application/3',CstMode::V_S_UPDT, false],
+    	];
+    }
+    
+    
+    /**
      * @depends testsave
      */
         
@@ -270,6 +315,9 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $y = new Model($bd['Session'], 1);
             $r = $y->getCobj();
 
+            $res=$r->getAttrPathVal($y, 'User:UserId');
+            $this->assertEquals($res, 'test');
+            
             $res = "";
             try {
                 $x=$r->checkreq(null);
@@ -286,38 +334,15 @@ class Access_Test extends PHPUnit_Framework_TestCase
             }
             $this->assertEquals($res, CstError::E_ERC012);
 
-        
+            try {
+            	$x=$r->getAttrPathVal(null, 'x:x');
+            } catch (Exception $e) {
+            	$res= $e->getMessage();
+            }
+            $this->assertEquals($res, CstError::E_ERC050);
             $db->commit();
         }
         return $bases;
     }
     
-    /**
-     * @dataProvider Provider1
-     */
-    public function itestRoot($p, $b, $c, $e1)
-    {
-        $y = new SessionHdl();
-        $req = new Request($p, $b);
-        $r = $y->getReqCond($req, $c);
-        $this->assertEquals(['true'], $r);
-        
-        $y = new SessionHdl(null, null);
-        $r = $y->getReqCond($req, $c);
-        $this->assertEquals(['true'], $r);
-        
-        $s = new Model('TestSess');
-        $s->addAttr('User', Mtype::M_INT);
-        
-        $y = new SessionHdl($s, null);
-        $r = $y->getReqCond($req, $c);
-        $this->assertEquals(['true'], $r);
-
-        $y = new SessionHdl(null);
-        $r = $y->getReqCond($req, $c);
-        $this->assertEquals(['true'], $r);
-
-        
-        $this->assertTrue($y->isRoot());
-    }
 }

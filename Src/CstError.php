@@ -125,7 +125,7 @@ class CstError
         self::E_ERC048 => 'Illegal action on this type of path',
         self::E_ERC049 => 'Action not authorized on this path',
 
-        self::E_ERC050 => 'illegal condition in role',
+        self::E_ERC050 => 'null object in attribute path',
         self::E_ERC051 => 'NOT USED',
         self::E_ERC052 => 'Cannot delete object- referential integrity',
         self::E_ERC053 => 'Action not authorized on this object',

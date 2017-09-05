@@ -296,6 +296,11 @@ class Session extends CModel
         return Access::getSelMenu($this->mod, $classList);
     }
     
+    public function getAttrPathVal($obj, $attrPath)
+    {
+        return Access::getAttrPathVal($obj, $attrPath);
+    }
+    
     public function checkARight($req, $attrObjs, $protect, $plast = true)
     {
         return Access::checkARight($this->mod, $req, $attrObjs, $protect, $plast);

@@ -11,11 +11,7 @@ use Exception;
 
 class Access
 {
-    protected static function isRoot($session)
-    {
-        return (is_null($session->getVal('ActiveRole')));
-    }
-
+    
     protected static function matchEval($elm, $patrn)
     {
         if (is_array($patrn)) {
@@ -35,7 +31,7 @@ class Access
         if (is_null($req)) {
             throw new Exception(CstError::E_ERC012);
         }
-        $res= self::getCond($session, $req->getAction(), $req->getModpath());
+        $res= self::getCondPath($session, $req->getAction(), $req->getModpath());
         if ($res) {
             return true;
         } else {
@@ -48,8 +44,8 @@ class Access
         $rList = [];
         foreach ($classList as $className) {
             $modPath = '|'.$className;
-            $res = self::getCond($session, CstMode::V_S_SLCT, $modPath);
-            if ($res === ['true']) {
+            $res = self::getCondPath($session, CstMode::V_S_SLCT, $modPath);
+            if ($res === true) {
                 $rList[]= '/'.$className;
             }
         }
@@ -57,10 +53,10 @@ class Access
         return $rList;
     }
     
-    protected static function getCond($session, $action, $modpath)
+    protected static function getCondPath($session, $action, $modpath)
     {
-        $obj = $session->getCobj();
-        $roleSpec=$obj->getRSpec();
+        $sessionCobj = $session->getCobj();
+        $roleSpec=$sessionCobj->getRSpec();
         if (!$roleSpec || !$session->getVal('Checked') || !$session->getVal('ValidFlag')) {
             $roleSpec=[
                     [CstMode::V_S_READ,'|','true'],
@@ -68,50 +64,48 @@ class Access
                     
             ];
         }
-        $cond = [];
+        $pathCond = [];
+        $found = false;
         foreach ($roleSpec as $elm) {
             if (self::matchEval($action, $elm[0]) and self::matchEval($modpath, $elm[1])) {
-                $ncond = $elm[2];
-                switch ($ncond) {
+                $pathCondElm = $elm[2];
+                switch ($pathCondElm) {
                     case 'true':
-                        if (count($cond) == 0) {
-                            $cond[]='true';
-                        }
+                        $found=true;
                         break;
                     case 'false':
                         return false;
                         break;
                     default:
-                        if (count($cond) == 1 and $cond[0] === 'true') {
-                            $cond[0]=$ncond;
-                        } else {
-                            $cond[]=$ncond;
-                        }
+                        $found=true;
+                        $pathCond[]=$pathCondElm;
                 }
             }
         }
-        if ($cond == []) {
+        if (!$found) {
             return false;
         }
-
-        return $cond;
+        if ($pathCond === []) {
+            return true;
+        }
+        return $pathCond;
     }
 
-    protected static function getCondAttr($cond, $attr)
+    protected static function getCondAttr($pathCond, $attr)
     {
-        $condElm = [];
-        if ($cond === ['true']) {
-            return $cond;
+        $attrCond = [];
+        if ($pathCond === true) {
+            return true;
         }
-        foreach ($cond as $condE) {
-            if (isset($condE[$attr])) {
-                $condElm[]=$condE[$attr];
+        foreach ($pathCond as $pathCondElm) {
+            if (isset($pathCondElm[$attr])) {
+                $attrCond[]=$pathCondElm[$attr];
             }
         }
-        if ($condElm==[]) {
-            $condElm=['true'];
+        if ($attrCond===[]) {
+            return true;
         }
-        return $condElm;
+        return $attrCond;
     }
 
     public static function checkARight($session, $req, $attrObjs, $protect, $plast = true)
@@ -121,7 +115,7 @@ class Access
         }
         $action = $req->getAction();
         $modpath=$req->getModpath();
-        $pathcond = self::getCond($session, $action, $modpath);
+        $pathcond = self::getCondPath($session, $action, $modpath);
         if (!$pathcond) {
             return false;
         }
@@ -131,7 +125,8 @@ class Access
             $obj = $attrObj[1];
             $c--;
             $last = (!$c and $plast);
-            $res = self::checkAttrCond($session, $action, $pathcond, $attr, $obj, $protect, $last);
+            $attrCond = self::getCondAttr($pathcond, $attr);
+            $res = self::checkAttrCond($session, $action, $attrCond, $obj, $protect, $last);
             if (!$res) {
                 return false;
             }
@@ -139,20 +134,21 @@ class Access
         return true;
     }
     
-    protected static function checkAttrCond($session, $action, $pathcond, $attr, $obj, $protect, $last)
+    protected static function checkAttrCond($session, $action, $attrCond, $obj, $protect, $last)
     {
-        $cond = self::getCondAttr($pathcond, $attr);
-        if ($cond == ['true']) {
+        if ($attrCond === true) {
             return true;
         }
-        foreach ($cond as $attro) {
-            $attra = explode('<>', $attro);
-            $attrs=$attro;
+        foreach ($attrCond as $attrCondElm) {
+            $attra = explode('<>', $attrCondElm);
             if (count($attra) > 1) {
-                $attro= $attra[0];
-                $attrs=$attra[1];
+                $objAttrPath= $attra[0];
+                $sessAttrPath=$attra[1];
+            } else {
+                $sessAttrPath=$attrCondElm;
+                $objAttrPath=$attrCondElm;
             }
-            $res = self::checkLinkAttr($session, $action, $obj, $attro, $attrs, $protect, $last);
+            $res = self::checkLinkAttr($session, $action, $obj, $objAttrPath, $sessAttrPath, $protect, $last);
             if (!$res) {
                 return false;
             }
@@ -160,78 +156,48 @@ class Access
         return true;
     }
     
-    protected static function checkLinkAttr($session, $action, $obj, $attroExp, $attrsExp, $protect, $last)
+    protected static function checkLinkAttr($session, $action, $obj, $objAttrPath, $sessAttrPath, $protect, $last)
     {
-        if (self::isRoot($session)) {
-            return true;
-        }
-        $r = self::resolvePath($session, $attrsExp);
-        if (is_null($r)) {
-            return false;
-        }
-        $sess=$r[0];
-        $attrs=$r[1];
-        $r = self::resolvePath($obj, $attroExp);
-        if (is_null($r)) {
-            return false;
-        }
-        $obj=$r[0];
-        $attro=$r[1];
-        if (is_null($obj)) {
-            return false;
-        }
-        if ((!$obj->existsAttr($attro)) or (!$sess->existsAttr($attrs))) {
-            throw new Exception(CstError::E_ERC050.":$attro:$attrs");
-        }
-        $typ = $obj->getTyp($attro);
-        $typs = $sess->getTyp($attrs);
-        if (Mtype::baseType($typ) != Mtype::baseType($typs)) {
-            throw new Exception(CstError::E_ERC050.':'.$typ.':'.$typs);
-        }
-        if ($typ == Mtype::M_REF
-        and $typs == Mtype::M_REF
-        and ($obj->getModRef($attro) != $sess->getModRef($attrs))) {
-            throw new Exception(CstError::E_ERC050.':'.$obj->getModRef($attro).':'.$sess->getModRef($attrs));
-        }
-        $id1=$sess->getVal($attrs);
-        $id2=$obj->getVal($attro);
-        if ($id1 === $id2) {
+        $attrA=explode(':', $objAttrPath);
+        $attr=$attrA[0];
+        $objVal = self::getAttrPathArrayVal($obj, $attrA);
+        $sessVal= self::getAttrPathVal($session, $sessAttrPath);
+        if ($sessVal === $objVal) {
             if ($protect) {
-                $obj->protect($attro);
+                $obj->protect($attr);
             }
             return true;
         }
-        if (($action == CstMode::V_S_CREA or $action ==CstMode::V_S_SLCT) and is_null($id2) and $last) {
+        if (($action == CstMode::V_S_CREA or $action ==CstMode::V_S_SLCT) and is_null($objVal) and $last) {
             if ($protect) {
-                $obj->setVal($attro, $id1);
-                $obj->protect($attro);
+                $obj->setVal($attr, $sessVal);
+                $obj->protect($attr);
             }
             return true;
         }
         return false;
     }
     
-    protected static function resolvePath($obj, $attrExp)
+    public static function getAttrPathVal($obj, $attrPath)
     {
-        $attrA=explode(':', $attrExp);
-        return self::resPath($obj, $attrA);
+        $attrA=explode(':', $attrPath);
+        return self::getAttrPathArrayVal($obj, $attrA);
     }
     
-    protected static function resPath($obj, $attrA)
+    
+    protected static function getAttrPathArrayVal($obj, $attrA)
     {
         if (is_null($obj)) {
-            return null;
+            throw new Exception(CstError::E_ERC050);
         }
         $c = count($attrA);
-        if ($c==0) {
-            return null;
+        if ($c==1) {
+            $res = $obj->getVal($attrA[0]);
+            return $res;
         }
         $attr = array_shift($attrA);
-        if ($c==1) {
-            return [$obj,$attr];
-        }
         $obj->protect($attr);
         $obj=$obj->getRef($attr);
-        return self::resPath($obj, $attrA);
+        return self::getAttrPathArrayVal($obj, $attrA);
     }
 }
