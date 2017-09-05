@@ -19,7 +19,7 @@ class Role extends CModel
         
         if (isset($bindings['Distribution'])) {
             $distribution=$bindings['Distribution'];
-            $res = $obj->addAttr('Users', Mtype::M_CREF, '/'.$distribution.'/User');
+            $res = $obj->addAttr('Users', Mtype::M_CREF, '/'.$distribution.'/Role');
         }
         
         return $obj->isErr();

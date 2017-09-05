@@ -197,15 +197,14 @@ class Handle
         return true;
     }
     
-
-    
+  
 // Autorize Actions on object
 
     public function getActionUrl($action, $prm)
     {
         // for object menu
         $req = $this->request->getActionReq($action);
-        $res = $this->checkARight($req, $this->attrObjs, false, false);
+        $res = $this->checkARight($req, $this->attrObjs, false, true);
         if (!$res) {
             return null;
         }

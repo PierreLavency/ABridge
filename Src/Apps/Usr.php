@@ -326,7 +326,7 @@ class Usr
         // Group
         
         $obj=new Model(self::USERGROUP);
-        $obj->setVal('Name', 'RootGroup');
+        $obj->setVal('Name', 'Root');
         $RootGroup=$obj->save();
         echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
         echo "<br>";
@@ -354,6 +354,16 @@ class Usr
         $obj->setVal('UserGroup', $RootGroup);
         $obj->setVal('User', $RootUser);
         $res=$obj->save();
+        echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
+        echo "<br>";
+ 
+        
+        // Root Default
+        
+        $obj=new Model(self::USER, $RootUser);
+        $obj->setVal('Role', $RootRole);
+        $obj->setVal('UserGroup', $RootGroup);
+        $RootUser=$obj->save();
         echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
         echo "<br>";
     }

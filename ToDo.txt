@@ -13,7 +13,7 @@ B22 EVALP in create dialog
 B23 menu and lables
 
 DEV
-- migrate UCL to new access control.
+
 - move menu into handle
 - check on delete of distribution / Groups if used in default.
 - set up own exception
@@ -53,6 +53,7 @@ DEV
 - changed DB model independently of class model.
 - user Jason to save data rather than serilialisation.
 - implement unique index.
+- prefix all tables
 - database paging
 
 - implement CSS 
@@ -84,6 +85,8 @@ INT
 - set up jenkin
 
 DONE
+-------------// 3 days
+- migrate UCL to new access control (UCL_TEST).
 -------------// 1 day
 set up resuable code (cdv)
 -------------// 1day
@@ -112,7 +115,7 @@ B19 cststp not set in admin class
 Hdl/Mod packages
 clean up perf test
 rollback change on model identifier
------------// 1 
+-----------// 1 days
 align src with PSR
 - use static to declare spec and other functions
 -----------// 10

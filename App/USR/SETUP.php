@@ -30,7 +30,12 @@ class Config
 		'Home' =>
 			['/',"/".Usr::SESSION."/~","/".Usr::USER."/~","/".Adm::ADMIN."/1"],
 		'MenuExcl' =>
-			["/".Adm::ADMIN,"/".Usr::USER,"/".Usr::SESSION],
+			[
+					"/".Adm::ADMIN,
+					"/".Usr::USER,"/".Usr::SESSION,
+					"/".Usr::DISTRIBUTION,"/".Usr::GROUPUSER,
+					"/".self::PDATA,
+			],
 			
 		Usr::USER =>[
 			'viewList' => [

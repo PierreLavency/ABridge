@@ -93,7 +93,7 @@ class Access
         if ($cond == []) {
             return false;
         }
-        $cond = array_unique($cond);
+
         return $cond;
     }
 

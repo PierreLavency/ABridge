@@ -262,7 +262,8 @@ class Config
 				'attrHtml' => [
 							CstMode::V_S_UPDT => ['User'=>CstHTML::H_T_SELECT],
 							CstMode::V_S_SLCT => [CstMode::V_S_SLCT=>[CstView::V_SLICE=>15,CstView::V_COUNTF=>true,CstView::V_CTYP=>CstView::V_C_TYPN]]
-				]				
+				]
+				
 		],
 		'Prof' => [
 		

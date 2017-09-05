@@ -25,14 +25,11 @@ class Student extends CModel
 	public function initMod($bindings)
 	{
 		$Code = 'Code';	
-		$sex_id=1;
-		$country_id=2;
 		$inscription = 'Inscription';
 		$user ='User';
-		$sex='Sex';
+		$sex='Sexe';
 		$country='Country';
 		
-var_dump($bindings);
 
 		$obj = $this->mod;
 		
@@ -48,21 +45,21 @@ var_dump($bindings);
 		
 		}
 		if (isset($bindings[$country])) {
+			$country=$bindings[$country];
 			$res = $obj->addAttr('Country',Mtype::M_CODE,"/$country/Values");
 		}
 		
 		if (isset($bindings[$inscription])) {
 			$inscription=$bindings[$inscription];
-			$res = $obj->addAttr('InscritA',M_CREF,'/'.$inscription.'/De');
+			$res = $obj->addAttr('InscritA',Mtype::M_CREF,'/'.$inscription.'/De');
 			$obj->addAttr('NbrCours',Mtype::M_INT,M_P_EVAL);
 			$obj->addAttr('NbrCredits',Mtype::M_INT,M_P_EVALP);
-			$obj->addAttr('Jason',Mtype::M_TXT,M_P_EVAL);
 		}
 		
 		if (isset($bindings[$user])) {
 			$user = $bindings[$user];
-			$obj->addAttr($user,Mtype::M_REF,'/'.$user);
-			$res=$obj->setBkey($user,true);
+			$obj->addAttr('User',Mtype::M_REF,'/'.$user);
+			$res=$obj->setBkey('User',true);
 		}
 		
 	}

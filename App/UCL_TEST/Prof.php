@@ -4,13 +4,13 @@ use ABridge\ABridge\GenJason;
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mtype;
 
-class Student extends CModel 
+class Prof extends CModel 
 {
 
 	public function getVal($attr) 
 	{
 		if ($attr == 'NbrCours') {
-			$a = $this->mod->getValN('InscritA');
+			$a = $this->mod->getValN('Donne');
 			$res = count($a);
 			return $res;
 		}
@@ -25,14 +25,11 @@ class Student extends CModel
 	public function initMod($bindings)
 	{
 		$Code = 'Code';	
-		$sex_id=1;
-		$country_id=2;
-		$inscription = 'Inscription';
+		$charge = 'Charge';
 		$user ='User';
-		$sex='Sex';
+		$sex='Sexe';
 		$country='Country';
 		
-var_dump($bindings);
 
 		$obj = $this->mod;
 		
@@ -48,21 +45,21 @@ var_dump($bindings);
 		
 		}
 		if (isset($bindings[$country])) {
+			$country=$bindings[$country];
 			$res = $obj->addAttr('Country',Mtype::M_CODE,"/$country/Values");
 		}
 		
-		if (isset($bindings[$inscription])) {
-			$inscription=$bindings[$inscription];
-			$res = $obj->addAttr('InscritA',M_CREF,'/'.$inscription.'/De');
+		if (isset($bindings[$charge])) {
+			$charge=$bindings[$charge];
+			$res = $obj->addAttr('Donne',Mtype::M_CREF,'/'.$charge.'/Par');
 			$obj->addAttr('NbrCours',Mtype::M_INT,M_P_EVAL);
 			$obj->addAttr('NbrCredits',Mtype::M_INT,M_P_EVALP);
-			$obj->addAttr('Jason',Mtype::M_TXT,M_P_EVAL);
 		}
 		
 		if (isset($bindings[$user])) {
 			$user = $bindings[$user];
-			$obj->addAttr($user,Mtype::M_REF,'/'.$user);
-			$res=$obj->setBkey($user,true);
+			$obj->addAttr('User',Mtype::M_REF,'/'.$user);
+			$res=$obj->setBkey('User',true);
 		}
 		
 	}
@@ -70,12 +67,12 @@ var_dump($bindings);
 	
 	public function save()
 	{
-		if ($this->mod->ExistsAttr('InscritA')) {
+		if ($this->mod->ExistsAttr('Donne')) {
 			$credits = 0;
-			$list = $this->mod->getValN('InscritA');
+			$list = $this->mod->getValN('Donne');
 			foreach ($list as $id) {
-				$inscription = $this->mod->getCref('InscritA',$id);
-				$cours = $inscription->getRef('A');
+				$charge = $this->mod->getCref('Donne',$id);
+				$cours = $charge->getRef('De');
 				$credit = $cours->getVal('Credits');
 				if (!is_null($credit)) {
 					$credits = $credits + $credit;
