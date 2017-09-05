@@ -83,7 +83,7 @@ class View
               ];
               
     protected $attrLbl = [];
-
+    protected $modLbl = [];
     
     public static function init($app, $specv)
     {
@@ -281,7 +281,23 @@ class View
         }
         return $attr;
     }
-        
+    
+    public function setModLblList($dspec)
+    {
+        $this->modLbl= $dspec;
+        return true;
+    }
+    
+    public function getModLbl($mod)
+    {
+        foreach ($this->modLbl as $x => $lbl) {
+            if ($x==$mod) {
+                return $lbl;
+            }
+        }
+        return $mod;
+    }
+    
     public function getProp($attr, $prop)
     {
         switch ($prop) {
@@ -633,7 +649,7 @@ class View
         } else {
             $mod=$hdl->getModName();
         }
-        $res[CstHTML::H_LABEL]=$mod; // see B23 $this->getLbl($mod);
+        $res[CstHTML::H_LABEL]=$this->getModLbl($mod);
         return $res;
     }
     
@@ -843,6 +859,7 @@ class View
             $specma=$spec['lblList'];
             $this->setLblList($specma);
         }
+
         if ($viewState !=  CstView::V_S_REF and $viewState !=  CstView::V_S_CREF) {
             if (isset($spec['viewList'])) {
                 $specma=$spec['viewList'];

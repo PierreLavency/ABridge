@@ -298,6 +298,12 @@ class Controler
         $selmenu= array_diff($selmenu, $rmenu);
         $menu = array_unique(array_merge($home, $selmenu));
         $v->setTopMenu($menu);
+
+        if (isset($specv['modLblList'])) {
+            $specma=$specv['modLblList'];
+            $v->setModLblList($specma);
+        }
+        
         $action = $this->handle->getAction();
         $v->show($action, $show);
         return true;

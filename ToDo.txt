@@ -10,7 +10,6 @@ B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 
 B22 EVALP in create dialog
-B23 menu and lables
 
 DEV
 
@@ -85,6 +84,8 @@ INT
 - set up jenkin
 
 DONE
+-------------// 025 day
+B23 distinguish mod from attr lables.
 -------------// 3 days
 - migrate UCL to new access control (UCL_TEST).
 -------------// 1 day

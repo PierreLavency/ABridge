@@ -57,6 +57,7 @@ class Config
 						"/".self::INSCRIPTION,
 						"/".self::CHARGE,
 				],
+			'modLblList'=>[Usr::USERGROUP=>'Group'],
 			Usr::USER => 
 					[
 						'viewList' => [
