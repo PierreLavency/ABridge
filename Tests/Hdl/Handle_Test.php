@@ -230,6 +230,9 @@ class Handle_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($h->setCriteria(['Ref'], ['='], [1]));
         $this->assertEquals(1, count($h->select()));
         
+        $vnum= $h->getVal('vnum');
+        $this->assertTrue($h->checkVers($vnum));
+        $this->assertFalse($h->checkVers($vnum+1));
         
         $h = new Handle('/', CstMode::V_S_READ, $ho);
         $this->assertTrue($h->nullObj());

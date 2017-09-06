@@ -66,7 +66,7 @@ class Model
     protected $inhObj;
     protected $inhNme;
     protected $vnum;
-    protected $isNew;
+
     
     protected $meta = [];
 
@@ -266,11 +266,7 @@ class Model
     {
         return $this->id;
     }
-    
-    public function isNew()
-    {
-        return $this->isNew;
-    }
+
     
     public function getVnum()
     {

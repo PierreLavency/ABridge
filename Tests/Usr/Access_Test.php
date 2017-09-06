@@ -268,35 +268,35 @@ class Access_Test extends PHPUnit_Framework_TestCase
     
     public function testDefault($p, $b, $e1, $bases)
     {
-    	
-    	
-    	foreach ($bases as $base) {
-    		list($db,$bd) = $base;
-    		
-    		$db->beginTrans();
-    				
-    		$y = new Model($bd['Session'], 3);
-    		$r = $y->getCobj();
-  		    		
-    		$req = new Request($p, $b);
-    		
-    		$res = $r->checkARight($req, [['Session',$y]], true);
-    		$this->assertEquals($e1, $res);
-    		
-    		
-    		$db->commit();
-    	}
-    	return $bases;
+        
+        
+        foreach ($bases as $base) {
+            list($db,$bd) = $base;
+            
+            $db->beginTrans();
+                    
+            $y = new Model($bd['Session'], 3);
+            $r = $y->getCobj();
+                    
+            $req = new Request($p, $b);
+            
+            $res = $r->checkARight($req, [['Session',$y]], true);
+            $this->assertEquals($e1, $res);
+            
+            
+            $db->commit();
+        }
+        return $bases;
     }
     
     public function Provider3()
     {
-    	return [
-    			['/',             CstMode::V_S_READ, true],
-    			['/Session/3',    CstMode::V_S_READ, true],
-    			['/Session/3',    CstMode::V_S_UPDT, true],
-    			['/Application/3',CstMode::V_S_UPDT, false],
-    	];
+        return [
+                ['/',             CstMode::V_S_READ, true],
+                ['/Session/3',    CstMode::V_S_READ, true],
+                ['/Session/3',    CstMode::V_S_UPDT, true],
+                ['/Application/3',CstMode::V_S_UPDT, false],
+        ];
     }
     
     
@@ -335,14 +335,13 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals($res, CstError::E_ERC012);
 
             try {
-            	$x=$r->getAttrPathVal(null, 'x:x');
+                $x=$r->getAttrPathVal(null, 'x:x');
             } catch (Exception $e) {
-            	$res= $e->getMessage();
+                $res= $e->getMessage();
             }
             $this->assertEquals($res, CstError::E_ERC050);
             $db->commit();
         }
         return $bases;
     }
-    
 }

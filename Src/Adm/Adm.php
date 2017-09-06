@@ -18,6 +18,7 @@ class Adm
     public static function begin($app, $prm)
     {
         $mod = 'Admin';
+        $new =  false;
         $obj = new Model($mod);
         $obj->setCriteria([], [], []);
         $res = $obj->select();
@@ -25,9 +26,10 @@ class Adm
             $obj->setVal('Application', $app);
             $obj->setVal('Init', true);
             $obj->save();
+            $new = true;
         } else {
             $obj = new Model($mod, $res[0]);
         }
-        return [$obj->isNew(),$obj];
+        return [$new,$obj];
     }
 }

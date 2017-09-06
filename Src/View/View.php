@@ -88,7 +88,7 @@ class View
     public static function init($app, $specv)
     {
         foreach ($specv as $mod => $specm) {
-            if ($specm != 'Home' and $specm !='MenuExcl') {
+            if ($mod != 'Home' and $mod !='MenuExcl' and $mod !='modLblList') {
                 $speci = Handler::get()->getViewHandler($mod);
                 if ($speci) {
                     $speciV = [];
@@ -103,12 +103,12 @@ class View
                 } else {
                     $speci=$specm;
                 }
-                
                 Handler::get()->setViewHandler($mod, $speci);
+            } else {
+                Handler::get()->setViewHandler($mod, $specm);
             }
         }
     }
-    
     
     
     // constructors
@@ -789,6 +789,7 @@ class View
 
     public function show($viewState, $show = true)
     {
+        $this->initMenu();
         $r = $this->buildView($viewState, false);
         $r=GenHTML::genHTML($r, $show);
         return $r;
@@ -809,7 +810,33 @@ class View
         }
         return $r;
     }
-  
+
+    public function initMenu()
+    {
+        $menu = $this->getTopMenu(null);
+        if ($menu != []) {
+            return;
+        }
+        $home = [];
+        $res = Handler::get()->getViewHandler('Home');
+        if ($res) {
+            $home=$res;
+        }
+        $selmenu = $this->handle->getSelPath();
+        $rmenu=[];
+        $res = Handler::get()->getViewHandler('MenuExcl');
+        if ($res) {
+            $rmenu=$res;
+        }
+        $selmenu= array_diff($selmenu, $rmenu);
+        $menu = array_unique(array_merge($home, $selmenu));
+        $this->setTopMenu($menu);
+        
+        $res = Handler::get()->getViewHandler('modLblList');
+        if ($res) {
+            $this->setModLblList($res);
+        }
+    }
     public function initView($handle, $viewState, $rec)
     {
         if ($handle->nullObj()) {
@@ -829,6 +856,7 @@ class View
         }
     }
  
+    
     public function setView($spec, $viewState)
     {
         if (isset($spec['attrList'])) {
@@ -886,6 +914,7 @@ class View
         $specL=[];
         $specS=[];
         $arg = [];
+ 
         
         if (!is_null($this->handle)) {
             $this->initView($this->handle, $viewState, $rec);

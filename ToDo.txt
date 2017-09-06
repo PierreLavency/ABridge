@@ -13,7 +13,6 @@ B22 EVALP in create dialog
 
 DEV
 
-- move menu into handle
 - check on delete of distribution / Groups if used in default.
 - set up own exception
 - review logging and error Management.
@@ -21,10 +20,9 @@ DEV
 - improve LC support (test/ dev Data Base etc.)
 
 - increase autorisations rule capability
-	- views and parameters
+	- views and other parameters
 	- handle user preference.
 - extend path with reference (// and get rid of getObj in session)
-	
 	
 - clean up picture path
 
@@ -37,8 +35,10 @@ DEV
 
 - delete in list.
 - order in list query and attr.
-- confirmation on META load / Java Script
-- set up rest services 
+- confirmation requested on META load / Java Script
+
+- set up rest services / Python
+- develop a CLI / Python
 - selection for Ref / Java script 
 
 - view sort out persistence/2
@@ -84,6 +84,8 @@ INT
 - set up jenkin
 
 DONE
+-------------// 0.5
+move managnement of menu into view.
 -------------// 025 day
 B23 distinguish mod from attr lables.
 -------------// 3 days

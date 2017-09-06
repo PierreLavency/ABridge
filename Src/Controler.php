@@ -280,12 +280,13 @@ class Controler
     protected function showView($show)
     {
         $this->logStartView();
+        $v=new View($this->handle);
+        /*
         $spec = $this->spec;
         $specv=[];
         if (isset($spec['View'])) {
             $specv = $spec['View'];
         }
-        $v=new View($this->handle);
         $home = [];
         if (isset($specv['Home'])) {
             $home=$specv['Home'];
@@ -303,7 +304,7 @@ class Controler
             $specma=$specv['modLblList'];
             $v->setModLblList($specma);
         }
-        
+        */
         $action = $this->handle->getAction();
         $v->show($action, $show);
         return true;
