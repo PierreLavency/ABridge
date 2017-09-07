@@ -1,6 +1,8 @@
 <?php
 		
-echo 'Load';
+require_once 'SETUP.php';
+
+config::loadData();
 
 
 	

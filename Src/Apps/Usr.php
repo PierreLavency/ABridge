@@ -17,7 +17,7 @@ class Usr
     const USERGROUP ='UserGroup';
     const GROUPUSER ='GroupUser';
     
-    public static function loadMeta()
+    public static function loadMeta($prm = null)
     {
         UtilsC::createMods(self::$config['Hdl']['Usr']);
     }
@@ -310,7 +310,7 @@ class Usr
         
 
     
-    public static function loadData()
+    public static function loadData($prm = null)
     {
         // Role
         

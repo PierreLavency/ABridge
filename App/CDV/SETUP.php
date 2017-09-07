@@ -1,10 +1,10 @@
 <?php
 
-
 use ABridge\ABridge\Apps\Cdv;
 use ABridge\ABridge\Apps\Adm;
+use ABridge\ABridge\App;
 
-class Config 
+class Config extends App
 {
 			
 	static $config = [
@@ -33,14 +33,14 @@ class Config
 		],
 	];
 	
-	public static function loadMeta()
+	public static function loadMeta($prm=null)
 	{
 		Adm::loadMeta();
 		Cdv::loadMeta(['Sexe','Country']);
 		
 	}
 	
-	public static function loadData()
+	public static function loadData($prm=null)
 	{
 		Adm::loadData();
 		Cdv::loadData(

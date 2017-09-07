@@ -12,13 +12,15 @@ use ABridge\ABridge\Apps\Adm;
 use ABridge\ABridge\Apps\Cdv;
 
 use ABridge\ABridge\UtilsC;
+use ABridge\ABridge\App;
+
 require_once 'Student.php';
 require_once 'Cours.php';
 require_once 'Inscription.php';
 require_once 'Prof.php';
 require_once 'Charge.php';
 
-class Config 
+class Config extends App
 {
 		
 	const STUDENT = 'Student';
@@ -246,7 +248,7 @@ class Config
 			]
 	];
 	
-	public static function loadMeta()
+	public static function loadMeta($prm=null)
 	{
 		Usr::loadMeta();
 		
@@ -286,7 +288,7 @@ class Config
 
 	}
 	
-	public static function loadData()
+	public static function loadData($prm=null)
 	{
 		Usr::loadData();
 		Adm::loadData();

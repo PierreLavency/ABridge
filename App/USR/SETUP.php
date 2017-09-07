@@ -9,7 +9,9 @@ use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Apps\Usr;
 use ABridge\ABridge\Apps\Adm;
 
-class Config 
+use ABridge\ABridge\App;
+
+class Config extends App
 {
 		
 	const DBDEC = 'USR';
@@ -66,7 +68,7 @@ class Config
 		],
 	];
 	
-	public static function loadMeta()
+	public static function loadMeta($prm=null)
 	{
 		Usr::loadMeta();
 		Adm::loadMeta();
@@ -96,7 +98,7 @@ class Config
 		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 	}
 	
-	public static function loadData()
+	public static function loadData($prm=null)
 	{
 		Usr::loadData();
 		Adm::loadData();

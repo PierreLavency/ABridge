@@ -4,8 +4,11 @@ use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
 
+use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\App;
 
-class Config
+class Config extends App
 {
 	
 	static $config = [
@@ -92,6 +95,137 @@ class Config
 
 		],
 		],
-	];		
+	];
+	
+	public static function loadMeta($prm=null)
+	{
+		$ACode = 'AbstractCode';
+		
+		$Album ='Album';
+		$Photo='Photo';
+		
+		$User ='User';
+		$Role = 'Role';
+		$Session ='Session';
+		$Distribution = 'Distribution';
+		
+		// Abstract
+		
+		$obj = new Model($ACode);
+		$res= $obj->deleteMod();
+		
+		$res = $obj->addAttr('Value',Mtype::M_STRING);
+		$res = $obj->setMdtr('Value',true);
+		$res = $obj->setBkey('Value',true);
+		$res = $obj->setAbstr();
+		
+		$res = $obj->saveMod();
+		$r = $obj->getErrLog ();
+		$r->show();
+		echo "<br>".$ACode."<br>";
+		
+		
+		// Album
+		$obj = new Model($Album);
+		$res= $obj->deleteMod();
+		
+		$res = $obj->addAttr('Nom',Mtype::M_STRING);
+		$res = $obj->addAttr('Description',Mtype::M_TXT);
+		$res = $obj->addAttr($Photo.'s',Mtype::M_CREF,'/'.$Photo.'/'.'De');
+		$res = $obj->addAttr($User,Mtype::M_REF,'/'.$User);
+		
+		$res = $obj->saveMod();
+		$r = $obj->getErrLog ();
+		$r->show();
+		echo "<br>".$Album."<br>";
+		
+		// Photos
+		
+		$obj = new Model($Photo);
+		$res= $obj->deleteMod();
+		$res = $obj->addAttr('Nom',Mtype::M_STRING);
+		$res = $obj->addAttr('Description',Mtype::M_TXT);
+		$res = $obj->addAttr('Photo',Mtype::M_STRING);
+		$res = $obj->addAttr('Rowp',Mtype::M_INT);
+		$res = $obj->addAttr('Colp',Mtype::M_INT);
+		$res = $obj->addAttr('De',Mtype::M_REF,'/'.$Album);
+		
+		$res = $obj->saveMod();
+		$r = $obj->getErrLog ();
+		$r->show();
+		echo "<br>".$Photo."<br>";
+		
+		// User
+		
+		$obj = new Model($User);
+		$res= $obj->deleteMod();
+		
+		$res = $obj->addAttr('Name',Mtype::M_STRING);
+		$res = $obj->addAttr('SurName',Mtype::M_STRING);
+		$res = $obj->addAttr('Play',Mtype::M_CREF,'/'.$Distribution.'/toUser');
+		
+		
+		echo "<br>User<br>";
+		$res = $obj->saveMod();
+		$r = $obj->getErrLog ();
+		$r->show();
+		
+		// Role
+		
+		$obj = new Model($Role);
+		$res= $obj->deleteMod();
+		
+		$res = $obj->addAttr('Name',Mtype::M_STRING);
+		$res = $obj->addAttr('JSpec',Mtype::M_JSON);
+		$res = $obj->addAttr('PlayedBy',Mtype::M_CREF,'/'.$Distribution.'/ofRole');
+		
+		echo "<br>$Role<br>";
+		$res = $obj->saveMod();
+		$r = $obj->getErrLog ();
+		$r->show();
+		
+		
+		// Session
+		
+		$obj = new Model($Session);
+		$res= $obj->deleteMod();
+		
+		$res = $obj->addAttr($User,Mtype::M_REF,'/'.$User);
+		$res = $obj->addAttr($Role,Mtype::M_REF,'/'.$Role);
+		$res = $obj->addAttr('Comment',Mtype::M_STRING);
+		$res = $obj->addAttr('BKey',Mtype::M_STRING);
+		$res = $obj->setBkey('BKey',true);
+		
+		
+		echo "<br>Session<br>";
+		$res = $obj->saveMod();
+		$r = $obj->getErrLog ();
+		$r->show();
+		
+		// Distribution
+		
+		$obj = new Model($Distribution);
+		$res= $obj->deleteMod();
+		
+		$path='/'.$Role;
+		$res = $obj->addAttr('ofRole',Mtype::M_REF,$path);
+		$res = $obj->setMdtr('ofRole',true); // Mdtr
+		
+		$path='/'.$User;
+		$res = $obj->addAttr('toUser',Mtype::M_REF,$path);
+		$res = $obj->setMdtr('toUser',true); // Mdtr
+		
+		$obj->setCkey(['ofRole','toUser'],true);
+		
+		echo "<br>Distribution<br>";
+		$res = $obj->saveMod();
+		$r = $obj->getErrLog ();
+		$r->show();	
+	}
+
+	public static function loadData($prm=null)
+	{
+		
+	}
 	
 }

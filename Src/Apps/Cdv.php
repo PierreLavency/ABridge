@@ -6,8 +6,9 @@ use ABridge\ABridge\View\CstView;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Mod\Find;
+use ABridge\ABridge\App;
 
-class Cdv
+class Cdv extends App
 {
     const CODE='Code';
     const CODEVAL='CodeValue';

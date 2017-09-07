@@ -2,14 +2,14 @@ CMD
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
 
-BUGS	24
-
+BUGS	25
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 
 B22 EVALP in create dialog
+B24 cannot log out if not root !
 
 DEV
 
@@ -22,7 +22,7 @@ DEV
 - increase autorisations rule capability
 	- views and other parameters
 	- handle user preference.
-- extend path with reference (// and get rid of getObj in session)
+	- extend path with reference (// and get rid of getObj in session)
 	
 - clean up picture path
 
@@ -30,8 +30,8 @@ DEV
 - Document the code!
 - combine temp/evalp reference. 
 
-
-- create Ctr Pack
+- create Ctr Component
+- abstract application interface
 
 - delete in list.
 - order in list query and attr.
@@ -84,8 +84,10 @@ INT
 - set up jenkin
 
 DONE
+-------------// 0.5
+first abstract Application interface
 -------------// 1
-abstract Component interface
+first abstract Component interface
 -------------// 0.5
 move managnement of menu into view.
 -------------// 025 day

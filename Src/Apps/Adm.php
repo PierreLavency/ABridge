@@ -3,8 +3,9 @@ namespace ABridge\ABridge\Apps;
 
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstView;
+use ABridge\ABridge\App;
 
-class Adm
+class Adm extends App
 {
     const ADMIN='Admin';
     
@@ -44,12 +45,12 @@ class Adm
             ],
     ];
     
-    public static function loadMeta()
+    public static function loadMeta($prm = null)
     {
         return true;
     }
     
-    public static function loadData()
+    public static function loadData($prm = null)
     {
         return true;
     }
