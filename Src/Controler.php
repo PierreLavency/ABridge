@@ -14,9 +14,10 @@ use ABridge\ABridge\Hdl\CstMode;
 
 use ABridge\ABridge\Adm\Adm;
 
+use ABridge\ABridge\View\Vew;
 use ABridge\ABridge\View\View;
 
-
+use ABridge\ABridge\Usr\Usr;
 
 use ABridge\ABridge\GenJASON;
 
@@ -56,6 +57,11 @@ class Controler
         $bases = [];
         
         Handler::get()->resetHandlers();
+        Mod::get()->reset();
+        Hdl::get()->reset();
+        Usr::get()->reset();
+        Adm::get()->reset();
+        Vew::get()->reset();
 
         $this->initConf($spec);
         
@@ -70,7 +76,7 @@ class Controler
     {
         if (isset($spec['Handlers'])) {
             $config=$spec['Handlers'];
-            Mod::init($this->defVal, $config);
+            Mod::get()->init($this->defVal, $config);
         }
         if (isset($spec['Apps'])) {
             $specv = $spec['Apps'];
@@ -82,16 +88,16 @@ class Controler
         }
         if (isset($spec['View'])) {
             $specv = $spec['View'];
-            View::init($this->appName, $specv);
+            Vew::get()->init($this->appName, $specv);
         }
         if (isset($spec['Adm'])) {
             $config=$spec['Adm'];
-            Adm::init($this->appName, $config);
+            Adm::get()->init($this->appName, $config);
             $this->spec['Adm']=$config;
         }
         if (isset($spec['Hdl'])) {
             $config=$spec['Hdl'];
-            Hdl::init($this->appName, $config);
+            Hdl::get()->init($this->appName, $config);
             $this->spec['Hdl']=$config;
         }
     }
@@ -164,9 +170,7 @@ class Controler
     
     public function beginTrans()
     {
-        foreach ($this->bases as $base) {
-            $base-> beginTrans();
-        }
+        Mod::get()->begin(null, null);
     }
     
     protected function setLogLevl($level)
@@ -276,60 +280,21 @@ class Controler
         }
         return (!$c->isErr());
     }
-        
-    protected function showView($show)
-    {
-        $this->logStartView();
-        $v=new View($this->handle);
-        /*
-        $spec = $this->spec;
-        $specv=[];
-        if (isset($spec['View'])) {
-            $specv = $spec['View'];
-        }
-        $home = [];
-        if (isset($specv['Home'])) {
-            $home=$specv['Home'];
-        }
-        $selmenu = $this->handle->getSelPath();
-        $rmenu=[];
-        if (isset($specv['MenuExcl'])) {
-            $rmenu=$specv['MenuExcl'];
-        }
-        $selmenu= array_diff($selmenu, $rmenu);
-        $menu = array_unique(array_merge($home, $selmenu));
-        $v->setTopMenu($menu);
-
-        if (isset($specv['modLblList'])) {
-            $specma=$specv['modLblList'];
-            $v->setModLblList($specma);
-        }
-        */
-        $action = $this->handle->getAction();
-        $v->show($action, $show);
-        return true;
-    }
-    
+ 
     public function run($show, $logLevel)
     {
-        $this->beginTrans();
+        Mod::get()->begin(null, null);
         
         $frccommit=false;
               
         if (isset($this->spec['Adm'])) {
-            $adm=Adm::begin($this->appName, $this->spec['Adm']);
-            if ($adm[0]) {
-                $frccommit=true;
-            }
+            $adm=Adm::get()->begin($this->appName, $this->spec['Adm']);
+            $frccommit=Adm::get()->isNew();
         }
  
         if (isset($this->spec['Hdl'])) {
-            $hres= Hdl::begin($this->appName, $this->spec['Hdl']);
-            if ($hres[0]) {
-                $frccommit=true;
-            }
-            $this->handle=$hres[1];
-        } else {
+            $this->handle= Hdl::get()->begin($this->appName, $this->spec['Hdl']);
+            $frccommit=Hdl::get()->isNew();
         }
 
         $this->setLogLevl($logLevel);
@@ -343,7 +308,8 @@ class Controler
         }
         
         if ($this->handle->nullobj()) {
-            $this->showView($show);
+            $this->logStartView();
+            Vew::get()->begin($show, $this->handle);
             $this->showLog();
             if ($frccommit) {
                 $this->commit();
@@ -396,7 +362,9 @@ class Controler
             $this->commit();
         }
         
-        $this->showView($show);
+        $this->logStartView();
+        Vew::get()->begin($show, $this->handle);
+
         $this->showLog();
         return $this->handle;
     }

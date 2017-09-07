@@ -3,25 +3,41 @@ namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Handler;
+use ABridge\ABridge\Comp;
 
-class Usr
+class Usr extends Comp
 {
 
     public static $cleanUp = false;
-    protected static $isNew = false;
     public static $timer= 0; // 0 when connected
-    protected $Keep = false;
-    
-    protected $cookies=[];
-    protected $sessions=[];
-    protected $changed = false;
-    protected $cookieName;
-    protected $session;
 
-    public static function init($name, $prm)
+
+    private static $instance = null;
+    protected $isNew = false;
+    
+    private function __construct()
+    {
+    }
+    
+    public static function get()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new Usr();
+        }
+        return self::$instance;
+    }
+
+    public function reset()
+    {
+        $this->isNew=false;
+        self::$instance =null;
+        return true;
+    }
+
+    public function init($name, $config)
     {
 
-        foreach ($prm as $mod => $cname) {
+        foreach ($config as $mod => $cname) {
             if (is_numeric($mod)) {
                 $mod = $cname;
                 $cname = __NAMESPACE__.'\\'.$mod;
@@ -30,7 +46,7 @@ class Usr
         }
     }
     
-    public static function begin($name, $prm)
+    public function begin($name, $prm)
     {
         $className=$prm[0];
         $id=0;
@@ -45,9 +61,8 @@ class Usr
         }
         
         $sessionHdl = $className::getSession($id);
-        self::$isNew=false;
         if ($sessionHdl->isNew()) {
-            self::$isNew=true;
+            $this->isNew=true;
             $id = $sessionHdl->getKey();
             $end = 0;
             if (self::$timer) {
@@ -60,5 +75,10 @@ class Usr
             }
         }
         return $sessionHdl;
+    }
+    
+    public function isNew()
+    {
+        return $this->isNew;
     }
 }

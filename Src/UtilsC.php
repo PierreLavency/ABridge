@@ -42,35 +42,45 @@ class UtilsC
         return true;
     }
     
-    public static function createMods($bdp)
+    public static function createMods($bindings, $logicalNames = null)
     {
-        $bd=[];
-        foreach ($bdp as $CName => $PName) {
-            if (is_numeric($CName)) {
-                $bd[$PName]=$PName;
-            } else {
-                $bd[$CName]=$PName;
-            }
+        $normBindings=self::bindingNorm($bindings);
+        if (is_null($logicalNames)) {
+            $logicalNames = array_keys($normBindings);
         }
-        foreach ($bd as $CName => $PName) {
-            $res = self::createMod($PName, $bd);
+        foreach ($logicalNames as $logicalName) {
+            $res = self::createMod($logicalName, $normBindings);
             if (!$res) {
                 return false;
             }
         }
-        $res = self::checkMods($bd);
+        $res = self::checkMods($logicalNames, $normBindings);
         return $res;
     }
     
-    
-    public static function createMod($name, $bd)
+    protected static function bindingNorm($bindings)
     {
-        $x = new Model($name);
+        $normBindings=[];
+        foreach ($bindings as $logicalName => $physicalName) {
+            if (is_numeric($logicalName)) {
+                $normBindings[$physicalName]=$physicalName;
+            } else {
+                $normBindings[$logicalName]=$physicalName;
+            }
+        }
+        return $normBindings;
+    }
+    
+    
+    public static function createMod($logicalName, $normBindings)
+    {
+        $physicalName=$normBindings[$logicalName];
+        $x = new Model($physicalName);
         $x->deleteMod();
-        $x->initMod($bd);
+        $x->initMod($normBindings);
         $x->saveMod();
         if ($x->isErr()) {
-            echo  $name ;
+            echo  $physicalName ;
             $log = $x->getErrLog();
             $log->show();
             return false;
@@ -78,10 +88,11 @@ class UtilsC
         return true;
     }
     
-    public static function checkMods($bd)
+    public static function checkMods($logicalNames, $normBindings)
     {
-        foreach ($bd as $CName => $PName) {
-            $x = new Model($PName);
+        foreach ($logicalNames as $logicalName) {
+            $physicalName=$normBindings[$logicalName];
+            $x = new Model($physicalName);
             $res = $x->checkMod();
             if (!$res) {
                 $log = $x->getErrLog();

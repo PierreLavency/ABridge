@@ -1,24 +1,45 @@
 <?php
 namespace ABridge\ABridge\Adm;
 
+use ABridge\ABridge\Comp;
+
 use ABridge\ABridge\Mod\Model;
 
 use ABridge\ABridge\Handler;
 
-class Adm
+class Adm extends Comp
 {
-    protected static $isNew=false;
+    protected $isNew = false;
+    private static $instance = null;
     
-    public static function init($app, $prm)
+    private function __construct()
+    {
+    }
+    
+    public static function get()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new Adm();
+        }
+        return self::$instance;
+    }
+    
+    public function reset()
+    {
+        $this->isNew=false;
+        self::$instance =null;
+        return true;
+    }
+    
+    public function init($app, $prm)
     {
         $mod = 'Admin';
         handler::get()->setCmod($mod, 'ABridge\ABridge\Adm\Admin');
     }
     
-    public static function begin($app, $prm)
+    public function begin($app, $prm)
     {
         $mod = 'Admin';
-        $new =  false;
         $obj = new Model($mod);
         $obj->setCriteria([], [], []);
         $res = $obj->select();
@@ -26,10 +47,15 @@ class Adm
             $obj->setVal('Application', $app);
             $obj->setVal('Init', true);
             $obj->save();
-            $new = true;
+            $this->isNew = true;
         } else {
             $obj = new Model($mod, $res[0]);
         }
-        return [$new,$obj];
+        return $obj;
+    }
+    
+    public function isNew()
+    {
+        return $this->isNew;
     }
 }

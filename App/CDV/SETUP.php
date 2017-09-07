@@ -36,7 +36,7 @@ class Config
 	public static function loadMeta()
 	{
 		Adm::loadMeta();
-		Cdv::loadMeta();
+		Cdv::loadMeta(['Sexe','Country']);
 		
 	}
 	

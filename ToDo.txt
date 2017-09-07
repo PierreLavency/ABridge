@@ -30,7 +30,7 @@ DEV
 - Document the code!
 - combine temp/evalp reference. 
 
-- abstract pack interface
+
 - create Ctr Pack
 
 - delete in list.
@@ -84,6 +84,8 @@ INT
 - set up jenkin
 
 DONE
+-------------// 1
+abstract Component interface
 -------------// 0.5
 move managnement of menu into view.
 -------------// 025 day

@@ -252,53 +252,38 @@ class Config
 		
 		$obj = new Model(Usr::USER);
 		$res = $obj->addAttr('Student',Mtype::M_CREF,'/'.self::STUDENT.'/'.Usr::USER);
-		$res = $obj->saveMod();
-		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-
 		$res = $obj->addAttr('Prof',Mtype::M_CREF,'/'.self::PROF.'/'.Usr::USER);
 		$res = $obj->saveMod();
 		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 		
 		Adm::loadMeta();
-		
-		Cdv::loadMeta();
-		
-		UtilsC::createMod(self::STUDENT,
-				[
-						self::SEXE=>Cdv::CODE.'/1',
-						self::COUNTRY=>Cdv::CODE.'/2',
-						Usr::USER=>Usr::USER,
-						self::INSCRIPTION=>self::INSCRIPTION,
-				]);
-		
-		UtilsC::createMod(self::COURS, 
-				[
-						Usr::USER=>Usr::USER,
-						Usr::USERGROUP=>Usr::USERGROUP,
-						self::INSCRIPTION=>self::INSCRIPTION,
-						self::CHARGE=>self::CHARGE,
-						
-				]);
+		Cdv::loadMeta([self::SEXE,self::COUNTRY]);
 
-		UtilsC::createMod(self::INSCRIPTION,
-				[
-						self::COURS=>self::COURS,
-						self::STUDENT=>self::STUDENT,
-				]);
+		$bindings=
+		[
+				self::SEXE=>Cdv::CODE.'/1',
+				self::COUNTRY=>Cdv::CODE.'/2',
+				Usr::USER=>Usr::USER,
+				Usr::USERGROUP=>Usr::USERGROUP,
+				self::INSCRIPTION=>self::INSCRIPTION,
+				self::CHARGE=>self::CHARGE,
+				self::COURS=>self::COURS,
+				self::STUDENT=>self::STUDENT,
+				self::PROF=>self::PROF,
+				
+		];
 
-		UtilsC::createMod(self::PROF,
-				[
-						self::SEXE=>Cdv::CODE.'/1',
-						self::COUNTRY=>Cdv::CODE.'/2',
-						Usr::USER=>Usr::USER,
-						self::CHARGE=>self::CHARGE,
-				]);
-		
-		UtilsC::createMod(self::CHARGE,
-				[
-						self::PROF=>self::PROF,
-						self::COURS=>self::COURS,
-				]);
+		$logicalNames =
+		[
+				self::STUDENT,
+				self::COURS,
+				self::INSCRIPTION,
+				self::PROF,
+				self::CHARGE,
+		];
+			
+		UtilsC::createMods($bindings,$logicalNames);		
+
 	}
 	
 	public static function loadData()

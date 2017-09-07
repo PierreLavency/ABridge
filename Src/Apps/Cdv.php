@@ -5,6 +5,7 @@ use ABridge\ABridge\View\CstView;
 
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Mod\Find;
 
 class Cdv
 {
@@ -34,7 +35,7 @@ class Cdv
             ],
     ];
     
-    public static function loadMeta()
+    public static function loadMeta($prm)
     {
         // CodeVal
         
@@ -47,9 +48,9 @@ class Cdv
         
         
         $res = $obj->saveMod();
-        echo "<br>".self::CODEVAL."<br>";
-        $r = $obj-> getErrLog();
-        $r->show();
+        echo $obj->getModName()."<br>";
+        $obj->getErrLog()->show();
+        echo "<br>";
         
         // Code
         
@@ -60,17 +61,25 @@ class Cdv
         $res=$obj->setBkey('Name', true);// Unique
         $res = $obj->addAttr('Values', Mtype::M_CREF, '/'.self::CODEVAL.'/ValueOf');
         
-        echo self::CODE."<br>";
         $res = $obj->saveMod();
-        $r->show();
+        echo $obj->getModName()."<br>";
+        $obj->getErrLog()->show();
+        echo "<br>";
+
+        foreach ($prm as $codeName) {
+            $codeMobj = new Model(self::CODE);
+            $codeMobj->setVal('Name', $codeName);
+            $codeMobj->save();
+            echo $codeMobj->getVal('Name')."<br>";
+            $codeMobj->getErrLog()->show();
+            echo "<br>";
+        }
     }
     
     public static function loadData($prm)
     {
         foreach ($prm as $code => $values) {
-            $codeMobj = new Model(self::CODE);
-            $codeMobj->setVal('Name', $code);
-            $codeMobj->save();
+            $codeMobj = Find::byKey(self::CODE, 'Name', $code);
             $codeId= $codeMobj->getId();
             foreach ($values as $value) {
                 $valMobj= new Model(self::CODEVAL);

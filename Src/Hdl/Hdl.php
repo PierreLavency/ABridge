@@ -3,30 +3,57 @@ namespace ABridge\ABridge\Hdl;
 
 use ABridge\ABridge\Hdl\Handle;
 use ABridge\ABridge\Usr\Usr;
+use ABridge\ABridge\Comp;
 
-class Hdl
+class Hdl extends Comp
 {
-    public static function init($app, $prm)
+    private static $instance = null;
+    protected $isNew=false;
+    
+    private function __construct()
+    {
+    }
+    
+    public static function get()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new Hdl();
+        }
+        return self::$instance;
+    }
+    
+    public function reset()
+    {
+        $this->isNew=false;
+        self::$instance =null;
+        return true;
+    }
+    
+    public function init($app, $prm)
     {
         if (isset($prm['Usr'])) {
-            Usr::init($app, $prm['Usr']);
+            Usr::get()->init($app, $prm['Usr']);
         }
     }
     
-    public static function begin($app, $prm)
+    public function begin($app, $prm)
     {
-        $isNew=false;
         if (isset($prm['Usr'])) {
-            $sessionHdl= Usr::begin($app, ['ABridge\ABridge\Usr\Session']);
-            if ($sessionHdl->isNew()) {
+            $sessionHdl= Usr::get()->begin($app, ['ABridge\ABridge\Usr\Session']);
+            if (Usr::get()->isNew()) {
                 $handle = new Handle('/Session/~', CstMode::V_S_UPDT, $sessionHdl);
-                $isNew=true;
+                $this->isNew=true;
             } else {
                 $handle = new Handle($sessionHdl);
             }
         } else {
             $handle = new Handle(null);
         }
-        return [$isNew,$handle];
+        return $handle;
+    }
+    
+    public function isNew()
+    {
+        return $this->isNew;
     }
 }

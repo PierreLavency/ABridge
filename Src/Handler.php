@@ -32,6 +32,7 @@ class Handler
 
     private $viewHandler=[]; // mod => spec
     private $cmod=[]; //mod=> Cmodclass
+    private $comp=[]; //comp=> obj
     
 /**
 * Constructeur de la classe
@@ -62,6 +63,8 @@ class Handler
         $this->bases= [];
         $this->modHandler=[];
         $this->viewHandler=[];
+        $this->cmod=[];
+        $this->comp=[];
         self::$instance =null;
         return true;
     }
@@ -171,6 +174,21 @@ class Handler
     public function setCmod($modName, $spec)
     {
         $this->cmod[$modName]=$spec;
+        return true;
+    }
+    
+    
+    public function getComp($compName)
+    {
+        if (isset($this->comp[$compName])) {
+            return ($this->comp[$compName]);
+        }
+        return null;
+    }
+    
+    public function setComp($compName, $compObj)
+    {
+        $this->comp[$compName]=$compObj;
         return true;
     }
 }
