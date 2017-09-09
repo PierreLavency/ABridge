@@ -29,17 +29,17 @@ class Hdl extends Comp
         return true;
     }
     
-    public function init($app, $prm)
+    public function init($appPrm, $prm)
     {
         if (isset($prm['Usr'])) {
-            Usr::get()->init($app, $prm['Usr']);
+            Usr::get()->init($appPrm, $prm['Usr']);
         }
     }
     
-    public function begin($app, $prm)
+    public function begin($appPrm, $prm)
     {
         if (isset($prm['Usr'])) {
-            $sessionHdl= Usr::get()->begin($app, ['ABridge\ABridge\Usr\Session']);
+            $sessionHdl= Usr::get()->begin($appPrm, $prm['Usr']);
             if (Usr::get()->isNew()) {
                 $handle = new Handle('/Session/~', CstMode::V_S_UPDT, $sessionHdl);
                 $this->isNew=true;

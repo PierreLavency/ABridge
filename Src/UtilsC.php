@@ -5,43 +5,40 @@ use ABridge\ABridge\Mod\Model;
 
 class UtilsC
 {
-   
-    public static function initHandlers($name, $classes, $bsname, $prm)
+    public static function genPrm($logicalNameList, $baseName, $types = ['dataBase','fileBase'])
     {
-        $typs = ['dataBase','fileBase'];
-        $bases = [];
-        Handler::get()->resetHandlers();
-        foreach ($typs as $typ) {
-            $db = Handler::get()->setBase($typ, $name, $prm);
-            $i=1;
-            $bindings=[];
-            foreach ($classes as $cname) {
-                $bname = $bsname.'_'.$typ.'_'.$i;
-                $i++;
-                $bindings[$cname]=$bname;
-                Handler::get()->setStateHandler($bname, $typ, $name);
+        $prm=[];
+        $physicalNameList=[];
+        $handlerList=[];
+        $listBindings= [];
+        foreach ($types as $type) {
+            $bindings= [];
+            foreach ($logicalNameList as $logicalName) {
+                $physicalName = $baseName.'_'.$type.'_'.$logicalName;
+                $bindings[$logicalName]=$physicalName;
+                $physicalNameList[]=$physicalName;
+                $handlerList[$physicalName]=[$type];
             }
-            $bases[]=[$db,$bindings];
+            $prm[$type]=$bindings;
+            $listBindings[]=$bindings;
         }
-        return $bases;
+        $prm['handlers']=$handlerList;
+        $prm['names']=$physicalNameList;
+        $prm['bindL']=$listBindings;
+        $prm['application']=
+        [
+                'name'=>'test',
+                'base'=>'dataBase',
+                'dbnm'=>'test',
+                'flnm'=>'test',
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'host'=>'localhost',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ];
+        return $prm;
     }
-    
-    public static function initClasses($bases)
-    {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
 
-            $res= self::createMods($bd);
-            if (!$res) {
-                return false;
-            }
-            $db->commit();
-        }
-        return true;
-    }
-    
     public static function createMods($bindings, $logicalNames = null)
     {
         $normBindings=self::bindingNorm($bindings);
@@ -58,7 +55,7 @@ class UtilsC
         return $res;
     }
     
-    protected static function bindingNorm($bindings)
+    private static function bindingNorm($bindings)
     {
         $normBindings=[];
         foreach ($bindings as $logicalName => $physicalName) {

@@ -88,16 +88,16 @@ class Controler
         }
         if (isset($spec['View'])) {
             $specv = $spec['View'];
-            Vew::get()->init($this->appName, $specv);
+            Vew::get()->init($this->defVal, $specv);
         }
         if (isset($spec['Adm'])) {
             $config=$spec['Adm'];
-            Adm::get()->init($this->appName, $config);
+            Adm::get()->init($this->defVal, $config);
             $this->spec['Adm']=$config;
         }
         if (isset($spec['Hdl'])) {
             $config=$spec['Hdl'];
-            Hdl::get()->init($this->appName, $config);
+            Hdl::get()->init($this->defVal, $config);
             $this->spec['Hdl']=$config;
         }
     }
@@ -221,12 +221,7 @@ class Controler
     
     public function commit()
     {
-        $res = true;
-        foreach ($this->bases as $base) {
-            $r =$base->commit();
-            $res = ($res and $r);
-        }
-        return $res;
+        return  Mod::get()->end();
     }
     
     public function close()
@@ -288,12 +283,12 @@ class Controler
         $frccommit=false;
               
         if (isset($this->spec['Adm'])) {
-            $adm=Adm::get()->begin($this->appName, $this->spec['Adm']);
+            $adm=Adm::get()->begin($this->defVal, $this->spec['Adm']);
             $frccommit=Adm::get()->isNew();
         }
  
         if (isset($this->spec['Hdl'])) {
-            $this->handle= Hdl::get()->begin($this->appName, $this->spec['Hdl']);
+            $this->handle= Hdl::get()->begin($this->defVal, $this->spec['Hdl']);
             $frccommit=Hdl::get()->isNew();
         }
 

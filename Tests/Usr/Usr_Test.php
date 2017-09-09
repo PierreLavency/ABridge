@@ -2,15 +2,15 @@
 use ABridge\ABridge\UtilsC;
 
 use ABridge\ABridge\Mod\Model;
-
+use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Usr\Usr;
 
-class Usr_Test_dataBase_1 extends Session
+class Usr_Test_dataBase_Session extends Session
 {
 }
-class Usr_Test_fileBase_1 extends Session
+class Usr_Test_fileBase_Session extends Session
 {
 }
 
@@ -21,115 +21,137 @@ class Usr_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        $name = 'test';
-        $classes = ['Session'];
-        $bsname = get_called_class();
-        $bases= UtilsC::initHandlers($name, $classes, $bsname, $prm);
-        $res = UtilsC::initClasses($bases);
+    	$classes = [Usr::SESSION];
+    	
+    	$prm=UtilsC::genPrm($classes, get_called_class());
+
+    	Mod::get()->reset();
+    	Usr::get()->reset();
+    	
+    	$mod= Mod::get();
+    	$usr= Usr::get();
+
+    	$prm['application']['base']='fileBase';
+    	$usr->init($prm['application'], $prm['fileBase']);
+    	$prm['application']['base']='dataBase';
+    	$usr->init($prm['application'], $prm['dataBase']);
+ 
+    	$mod->begin();
+    	
+        $res = UtilsC::createMods($prm['dataBase']);
+        $res = $res and UtilsC::createMods($prm['fileBase']);
+        
+        $mod->end();
+        
         $this->assertTrue($res);
         
-        return $bases;
+        return $prm;
     }
     /**
     * @depends testInit
     */
-    public function testNew($bases)
+    public function testNew($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
+    	$mod= Mod::get();
+    	$usr= Usr::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+        	
+            $mod->begin();
             
-            $db->beginTrans();
-        
-            Usr::init($bd['Session'], [$bd['Session']=>$bd['Session']]);
-            
-            $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
+            $cobj = $usr->begin($prm['application'], $bd);
+ 
             $session = $cobj->getMod();
 
-            $this->assertTrue($cobj->isNew());
-            $this->assertEquals(1, $session->getId());
+            $this->assertTrue($usr->isNew());
+            $this->assertEquals(1, $session->getId());         
      
-            $db->commit();
+            $mod->end();
         }
-        return $bases;
+        return $prm;
     }
 
      /**
     * @depends testNew
     */
-    public function testExists($bases)
+    public function testExists($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
+    	$mod= Mod::get();
+    	$usr= Usr::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
             
-            $db->beginTrans();
+    		$mod->begin();
+            
             $x =  new Model($bd['Session'], 1);
-            $_COOKIE[$bd['Session']]= $x->getVal('BKey');
+            $name = $prm['application']['name'].$bd['Session'];
+            $_COOKIE[$name]= $x->getVal('BKey');
             
-            $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
-            $session = $cobj->getMod();
+            $cobj = Usr::get()->begin($prm['application'], $bd);
 
-            $this->assertFalse($cobj->isNew());
+            $this->assertFalse(Usr::get()->isNew());
      
-            $db->commit();
+            $mod->end();
         }
-        return $bases;
+        return $prm;
     }
     
     /**
     * @depends testExists
     */
-    public function testExistsNew($bases)
+    public function testExistsNew($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
+    	$mod= Mod::get();
+    	$usr= Usr::get();
+ 
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
             
-            $db->beginTrans();
             $x =  new Model($bd['Session'], 1);
-            $_COOKIE[$bd['Session']]= $x->getVal('BKey');
+            $name = $prm['application']['name'].$bd['Session'];
+            $_COOKIE[$name]= $x->getVal('BKey');
             $x->delet();
-            
-             
-            $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
+                        
+            $cobj = Usr::get()->begin($prm['application'], $bd);
             $session = $cobj->getMod();
 
             $this->assertTrue($cobj->isNew());
             $this->assertEquals(2, $session->getId());
             
-            $db->commit();
+            $mod->end();
         }
-        return $bases;
+        return $prm;
     }
     
     /**
      * @depends testExistsNew
      */
-    public function testCleanUp($bases)
+    public function testCleanUp($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	$usr= Usr::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
+
             $x =  new Model($bd['Session'], 2);
-            $_COOKIE[$bd['Session']]= $x->getVal('BKey');
+            $name = $prm['application']['name'].$bd['Session'];
+            $_COOKIE[$name]= $x->getVal('BKey');
             
             Usr::$cleanUp=true;
-            
-            
-            $cobj = Usr::begin($bd['Session'], [$bd['Session']]);
+                        
+            $cobj = Usr::get()->begin($prm['application'], $bd);
             $session = $cobj->getMod();
             
             $this->assertTrue($cobj->isNew());
             $this->assertEquals(3, $session->getId());
             
             Usr::$cleanUp=false;
-            $db->commit();
+            
+            $mod->end();
         }
-        return $bases;
+        return $prm;
     }
 }

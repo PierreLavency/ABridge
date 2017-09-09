@@ -1,14 +1,14 @@
 <?php
 use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Find;
-
+use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Usr\Session;
 
-class Session_Test_dataBase_1 extends Session
+class Session_Test_dataBase_Session extends Session
 {
 }
-class Session_Test_fileBase_1 extends Session
+class Session_Test_fileBase_Session extends Session
 {
 }
 
@@ -18,30 +18,39 @@ class Session_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        $name = 'test';
-        $classes = ['Session'];
-        $bsname = get_called_class();
-        $bases= UtilsC::initHandlers($name, $classes, $bsname, $prm);
-        $res = UtilsC::initClasses($bases);
-        $this->assertTrue($res);
-        return $bases;
+    	$classes = ['Session'];
+    	
+    	$prm=UtilsC::genPrm($classes, get_called_class());
+    	
+    	Mod::get()->reset();
+    	
+    	$mod= Mod::get();
+    	
+    	$mod->init($prm['application'],$prm['handlers']);
+    	
+    	$mod->begin();
+    	
+    	$res = UtilsC::createMods($prm['dataBase']);
+    	$res = $res and UtilsC::createMods($prm['fileBase']);
+    	
+    	$mod->end();
+    	
+    	$this->assertTrue($res);
+    	
+    	return $prm;
     }
     /**
     * @depends testInit
     */
-    public function testsave($bases)
+    public function testsave($prm)
     {
         $idl = [];
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $modS= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$modS->begin();
+        	
             $obj=$bd['Session']::getSession(0);
             $x = $obj->getMod();
 
@@ -50,10 +59,10 @@ class Session_Test extends PHPUnit_Framework_TestCase
             $res=$x->save();
             $this->assertEquals(1, $res);
      
-            $db->commit();
+            $modS->end();
         }
         
-        return [$bases,$idl];
+        return [$prm,$idl];
     }
 
     /**
@@ -62,13 +71,14 @@ class Session_Test extends PHPUnit_Framework_TestCase
     
     public function testKey($basesId)
     {
-        list($bases,$idl) = $basesId;
+        list($prm,$idl) = $basesId;
         $i=0;
         
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $modS= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$modS->begin();
             
             $obj = $bd['Session']::getSession($idl[$i]);
 
@@ -76,7 +86,7 @@ class Session_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals($idl[$i], $obj->getKey());
             
             $i++;
-            $db->commit();
+            $modS->end();
         }
         
         return $basesId;
@@ -89,13 +99,14 @@ class Session_Test extends PHPUnit_Framework_TestCase
     public function testdel($basesId)
     {
         
-        list($bases,$idl) = $basesId;
+        list($prm,$idl) = $basesId;
         $i=0;
         
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $modS= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$modS->begin();
         
             $obj = $bd['Session']::getSession($idl[$i]);
             $mod= $obj->getMod();
@@ -105,7 +116,7 @@ class Session_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(0, $mod->getValN('ValidFlag'));
             
             $i++;
-            $db->commit();
+            $modS->end();
         }
         
         return $basesId;
@@ -117,13 +128,14 @@ class Session_Test extends PHPUnit_Framework_TestCase
     public function testdel2($basesId)
     {
         
-        list($bases,$idl) = $basesId;
+        list($prm,$idl) = $basesId;
         $i=0;
         
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $modS= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$modS->begin();
 
             $obj = $bd['Session']::getSession($idl[$i]);
             $mod= $obj->getMod();
@@ -139,7 +151,7 @@ class Session_Test extends PHPUnit_Framework_TestCase
             $this->assertNull($x);
             
             $i++;
-            $db->commit();
+            $modS->end();
         }
         
         return $basesId;

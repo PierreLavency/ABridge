@@ -7,9 +7,32 @@ abstract class Comp
 
     abstract public function reset();
     
-    abstract public function init($prm, $config);
+    abstract public function init($appPrm, $config);
     
-    abstract public function begin($app, $prm);
+    abstract public function begin($appPrm, $config);
     
     abstract public function isNew();
+    
+    
+    public static function normBindings($bindings)
+    {
+        $normBindings=[];
+        foreach ($bindings as $logicalName => $physicalName) {
+            if (is_numeric($logicalName)) {
+                $normBindings[$physicalName]=$physicalName;
+            } else {
+                $normBindings[$logicalName]=$physicalName;
+            }
+        }
+        return $normBindings;
+    }
+    
+    public static function defltHandlers($bindings)
+    {
+        $defltHandlers=[];
+        foreach ($bindings as $logicalName => $physicalName) {
+            $defltHandlers[$physicalName]=[];
+        }
+        return $defltHandlers;
+    }
 }

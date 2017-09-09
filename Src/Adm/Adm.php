@@ -3,13 +3,16 @@ namespace ABridge\ABridge\Adm;
 
 use ABridge\ABridge\Comp;
 
+use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Model;
 
 use ABridge\ABridge\Handler;
 
 class Adm extends Comp
 {
-    protected $isNew = false;
+    const ADMIN='Admin';
+    
+    protected $isNew = false; // not reentrent
     private static $instance = null;
     
     private function __construct()
@@ -31,20 +34,31 @@ class Adm extends Comp
         return true;
     }
     
-    public function init($app, $prm)
+    public function init($appPrm, $bindings)
     {
-        $mod = 'Admin';
-        handler::get()->setCmod($mod, 'ABridge\ABridge\Adm\Admin');
+        if ($bindings==[]) {
+            $bindings[self::ADMIN]=self::ADMIN;
+        }
+        $bindings = self::normBindings($bindings);
+        Mod::get()->init($appPrm, self::defltHandlers($bindings));
+        if ($bindings[self::ADMIN]==self::ADMIN) {
+            $className = __NAMESPACE__.'\\'.self::ADMIN;
+            Handler::get()->setCmod(self::ADMIN, $className);
+        }
     }
     
-    public function begin($app, $prm)
+    public function begin($appPrm, $bindings)
     {
-        $mod = 'Admin';
+        $this->isNew = false;
+        $mod =self::ADMIN;
+        if (isset($bindings[self::ADMIN])) {
+            $mod=$bindings[self::ADMIN];
+        }
         $obj = new Model($mod);
         $obj->setCriteria([], [], []);
         $res = $obj->select();
         if (count($res)==0) {
-            $obj->setVal('Application', $app);
+            $obj->setVal('Application', $appPrm['name']);
             $obj->setVal('Init', true);
             $obj->save();
             $this->isNew = true;

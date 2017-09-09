@@ -3,6 +3,7 @@
 use ABridge\ABridge\UtilsC;
 
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mtype;
@@ -16,31 +17,31 @@ use ABridge\ABridge\Usr\Role;
 use ABridge\ABridge\Usr\Distribution;
 use ABridge\ABridge\Usr\Session;
 
-class Access_Test_dataBase_2 extends User
+class Access_Test_dataBase_User extends User
 {
 }
-class Access_Test_fileBase_2 extends User
-{
-}
-
-class Access_Test_dataBase_3 extends Role
-{
-}
-class Access_Test_fileBase_3 extends Role
+class Access_Test_fileBase_User extends User
 {
 }
 
-class Access_Test_dataBase_1 extends Session
+class Access_Test_dataBase_Role extends Role
 {
 }
-class Access_Test_fileBase_1 extends Session
+class Access_Test_fileBase_Role extends Role
 {
 }
 
-class Access_Test_dataBase_4 extends Distribution
+class Access_Test_dataBase_Session extends Session
 {
 }
-class Access_Test_fileBase_4 extends Distribution
+class Access_Test_fileBase_Session extends Session
+{
+}
+
+class Access_Test_dataBase_Distribution extends Distribution
+{
+}
+class Access_Test_fileBase_Distribution extends Distribution
 {
 }
 
@@ -49,30 +50,38 @@ class Access_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        $name = 'test';
-        $classes = ['Session','User','Role','Distribution'];
-        $bsname = get_called_class();
-        $bases = UtilsC::initHandlers($name, $classes, $bsname, $prm);
-        $res = UtilsC::initClasses($bases);
-        $this->assertTrue($res);
-        return $bases;
+    	$classes = ['Session','User','Role','Distribution'];
+    	
+    	$prm=UtilsC::genPrm($classes, get_called_class());
+    	
+    	Mod::get()->reset();
+    	
+    	$mod= Mod::get();
+    	
+    	$mod->init($prm['application'],$prm['handlers']);
+    	
+    	$mod->begin();
+    	
+    	$res = UtilsC::createMods($prm['dataBase']);
+    	$res = $res and UtilsC::createMods($prm['fileBase']);
+    	
+    	$mod->end();
+    	
+    	$this->assertTrue($res);
+    	
+    	return $prm;
     }
     
     /**
     * @depends testInit
     */
-    public function testsave($bases)
+    public function testsave($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
             
             $x = new Model($bd['Role']);
             $x->setVal('Name', 'Default');
@@ -128,17 +137,16 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(3, $res);
             $this->assertFalse($x->isErr());
             
-            $db->commit();
-        }
-        
-        return $bases;
+            $mod->end();
+    	}
+    	return $prm;
     }
     
     /**
      * @dataProvider Provider1
      * @depends testsave
      */
-    public function testCond($p, $b, $c, $e1, $bases)
+    public function testCond($p, $b, $c, $e1, $prm)
     {
         
         $rolespec =[
@@ -150,10 +158,11 @@ class Access_Test extends PHPUnit_Framework_TestCase
         [[CstMode::V_S_CREA,CstMode::V_S_DELT],      '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
         ];
 
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$mod->begin();
         
             $role = new Model($bd['Role'], 1);
             $res = json_encode($rolespec);
@@ -171,9 +180,9 @@ class Access_Test extends PHPUnit_Framework_TestCase
                 $this->assertFalse($x->checkReq($req));
             }
             
-            $db->commit();
+            $mod->end();
         }
-        return $bases;
+        return $prm;
     }
 
     public function Provider1()
@@ -198,7 +207,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
      * @depends testsave
      */
     
-    public function testCheck($p, $b, $e1, $e2, $e3, $bases)
+    public function testCheck($p, $b, $e1, $e2, $e3, $prm)
     {
         
         $rolespec =[
@@ -208,10 +217,11 @@ class Access_Test extends PHPUnit_Framework_TestCase
         [[CstMode::V_S_CREA,CstMode::V_S_DELT],           '|Application|BuiltFrom',               ['Application'=>'User','BuiltFrom'=>'User']],
         ];
         
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$mod->begin();
 
             $role = new Model($bd['Role'], 2);
             $res = json_encode($rolespec);
@@ -243,9 +253,10 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $res = $r->checkARight($req, [['Application',$x]], true);
             $this->assertEquals($e3, $res);
             
-            $db->commit();
+            
+            $mod->end();
         }
-        return $bases;
+        return $prm;
     }
 
     public function Provider2()
@@ -266,14 +277,15 @@ class Access_Test extends PHPUnit_Framework_TestCase
      * @depends testsave
      */
     
-    public function testDefault($p, $b, $e1, $bases)
+    public function testDefault($p, $b, $e1, $prm)
     {
         
         
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
                     
             $y = new Model($bd['Session'], 3);
             $r = $y->getCobj();
@@ -284,9 +296,10 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals($e1, $res);
             
             
-            $db->commit();
-        }
-        return $bases;
+            
+            $mod->end();
+    	}
+    	return $prm;
     }
     
     public function Provider3()
@@ -304,13 +317,14 @@ class Access_Test extends PHPUnit_Framework_TestCase
      * @depends testsave
      */
         
-    public function testErr($bases)
+    public function testErr($prm)
     {
  
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
         
             $y = new Model($bd['Session'], 1);
             $r = $y->getCobj();
@@ -340,8 +354,9 @@ class Access_Test extends PHPUnit_Framework_TestCase
                 $res= $e->getMessage();
             }
             $this->assertEquals($res, CstError::E_ERC050);
-            $db->commit();
-        }
-        return $bases;
+            
+            $mod->end();
+    	}
+    	return $prm;
     }
 }

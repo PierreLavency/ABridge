@@ -2,15 +2,16 @@
 use ABridge\ABridge\UtilsC;
 
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\CstError;
 
 use ABridge\ABridge\Usr\User;
 
-class User_Test_dataBase_1 extends User
+class User_Test_dataBase_User extends User
 {
 }
-class User_Test_fileBase_1 extends User
+class User_Test_fileBase_User extends User
 {
 }
 
@@ -19,30 +20,39 @@ class User_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        $name = 'test';
-        $classes = ['User'];
-        $bsname = get_called_class();
-        $bases= UtilsC::initHandlers($name, $classes, $bsname, $prm);
-        $res = UtilsC::initClasses($bases);
-        $this->assertTrue($res);
-        return $bases;
+    	$classes = ['User'];
+    	
+    	$prm=UtilsC::genPrm($classes, get_called_class());
+    	
+    	Mod::get()->reset();
+    	
+    	$mod= Mod::get();
+
+    	$mod->init($prm['application'],$prm['handlers']);
+    	
+    	$mod->begin();
+    	
+    	$res = UtilsC::createMods($prm['dataBase']);
+    	$res = $res and UtilsC::createMods($prm['fileBase']);
+    	
+    	
+    	$mod->end();
+    	
+    	$this->assertTrue($res);
+    	
+    	return $prm;
     }
     /**
     * @depends testInit
     */
-    public function testsave($bases)
+    public function testsave($prm)
     {
 
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-        
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
             
             $x = new Model($bd['User']);
             $res=$x->save();
@@ -52,21 +62,22 @@ class User_Test extends PHPUnit_Framework_TestCase
             $res = $obj->authenticate(null, null);
             $this->assertTrue($res);
      
-            $db->commit();
-        }
-        return $bases;
+            $mod->end();
+    	}
+    	return $prm;
     }
  
     /**
     * @depends  testsave
     */
     
-    public function testget($bases)
+    public function testget($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
             
             $x = new Model($bd['User'], 1);
             $res= $x->getVal('Password');
@@ -80,20 +91,22 @@ class User_Test extends PHPUnit_Framework_TestCase
             $res=$x->save();
             $this->assertFalse($x->isErr());
             
-            $db->commit();
-        }
-        return $bases;
+            $mod->end();
+    	}
+    	return $prm;
     }
 
     /**
     * @depends  testget
     */
 
-    public function testget2($bases)
+    public function testget2($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
             
             $x = new Model($bd['User'], 1);
             $res= $x->getVal('Password');
@@ -122,20 +135,21 @@ class User_Test extends PHPUnit_Framework_TestCase
             $res = $obj->authenticate('test2', 'Password2');
             $this->assertFalse($res);
             
-            $db->commit();
-        }
-        return $bases;
+            $mod->end();
+    	}
+    	return $prm;
     }
 
     /**
     * @depends  testget2
     */
-    public function testerr($bases)
+    public function testerr($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
             
             $this->assertNotNull($x = new Model($bd['User'], 1));
             $x->setVal('UserId', 'test3');
@@ -153,9 +167,8 @@ class User_Test extends PHPUnit_Framework_TestCase
             
             $this->assertEquals($x->getErrLine(), CstError::E_ERC058);
             
-            $db->commit();
-        }
-        
-        return $bases;
+            $mod->end();
+    	}
+    	return $prm;
     }
 }

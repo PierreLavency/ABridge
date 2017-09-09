@@ -12,17 +12,13 @@ B22 EVALP in create dialog
 B24 cannot log out if not root !
 
 DEV
+- develop component for abstract code (Cda).
+- implement memBase
 
 - check on delete of distribution / Groups if used in default.
 - set up own exception
 - review logging and error Management.
-- implement memBase
 - improve LC support (test/ dev Data Base etc.)
-
-- increase autorisations rule capability
-	- views and other parameters
-	- handle user preference.
-	- extend path with reference (// and get rid of getObj in session)
 	
 - clean up picture path
 
@@ -31,7 +27,6 @@ DEV
 - combine temp/evalp reference. 
 
 - create Ctr Component
-- abstract application interface
 
 - delete in list.
 - order in list query and attr.
@@ -40,14 +35,7 @@ DEV
 - set up rest services / Python
 - develop a CLI / Python
 - selection for Ref / Java script 
-
-- view sort out persistence/2
-- multi language /2
-
-- delete all object in class /2
-- introduction of name space in Tests /2
-
-- set up modif logging // node.js ?
+- set up modif logging / node.js ?
 
 - changed DB model independently of class model.
 - user Jason to save data rather than serilialisation.
@@ -57,11 +45,22 @@ DEV
 
 - implement CSS 
 
-- graphics : include svg bit in view. /2
 - iniMod rather than fileBase (?)
 - revisit dot attributes (?)
 - unify get code with get reference. (??)
 - support CREF on abstract (????)
+
+
+- increase autorisations rule capability /2
+	- views and other parameters
+	- handle user preference.
+	- extend path with reference (// and get rid of getObj in session)
+- view sort out persistence/2
+- multi language /2
+- delete all object in class /2
+- introduction of name space in Tests /2
+- graphics : include svg bit in view. /2
+
 
 TEST
 

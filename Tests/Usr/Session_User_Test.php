@@ -3,24 +3,25 @@
 use ABridge\ABridge\UtilsC;
 
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\CstError;
 
 use ABridge\ABridge\Usr\User;
 
 use ABridge\ABridge\Usr\Session;
 
-class Session_User_Test_dataBase_2 extends User
+class Session_User_Test_dataBase_User extends User
 {
 };
-class Session_User_Test_fileBase_2 extends User
+class Session_User_Test_fileBase_User extends User
 {
 };
 
 
-class Session_User_Test_dataBase_1 extends Session
+class Session_User_Test_dataBase_Session extends Session
 {
 };
-class Session_User_Test_fileBase_1 extends Session
+class Session_User_Test_fileBase_Session extends Session
 {
 };
 
@@ -31,29 +32,37 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
     
     public function testInit()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        $name = 'test';
-        $classes = ['Session','User'];
-        $bsname = get_called_class();
-        $bases= UtilsC::initHandlers($name, $classes, $bsname, $prm);
-        $res = UtilsC::initClasses($bases);
-        $this->assertTrue($res);
-        return $bases;
+    	$classes = ['Session','User'];
+    	
+    	$prm=UtilsC::genPrm($classes, get_called_class());
+    	
+    	Mod::get()->reset();
+    	
+    	$mod= Mod::get();
+    	
+    	$mod->init($prm['application'],$prm['handlers']);
+    	
+    	$mod->begin();
+    	
+    	$res = UtilsC::createMods($prm['dataBase']);
+    	$res = $res and UtilsC::createMods($prm['fileBase']);
+    	
+    	$mod->end();
+    	
+    	$this->assertTrue($res);
+    	
+    	return $prm;
     }
     /**
     * @depends testInit
     */
-    public function testsave($bases)
+    public function testsave($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
 
             $x = new Model($bd['User']);
             $x->setVal('UserId', 'test');
@@ -70,23 +79,24 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(1, $res);
  
 
-            $db->commit();
+            $mod->end();
         }
         
-        return $bases;
+        return $prm;
     }
 
     /**
     * @depends  testsave
     */
     
-    public function testUpdt($bases)
+    public function testUpdt($prm)
     {
 
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
             
             $x = new Model($bd['Session'], 1);
             
@@ -97,23 +107,23 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
             
             $this->assertFalse($x->isErr());
             
-            $db->commit();
+            $mod->end();
         }
         
-        return $bases;
+        return $prm;
     }
  
     /**
     * @depends  testUpdt
     */
 
-    public function testErr($bases)
+    public function testErr($prm)
     {
-        
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
         
             $x = new Model($bd['Session'], 1);
             
@@ -133,9 +143,9 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
 
             $x->save();
             $this->assertEquals($x->getErrLine(), CstError::E_ERC057);
-            $db->commit();
+            $mod->end();
         }
         
-        return $bases;
+        return $prm;
     }
 }

@@ -23,15 +23,7 @@ class Usr
     }
     
     static public $config = [
-            'Handlers' =>
-            [
-                    self::USER          => [],
-                    self::ROLE          => [],
-                    self::DISTRIBUTION  => [],
-                    self::USERGROUP     => [],
-                    self::GROUPUSER     => [],
-                    self::SESSION       => [],
-            ],
+
             'Hdl'   => [
                     'Usr'   => [
                             self::USER          ,

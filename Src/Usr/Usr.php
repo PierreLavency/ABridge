@@ -3,16 +3,26 @@ namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Handler;
+
+use ABridge\ABridge\Mod\Mod;
+
 use ABridge\ABridge\Comp;
 
 class Usr extends Comp
 {
-
+    const USER ='User';
+    const ROLE = 'Role';
+    const SESSION ='Session';
+    const DISTRIBUTION = 'Distribution';
+    const USERGROUP ='UserGroup';
+    const GROUPUSER ='GroupUser';
+    
+    const DEFAUTCLASSNAME = __NAMESPACE__.'\\'.self::SESSION;
+    
     public static $cleanUp = false;
     public static $timer= 0; // 0 when connected
-
-
     private static $instance = null;
+    
     protected $isNew = false;
     
     private function __construct()
@@ -34,23 +44,31 @@ class Usr extends Comp
         return true;
     }
 
-    public function init($name, $config)
+    public function init($appPrm, $bindings)
     {
-
-        foreach ($config as $mod => $cname) {
-            if (is_numeric($mod)) {
-                $mod = $cname;
-                $cname = __NAMESPACE__.'\\'.$mod;
+        $bindings = self::normBindings($bindings);
+        foreach ($bindings as $mod => $physicalName) {
+            if ($mod == $physicalName) {
+                $className= __NAMESPACE__.'\\'.$mod;
+                handler::get()->setCmod($mod, $className);
             }
-            handler::get()->setCmod($mod, $cname);
         }
+        Mod::get()->init($appPrm, self::defltHandlers($bindings));
     }
     
-    public function begin($name, $prm)
+    public function begin($appPrm, $bindings)
     {
-        $className=$prm[0];
+        $className = self::DEFAUTCLASSNAME;
+        $cookieName = self::SESSION;
+        if (isset($bindings[self::SESSION])) {
+            $sessionBinding= $bindings[self::SESSION];
+            if ($sessionBinding != self::SESSION) {
+                $className=$sessionBinding;
+                $cookieName=$sessionBinding;
+            }
+        }
+        $name = $appPrm['name'].$cookieName;
         $id=0;
-        
         if (self::$cleanUp) {
             if (isset($_COOKIE[$name])) {
                 unset($_COOKIE[$name]);
@@ -59,7 +77,7 @@ class Usr extends Comp
         if (isset($_COOKIE[$name])) {
             $id=$_COOKIE[$name];
         }
-        
+        $this->isNew=false;
         $sessionHdl = $className::getSession($id);
         if ($sessionHdl->isNew()) {
             $this->isNew=true;

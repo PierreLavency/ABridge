@@ -18,6 +18,7 @@ class Mod extends Comp
 
     public function reset()
     {
+        Handler::get()->resetHandlers();
         $this->mods=[];
         $this->bases=[];
         self::$instance =null;
@@ -32,24 +33,24 @@ class Mod extends Comp
         return self::$instance;
     }
     
-    public function init($prm, $config)
+    public function init($appPrm, $config)
     {
         foreach ($config as $classN => $handler) {
             $c = count($handler);
             switch ($c) {
                 case 0:
-                    $handler[0]=$prm['base'];
+                    $handler[0]=$appPrm['base'];
                     // default set
                 case 1:
                     if ($handler[0]=='dataBase') {
-                        $handler[]=$prm['dbnm'];
+                        $handler[]=$appPrm['dbnm'];
                     }
                     if ($handler[0]=='fileBase') {
-                        $handler[]=$prm['flnm'];
+                        $handler[]=$appPrm['flnm'];
                     }
                     // default set
                 case 2:
-                    Handler::get()->setBase($handler[0], $handler[1], $prm);
+                    Handler::get()->setBase($handler[0], $handler[1], $appPrm);
                     Handler::get()->setStateHandler(
                         $classN,
                         $handler[0],
@@ -62,11 +63,21 @@ class Mod extends Comp
         $this->bases = Handler::get()->getBaseClasses();
     }
     
-    public function begin($app, $prm)
+    public function begin($appPrm = null, $config = null)
     {
         foreach ($this->bases as $base) {
             $base-> beginTrans();
         }
+    }
+
+    public function end()
+    {
+        $res = true;
+        foreach ($this->bases as $base) {
+            $r =$base->commit();
+            $res = ($res and $r);
+        }
+        return $res;
     }
     
     public function isNew()

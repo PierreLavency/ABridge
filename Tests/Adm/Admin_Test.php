@@ -3,11 +3,12 @@
 use ABridge\ABridge\Adm\Admin;
 use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mod;
 
-class Admin_Test_dataBase_1 extends Admin
+class Admin_Test_dataBase_Admin extends Admin
 {
 }
-class Admin_Test_fileBase_1 extends Admin
+class Admin_Test_fileBase_Admin extends Admin
 {
 }
 
@@ -16,30 +17,28 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        $name = 'atest';
-        $classes = ['Admin'];
-        $bsname = end(explode('\\', get_called_class()));
-        $bases= UtilsC::initHandlers($name, $classes, $bsname, $prm);
-        $res = UtilsC::initClasses($bases);
-        $this->assertTrue($res);
-        return $bases;
+    	$classes = ['Admin'];
+    	$prm=UtilsC::genPrm($classes, get_called_class());
+
+    	Mod::get()->reset();   	
+
+    	$mod= Mod::get();
+    	
+    	$mod->init($prm['application'],$prm['handlers']);    	
+
+        return $prm;
     }
     /**
     * @depends testInit
     */
-    public function testsave($bases)
+    public function testsave($prm)
     {
 
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-        
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
             
             $x = new Model($bd['Admin']);
             $res=$x->deleteMod();
@@ -49,23 +48,25 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
             $x->setVal('Application', '../Tests/Adm');
             $x->setVal('Init', true);
             $res=$x->save();
+            $x->getErrLog()->show();
             $this->assertequals(1, $res);
      
-            $db->commit();
-        }
-        return $bases;
+            $mod->end();
+    	}
+    	return $prm;
     }
  
     /**
     * @depends  testsave
     */
     
-    public function testget($bases)
+    public function testget($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
             
             $x = new Model($bd['Admin'], 1);
             $res= $x->getVal('Application');
@@ -74,20 +75,22 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
             
             $this->assertFalse($x->isErr());
             
-            $db->commit();
-        }
-        return $bases;
+            $mod->end();
+    	}
+    	return $prm;
     }
 
     /**
     * @depends  testget
     */
 
-    public function testget2($bases)
+    public function testget2($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
             
             $x = new Model($bd['Admin'], 1);
             $res= $x->getVal('Application');
@@ -100,21 +103,22 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
             $res=$x->delet();
             $this->assertFalse($res);
             
-            $db->commit();
-        }
-        return $bases;
+            $mod->end();
+    	}
+    	return $prm;
     }
 
     /**
     * @depends  testget2
     */
-    public function testsave2($bases)
+    public function testsave2($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-
-            $db->beginTrans();
-            
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
+    		
             $x = new Model($bd['Admin'], 1);
             $res= $x->getVal('Application');
             $this->assertEquals('../Tests/Adm', $res);
@@ -128,9 +132,9 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
             $this->assertEquals(1, $res);
             $x->getErrLog()->show();
             $this->assertFalse($x->isErr());
-            $db->commit();
-        }
-        
-        return $bases;
+            
+            $mod->end();
+    	}
+    	return $prm;
     }
 }

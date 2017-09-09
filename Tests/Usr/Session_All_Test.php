@@ -2,6 +2,7 @@
 
 use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\CstError;
 
 use ABridge\ABridge\Usr\User;
@@ -11,45 +12,45 @@ use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Usr\UserGroup;
 use ABridge\ABridge\Usr\GroupUser;
 
-class Session_All_Test_dataBase_2 extends User
+class Session_All_Test_dataBase_User extends User
 {
 }
-class Session_All_Test_fileBase_2 extends User
-{
-}
-
-class Session_All_Test_dataBase_3 extends Role
-{
-}
-class Session_All_Test_fileBase_3 extends Role
+class Session_All_Test_fileBase_User extends User
 {
 }
 
-class Session_All_Test_dataBase_1 extends Session
+class Session_All_Test_dataBase_Role extends Role
 {
 }
-class Session_All_Test_fileBase_1 extends Session
-{
-}
-
-class Session_All_Test_dataBase_4 extends Distribution
-{
-}
-class Session_All_Test_fileBase_4 extends Distribution
+class Session_All_Test_fileBase_Role extends Role
 {
 }
 
-class Session_All_Test_dataBase_5 extends UserGroup
+class Session_All_Test_dataBase_Session extends Session
 {
 }
-class Session_All_Test_fileBase_5 extends UserGroup
+class Session_All_Test_fileBase_Session extends Session
 {
 }
 
-class Session_All_Test_dataBase_6 extends GroupUser
+class Session_All_Test_dataBase_Distribution extends Distribution
 {
 }
-class Session_All_Test_fileBase_6 extends GroupUser
+class Session_All_Test_fileBase_Distribution extends Distribution
+{
+}
+
+class Session_All_Test_dataBase_UserGroup extends UserGroup
+{
+}
+class Session_All_Test_fileBase_UserGroup extends UserGroup
+{
+}
+
+class Session_All_Test_dataBase_GroupUser extends GroupUser
+{
+}
+class Session_All_Test_fileBase_GroupUser extends GroupUser
 {
 }
 
@@ -59,30 +60,37 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
    
     public function testInit()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        $name = 'test';
-        $classes = ['Session','User','Role','Distribution','UserGroup','GroupUser'];
-        $bsname = get_called_class();
-        $bases= UtilsC::initHandlers($name, $classes, $bsname, $prm);
-        $res = UtilsC::initClasses($bases);
-        $this->assertTrue($res);
-        return $bases;
+    	$classes = ['Session','User','Role','Distribution','UserGroup','GroupUser'];
+    	$prm=UtilsC::genPrm($classes, get_called_class());
+    	
+    	Mod::get()->reset();
+    	
+    	$mod= Mod::get();
+    	
+    	$mod->init($prm['application'],$prm['handlers']);
+    	
+    	$mod->begin();
+    	
+    	$res = UtilsC::createMods($prm['dataBase']);
+    	$res = $res and UtilsC::createMods($prm['fileBase']);
+    	
+    	$mod->end();
+    	
+    	$this->assertTrue($res);
+    	
+    	return $prm;
     }
     /**
     * @depends testInit
     */
-    public function testsave($bases)
+    public function testsave($prm)
     {
         $idl = [];
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$mod->begin();
             
             $x = new Model($bd['Role']);
             $x->setVal('Name', 'Default');
@@ -125,10 +133,10 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
             $res=$x->save();
             $this->assertEquals(1, $res);
 
-            $db->commit();
+            $mod->end();
         }
         
-        return [$bases,$idl];
+        return [$prm,$idl];
     }
 
 
@@ -138,13 +146,15 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
     
     public function testsave1($basesId)
     {
-        list($bases,$idl) = $basesId;
+        list($prm,$idl) = $basesId;
         $i=0;
         
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$mod->begin();
+           
             
             $x = new Model($bd['Session'], 1);
             
@@ -172,7 +182,8 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
             $x->setVal('GroupName', 'test2');
             $x->save();
             $this->assertEquals(CstError::E_ERC060.":test2", $x->getErrLine());
-            $db->commit();
+            
+            $mod->end();
         }
         
         return $basesId;
@@ -184,13 +195,14 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
     
     public function testsave2($basesId)
     {
-        list($bases,$idl) = $basesId;
+        list($prm,$idl) = $basesId;
         $i=0;
         
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$mod->begin();
             
             $x=new Model($bd['User'], 1);
             $x->setVal('Role', 1);
@@ -232,7 +244,8 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
             $this->assertFalse($x->isErr());
             $this->assertEquals($x->getVal('ActiveGroup'), 1);
             
-            $db->commit();
+            $mod->end();
+            
         }
         
         return $basesId;
@@ -244,13 +257,14 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
     
     public function testsave3($basesId)
     {
-        list($bases,$idl) = $basesId;
+        list($prm,$idl) = $basesId;
         $i=0;
         
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$mod->begin();
                         
             $x = new Model($bd['Session'], 1);
                      
@@ -271,7 +285,7 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals('Default', $y->getVal('RoleName'));
             $this->assertEquals('test1', $y->getVal('GroupName'));
             
-            $db->commit();
+            $mod->end();
         }
         
         return $basesId;

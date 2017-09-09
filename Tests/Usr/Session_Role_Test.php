@@ -3,6 +3,7 @@
 use ABridge\ABridge\UtilsC;
 
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Hdl\CstMode;
 
@@ -12,17 +13,17 @@ use ABridge\ABridge\Usr\User;
 use ABridge\ABridge\Usr\Role;
 use ABridge\ABridge\Usr\Session;
 
-class Session_Role_Test_dataBase_2 extends Role
+class Session_Role_Test_dataBase_Role extends Role
 {
 };
-class Session_Role_Test_fileBase_2 extends Role
+class Session_Role_Test_fileBase_Role extends Role
 {
 };
 
-class Session_Role_Test_dataBase_1 extends Session
+class Session_Role_Test_dataBase_Session extends Session
 {
 };
-class Session_Role_Test_fileBase_1 extends Session
+class Session_Role_Test_fileBase_Session extends Session
 {
 };
 
@@ -32,30 +33,38 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
    
     public function testInit()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        $name = 'test';
-        $classes = ['Session','Role'];
-        $bsname = get_called_class();
-        $bases= UtilsC::initHandlers($name, $classes, $bsname, $prm);
-        $res = UtilsC::initClasses($bases);
-        $this->assertTrue($res);
-        return $bases;
+    	$classes = ['Session','Role'];
+    	
+    	$prm=UtilsC::genPrm($classes, get_called_class());
+    	
+    	Mod::get()->reset();
+    	
+    	$mod= Mod::get();
+    	
+    	$mod->init($prm['application'],$prm['handlers']);
+    	
+    	$mod->begin();
+    	
+    	$res = UtilsC::createMods($prm['dataBase']);
+    	$res = $res and UtilsC::createMods($prm['fileBase']);
+    	
+    	$mod->end();
+    	
+    	$this->assertTrue($res);
+    	
+    	return $prm;
     }
 
     /**
     * @depends testInit
     */
-    public function testsave($bases)
+    public function testsave($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
 
             $x = new Model($bd['Role']);
             $x->setVal('Name', 'Default');
@@ -91,17 +100,17 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(CstError::E_ERC059.":".$bd['Role'].":NotExists", $x->getErrLine());
             
  
-            $db->commit();
+            $mod->end();
         }
         
-        return $bases;
+        return $prm;
     }
 
     /**
     * @depends  testsave
     */
     
-    public function testGet($bases)
+    public function testGet($prm)
     {
         $rolespec =[
         [[CstMode::V_S_READ,CstMode::V_S_SLCT],           'true',                                 'true'],
@@ -112,10 +121,11 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
         [[CstMode::V_S_CREA,CstMode::V_S_DELT],           '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
         ];
         
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+        	
+        	$mod->begin();
             
             $x = new Model($bd['Session'], 1);
 
@@ -144,30 +154,31 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
             $res = $sessionHdl->getObj($bd['Session']);
             $this->assertEquals(2, $res->getId());
             
-            $db->commit();
+            $mod->end();
         }
         
-        return $bases;
+        return $prm;
     }
  
      /**
     * @depends  testGet
     */
     
-    public function testMenu($bases)
+    public function testMenu($prm)
     {
-        foreach ($bases as $base) {
-            list($db,$bd) = $base;
-            
-            $db->beginTrans();
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
 
             $x = new Model($bd['Session'], 1);
             $sessionHdl = $x->getCobj();
             $res= $sessionHdl->getSelMenu(['User','Application']);
             $this->assertEquals(['/Application'], $res);
             
-            $db->commit();
+            $mod->end();
         }
-        return $bases;
+        return $prm;
     }
 }
