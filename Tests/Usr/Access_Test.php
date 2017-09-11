@@ -93,6 +93,11 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $res=$x->save();
             $this->assertEquals(2, $res);
  
+            $x = new Model($bd['Role']);
+            $x->setVal('Name', 'Errors');
+            $res=$x->save();
+            $this->assertEquals(3, $res);
+            
             $x = new Model($bd['User']);
             $x->setVal('UserId', 'test');
             $res=$x->save();
@@ -102,7 +107,12 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $x->setVal('UserId', 'test2');
             $res=$x->save();
             $this->assertEquals(2, $res);
-                    
+
+            $x = new Model($bd['User']);
+            $x->setVal('UserId', 'test3');
+            $res=$x->save();
+            $this->assertEquals(3, $res);
+            
             $x = new Model($bd['Distribution']);
             $x->setVal('Role', 1);
             $x->setVal('User', 1);
@@ -114,6 +124,12 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $x->setVal('User', 2);
             $res=$x->save();
             $this->assertEquals(2, $res);
+
+            $x = new Model($bd['Distribution']);
+            $x->setVal('Role', 3);
+            $x->setVal('User', 3);
+            $res=$x->save();
+            $this->assertEquals(3, $res);
             
             $x = new Model($bd['Session']);
             $x->setVal('UserId', 'test');
@@ -136,6 +152,15 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $res=$x->save();
             $this->assertEquals(3, $res);
             $this->assertFalse($x->isErr());
+
+            $x = new Model($bd['Session']);
+            $x->setVal('UserId', 'test3');
+            $x->setVal('RoleName', 'Errors');
+            $res=$x->save();
+            $this->assertEquals(4, $res);
+            $res=$x->save();
+            $this->assertFalse($x->isErr());
+            
             
             $mod->end();
     	}
@@ -154,6 +179,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
         [CstMode::V_S_SLCT,                         '|User',                                'false'],
         [CstMode::V_S_READ,                         '|User',                                ["User"=>"User"]],
         [CstMode::V_S_UPDT,                         '|Application',                         ["Application"=>"User"]],
+        [CstMode::V_S_DELT,                         '|Application',                         ['Application'=>'User<!=>User']],
         [[CstMode::V_S_CREA,CstMode::V_S_UPDT,CstMode::V_S_DELT], ['|Application|In','|Application|Out'], ["Application"=>"User"]],
         [[CstMode::V_S_CREA,CstMode::V_S_DELT],      '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
         ];
@@ -191,14 +217,15 @@ class Access_Test extends PHPUnit_Framework_TestCase
             ['/Userr/1',                    CstMode::V_S_UPDT, 'User'        ,false],
             ['/User',                       CstMode::V_S_SLCT, 'User'        ,false],
             ['/User/1',                     CstMode::V_S_READ, 'User'        ,['User']],
-            ['/Application',                CstMode::V_S_SLCT, 'Application' ,['true']],
+            ['/Application',                CstMode::V_S_SLCT, 'Application' ,true],
             ['/Application/1',              CstMode::V_S_UPDT, 'Application' ,['User']],
+        	['/Application/1',              CstMode::V_S_DELT, 'Application' ,['User<!=>User']],
             ['/Application/1/In',           CstMode::V_S_CREA, 'Application' ,['User']],
             ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'Application' ,['User']],
             ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'BuiltFrom'   ,['User']],
-            ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'User'        ,['true']],
+            ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'User'        ,true],
             ['/Application/1/Ins',          CstMode::V_S_CREA, 'Application' ,false],
-            ['/Application/1/Ins',          CstMode::V_S_SLCT, 'Application' ,['true']],
+            ['/Application/1/Ins',          CstMode::V_S_SLCT, 'Application' ,true],
             ];
     }
     
@@ -213,8 +240,9 @@ class Access_Test extends PHPUnit_Framework_TestCase
         $rolespec =[
         [[CstMode::V_S_READ,CstMode::V_S_SLCT],           'true',                                 'true'],
         [CstMode::V_S_UPDT,                      '|Application',                         ['Application'=>'User<>User']],
-        [[CstMode::V_S_CREA,CstMode::V_S_UPDT,CstMode::V_S_DELT],  ['|Application|In','Application|Out'],  ['Application'=>'User']],
-        [[CstMode::V_S_CREA,CstMode::V_S_DELT],           '|Application|BuiltFrom',               ['Application'=>'User','BuiltFrom'=>'User']],
+        [CstMode::V_S_DELT,                         '|Application',                         ['Application'=>'User<!=>User']],
+        [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  ['|Application|In','Application|Out'],  ['Application'=>'User']],
+        [[CstMode::V_S_CREA],           '|Application|BuiltFrom',               ['Application'=>'User','BuiltFrom'=>'User']],
         ];
         
         $mod= Mod::get();
@@ -265,6 +293,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
             ['/ApplicationA/1',             CstMode::V_S_UPDT, false, false, false],
             ['/Application',                CstMode::V_S_SLCT, true, true , true],
             ['/Application/1',              CstMode::V_S_UPDT, true, false, false],
+        	['/Application/1',              CstMode::V_S_DELT, false,true, true],
             ['/Application/1/In',           CstMode::V_S_CREA, true, false, true],
             ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, true, false, true],
             ['/Application/1/Ins',          CstMode::V_S_CREA, false,false, false],
@@ -312,6 +341,54 @@ class Access_Test extends PHPUnit_Framework_TestCase
         ];
     }
     
+    /**
+     * @dataProvider Provider4
+     * @depends testsave
+     */
+    
+    public function testErr2($p, $b, $e1, $prm)
+    {
+    	$rolespec =[   			
+    			[CstMode::V_S_DELT, '|Application',['Application'=>'User<eroor>User']],
+    			[CstMode::V_S_UPDT, '|Application',['Application'=>'<>User']],
+    			[CstMode::V_S_READ, '|Application',['Application'=>'User<eroor>>User']],
+    	];
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		
+    		$mod->begin();
+    		$role = new Model($bd['Role'], 3);
+    		$res = json_encode($rolespec);
+    		$role->setVal('JSpec', $res);
+    		$role->save();
+    		
+    		$y = new Model($bd['Session'], 4);
+    		$r = $y->getCobj();
+    		
+    		$x = new Model('TestApp');
+    		$x->addAttr('User', Mtype::M_INTP);
+    		$x->setVal('User', 2);
+    		
+    		$req = new Request($p, $b);
+    		$res = "";
+	   		try {
+    			$res = $r->checkARight($req, [['Application',$x],['BuiltFrom',$x]], true);
+    		} catch (Exception $e) {
+    			$res= $e->getMessage();
+    		}
+    		$this->assertEquals($e1, $res);
+    	}
+    }
+    
+    public function Provider4()
+    {
+    	return [
+    			['/Application/1', CstMode::V_S_DELT,  CstError::E_ERC066.':eroor'],
+    			['/Application/1', CstMode::V_S_UPDT,  CstError::E_ERC065.':<>User'],
+    			['/Application/1', CstMode::V_S_READ,  CstError::E_ERC065.':User<eroor>>User'],
+    	];
+    }
     
     /**
      * @depends testsave
@@ -319,13 +396,12 @@ class Access_Test extends PHPUnit_Framework_TestCase
         
     public function testErr($prm)
     {
- 
+
+    	
     	$mod= Mod::get();
     	
-    	foreach ($prm['bindL'] as $bd) {
+    	foreach ($prm['bindL'] as $bd) {  		
     		
-    		$mod->begin();
-        
             $y = new Model($bd['Session'], 1);
             $r = $y->getCobj();
 
@@ -354,6 +430,8 @@ class Access_Test extends PHPUnit_Framework_TestCase
                 $res= $e->getMessage();
             }
             $this->assertEquals($res, CstError::E_ERC050);
+
+            
             
             $mod->end();
     	}

@@ -68,6 +68,8 @@ class CstError
     const E_ERC062 = 'ERC062';  // no custom class defined
     const E_ERC063 = 'ERC063';
     const E_ERC064 = 'ERC064';
+    const E_ERC065 = 'ERC065';
+    const E_ERC066 = 'ERC066';
     
     protected static $disp =
     [
@@ -143,6 +145,8 @@ class CstError
         self::E_ERC063 => 'Invalid Base type',
         
         self::E_ERC064 => 'Object cannot be determined',
+        self::E_ERC065 => 'illigal condition in Role',
+        self::E_ERC066 => 'illigal operator in Role',
         
     ];
         

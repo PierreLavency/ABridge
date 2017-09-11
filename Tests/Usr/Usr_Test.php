@@ -38,8 +38,8 @@ class Usr_Test extends PHPUnit_Framework_TestCase
  
     	$mod->begin();
     	
-        $res = UtilsC::createMods($prm['dataBase']);
-        $res = $res and UtilsC::createMods($prm['fileBase']);
+    	$res = usr::initMeta($prm['application'], $prm['dataBase']);
+    	$res = $res and usr::initMeta($prm['application'], $prm['fileBase']);
         
         $mod->end();
         

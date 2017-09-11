@@ -4,7 +4,7 @@ namespace ABridge\ABridge\Apps;
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
-use ABridge\ABridge\UtilsC;
+
 use ABridge\ABridge\Mod\Model;
 
 class Usr
@@ -19,7 +19,7 @@ class Usr
     
     public static function loadMeta($prm = null)
     {
-        UtilsC::createMods(self::$config['Hdl']['Usr']);
+        Usr::initMeta([], self::$config['Hdl']['Usr']);
     }
     
     static public $config = [

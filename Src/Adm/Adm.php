@@ -72,4 +72,9 @@ class Adm extends Comp
     {
         return $this->isNew;
     }
+    
+    public function initMeta($appPrm, $config)
+    {
+        return true;
+    }
 }

@@ -311,7 +311,7 @@ class Config extends App
  [["Create","Update","Delete"],"|User|Student",              {"User":"id<>User"}],
  [["Create","Update","Delete"],"|User|Student|InscritA",     {"User":"id<>User"}],
  [ "Select",                   "|User|Student",               "false"],
- [["Read","Update"],           "|Session",                   {"Session":"id"}],
+ [["Read","Update","Delete"],  "|Session",                   {"Session":"id"}],
  [["Read","Update"],           "|User",                      {"User":"id<>User"}]
 ]';
 		
@@ -327,7 +327,7 @@ class Config extends App
  [["Select"],                 ["|Student","|Cours","|Prof"],  "true"],
  [["Update","Delete"],         "|Prof",                       {"Prof":"User"}],
  [["Create","Update","Delete"],"|User|Prof",                  {"User":"id<>User"}],
- [["Read","Update"],           "|Session",                    {"Session":"id"}],
+ [["Read","Update","Delete"],  "|Session",                    {"Session":"id"}],
  [["Read","Update"],           "|User",                       {"User":"id<>User"}]
 ]';
 		
@@ -347,7 +347,7 @@ class Config extends App
  [["Update","Delete"],         "|Cours",            {"Cours":"UserGroup<>ActiveGroup"}],
  [["Create","Update","Delete"],"|Cours|Par",        {"Cours":"UserGroup<>ActiveGroup"}],
  [["Create","Update","Delete"],"|Cours|SuiviPar",   {"Cours":"UserGroup<>ActiveGroup"}],
- [["Update","Read"],           "|Session",          {"Session":"id"}],
+ [["Update","Read","Delete"],  "|Session",          {"Session":"id"}],
  [["Update","Read"],           "|User",             {"User":"id<>User"}]
 ]';
 		

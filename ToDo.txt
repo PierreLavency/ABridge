@@ -7,11 +7,12 @@ B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
-
 B22 EVALP in create dialog
-B24 cannot log out if not root !
+
 
 DEV
+- improve session (session name etc.)
+- improve Admin (view app paramter).
 - develop component for abstract code (Cda).
 - implement memBase
 
@@ -82,7 +83,12 @@ INT
 - set up a git server
 - set up jenkin
 
-DONE
+DONEB
+improve role rules capability (different operators).
+improve handle test coverage.
+B24 cannot log out if not root !
+-------------// 2
+improve component testing
 -------------// 0.5
 first abstract Application interface
 -------------// 1

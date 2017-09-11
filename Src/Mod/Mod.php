@@ -90,4 +90,9 @@ class Mod extends Comp
     {
         return $this->mods;
     }
+    
+    public function initMeta($appPrm, $config)
+    {
+        return true;
+    }
 }

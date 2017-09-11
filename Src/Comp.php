@@ -13,6 +13,8 @@ abstract class Comp
     
     abstract public function isNew();
     
+    abstract public function initMeta($appPrm, $config);
+    
     
     public static function normBindings($bindings)
     {

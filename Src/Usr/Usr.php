@@ -3,7 +3,7 @@ namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Handler;
-
+use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Comp;
@@ -98,5 +98,11 @@ class Usr extends Comp
     public function isNew()
     {
         return $this->isNew;
+    }
+    
+    
+    public function initMeta($appPrm, $bindings)
+    {
+        return UtilsC::createMods($bindings);
     }
 }

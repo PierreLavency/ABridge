@@ -182,7 +182,7 @@ class Handle
     protected function checkReq($request)
     {
         if ($this->sessionHdl) {
-            $res = $this->sessionHdl->checkReq($this->request);
+            $res = $this->sessionHdl->checkReq($request);
             return $res;
         }
         return true;
@@ -215,9 +215,6 @@ class Handle
     {
         // for Cref menu
         $req= $this->request->getCrefReq($attr, $action);
-        if (is_null($req)) {
-            return null;
-        }
         $res = $this->checkARight($req, $this->attrObjs, false, false);
         if (!$res) {
             return null;

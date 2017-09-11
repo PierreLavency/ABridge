@@ -65,4 +65,9 @@ class Vew extends Comp
     {
         return false;
     }
+    
+    public function initMeta($appPrm, $config)
+    {
+        return true;
+    }
 }
