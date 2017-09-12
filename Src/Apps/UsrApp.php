@@ -6,8 +6,10 @@ use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
 
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Usr\Usr;
+use ABridge\ABridge\App;
 
-class Usr
+class UsrApp extends App
 {
 
     const USER ='User';

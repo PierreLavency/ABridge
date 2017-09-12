@@ -58,12 +58,13 @@ class Adm extends Comp
         $obj->setCriteria([], [], []);
         $res = $obj->select();
         if (count($res)==0) {
-            $obj->setVal('Application', $appPrm['name']);
-            $obj->setVal('Init', true);
+            foreach ($appPrm as $attr => $val) {
+                $obj->setVal($attr, $val);
+            }
             $obj->save();
             $this->isNew = true;
         } else {
-            $obj = new Model($mod, $res[0]);
+            $obj = new Model($mod, 1);
         }
         return $obj;
     }
@@ -73,8 +74,15 @@ class Adm extends Comp
         return $this->isNew;
     }
     
-    public function initMeta($appPrm, $config)
+    public function initMeta($appPrm, $bindings)
     {
-        return true;
+        if ($bindings==[]) {
+            $bindings[self::ADMIN]=self::ADMIN;
+        }
+        $bindings = self::normBindings($bindings);
+        foreach ($bindings as $logicalName => $physicalName) {
+            $x = new Model($physicalName);
+            $x->deleteMod();
+        }
     }
 }

@@ -6,12 +6,16 @@ use ABridge\ABridge\View\CstHTML;
 
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
-
-use ABridge\ABridge\Apps\Usr;
-use ABridge\ABridge\Apps\Adm;
-use ABridge\ABridge\Apps\Cdv;
+use ABridge\ABridge\Adm\Adm;
+use ABridge\ABridge\Usr\Usr;
 
 use ABridge\ABridge\UtilsC;
+
+
+use ABridge\ABridge\Apps\AdmApp;
+use ABridge\ABridge\Apps\UsrApp;
+use ABridge\ABridge\Apps\Cdv;
+
 use ABridge\ABridge\App;
 
 require_once 'Student.php';
@@ -34,8 +38,8 @@ class Config extends App
 	static $config = [
 	'Apps'	=>
 			[
-					'Usr',
-					'Adm',
+					'UsrApp',
+					'AdmApp',
 					'Cdv'
 			],
 	'Handlers' =>
@@ -250,7 +254,7 @@ class Config extends App
 	
 	public static function loadMeta($prm=null)
 	{
-		Usr::loadMeta();
+		UsrApp::loadMeta();
 		
 		$obj = new Model(Usr::USER);
 		$res = $obj->addAttr('Student',Mtype::M_CREF,'/'.self::STUDENT.'/'.Usr::USER);
@@ -258,7 +262,7 @@ class Config extends App
 		$res = $obj->saveMod();
 		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 		
-		Adm::loadMeta();
+		AdmApp::loadMeta();
 		Cdv::loadMeta([self::SEXE,self::COUNTRY]);
 
 		$bindings=
@@ -290,8 +294,8 @@ class Config extends App
 	
 	public static function loadData($prm=null)
 	{
-		Usr::loadData();
-		Adm::loadData();
+		usrApp::loadData();
+		admApp::loadData();
 		Cdv::loadData(
 				[
 						self::SEXE=>['Male','Female'],

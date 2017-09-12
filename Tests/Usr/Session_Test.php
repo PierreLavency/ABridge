@@ -18,26 +18,26 @@ class Session_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-    	$classes = ['Session'];
-    	
-    	$prm=UtilsC::genPrm($classes, get_called_class());
-    	
-    	Mod::get()->reset();
-    	
-    	$mod= Mod::get();
-    	
-    	$mod->init($prm['application'],$prm['handlers']);
-    	
-    	$mod->begin();
-    	
-    	$res = UtilsC::createMods($prm['dataBase']);
-    	$res = $res and UtilsC::createMods($prm['fileBase']);
-    	
-    	$mod->end();
-    	
-    	$this->assertTrue($res);
-    	
-    	return $prm;
+        $classes = ['Session'];
+        
+        $prm=UtilsC::genPrm($classes, get_called_class());
+        
+        Mod::get()->reset();
+        
+        $mod= Mod::get();
+        
+        $mod->init($prm['application'], $prm['handlers']);
+        
+        $mod->begin();
+        
+        $res = UtilsC::createMods($prm['dataBase']);
+        $res = $res and UtilsC::createMods($prm['fileBase']);
+        
+        $mod->end();
+        
+        $this->assertTrue($res);
+        
+        return $prm;
     }
     /**
     * @depends testInit
@@ -48,9 +48,8 @@ class Session_Test extends PHPUnit_Framework_TestCase
         $modS= Mod::get();
         
         foreach ($prm['bindL'] as $bd) {
-        	
-        	$modS->begin();
-        	
+            $modS->begin();
+            
             $obj=$bd['Session']::getSession(0);
             $x = $obj->getMod();
 
@@ -77,8 +76,7 @@ class Session_Test extends PHPUnit_Framework_TestCase
         $modS= Mod::get();
         
         foreach ($prm['bindL'] as $bd) {
-        	
-        	$modS->begin();
+            $modS->begin();
             
             $obj = $bd['Session']::getSession($idl[$i]);
 
@@ -105,8 +103,7 @@ class Session_Test extends PHPUnit_Framework_TestCase
         $modS= Mod::get();
         
         foreach ($prm['bindL'] as $bd) {
-        	
-        	$modS->begin();
+            $modS->begin();
         
             $obj = $bd['Session']::getSession($idl[$i]);
             $mod= $obj->getMod();
@@ -134,8 +131,7 @@ class Session_Test extends PHPUnit_Framework_TestCase
         $modS= Mod::get();
         
         foreach ($prm['bindL'] as $bd) {
-        	
-        	$modS->begin();
+            $modS->begin();
 
             $obj = $bd['Session']::getSession($idl[$i]);
             $mod= $obj->getMod();

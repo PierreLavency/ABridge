@@ -2,7 +2,6 @@
 namespace ABridge\ABridge;
 
 use ABridge\ABridge\Logger;
-//use ABridge\ABridge\Mod\Base;
 use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Handler;
@@ -289,9 +288,8 @@ class Controler
  
         if (isset($this->spec['Hdl'])) {
             $this->handle= Hdl::get()->begin($this->defVal, $this->spec['Hdl']);
-            $frccommit=Hdl::get()->isNew();
+            $frccommit=($frccommit || Hdl::get()->isNew());
         }
-
         $this->setLogLevl($logLevel);
         $this->logUrl();
         $method=$this->handle->getMethod();

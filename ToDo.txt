@@ -12,7 +12,6 @@ B22 EVALP in create dialog
 
 DEV
 - improve session (session name etc.)
-- improve Admin (view app paramter).
 - develop component for abstract code (Cda).
 - implement memBase
 
@@ -83,7 +82,10 @@ INT
 - set up a git server
 - set up jenkin
 
-DONEB
+DONE
+--------------//1
+- improve Admin (view app parameter).
+--------------//3
 improve role rules capability (different operators).
 improve handle test coverage.
 B24 cannot log out if not root !

@@ -10,7 +10,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-    	$prm=UtilsC::genPrm(['test1','test2','test3','test4'], get_called_class());
+        $prm=UtilsC::genPrm(['test1','test2','test3','test4'], get_called_class());
 
         $config=[
                 'test1'=>[],
@@ -30,18 +30,18 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
         Mod::get()->reset();
         $mod= Mod::get();
                 
-        $mod->init($prm['application'],$prm['handlers']);
+        $mod->init($prm['application'], $prm['handlers']);
 
-        $this->assertEquals(8,count($mod->getMods()));
+        $this->assertEquals(8, count($mod->getMods()));
         
         $mod->begin();
         
         foreach ($prm['names'] as $modName) {
-        	$obj=new Model($modName);
-        	$obj->deleteMod();
-        	$obj->addAttr('Name', Mtype::M_STRING);
-        	$res=$obj->saveMod();
-        	$this->assertTrue($res);
+            $obj=new Model($modName);
+            $obj->deleteMod();
+            $obj->addAttr('Name', Mtype::M_STRING);
+            $res=$obj->saveMod();
+            $this->assertTrue($res);
         }
         
         $res=$mod->end();
@@ -49,14 +49,13 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
 
         $mod->begin();
         foreach ($prm['names'] as $modName) {
-        	$obj=new Model($modName);
-        	$obj->setVal('Name', 'toto');
-        	$res=$obj->save();
-        	$this->assertEquals(1,$res);
+            $obj=new Model($modName);
+            $obj->setVal('Name', 'toto');
+            $res=$obj->save();
+            $this->assertEquals(1, $res);
         }
         
         $res=$mod->end();
         $this->assertTrue($res);
-        
     }
 }

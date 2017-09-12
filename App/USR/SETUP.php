@@ -6,8 +6,11 @@ use ABridge\ABridge\View\CstView;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 
-use ABridge\ABridge\Apps\Usr;
-use ABridge\ABridge\Apps\Adm;
+use ABridge\ABridge\Apps\AdmApp;
+use ABridge\ABridge\Apps\UsrApp;
+
+use ABridge\ABridge\Adm\Adm;
+use ABridge\ABridge\Usr\Usr;
 
 use ABridge\ABridge\App;
 
@@ -20,8 +23,8 @@ class Config extends App
 	static $config = [
 	'Apps'	=>
 			[
-					'Usr',
-					'Adm',				
+					'UsrApp',
+					'AdmApp',				
 			],
 	'Handlers' =>
 			[
@@ -70,8 +73,8 @@ class Config extends App
 	
 	public static function loadMeta($prm=null)
 	{
-		Usr::loadMeta();
-		Adm::loadMeta();
+		UsrApp::loadMeta();
+		AdmApp::loadMeta();
 		
 		$obj = new Model(Usr::USER);		
 		$res = $obj->addAttr('Of',Mtype::M_CREF,'/'.self::PDATA.'/'.Usr::USER);		
@@ -100,8 +103,8 @@ class Config extends App
 	
 	public static function loadData($prm=null)
 	{
-		Usr::loadData();
-		Adm::loadData();
+		UsrApp::loadData();
+		AdmApp::loadData();
 		
 		$RSpec ='[
 [["Read"],"true", "true"],

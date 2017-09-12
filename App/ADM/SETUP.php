@@ -1,7 +1,9 @@
 <?php
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstView;
+
 use ABridge\ABridge\App;
+use ABridge\ABridge\Apps\AdmApp;
 
 class Config extends App
 {
@@ -9,10 +11,7 @@ class Config extends App
 	const Admin ='Admin';
 	
 	static $config = [
-			
-	'Adm' => [
-			
-	],
+
 	'Hdl' 	=> [
 
 	],
@@ -25,18 +24,18 @@ class Config extends App
 		],
 						
 	'Apps' => [
-		'Adm',	
+		'AdmApp',	
 	]
 	];
 	
 	public  static function loadMeta($prm=null)
 	{
-		echo 'LoadMeta ';
+		AdmApp::loadMeta();
 	}
 	
 	public  static function loadData($prm=null)
 	{
-		echo 'LoadData ';;
+		echo 'LoadData ';
 	}
 }
 	

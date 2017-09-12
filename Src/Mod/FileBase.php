@@ -49,9 +49,26 @@ class FileBase extends Base
             }
         }
         $r = parent::putModel($model, $meta);
+        parent::commit(); // to align
         return $r;
     }
- 
+    
+    //to align
+    
+    public function delMod($model)
+    {
+        $r=parent::delMod($model);
+        parent::commit(); // to align
+        return $r;
+    }
+    public function newModId($model, $meta, $idF)
+    {
+        $r=parent::newModId($model, $meta, $idF);
+        parent::commit(); // to align
+        return $r;
+    }
+    
+    
     public function newObj($model, $values)
     {
         return $this->newObjId($model, $values, 0);

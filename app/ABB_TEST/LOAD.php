@@ -1,9 +1,9 @@
 <?php
 
 use ABridge\ABridge\Mod\Model; 
-use ABridge\ABridge\Apps\Usr;
+use ABridge\ABridge\Apps\UsrApp;
 
-Usr::loadData();
+UsrApp::loadData();
 
 require_once 'SETUP.php';
 

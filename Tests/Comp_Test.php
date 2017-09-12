@@ -17,9 +17,9 @@ class Comp_Test extends PHPUnit_Framework_TestCase
     public function Provider1()
     {
         return [
-        	[['X'],['X'=>'X']],
-        	[[],[]],
-        	[['X'=>'X'],['X'=>'X']],
+            [['X'],['X'=>'X']],
+            [[],[]],
+            [['X'=>'X'],['X'=>'X']],
             ];
     }
 }

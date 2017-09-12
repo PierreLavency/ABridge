@@ -2,14 +2,15 @@
 
 use ABridge\ABridge\Mod\Model; 
 use ABridge\ABridge\Mod\Mtype;
-use ABridge\ABridge\Apps\Usr;
+use ABridge\ABridge\Apps\UsrApp;
+use ABridge\ABridge\Apps\AdmApp;
 
 // when running this data will be lost !!
 
 	require_once 'SETUP.php';
 
-
-	Usr::loadMeta();
+	AdmApp::loadMeta();
+	UsrApp::loadMeta();
 	
 	// Architecture building block 
 			

@@ -40,8 +40,8 @@ class Config
 	],
 			
 	'Apps'	=>[
-			'Usr',
-			'Adm',		
+			'UsrApp',
+			'AdmApp',		
 	],
 			
 	'Handlers' =>
@@ -63,9 +63,9 @@ class Config
 				
 	'View' => [			
 		'Home' =>
-			['/','/'.self::Session.'/~','/'.self::User.'/~',],
+			['/','/'.self::Session.'/~','/'.self::User.'/~',"/Admin/1"],
 		'MenuExcl' =>
-			["/".self::ABB],			
+			["/".self::ABB,"/Admin"],			
 		self::Application=> [
 		
 				'attrList' => [

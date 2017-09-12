@@ -32,37 +32,36 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
     
     public function testInit()
     {
-    	$classes = ['Session','User'];
-    	
-    	$prm=UtilsC::genPrm($classes, get_called_class());
-    	
-    	Mod::get()->reset();
-    	
-    	$mod= Mod::get();
-    	
-    	$mod->init($prm['application'],$prm['handlers']);
-    	
-    	$mod->begin();
-    	
-    	$res = UtilsC::createMods($prm['dataBase']);
-    	$res = $res and UtilsC::createMods($prm['fileBase']);
-    	
-    	$mod->end();
-    	
-    	$this->assertTrue($res);
-    	
-    	return $prm;
+        $classes = ['Session','User'];
+        
+        $prm=UtilsC::genPrm($classes, get_called_class());
+        
+        Mod::get()->reset();
+        
+        $mod= Mod::get();
+        
+        $mod->init($prm['application'], $prm['handlers']);
+        
+        $mod->begin();
+        
+        $res = UtilsC::createMods($prm['dataBase']);
+        $res = $res and UtilsC::createMods($prm['fileBase']);
+        
+        $mod->end();
+        
+        $this->assertTrue($res);
+        
+        return $prm;
     }
     /**
     * @depends testInit
     */
     public function testsave($prm)
     {
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
 
             $x = new Model($bd['User']);
             $x->setVal('UserId', 'test');
@@ -92,11 +91,10 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
     public function testUpdt($prm)
     {
 
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $x = new Model($bd['Session'], 1);
             
@@ -119,11 +117,10 @@ class Session_User_Test extends PHPUnit_Framework_TestCase
 
     public function testErr($prm)
     {
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
         
             $x = new Model($bd['Session'], 1);
             

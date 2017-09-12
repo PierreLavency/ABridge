@@ -1,7 +1,8 @@
 <?php
 
 use ABridge\ABridge\Apps\Cdv;
-use ABridge\ABridge\Apps\Adm;
+use ABridge\ABridge\Apps\AdmApp;
+use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\App;
 
 class Config extends App
@@ -10,7 +11,7 @@ class Config extends App
 	static $config = [
 	'Apps'	=>
 			[
-					'Adm',
+					'AdmApp',
 					'Cdv'
 			],
 	'Handlers' =>
@@ -35,14 +36,14 @@ class Config extends App
 	
 	public static function loadMeta($prm=null)
 	{
-		Adm::loadMeta();
+		AdmApp::loadMeta();
 		Cdv::loadMeta(['Sexe','Country']);
 		
 	}
 	
 	public static function loadData($prm=null)
 	{
-		Adm::loadData();
+		AdmApp::loadData();
 		Cdv::loadData(
 				[
 						'Sexe'=>['Male','Female'],

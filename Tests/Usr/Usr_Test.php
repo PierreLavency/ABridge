@@ -21,25 +21,25 @@ class Usr_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-    	$classes = [Usr::SESSION];
-    	
-    	$prm=UtilsC::genPrm($classes, get_called_class());
+        $classes = [Usr::SESSION];
+        
+        $prm=UtilsC::genPrm($classes, get_called_class());
 
-    	Mod::get()->reset();
-    	Usr::get()->reset();
-    	
-    	$mod= Mod::get();
-    	$usr= Usr::get();
+        Mod::get()->reset();
+        Usr::get()->reset();
+        
+        $mod= Mod::get();
+        $usr= Usr::get();
 
-    	$prm['application']['base']='fileBase';
-    	$usr->init($prm['application'], $prm['fileBase']);
-    	$prm['application']['base']='dataBase';
-    	$usr->init($prm['application'], $prm['dataBase']);
+        $prm['application']['base']='fileBase';
+        $usr->init($prm['application'], $prm['fileBase']);
+        $prm['application']['base']='dataBase';
+        $usr->init($prm['application'], $prm['dataBase']);
  
-    	$mod->begin();
-    	
-    	$res = usr::initMeta($prm['application'], $prm['dataBase']);
-    	$res = $res and usr::initMeta($prm['application'], $prm['fileBase']);
+        $mod->begin();
+        
+        $res = usr::initMeta($prm['application'], $prm['dataBase']);
+        $res = $res and usr::initMeta($prm['application'], $prm['fileBase']);
         
         $mod->end();
         
@@ -52,11 +52,10 @@ class Usr_Test extends PHPUnit_Framework_TestCase
     */
     public function testNew($prm)
     {
-    	$mod= Mod::get();
-    	$usr= Usr::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-        	
+        $mod= Mod::get();
+        $usr= Usr::get();
+        
+        foreach ($prm['bindL'] as $bd) {
             $mod->begin();
             
             $cobj = $usr->begin($prm['application'], $bd);
@@ -64,7 +63,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             $session = $cobj->getMod();
 
             $this->assertTrue($usr->isNew());
-            $this->assertEquals(1, $session->getId());         
+            $this->assertEquals(1, $session->getId());
      
             $mod->end();
         }
@@ -76,12 +75,11 @@ class Usr_Test extends PHPUnit_Framework_TestCase
     */
     public function testExists($prm)
     {
-    	$mod= Mod::get();
-    	$usr= Usr::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-            
-    		$mod->begin();
+        $mod= Mod::get();
+        $usr= Usr::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $x =  new Model($bd['Session'], 1);
             $name = $prm['application']['name'].$bd['Session'];
@@ -101,12 +99,11 @@ class Usr_Test extends PHPUnit_Framework_TestCase
     */
     public function testExistsNew($prm)
     {
-    	$mod= Mod::get();
-    	$usr= Usr::get();
+        $mod= Mod::get();
+        $usr= Usr::get();
  
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $x =  new Model($bd['Session'], 1);
             $name = $prm['application']['name'].$bd['Session'];
@@ -129,12 +126,11 @@ class Usr_Test extends PHPUnit_Framework_TestCase
      */
     public function testCleanUp($prm)
     {
-    	$mod= Mod::get();
-    	$usr= Usr::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        $usr= Usr::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
 
             $x =  new Model($bd['Session'], 2);
             $name = $prm['application']['name'].$bd['Session'];

@@ -2,7 +2,7 @@
 
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Apps\Adm;
+use ABridge\ABridge\Apps\AdmApp;
 
 use ABridge\ABridge\App;
 
@@ -12,7 +12,7 @@ class Config extends App
 	static $config = [
 	'Apps'	=>
 			[
-					'Adm',
+					'AdmApp',
 					
 			],
 	'Handlers' =>
@@ -29,7 +29,7 @@ class Config extends App
 
 	public static function loadMeta($prm=null)
 	{
-		Adm::loadMeta();
+		AdmApp::loadMeta();
 		
 		$x = new Model('Afs');
 		$x->deleteMod();
@@ -60,7 +60,7 @@ class Config extends App
 	
 	public static function loadData($prm=null)
 	{
-		Adm::loadData();
+		AdmApp::loadData();
 		
 		$x=new Model('Dir');
 		$x->setVal('Name','/');

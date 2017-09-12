@@ -6,40 +6,52 @@ use ABridge\ABridge\Mod\Mtype;
 
 class Admin extends CModel
 {
+
     public function __construct($mod)
     {
         $this->mod=$mod;
-        if (! $mod->existsAttr('Application')) {
+        if (! $mod->existsAttr('name')) {
             $this->initMod([]);
             $this->mod->saveMod();
         }
     }
     
+    protected $attrList = ['name','path','base','dbnm','flnm','host','user','pass'];
+
     public function initMod($bindings)
     {
         $obj = $this->mod;
         
-        $res = $obj->addAttr('Application', Mtype::M_STRING);
-        $res = $obj->addAttr('Init', Mtype::M_BOOL, M_P_TEMP);
+        foreach ($this->attrList as $attr) {
+            $res = $obj->addAttr($attr, Mtype::M_STRING);
+        }
+        
         $res = $obj->addAttr('Meta', Mtype::M_BOOL, M_P_TEMP);
         $res = $obj->addAttr('Load', Mtype::M_BOOL, M_P_TEMP);
         $res = $obj->addAttr('Delta', Mtype::M_BOOL, M_P_TEMP);
+        $res = $obj->addAttr('MetaData', Mtype::M_TXT, M_P_EVAL);
         
         return $obj->isErr();
     }
-
+    
+    public function getVal($attr)
+    {
+        if ($attr == 'MetaData') {
+            return $this->mod->getMeta();
+        }
+        return $this->mod->getValN($attr);
+    }
+    
     public function save()
     {
-        $app = $this->mod->getVal('Application');
+        $attrVal = [];
+        foreach ($this->attrList as $attr) {
+            $attrVal[$attr] = $this->mod->getVal($attr);
+        }
+        
+        $app = $this->mod->getVal('name');
         $path = "App/$app/";
         
-        if ($this->mod->getVal('Init')) {
-            $this->mod->deleteMod();
-            $this->initMod([]);
-            $this->mod->saveMod();
-            $this->mod->setVal('Application', $app);
-            return $this->mod->saveN();
-        }
         if ($this->mod->getVal('Load')) {
             require_once $path.'LOAD.php';
         }
@@ -51,11 +63,19 @@ class Admin extends CModel
             require_once $path.'DELTA.php';
         }
         
-        if (! $this->mod->getId()) {
+        if ($this->mod->getId() != 0) {
             $this->mod->setCriteria([], [], []);
             $res = $this->mod->select();
-            if (count($res)>0) {
-                return $res[0];
+            if (!$res) {
+                $this->mod->deleteMod();
+                $this->initMod([]);
+                $this->mod->saveMod();
+                foreach ($attrVal as $attr => $val) {
+                    $this->mod->setValN($attr, $val);
+                }
+                $id=$this->mod->saveN();
+                $this->mod->getErrlog()->show();
+                return $id;
             }
         }
 

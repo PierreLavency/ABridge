@@ -20,27 +20,27 @@ class User_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-    	$classes = ['User'];
-    	
-    	$prm=UtilsC::genPrm($classes, get_called_class());
-    	
-    	Mod::get()->reset();
-    	
-    	$mod= Mod::get();
+        $classes = ['User'];
+        
+        $prm=UtilsC::genPrm($classes, get_called_class());
+        
+        Mod::get()->reset();
+        
+        $mod= Mod::get();
 
-    	$mod->init($prm['application'],$prm['handlers']);
-    	
-    	$mod->begin();
-    	
-    	$res = UtilsC::createMods($prm['dataBase']);
-    	$res = $res and UtilsC::createMods($prm['fileBase']);
-    	
-    	
-    	$mod->end();
-    	
-    	$this->assertTrue($res);
-    	
-    	return $prm;
+        $mod->init($prm['application'], $prm['handlers']);
+        
+        $mod->begin();
+        
+        $res = UtilsC::createMods($prm['dataBase']);
+        $res = $res and UtilsC::createMods($prm['fileBase']);
+        
+        
+        $mod->end();
+        
+        $this->assertTrue($res);
+        
+        return $prm;
     }
     /**
     * @depends testInit
@@ -48,11 +48,10 @@ class User_Test extends PHPUnit_Framework_TestCase
     public function testsave($prm)
     {
 
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $x = new Model($bd['User']);
             $res=$x->save();
@@ -63,8 +62,8 @@ class User_Test extends PHPUnit_Framework_TestCase
             $this->assertTrue($res);
      
             $mod->end();
-    	}
-    	return $prm;
+        }
+        return $prm;
     }
  
     /**
@@ -73,11 +72,10 @@ class User_Test extends PHPUnit_Framework_TestCase
     
     public function testget($prm)
     {
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $x = new Model($bd['User'], 1);
             $res= $x->getVal('Password');
@@ -92,8 +90,8 @@ class User_Test extends PHPUnit_Framework_TestCase
             $this->assertFalse($x->isErr());
             
             $mod->end();
-    	}
-    	return $prm;
+        }
+        return $prm;
     }
 
     /**
@@ -102,11 +100,10 @@ class User_Test extends PHPUnit_Framework_TestCase
 
     public function testget2($prm)
     {
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $x = new Model($bd['User'], 1);
             $res= $x->getVal('Password');
@@ -136,8 +133,8 @@ class User_Test extends PHPUnit_Framework_TestCase
             $this->assertFalse($res);
             
             $mod->end();
-    	}
-    	return $prm;
+        }
+        return $prm;
     }
 
     /**
@@ -145,11 +142,10 @@ class User_Test extends PHPUnit_Framework_TestCase
     */
     public function testerr($prm)
     {
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $this->assertNotNull($x = new Model($bd['User'], 1));
             $x->setVal('UserId', 'test3');
@@ -168,7 +164,7 @@ class User_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals($x->getErrLine(), CstError::E_ERC058);
             
             $mod->end();
-    	}
-    	return $prm;
+        }
+        return $prm;
     }
 }

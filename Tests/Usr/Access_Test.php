@@ -50,26 +50,26 @@ class Access_Test extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-    	$classes = ['Session','User','Role','Distribution'];
-    	
-    	$prm=UtilsC::genPrm($classes, get_called_class());
-    	
-    	Mod::get()->reset();
-    	
-    	$mod= Mod::get();
-    	
-    	$mod->init($prm['application'],$prm['handlers']);
-    	
-    	$mod->begin();
-    	
-    	$res = UtilsC::createMods($prm['dataBase']);
-    	$res = $res and UtilsC::createMods($prm['fileBase']);
-    	
-    	$mod->end();
-    	
-    	$this->assertTrue($res);
-    	
-    	return $prm;
+        $classes = ['Session','User','Role','Distribution'];
+        
+        $prm=UtilsC::genPrm($classes, get_called_class());
+        
+        Mod::get()->reset();
+        
+        $mod= Mod::get();
+        
+        $mod->init($prm['application'], $prm['handlers']);
+        
+        $mod->begin();
+        
+        $res = UtilsC::createMods($prm['dataBase']);
+        $res = $res and UtilsC::createMods($prm['fileBase']);
+        
+        $mod->end();
+        
+        $this->assertTrue($res);
+        
+        return $prm;
     }
     
     /**
@@ -77,11 +77,10 @@ class Access_Test extends PHPUnit_Framework_TestCase
     */
     public function testsave($prm)
     {
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $x = new Model($bd['Role']);
             $x->setVal('Name', 'Default');
@@ -163,8 +162,8 @@ class Access_Test extends PHPUnit_Framework_TestCase
             
             
             $mod->end();
-    	}
-    	return $prm;
+        }
+        return $prm;
     }
     
     /**
@@ -187,8 +186,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
         $mod= Mod::get();
         
         foreach ($prm['bindL'] as $bd) {
-        	
-        	$mod->begin();
+            $mod->begin();
         
             $role = new Model($bd['Role'], 1);
             $res = json_encode($rolespec);
@@ -219,7 +217,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
             ['/User/1',                     CstMode::V_S_READ, 'User'        ,['User']],
             ['/Application',                CstMode::V_S_SLCT, 'Application' ,true],
             ['/Application/1',              CstMode::V_S_UPDT, 'Application' ,['User']],
-        	['/Application/1',              CstMode::V_S_DELT, 'Application' ,['User<!=>User']],
+            ['/Application/1',              CstMode::V_S_DELT, 'Application' ,['User<!=>User']],
             ['/Application/1/In',           CstMode::V_S_CREA, 'Application' ,['User']],
             ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'Application' ,['User']],
             ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'BuiltFrom'   ,['User']],
@@ -248,8 +246,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
         $mod= Mod::get();
         
         foreach ($prm['bindL'] as $bd) {
-        	
-        	$mod->begin();
+            $mod->begin();
 
             $role = new Model($bd['Role'], 2);
             $res = json_encode($rolespec);
@@ -293,7 +290,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
             ['/ApplicationA/1',             CstMode::V_S_UPDT, false, false, false],
             ['/Application',                CstMode::V_S_SLCT, true, true , true],
             ['/Application/1',              CstMode::V_S_UPDT, true, false, false],
-        	['/Application/1',              CstMode::V_S_DELT, false,true, true],
+            ['/Application/1',              CstMode::V_S_DELT, false,true, true],
             ['/Application/1/In',           CstMode::V_S_CREA, true, false, true],
             ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, true, false, true],
             ['/Application/1/Ins',          CstMode::V_S_CREA, false,false, false],
@@ -310,11 +307,10 @@ class Access_Test extends PHPUnit_Framework_TestCase
     {
         
         
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
                     
             $y = new Model($bd['Session'], 3);
             $r = $y->getCobj();
@@ -327,8 +323,8 @@ class Access_Test extends PHPUnit_Framework_TestCase
             
             
             $mod->end();
-    	}
-    	return $prm;
+        }
+        return $prm;
     }
     
     public function Provider3()
@@ -348,46 +344,45 @@ class Access_Test extends PHPUnit_Framework_TestCase
     
     public function testErr2($p, $b, $e1, $prm)
     {
-    	$rolespec =[   			
-    			[CstMode::V_S_DELT, '|Application',['Application'=>'User<eroor>User']],
-    			[CstMode::V_S_UPDT, '|Application',['Application'=>'<>User']],
-    			[CstMode::V_S_READ, '|Application',['Application'=>'User<eroor>>User']],
-    	];
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
-    		$role = new Model($bd['Role'], 3);
-    		$res = json_encode($rolespec);
-    		$role->setVal('JSpec', $res);
-    		$role->save();
-    		
-    		$y = new Model($bd['Session'], 4);
-    		$r = $y->getCobj();
-    		
-    		$x = new Model('TestApp');
-    		$x->addAttr('User', Mtype::M_INTP);
-    		$x->setVal('User', 2);
-    		
-    		$req = new Request($p, $b);
-    		$res = "";
-	   		try {
-    			$res = $r->checkARight($req, [['Application',$x],['BuiltFrom',$x]], true);
-    		} catch (Exception $e) {
-    			$res= $e->getMessage();
-    		}
-    		$this->assertEquals($e1, $res);
-    	}
+        $rolespec =[
+                [CstMode::V_S_DELT, '|Application',['Application'=>'User<eroor>User']],
+                [CstMode::V_S_UPDT, '|Application',['Application'=>'<>User']],
+                [CstMode::V_S_READ, '|Application',['Application'=>'User<eroor>>User']],
+        ];
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
+            $role = new Model($bd['Role'], 3);
+            $res = json_encode($rolespec);
+            $role->setVal('JSpec', $res);
+            $role->save();
+            
+            $y = new Model($bd['Session'], 4);
+            $r = $y->getCobj();
+            
+            $x = new Model('TestApp');
+            $x->addAttr('User', Mtype::M_INTP);
+            $x->setVal('User', 2);
+            
+            $req = new Request($p, $b);
+            $res = "";
+            try {
+                $res = $r->checkARight($req, [['Application',$x],['BuiltFrom',$x]], true);
+            } catch (Exception $e) {
+                $res= $e->getMessage();
+            }
+            $this->assertEquals($e1, $res);
+        }
     }
     
     public function Provider4()
     {
-    	return [
-    			['/Application/1', CstMode::V_S_DELT,  CstError::E_ERC066.':eroor'],
-    			['/Application/1', CstMode::V_S_UPDT,  CstError::E_ERC065.':<>User'],
-    			['/Application/1', CstMode::V_S_READ,  CstError::E_ERC065.':User<eroor>>User'],
-    	];
+        return [
+                ['/Application/1', CstMode::V_S_DELT,  CstError::E_ERC066.':eroor'],
+                ['/Application/1', CstMode::V_S_UPDT,  CstError::E_ERC065.':<>User'],
+                ['/Application/1', CstMode::V_S_READ,  CstError::E_ERC065.':User<eroor>>User'],
+        ];
     }
     
     /**
@@ -397,11 +392,10 @@ class Access_Test extends PHPUnit_Framework_TestCase
     public function testErr($prm)
     {
 
-    	
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {  		
-    		
+        
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
             $y = new Model($bd['Session'], 1);
             $r = $y->getCobj();
 
@@ -434,7 +428,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
             
             
             $mod->end();
-    	}
-    	return $prm;
+        }
+        return $prm;
     }
 }

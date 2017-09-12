@@ -7,7 +7,6 @@ use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Usr\User;
 use ABridge\ABridge\Usr\Role;
 
-
 class User_Role_Test_dataBase_User extends User
 {
 }
@@ -27,37 +26,36 @@ class User_Role_Test extends PHPUnit_Framework_TestCase
     
     public function testInit()
     {
-    	$classes = ['User','Role'];
-    	
-    	$prm=UtilsC::genPrm($classes, get_called_class());
-    	
-    	Mod::get()->reset();
-    	
-    	$mod= Mod::get();
-    	
-    	$mod->init($prm['application'],$prm['handlers']);
-    	
-    	$mod->begin();
-    	
-    	$res = UtilsC::createMods($prm['dataBase']);
-    	$res = $res and UtilsC::createMods($prm['fileBase']);
+        $classes = ['User','Role'];
+        
+        $prm=UtilsC::genPrm($classes, get_called_class());
+        
+        Mod::get()->reset();
+        
+        $mod= Mod::get();
+        
+        $mod->init($prm['application'], $prm['handlers']);
+        
+        $mod->begin();
+        
+        $res = UtilsC::createMods($prm['dataBase']);
+        $res = $res and UtilsC::createMods($prm['fileBase']);
 
-    	$mod->end();
-    	
-    	$this->assertTrue($res);
-    	
-    	return $prm;
+        $mod->end();
+        
+        $this->assertTrue($res);
+        
+        return $prm;
     }
     /**
     * @depends testInit
     */
     public function testsave($prm)
     {
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $x = new Model($bd['User']);
             $res=$x->save();
@@ -73,8 +71,8 @@ class User_Role_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(2, $res);
      
             $mod->end();
-    	}
-    	return $prm;
+        }
+        return $prm;
     }
 
     /**
@@ -83,11 +81,10 @@ class User_Role_Test extends PHPUnit_Framework_TestCase
     public function testset($prm)
     {
         
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $x = new Model($bd['Role'], 1);
             $res= $x->setVal('Name', 'test1');
@@ -111,8 +108,8 @@ class User_Role_Test extends PHPUnit_Framework_TestCase
             $this->assertFalse($x->isErr());
             
             $mod->end();
-    	}
-    	return $prm;
+        }
+        return $prm;
     }
 
     /**
@@ -121,11 +118,10 @@ class User_Role_Test extends PHPUnit_Framework_TestCase
 
     public function testsetRole($prm)
     {
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
             
             $x = new Model($bd['Role'], 1);
             $obj=$x->getCobj();
@@ -139,7 +135,7 @@ class User_Role_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals($spec, $obj->getSpec());
             
             $mod->end();
-    	}
-    	return $prm;
+        }
+        return $prm;
     }
 }

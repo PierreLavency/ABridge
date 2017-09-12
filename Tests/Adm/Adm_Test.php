@@ -19,41 +19,36 @@ class Adm_Test extends \PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-    	$classes = [Adm::ADMIN];
-    	
-    	$prm=UtilsC::genPrm($classes, get_called_class());
-    	
-    	Mod::get()->reset();
-    	$res= Adm::get()->reset();
-    	$this->assertTrue($res);
-    	
-    	$mod= Mod::get();
-    	$adm= Adm::get();
-    	
-    	$this->assertNotNull($adm);
+        $classes = [Adm::ADMIN];
+        
+        $prm=UtilsC::genPrm($classes, get_called_class());
+        
+        Mod::get()->reset();
+        $res= Adm::get()->reset();
+        $this->assertTrue($res);
+        
+        $mod= Mod::get();
+        $adm= Adm::get();
+        
+        $this->assertNotNull($adm);
 
-    	
-    	$prm['application']['base']='fileBase';
-    	$adm->init($prm['application'], $prm['fileBase']);
-    	$prm['application']['base']='dataBase';
-    	$adm->init($prm['application'], $prm['dataBase']);
-    	
-    	$adm->init($prm['application'],[]);
-    	
-    	$this->assertEquals(3,count($mod->getMods()));
+        
+        $prm['application']['base']='fileBase';
+        $adm->init($prm['application'], $prm['fileBase']);
+        $prm['application']['base']='dataBase';
+        $adm->init($prm['application'], $prm['dataBase']);
+        
+        
+        $this->assertEquals(2, count($mod->getMods()));
 
-    	$mod->begin();
-    	
-    	$x= new Model($prm['dataBase'][Adm::ADMIN]);
-    	$x->deleteMod();
-    	$x->saveMod();
-    	$x= new Model($prm['fileBase'][Adm::ADMIN]);
-    	$x->deleteMod();
-    	$x->saveMod();
-    	
-    	$mod->end();
-    	
-    	return $prm;
+        $mod->begin();
+        
+        $res = Adm::get()->initMeta($prm['application'], $prm['dataBase']);
+        $res = Adm::get()->initMeta($prm['application'], $prm['fileBase']);
+        
+        $mod->end();
+        
+        return $prm;
     }
     /**
     * @depends testInit
@@ -64,42 +59,39 @@ class Adm_Test extends \PHPUnit_Framework_TestCase
      */
     public function testNew($prm)
     {
-    	$mod= Mod::get();
-    	$adm= Adm::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
-    		
-    		$obj = $adm->begin($prm['application'], $bd);
-    		
-    		$this->assertTrue($adm->isNew());
-    		$this->assertEquals(1, $obj->getId());
-    		
-    		$mod->end();
-    	}
-    	return $prm;
+        $mod= Mod::get();
+        $adm= Adm::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
+            
+            $obj = $adm->begin($prm['application'], $bd);
+            
+            $this->assertTrue($adm->isNew());
+            $this->assertEquals(1, $obj->getId());
+            
+            $mod->end();
+        }
+        return $prm;
     }
     /**
      * @depends testNew
      */
     public function testExists($prm)
     {
-    	$mod= Mod::get();
-    	$adm= Adm::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		
-    		$mod->begin();
-    		
-    		$obj = Adm::get()->begin($prm['application'], $bd);
-    		
-    		$this->assertEquals(1, $obj->getId());
-    		$this->assertFalse(Adm::get()->isNew());
-    		
-    		$mod->end();
-    	}
-    	return $prm;
+        $mod= Mod::get();
+        $adm= Adm::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
+            
+            $obj = Adm::get()->begin($prm['application'], $bd);
+            
+            $this->assertEquals(1, $obj->getId());
+            $this->assertFalse(Adm::get()->isNew());
+            
+            $mod->end();
+        }
+        return $prm;
     }
-    
 }
