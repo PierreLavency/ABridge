@@ -3,7 +3,6 @@ namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Handler;
-use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Comp;
@@ -78,7 +77,7 @@ class Usr extends Comp
             $id=$_COOKIE[$name];
         }
         $this->isNew=false;
-        $sessionHdl = $className::getSession($id);
+        $sessionHdl = $className::getSession($id, ['Name'=>$name]);
         if ($sessionHdl->isNew()) {
             $this->isNew=true;
             $id = $sessionHdl->getKey();
@@ -103,6 +102,6 @@ class Usr extends Comp
     
     public function initMeta($appPrm, $bindings)
     {
-        return UtilsC::createMods($bindings);
+        return Mod::get()->initModBindings($bindings);
     }
 }

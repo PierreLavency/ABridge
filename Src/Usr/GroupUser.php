@@ -2,7 +2,6 @@
 namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Mod\CModel;
-use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mtype;
 
 class GroupUser extends CModel

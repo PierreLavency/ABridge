@@ -48,8 +48,8 @@ class User_Distribution_Test extends PHPUnit_Framework_TestCase
         
         $mod->begin();
         
-        $res = UtilsC::createMods($prm['dataBase']);
-        $res = $res and UtilsC::createMods($prm['fileBase']);
+        $res = $mod->initModBindings($prm['dataBase']);
+        $res = ($res && $mod->initModBindings($prm['fileBase']));
         
         $mod->end();
         

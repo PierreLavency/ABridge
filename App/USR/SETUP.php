@@ -108,9 +108,9 @@ class Config extends App
 		
 		$RSpec ='[
 [["Read"],"true", "true"],
-[["Read","Update","Delete"],"|Session",{"Session":"id"}],
-[["Read","Update"],"|User",{"User":"id<>User"}],
-[["Read","Create","Update","Delete"],"|User|Of",{"User":"id<>User"}]
+[["Read","Update","Delete"],"|Session",{"Session":":id"}],
+[["Read","Update"],"|User",{"User":":id<>:User"}],
+[["Read","Create","Update","Delete"],"|User|Of",{"User":":id<>:User"}]
 ]';
 		
 		$obj=new Model(usr::ROLE);

@@ -11,9 +11,11 @@ B22 EVALP in create dialog
 
 
 DEV
-- improve session (session name etc.)
+
 - develop component for abstract code (Cda).
 - implement memBase
+- create Ctr Component
+- move from handler to Vew view related stuff.
 
 - check on delete of distribution / Groups if used in default.
 - set up own exception
@@ -25,8 +27,6 @@ DEV
 - review property management in Model
 - Document the code!
 - combine temp/evalp reference. 
-
-- create Ctr Component
 
 - delete in list.
 - order in list query and attr.
@@ -83,6 +83,10 @@ INT
 - set up jenkin
 
 DONE
+--------------//1
+- improve session (session name)
+- improve access rule capabilities (constant).
+- Utils to be used in test only (move code to Mod)
 --------------//1
 - improve Admin (view app parameter).
 --------------//3

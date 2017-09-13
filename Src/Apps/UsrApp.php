@@ -152,12 +152,14 @@ class UsrApp extends App
                                     
                                     'Trace' =>[
                                             'attrList' => [
-                                                    CstMode::V_S_READ=> [
+                                                    CstMode::V_S_READ=>
+                                                    [
                                                             'id',
                                                             'vnum',
                                                             'ctstp',
                                                             'utstp',
-                                                    'MetaData'],
+                                                            'MetaData',
+                                                    ],
                                             ],
                                             'navList' => [
                                                     CstMode::V_S_READ => [],
@@ -244,6 +246,7 @@ class UsrApp extends App
                                             'attrList' => [
                                                     CstMode::V_S_READ=> [
                                                             'id',
+                                                            'Name',
                                                             'ValidStart',
                                                             'BKey',
                                                             'vnum',

@@ -95,4 +95,53 @@ class Mod extends Comp
     {
         return true;
     }
+    
+    
+    public static function initModBindings($bindings, $logicalNames = null)
+    {
+        $normBindings=self::normBindings($bindings);
+        if (is_null($logicalNames)) {
+            $logicalNames = array_keys($normBindings);
+        }
+        foreach ($logicalNames as $logicalName) {
+            $res = self::initModBinding($logicalName, $normBindings);
+            if (!$res) {
+                return false;
+            }
+        }
+        $res = self::checkMods($logicalNames, $normBindings);
+        return $res;
+    }
+      
+    
+    public static function initModBinding($logicalName, $normBindings)
+    {
+        $physicalName=$normBindings[$logicalName];
+        $x = new Model($physicalName);
+        $x->deleteMod();
+        $x->initMod($normBindings);
+        $x->saveMod();
+        if ($x->isErr()) {
+            echo  $physicalName ;
+            $log = $x->getErrLog();
+            $log->show();
+            return false;
+        }
+        return true;
+    }
+    
+    public static function checkMods($logicalNames, $normBindings)
+    {
+        foreach ($logicalNames as $logicalName) {
+            $physicalName=$normBindings[$logicalName];
+            $x = new Model($physicalName);
+            $res = $x->checkMod();
+            if (!$res) {
+                $log = $x->getErrLog();
+                $log->show();
+                return false;
+            }
+        }
+        return true;
+    }
 }

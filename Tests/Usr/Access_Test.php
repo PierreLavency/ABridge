@@ -62,8 +62,8 @@ class Access_Test extends PHPUnit_Framework_TestCase
         
         $mod->begin();
         
-        $res = UtilsC::createMods($prm['dataBase']);
-        $res = $res and UtilsC::createMods($prm['fileBase']);
+        $res = $mod->initModBindings($prm['dataBase']);
+        $res = ($res && $mod->initModBindings($prm['fileBase']));
         
         $mod->end();
         
@@ -174,13 +174,13 @@ class Access_Test extends PHPUnit_Framework_TestCase
     {
         
         $rolespec =[
-        [[CstMode::V_S_READ,CstMode::V_S_SLCT],      'true',                                 'true'],
+        [[CstMode::V_S_READ,CstMode::V_S_SLCT],      'true',                                'true'],
         [CstMode::V_S_SLCT,                         '|User',                                'false'],
-        [CstMode::V_S_READ,                         '|User',                                ["User"=>"User"]],
-        [CstMode::V_S_UPDT,                         '|Application',                         ["Application"=>"User"]],
-        [CstMode::V_S_DELT,                         '|Application',                         ['Application'=>'User<!=>User']],
-        [[CstMode::V_S_CREA,CstMode::V_S_UPDT,CstMode::V_S_DELT], ['|Application|In','|Application|Out'], ["Application"=>"User"]],
-        [[CstMode::V_S_CREA,CstMode::V_S_DELT],      '|Application|BuiltFrom',               ["Application"=>"User","BuiltFrom"=>"User"]],
+        [CstMode::V_S_READ,                         '|User',                                ["User"=>":User"]],
+        [CstMode::V_S_UPDT,                         '|Application',                         ["Application"=>":User"]],
+        [CstMode::V_S_DELT,                         '|Application',                         ['Application'=>':User<!=>:User']],
+        [[CstMode::V_S_CREA,CstMode::V_S_UPDT,CstMode::V_S_DELT], ['|Application|In','|Application|Out'], ["Application"=>":User"]],
+        [[CstMode::V_S_CREA,CstMode::V_S_DELT],      '|Application|BuiltFrom',               ["Application"=>":User","BuiltFrom"=>":User"]],
         ];
 
         $mod= Mod::get();
@@ -214,13 +214,13 @@ class Access_Test extends PHPUnit_Framework_TestCase
         return [
             ['/Userr/1',                    CstMode::V_S_UPDT, 'User'        ,false],
             ['/User',                       CstMode::V_S_SLCT, 'User'        ,false],
-            ['/User/1',                     CstMode::V_S_READ, 'User'        ,['User']],
+            ['/User/1',                     CstMode::V_S_READ, 'User'        ,[':User']],
             ['/Application',                CstMode::V_S_SLCT, 'Application' ,true],
-            ['/Application/1',              CstMode::V_S_UPDT, 'Application' ,['User']],
-            ['/Application/1',              CstMode::V_S_DELT, 'Application' ,['User<!=>User']],
-            ['/Application/1/In',           CstMode::V_S_CREA, 'Application' ,['User']],
-            ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'Application' ,['User']],
-            ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'BuiltFrom'   ,['User']],
+            ['/Application/1',              CstMode::V_S_UPDT, 'Application' ,[':User']],
+            ['/Application/1',              CstMode::V_S_DELT, 'Application' ,[':User<!=>:User']],
+            ['/Application/1/In',           CstMode::V_S_CREA, 'Application' ,[':User']],
+            ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'Application' ,[':User']],
+            ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'BuiltFrom'   ,[':User']],
             ['/Application/1/BuiltFrom',    CstMode::V_S_CREA, 'User'        ,true],
             ['/Application/1/Ins',          CstMode::V_S_CREA, 'Application' ,false],
             ['/Application/1/Ins',          CstMode::V_S_SLCT, 'Application' ,true],
@@ -236,15 +236,15 @@ class Access_Test extends PHPUnit_Framework_TestCase
     {
         
         $rolespec =[
-        [[CstMode::V_S_READ,CstMode::V_S_SLCT],           'true',                                 'true'],
-        [CstMode::V_S_UPDT,                      '|Application',                         ['Application'=>'User<>User']],
-        [CstMode::V_S_DELT,                         '|Application',                         ['Application'=>'User<!=>User']],
-        [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  ['|Application|In','Application|Out'],  ['Application'=>'User']],
-        [[CstMode::V_S_CREA],           '|Application|BuiltFrom',               ['Application'=>'User','BuiltFrom'=>'User']],
+        [[CstMode::V_S_READ,CstMode::V_S_SLCT],  'true',                                 'true'],
+        [CstMode::V_S_UPDT,                      '|Application',                         ['Application'=>':User<>:User']],
+        [CstMode::V_S_DELT,                       '|Application',                        ['Application'=>':User<!=>:User']],
+        [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  ['|Application|In','Application|Out'],  ['Application'=>':User']],
+        [[CstMode::V_S_CREA],                    '|Application|BuiltFrom',               ['Application'=>':User','BuiltFrom'=>':User']],
         ];
         
         $mod= Mod::get();
-        
+
         foreach ($prm['bindL'] as $bd) {
             $mod->begin();
 
@@ -308,7 +308,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
         
         
         $mod= Mod::get();
-        
+
         foreach ($prm['bindL'] as $bd) {
             $mod->begin();
                     
@@ -345,9 +345,10 @@ class Access_Test extends PHPUnit_Framework_TestCase
     public function testErr2($p, $b, $e1, $prm)
     {
         $rolespec =[
-                [CstMode::V_S_DELT, '|Application',['Application'=>'User<eroor>User']],
-                [CstMode::V_S_UPDT, '|Application',['Application'=>'<>User']],
-                [CstMode::V_S_READ, '|Application',['Application'=>'User<eroor>>User']],
+                [CstMode::V_S_DELT, '|Application',['Application'=>':User<eroor>:User']],
+                [CstMode::V_S_UPDT, '|Application',['Application'=>'<>:User']],
+                [CstMode::V_S_READ, '|Application',['Application'=>':User<eroor>>:User']],
+        		[CstMode::V_S_SLCT, '|Application',['Application'=>'User<==>:User']],
         ];
         $mod= Mod::get();
         
@@ -380,8 +381,9 @@ class Access_Test extends PHPUnit_Framework_TestCase
     {
         return [
                 ['/Application/1', CstMode::V_S_DELT,  CstError::E_ERC066.':eroor'],
-                ['/Application/1', CstMode::V_S_UPDT,  CstError::E_ERC065.':<>User'],
-                ['/Application/1', CstMode::V_S_READ,  CstError::E_ERC065.':User<eroor>>User'],
+                ['/Application/1', CstMode::V_S_UPDT,  CstError::E_ERC065.':<>:User'],
+                ['/Application/1', CstMode::V_S_READ,  CstError::E_ERC065.'::User<eroor>>:User'],
+        		['/Application', CstMode::V_S_SLCT,    CstError::E_ERC051.':User'],
         ];
     }
     
@@ -398,9 +400,6 @@ class Access_Test extends PHPUnit_Framework_TestCase
         foreach ($prm['bindL'] as $bd) {
             $y = new Model($bd['Session'], 1);
             $r = $y->getCobj();
-
-            $res=$r->getAttrPathVal($y, 'User:UserId');
-            $this->assertEquals($res, 'test');
             
             $res = "";
             try {
@@ -419,16 +418,50 @@ class Access_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals($res, CstError::E_ERC012);
 
             try {
-                $x=$r->getAttrPathVal(null, 'x:x');
+                $x=$r->getAttrPathVal(null, ':x:x');
             } catch (Exception $e) {
                 $res= $e->getMessage();
             }
-            $this->assertEquals($res, CstError::E_ERC050);
-
-            
+            $this->assertEquals($res, CstError::E_ERC050);           
             
             $mod->end();
         }
         return $prm;
     }
+    
+    /**
+     * @dataProvider Provider5
+     * @depends testErr
+     */
+    
+    public function testPath($p,$e1,$prm)
+    {
+    	$mod= Mod::get();
+    	
+    	foreach ($prm['bindL'] as $bd) {
+    		$y = new Model($bd['Session'], 1);
+    		$r = $y->getCobj();
+    		
+    		try {
+    			$res=$r->getAttrPathVal($y, $p);
+    		} catch (Exception $e) {
+    			$res= $e->getMessage();
+    		}
+
+    		$this->assertEquals($e1,$res);
+    		    		
+    		
+    		$mod->end();
+    	}
+    }
+    public function Provider5()
+    {
+    	return [
+    			[':User:UserId','test'],
+    			['const','const'],
+    			[':',  CstError::E_ERC051.'::'],
+
+    	];
+    }
+    
 }

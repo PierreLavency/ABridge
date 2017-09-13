@@ -310,13 +310,13 @@ class Config extends App
 '[
  [["Read"],                    "true",                        "true"],
  [["Select"],                 ["|Student","|Cours","|Prof"],  "true"],
- [["Update","Delete"],         "|Student",                   {"Student":"User"}],
- [["Create","Update","Delete"],"|Student|InscritA",          {"Student":"User"}],
- [["Create","Update","Delete"],"|User|Student",              {"User":"id<>User"}],
- [["Create","Update","Delete"],"|User|Student|InscritA",     {"User":"id<>User"}],
+ [["Update","Delete"],         "|Student",                   {"Student":":User"}],
+ [["Create","Update","Delete"],"|Student|InscritA",          {"Student":":User"}],
+ [["Create","Update","Delete"],"|User|Student",              {"User":":id<==>:User"}],
+ [["Create","Update","Delete"],"|User|Student|InscritA",     {"User":":id<==>:User"}],
  [ "Select",                   "|User|Student",               "false"],
- [["Read","Update","Delete"],  "|Session",                   {"Session":"id"}],
- [["Read","Update"],           "|User",                      {"User":"id<>User"}]
+ [["Read","Update","Delete"],  "|Session",                   {"Session":":id"}],
+ [["Read","Update"],           "|User",                      {"User":":id<==>:User"}]
 ]';
 		
 		$obj=new Model(Usr::ROLE);
@@ -329,10 +329,10 @@ class Config extends App
 '[
  [["Read"],                    "true",                        "true"],
  [["Select"],                 ["|Student","|Cours","|Prof"],  "true"],
- [["Update","Delete"],         "|Prof",                       {"Prof":"User"}],
- [["Create","Update","Delete"],"|User|Prof",                  {"User":"id<>User"}],
- [["Read","Update","Delete"],  "|Session",                    {"Session":"id"}],
- [["Read","Update"],           "|User",                       {"User":"id<>User"}]
+ [["Update","Delete"],         "|Prof",                       {"Prof":":User"}],
+ [["Create","Update","Delete"],"|User|Prof",                  {"User":":id<==>:User"}],
+ [["Read","Update","Delete"],  "|Session",                    {"Session":":id"}],
+ [["Read","Update"],           "|User",                       {"User":":id<==>:User"}]
 ]';
 		
 		
@@ -346,13 +346,13 @@ class Config extends App
 '[
  [["Read"],                    "true",              "true"],
  [["Select"],  ["|Student","|Cours","|Prof","|Inscription","|Charge"],        "true"],
- [ "Create",                   "|Cours",            {"Cours":"User"}],
- [ "Create",                   "|Cours",            {"Cours":"UserGroup<>ActiveGroup"}],
- [["Update","Delete"],         "|Cours",            {"Cours":"UserGroup<>ActiveGroup"}],
- [["Create","Update","Delete"],"|Cours|Par",        {"Cours":"UserGroup<>ActiveGroup"}],
- [["Create","Update","Delete"],"|Cours|SuiviPar",   {"Cours":"UserGroup<>ActiveGroup"}],
- [["Update","Read","Delete"],  "|Session",          {"Session":"id"}],
- [["Update","Read"],           "|User",             {"User":"id<>User"}]
+ [ "Create",                   "|Cours",            {"Cours":":User"}],
+ [ "Create",                   "|Cours",            {"Cours":":UserGroup<>:ActiveGroup"}],
+ [["Update","Delete"],         "|Cours",            {"Cours":":UserGroup<>:ActiveGroup"}],
+ [["Create","Update","Delete"],"|Cours|Par",        {"Cours":":UserGroup<==>:ActiveGroup"}],
+ [["Create","Update","Delete"],"|Cours|SuiviPar",   {"Cours":":UserGroup<==>:ActiveGroup"}],
+ [["Update","Read","Delete"],  "|Session",          {"Session":":id"}],
+ [["Update","Read"],           "|User",             {"User":":id<==>:User"}]
 ]';
 		
 		

@@ -126,7 +126,7 @@ require_once 'SETUP.php';
 [["Select"],        ["|Application","|Component","|Interface","|Exchange"], "true"],
 [["Read"],          "true",         "true"],
 [["Read","Update","Delete"],  "|Session",    {"Session":"id"}],
-[["Read","Update"],  "|User",       {"User":"id<>User"}]
+[["Read","Update"],  "|User",       {"User":":id<==>:User"}]
 ]';
 
 	$obj=new Model(Config::Role);
@@ -139,15 +139,15 @@ require_once 'SETUP.php';
 '[
  [["Select"],                      ["|Application","|Component","|Interface","|Exchange"], "true"],
  [["Read"],                        "true",                              "true"],
- [["Update"],                      "|Application",                      {"Application":"Owner<>ActiveGroup"}],
- [["Create"],                      "|Application|BuiltFrom",            {"Application":"Owner<>ActiveGroup","BuiltFrom":"Owner<>ActiveGroup"}],
- [["Create","Update","Delete"],    "|Application|In",                   {"Application":"Owner<>ActiveGroup"}],
- [["Create","Update","Delete"],    "|Application|Out",                  {"Application":"Owner<>ActiveGroup"}],
- [["Update","Delete"],             "|Application|BuiltFrom",            {"BuiltFrom":"Owner<>ActiveGroup"}],
- [["Create","Update","Delete"],    "|Application|BuiltFrom|In",         {"BuiltFrom":"Owner<>ActiveGroup"}],
- [["Create","Update","Delete"],    "|Application|BuiltFrom|Out",        {"BuiltFrom":"Owner<>ActiveGroup"}],
- [["Read","Update","Delete"],      "|Session",                          {"Session":"id"}],
- [["Read","Update"],               "|User",                             {"User":"id<>User"}]
+ [["Update"],                      "|Application",                      {"Application":":Owner<==>:ActiveGroup"}],
+ [["Create"],                      "|Application|BuiltFrom",            {"Application":":Owner<==>:ActiveGroup","BuiltFrom":":Owner<>:ActiveGroup"}],
+ [["Create","Update","Delete"],    "|Application|In",                   {"Application":":Owner<==>:ActiveGroup"}],
+ [["Create","Update","Delete"],    "|Application|Out",                  {"Application":":Owner<==>:ActiveGroup"}],
+ [["Update","Delete"],             "|Application|BuiltFrom",            {"BuiltFrom":":Owner<==>:ActiveGroup"}],
+ [["Create","Update","Delete"],    "|Application|BuiltFrom|In",         {"BuiltFrom":":Owner<==>:ActiveGroup"}],
+ [["Create","Update","Delete"],    "|Application|BuiltFrom|Out",        {"BuiltFrom":":Owner<==>:ActiveGroup"}],
+ [["Read","Update","Delete"],      "|Session",                          {"Session":":id"}],
+ [["Read","Update"],               "|User",                             {"User":":id<==>:User"}]
 ]';
 
 		
@@ -165,8 +165,8 @@ require_once 'SETUP.php';
  [["Create","Update","Delete"],    "|Component",                        "true"],
  [["Create","Update","Delete"],    "|Interface",                        "true"],
  [["Create","Update","Delete"],    "|Exchange",                         "true"],
- [["Read","Update","Delete"],      "|Session",                          {"Session":"id"}],
- [["Read","Update"],               "|User",                             {"User":"id<>User"}]
+ [["Read","Update","Delete"],      "|Session",                          {"Session":":id"}],
+ [["Read","Update"],               "|User",                             {"User":":id<==>:User"}]
 ]';
 
 	

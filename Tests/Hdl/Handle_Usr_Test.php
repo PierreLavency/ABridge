@@ -101,8 +101,8 @@ class Handle_Usr_Test extends PHPUnit_Framework_TestCase
             $rolespec =[
                     [CstMode::V_S_SLCT,                         $path,                    'true'],
                     [CstMode::V_S_READ,                         $path,                    'true'],
-                    [CstMode::V_S_CREA,                         $path,                [$bd['Name']=>"User"]],
-                    [CstMode::V_S_UPDT,                         $path,                [$bd['Name']=>"User"]],
+                    [CstMode::V_S_CREA,                         $path,                [$bd['Name']=>":User"]],
+                    [CstMode::V_S_UPDT,                         $path,                [$bd['Name']=>":User"]],
 
             ];
             $rlspec = json_encode($rolespec);

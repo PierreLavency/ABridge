@@ -34,7 +34,8 @@ class Session extends CModel
         $res = $obj->addAttr('Checked', Mtype::M_INT, M_P_EVALP);
         $res = $obj->addAttr('ValidStart', Mtype::M_INT, M_P_EVALP);
         $res = $obj->addAttr('ValidFlag', Mtype::M_INT, M_P_EVALP);
-
+        $res = $obj->addAttr('Name', Mtype::M_STRING);
+        
         $res = $obj->setBkey('BKey', true);
         $res = $obj->setMdtr('BKey', true);
 
@@ -225,7 +226,7 @@ class Session extends CModel
         return $this->mod->saveN();
     }
 
-    public static function getSession($id)
+    public static function getSession($id, $attrValList = [])
     {
         $modName=  get_called_class();
         if ($name =substr(strrchr($modName, '\\'), 1)) {
@@ -235,6 +236,9 @@ class Session extends CModel
         $sessionHdl=$mod->getCObj();
         $obj= $mod->getBkey('BKey', $id);
         if (is_null($obj)) {
+            foreach ($attrValList as $attr => $val) {
+                $mod->setVal($attr, $val);
+            }
             $mod->save();
             return $sessionHdl;
         }

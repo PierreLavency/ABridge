@@ -2,7 +2,6 @@
 namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\CstError;
-use ABridge\ABridge\Mod\Mtype;
 
 use ABridge\ABridge\Hdl\CstMode;
 
@@ -60,7 +59,7 @@ class Access
         if (!$roleSpec || !$session->getVal('Checked') || !$session->getVal('ValidFlag')) {
             $roleSpec=[
                     [CstMode::V_S_READ,'|','true'],
-                    [[CstMode::V_S_UPDT,CstMode::V_S_READ],'|Session',['Session'=>'id']],
+                    [[CstMode::V_S_UPDT,CstMode::V_S_READ],'|Session',['Session'=>':id']],
                     
             ];
         }
@@ -203,14 +202,17 @@ class Access
                 throw new Exception(CstError::E_ERC066.':'.$op);
         }
     }
-   
-    
     
     protected static function checkLinkAttr($session, $action, $obj, $objAttrPath, $sessAttrPath, $op, $protect, $last)
     {
-        $attrA=explode(':', $objAttrPath);
-        $attr=$attrA[0];
-        $objVal = self::getAttrPathArrayVal($obj, $attrA);
+        $attrPathList=explode(':', $objAttrPath);
+        if ($attrPathList[0] != "") {
+            throw new Exception(CstError::E_ERC051.':'.$objAttrPath);
+        } else {
+            $attr=$attrPathList[1];
+        }
+ 
+        $objVal = self::getAttrPathArrayVal($obj, $attrPathList, $objAttrPath);
         $sessVal= self::getAttrPathVal($session, $sessAttrPath);
         
         if (self::evalCond($sessVal, $op, $objVal)) {
@@ -233,24 +235,34 @@ class Access
     
     public static function getAttrPathVal($obj, $attrPath)
     {
-        $attrA=explode(':', $attrPath);
-        return self::getAttrPathArrayVal($obj, $attrA);
+        $attrPathList=explode(':', $attrPath);
+        if ($attrPathList[0] != "") {
+//            echo $attrPath."\n";
+            return $attrPath;
+        }
+        return self::getAttrPathArrayVal($obj, $attrPathList, $attrPath);
     }
     
     
-    protected static function getAttrPathArrayVal($obj, $attrPathArray)
+    protected static function getAttrPathArrayVal($obj, $attrPathList, $attrPath)
     {
         if (is_null($obj)) {
             throw new Exception(CstError::E_ERC050);
         }
-        $c = count($attrPathArray);
+        $c = count($attrPathList);
+        if (! $c) {
+            throw new Exception(CstError::E_ERC051.':'.$attrPath);
+        }
+        $attr = array_shift($attrPathList);
+        if ($attr == "") {
+            return self::getAttrPathArrayVal($obj, $attrPathList, $attrPath);
+        }
         if ($c==1) {
-            $res = $obj->getVal($attrPathArray[0]);
+            $res = $obj->getVal($attr);
             return $res;
         }
-        $attr = array_shift($attrPathArray);
         $obj->protect($attr);
         $obj=$obj->getRef($attr);
-        return self::getAttrPathArrayVal($obj, $attrPathArray);
+        return self::getAttrPathArrayVal($obj, $attrPathList, $attrPath);
     }
 }
