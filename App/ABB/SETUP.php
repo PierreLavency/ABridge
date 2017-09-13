@@ -3,9 +3,9 @@
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
-
+use ABridge\ABridge\App;
 	
-class Config
+class Config extends App
 {
 	const DBDEC = 'abbtest';
 	
@@ -23,6 +23,16 @@ class Config
 	const SControl='SControl';
 	const IType='IType';
 	const IUse='IUse';
+	
+	public static function loadMeta($prm)
+	{
+		return true;
+	}
+	
+	public static function loadData($prm)
+	{
+		return true;
+	}
 	
 	static $config = [
 	'Default'	=> [

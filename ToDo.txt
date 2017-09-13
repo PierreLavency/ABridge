@@ -2,13 +2,12 @@ CMD
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
 
-BUGS	25
+BUGS	26
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B22 EVALP in create dialog
-
 
 DEV
 
@@ -83,6 +82,8 @@ INT
 - set up jenkin
 
 DONE
+move from handler to Vew view related stuff.
+B25 session attributes (name) are not copied from previous session when loging in again
 --------------//1
 - improve session (session name)
 - improve access rule capabilities (constant).

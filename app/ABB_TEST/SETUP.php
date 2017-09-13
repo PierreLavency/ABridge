@@ -3,9 +3,9 @@
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
+use ABridge\ABridge\App;
 
-
-class Config 
+class Config extends App
 {
 	
 	const DBDEC = 'abb';
@@ -31,7 +31,16 @@ class Config
 	const Group = 'UserGroup';
 	
 	const Adm ='Admin';
-
+	
+	public static function loadMeta($prm)
+	{
+		return true;
+	}
+	
+	public static function loadData($prm)
+	{
+		return true;
+	}
 
 	static $config = [
 			

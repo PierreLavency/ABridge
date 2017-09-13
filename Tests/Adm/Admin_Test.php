@@ -100,7 +100,7 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
             $this->assertEquals('../Tests/Adm', $res);
             
             $x->setVal('Meta', true);
-            $res = Adm::get()->InitMeta([], $bd); //to simulate 
+            $res = Adm::get()->InitMeta([], $bd); //to simulate
             
             $res=$x->save();
             $this->assertEquals(1, $res);
@@ -117,26 +117,26 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
     
     public function testLoad($prm)
     {
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		$mod->begin();
-    		
-    		$x = new Model($bd[Adm::ADMIN], 1);
-    		$res= $x->getVal('name');
-    		$this->assertEquals('../Tests/Adm', $res);
-    		$this->assertNotNull($x->getVal('MetaData'));
-    		
-    		$x->setVal('Load', true);
-    		
-    		$res=$x->save();
-    		$this->assertEquals(1, $res);
-    		
-    		$res=$x->delet();
-    		$this->assertFalse($res);
-    		
-    		$mod->end();
-    	}
-    	return $prm;
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $mod->begin();
+            
+            $x = new Model($bd[Adm::ADMIN], 1);
+            $res= $x->getVal('name');
+            $this->assertEquals('../Tests/Adm', $res);
+            $this->assertNotNull($x->getVal('MetaData'));
+            
+            $x->setVal('Load', true);
+            
+            $res=$x->save();
+            $this->assertEquals(1, $res);
+            
+            $res=$x->delet();
+            $this->assertFalse($res);
+            
+            $mod->end();
+        }
+        return $prm;
     }
 }

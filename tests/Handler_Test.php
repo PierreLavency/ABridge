@@ -75,17 +75,7 @@ class Handler_Test extends PHPUnit_Framework_TestCase
 //        $this->assertEquals(2,count(Handler::get()->getBaseClasses()));
         $this->assertEquals($c1, $c2);
     }
- 
-    public function testViewHandler()
-    {
-        $this->assertTrue(Handler::get()->resetHandlers());
-        $x = 'x';
-        Handler::get()->setViewHandler($x, $x);
-        $y = Handler::get()->getViewHandler($x);
-        $this->assertEquals($x, $y);
-        $y = Handler::get()->getViewHandler('yy');
-        $this->assertNull($y);
-    }
+
     
     public function testModHandler()
     {

@@ -3,18 +3,29 @@
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
+use ABridge\ABridge\App;
 
 require_once 'Cours.php';
 require_once 'Student.php';
 require_once 'Inscription.php';   
 
 
-class Config
+class Config extends App
 {
 	const DBDEC = 'genealogy';
 	const Session = 'Session';
 	const User = 'User';
 	const Group = 'UGroup';
+	
+	public  static function loadMeta($prm=null)
+	{
+		return true;
+	}
+	
+	public  static function loadData($prm=null)
+	{
+		return  true;
+	}
 	
 	static $config = [
 			

@@ -36,7 +36,8 @@ if ($application == 'UnitTest') {
     require_once $path.'SETUP.php' ;
 
     $ctrl = new Controler(Config::$config, $conf);
-
+//    $ctrl = new Controler('x', $conf);
+    
 if (isset($init)) {
     $ctrl->beginTrans();
     require_once $path.'META.php';

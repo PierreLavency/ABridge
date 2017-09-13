@@ -275,6 +275,8 @@ class Session extends CModel
                 $this->mod->setValN('GroupName', $groupMobj->getVal('Name'));
             }
         }
+        $val = $pobj->getValN('Name');
+        $this->mod->setValN('Name', $val);
     }
     
     public function isNew()

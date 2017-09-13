@@ -3,11 +3,22 @@
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
+use ABridge\ABridge\App;
 
 require_once 'Person.php';
 
-class Config
+class Config extends App
 {
+	public  static function loadMeta($prm=null)
+	{
+		return true;
+	}
+	
+	public  static function loadData($prm=null)
+	{
+		return  true;
+	}
+	
 	static $config = [
 	'Handlers' =>
 		[

@@ -348,7 +348,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
                 [CstMode::V_S_DELT, '|Application',['Application'=>':User<eroor>:User']],
                 [CstMode::V_S_UPDT, '|Application',['Application'=>'<>:User']],
                 [CstMode::V_S_READ, '|Application',['Application'=>':User<eroor>>:User']],
-        		[CstMode::V_S_SLCT, '|Application',['Application'=>'User<==>:User']],
+                [CstMode::V_S_SLCT, '|Application',['Application'=>'User<==>:User']],
         ];
         $mod= Mod::get();
         
@@ -383,7 +383,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
                 ['/Application/1', CstMode::V_S_DELT,  CstError::E_ERC066.':eroor'],
                 ['/Application/1', CstMode::V_S_UPDT,  CstError::E_ERC065.':<>:User'],
                 ['/Application/1', CstMode::V_S_READ,  CstError::E_ERC065.'::User<eroor>>:User'],
-        		['/Application', CstMode::V_S_SLCT,    CstError::E_ERC051.':User'],
+                ['/Application', CstMode::V_S_SLCT,    CstError::E_ERC051.':User'],
         ];
     }
     
@@ -422,7 +422,7 @@ class Access_Test extends PHPUnit_Framework_TestCase
             } catch (Exception $e) {
                 $res= $e->getMessage();
             }
-            $this->assertEquals($res, CstError::E_ERC050);           
+            $this->assertEquals($res, CstError::E_ERC050);
             
             $mod->end();
         }
@@ -434,34 +434,33 @@ class Access_Test extends PHPUnit_Framework_TestCase
      * @depends testErr
      */
     
-    public function testPath($p,$e1,$prm)
+    public function testPath($p, $e1, $prm)
     {
-    	$mod= Mod::get();
-    	
-    	foreach ($prm['bindL'] as $bd) {
-    		$y = new Model($bd['Session'], 1);
-    		$r = $y->getCobj();
-    		
-    		try {
-    			$res=$r->getAttrPathVal($y, $p);
-    		} catch (Exception $e) {
-    			$res= $e->getMessage();
-    		}
+        $mod= Mod::get();
+        
+        foreach ($prm['bindL'] as $bd) {
+            $y = new Model($bd['Session'], 1);
+            $r = $y->getCobj();
+            
+            try {
+                $res=$r->getAttrPathVal($y, $p);
+            } catch (Exception $e) {
+                $res= $e->getMessage();
+            }
 
-    		$this->assertEquals($e1,$res);
-    		    		
-    		
-    		$mod->end();
-    	}
+            $this->assertEquals($e1, $res);
+                        
+            
+            $mod->end();
+        }
     }
     public function Provider5()
     {
-    	return [
-    			[':User:UserId','test'],
-    			['const','const'],
-    			[':',  CstError::E_ERC051.'::'],
+        return [
+                [':User:UserId','test'],
+                ['const','const'],
+                [':',  CstError::E_ERC051.'::'],
 
-    	];
+        ];
     }
-    
 }

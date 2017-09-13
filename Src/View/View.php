@@ -1,7 +1,7 @@
 <?php
 namespace ABridge\ABridge\View;
 
-use ABridge\ABridge\Handler;
+use ABridge\ABridge\View\Vew;
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mtype;
 
@@ -89,7 +89,7 @@ class View
     {
         foreach ($specv as $mod => $specm) {
             if ($mod != 'Home' and $mod !='MenuExcl' and $mod !='modLblList') {
-                $speci = Handler::get()->getViewHandler($mod);
+                $speci = Vew::get()->getViewPrm($mod);
                 if ($speci) {
                     $speciV = [];
                     if (isset($speci['viewList'])) {
@@ -103,9 +103,9 @@ class View
                 } else {
                     $speci=$specm;
                 }
-                Handler::get()->setViewHandler($mod, $speci);
+                Vew::get()->setViewHandler($mod, $speci);
             } else {
-                Handler::get()->setViewHandler($mod, $specm);
+                Vew::get()->setViewHandler($mod, $specm);
             }
         }
     }
@@ -818,13 +818,13 @@ class View
             return;
         }
         $home = [];
-        $res = Handler::get()->getViewHandler('Home');
+        $res = Vew::get()->getViewPrm('Home');
         if ($res) {
             $home=$res;
         }
         $selmenu = $this->handle->getSelPath();
         $rmenu=[];
-        $res = Handler::get()->getViewHandler('MenuExcl');
+        $res = Vew::get()->getViewPrm('MenuExcl');
         if ($res) {
             $rmenu=$res;
         }
@@ -832,7 +832,7 @@ class View
         $menu = array_unique(array_merge($home, $selmenu));
         $this->setTopMenu($menu);
         
-        $res = Handler::get()->getViewHandler('modLblList');
+        $res = Vew::get()->getViewPrm('modLblList');
         if ($res) {
             $this->setModLblList($res);
         }
@@ -846,7 +846,7 @@ class View
             $this->_name=$this->handle->getPrm('View');
         }
         $modName = $handle->getModName();
-        $spec = Handler::get()->getViewHandler($modName);
+        $spec = Vew::get()->getViewPrm($modName);
         if (is_null($spec)) {
                 return true;
         }

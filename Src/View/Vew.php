@@ -2,12 +2,13 @@
 namespace ABridge\ABridge\View;
 
 use ABridge\ABridge\View\View;
-use ABridge\ABridge\Handler;
+
 use ABridge\ABridge\Comp;
 
 class Vew extends Comp
 {
     private static $instance = null;
+    private $viewHandler=[]; // mod => spec
     
     private function __construct()
     {
@@ -24,7 +25,22 @@ class Vew extends Comp
     public function reset()
     {
         $this->isNew=false;
+        $this->viewHandler=[];
         self::$instance =null;
+        return true;
+    }
+    
+    public function getViewPrm($modName)
+    {
+        if (isset($this->viewHandler[$modName])) {
+            return ($this->viewHandler[$modName]);
+        }
+        return null;
+    }
+    
+    private function setViewPrm($modName, $spec)
+    {
+        $this->viewHandler[$modName]=$spec;
         return true;
     }
     
@@ -32,7 +48,7 @@ class Vew extends Comp
     {
         foreach ($config as $mod => $modConf) {
             if ($mod != 'Home' and $mod !='MenuExcl' and $mod !='modLblList') {
-                $speci = Handler::get()->getViewHandler($mod);
+                $speci = $this->getViewPrm($mod);
                 if ($speci) {
                     $speciV = [];
                     if (isset($speci['viewList'])) {
@@ -46,9 +62,9 @@ class Vew extends Comp
                 } else {
                     $speci=$modConf;
                 }
-                Handler::get()->setViewHandler($mod, $speci);
+                $this->setViewPrm($mod, $speci);
             } else {
-                Handler::get()->setViewHandler($mod, $modConf);
+                $this->setViewPrm($mod, $modConf);
             }
         }
     }

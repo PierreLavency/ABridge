@@ -49,7 +49,8 @@ class Controler
  
     public function construct2($spec, $ini)
     {
-            
+//    	$spec=\Config::$config;
+        
         $this->initPrm($spec, $ini);
         
         $this->spec=$spec;
