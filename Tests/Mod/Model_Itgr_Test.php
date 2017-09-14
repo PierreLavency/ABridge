@@ -1,15 +1,15 @@
 <?php
     
 use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Mtype;
 
 class Model_Rig_Test extends PHPUnit_Framework_TestCase
 {
-    protected static $db1;
-    protected static $db2;
-
-
+    protected static $dbs;
+    protected static $prm;
+    
     protected $Application='AApplication';
     protected $AbstrApp='AbstrApp';
     protected $Code='ACode';
@@ -21,60 +21,35 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
     
     public static function setUpBeforeClass()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        Handler::get()->resetHandlers();
-        $typ='dataBase';
-        $name='test';
-        $Application=get_called_class().'_1';
-        $AbstrApp=get_called_class().'_2';
-        $Code=get_called_class().'_3';
-        $Exchange=get_called_class().'_4';
+        $classes = ['AbstrApp','Application','Code','Exchange'];
+        $baseTypes=['dataBase','fileBase','memBase'];
+        $baseName='test';
         
-        self::$db1=Handler::get()->setBase($typ, $name, $prm);
-        Handler::get()->setStateHandler($Application, $typ, $name);
-        Handler::get()->setStateHandler($AbstrApp, $typ, $name);
-        Handler::get()->setStateHandler($Code, $typ, $name);
-        Handler::get()->setStateHandler($Exchange, $typ, $name);
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
         
-        $typ='fileBase';
-        $name=$name.'_f';
-        $Application=get_called_class().'_f_1';
-        $AbstrApp=get_called_class().'_f_2';
-        $Code=get_called_class().'_f_3';
-        $Exchange=get_called_class().'_f_4';
+        self::$prm=$prm;
+        self::$dbs=[];
         
-        self::$db2=Handler::get()->setBase($typ, $name, $prm);
-        Handler::get()->setStateHandler($Application, $typ, $name);
-        Handler::get()->setStateHandler($AbstrApp, $typ, $name);
-        Handler::get()->setStateHandler($Code, $typ, $name);
-        Handler::get()->setStateHandler($Exchange, $typ, $name);
+        Mod::get()->reset();
+        Mod::get()->init($prm['application'], $prm['handlers']);
+        
+        foreach ($baseTypes as $baseType) {
+            self::$dbs[$baseType]=Mod::get()->getBase($baseType, $baseName);
+        };
     }
     
     public function setTyp($typ)
     {
-        if ($typ== 'SQL') {
-            $this->db=self::$db1;
-            $this->Application=get_called_class().'_1';
-            $this->AbstrApp=get_called_class().'_2';
-            $this->Code=get_called_class().'_3';
-            $this->Exchange=get_called_class().'_4';
-        } else {
-            $this->db=self::$db2;
-            $this->Application=get_called_class().'_f_1';
-            $this->AbstrApp=get_called_class().'_f_2';
-            $this->Code=get_called_class().'_f_3';
-            $this->Exchange=get_called_class().'_f_4';
-        }
+        $this->db=self::$dbs[$typ];
+        $this->AbstrApp=self::$prm[$typ]['AbstrApp'];
+        $this->Application=self::$prm[$typ]['Application'];
+        $this->Code=self::$prm[$typ]['Code'];
+        $this->Exchange=self::$prm[$typ]['Exchange'];
     }
     
     public function Provider1()
     {
-        return [['SQL'],['FLE']];
+        return [['dataBase'],['fileBase'],['memBase']];
     }
     /**
      * @dataProvider Provider1
@@ -159,7 +134,7 @@ class Model_Rig_Test extends PHPUnit_Framework_TestCase
         $res = true;
         $res= $obj->delet();
 
-        if ($typ == 'SQL') {
+        if ($typ == 'dataBase') {
             $this->assertFalse($res);
             $this->assertTrue($obj->isErr());
             $this->assertTrue($db->checkFKey(false));

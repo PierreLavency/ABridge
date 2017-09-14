@@ -11,12 +11,7 @@ use Mysqli;
 
 class SQLBase extends Base
 {
-/*
-    protected static $filepath;
-    protected static $servername;
-    protected static $username;
-    protected static $password;
-    */
+
     protected $server;
     protected $usr;
     protected $psw;
@@ -32,26 +27,11 @@ class SQLBase extends Base
         $this->connect();
         parent::__construct($path, 'sqlBase/'.$dbname);
     }
- /*
-    public static function setDB($filepath, $server, $usr, $psw)
+
+    public function getBaseType()
     {
-        self::$filepath=$filepath;
-        self::$servername=$server;
-        self::$username=$usr;
-        self::$password=$psw;
-        return true;
+        return 'dataBase';
     }
-    
-    public static function getDB()
-    {
-        $res=[];
-        $res[]=self::$filepath;
-        $res[]=self::$servername;
-        $res[]=self::$username;
-        $res[]=self::$password;
-        return $res;
-    }
-*/
     
     public function connect()
     {

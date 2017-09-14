@@ -1,15 +1,18 @@
 <?php
     
 use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\UtilsC;
 
 class Model_Key_Test extends PHPUnit_Framework_TestCase
 {
     protected static $db1;
     protected static $db2;
-
+    
+    protected static $dbs;
+    protected static $prm;
 
     protected $Code;
     protected $CodeVal;
@@ -20,54 +23,37 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
     
     public static function setUpBeforeClass()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        Handler::get()->resetHandlers();
-        $typ='dataBase';
-        $name='test';
-        $Code=get_called_class().'_1';
-        $CodeVal=get_called_class().'_2';
-        $Student=get_called_class().'_3';
-        self::$db1=Handler::get()->setBase($typ, $name, $prm);
-        Handler::get()->setStateHandler($Code, $typ, $name);
-        Handler::get()->setStateHandler($CodeVal, $typ, $name);
-        Handler::get()->setStateHandler($Student, $typ, $name);
+        $classes = ['Code','Student','CodeVal'];
+        $baseTypes=['dataBase','fileBase','memBase'];
+        $baseName='test';
         
-        $typ='fileBase';
-        $name=$name.'_f';
-        $Code=get_called_class().'_f_1';
-        $CodeVal=get_called_class().'_f_2';
-        $Student=get_called_class().'_f_3';
-        self::$db2=Handler::get()->setBase($typ, $name, $prm);
-        Handler::get()->setStateHandler($Code, $typ, $name);
-        Handler::get()->setStateHandler($CodeVal, $typ, $name);
-        Handler::get()->setStateHandler($Student, $typ, $name);
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
+        
+        self::$prm=$prm;
+        self::$dbs=[];
+        
+        Mod::get()->reset();
+        Mod::get()->init($prm['application'], $prm['handlers']);
+        
+        foreach ($baseTypes as $baseType) {
+            self::$dbs[$baseType]=Mod::get()->getBase($baseType, $baseName);
+        };
     }
     
     public function setTyp($typ)
     {
-        if ($typ== 'SQL') {
-            $this->db=self::$db1;
-            $this->Code=get_called_class().'_1';
-            $this->CodeVal=get_called_class().'_2';
-            $this->Student=get_called_class().'_3';
-        } else {
-            $this->db=self::$db2;
-            $this->Code=get_called_class().'_f_1';
-            $this->CodeVal=get_called_class().'_f_2';
-            $this->Student=get_called_class().'_f_3';
-        }
-
+ 
+        $this->db=self::$dbs[$typ];
+        $this->Code=self::$prm[$typ]['Code'];
+        $this->CodeVal=self::$prm[$typ]['CodeVal'];
+        $this->Student=self::$prm[$typ]['Student'];
+        
         $this->NoState=get_called_class().'_f_4';
     }
     
     public function Provider1()
     {
-        return [['SQL'],['FLE']];
+        return [['dataBase'],['fileBase'],['memBase']];
     }
     /**
      * @dataProvider Provider1

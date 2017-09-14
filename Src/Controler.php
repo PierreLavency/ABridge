@@ -134,7 +134,13 @@ class Controler
         if (!isset($this->defVal['dbnm'])) {
             $this->defVal['dbnm']=$appName;
         }
- 
+        
+        if (isset($ini['menm'])) {
+            $this->defVal['menm']=$ini['menm'];
+        }
+        if (!isset($this->defVal['menm'])) {
+            $this->defVal['menm']=$appName;
+        }
         if (isset($ini['flnm'])) {
             $this->defVal['flnm']=$ini['flnm'];
         }

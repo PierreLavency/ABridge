@@ -14,6 +14,4 @@ class Vew_Test extends PHPUnit_Framework_TestCase
         $y = Vew::get()->getViewPrm('yy');
         $this->assertNull($y);
     }
-    
-
 }

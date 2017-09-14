@@ -11,10 +11,11 @@ class AdmApp extends App
     const ADMIN='Admin';
     
     public static $config = [
+
             'Handlers' => [
-                    self::ADMIN => ['dataBase',],
+                    self::ADMIN => ['memBase',],
             ],
-                    
+                  
             'Adm' => [
                     
             ],

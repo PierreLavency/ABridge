@@ -130,6 +130,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
     public function testRollBack()
     {
         $x = self::$db;
+
         $x->beginTrans();
         $this->assertEquals(0, $x->getObj(self::$CName, $this->id2));
         $this->assertTrue($x->delObj(self::$CName, $this->id1));
@@ -275,6 +276,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
             $r = true;
         }
         $this->assertTrue($r);
+        
 // no error if no begin transaction 
         
 // all fails since closed 

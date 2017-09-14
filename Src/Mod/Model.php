@@ -175,10 +175,10 @@ class Model
         $this->meta['predef'] = array('id','vnum','ctstp','utstp');
         $this->meta['attr'] = array('id','vnum','ctstp','utstp');
         $this->meta['type'] = array(
-            "id"=>Mtype::M_ID,
-            "vnum"=>Mtype::M_INT,
-            "ctstp"=>Mtype::M_TMSTP,
-            "utstp"=>Mtype::M_TMSTP,
+            "id"    =>Mtype::M_ID,
+            "vnum"  =>Mtype::M_INT,
+            "ctstp"     =>Mtype::M_TMSTP,
+            "utstp"     =>Mtype::M_TMSTP,
         );
         $this->attrVal = array('vnum' => 0);
         $this->meta['dflt'] = [];
@@ -215,8 +215,7 @@ class Model
             $this->custom=false;
             return $res;
         }
-        $this->errLog->logLine(CstError::E_ERC061.':'.$this->getModName());
-        return false;
+        throw new Exception(CstError::E_ERC061.':'.$this->getModName());
     }
     /**
      * Returns the errorlogger.
@@ -317,7 +316,22 @@ class Model
     {
         return $this->meta['attr'];
     }
-
+    
+    public function getAllPeristAttr()
+    {
+        $attrLst = $this->getAllAttr();
+        $res= [];
+        foreach ($attrLst as $attr) {
+            if (($this->getTyp($attr) !=  Mtype::M_CREF)
+                    and (! $this->isEval($attr))
+                    and (! $this->isTemp($attr))
+                    ) {
+                        $res[]=$attr;
+            }
+        }
+        return $res;
+    }
+    
     public function getAttrList()
     {
         $list = $this->getAllAttr();

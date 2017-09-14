@@ -12,9 +12,7 @@ B22 EVALP in create dialog
 DEV
 
 - develop component for abstract code (Cda).
-- implement memBase
 - create Ctr Component
-- move from handler to Vew view related stuff.
 
 - check on delete of distribution / Groups if used in default.
 - set up own exception
@@ -49,7 +47,6 @@ DEV
 - unify get code with get reference. (??)
 - support CREF on abstract (????)
 
-
 - increase autorisations rule capability /2
 	- views and other parameters
 	- handle user preference.
@@ -82,6 +79,9 @@ INT
 - set up jenkin
 
 DONE
+--------------// 1 (!!)
+- implement memBase
+--------------// 1
 move from handler to Vew view related stuff.
 B25 session attributes (name) are not copied from previous session when loging in again
 --------------//1

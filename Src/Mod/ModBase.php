@@ -41,43 +41,44 @@ class ModBase
     
     public function saveMod($mod)
     {
-        $name = $mod->getModName();
-        $abst = $mod->isAbstr();
-        $inh  = $mod->getInhNme();
+        $modName = $mod->getModName();
+        $abstractMod = $mod->isAbstr();
+        $inhertFromMod  = $mod->getInhNme();
         $typ  = $mod->getAllTyp();
-        $plst = $this->getPeristAttr($mod);
-        if ($abst) {
+        $plst = $mod->getAllPeristAttr();
+        if ($abstractMod) { // Why ?
             $predef = $mod->getAllPredef();
             $plst   = array_diff($plst, $predef);
         }
         $meta=[];
         $frg=[];
         $meta['attr_lst']  = $mod->getAllAttr();
-        $meta['attr_typ']  = $typ;
-        $meta['attr_plst'] = $plst;
+        $meta['attr_typ']  = $typ;  //$mod->getAllTyp();
+        $meta['attr_plst'] = $plst; //$mod->getAllPeristAttr();
         $meta['attr_dflt'] = $mod->getAllDflt();
         $meta['attr_path'] = $mod->getAllRefParm();
         $meta['attr_bkey'] = $mod->getAllBkey();
         $meta['attr_mdtr'] = $mod->getAllMdtr();
         $meta['attr_ckey'] = $mod->getAllCkey();
-        $meta['inhnme']    = $inh;
-        $meta['isabstr']   = $abst;
-        if ($inh) {
-            $metaInh=$this->base->getMod($inh);
+        $meta['inhnme']    = $inhertFromMod;
+        $meta['isabstr']   = $abstractMod;
+        if ($inhertFromMod) {
+            $metaInh=$this->base->getMod($inhertFromMod);
             $metaInh=$metaInh['meta'];
             $iplst=$metaInh['attr_plst'];
             $ityp =$metaInh['attr_typ'];
             $plst = array_merge($plst, $iplst);
             $typ= $typ+$ityp;
-            $frg['id']=$inh;
+            $frg['id']=$inhertFromMod;
         }
-        $ameta['attr_plst'] = $plst;
-        $ameta['attr_typ'] = $typ;
-        $ameta['meta']=$meta;
+        
+        $newBaseMod['attr_plst'] = $plst; //
+        $newBaseMod['attr_typ'] = $typ;
+        $newBaseMod['meta']=$meta;
 
-        if ($abst) {
-            $ameta=$this->abstr;
-            $ameta['meta']=$meta;
+        if ($abstractMod) {
+            $newBaseMod=$this->abstr;
+            $newBaseMod['meta']=$meta;
         }
         
         foreach ($plst as $pattr) {
@@ -85,17 +86,17 @@ class ModBase
                 $frg[$pattr] = $mod->getModRef($pattr);
             }
         }
-        $ameta['attr_frg']=$frg;
+        $newBaseMod['attr_frg']=$frg;
         
-        if (! $this->base->existsMod($name)) {
-            if ($inh) {
-                return ($this->base->newModId($name, $ameta, false));
+        if (! $this->base->existsMod($modName)) {
+            if ($inhertFromMod) {
+                return ($this->base->newModId($modName, $newBaseMod, false));
             }
-            return ($this->base->newMod($name, $ameta));
+            return ($this->base->newMod($modName, $newBaseMod));
         }
         
-        $values = $this->base->getMod($name);
-        if ($abst) {
+        $values = $this->base->getMod($modName);
+        if ($abstractMod) {
             $values=$values['meta'];
         }
         $iplst = [];
@@ -114,15 +115,15 @@ class ModBase
                 $frg[$pattr] = 'XX';
             }
         }
-        $ameta['attr_frg']=$frg;
-        if ($abst) {
-            $res= $this->base->putMod($name, $ameta, [], []);
+        $newBaseMod['attr_frg']=$frg;
+        if ($abstractMod) {
+            $res= $this->base->putMod($modName, $newBaseMod, [], []);
             foreach ($this->base->getAllMod() as $smod) {
                 $svals = $this->base->getMod($smod);
                 if (isset($svals['meta'])) {
                     $sval = $svals['meta'];
                     if (isset($sval['inhnme'])) {
-                        if ($sval['inhnme']==$name) {
+                        if ($sval['inhnme']==$modName) {
                             $svals['attr_frg']=$frg;
                             $this->base->putMod(
                                 $smod,
@@ -136,7 +137,7 @@ class ModBase
             }
             return $res;
         }
-        return ($this->base->putMod($name, $ameta, $addList, $delList));
+        return ($this->base->putMod($modName, $newBaseMod, $addList, $delList));
     }
     
     public function restoreMod($mod)

@@ -5,12 +5,20 @@ use Exception;
 use ABridge\ABridge\Mod\Base;
 use ABridge\ABridge\CstError;
 
+// memBase = FileBase with null file 
+
+
 class FileBase extends Base
 {
 
     public function __construct($path, $id)
     {
-        parent::__construct($path, 'fileBase/'.$id);
+        if (is_null($id)) {
+            $fileName = null;
+        } else {
+            $fileName = 'fileBase/'.$id;
+        }
+        parent::__construct($path, $fileName);
     }
     
     public function checkFKey($flag)
@@ -28,6 +36,14 @@ class FileBase extends Base
     public static function exists($path, $id)
     {
         return parent::existsBase($path, 'fileBase/'.$id);
+    }
+    
+    public function getBaseType()
+    {
+        if ($this->memBase) {
+            return 'memBase';
+        }
+        return 'fileBase';
     }
     
     public function putMod($model, $meta, $addList, $delList)
@@ -53,7 +69,6 @@ class FileBase extends Base
         return $r;
     }
     
-    //to align
     
     public function delMod($model)
     {

@@ -1,11 +1,12 @@
 <?php
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\CModel;
-use ABridge\ABridge\Handler;
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\UtilsC;
 
-class testevalP extends CModel
+class Model_Evp_Test_dataBase_Student extends CModel
 {
     private $_fsave = true;
     protected $_fdel  = true;
@@ -46,10 +47,10 @@ class testevalP extends CModel
     
     public function testN()
     {
-        return 'testevalP';
+        return 'Model_Evp_Test_dataBase_Student';
     }
 }
-class testevalPF extends CModel
+class Model_Evp_Test_fileBase_Student extends CModel
 {
 
     private $_x;
@@ -92,13 +93,60 @@ class testevalPF extends CModel
     
     public function testN()
     {
-        return 'testevalPF';
+        return 'Model_Evp_Test_fileBase_Student';
+    }
+}
+
+class Model_Evp_Test_memBase_Student extends CModel
+{
+    
+    private $_x;
+    private $_fsave = true;
+    private $_fdel  = true;
+    
+    public function save()
+    {
+        $a = $this->mod->getValN('a');
+        $b = $this->mod->getValN('b');
+        $this->mod->setVal('aplusb', $a+$b);
+        if (!$a and $this->mod->getId()and $this->_fsave) {
+            $this->mod->getErrLog()->logLine('wrong');
+            $this->_fsave = false;
+            return false;
+        }
+        $res =  $this->mod->saveN();
+        if (!$this->_fsave) {
+            $this->mod->getErrLog()->logLine('Awrong');
+            return false;
+        }
+        return $res;
+    }
+    
+    public function delet()
+    {
+        $a = $this->mod->getValN('a');
+        if (!$a and $this->mod->getId()and $this->_fdel) {
+            $this->mod->getErrLog()->logLine('Dwrong');
+            $this->_fdel = false;
+            return false;
+        }
+        $res= $this->mod->deletN();
+        if (!$this->_fdel) {
+            $this->mod->getErrLog()->logLine('DDwrong');
+            return false;
+        }
+        return $res;
+    }
+    
+    public function testN()
+    {
+        return 'Model_Evp_Test_memBase_Student' ;
     }
 }
 class Model_Evp_Test extends PHPUnit_Framework_TestCase
 {
-    protected static $db1;
-    protected static $db2;
+    protected static $dbs;
+    protected static $prm;
 
     protected $Student='testevalP';
     protected $db;
@@ -106,42 +154,32 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
     
     public static function setUpBeforeClass()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        Handler::get()->resetHandlers();
+        $classes = ['Student'];
+        $baseTypes=['dataBase','fileBase','memBase'];
+        $baseName='test';
         
-        $typ='dataBase';
-        $name='test';
-        $Student='testevalP';
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
         
-        self::$db1=Handler::get()->setBase($typ, $name, $prm);
-        Handler::get()->setStateHandler($Student, $typ, $name);
+        self::$prm=$prm;
+        self::$dbs=[];
         
-        $Student='testevalPF';
-        $typ='fileBase';
+        Mod::get()->reset();
+        Mod::get()->init($prm['application'], $prm['handlers']);
         
-        self::$db2=Handler::get()->setBase($typ, $name, $prm);
-        Handler::get()->setStateHandler($Student, $typ, $name);
+        foreach ($baseTypes as $baseType) {
+            self::$dbs[$baseType]=Mod::get()->getBase($baseType, $baseName);
+        }
     }
     
     public function setTyp($typ)
     {
-        if ($typ== 'SQL') {
-            $this->db=self::$db1;
-            $this->Student='testevalP';
-        } else {
-            $this->db=self::$db2;
-            $this->Student='testevalPF';
-        }
+        $this->db=self::$dbs[$typ];
+        $this->Student=self::$prm[$typ]['Student'];
     }
     
     public function Provider1()
     {
-        return [['SQL'],['FLE']];
+        return [['dataBase'],['fileBase'],['memBase']];
     }
     /**
      * @dataProvider Provider1
@@ -240,8 +278,13 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($this->Student, $cobj->testN());
 
         $y= new Model('notExists');
-        $this->assertFalse($y->initMod([]));
-        
+
+        try {
+            $y->initMod([]);
+        } catch (Exception $e) {
+            $res= $e->getMessage();
+        }
+        $this->assertEquals(CstError::E_ERC061.':notExists', $res);
         $db->commit();
     }
     

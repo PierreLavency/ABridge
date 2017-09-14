@@ -7,51 +7,53 @@ use ABridge\ABridge\CstError;
 
 abstract class Base
 {
-    protected $filePath;
     protected $objects=[];
-    protected $fileN;
-    protected $fileName;
+    protected $preObjects=[];
+    private $fileN;
+    private $fileName;
     protected $logLevl;
     protected $logger;
     protected $connected;
+    protected $memBase;
 
+    // memBase = FileBase with null file
+    
     protected function __construct($path, $id)
     {
-        $this->filePath=$path;
-        $this->fileN = $path . $id;
-        $this->fileName = $this->fileN.'.txt';
         $this->logLevl=0;
         $this->logger=null;
+        $this->fileN = $path . $id;
+        if (is_null($id)) {
+            $this->memBase= true;
+        } else {
+            $this->fileName = $path . $id .'.txt';
+            $this->memBase=false;
+        }
         $this->connected=true;
         $this->load();
     }
     
     protected function erase()
     {
+        if ($this->memBase) {
+            $this->objects = [];
+            $this->preObjects=[];
+            return true;
+        }
         if (file_exists($this->fileName)) {
             unlink($this->fileName);
         }
         $this->objects = [];
         return true;
     }
-/*    
-    public static function setPath($path)
-    {
-        self::$filePath =$path;
-        return true;
-    }
-    
-    
-    public static function getPath()
-    {
-        return self::$filePath;
-    }
-*/
+
     protected static function existsBase($path, $id)
     {
         $f = $path . $id.'.txt';
         return file_exists($f);
     }
+    
+    
     
     public function connect()
     {
@@ -75,6 +77,11 @@ abstract class Base
     
     private function load()
     {
+        if ($this->memBase) {
+            $this->objects = [];
+            $this->preObjects=[];
+            return true;
+        }
         if (file_exists($this->fileName)) {
             $file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
             $this->objects = unserialize($file);
@@ -98,6 +105,10 @@ abstract class Base
         if (! $this->isConnected()) {
             throw new Exception(CstError::E_ERC025);
         }
+        if ($this->memBase) {
+            $this->preObjects=$this->objects;
+            return true;
+        }
         $file = serialize($this->objects);
         $r=file_put_contents($this->fileName, $file, FILE_USE_INCLUDE_PATH);
         return $r;
@@ -107,6 +118,10 @@ abstract class Base
     {
         if (! $this->isConnected()) {
             throw new Exception(CstError::E_ERC025);
+        }
+        if ($this->memBase) {
+            $this->objects=$this->preObjects;
+            return true;
         }
         $this->load();
         return true;
@@ -203,6 +218,8 @@ abstract class Base
         return $this->logger;
     }
  
+    abstract public function getBaseType();
+    
     abstract protected function checkFKey($flag);
  
     abstract protected function remove();

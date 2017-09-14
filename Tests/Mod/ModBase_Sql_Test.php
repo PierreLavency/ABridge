@@ -3,26 +3,25 @@
 use ABridge\ABridge\Mod\SQLBase;
 
 require_once("ModBase_Case.php");
+use ABridge\ABridge\UtilsC;
 
 class ModBase_Sql_Test extends ModBase_Case
 {
     public static function setUpBeforeClass()
     {
-            self::$CName=get_called_class().'_1';
-        ;
-            self::$DBName= 'test';
-            $prm=[
-                    'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                    'host'=>'localhost',
-                    'user'=>'cl822',
-                    'pass'=>'cl822'
-            ];
-            self::$db = new SQLBase(
-                $prm['path'],
-                $prm['host'],
-                $prm['user'],
-                $prm['pass'],
-                self::$DBName
-            );
+        $classes = ['test1'];
+        $prm=UtilsC::genPrm($classes, get_called_class(), ['dataBase']);
+        
+        self::$CName= $prm['dataBase']['test1'];
+        
+        self::$DBName=$prm['application']['dbnm'];
+          
+        self::$db = new SQLBase(
+            $prm['application']['path'],
+            $prm['application']['host'],
+            $prm['application']['user'],
+            $prm['application']['pass'],
+            self::$DBName
+        );
     }
 }

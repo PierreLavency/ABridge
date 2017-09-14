@@ -5,18 +5,18 @@ use ABridge\ABridge\UtilsC;
 
 require_once("ModBase_Abst_Case.php");
 
-class ModBase_Abst_Fle_Test extends ModBase_Abst_Case
+class ModBase_Abst_Mem_Test extends ModBase_Abst_Case
 {
 
     public static function setUpBeforeClass()
     {
         $classes = ['test1','test2'];
-        $prm=UtilsC::genPrm($classes, get_called_class(), ['fileBase']);
+        $prm=UtilsC::genPrm($classes, get_called_class(), ['memBase']);
         
-        self::$CName= $prm['fileBase']['test1'];
-        self::$HName= $prm['fileBase']['test2'];
+        self::$CName= $prm['memBase']['test1'];
+        self::$HName= $prm['memBase']['test2'];
         
-        self::$DBName=$prm['application']['flnm'];
+        self::$DBName=null;
         $fpath=$prm['application']['path'];
         
         self::$db = new FileBase($fpath, self::$DBName);

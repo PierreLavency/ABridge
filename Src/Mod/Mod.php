@@ -48,6 +48,9 @@ class Mod extends Comp
                     if ($handler[0]=='fileBase') {
                         $handler[]=$appPrm['flnm'];
                     }
+                    if ($handler[0]=='memBase') {
+                        $handler[]=$appPrm['menm'];
+                    }
                     // default set
                 case 2:
                     Handler::get()->setBase($handler[0], $handler[1], $appPrm);
@@ -62,6 +65,13 @@ class Mod extends Comp
         }
         $this->bases = Handler::get()->getBaseClasses();
     }
+    
+    
+    public function getBase($baseType, $baseName)
+    {
+        return Handler::get()->getBase($baseType, $baseName);
+    }
+ 
     
     public function begin($appPrm = null, $config = null)
     {
@@ -122,9 +132,9 @@ class Mod extends Comp
         $x->initMod($normBindings);
         $x->saveMod();
         if ($x->isErr()) {
-            echo  $physicalName ;
+//            echo  $physicalName ;
             $log = $x->getErrLog();
-            $log->show();
+//            $log->show();
             return false;
         }
         return true;
@@ -138,7 +148,7 @@ class Mod extends Comp
             $res = $x->checkMod();
             if (!$res) {
                 $log = $x->getErrLog();
-                $log->show();
+//                $log->show();
                 return false;
             }
         }

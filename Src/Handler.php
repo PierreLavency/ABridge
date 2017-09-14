@@ -19,12 +19,14 @@ class Handler
     private $filePath;
     private $bases = []; //'fileBase'=> [name => class],
     private $basesClasses =[
+            'memBase'=>'ABridge\ABridge\Mod\FileBase',
             'fileBase'=>'ABridge\ABridge\Mod\FileBase',
             'dataBase'=>'ABridge\ABridge\Mod\SQLBase',
             
     ];
     private $modHandler= [];
     private $modBase =[
+            'memBase' =>'ABridge\ABridge\Mod\ModBase',
             'fileBase' =>'ABridge\ABridge\Mod\ModBase',
             'dataBase'=>'ABridge\ABridge\Mod\ModBase',
             
@@ -62,7 +64,6 @@ class Handler
     {
         $this->bases= [];
         $this->modHandler=[];
-        $this->viewHandler=[];
         $this->cmod=[];
         $this->comp=[];
         self::$instance =null;
@@ -101,6 +102,9 @@ class Handler
         };
         $classN = $this->basesClasses[$base];
         $path = $prm['path'];
+        if ($base === 'memBase') {
+            $x = new $classN($path,null);
+        }
         if ($base === 'fileBase') {
             $x = new $classN($path,$instance);
         }
@@ -144,21 +148,7 @@ class Handler
         $this->modHandler[$modName]=$y;
         return $y;
     }
-        
-    public function getViewHandler($modName)
-    {
-        if (isset($this->viewHandler[$modName])) {
-            return ($this->viewHandler[$modName]);
-        }
-        return null;
-    }
-    
-    public function setViewHandler($modName, $spec)
-    {
-        $this->viewHandler[$modName]=$spec;
-        return true;
-    }
-    
+           
     
     public function getCmod($modName)
     {

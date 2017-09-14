@@ -4,6 +4,7 @@ use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\CstError;
 
 class Mod_Test extends \PHPUnit_Framework_TestCase
 {
@@ -57,5 +58,16 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
         
         $res=$mod->end();
         $this->assertTrue($res);
+    }
+    
+    public function testBindings()
+    {
+        $mod= Mod::get();
+        try {
+            $mod->initModBindings(['notexist']);
+        } catch (Exception $e) {
+            $res= $e->getMessage();
+        }
+        $this->assertEquals(CstError::E_ERC061.':notexist', $res);
     }
 }

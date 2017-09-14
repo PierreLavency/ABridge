@@ -2,57 +2,49 @@
     
 
 use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\UtilsC;
 
 class Model_Slc_Test extends PHPUnit_Framework_TestCase
 {
-    protected static $db1;
-    protected static $db2;
-
+    protected static $dbs;
+    protected static $prm;
+    
     protected $Student='testevalP';
     protected $db;
 
     
     public static function setUpBeforeClass()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        Handler::get()->resetHandlers();
-        $typ='dataBase';
-        $name='test';
-        $Student=get_called_class().'_1';
+        $classes = ['Student'];
+        $baseTypes=['dataBase','fileBase','memBase'];
+        $baseName='test';
         
-        self::$db1=Handler::get()->setBase($typ, $name, $prm);
-
-        Handler::get()->setStateHandler($Student, $typ, $name);
-        $Student=get_called_class().'_f_1';
-        $typ='fileBase';
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
         
-        self::$db2=Handler::get()->setBase($typ, $name, $prm);
-
-        Handler::get()->setStateHandler($Student, $typ, $name);
+        self::$prm=$prm;
+        self::$dbs=[];
+        
+        Mod::get()->reset();
+        Mod::get()->init($prm['application'], $prm['handlers']);
+        
+        foreach ($baseTypes as $baseType) {
+            self::$dbs[$baseType]=Mod::get()->getBase($baseType, $baseName);
+        };
     }
     
     public function setTyp($typ)
     {
-        if ($typ== 'SQL') {
-            $this->db=self::$db1;
-            $this->Student=get_called_class().'_1';
-        } else {
-            $this->db=self::$db2;
-            $this->Student=get_called_class().'_f_1';
-        }
+        $this->db=self::$dbs[$typ];
+
+        $this->Student=self::$prm[$typ]['Student'];
     }
     
     public function Provider1()
     {
-        return [['SQL'],['FLE']];
+        return [['dataBase'],['fileBase'],['memBase']];
     }
     /**
      * @dataProvider Provider1

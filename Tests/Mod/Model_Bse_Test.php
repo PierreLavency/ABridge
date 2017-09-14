@@ -1,55 +1,47 @@
 <?php
     
 use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\UtilsC;
 
 class Model_Bse_Test extends PHPUnit_Framework_TestCase
 {
-    protected static $db1;
-    protected static $db2;
-
-    protected $Cname = 'students';
+    protected static $dbs;
+    protected static $prm;
+    
     protected $db;
     
     
     public static function setUpBeforeClass()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        Handler::get()->resetHandlers();
-        $typ='dataBase';
-        $name='test';
-        $Cname=get_called_class().'_1';
-        self::$db1=Handler::get()->setBase($typ, $name, $prm);
-        Handler::get()->setStateHandler($Cname, $typ, $name);
+        $classes = ['Student'];
+        $baseTypes=['dataBase','fileBase','memBase'];
+        $baseName='test';
         
-        $typ='fileBase';
-        $name=$name.'_f';
-        $Cname=get_called_class().'_f_1';
-        self::$db2=Handler::get()->setBase($typ, $name, $prm);
-        Handler::get()->setStateHandler($Cname, $typ, $name);
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
+ 
+        self::$prm=$prm;
+        self::$dbs=[];
+        
+        Mod::get()->reset();
+        Mod::get()->init($prm['application'], $prm['handlers']);
+        
+        foreach ($baseTypes as $baseType) {
+            self::$dbs[$baseType]=Mod::get()->getBase($baseType, $baseName);
+        }
     }
     
     public function setTyp($typ)
     {
-        if ($typ== 'SQL') {
-                $this->db=self::$db1;
-                $this->Cname=get_called_class().'_1';
-        } else {
-            $this->db=self::$db2;
-            $this->Cname=get_called_class().'_f_1';
-        }
+        $this->db=self::$dbs[$typ];
+        $this->Cname=self::$prm[$typ]['Student'];
     }
     
     public function Provider1()
     {
-        return [['SQL'],['FLE']];
+        return [['dataBase'],['fileBase'],['memBase']];
     }
     /**
      * @dataProvider Provider1
@@ -234,9 +226,14 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
         
         $db->beginTrans();
 
-        $hdl = Handler::get()->getStateHandler($this->Cname);
-        $res=$hdl->findObj($this->Cname, 'id', 1);
-        $this->assertEquals($res, []);
+        $res = false;
+        try {
+            $x= new Model($this->Cname, 1);
+        } catch (Exception $e) {
+            $res=true;
+        }
+
+        $this->assertTrue($res);
         
         $ins=new Model($this->Cname);
         $this->assertNotNull($ins);

@@ -12,14 +12,17 @@ class Admin_Test_dataBase_Admin extends Admin
 class Admin_Test_fileBase_Admin extends Admin
 {
 }
-
+class Admin_Test_memBase_Admin extends Admin
+{
+}
 class Admin_Test extends \PHPUnit_Framework_TestCase
 {
 
     public function testInit()
     {
         $classes = [Adm::ADMIN];
-        $prm=UtilsC::genPrm($classes, get_called_class());
+        $baseTypes=['dataBase','fileBase','memBase'];
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
 
         Mod::get()->reset();
 
@@ -31,7 +34,7 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
         
         $res = Adm::get()->initMeta($prm['application'], $prm['dataBase']);
         $res = Adm::get()->initMeta($prm['application'], $prm['fileBase']);
-        
+        $res = Adm::get()->initMeta($prm['application'], $prm['memBase']);
         $mod->end();
        
         return $prm;

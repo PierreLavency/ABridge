@@ -31,6 +31,7 @@ class UtilsC
                 'base'=>'dataBase',
                 'dbnm'=>'test',
                 'flnm'=>'test',
+                'menm'=>'test',
                 'path'=>'C:/Users/pierr/ABridge/Datastore/',
                 'host'=>'localhost',
                 'user'=>'cl822',

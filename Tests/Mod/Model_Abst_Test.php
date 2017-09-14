@@ -1,15 +1,16 @@
 <?php
     
 use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\UtilsC;
 
 class Model_Abst_Test extends PHPUnit_Framework_TestCase
 {
-    protected static $db1;
-    protected static $db2;
-
+    protected static $dbs;
+    protected static $prm;
+    
 
     protected $Application;
     protected $Component;
@@ -23,58 +24,35 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
     
-        Handler::get()->resetHandlers();
-        $typ='dataBase';
-        $name='atest';
-        $Application=get_called_class().'_1';
-        $Component=get_called_class().'_2';
-        $ABB=get_called_class().'_3';
-        $Exchange=get_called_class().'_4';
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-        self::$db1=Handler::get()->setBase($typ, $name, $prm);
-         Handler::get()->setStateHandler($Application, $typ, $name);
-         Handler::get()->setStateHandler($Component, $typ, $name);
-         Handler::get()->setStateHandler($ABB, $typ, $name);
-         Handler::get()->setStateHandler($Exchange, $typ, $name);
+        $classes = ['ABB','Application','Component','Exchange'];
+        $baseTypes=['dataBase','fileBase','memBase'];
+        $baseName='test';
         
-        $typ='fileBase';
-        $name=$name.'_f';
-        $Application=get_called_class().'_f_1';
-        $Component=get_called_class().'_f_2';
-        $ABB=get_called_class().'_f_3';
-        $Exchange=get_called_class().'_f_4';
-        self::$db2=Handler::get()->setBase($typ, $name, $prm);
-         Handler::get()->setStateHandler($Application, $typ, $name);
-         Handler::get()->setStateHandler($Component, $typ, $name);
-         Handler::get()->setStateHandler($ABB, $typ, $name);
-         Handler::get()->setStateHandler($Exchange, $typ, $name);
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
+        
+        self::$prm=$prm;
+        self::$dbs=[];
+        
+        Mod::get()->reset();
+        Mod::get()->init($prm['application'], $prm['handlers']);
+        
+        foreach ($baseTypes as $baseType) {
+            self::$dbs[$baseType]=Mod::get()->getBase($baseType, $baseName);
+        }
     }
     
     public function setTyp($typ)
     {
-        if ($typ== 'SQL') {
-            $this->db=self::$db1;
-            $this->ABB=get_called_class().'_3';
-            $this->Application=get_called_class().'_1';
-            $this->Component=get_called_class().'_2';
-            $this->Exchange=get_called_class().'_4';
-        } else {
-            $this->db=self::$db2;
-            $this->ABB=get_called_class().'_f_3';
-            $this->Application=get_called_class().'_f_1';
-            $this->Component=get_called_class().'_f_2';
-            $this->Exchange=get_called_class().'_f_4';
-        }
+            $this->db=self::$dbs[$typ];
+            $this->ABB=self::$prm[$typ]['ABB'];
+            $this->Application=self::$prm[$typ]['Application'];
+            $this->Component=self::$prm[$typ]['Component'];
+            $this->Exchange=self::$prm[$typ]['Exchange'];
     }
     
     public function Provider1()
     {
-        return [['SQL'],['FLE']];
+        return [['dataBase'],['fileBase'],['memBase']];
     }
     /**
      * @dataProvider Provider1
