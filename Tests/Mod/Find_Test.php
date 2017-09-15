@@ -28,8 +28,8 @@ class Find_Test extends PHPUnit_Framework_TestCase
         self::$prm=$prm;
         self::$dbs=[];
         
-        $mod = Mod::get();
-        $mod->reset();
+        Mod::get()->reset();
+        $mod=Mod::get();
         $mod->init($prm['application'], $prm['handlers']);
         
         foreach ($baseTypes as $baseType) {

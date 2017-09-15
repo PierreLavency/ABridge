@@ -12,10 +12,11 @@ namespace ABridge\ABridge\Mod;
  * @link     No
  */
 use ABridge\ABridge\Logger;
-use ABridge\ABridge\Handler;
+
 use ABridge\ABridge\CstError;
 
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Mod\Mod;
 
 use Exception;
  
@@ -132,7 +133,7 @@ class Model
 
     protected function initObj($name)
     {
-        $cmodName = Handler::get()->getCmod($name);
+        $cmodName = Mod::get()->getCmod($name);
         if (is_null($cmodName)) {
             $this->obj= null;
             return null;
@@ -162,7 +163,7 @@ class Model
         $logname = $name.'errLog';
         $this->errLog= new Logger($logname);
         $this->obj=null;
-        $this->stateHdlr=Handler::get()->getStateHandler($name);
+        $this->stateHdlr=Mod::get()->getStateHandler($name);
     }
     /**
      * Re/Initialise the attributes and their properties
@@ -1389,7 +1390,7 @@ class Model
             return true;
         }
         if ($parm === M_P_EVAL or $parm === M_P_EVALP) {
-            $cmodName = Handler::get()->getCmod($this->getModName());
+            $cmodName = Mod::get()->getCmod($this->getModName());
             if (is_null($cmodName)) {
                 $this->errLog->logLine(CstError::E_ERC040.':'.$attr.':'.$typ);
                 return false;
@@ -1688,7 +1689,7 @@ class Model
             return false;
         }
         if (! $this->stateHdlr) {
-            $this->errLog->logLine(CstError::E_ERC006);
+            $this->errLog->logLine(CstError::E_ERC006.':'.$this->getModName());
             return false;
         }
         if ($this->modChgd) {
@@ -1786,7 +1787,7 @@ class Model
             return false;
         }
         if (! $this->stateHdlr) {
-            $this->errLog->logLine(CstError::E_ERC006);
+            $this->errLog->logLine(CstError::E_ERC006.':'.$this->getModName());
             return false;
         }
         if (!$this->isDel()) {
@@ -1815,7 +1816,7 @@ class Model
     public function deleteMod()
     {
         if (! $this->stateHdlr) {
-            $this->errLog->logLine(CstError::E_ERC006);
+            $this->errLog->logLine(CstError::E_ERC006.':'.$this->getModName());
             return false;
         }
         $res=$this->stateHdlr->eraseMod($this);
@@ -1833,7 +1834,7 @@ class Model
     public function saveMod()
     {
         if (! $this->stateHdlr) {
-            $this->errLog->logLine(CstError::E_ERC006);
+            $this->errLog->logLine(CstError::E_ERC006.':'.$this->getModName());
             return false;
         }
         $res=$this->stateHdlr->saveMod($this);

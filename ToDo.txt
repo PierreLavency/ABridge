@@ -1,6 +1,7 @@
 CMD
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
+grep -ri 'xx' Src/* App/* Tests/*
 
 BUGS	26
 B1 session with API.
@@ -10,6 +11,7 @@ B12 in ABB - txt on application 5.
 B22 EVALP in create dialog
 
 DEV
+- standardize tests 
 - add component view in admin
 - remove handlers
 - develop component for abstract code (Cda).
@@ -80,6 +82,10 @@ INT
 - set up jenkin
 
 DONE
+--------------// 1
+- standardize tests 
+--------------// 0.5
+standardize application parameter (dbnm =>dataBase)
 --------------// 1 (!!)
 - implement memBase
 --------------// 1

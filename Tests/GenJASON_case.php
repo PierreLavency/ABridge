@@ -1,48 +1,48 @@
 <?php
 
+
 use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Mtype;
 
-function GenJasonCasesData($id, $B, $D)
+function GenJasonCasesData($testDir, $testFile, $id, $B, $D)
 {
     for ($i=1; $i<$B; $i++) {
-        $x = new Model('TestDir');
+        $x = new Model($testDir);
         $name = 'D_'.$id.'.'.$i;
         $x->setVal('Name', $name);
         $x->setVal('Father', $id);
         $id2= $x->save();
-        $x = new Model('TestFle');
+        $x = new Model($testFile);
         $name = 'F_'.$id.'.'.$i;
         $x->setVal('Name', $name);
         $x->setVal('Father', $id);
         $x->save();
         if ($D > 0) {
-            GenJasonCasesData($id2, $B, $D-1);
+            GenJasonCasesData($testDir, $testFile, $id2, $B, $D-1);
         }
     }
 }
 
 function GenJasonCases()
 {
-    $prm=[
-            'path'=>'C:/Users/pierr/ABridge/Datastore/',
-            'host'=>'localhost',
-            'user'=>'cl822',
-            'pass'=>'cl822'
-    ];
-    $db = Handler::get()->setBase('dataBase', 'test', $prm);
-    $db->setLogLevl(0);
-    Handler::get()->setStateHandler('TestDir', 'dataBase', 'test');
-    Handler::get()->setStateHandler('TestFle', 'dataBase', 'test');
-    Handler::get()->setStateHandler('Code', 'dataBase', 'test');
-    Handler::get()->setStateHandler('CodeValue', 'dataBase', 'test');
+	$classes = ['testDir','testFile','CodeVal','Code'];
+	$baseTypes=['dataBase'];
+	$baseType='dataBase';
+	
+	$prm=UtilsC::genPrm($classes, 'GENJASON_Test', $baseTypes);
+	Mod::get()->init($prm['application'], $prm['handlers']);
+	
+	$baseType='dataBase';
+    $Code = $prm[$baseType]['Code'];
+    $CodeVal= $prm[$baseType]['CodeVal'];
+    $testDir= $prm[$baseType]['testDir'];
+    $testFile=$prm[$baseType]['testFile'];
     
-    $db->beginTrans();
+    
+    Mod::get()->begin();
 
-    // Code
-    $Code = 'Code';
-    $CodeVal= 'CodeValue';
     
     $codeval = new Model($CodeVal);
     $res= $codeval->deleteMod();
@@ -71,43 +71,44 @@ function GenJasonCases()
     $sex_id = $sex->save();
     
     
-    $x=new Model('TestDir');
+    $x=new Model($testDir);
     $x->deleteMod();
     $x->addAttr('Name', Mtype::M_STRING);
 
-    $res = $x->addAttr('Sexe', Mtype::M_CODE, "/Code/1/Values");
-    $x->addAttr('Father', Mtype::M_REF, '/TestDir');
-    $x->addAttr('FatherOfD', Mtype::M_CREF, '/TestDir/Father');
-    $x->addAttr('FatherOfF', Mtype::M_CREF, '/TestFle/Father');
+    $res = $x->addAttr('Sexe', Mtype::M_CODE, '/'.$Code.'/1/Values');
+    $x->addAttr('Father', Mtype::M_REF, '/'.$testDir);
+    $x->addAttr('FatherOfD', Mtype::M_CREF, '/'.$testDir.'/Father');
+    $x->addAttr('FatherOfF', Mtype::M_CREF, '/'.$testFile.'/Father');
     $x->saveMod();
     $r = $x-> getErrLog();
     $r->show();
         
-    $x=new Model('TestFle');
+    $x=new Model($testFile);
     $x->deleteMod();
     $x->addAttr('Name', Mtype::M_STRING);
-    $x->addAttr('Father', Mtype::M_REF, '/TestDir');
+    $x->addAttr('Father', Mtype::M_REF, '/'.$testDir);
     $x->saveMod();
     $r = $x-> getErrLog();
     $r->show();
 
-    $x=new Model('TestDir');
+    $x=new Model($testDir);
     $x->setVal('Name', '/');
     $x->setVal('Sexe', 1);
     $id = $x->save();
     
-    GenJasonCasesData($id, 3, 2);
-    $db->Commit();
+    GenJasonCasesData($testDir, $testFile, $id, 3, 2);
+    Mod::get()->End();
+    
 
     $test=[];
     $n=0;
-    $test[$n]=['TestDir',1,0,$n];
+    $test[$n]=[$testDir,1,0,$n];
     $n++;
-    $test[$n]=['TestDir',1,1,$n];
+    $test[$n]=[$testDir,1,1,$n];
     $n++;
-    $test[$n]=['TestDir',1,2,$n];
+    $test[$n]=[$testDir,1,2,$n];
     $n++;
-    $test[$n]=['TestDir',1,-1,$n];
+    $test[$n]=[$testDir,1,-1,$n];
 
     return $test;
 }

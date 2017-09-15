@@ -96,18 +96,18 @@ class Model_Err_Test extends PHPUnit_Framework_TestCase
 
         $n++;
         $this->assertFalse($x->save());
-        $this->assertEquals($log->getLine($n), 'ERC006');
+        $this->assertEquals($log->getLine($n), 'ERC006:test');
         
         $n++;
         $this->assertFalse($x->delet());
-        $this->assertEquals($log->getLine($n), 'ERC006');
+        $this->assertEquals($log->getLine($n), 'ERC006:test');
         
         $n++;
         $this->assertFalse($x->saveMod());
-        $this->assertEquals($log->getLine($n), 'ERC006');
+        $this->assertEquals($log->getLine($n), 'ERC006:test');
 
         $n++;
         $this->assertFalse($x->deleteMod());
-        $this->assertEquals($log->getLine($n), 'ERC006');
+        $this->assertEquals($log->getLine($n), 'ERC006:test');
     }
 }

@@ -2,12 +2,12 @@
 
 use ABridge\ABridge\UnitTest;
 
-use ABridge\ABridge\Handler;
-
 use ABridge\ABridge\Hdl\Request;
 use ABridge\ABridge\Hdl\Handle;
 use ABridge\ABridge\Hdl\CstMode;
 
+use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\UtilsC;
 
 use ABridge\ABridge\View\View;
 use ABridge\ABridge\View\CstView;
@@ -21,19 +21,18 @@ $log=new UnitTest($logName, 1);
 
 /**************************************/
 
+$classes = ['Dir'];
+$baseTypes=['dataBase'];
+
+$prm=UtilsC::genPrm($classes, 'View_Xref_Test', $baseTypes);
+
+Mod::get()->reset();
+Mod::get()->init($prm['application'], $prm['handlers']);
 
 $show = false;
 $test = viewCasesXref();
-$prm=[
-        'path'=>'C:/Users/pierr/ABridge/Datastore/',
-        'host'=>'localhost',
-        'user'=>'cl822',
-        'pass'=>'cl822'
-];
-$db = handler::get()->setBase('dataBase', 'test', $prm);
-handler::get()->setStateHandler('dir', 'dataBase', 'test');
 
-$db->beginTrans();
+Mod::get()->begin();
 
 for ($i=0; $i<count($test); $i++) {
     if ($show) {
@@ -54,6 +53,7 @@ for ($i=0; $i<count($test); $i++) {
     $res = $v->show($s, $show);
     $log->logLine($res);
 }
+Mod::get()->End();
 
 $log->saveTest();
 

@@ -13,6 +13,8 @@ class Mod extends Comp
     private static $instance = null;
     private static $handler = null;
     
+    private $cmod=[]; //mod=> Cmodclass
+    
     private function __construct()
     {
     }
@@ -20,9 +22,10 @@ class Mod extends Comp
     public function reset()
     {
         Handler::get()->resetHandlers();
-        self::$handler=Handler::get();
+//        self::$handler=Handler::get();
         $this->mods=[];
         $this->bases=[];
+        $this->cmod=[];
         self::$instance =null;
         return true;
     }
@@ -69,20 +72,13 @@ class Mod extends Comp
         $this->bases = self::$handler->getBaseClasses();
     }
     
-    
-    public function getBase($baseType, $baseName)
-    {
-        return self::$handler->getBase($baseType, $baseName);
-    }
- 
-    
     public function begin($appPrm = null, $config = null)
     {
         foreach ($this->bases as $base) {
             $base-> beginTrans();
         }
     }
-
+    
     public function end()
     {
         $res = true;
@@ -92,23 +88,57 @@ class Mod extends Comp
         }
         return $res;
     }
-    
+
     public function isNew()
     {
         return true;
-    }
-    
-    
-    public function getMods()
-    {
-        return $this->mods;
     }
     
     public function initMeta($appPrm, $config)
     {
         return true;
     }
+        
     
+    public function getBase($baseType, $baseName)
+    {
+        return self::$handler->getBase($baseType, $baseName);
+    }
+
+    public function getBaseClasses()
+    {
+        return self::$handler->getBaseClasses();
+    }
+
+    public function getMods()
+    {
+        return self::$handler->getMods();
+    }
+    
+    public function getCmod($modName)
+    {
+//	   	return self::$handler->getCmod($modName);
+        if (isset($this->cmod[$modName])) {
+            return ($this->cmod[$modName]);
+        }
+        if (class_exists($modName)) {
+            return $modName;
+        }
+        return null;
+    }
+    
+    public function setCmod($modName, $spec)
+    {
+//    	return self::$handler->setCmod($modName, $spec);
+        $this->cmod[$modName]=$spec;
+        return true;
+    }
+    
+    public function getStateHandler($modName)
+    {
+        return self::$handler->getStateHandler($modName);
+    }
+       
     
     public static function initModBindings($bindings, $logicalNames = null)
     {
@@ -135,9 +165,8 @@ class Mod extends Comp
         $x->initMod($normBindings);
         $x->saveMod();
         if ($x->isErr()) {
-//            echo  $physicalName ;
             $log = $x->getErrLog();
-//            $log->show();
+
             return false;
         }
         return true;
@@ -151,7 +180,7 @@ class Mod extends Comp
             $res = $x->checkMod();
             if (!$res) {
                 $log = $x->getErrLog();
-//                $log->show();
+
                 return false;
             }
         }

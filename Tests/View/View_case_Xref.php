@@ -1,42 +1,44 @@
 <?php
 
 use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Handler;
+
 use ABridge\ABridge\Mod\Mtype;
 
 use ABridge\ABridge\Hdl\CstMode;
 
 use ABridge\ABridge\View\CstView;
 
+use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\UtilsC;
+
 function viewCasesXref()
 {
-    $prm=[
-        'path'=>'C:/Users/pierr/ABridge/Datastore/',
-        'host'=>'localhost',
-        'user'=>'cl822',
-        'pass'=>'cl822'
-    ];
-    $db = Handler::get()->setBase('dataBase', 'test', $prm);
-    $db->setLogLevl(0);
-    Handler::get()->setStateHandler('viewCasesXref', 'dataBase', 'test');
+	$classes = ['Dir'];
+	$baseTypes=['dataBase'];
+	$baseType= 'dataBase';
+	
+	$prm=UtilsC::genPrm($classes, 'View_Xref_Test', $baseTypes);
     
-    $db->beginTrans();
-    $x=new Model('viewCasesXref');
+	$dir = $prm[$baseType]['Dir'];
+    
+    Mod::get()->begin();
+    
+    $x=new Model($dir);
     $x->deleteMod();
 
     $x->addAttr('Name', Mtype::M_STRING);
-    $x->addAttr('Father', Mtype::M_REF, '/viewCasesXref');
-    $x->addAttr('FatherOf', Mtype::M_CREF, '/viewCasesXref/Father');
-    $x->addAttr('Mother', Mtype::M_REF, '/viewCasesXref');
-    $x->addAttr('MotherOf', Mtype::M_CREF, '/viewCasesXref/Mother');
+    $x->addAttr('Father', Mtype::M_REF, '/'.$dir);
+    $x->addAttr('FatherOf', Mtype::M_CREF, '/'.$dir.'/Father');
+    $x->addAttr('Mother', Mtype::M_REF, '/'.$dir);
+    $x->addAttr('MotherOf', Mtype::M_CREF, '/'.$dir.'/Mother');
     $x->saveMod();
 
-    $x=new Model('viewCasesXref');
+    $x=new Model($dir);
     $x->setVal('Name', 'Name_1');
     $x->save();
 
     for ($i=2; $i<10; $i++) {
-        $y = new Model('viewCasesXref');
+        $y = new Model($dir);
         $name = 'Name_'.$i;
         $y->setVal('Name', $name);
         $y->setVal('Father', 1);
@@ -47,7 +49,7 @@ function viewCasesXref()
     
     for ($i=2; $i<3; $i++) {
         for ($j=1; $j<12; $j++) {
-            $z= new Model('viewCasesXref');
+            $z= new Model($dir);
             $n = (10*$i)+$j;
             $name = 'Name_'.$n;
             $z->setVal('Name', $name);
@@ -57,11 +59,11 @@ function viewCasesXref()
         }
     }
 
-    
-    $db->Commit();
+   
+    Mod::get()->End();
 
     $v = 2;
-    $path = '/viewCasesXref/'.$v;
+    $path = '/'.$dir.'/'.$v;
     
     $test=[];
     $n=0;

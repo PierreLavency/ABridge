@@ -1,7 +1,7 @@
 <?php
 namespace ABridge\ABridge\Hdl;
 
-use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Mod\Model;
 
@@ -128,7 +128,7 @@ class Handle
     
     public function getSelPath()
     {
-        $classL=Handler::get()->getMods();
+        $classL=Mod::get()->getMods();
         if ($this->sessionHdl) {
             $selmenu = $this->sessionHdl->getSelMenu($classL);
         } else {

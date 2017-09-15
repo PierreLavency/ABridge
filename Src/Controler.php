@@ -4,7 +4,6 @@ namespace ABridge\ABridge;
 use ABridge\ABridge\Logger;
 use ABridge\ABridge\Mod\Mod;
 
-use ABridge\ABridge\Handler;
 use ABridge\ABridge\Mod\Mtype;
 
 use ABridge\ABridge\Hdl\Hdl;
@@ -56,7 +55,6 @@ class Controler
         $this->spec=$spec;
         $bases = [];
         
-        Handler::get()->resetHandlers();
         Mod::get()->reset();
         Hdl::get()->reset();
         Usr::get()->reset();
@@ -69,7 +67,7 @@ class Controler
             $this->spec['Hdl']=[];
         }
         
-        $this->bases = Handler::get()->getBaseClasses();
+        $this->bases = Mod::get()->getBaseClasses();
     }
  
     protected function initConf($spec)

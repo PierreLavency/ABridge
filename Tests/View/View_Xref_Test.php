@@ -1,7 +1,6 @@
 <?php
     
 use ABridge\ABridge\Logger;
-use ABridge\ABridge\Handler;
 
 use ABridge\ABridge\Hdl\Request;
 use ABridge\ABridge\Hdl\Handle;
@@ -10,6 +9,9 @@ use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\View;
 use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
+
+use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\UtilsC;
 
 require_once 'View_case_Xref.php';
 
@@ -20,16 +22,16 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
     protected static $db;
     public static function setUpBeforeClass()
     {
-        $prm=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
+    	$classes = ['Dir'];
+    	$baseTypes=['dataBase'];
+    	
+    	$prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
+    	
+    	Mod::get()->reset();
+    	Mod::get()->init($prm['application'], $prm['handlers']);
+        
         self::$log=new Logger('View_init_Xref');
         self::$log->load();
-        self::$db = Handler::get()->setBase('dataBase', 'test', $prm);
-        Handler::get()->setStateHandler('dir', 'dataBase', 'test');
     }
     
     
@@ -39,7 +41,8 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
         $id = $test[0][0];
         $p = $test[0][1];
         $s = $test[0][2];
-        self::$db->beginTrans();
+        
+        Mod::get()->begin();
 
         $request = new Request($p, CstMode::V_S_READ);
         $handle = new Handle($p, CstMode::V_S_READ, null);
@@ -50,7 +53,8 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
         
         $this->expectOutputString(self::$log->getLine(0));
         $this->assertNotNull($v->show($s, true));
-        self::$db->commit();
+        
+        Mod::get()->end();
     }
     
 
@@ -61,7 +65,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
     public function testView($id, $p, $s, $expected)
     {
 
-        self::$db->beginTrans();
+    	Mod::get()->begin();
     
         $home= null;
         $request = new Request($p, CstMode::V_S_READ);
@@ -73,7 +77,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
         $v->setAttrListHtml(['Mother'=>CstHTML::H_T_SELECT], CstMode::V_S_CREA);
     
         $this->assertEquals(self::$log->getLine($expected), $v->show($s, false));
-        self::$db->commit();
+        Mod::get()->end();
     }
  
     public function Provider1()

@@ -1,10 +1,10 @@
-a:7:{i:0;s:1780:"<!DOCTYPE html>
+a:7:{i:0;s:1822:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= "/ABridge.php/viewCasesXref/2" ><input type='hidden' name='vnum' value='1' >
+ <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -12,7 +12,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr> </table>
 	<table > <tr>
 		<td>
-			viewCasesXref
+			View_Xref_Test_dataBase_Dir
 		</td>
 	</tr> </table>
 	<table > <tr>
@@ -20,7 +20,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 			<input type="submit" value = Create >
 		</td>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2" >Cancel</a>
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Cancel</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -102,7 +102,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:1;s:3950:"<!DOCTYPE html>
+ </html>";i:1;s:4412:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -116,22 +116,22 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 
 <table > <tr>
 	<td>
-		viewCasesXref
+		View_Xref_Test_dataBase_Dir
 	</td>
 </tr> </table>
 
 <table > <tr>
 	<td>
-		<a href="/ABridge.php/viewCasesXref/2?Action=Update" >Update</a>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?Action=Update" >Update</a>
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref/2?Action=Delete" >Delete</a>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?Action=Delete" >Delete</a>
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref?Action=Create" >Create</a>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir?Action=Create" >Create</a>
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref?Action=Select" >Select</a>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir?Action=Select" >Select</a>
 	</td>
 </tr> </table>
 
@@ -157,7 +157,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 			Father
 		</td>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/1" >1
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
 </a>
 		</td>
 	</tr>
@@ -166,7 +166,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 			Mother
 		</td>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/1" >1
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
 </a>
 		</td>
 	</tr>
@@ -180,20 +180,20 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 		11 : 0-10
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref/2?FatherOf=0" >Previous</a>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?FatherOf=0" >Previous</a>
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref/2?FatherOf=10" >Next</a>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?FatherOf=10" >Next</a>
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref/2/FatherOf?Action=Create" >Add</a>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf?Action=Create" >Add</a>
 	</td>
 </tr> </table>
 
 <table >
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/FatherOf/10" >10
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/10" >10
 </a>
 		</td>
 		<td>
@@ -202,7 +202,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/FatherOf/11" >11
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/11" >11
 </a>
 		</td>
 		<td>
@@ -211,7 +211,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/FatherOf/12" >12
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/12" >12
 </a>
 		</td>
 		<td>
@@ -220,7 +220,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/FatherOf/13" >13
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/13" >13
 </a>
 		</td>
 		<td>
@@ -229,7 +229,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/FatherOf/14" >14
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/14" >14
 </a>
 		</td>
 		<td>
@@ -238,7 +238,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/FatherOf/15" >15
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/15" >15
 </a>
 		</td>
 		<td>
@@ -247,7 +247,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/FatherOf/16" >16
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/16" >16
 </a>
 		</td>
 		<td>
@@ -256,7 +256,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/FatherOf/17" >17
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/17" >17
 </a>
 		</td>
 		<td>
@@ -265,7 +265,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/FatherOf/18" >18
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/18" >18
 </a>
 		</td>
 		<td>
@@ -274,7 +274,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/FatherOf/19" >19
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/19" >19
 </a>
 		</td>
 		<td>
@@ -292,20 +292,20 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 		11 : 0-10
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref/2?MotherOf=0" >Previous</a>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?MotherOf=0" >Previous</a>
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref/2?MotherOf=10" >Next</a>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?MotherOf=10" >Next</a>
 	</td>
 	<td>
-		<a href="/ABridge.php/viewCasesXref/2/MotherOf?Action=Create" >Add</a>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf?Action=Create" >Add</a>
 	</td>
 </tr> </table>
 
 <table >
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/MotherOf/10" >10
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/10" >10
 </a>
 		</td>
 		<td>
@@ -314,7 +314,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/MotherOf/11" >11
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/11" >11
 </a>
 		</td>
 		<td>
@@ -323,7 +323,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/MotherOf/12" >12
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/12" >12
 </a>
 		</td>
 		<td>
@@ -332,7 +332,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/MotherOf/13" >13
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/13" >13
 </a>
 		</td>
 		<td>
@@ -341,7 +341,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/MotherOf/14" >14
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/14" >14
 </a>
 		</td>
 		<td>
@@ -350,7 +350,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/MotherOf/15" >15
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/15" >15
 </a>
 		</td>
 		<td>
@@ -359,7 +359,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/MotherOf/16" >16
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/16" >16
 </a>
 		</td>
 		<td>
@@ -368,7 +368,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/MotherOf/17" >17
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/17" >17
 </a>
 		</td>
 		<td>
@@ -377,7 +377,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/MotherOf/18" >18
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/18" >18
 </a>
 		</td>
 		<td>
@@ -386,7 +386,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2/MotherOf/19" >19
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/19" >19
 </a>
 		</td>
 		<td>
@@ -399,13 +399,13 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 
 
  </body> 
- </html>";i:2;s:951:"<!DOCTYPE html>
+ </html>";i:2;s:993:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= "/ABridge.php/viewCasesXref/2" ><input type='hidden' name='vnum' value='1' >
+ <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -413,7 +413,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr> </table>
 	<table > <tr>
 		<td>
-			viewCasesXref
+			View_Xref_Test_dataBase_Dir
 		</td>
 	</tr> </table>
 	<table > <tr>
@@ -421,7 +421,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 			<input type="submit" value = Update >
 		</td>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2" >Cancel</a>
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Cancel</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -461,13 +461,13 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:3;s:893:"<!DOCTYPE html>
+ </html>";i:3;s:963:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= "/ABridge.php/viewCasesXref/2" ><input type='hidden' name='vnum' value='1' >
+ <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -475,7 +475,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr> </table>
 	<table > <tr>
 		<td>
-			viewCasesXref
+			View_Xref_Test_dataBase_Dir
 		</td>
 	</tr> </table>
 	<table > <tr>
@@ -483,7 +483,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 			<input type="submit" value = Delete >
 		</td>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2" >Cancel</a>
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Cancel</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -508,7 +508,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 				Father
 			</td>
 			<td>
-				<a href="/ABridge.php/viewCasesXref/1" >1
+				<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
 </a>
 			</td>
 		</tr>
@@ -517,7 +517,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 				Mother
 			</td>
 			<td>
-				<a href="/ABridge.php/viewCasesXref/1" >1
+				<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
 </a>
 			</td>
 		</tr>
@@ -525,13 +525,13 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:4;s:1999:"<!DOCTYPE html>
+ </html>";i:4;s:2069:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <form method=POST action= "/ABridge.php/viewCasesXref/2" ><input type='hidden' name='vnum' value='1' >
+ <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -539,7 +539,7 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 	</tr> </table>
 	<table > <tr>
 		<td>
-			viewCasesXref
+			View_Xref_Test_dataBase_Dir
 		</td>
 	</tr> </table>
 	<table > <tr>
@@ -547,13 +547,13 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
 			<input type="submit" value = Select >
 		</td>
 		<td>
-			<a href="/ABridge.php/viewCasesXref?Action=Select" >Refresh</a>
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir?Action=Select" >Refresh</a>
 		</td>
 		<td>
-			<a href="/ABridge.php/viewCasesXref/2" >Cancel</a>
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Cancel</a>
 		</td>
 		<td>
-			<a href="/ABridge.php/viewCasesXref?Action=Create" >Create</a>
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir?Action=Create" >Create</a>
 		</td>
 	</tr> </table>
 	<table >
@@ -644,19 +644,19 @@ a:7:{i:0;s:1780:"<!DOCTYPE html>
  Name_2
 
  </body> 
- </html>";i:6;s:238:"<!DOCTYPE html>
+ </html>";i:6;s:280:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <a href="/ABridge.php/viewCasesXref/2" >Name_2
+ <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2
 </a>
 
-<a href="/ABridge.php/viewCasesXref/1" >1
+<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
 </a>
 
-<a href="/ABridge.php/viewCasesXref/1" >1
+<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
 </a>
 
 

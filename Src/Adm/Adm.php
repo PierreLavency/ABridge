@@ -6,7 +6,7 @@ use ABridge\ABridge\Comp;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Model;
 
-use ABridge\ABridge\Handler;
+//use ABridge\ABridge\Handler;
 
 class Adm extends Comp
 {
@@ -43,7 +43,7 @@ class Adm extends Comp
         Mod::get()->init($appPrm, self::defltHandlers($bindings));
         if ($bindings[self::ADMIN]==self::ADMIN) {
             $className = __NAMESPACE__.'\\'.self::ADMIN;
-            Handler::get()->setCmod(self::ADMIN, $className);
+            Mod::get()->setCmod(self::ADMIN, $className);
         }
     }
     
