@@ -11,6 +11,7 @@ class Mod extends Comp
     protected $bases=[];
     
     private static $instance = null;
+    private static $handler = null;
     
     private function __construct()
     {
@@ -19,6 +20,7 @@ class Mod extends Comp
     public function reset()
     {
         Handler::get()->resetHandlers();
+        self::$handler=Handler::get();
         $this->mods=[];
         $this->bases=[];
         self::$instance =null;
@@ -29,6 +31,7 @@ class Mod extends Comp
     {
         if (is_null(self::$instance)) {
             self::$instance = new Mod();
+            self::$handler=Handler::get();
         }
         return self::$instance;
     }
@@ -43,18 +46,18 @@ class Mod extends Comp
                     // default set
                 case 1:
                     if ($handler[0]=='dataBase') {
-                        $handler[]=$appPrm['dbnm'];
+                        $handler[]=$appPrm['dataBase'];
                     }
                     if ($handler[0]=='fileBase') {
-                        $handler[]=$appPrm['flnm'];
+                        $handler[]=$appPrm['fileBase'];
                     }
                     if ($handler[0]=='memBase') {
-                        $handler[]=$appPrm['menm'];
+                        $handler[]=$appPrm['memBase'];
                     }
                     // default set
                 case 2:
-                    Handler::get()->setBase($handler[0], $handler[1], $appPrm);
-                    Handler::get()->setStateHandler(
+                    self::$handler->setBase($handler[0], $handler[1], $appPrm);
+                    self::$handler->setStateHandler(
                         $classN,
                         $handler[0],
                         $handler[1]
@@ -63,13 +66,13 @@ class Mod extends Comp
             }
             $this->mods[]=$classN;
         }
-        $this->bases = Handler::get()->getBaseClasses();
+        $this->bases = self::$handler->getBaseClasses();
     }
     
     
     public function getBase($baseType, $baseName)
     {
-        return Handler::get()->getBase($baseType, $baseName);
+        return self::$handler->getBase($baseType, $baseName);
     }
  
     

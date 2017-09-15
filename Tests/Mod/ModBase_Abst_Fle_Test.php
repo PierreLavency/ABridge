@@ -16,7 +16,7 @@ class ModBase_Abst_Fle_Test extends ModBase_Abst_Case
         self::$CName= $prm['fileBase']['test1'];
         self::$HName= $prm['fileBase']['test2'];
         
-        self::$DBName=$prm['application']['flnm'];
+        self::$DBName=$prm['application']['fileBase'];
         $fpath=$prm['application']['path'];
         
         self::$db = new FileBase($fpath, self::$DBName);

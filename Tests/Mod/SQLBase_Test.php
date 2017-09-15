@@ -18,7 +18,7 @@ class SQLBase_Test extends Base_Case
         self::$CName= $prm['dataBase']['test1'];
         self::$CName2=$prm['dataBase']['test2'];
         
-        self::$DBName=$prm['application']['dbnm'];
+        self::$DBName=$prm['application']['dataBase'];
         
         self::$db = new SQLBase(
             $prm['application']['path'],

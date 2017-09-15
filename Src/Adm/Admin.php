@@ -16,7 +16,7 @@ class Admin extends CModel
         }
     }
     
-    protected $attrList = ['name','path','base','dbnm','flnm','host','user','pass'];
+    protected $attrList = ['name','path','base','dBase','fileBase','memBase','host','user','pass'];
 
     public function initMod($bindings)
     {

@@ -31,7 +31,7 @@ class Config extends App
 			
 	'Default'	=> [
 		'base'=>'fileBase',
-		'flnm'=>self::DBDEC,
+		'fileBase'=>self::DBDEC,
 	],
 			
 	'Handlers' => [

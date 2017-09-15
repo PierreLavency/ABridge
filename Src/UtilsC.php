@@ -29,9 +29,9 @@ class UtilsC
         [
                 'name'=>'test',
                 'base'=>'dataBase',
-                'dbnm'=>'test',
-                'flnm'=>'test',
-                'menm'=>'test',
+                'dataBase'=>'test',
+                'fileBase'=>'test',
+                'memBase'=>'test',
                 'path'=>'C:/Users/pierr/ABridge/Datastore/',
                 'host'=>'localhost',
                 'user'=>'cl822',

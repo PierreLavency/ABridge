@@ -59,6 +59,9 @@ class Adm extends Comp
         $res = $obj->select();
         if (count($res)==0) {
             foreach ($appPrm as $attr => $val) {
+                if ($attr == 'dataBase') {
+                    $attr='dBase';
+                }
                 $obj->setVal($attr, $val);
             }
             $obj->save();

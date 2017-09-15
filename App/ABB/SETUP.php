@@ -36,7 +36,7 @@ class Config extends App
 	
 	static $config = [
 	'Default'	=> [
-			'dbnm'=>self::DBDEC,
+			'dataBase'=>self::DBDEC,
 	],
 	'Handlers' 	=>
 		[

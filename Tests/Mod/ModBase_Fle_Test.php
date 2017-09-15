@@ -15,7 +15,7 @@ class ModBase_Fle_Test extends ModBase_Case
         
         self::$CName= $prm['fileBase']['test1'];
         
-        self::$DBName=$prm['application']['flnm'];
+        self::$DBName=$prm['application']['fileBase'];
         $fpath=$prm['application']['path'];
         
         self::$db = new FileBase($fpath, self::$DBName);

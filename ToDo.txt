@@ -10,7 +10,8 @@ B12 in ABB - txt on application 5.
 B22 EVALP in create dialog
 
 DEV
-
+- add component view in admin
+- remove handlers
 - develop component for abstract code (Cda).
 - create Ctr Component
 

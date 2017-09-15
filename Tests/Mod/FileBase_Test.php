@@ -18,7 +18,7 @@ class FileBase_Test extends Base_Case
         self::$CName= $prm['fileBase']['test1'];
         self::$CName2=$prm['fileBase']['test2'];
 
-        self::$DBName=$prm['application']['flnm'];
+        self::$DBName=$prm['application']['fileBase'];
         $fpath=$prm['application']['path'];
             
         self::$db = new FileBase($fpath, self::$DBName);

@@ -16,7 +16,7 @@ class ModBase_Abst_Sql_Test extends ModBase_Abst_Case
         
         self::$HName=$prm['dataBase']['test2'];
         
-        self::$DBName=$prm['application']['dbnm'];
+        self::$DBName=$prm['application']['dataBase'];
         
         self::$db = new SQLBase(
             $prm['application']['path'],

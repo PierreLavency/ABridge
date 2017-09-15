@@ -5,6 +5,7 @@ use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\UtilsC;
+use ABridge\ABridge\Handler;
 
 class Find_Test extends PHPUnit_Framework_TestCase
 {
@@ -23,11 +24,13 @@ class Find_Test extends PHPUnit_Framework_TestCase
         
         $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
         
+        
         self::$prm=$prm;
         self::$dbs=[];
         
-        Mod::get()->reset();
-        Mod::get()->init($prm['application'], $prm['handlers']);
+        $mod = Mod::get();
+        $mod->reset();
+        $mod->init($prm['application'], $prm['handlers']);
         
         foreach ($baseTypes as $baseType) {
             self::$dbs[$baseType]=Mod::get()->getBase($baseType, $baseName);
@@ -53,7 +56,7 @@ class Find_Test extends PHPUnit_Framework_TestCase
         $this->setTyp($typ);
         $db=$this->db;
         $db->beginTrans();
-        
+
         $mod = new Model($this->Cname);
         
         $res= $mod->deleteMod();

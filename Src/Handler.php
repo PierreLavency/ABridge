@@ -102,14 +102,18 @@ class Handler
         };
         $classN = $this->basesClasses[$base];
         $path = $prm['path'];
-        if ($base === 'memBase') {
-            $x = new $classN($path,null);
-        }
-        if ($base === 'fileBase') {
-            $x = new $classN($path,$instance);
-        }
-        if ($base == 'dataBase') {
-            $x = new $classN($path, $prm['host'],$prm['user'],$prm['pass'],$instance);
+        switch ($base) {
+            case 'memBase':
+                $x = new $classN($path,null);
+                break;
+            case 'fileBase':
+                $x = new $classN($path,$instance);
+                break;
+            case 'dataBase':
+                $x = new $classN($path, $prm['host'],$prm['user'],$prm['pass'],$instance);
+                break;
+            default:
+                throw Exception($base);
         }
         $instances[$instance]=$x;
         $this->bases[$base]=$instances;

@@ -14,7 +14,7 @@ class ModBase_Sql_Test extends ModBase_Case
         
         self::$CName= $prm['dataBase']['test1'];
         
-        self::$DBName=$prm['application']['dbnm'];
+        self::$DBName=$prm['application']['dataBase'];
           
         self::$db = new SQLBase(
             $prm['application']['path'],

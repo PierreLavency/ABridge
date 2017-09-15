@@ -128,24 +128,24 @@ class Controler
             $this->defVal['base']='dataBase';
         }
         
-        if (isset($ini['dbnm'])) {
-            $this->defVal['dbnm']=$ini['dbnm'];
+        if (isset($ini['dataBase'])) {
+            $this->defVal['dataBase']=$ini['dataBase'];
         }
-        if (!isset($this->defVal['dbnm'])) {
-            $this->defVal['dbnm']=$appName;
+        if (!isset($this->defVal['dataBase'])) {
+            $this->defVal['dataBase']=$appName;
         }
         
-        if (isset($ini['menm'])) {
-            $this->defVal['menm']=$ini['menm'];
+        if (isset($ini['memBase'])) {
+            $this->defVal['memBase']=$ini['memBase'];
         }
-        if (!isset($this->defVal['menm'])) {
-            $this->defVal['menm']=$appName;
+        if (!isset($this->defVal['memBase'])) {
+            $this->defVal['memBase']=$appName;
         }
-        if (isset($ini['flnm'])) {
-            $this->defVal['flnm']=$ini['flnm'];
+        if (isset($ini['fileBase'])) {
+            $this->defVal['fileBase']=$ini['fileBase'];
         }
-        if (!isset($this->defVal['flnm'])) {
-            $this->defVal['flnm']=$appName;
+        if (!isset($this->defVal['fileBase'])) {
+            $this->defVal['fileBase']=$appName;
         }
         
         if (isset($ini['host'])) {

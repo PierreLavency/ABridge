@@ -38,9 +38,10 @@ class Adm_Test extends \PHPUnit_Framework_TestCase
         $adm->init($prm['application'], $prm['memBase']);
         $prm['application']['base']='fileBase';
         $adm->init($prm['application'], $prm['fileBase']);
+
         $prm['application']['base']='dataBase';
         $adm->init($prm['application'], $prm['dataBase']);
-        
+     
         
         $this->assertEquals(3, count($mod->getMods()));
 
