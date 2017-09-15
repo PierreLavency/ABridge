@@ -52,7 +52,7 @@ class GenJASON_Test extends PHPUnit_Framework_TestCase
     {
 
     
-    	Mod::get()->begin();
+        Mod::get()->begin();
         
         $h= new Model($a, $b);
 
@@ -63,6 +63,6 @@ class GenJASON_Test extends PHPUnit_Framework_TestCase
  
     public function Provider1()
     {
-    	return GenJASONCases();
+        return GenJASONCases();
     }
 }

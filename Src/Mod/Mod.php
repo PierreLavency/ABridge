@@ -1,19 +1,33 @@
 <?php
 namespace ABridge\ABridge\Mod;
 
-use ABridge\ABridge\Handler;
 use ABridge\ABridge\Comp;
+use ABridge\ABridge\CstError;
+
+use Exception;
 
 class Mod extends Comp
 {
     protected static $isNew=false;
-    protected $mods=[];
-    protected $bases=[];
-    
+
     private static $instance = null;
-    private static $handler = null;
+    private $bases = []; //'fileBase'=> [name => class],
+    private $basesClasses =[
+            'memBase'=>'ABridge\ABridge\Mod\FileBase',
+            'fileBase'=>'ABridge\ABridge\Mod\FileBase',
+            'dataBase'=>'ABridge\ABridge\Mod\SQLBase',
+            
+    ];
+    private $modHandler= [];
+    private $modBase =[
+            'memBase' =>'ABridge\ABridge\Mod\ModBase',
+            'fileBase' =>'ABridge\ABridge\Mod\ModBase',
+            'dataBase'=>'ABridge\ABridge\Mod\ModBase',
+            
+    ];
     
     private $cmod=[]; //mod=> Cmodclass
+
     
     private function __construct()
     {
@@ -21,11 +35,10 @@ class Mod extends Comp
 
     public function reset()
     {
-        Handler::get()->resetHandlers();
-//        self::$handler=Handler::get();
-        $this->mods=[];
-        $this->bases=[];
+        $this->bases= [];
+        $this->modHandler=[];
         $this->cmod=[];
+        $this->comp=[];
         self::$instance =null;
         return true;
     }
@@ -34,7 +47,6 @@ class Mod extends Comp
     {
         if (is_null(self::$instance)) {
             self::$instance = new Mod();
-            self::$handler=Handler::get();
         }
         return self::$instance;
     }
@@ -59,22 +71,21 @@ class Mod extends Comp
                     }
                     // default set
                 case 2:
-                    self::$handler->setBase($handler[0], $handler[1], $appPrm);
-                    self::$handler->setStateHandler(
+                    $this->setBase($handler[0], $handler[1], $appPrm);
+                    $res = $this->setStateHandler(
                         $classN,
                         $handler[0],
                         $handler[1]
                     );
                     break;
             }
-            $this->mods[]=$classN;
         }
-        $this->bases = self::$handler->getBaseClasses();
     }
     
     public function begin($appPrm = null, $config = null)
     {
-        foreach ($this->bases as $base) {
+        $bases =$this->getBaseClasses();
+        foreach ($bases as $base) {
             $base-> beginTrans();
         }
     }
@@ -82,7 +93,8 @@ class Mod extends Comp
     public function end()
     {
         $res = true;
-        foreach ($this->bases as $base) {
+        $bases =$this->getBaseClasses();
+        foreach ($bases as $base) {
             $r =$base->commit();
             $res = ($res and $r);
         }
@@ -100,24 +112,68 @@ class Mod extends Comp
     }
         
     
-    public function getBase($baseType, $baseName)
+    public function getBase($base, $instance)
     {
-        return self::$handler->getBase($baseType, $baseName);
+        if (array_key_exists($base, $this->bases)) {
+            $instances=$this->bases[$base];
+            if (array_key_exists($instance, $instances)) {
+                return $instances[$instance];
+            }
+        };
+        return null;
     }
-
+    
+    public function setBase($base, $instance, $prm)
+    {
+        if (! array_key_exists($base, $this->basesClasses)) {
+            throw new Exception(CstError::E_ERC063.':'.$base);
+        }
+        $instances=[];
+        if (array_key_exists($base, $this->bases)) {
+            $instances=$this->bases[$base];
+            if (array_key_exists($instance, $instances)) {
+                return $instances[$instance];
+            }
+        };
+        $classN = $this->basesClasses[$base];
+        $path = $prm['path'];
+        switch ($base) {
+            case 'memBase':
+                $x = new $classN($path,null);
+                break;
+            case 'fileBase':
+                $x = new $classN($path,$instance);
+                break;
+            case 'dataBase':
+                $x = new $classN($path, $prm['host'],$prm['user'],$prm['pass'],$instance);
+                break;
+            default:
+                throw Exception($base);
+        }
+        $instances[$instance]=$x;
+        $this->bases[$base]=$instances;
+        return $x;
+    }
+    
     public function getBaseClasses()
     {
-        return self::$handler->getBaseClasses();
+        $res=[];
+        foreach ($this->bases as $base => $baseClasses) {
+            foreach ($baseClasses as $name => $baseClass) {
+                $res[]=$baseClass;
+            }
+        }
+        return $res;
     }
 
     public function getMods()
     {
-        return self::$handler->getMods();
+        $res= array_keys($this->modHandler);
+        return $res;
     }
     
     public function getCmod($modName)
     {
-//	   	return self::$handler->getCmod($modName);
         if (isset($this->cmod[$modName])) {
             return ($this->cmod[$modName]);
         }
@@ -129,17 +185,35 @@ class Mod extends Comp
     
     public function setCmod($modName, $spec)
     {
-//    	return self::$handler->setCmod($modName, $spec);
         $this->cmod[$modName]=$spec;
         return true;
     }
     
     public function getStateHandler($modName)
     {
-        return self::$handler->getStateHandler($modName);
+        if (array_key_exists($modName, $this->modHandler)) {
+            return ($this->modHandler[$modName]);
+        }
+        return false;
     }
-       
-    
+
+    private function setStateHandler($modName, $base, $instance)
+    {
+        $y= $this-> getStateHandler($modName);
+        if ($y) {
+            return $y;
+        }
+        $x = $this->getBase($base, $instance);
+        $classN = $this->modBase[$base];
+        $y= new $classN($x);
+        $this->modHandler[$modName]=$y;
+        return $y;
+    }
+
+
+
+
+//    
     public static function initModBindings($bindings, $logicalNames = null)
     {
         $normBindings=self::normBindings($bindings);

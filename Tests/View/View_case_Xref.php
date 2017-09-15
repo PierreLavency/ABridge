@@ -13,13 +13,13 @@ use ABridge\ABridge\UtilsC;
 
 function viewCasesXref()
 {
-	$classes = ['Dir'];
-	$baseTypes=['dataBase'];
-	$baseType= 'dataBase';
-	
-	$prm=UtilsC::genPrm($classes, 'View_Xref_Test', $baseTypes);
+    $classes = ['Dir'];
+    $baseTypes=['dataBase'];
+    $baseType= 'dataBase';
     
-	$dir = $prm[$baseType]['Dir'];
+    $prm=UtilsC::genPrm($classes, 'View_Xref_Test', $baseTypes);
+    
+    $dir = $prm[$baseType]['Dir'];
     
     Mod::get()->begin();
     

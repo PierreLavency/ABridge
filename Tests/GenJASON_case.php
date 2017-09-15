@@ -27,14 +27,14 @@ function GenJasonCasesData($testDir, $testFile, $id, $B, $D)
 
 function GenJasonCases()
 {
-	$classes = ['testDir','testFile','CodeVal','Code'];
-	$baseTypes=['dataBase'];
-	$baseType='dataBase';
-	
-	$prm=UtilsC::genPrm($classes, 'GENJASON_Test', $baseTypes);
-	Mod::get()->init($prm['application'], $prm['handlers']);
-	
-	$baseType='dataBase';
+    $classes = ['testDir','testFile','CodeVal','Code'];
+    $baseTypes=['dataBase'];
+    $baseType='dataBase';
+    
+    $prm=UtilsC::genPrm($classes, 'GENJASON_Test', $baseTypes);
+    Mod::get()->init($prm['application'], $prm['handlers']);
+    
+    $baseType='dataBase';
     $Code = $prm[$baseType]['Code'];
     $CodeVal= $prm[$baseType]['CodeVal'];
     $testDir= $prm[$baseType]['testDir'];

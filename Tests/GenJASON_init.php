@@ -38,7 +38,7 @@ for ($i=0; $i<count($test); $i++) {
     $log->logLine($r);
 }
 
-Mod::get()->end();   
+Mod::get()->end();
 
 $log->saveTest();
 

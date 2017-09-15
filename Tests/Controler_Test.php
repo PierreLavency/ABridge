@@ -3,7 +3,7 @@
 use ABridge\ABridge\Controler;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
-
+use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Hdl\CstMode;
 
@@ -46,6 +46,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
     function testRoot()
     {
+
+        	
         $ctrl = new Controler($this->config, [
         'name'=>'UnitTest',
         'path'=>'C:/Users/pierr/ABridge/Datastore/',

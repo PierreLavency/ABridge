@@ -22,13 +22,13 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
     protected static $db;
     public static function setUpBeforeClass()
     {
-    	$classes = ['Dir'];
-    	$baseTypes=['dataBase'];
-    	
-    	$prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
-    	
-    	Mod::get()->reset();
-    	Mod::get()->init($prm['application'], $prm['handlers']);
+        $classes = ['Dir'];
+        $baseTypes=['dataBase'];
+        
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
+        
+        Mod::get()->reset();
+        Mod::get()->init($prm['application'], $prm['handlers']);
         
         self::$log=new Logger('View_init_Xref');
         self::$log->load();
@@ -65,7 +65,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
     public function testView($id, $p, $s, $expected)
     {
 
-    	Mod::get()->begin();
+        Mod::get()->begin();
     
         $home= null;
         $request = new Request($p, CstMode::V_S_READ);

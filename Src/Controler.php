@@ -54,7 +54,7 @@ class Controler
         
         $this->spec=$spec;
         $bases = [];
-        
+      
         Mod::get()->reset();
         Hdl::get()->reset();
         Usr::get()->reset();
