@@ -3,6 +3,7 @@ namespace ABridge\ABridge\Adm;
 
 use ABridge\ABridge\Mod\CModel;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Mod\Mod;
 
 class Admin extends CModel
 {
@@ -30,6 +31,7 @@ class Admin extends CModel
         $res = $obj->addAttr('Load', Mtype::M_BOOL, M_P_TEMP);
         $res = $obj->addAttr('Delta', Mtype::M_BOOL, M_P_TEMP);
         $res = $obj->addAttr('MetaData', Mtype::M_TXT, M_P_EVAL);
+        $res = $obj->addAttr('ModState', Mtype::M_TXT, M_P_EVAL);
         
         return $obj->isErr();
     }
@@ -38,6 +40,9 @@ class Admin extends CModel
     {
         if ($attr == 'MetaData') {
             return $this->mod->getMeta();
+        }
+        if ($attr == 'ModState') {
+            return Mod::get()->showState();
         }
         return $this->mod->getValN($attr);
     }

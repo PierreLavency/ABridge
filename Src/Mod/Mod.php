@@ -11,15 +11,16 @@ class Mod extends Comp
     protected static $isNew=false;
 
     private static $instance = null;
-    private $bases = []; //'fileBase'=> [name => class],
-    private $basesClasses =[
+    private $baseTypeInstances = []; //'fileBase'=> [name => baseObj],
+    private $handlerList= []; // Mod => baseObj
+    private $handlerDetailList=[];
+    private $baseTypeClasses =[
             'memBase'=>'ABridge\ABridge\Mod\FileBase',
             'fileBase'=>'ABridge\ABridge\Mod\FileBase',
             'dataBase'=>'ABridge\ABridge\Mod\SQLBase',
             
     ];
-    private $modHandler= [];
-    private $modBase =[
+    private $modBaseClasses =[
             'memBase' =>'ABridge\ABridge\Mod\ModBase',
             'fileBase' =>'ABridge\ABridge\Mod\ModBase',
             'dataBase'=>'ABridge\ABridge\Mod\ModBase',
@@ -35,8 +36,8 @@ class Mod extends Comp
 
     public function reset()
     {
-        $this->bases= [];
-        $this->modHandler=[];
+        $this->baseTypeInstances= [];
+        $this->handlerList=[];
         $this->cmod=[];
         $this->comp=[];
         self::$instance =null;
@@ -51,31 +52,31 @@ class Mod extends Comp
         return self::$instance;
     }
     
-    public function init($appPrm, $config)
+    public function init($appPrm, $configHandlerSpecs)
     {
-        foreach ($config as $classN => $handler) {
-            $c = count($handler);
+        foreach ($configHandlerSpecs as $className => $handlerSpec) {
+            $c = count($handlerSpec);
             switch ($c) {
                 case 0:
-                    $handler[0]=$appPrm['base'];
+                    $handlerSpec[0]=$appPrm['base'];
                     // default set
                 case 1:
-                    if ($handler[0]=='dataBase') {
-                        $handler[]=$appPrm['dataBase'];
+                    if ($handlerSpec[0]=='dataBase') {
+                        $handlerSpec[]=$appPrm['dataBase'];
                     }
-                    if ($handler[0]=='fileBase') {
-                        $handler[]=$appPrm['fileBase'];
+                    if ($handlerSpec[0]=='fileBase') {
+                        $handlerSpec[]=$appPrm['fileBase'];
                     }
-                    if ($handler[0]=='memBase') {
-                        $handler[]=$appPrm['memBase'];
+                    if ($handlerSpec[0]=='memBase') {
+                        $handlerSpec[]=$appPrm['memBase'];
                     }
                     // default set
                 case 2:
-                    $this->setBase($handler[0], $handler[1], $appPrm);
+                    $this->setBase($handlerSpec[0], $handlerSpec[1], $appPrm);
                     $res = $this->setStateHandler(
-                        $classN,
-                        $handler[0],
-                        $handler[1]
+                        $className,
+                        $handlerSpec[0],
+                        $handlerSpec[1]
                     );
                     break;
             }
@@ -110,55 +111,76 @@ class Mod extends Comp
     {
         return true;
     }
-        
-    
-    public function getBase($base, $instance)
+           
+    public function getBase($baseType, $baseName)
     {
-        if (array_key_exists($base, $this->bases)) {
-            $instances=$this->bases[$base];
-            if (array_key_exists($instance, $instances)) {
-                return $instances[$instance];
+        if (array_key_exists($baseType, $this->baseTypeInstances)) {
+            $instances=$this->baseTypeInstances[$baseType];
+            if (array_key_exists($baseName, $instances)) {
+                return $instances[$baseName];
             }
         };
         return null;
     }
     
-    public function setBase($base, $instance, $prm)
+    public function setBase($baseType, $baseName, $prm)
     {
-        if (! array_key_exists($base, $this->basesClasses)) {
-            throw new Exception(CstError::E_ERC063.':'.$base);
+        if (! array_key_exists($baseType, $this->baseTypeClasses)) {
+            throw new Exception(CstError::E_ERC063.':'.$baseType);
         }
         $instances=[];
-        if (array_key_exists($base, $this->bases)) {
-            $instances=$this->bases[$base];
-            if (array_key_exists($instance, $instances)) {
-                return $instances[$instance];
+        if (array_key_exists($baseType, $this->baseTypeInstances)) {
+            $instances=$this->baseTypeInstances[$baseType];
+            if (array_key_exists($baseName, $instances)) {
+                return $instances[$baseName];
             }
         };
-        $classN = $this->basesClasses[$base];
+        $className = $this->baseTypeClasses[$baseType];
         $path = $prm['path'];
-        switch ($base) {
+        switch ($baseType) {
             case 'memBase':
-                $x = new $classN($path,null);
+                $baseObj = new $className($path,null);
                 break;
             case 'fileBase':
-                $x = new $classN($path,$instance);
+                $baseObj = new $className($path,$baseName);
                 break;
             case 'dataBase':
-                $x = new $classN($path, $prm['host'],$prm['user'],$prm['pass'],$instance);
+                $baseObj = new $className($path, $prm['host'],$prm['user'],$prm['pass'],$baseName);
                 break;
             default:
-                throw Exception($base);
+                throw Exception($baseType);
         }
-        $instances[$instance]=$x;
-        $this->bases[$base]=$instances;
-        return $x;
+        $instances[$baseName]=$baseObj;
+        $this->baseTypeInstances[$baseType]=$instances;
+        return $baseObj;
+    }
+    
+    private function setStateHandler($modName, $baseType, $baseName)
+    {
+        $stateHandler= $this-> getStateHandler($modName);
+        if ($stateHandler) {
+            return $stateHandler;
+        }
+        $baseObj = $this->getBase($baseType, $baseName);
+        $className = $this->modBaseClasses[$baseType];
+        $stateHandler= new $className($baseObj);
+        $this->handlerList[$modName]=$stateHandler;
+        $this->handlerDetailList[$modName]=[$baseType,$baseName];
+        return $stateHandler;
+    }
+    
+    public function getStateHandler($modName)
+    {
+        if (array_key_exists($modName, $this->handlerList)) {
+            return ($this->handlerList[$modName]);
+        }
+        return false;
     }
     
     public function getBaseClasses()
     {
         $res=[];
-        foreach ($this->bases as $base => $baseClasses) {
+        foreach ($this->baseTypeInstances as $base => $baseClasses) {
             foreach ($baseClasses as $name => $baseClass) {
                 $res[]=$baseClass;
             }
@@ -168,11 +190,11 @@ class Mod extends Comp
 
     public function getMods()
     {
-        $res= array_keys($this->modHandler);
+        $res= array_keys($this->handlerList);
         return $res;
     }
     
-    public function getCmod($modName)
+    public function getClassMod($modName)
     {
         if (isset($this->cmod[$modName])) {
             return ($this->cmod[$modName]);
@@ -183,58 +205,56 @@ class Mod extends Comp
         return null;
     }
     
-    public function setCmod($modName, $spec)
+    public function assocClassMod($modName, $className)
     {
-        $this->cmod[$modName]=$spec;
+        $this->cmod[$modName]=$className;
         return true;
     }
     
-    public function getStateHandler($modName)
+
+    public function showState()
     {
-        if (array_key_exists($modName, $this->modHandler)) {
-            return ($this->modHandler[$modName]);
+        $showState= [];
+        foreach ($this->baseTypeInstances as $baseType => $Instances) {
+            $showStateInstance=[];
+            foreach ($Instances as $instanceName => $baseObj) {
+                $classList=[];
+                foreach ($this->handlerDetailList as $modName => $handlerDetail) {
+                    if ($handlerDetail[0]==$baseType and $handlerDetail[1]==$instanceName) {
+                        $classList[]=$modName;
+                    }
+                }
+                $showStateInstance[] = [$instanceName,$classList];
+            }
+            $showState[$baseType]=$showStateInstance;
         }
-        return false;
+        return json_encode($showState, JSON_PRETTY_PRINT);
     }
 
-    private function setStateHandler($modName, $base, $instance)
-    {
-        $y= $this-> getStateHandler($modName);
-        if ($y) {
-            return $y;
-        }
-        $x = $this->getBase($base, $instance);
-        $classN = $this->modBase[$base];
-        $y= new $classN($x);
-        $this->modHandler[$modName]=$y;
-        return $y;
-    }
-
-
-
+ 
 
 //    
-    public static function initModBindings($bindings, $logicalNames = null)
+    public static function initModBindings($bindings, $logicalModNames = null)
     {
         $normBindings=self::normBindings($bindings);
-        if (is_null($logicalNames)) {
-            $logicalNames = array_keys($normBindings);
+        if (is_null($logicalModNames)) {
+            $logicalModNames = array_keys($normBindings);
         }
-        foreach ($logicalNames as $logicalName) {
+        foreach ($logicalModNames as $logicalName) {
             $res = self::initModBinding($logicalName, $normBindings);
             if (!$res) {
                 return false;
             }
         }
-        $res = self::checkMods($logicalNames, $normBindings);
+        $res = self::checkMods($logicalModNames, $normBindings);
         return $res;
     }
       
     
-    public static function initModBinding($logicalName, $normBindings)
+    public static function initModBinding($logicalModName, $normBindings)
     {
-        $physicalName=$normBindings[$logicalName];
-        $x = new Model($physicalName);
+        $physicalModName=$normBindings[$logicalModName];
+        $x = new Model($physicalModName);
         $x->deleteMod();
         $x->initMod($normBindings);
         $x->saveMod();
@@ -246,11 +266,11 @@ class Mod extends Comp
         return true;
     }
     
-    public static function checkMods($logicalNames, $normBindings)
+    public static function checkMods($logicalModNames, $normBindings)
     {
-        foreach ($logicalNames as $logicalName) {
-            $physicalName=$normBindings[$logicalName];
-            $x = new Model($physicalName);
+        foreach ($logicalModNames as $logicalModName) {
+            $physicalModName=$normBindings[$logicalModName];
+            $x = new Model($physicalModName);
             $res = $x->checkMod();
             if (!$res) {
                 $log = $x->getErrLog();

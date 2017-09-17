@@ -133,7 +133,7 @@ class Model
 
     protected function initObj($name)
     {
-        $cmodName = Mod::get()->getCmod($name);
+        $cmodName = Mod::get()->getClassMod($name);
         if (is_null($cmodName)) {
             $this->obj= null;
             return null;
@@ -1390,7 +1390,7 @@ class Model
             return true;
         }
         if ($parm === M_P_EVAL or $parm === M_P_EVALP) {
-            $cmodName = Mod::get()->getCmod($this->getModName());
+            $cmodName = Mod::get()->getClassMod($this->getModName());
             if (is_null($cmodName)) {
                 $this->errLog->logLine(CstError::E_ERC040.':'.$attr.':'.$typ);
                 return false;

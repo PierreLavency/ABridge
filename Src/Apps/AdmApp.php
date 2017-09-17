@@ -80,6 +80,21 @@ class AdmApp extends App
                                                     CstMode::V_S_READ => [CstMode::V_S_UPDT],
                                             ],
                                     ],
+                                    'ModState' =>
+                                    [
+                                            'attrList' =>
+                                            [
+                                                    CstMode::V_S_READ=>
+                                                    [
+                                                            'ModState',
+                                                            
+                                                    ],
+                                            ],
+                                            'navList' =>
+                                            [
+                                                    CstMode::V_S_READ => [],
+                                            ],
+                                    ],
                                     'Trace' =>
                                     [
                                             'attrList' =>
@@ -89,7 +104,7 @@ class AdmApp extends App
                                                             'vnum',
                                                             'ctstp',
                                                             'utstp',
-                                                            'MetaData'
+                                                            'MetaData',
                                                             
                                                     ],
                                             ],

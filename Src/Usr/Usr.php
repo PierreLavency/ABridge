@@ -48,7 +48,7 @@ class Usr extends Comp
         foreach ($bindings as $mod => $physicalName) {
             if ($mod == $physicalName) {
                 $className= __NAMESPACE__.'\\'.$mod;
-                Mod::get()->setCmod($mod, $className);
+                Mod::get()->assocClassMod($mod, $className);
             }
         }
         Mod::get()->init($appPrm, self::defltHandlers($bindings));

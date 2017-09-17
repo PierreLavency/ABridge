@@ -43,7 +43,7 @@ class Adm extends Comp
         Mod::get()->init($appPrm, self::defltHandlers($bindings));
         if ($bindings[self::ADMIN]==self::ADMIN) {
             $className = __NAMESPACE__.'\\'.self::ADMIN;
-            Mod::get()->setCmod(self::ADMIN, $className);
+            Mod::get()->assocClassMod(self::ADMIN, $className);
         }
     }
     
