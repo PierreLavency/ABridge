@@ -11,7 +11,9 @@ class Vew extends Comp
     private $viewHandler=[]; // mod => spec
     
     private function __construct()
-    {
+    {        
+    	$this->isNew=false;
+    	$this->viewHandler=[];
     }
     
     public static function get()
@@ -22,10 +24,8 @@ class Vew extends Comp
         return self::$instance;
     }
     
-    public function reset()
+    public static function reset()
     {
-        $this->isNew=false;
-        $this->viewHandler=[];
         self::$instance =null;
         return true;
     }

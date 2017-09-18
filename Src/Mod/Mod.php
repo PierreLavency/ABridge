@@ -32,14 +32,14 @@ class Mod extends Comp
     
     private function __construct()
     {
+    	$this->baseTypeInstances= [];
+    	$this->handlerList=[];
+    	$this->cmod=[];
+    	$this->comp=[];
     }
 
-    public function reset()
+    public static function reset()
     {
-        $this->baseTypeInstances= [];
-        $this->handlerList=[];
-        $this->cmod=[];
-        $this->comp=[];
         self::$instance =null;
         return true;
     }

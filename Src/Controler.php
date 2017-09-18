@@ -2,7 +2,6 @@
 namespace ABridge\ABridge;
 
 use ABridge\ABridge\Log\Log;
-use ABridge\ABridge\Log\Logger;
 use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Mod\Mtype;
@@ -56,12 +55,12 @@ class Controler
         $this->spec=$spec;
         $bases = [];
       
-        Log::get()->reset();
-        Mod::get()->reset();
-        Hdl::get()->reset();
-        Usr::get()->reset();
-        Adm::get()->reset();
-        Vew::get()->reset();
+        Log::reset();
+        Mod::reset();
+        Hdl::reset();
+        Usr::reset();
+        Adm::reset();
+        Vew::reset();
 
         $this->initConf($spec);
         

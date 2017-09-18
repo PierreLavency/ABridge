@@ -5,7 +5,7 @@ abstract class Comp
 {
     abstract public static function get();
 
-    abstract public function reset();
+    abstract static public function reset();
     
     abstract public function init($appPrm, $config);
     

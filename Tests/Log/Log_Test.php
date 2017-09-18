@@ -8,7 +8,7 @@ class Log_Test extends \PHPUnit_Framework_TestCase
     public function testInit()
     {
         $br = "\n";
-        $res = Log::get()->reset();
+        $res = Log::reset();
         
         $this->assertTrue($res);
             
@@ -37,7 +37,7 @@ class Log_Test extends \PHPUnit_Framework_TestCase
         $log->logLine($testLine2, $testAttributes);
         $this->assertEquals($testLine, $log->getLastLine());
         
-        Log::get()->reset();
+        Log::reset();
         $log = Log::get();
         $this->assertNull($log->getLastLine());
         

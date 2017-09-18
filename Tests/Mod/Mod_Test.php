@@ -20,7 +20,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
                 'test4'=>['dataBase','test'],
         ];
         
-        Mod::get()->reset();
+        Mod::reset();
         $mod= Mod::get();
         
         $mod->init($prm['application'], $config);
@@ -28,7 +28,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['test1','test2','test3','test4'], $mod->getMods());
                 
         
-        Mod::get()->reset();
+        Mod::reset();
         $mod= Mod::get();
                 
         $mod->init($prm['application'], $prm['handlers']);
@@ -80,7 +80,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
                 'user'=>'cl822',
                 'pass'=>'cl822'
         ];
-        $this->assertTrue(Mod::get()->reset());
+        $this->assertTrue(Mod::reset());
         $this->assertNotNull($db1 = Mod::get()->setBase('dataBase', 'test', $prm));
         $this->assertNotNull($db2 = Mod::get()->getBase('dataBase', 'test'));
         $this->assertNull(Mod::get()->getBase('dataBase', 'test2'));
@@ -95,7 +95,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
                 'user'=>'cl822',
                 'pass'=>'cl822'
         ];
-        $this->assertTrue(Mod::get()->reset());
+        $this->assertTrue(Mod::reset());
         $this->assertNotNull($db1 = Mod::get()->setBase('dataBase', 'test', $prm));
         $this->assertNotNull($db2 = Mod::get()->setBase('fileBase', 'test', $prm));
         $this->assertNotEquals($db1, $db2);
@@ -109,7 +109,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
                 'user'=>'cl822',
                 'pass'=>'cl822'
         ];
-        $this->assertTrue(Mod::get()->reset());
+        $this->assertTrue(Mod::reset());
         $this->assertNotNull($db1 = Mod::get()->setBase('fileBase', 'test', $prm));
         $this->assertNotNull($db2 = Mod::get()->setBase('fileBase', 'test1', $prm));
         $r = false;
@@ -128,7 +128,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
     
     public function testModHandler()
     {
-        $this->assertTrue(Mod::get()->reset());
+        $this->assertTrue(Mod::reset());
         $this->assertNull(Mod::get()->getClassMod('notexists'));
         $this->assertEquals(get_called_class(), Mod::get()->getClassMod(get_called_class()));
         $this->assertTrue(Mod::get()->assocClassMod(get_called_class(), 'x'));

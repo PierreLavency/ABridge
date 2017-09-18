@@ -26,7 +26,7 @@ $baseTypes=['dataBase'];
 
 $prm=UtilsC::genPrm($classes, 'View_Xref_Test', $baseTypes);
 
-Mod::get()->reset();
+Mod::reset();
 Mod::get()->init($prm['application'], $prm['handlers']);
 
 $show = false;

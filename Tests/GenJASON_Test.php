@@ -21,7 +21,7 @@ class GenJASON_Test extends PHPUnit_Framework_TestCase
         
         $prm=UtilsC::genPrm($classes, 'GENJASON_Test', $baseTypes);
         
-        Mod::get()->reset();
+        Mod::reset();
         Mod::get()->init($prm['application'], $prm['handlers']);
                
         self::$log=new Logger();

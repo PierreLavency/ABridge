@@ -27,7 +27,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
         
         $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
         
-        Mod::get()->reset();
+        Mod::reset();
         Mod::get()->init($prm['application'], $prm['handlers']);
         
         self::$log=new Logger();

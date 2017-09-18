@@ -1675,12 +1675,12 @@ class Model
         }
         return $res;
     }
- 
+ /*
     public function resetVers()
     {
         $this->vnum=0;
     }
-    
+*/    
     
     public function saveN()
     {

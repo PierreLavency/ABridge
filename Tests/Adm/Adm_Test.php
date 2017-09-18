@@ -25,8 +25,8 @@ class Adm_Test extends \PHPUnit_Framework_TestCase
         
         $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
         
-        Mod::get()->reset();
-        $res= Adm::get()->reset();
+        Mod::reset();
+        $res= Adm::reset();
         $this->assertTrue($res);
         
         $mod= Mod::get();

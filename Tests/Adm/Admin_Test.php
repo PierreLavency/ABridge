@@ -24,7 +24,7 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
         $baseTypes=['dataBase','fileBase','memBase'];
         $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
 
-        Mod::get()->reset();
+        Mod::reset();
 
         $mod= Mod::get();
         

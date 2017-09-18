@@ -40,7 +40,7 @@ class User_Distribution_Test extends PHPUnit_Framework_TestCase
         
         $prm=UtilsC::genPrm($classes, get_called_class());
         
-        Mod::get()->reset();
+        Mod::reset();
         
         $mod= Mod::get();
         

@@ -19,7 +19,7 @@ $baseTypes=['dataBase'];
 
 $prm=UtilsC::genPrm($classes, 'GENJASON_Test', $baseTypes);
 
-Mod::get()->reset();
+Mod::reset();
 Mod::get()->init($prm['application'], $prm['handlers']);
 
 

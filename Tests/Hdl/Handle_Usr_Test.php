@@ -45,8 +45,8 @@ class Handle_Usr_Test extends PHPUnit_Framework_TestCase
         
         $prm=UtilsC::genPrm($classes, get_called_class());
                 
-        Mod::get()->reset();
-        Usr::get()->reset();
+        Mod::reset();
+        Usr::reset();
         
         $mod= Mod::get();
         $usr= Usr::get();

@@ -6,7 +6,7 @@ class Vew_Test extends PHPUnit_Framework_TestCase
 {
     public function testViewHandler()
     {
-        $this->assertTrue(Vew::get()->reset());
+        $this->assertTrue(Vew::reset());
         $x = ['x'=>'xx','y'=>'y'];
         Vew::get()->init([], $x);
         $y = Vew::get()->getViewPrm('x');

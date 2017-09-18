@@ -12,6 +12,7 @@ class Hdl extends Comp
     
     private function __construct()
     {
+    	$this->isNew=false;
     }
     
     public static function get()
@@ -22,9 +23,8 @@ class Hdl extends Comp
         return self::$instance;
     }
     
-    public function reset()
+    public static function reset()
     {
-        $this->isNew=false;
         self::$instance =null;
         return true;
     }

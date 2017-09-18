@@ -25,7 +25,7 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
         self::$prm=$prm;
         self::$dbs=[];
         
-        Mod::get()->reset();
+        Mod::reset();
         Mod::get()->init($prm['application'], $prm['handlers']);
         
         foreach ($baseTypes as $baseType) {

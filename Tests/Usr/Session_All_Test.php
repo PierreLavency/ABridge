@@ -63,7 +63,7 @@ class Session_All_Test extends PHPUnit_Framework_TestCase
         $classes = ['Session','User','Role','Distribution','UserGroup','GroupUser'];
         $prm=UtilsC::genPrm($classes, get_called_class());
         
-        Mod::get()->reset();
+        Mod::reset();
         
         $mod= Mod::get();
         

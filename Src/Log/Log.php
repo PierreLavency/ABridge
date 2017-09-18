@@ -31,7 +31,7 @@ class Log extends Comp
         return self::$instance;
     }
     
-    public function reset()
+    public static function reset()
     {
         self::$instance =null;
         return true;
