@@ -52,12 +52,12 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
     function testRoot()
     {
-    	Log::reset();
-    	Mod::reset();
-    	Hdl::reset();
-    	Usr::reset();
-    	Adm::reset();
-    	Vew::reset();
+        Log::reset();
+        Mod::reset();
+        Hdl::reset();
+        Usr::reset();
+        Adm::reset();
+        Vew::reset();
             
         $ctrl = new Controler($this->config, [
         'name'=>'UnitTest',

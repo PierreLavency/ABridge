@@ -13,22 +13,22 @@ B22 EVALP in create dialog
 
 DEV
 - backup !!!
-
-- develop component for abstract code (Cda).
-- create Ctr Component
 - remove predef attributes from abstract class.
+- develop component for abstract code (Cda).
+- create Ctr Component.
 
 - check on delete of distribution / Groups if used in default.
 - set up own exception
-- review error Management in Model (execption rather than errolog)
+
 - improve LC support (test/ dev Data Base etc.)
 	
 - clean up picture path
 
-- review property management in Model (?)
+- review property management in Model
+- review error Management in Model (execption rather than errolog)
+- combine temp/evalp reference.
+ 
 - Document the code!
-- combine temp/evalp reference. 
-
 - delete in list.
 - order in list query and attr.
 - confirmation requested on META load / Java Script
@@ -38,8 +38,9 @@ DEV
 - selection for Ref / Java script 
 - set up modif logging / node.js ?
 
+
 - changed DB model independently of class model.
-- user Jason to save data rather than serilialisation.
+- user Jason to save data rather than serilialisation (?).
 - implement unique index.
 - prefix all tables
 - database paging

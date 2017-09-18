@@ -7,6 +7,12 @@ use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstView;
 
+use ABridge\ABridge\Log\Log;
+use ABridge\ABridge\Hdl\Hdl;
+use ABridge\ABridge\Usr\Usr;
+use ABridge\ABridge\Adm\Adm;
+use ABridge\ABridge\View\Vew;
+
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
 
@@ -63,12 +69,18 @@ class Controler_Perf
         $ctrl = new Controler($this->config, $this->ini);
         $resc = $ctrl->run($this->show, 0);
 //    	$resc->getErrLog()->show();
-        $ctrl->close();
         return $resc;
     }
         
     public function initMod()
     {
+        Log::reset();
+        Mod::reset();
+        Hdl::reset();
+        Usr::reset();
+        Adm::reset();
+        Vew::reset();
+        
         $ctrl = new Controler($this->config, $this->ini);
         Mod::get()->begin();
         
@@ -81,7 +93,6 @@ class Controler_Perf
         $x->saveMod();
  
         Mod::get()->end();
-        $ctrl->close();
     }
     
     public function initRoot()
