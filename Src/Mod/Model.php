@@ -1680,7 +1680,7 @@ class Model
     {
         $this->vnum=0;
     }
-*/    
+*/
     
     public function saveN()
     {

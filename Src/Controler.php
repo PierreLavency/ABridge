@@ -54,14 +54,7 @@ class Controler
         
         $this->spec=$spec;
         $bases = [];
-      
-        Log::reset();
-        Mod::reset();
-        Hdl::reset();
-        Usr::reset();
-        Adm::reset();
-        Vew::reset();
-
+        
         $this->initConf($spec);
         
         if (! isset($this->spec['Hdl'])) {
@@ -122,16 +115,16 @@ class Controler
 
         $paramList=['path','base','dataBase','memBase','fileBase','host','user','pass','trace'];
         foreach ($paramList as $param) {
-        	if (isset($ini[$param])) {
-        		$this->defVal[$param]= $ini[$param];
-        	}
-        }      
+            if (isset($ini[$param])) {
+                $this->defVal[$param]= $ini[$param];
+            }
+        }
         if (!isset($this->defVal['path'])) {
             $this->defVal['path']='C:/Users/pierr/ABridge/Datastore/';
         }
         if (!isset($this->defVal['base'])) {
             $this->defVal['base']='dataBase';
-        }        
+        }
         if (!isset($this->defVal['dataBase'])) {
             $this->defVal['dataBase']=$appName;
         }

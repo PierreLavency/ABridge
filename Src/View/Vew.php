@@ -11,9 +11,9 @@ class Vew extends Comp
     private $viewHandler=[]; // mod => spec
     
     private function __construct()
-    {        
-    	$this->isNew=false;
-    	$this->viewHandler=[];
+    {
+        $this->isNew=false;
+        $this->viewHandler=[];
     }
     
     public static function get()

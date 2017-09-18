@@ -32,10 +32,10 @@ class Mod extends Comp
     
     private function __construct()
     {
-    	$this->baseTypeInstances= [];
-    	$this->handlerList=[];
-    	$this->cmod=[];
-    	$this->comp=[];
+        $this->baseTypeInstances= [];
+        $this->handlerList=[];
+        $this->cmod=[];
+        $this->comp=[];
     }
 
     public static function reset()

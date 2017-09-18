@@ -4,6 +4,12 @@ use ABridge\ABridge\Controler;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\Log\Log;
+use ABridge\ABridge\Hdl\Hdl;
+use ABridge\ABridge\Usr\Usr;
+use ABridge\ABridge\Adm\Adm;
+use ABridge\ABridge\View\Vew;
+
 
 use ABridge\ABridge\Hdl\CstMode;
 
@@ -46,7 +52,12 @@ class Controler_Test extends PHPUnit_Framework_TestCase
 
     function testRoot()
     {
-
+    	Log::reset();
+    	Mod::reset();
+    	Hdl::reset();
+    	Usr::reset();
+    	Adm::reset();
+    	Vew::reset();
             
         $ctrl = new Controler($this->config, [
         'name'=>'UnitTest',
@@ -197,7 +208,6 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $res = $ctrl->run($this->show, 0);
         
-        $ctrl->close();
         return $res;
     }
     
@@ -240,7 +250,6 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $this->assertFalse($res->isErr());
         $this->assertEquals(CstMode::V_S_READ, $res->getAction());
 
-        $ctrl->close();
         return $res->getRPath();
     }
     
@@ -284,7 +293,6 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['REQUEST_METHOD']='POST';
         $res = $ctrl->run($this->show, 0);
         
-        $ctrl->close();
         return [$res,$x];
     }
     

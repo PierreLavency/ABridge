@@ -17,7 +17,7 @@ class Adm extends Comp
     
     private function __construct()
     {
-    	$this->isNew=false;
+        $this->isNew=false;
     }
     
     public static function get()
