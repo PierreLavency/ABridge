@@ -23,22 +23,7 @@ class ModBase
         $name = $mod->getModName();
         return ($this->base->delMod($name));
     }
-    
-    protected function getPeristAttr($mod)
-    {
-        $attrLst = $mod->getAllAttr();
-        $res= [];
-        foreach ($attrLst as $attr) {
-            if (($mod->getTyp($attr) !=  Mtype::M_CREF)
-                and (! $mod->isEval($attr))
-                and (! $mod->isTemp($attr))
-                ) {
-                $res[]=$attr;
-            }
-        }
-        return $res;
-    }
-    
+       
     public function saveMod($mod)
     {
         $modName = $mod->getModName();

@@ -2,7 +2,7 @@
 namespace ABridge\ABridge\Mod;
 
 use Exception;
-use ABridge\ABridge\Logger;
+use ABridge\ABridge\Log\Log;
 use ABridge\ABridge\CstError;
 
 abstract class Base
@@ -21,7 +21,7 @@ abstract class Base
     protected function __construct($path, $id)
     {
         $this->logLevl=0;
-        $this->logger=null;
+        $this->logger=Log::Get();
         $this->fileN = $path . $id;
         if (is_null($id)) {
             $this->memBase= true;
@@ -189,35 +189,7 @@ abstract class Base
         return true;
     }
     
-    public function setLogLevl($levl)
-    {
-        if (($levl > 0) and is_null($this->logger)) {
-            $logname = $this->fileN.'_ErrLog';
-            $this->logger = new Logger($logname);
-        }
-        $this->logLevl=$levl;
-        return true;
-    }
-    
-    protected function logLine($levl, $line)
-    {
-        if ($this->logLevl <= 0) {
-            return true;
-        }
-        if ($levl <= $this->logLevl) {
-            $this->logger->logLine($line);
-        }
-        return true;
-    }
-    
-    public function getLog()
-    {
-        if (is_null($this->logger)) {
-            return false;
-        }
-        return $this->logger;
-    }
- 
+
     abstract public function getBaseType();
     
     abstract protected function checkFKey($flag);

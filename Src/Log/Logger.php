@@ -1,5 +1,5 @@
 <?php
-namespace ABridge\ABridge;
+namespace ABridge\ABridge\Log;
 
 /**
  * Logger  class file
@@ -25,37 +25,26 @@ namespace ABridge\ABridge;
 class Logger
 {
     public $lines = [];
+    public $linesAttributes=[];
     protected static $filePath ="";
     public $fileName;
     public $name;
+    protected $br;
 
     /**
      * Constructor
      *
      * @param string $name file name to be used if saved.
      */
-    public function __construct($name = "defaultLoggerFileName")
+    public function __construct()
     {
-        $this->name = $name;
-        $this->fileName = self::$filePath.'Logstore/'.$name.".txt";
+        if (php_sapi_name()==='cli') {
+            $this->br="\n";
+        } else {
+            $this->br="<br>";
+        }
     }
 
-    public static function setPath($path)
-    {
-        self::$filePath =$path;
-        return true;
-    }
-    
-    public static function getPath()
-    {
-        return self::$filePath;
-    }
-
-    public static function exists($id)
-    {
-        $f = self::$filePath.'Logstore/'. $id.'.txt';
-        return file_exists($f);
-    }
     
     /**
      * Log a line
@@ -64,10 +53,11 @@ class Logger
      *
      * @return int line number
      */
-    public function logLine($line)
+    public function logLine($line, $attributes = [])
     {
         $r = count($this->lines);
         $this->lines[] = $line;
+        $this->linesAttributes[]=$attributes;
         return $r;
     }
 
@@ -88,13 +78,13 @@ class Logger
             }
             return $result;
         }
-        $result="<br>";
+        $result=$this->br;
         for ($i=0; $i<$c; $i++) {
-            $result=$result. "LINE:".$i."<br>";
+            $result=$result. $this->showLineHeader($i);
             $result=$result. $this->lines[$i];
-            $result=$result."<br>";
+            $result=$result.$this->br;
         }
-        $result=$result."<br>";
+        $result=$result.$this->br;
         if ($show) {
             echo $result;
         }
@@ -112,7 +102,7 @@ class Logger
     {
         $res="";
         if ($i < count($this->lines)) {
-            $res= "LINE:".$i."<br>".$this->lines[$i]."<br>";
+            $res= $this->showLineHeader($i).$this->lines[$i].$this->br;
             if ($show) {
                 echo $res;
             }
@@ -121,6 +111,19 @@ class Logger
         return false;
     }
  
+    
+    protected function showLineHeader($i)
+    {
+        $header =  "LINE:".$i;
+        $attributes = $this->linesAttributes[$i];
+        foreach ($attributes as $name => $value) {
+            $header = $header.' '.$name.' : '.$value;
+        }
+        $header=$header.$this->br;
+        return $header;
+    }
+    
+    
     /**
      * Get a logged line
      *
@@ -136,6 +139,15 @@ class Logger
         return false;
     }
 
+    public function getAttributes($i)
+    {
+        if ($i < count($this->linesAttributes)) {
+            return $this->linesAttributes[$i];
+        }
+        return false;
+    }
+    
+    
     /**
      * Get number of lines logged
      *
@@ -179,7 +191,7 @@ class Logger
     {
         $c = $log->logSize();
         for ($i=0; $i<$c; $i++) {
-            $this->logLine($log->getLine($i));
+            $this->logLine($log->getLine($i), $log->getAttributes($i));
         }
         $r = $c +1;
         return $r;
@@ -190,9 +202,11 @@ class Logger
      *
      * @return int the number of byte saved
      */
-    public function save()
+    public function save($path, $name)
     {
-        $file = serialize($this->lines);
+        $this->fileName = $path.'Logstore/'.$name.".txt";
+        $fileContent = [$this->lines,$this->linesAttributes];
+        $file = serialize($fileContent);
         $r=file_put_contents($this->fileName, $file, FILE_USE_INCLUDE_PATH);
         return $r;
     }
@@ -201,10 +215,13 @@ class Logger
      *
      * @return int the number of byte saved
      */
-    public function load()
+    public function load($path, $name)
     {
+        $this->fileName = $path.'Logstore/'.$name.".txt";
         $file = file_get_contents($this->fileName, FILE_USE_INCLUDE_PATH);
-        $this->lines = unserialize($file);
+        $fileContent= unserialize($file);
+        $this->lines=$fileContent[0];
+        $this->linesAttributes=$fileContent[1];
         return true;
     }
 }

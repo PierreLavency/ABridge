@@ -1,16 +1,18 @@
 CMD
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'reset' Src/* App/* Tests/*
+grep -ri 'showLine' Src/* App/* Tests/*
 
-BUGS	26
+BUGS	27
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B22 EVALP in create dialog
+B26 reset must be static.
 
 DEV
+- backup !!!
 - remove reset from non testing code.
 - develop component for abstract code (Cda).
 - create Ctr Component
@@ -18,7 +20,7 @@ DEV
 
 - check on delete of distribution / Groups if used in default.
 - set up own exception
-- review logging and error Management.
+- review error Management in Model (execption rather than errolog)
 - improve LC support (test/ dev Data Base etc.)
 	
 - clean up picture path
@@ -59,12 +61,12 @@ DEV
 - graphics : include svg bit in view. /2
 
 PERF
+role access in Access
 getTyp : no call to attrExists
 attrExists : isset
 initMod rather than restoreMod
 
 TEST
-
 - improve view test coverage - need to separate view show and build // some progress
 - set up unit test for unittest
 
@@ -84,6 +86,9 @@ INT
 - set up jenkin
 
 DONE
+--------------// 1 day
+- review logging
+- remove static initialisation (logging)
 --------------//0.25
 - add Modstate view in admin
 --------------// 0.5

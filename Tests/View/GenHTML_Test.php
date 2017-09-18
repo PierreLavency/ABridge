@@ -1,6 +1,6 @@
 <?php
     
-use ABridge\ABridge\Logger;
+use ABridge\ABridge\Log\Logger;
 use ABridge\ABridge\View\GenHTML;
 
 require_once 'GenHTML_case.php';
@@ -12,8 +12,8 @@ class GenHTML_Test extends PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$log=new Logger('GenHTML_init');
-        self::$log->load();
+        self::$log=new Logger();
+        self::$log->load('C:/Users/pierr/ABridge/Datastore/', 'GenHTML_init');
     }
     
     public function testFormElmOut()

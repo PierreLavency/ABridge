@@ -177,7 +177,7 @@ class SQLBase extends Base
             }
         }
         $sql=$s. " ) \n";
-        $this->logLine(1, $sql);
+        $this->logger->logLine($sql, ['class'=>__CLASS__,'line'=>__LINE__]);
         if (! $this->mysqli->query($sql)) {
             throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
         };
@@ -199,7 +199,7 @@ class SQLBase extends Base
         $sqlDrop = $this->dropAttr($model, $delList, $attrFrg);
         if ($sqlDrop) {
             $sqlDrop=$sql.$sqlDrop;
-            $this->logLine(1, $sqlDrop);
+            $this->logger->logLine($sqlDrop, ['class'=>__CLASS__,'line'=>__LINE__]);
             if (! $this->mysqli->query($sqlDrop)) {
                 throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
             }
@@ -208,7 +208,7 @@ class SQLBase extends Base
         $sqlAdd = $this->addAttr($model, $addList, $attrFrg);
         if ($sqlAdd) {
             $sqlAdd=$sql.$sqlAdd;
-            $this->logLine(1, $sqlAdd);
+            $this->logger->logLine($sqlAdd, ['class'=>__CLASS__,'line'=>__LINE__]);
             if (! $this->mysqli->query($sqlAdd)) {
                 throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
             }
@@ -280,7 +280,7 @@ class SQLBase extends Base
     public function delMod($model)
     {
         $sql = "\n DROP TABLE $model \n";
-        $this->logLine(1, $sql);
+        $this->logger->logLine($sql, ['class'=>__CLASS__,'line'=>__LINE__]);
         if (! $this->mysqli->query($sql)) {
  //           echo E_ERC021.":$sql" . ":".$this->mysqli->error."<br>";
         }; // if does not exist ok !!
@@ -295,7 +295,7 @@ class SQLBase extends Base
             return false;
         };
         $sql = "SELECT * FROM $model where id= $id";
-        $this->logLine(1, $sql);
+        $this->logger->logLine($sql, ['class'=>__CLASS__,'line'=>__LINE__]);
         $result = $this->mysqli->query($sql);
         if ($result->num_rows ==1) {
             // output data of each row
@@ -336,7 +336,7 @@ class SQLBase extends Base
             }
         }
         $sql = "\n UPDATE $model SET $lv WHERE id= $id and vnum= $vnum \n" ;
-        $this->logLine(1, $sql);
+        $this->logger->logLine($sql, ['class'=>__CLASS__,'line'=>__LINE__]);
         if (! $this->mysqli->query($sql)) {
             throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
         };
@@ -352,7 +352,7 @@ class SQLBase extends Base
             return false;
         };
         $sql = "\n DELETE FROM $model WHERE id=$id \n";
-        $this->logLine(1, $sql);
+        $this->logger->logLine($sql, ['class'=>__CLASS__,'line'=>__LINE__]);
         if (! $this->mysqli->query($sql)) {
             throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
         };
@@ -400,7 +400,7 @@ class SQLBase extends Base
         $la = $la. ')';
         $lv = $lv. ')';
         $sql = "\n INSERT INTO $model \n $la \n VALUES \n $lv \n";
-        $this->logLine(1, $sql);
+        $this->logger->logLine($sql, ['class'=>__CLASS__,'line'=>__LINE__]);
         if (! $this->mysqli->query($sql)) {
             throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
         };
@@ -421,7 +421,7 @@ class SQLBase extends Base
         }
         $res = [];
         $sql = "SELECT id FROM $model where $attr= '$val'";
-        $this->logLine(1, $sql);
+        $this->logger->logLine($sql, ['class'=>__CLASS__,'line'=>__LINE__]);
         $result = $this->mysqli->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -459,7 +459,7 @@ class SQLBase extends Base
         $res = [];
         $w= $this->buildWheOp($attrList, $opList, $valList);
         $sql = "SELECT id FROM $model where ". $w;
-        $this->logLine(1, $sql);
+        $this->logger->logLine($sql, ['class'=>__CLASS__,'line'=>__LINE__]);
         $result = $this->mysqli->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {

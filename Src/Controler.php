@@ -1,7 +1,8 @@
 <?php
 namespace ABridge\ABridge;
 
-use ABridge\ABridge\Logger;
+use ABridge\ABridge\Log\Log;
+use ABridge\ABridge\Log\Logger;
 use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Mod\Mtype;
@@ -55,6 +56,7 @@ class Controler
         $this->spec=$spec;
         $bases = [];
       
+        Log::get()->reset();
         Mod::get()->reset();
         Hdl::get()->reset();
         Usr::get()->reset();
@@ -66,7 +68,9 @@ class Controler
         if (! isset($this->spec['Hdl'])) {
             $this->spec['Hdl']=[];
         }
-        
+        if (! isset($this->spec['Log'])) {
+            Log::get()->init($this->defVal, []);
+        }
         $this->bases = Mod::get()->getBaseClasses();
     }
  
@@ -98,6 +102,11 @@ class Controler
             Hdl::get()->init($this->defVal, $config);
             $this->spec['Hdl']=$config;
         }
+        if (isset($spec['Log'])) {
+            $config=$spec['Log'];
+            Log::get()->init($this->defVal, $config);
+            $this->spec['Log']=$config;
+        }
     }
     
     private function initPrm($spec, $ini)
@@ -111,122 +120,54 @@ class Controler
         $appName = $ini['name'];
         $this->appName = $appName;
         $this->defVal['name']=$appName;
-        
-        if (isset($ini['path'])) {
-            $this->defVal['path']= $ini['path'];
-        }
+
+        $paramList=['path','base','dataBase','memBase','fileBase','host','user','pass','trace'];
+        foreach ($paramList as $param) {
+        	if (isset($ini[$param])) {
+        		$this->defVal[$param]= $ini[$param];
+        	}
+        }      
         if (!isset($this->defVal['path'])) {
             $this->defVal['path']='C:/Users/pierr/ABridge/Datastore/';
         }
-
-        if (isset($ini['base'])) {
-            $this->defVal['base']=$ini['base'];
-        }
         if (!isset($this->defVal['base'])) {
             $this->defVal['base']='dataBase';
-        }
-        
-        if (isset($ini['dataBase'])) {
-            $this->defVal['dataBase']=$ini['dataBase'];
-        }
+        }        
         if (!isset($this->defVal['dataBase'])) {
             $this->defVal['dataBase']=$appName;
-        }
-        
-        if (isset($ini['memBase'])) {
-            $this->defVal['memBase']=$ini['memBase'];
         }
         if (!isset($this->defVal['memBase'])) {
             $this->defVal['memBase']=$appName;
         }
-        if (isset($ini['fileBase'])) {
-            $this->defVal['fileBase']=$ini['fileBase'];
-        }
         if (!isset($this->defVal['fileBase'])) {
             $this->defVal['fileBase']=$appName;
-        }
-        
-        if (isset($ini['host'])) {
-            $this->defVal['host']= $ini['host'];
         }
         if (!isset($this->defVal['host'])) {
             $this->defVal['host']='localhost';
         }
-        
-        if (isset($ini['user'])) {
-            $this->defVal['user']=$ini['user'];
-        }
         if (!isset($this->defVal['user'])) {
             $this->defVal['user']=$appName;
-        }
-                
-        if (isset($ini['pass'])) {
-            $this->defVal['pass']= $ini['pass'];
         }
         if (!isset($this->defVal['pass'])) {
             $this->defVal['pass']=$this->defVal['user'];
         }
-        
-        Logger::setPath($this->defVal['path']);
+        if (!isset($this->defVal['trace'])) {
+            $this->defVal['trace']=0;
+        }
     }
  
-    
-    
-    public function beginTrans()
-    {
-        Mod::get()->begin(null, null);
-    }
-    
-    protected function setLogLevl($level)
-    {
-        $this->logLevel=$level;
-        if (!$level) {
-            return true;
-        }
-
-        foreach ($this->bases as $base) {
-            $base-> setLogLevl($level);
-        }
-    }
 
     protected function logUrl()
     {
-        if ($this->logLevel > 0) {
-            $urli = $this->handle->getDocRoot();
-            echo 'uri is '.$urli. '<br>';
-            $urlp = $this->handle->getRpath();
-            echo 'path is '.$urlp. '<br>';
-            $method = $this->handle->getMethod();
-            echo 'method is '.$method. '<br>';
-        }
+        $log=Log::get();
+        $urli = 'Uri : '.$this->handle->getDocRoot();
+        $log->logLine($urli, ['class'=>__CLASS__]);
+        $urlp = 'Path : '.$this->handle->getRpath();
+        $log->logLine($urlp, ['class'=>__CLASS__]);
+        $method = 'Method: '.$this->handle->getMethod();
+        $log->logLine($method, ['class'=>__CLASS__]);
     }
 
-    protected function logStartView()
-    {
-        if ($this->logLevel <=1) {
-            return true;
-        }
-        foreach ($this->bases as $base) {
-            $log = $base-> getLog();
-            $log->logLine(' **************  ');
-        }
-    }
-    
-    protected function showLog()
-    {
-        if ($this->logLevel<=1) {
-            return true;
-        }
-        foreach ($this->bases as $base) {
-            $log = $base-> getLog();
-            $log->show();
-        }
-    }
-    
-    public function commit()
-    {
-        return  Mod::get()->end();
-    }
     
     public function close()
     {
@@ -246,6 +187,16 @@ class Controler
             $res = ($res and $r);
         }
         return $res;
+    }
+    
+    public function begin()
+    {
+        Mod::get()->begin();
+    }
+    
+    public function end()
+    {
+        Mod::get()->end();
     }
     
     protected function setVal($action)
@@ -282,7 +233,9 @@ class Controler
  
     public function run($show, $logLevel)
     {
-        Mod::get()->begin(null, null);
+        Log::get()->begin();
+    
+        Mod::get()->begin();
         
         $frccommit=false;
               
@@ -295,8 +248,8 @@ class Controler
             $this->handle= Hdl::get()->begin($this->defVal, $this->spec['Hdl']);
             $frccommit=($frccommit || Hdl::get()->isNew());
         }
-        $this->setLogLevl($logLevel);
         $this->logUrl();
+        
         $method=$this->handle->getMethod();
         
         if ($this->handle->getDocRoot() == '/ABridgeAPI.php') {
@@ -306,11 +259,9 @@ class Controler
         }
         
         if ($this->handle->nullobj()) {
-            $this->logStartView();
             Vew::get()->begin($show, $this->handle);
-            $this->showLog();
             if ($frccommit) {
-                $this->commit();
+                Mod::get()->end();
             }
             return $this->handle;
         }
@@ -338,7 +289,7 @@ class Controler
                 }
             }
             if (!$this->handle->isErr()) {
-                $res=$this->commit();
+                $res=Mod::get()->end();
                 $frccommit=false;
                 if ($res) {
                     $actionExec=true;
@@ -357,13 +308,13 @@ class Controler
         }
         
         if ($frccommit) {
-            $this->commit();
+            Mod::get()->end();
         }
         
-        $this->logStartView();
         Vew::get()->begin($show, $this->handle);
 
-        $this->showLog();
+        Log::get()->end();
+        
         return $this->handle;
     }
 }

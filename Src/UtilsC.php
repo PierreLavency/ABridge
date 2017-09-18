@@ -1,8 +1,6 @@
 <?php
 namespace ABridge\ABridge;
 
-use ABridge\ABridge\Mod\Model;
-
 class UtilsC
 {
     public static function genPrm($logicalNameList, $baseName, $types = ['dataBase','fileBase'])

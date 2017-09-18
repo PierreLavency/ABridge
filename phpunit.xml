@@ -17,8 +17,13 @@
 		<directory>Tests/Adm</directory>
 	</testsuite>
 	<testsuite name="Hdl">
-		<directory>Tests/Hdl</directory></testsuite>
+		<directory>Tests/Hdl</directory>
+	</testsuite>
+	<testsuite name="Log">
+		<directory>Tests/Log</directory>
+	</testsuite>	
 	<testsuite name="Mod">
-		<directory>Tests/Mod</directory></testsuite>
+		<directory>Tests/Mod</directory>
+	</testsuite>
   </testsuites>
 </phpunit>

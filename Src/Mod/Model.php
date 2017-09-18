@@ -11,7 +11,7 @@ namespace ABridge\ABridge\Mod;
  * @author   Pierre Lavency <pierrelavency@hotmail.com>
  * @link     No
  */
-use ABridge\ABridge\Logger;
+use ABridge\ABridge\Log\Logger;
 
 use ABridge\ABridge\CstError;
 

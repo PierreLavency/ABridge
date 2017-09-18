@@ -11,6 +11,11 @@ class Model_Evp_Test_dataBase_Student extends CModel
     private $_fsave = true;
     protected $_fdel  = true;
     
+    public function initMod($bindings)
+    {
+        return true;
+    }
+    
     public function save()
     {
         $a = $this->mod->getValN('a');
@@ -56,7 +61,12 @@ class Model_Evp_Test_fileBase_Student extends CModel
     private $_x;
     private $_fsave = true;
     private $_fdel  = true;
- 
+    
+    public function initMod($bindings)
+    {
+        return true;
+    }
+    
     public function save()
     {
         $a = $this->mod->getValN('a');
@@ -103,6 +113,11 @@ class Model_Evp_Test_memBase_Student extends CModel
     private $_x;
     private $_fsave = true;
     private $_fdel  = true;
+
+    public function initMod($bindings)
+    {
+        return true;
+    }
     
     public function save()
     {

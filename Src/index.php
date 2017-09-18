@@ -39,11 +39,11 @@ if ($application == 'UnitTest') {
 //    $ctrl = new Controler('x', $conf);
     
 if (isset($init)) {
-    $ctrl->beginTrans();
+    $ctrl->begin();
     require_once $path.'META.php';
     $path = "App/".$application .'/';
     require_once $path.'LOAD.php';
-    $ctrl->commit();
+    $ctrl->end();
     $ctrl->close();
     return;
 }

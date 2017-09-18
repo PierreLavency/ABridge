@@ -53,7 +53,7 @@ class CstError
     const E_ERC048 = 'ERC048';  // illegal action on path type
     const E_ERC049 = 'ERC049';  // illegal action on obj
     const E_ERC050 = 'ERC050';  // illegal condition in role
-    const E_ERC051 = 'ERC051';  // NOT USED no sessionMg found
+    const E_ERC051 = 'ERC051';  // illegal path
     const E_ERC052 = 'ERC052';  // cannot delete - ref integrity
     const E_ERC053 = 'ERC053';  // access denied
     const E_ERC054 = 'ERC054';  // must be a REF attr
@@ -128,7 +128,7 @@ class CstError
         self::E_ERC049 => 'Action not authorized on this path',
 
         self::E_ERC050 => 'null object in attribute path',
-        self::E_ERC051 => 'NOT USED',
+        self::E_ERC051 => 'illegal path',
         self::E_ERC052 => 'Cannot delete object- referential integrity',
         self::E_ERC053 => 'Action not authorized on this object',
         self::E_ERC054 => 'Parameter must be a REF attribute',

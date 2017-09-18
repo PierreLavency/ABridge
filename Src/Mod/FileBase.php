@@ -112,7 +112,7 @@ class FileBase extends Base
             $meta["lastId"]=$id+1;
         }
         $this->objects[$model][0]=$meta;
-        $this->logLine(1, "newObj $model $id \n");
+        $this->logger->logLine("newObj $model $id \n", ['class'=>__CLASS__,'line'=>__LINE__]);
         return $id;
     }
 
@@ -130,7 +130,7 @@ class FileBase extends Base
         if (! array_key_exists($id, $this->objects[$model])) {
             return false;
         }
-        $this->logLine(1, "getObj $model $id \n");
+        $this->logger->logLine("getObj $model $id \n", ['class'=>__CLASS__,'line'=>__LINE__]);
         return $this->objects[$model][$id];
     }
 
@@ -149,7 +149,7 @@ class FileBase extends Base
             return false;
         }
         $this->objects[$model][$id] = $values;
-        $this->logLine(1, "putObj $model $id \n");
+        $this->logger->logLine("putObj $model $id \n", ['class'=>__CLASS__,'line'=>__LINE__]);
         return $id; // check -> true
     }
 
@@ -168,7 +168,7 @@ class FileBase extends Base
             return true;
         }
         unset($this->objects[$model][$id]);
-        $this->logLine(1, "delObj $model $id \n");
+        $this->logger->logLine("delObj $model $id \n", ['class'=>__CLASS__,'line'=>__LINE__]);
         return true;
     }
 
@@ -194,7 +194,7 @@ class FileBase extends Base
                 }
             }
         }
-        $this->logLine(1, "findObj $model $attr $val  \n");
+        $this->logger->logLine("findObj $model $attr $val  \n", ['class'=>__CLASS__,'line'=>__LINE__]);
         return $result;
     }
 
@@ -245,7 +245,7 @@ class FileBase extends Base
                 }
             }
         }
-        $this->logLine(1, "findObjOp $model $attr $op $val  \n");
+        $this->logger->logLine("findObjOp $model $attr $op $val  \n", ['class'=>__CLASS__,'line'=>__LINE__]);
         return $result;
     }
     

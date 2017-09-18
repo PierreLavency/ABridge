@@ -1,7 +1,6 @@
 <?php
     
-
-use ABridge\ABridge\Logger;
+use ABridge\ABridge\Log\Logger;
 
 class Logger_Test extends PHPUnit_Framework_TestCase
 {
@@ -9,21 +8,16 @@ class Logger_Test extends PHPUnit_Framework_TestCase
  
     public function testLogLine1()
     {
-        $this->assertTrue(Logger::setPath('C:/Users/pierr/ABridge/Datastore/'));
-        
-        $this->assertEquals(Logger::getPath(), 'C:/Users/pierr/ABridge/Datastore/');
         
         $logName = basename(__FILE__, ".php");
         
-        $this->assertNotNull(($x = new Logger($logName)));
+        $this->assertNotNull(($x = new Logger()));
         
         $this->assertEquals(0, $x->logLine("this is my first logged line"));
                     
         $this->assertEquals(1, $x->logLine("this is my second logged line"));
 
-        $this->assertNotNull($x->save());
-
-        $this->assertTrue(Logger::exists($logName));
+        $this->assertNotNull($x->save('C:/Users/pierr/ABridge/Datastore/', $logName));
     }
  
     /**
@@ -34,11 +28,11 @@ class Logger_Test extends PHPUnit_Framework_TestCase
     {
         $logName = basename(__FILE__, ".php");
         
-        $this->assertNotNull(($x = new Logger($logName)));
+        $this->assertNotNull(($x = new Logger()));
         
         $this->assertEquals(0, $x->logLine("this is my first again logged line"));
                     
-        $this->assertNotNull($x->save());
+        $this->assertNotNull($x->save('C:/Users/pierr/ABridge/Datastore/', $logName));
     }
  
  
@@ -48,11 +42,12 @@ class Logger_Test extends PHPUnit_Framework_TestCase
  
     public function testLogLine3()
     {
+        $br = "\n";
         $logName = basename(__FILE__, ".php");
         
-        $this->assertNotNull(($x = new Logger($logName)));
+        $this->assertNotNull(($x = new Logger()));
         
-        $this->assertTrue($x->load());
+        $this->assertTrue($x->load('C:/Users/pierr/ABridge/Datastore/', $logName));
         
         $this->assertEquals(1, $x->logSize());
         
@@ -66,15 +61,15 @@ class Logger_Test extends PHPUnit_Framework_TestCase
         
         $this->assertNotNull($ls = $x->showLine(0, false));
         
-        $r= "LINE:0<br>".$l."<br>";
+        $r= "LINE:0".$br.$l.$br;
         
-        $this->assertEquals($ls, $r);
+        $this->assertEquals($r, $ls);
         
         $o=$r;
         $this->expectOutputString($o);
         $this->assertNotNull($ls = $x->showLine(0));
         
-        $r = '<br>'.$r. '<br>';
+        $r = $br.$r. $br;
         
         $this->assertEquals($x->show(false), $r);
         
@@ -83,9 +78,9 @@ class Logger_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($x->show(), $r);
                 
                 
-        $this->assertNotNull(($y = new Logger($logName)));
+        $this->assertNotNull(($y = new Logger()));
         
-        $this->assertTrue($y->load());
+        $this->assertTrue($y->load('C:/Users/pierr/ABridge/Datastore/', $logName));
         
         $this->assertFalse($x->diff($y));
         
@@ -103,5 +98,28 @@ class Logger_Test extends PHPUnit_Framework_TestCase
         
         $this->assertEquals($y->diff($z), 1);
         $this->assertEquals($x->diff($z), -1);
+    }
+    
+    /**
+     * @depends testLogLine3
+     */
+    
+    public function testAttribute()
+    {
+        $br = "\n";
+        $logName = basename(__FILE__, ".php");
+        
+        $x = new Logger();
+        
+        $testLine = 'this is a test line';
+        $testAttributes = ['file'=>__FILE__,'class'=>__CLASS__];
+        $lineNumber= $x->logLine($testLine, $testAttributes);
+        $resAttributes=$x->getAttributes($lineNumber);
+        $this->assertEquals($testAttributes, $resAttributes);
+        
+        $testOutput = 'LINE:0 file : '.__FILE__.' class : '.__CLASS__.$br.$testLine.$br;
+        $this->assertEquals($testOutput, $x->showLine($lineNumber, false));
+        
+        $this->assertEquals(false, $x->getAttributes($lineNumber+1));
     }
 }

@@ -16,10 +16,7 @@ abstract class CModel
         return $this->mod;
     }
     
-    public function initMod($bindings)
-    {
-        return true;
-    }
+    abstract public function initMod($bindings);
 
     
     public function getValues($attr)

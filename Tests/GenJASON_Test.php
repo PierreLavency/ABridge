@@ -2,7 +2,7 @@
 use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Logger;
+use ABridge\ABridge\Log\Logger;
 use ABridge\ABridge\GenJason;
 
 require_once('GenJason_case.php');
@@ -24,8 +24,8 @@ class GenJASON_Test extends PHPUnit_Framework_TestCase
         Mod::get()->reset();
         Mod::get()->init($prm['application'], $prm['handlers']);
                
-        self::$log=new Logger('GenJASON_init');
-        self::$log->load();
+        self::$log=new Logger();
+        self::$log->load('C:/Users/pierr/ABridge/Datastore/', 'GenJASON_init');
     }
     
 

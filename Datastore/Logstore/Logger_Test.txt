@@ -1,1 +1,1 @@
-a:1:{i:0;s:34:"this is my first again logged line";}
+a:2:{i:0;a:1:{i:0;s:34:"this is my first again logged line";}i:1;a:1:{i:0;a:0:{}}}

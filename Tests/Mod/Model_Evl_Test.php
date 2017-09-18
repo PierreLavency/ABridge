@@ -16,6 +16,10 @@ class testeval extends CModel
         }
         return $this->mod->getValN($attr);
     }
+    public function initMod($bindings)
+    {
+        return true;
+    }
 }
 
 class Model_Evl_Test extends PHPUnit_Framework_TestCase

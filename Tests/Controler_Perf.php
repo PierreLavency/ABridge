@@ -2,6 +2,7 @@
 
 use ABridge\ABridge\Controler;
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstView;
@@ -69,7 +70,7 @@ class Controler_Perf
     public function initMod()
     {
         $ctrl = new Controler($this->config, $this->ini);
-        $ctrl->beginTrans();
+        Mod::get()->begin();
         
         $x=new Model($this->CName);
         $x->deleteMod();
@@ -79,7 +80,7 @@ class Controler_Perf
         $x->addAttr('Cref', Mtype::M_CREF, '/'.$this->CName.'/Ref');
         $x->saveMod();
  
-        $ctrl->commit();
+        Mod::get()->end();
         $ctrl->close();
     }
     

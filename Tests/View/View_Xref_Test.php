@@ -1,6 +1,6 @@
 <?php
     
-use ABridge\ABridge\Logger;
+use ABridge\ABridge\Log\Logger;
 
 use ABridge\ABridge\Hdl\Request;
 use ABridge\ABridge\Hdl\Handle;
@@ -30,8 +30,8 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
         Mod::get()->reset();
         Mod::get()->init($prm['application'], $prm['handlers']);
         
-        self::$log=new Logger('View_init_Xref');
-        self::$log->load();
+        self::$log=new Logger();
+        self::$log->load('C:/Users/pierr/ABridge/Datastore/', 'View_init_Xref');
     }
     
     

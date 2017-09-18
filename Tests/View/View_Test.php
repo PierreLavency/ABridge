@@ -1,6 +1,6 @@
 <?php
     
-use ABridge\ABridge\Logger;
+use ABridge\ABridge\Log\Logger;
 
 require_once 'View_case.php';
 
@@ -11,8 +11,8 @@ class View_Test extends PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$log=new Logger('View_init');
-        self::$log->load();
+        self::$log=new Logger();
+        self::$log->load('C:/Users/pierr/ABridge/Datastore/', 'View_init');
     }
     
     

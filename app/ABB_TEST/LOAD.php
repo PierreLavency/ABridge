@@ -125,7 +125,7 @@ require_once 'SETUP.php';
 '[
 [["Select"],        ["|Application","|Component","|Interface","|Exchange"], "true"],
 [["Read"],          "true",         "true"],
-[["Read","Update","Delete"],  "|Session",    {"Session":"id"}],
+[["Read","Update","Delete"],  "|Session",    {"Session":":id"}],
 [["Read","Update"],  "|User",       {"User":":id<==>:User"}]
 ]';
 

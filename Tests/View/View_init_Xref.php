@@ -17,7 +17,7 @@ require_once 'View_case_Xref.php';
 
 $logName = basename(__FILE__, ".php");
 
-$log=new UnitTest($logName, 1);
+$log=new UnitTest('C:/Users/pierr/ABridge/Datastore/', $logName, 1);
 
 /**************************************/
 

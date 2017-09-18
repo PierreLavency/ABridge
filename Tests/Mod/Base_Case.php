@@ -207,24 +207,10 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $x->commit();
     }
 
-    /**
-    * @depends  testErr
-    */
-    public function testLog()
-    {
-        $x = self::$db;
-        $x->beginTrans();
-        
-        $this->assertFalse($x->getLog());
-        $this->assertTrue($x->setLogLevl(1));
-        $this->assertEquals(1, count($x->findObj(self::$CName, 'CODE', '01')));
-        $this->assertNotNull($l = $x->getLog());
-        $this->assertEquals(1, $l->logSize());
-        $x->commit();
-    }
+
     
     /**
-    * @depends  testLog
+    * @depends  testErr
     */
     public function testPutMod2()
     {
