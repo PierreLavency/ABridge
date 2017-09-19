@@ -49,7 +49,8 @@ class Model
      */
     protected $modChgd;
 
-    protected $attrVal;
+    protected $attributeValues;
+    protected $attributeTypes;
 
     /**
      * @var array The error logger.
@@ -174,14 +175,13 @@ class Model
     {
         $this->meta['modname'] = $this->getModName();
         $this->meta['predef'] = array('id','vnum','ctstp','utstp');
-        $this->meta['attr'] = array('id','vnum','ctstp','utstp');
-        $this->meta['type'] = array(
+        $this->attributeTypes = array(
             "id"    =>Mtype::M_ID,
             "vnum"  =>Mtype::M_INT,
             "ctstp"     =>Mtype::M_TMSTP,
             "utstp"     =>Mtype::M_TMSTP,
         );
-        $this->attrVal = array('vnum' => 0);
+        $this->attributeValues = array('vnum' => 0);
         $this->meta['dflt'] = [];
         $this->meta['param'] = [];
         $this->meta['bkey'] = [];
@@ -201,6 +201,9 @@ class Model
     
     public function getMeta()
     {
+    	$this->meta['attr'] = $this->getAllAttr();       
+    	$this->meta['type'] = $this->getAllTyp();       
+    	$this->meta['isabstr'] = $this->isAbstr();
         $this->meta['isabstr'] = $this->isAbstr();
         $this->meta['inhnme']  = $this->getInhNme();
         $res =json_encode($this->meta, JSON_PRETTY_PRINT);
@@ -315,7 +318,7 @@ class Model
      */
     public function getAllAttr()
     {
-        return $this->meta['attr'];
+        return array_keys($this->attributeTypes);
     }
     
     public function getAllPeristAttr()
@@ -359,7 +362,7 @@ class Model
      */
     public function getAllTyp()
     {
-        return $this->meta['type'];
+        return $this->attributeTypes;
     }
    /**
      * Returns the list of default values of a Model.
@@ -378,7 +381,7 @@ class Model
     public function getAllVal()
     {
         $res=[];
-        foreach ($this->attrVal as $attr => $val) {
+        foreach ($this->attributeValues as $attr => $val) {
             if (! $this->isTemp($attr)) {
                 $res[$attr]=$val;
             }
@@ -440,8 +443,8 @@ class Model
             $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
-        if (isset($this->meta['type'][$attr])) {
-            return $this->meta['type'][$attr];
+        if (isset($this->attributeTypes[$attr])) {
+            return $this->attributeTypes[$attr];
         }
         $abstr = $this->getInhObj();
         return $abstr->getTyp($attr);
@@ -789,7 +792,7 @@ class Model
      */
     public function existsAttr($attr)
     {
-        if (in_array($attr, $this->meta['attr'])) {
+    	if (isset($this->attributeTypes[$attr])) {
             return true;
         } ;
         $abstr = $this->getInhObj();
@@ -801,10 +804,8 @@ class Model
 
     protected function existsAttrLocal($attr)
     {
-        if (in_array($attr, $this->meta['attr'])) {
-            return true;
-        } ;
-        return false;
+    	return isset($this->attributeTypes[$attr]);
+
     }
 
 
@@ -988,8 +989,8 @@ class Model
             $this->meta['param'][$attr]=$path;
             $this->meta['tmp'][]=$attr;
         }
-        $this->meta['attr'][]=$attr;
-        $this->meta['type'][$attr]=$typ;
+
+        $this->attributeTypes[$attr]=$typ;
 
         $this->modChgd=true;
         return true;
@@ -1019,12 +1020,9 @@ class Model
                 return false;
             }
         }
-        $key = array_search($attr, $this->meta['attr']);
-        if ($key!==false) {
-            unset($this->meta['attr'][$key]);
-        }
-        if (isset($this->meta['type'][$attr])) {
-            unset($this->meta['type'][$attr]);
+
+        if (isset($this->attributeTypes[$attr])) {
+            unset($this->attributeTypes[$attr]);
         }
         if (isset($this->meta['param'][$attr])) {
             unset($this->meta['param'][$attr]);
@@ -1148,7 +1146,7 @@ class Model
             $res=$this->findObjAttr($patha[1], $patha[2], $this->getId());
             return $res;
         }
-        foreach ($this->attrVal as $x => $val) {
+        foreach ($this->attributeValues as $x => $val) {
             if ($x==$attr) {
                 return $val;
             }
@@ -1165,7 +1163,7 @@ class Model
      */
     protected function setValNoCheck($attr, $val)
     {
-        $this->attrVal[$attr]=$val;
+        $this->attributeValues[$attr]=$val;
         return true;
     }
     /**
@@ -1600,7 +1598,7 @@ class Model
     protected function checkMdtr($attrList)
     {
         foreach ($attrList as $attr) {
-            if (array_key_exists($attr, $this->attrVal)) {
+            if (array_key_exists($attr, $this->attributeValues)) {
                 $val = $this->getVal($attr);
                 if (is_null($val)) {
                     $this->errLog->logLine(CstError::E_ERC019.':'.$attr);

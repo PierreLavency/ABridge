@@ -20,7 +20,7 @@ class ModBase
 
     public function eraseMod($mod)
     {
-        $name = $mod->getModName();
+    	$name = $mod->getModName();
         return ($this->base->delMod($name));
     }
        

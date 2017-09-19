@@ -16,15 +16,20 @@ use ABridge\ABridge\View\Vew;
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
 
-$numberRun=3;
+$numberRun=2;
 $runTime=[];
+$previousTime=0;
+$currentTime=0;
 $avg=0;
 for ($i = 0; $i < $numberRun; $i++) {
 	$x= new Controler_Perf();
 	$x->initMod();
 	$res= $x->initRoot();
 	$n=$x->depthBreadthNew($res->getRPath(), 2, 20);
-	$runTime[$i]=xdebug_time_index();
+	$x->close();
+	$currentTime=xdebug_time_index();
+	$runTime[$i]=$currentTime-$previousTime;
+	$previousTime=$currentTime;
 	echo "run $i : $runTime[$i] \n";
 	$avg=$avg+$runTime[$i];
 }
@@ -63,6 +68,7 @@ class Controler_Perf
             'host'=>'localhost',
             'user'=>'cl822',
             'pass'=>'cl822',
+    		'trace'=>'3',
     ];
     
     protected $show = false;
@@ -74,36 +80,49 @@ class Controler_Perf
     {
         $ctrl = new Controler($this->config, $this->ini);
         $resc = $ctrl->run($this->show, 0);
-//    	$resc->getErrLog()->show();
         return $resc;
     }
         
     public function initMod()
     {
-        Log::reset();
+
+
+    	Log::reset();
         Mod::reset();
         Hdl::reset();
         Usr::reset();
         Adm::reset();
         Vew::reset();
+               
         
         $ctrl = new Controler($this->config, $this->ini);
+     
+
         Mod::get()->begin();
-        
+
         $x=new Model($this->CName);
+        $x->getErrLog()->show();
         $x->deleteMod();
-        $x=new Model($this->CName);
+
         $x->addAttr('Name', Mtype::M_STRING);
         $x->addAttr('Ref', Mtype::M_REF, '/'.$this->CName);
         $x->addAttr('Cref', Mtype::M_CREF, '/'.$this->CName.'/Ref');
         $x->saveMod();
- 
+
         Mod::get()->end();
+    }
+    
+    
+    public function close()
+    {
+    	$ctrl = new Controler($this->config, $this->ini);
+    	$ctrl->close();
     }
     
     public function initRoot()
     {
-        $path = '/';
+    	
+    	$path = '/';
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
@@ -125,10 +144,6 @@ class Controler_Perf
         
         return $res;
     }
-
-    /**
-    * @depends testRoot
-    */
     
     public function select($path, $i)
     {

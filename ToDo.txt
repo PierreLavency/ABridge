@@ -10,12 +10,8 @@ B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B22 EVALP in create dialog
 
-PERF
-19/09
-177.10176992416
-206.75799107552
-203.0592199.88539195061
-199.88539195061
+PERF on 2*20
+0.491=>0.387
 
 DEV
 - backup !!!
