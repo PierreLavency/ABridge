@@ -182,7 +182,7 @@ class ModBase
         }
         $predef = $mod->getAllPredef();
         foreach ($attrlist as $attr) {
-            if (! in_array($attr, $predef)) {
+            if (! in_array($attr, $predef) and isset($attrtype[$attr])) {
                 $typ= $attrtype[$attr];
                 $path=0;
                 if (array_key_exists($attr, $attrpath)) {

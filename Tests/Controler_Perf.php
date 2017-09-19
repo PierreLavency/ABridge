@@ -16,18 +16,24 @@ use ABridge\ABridge\View\Vew;
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
 
-$x= new Controler_Perf();
-$x->initMod();
-$res= $x->initRoot();
-/*
-$x->depthNew($res->getRPath(),30);
-echo xdebug_time_index(), "\n";
-$x->breadthNew($res->getRPath(),30);
-echo xdebug_time_index(), "\n";
-*/
+$numberRun=3;
+$runTime=[];
+$avg=0;
+for ($i = 0; $i < $numberRun; $i++) {
+	$x= new Controler_Perf();
+	$x->initMod();
+	$res= $x->initRoot();
+	$n=$x->depthBreadthNew($res->getRPath(), 2, 20);
+	$runTime[$i]=xdebug_time_index();
+	echo "run $i : $runTime[$i] \n";
+	$avg=$avg+$runTime[$i];
+}
+$avg=$avg/$numberRun;
+echo "number of object/run : $n   \n";
+echo "average run time     : $avg \n" ;
+$avg=$avg/$n;
+echo "average time/object  : $avg \n";
 
-$x->depthBreadthNew($res->getRPath(), 2, 20);
-echo xdebug_time_index(), "\n";
 
 class Controler_Perf
 {
@@ -183,15 +189,17 @@ class Controler_Perf
     
     public function depthBreadthNew($path, $n, $f)
     {
+    	$t = 0;
         if ($n==0) {
-            return;
+            return $t;
         }
         for ($i = 1; $i <= $f; $i++) {
             $name=$path.'_'.$i;
             $x=$this->createSon($path, $name);
-            $this->depthBreadthNew($x->getRPath(), $n-1, $f);
+            $t++;
+            $t=$t+$this->depthBreadthNew($x->getRPath(), $n-1, $f);
         }
-        return;
+        return $t;
     }
     
     protected function Upd($path, $i)
