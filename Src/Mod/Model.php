@@ -201,9 +201,9 @@ class Model
     
     public function getMeta()
     {
-    	$this->meta['attr'] = $this->getAllAttr();       
-    	$this->meta['type'] = $this->getAllTyp();       
-    	$this->meta['isabstr'] = $this->isAbstr();
+        $this->meta['attr'] = $this->getAllAttr();
+        $this->meta['type'] = $this->getAllTyp();
+        $this->meta['isabstr'] = $this->isAbstr();
         $this->meta['isabstr'] = $this->isAbstr();
         $this->meta['inhnme']  = $this->getInhNme();
         $res =json_encode($this->meta, JSON_PRETTY_PRINT);
@@ -439,17 +439,43 @@ class Model
      */
     public function getTyp($attr)
     {
-        if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
-            return false;
-        }
-        if (isset($this->attributeTypes[$attr])) {
-            return $this->attributeTypes[$attr];
-        }
-        $abstr = $this->getInhObj();
-        return $abstr->getTyp($attr);
+    	if (isset($this->attributeTypes[$attr])) {
+    		return $this->attributeTypes[$attr];
+    	};
+    	$abstr = $this->getInhObj();
+    	if (!is_null($abstr)) {
+    		$typ= $abstr->getTyp($attr);
+    		if($typ) {
+    			return $typ;
+    		}
+    	}
+        $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
+        return false;
     }
-
+    
+    /**
+     * Returns true if the attribute exists.
+     *
+     * @param string $attr the attribute.
+     *
+     * @return boolean
+     */
+    public function existsAttr($attr)
+    {
+    	if (isset($this->attributeTypes[$attr])) {
+    		return true;
+    	} ;
+    	$abstr = $this->getInhObj();
+    	if (!is_null($abstr)) {
+    		return $abstr->existsAttr($attr);
+    	}
+    	return false;
+    }
+    
+    protected function existsAttrLocal($attr)
+    {
+    	return isset($this->attributeTypes[$attr]);
+    }
 
     /**
      * Returns the 'path' of an attribute.
@@ -783,30 +809,7 @@ class Model
         return ($res);
     }
 
-    /**
-     * Returns true if the attribute exists.
-     *
-     * @param string $attr the attribute.
-     *
-     * @return boolean
-     */
-    public function existsAttr($attr)
-    {
-    	if (isset($this->attributeTypes[$attr])) {
-            return true;
-        } ;
-        $abstr = $this->getInhObj();
-        if (!is_null($abstr)) {
-            return $abstr->existsAttr($attr);
-        }
-        return false;
-    }
 
-    protected function existsAttrLocal($attr)
-    {
-    	return isset($this->attributeTypes[$attr]);
-
-    }
 
 
     /**

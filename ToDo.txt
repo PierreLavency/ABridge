@@ -10,8 +10,8 @@ B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B22 EVALP in create dialog
 
-PERF on 2*20
-0.491=>0.387
+
+
 
 DEV
 - backup !!!
@@ -89,6 +89,12 @@ INT
 - set up jenkin
 
 DONE
+--------------// 0.5
+optimize gettyp
+PERF on 2*20 : 0.354
+---------------//1
+remove 'meta' for attr and types replaced by attributeTypes
+PERF on 2*20 : 0.491=>0.387
 ---------------// 0.25
 - remove reset from non testing code.
 ---------------// 0.25

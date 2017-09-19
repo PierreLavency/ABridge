@@ -279,7 +279,7 @@ class SQLBase extends Base
     
     public function delMod($model)
     {
-    	$sql = "\n DROP TABLE $model \n";
+        $sql = "\n DROP TABLE $model \n";
         $this->logger->logLine($sql, ['class'=>__CLASS__,'line'=>__LINE__]);
         if (! $this->mysqli->query($sql)) {
  //           echo E_ERC021.":$sql" . ":".$this->mysqli->error."<br>";

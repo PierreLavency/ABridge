@@ -17,36 +17,44 @@ require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
 
 $numberRun=2;
-$runTime=[];
+$breath=20;
+$depth=2;
+//$bases= ['dataBase','memBase','fileBase'];
+$bases =['dataBase'];
+
+$runTime=0;
 $previousTime=0;
 $currentTime=0;
-$avg=0;
-for ($i = 0; $i < $numberRun; $i++) {
-	$x= new Controler_Perf();
-	$x->initMod();
-	$res= $x->initRoot();
-	$n=$x->depthBreadthNew($res->getRPath(), 2, 20);
-	$x->close();
-	$currentTime=xdebug_time_index();
-	$runTime[$i]=$currentTime-$previousTime;
-	$previousTime=$currentTime;
-	echo "run $i : $runTime[$i] \n";
-	$avg=$avg+$runTime[$i];
+foreach ($bases as $base)
+{	
+	echo "\nrunning on $base\n";
+	$avg=0;
+	for ($i = 0; $i < $numberRun; $i++) {
+	    $x= new Controler_Perf();
+	    $x->config['Handlers']=['Controler_Test_1'=>[$base,'test_perf']];
+	    $x->initMod();
+	    $res= $x->initRoot();
+	    $n=$x->depthBreadthNew($res->getRPath(), $depth, $breath);
+	    $x->close();
+	    $currentTime=xdebug_time_index();
+	    $runTime=$currentTime-$previousTime;
+	    $previousTime=$currentTime;
+	    echo "\t run $i : $runTime \n";
+	    $avg=$avg+$runTime;
+	}
+	$avg=$avg/$numberRun;
+	echo "number of object/run : $n   \n";
+	echo "average run time     : $avg \n" ;
+	$avg=$avg/$n;
+	echo "average time/object  : $avg \n";
 }
-$avg=$avg/$numberRun;
-echo "number of object/run : $n   \n";
-echo "average run time     : $avg \n" ;
-$avg=$avg/$n;
-echo "average time/object  : $avg \n";
-
 
 class Controler_Perf
 {
     
-    protected $config =  [
+    public $config =  [
     'Handlers' => [
-    'Controler_Test_1'=>['dataBase','test_perf'],
-    'Controler_Test_2'=>['fileBase'],
+    'Controler_Test_1'=>['memBase','test_perf'],
     ],
     'Views' => [
         'Home'=>['Controler_Test_1'],
@@ -68,7 +76,7 @@ class Controler_Perf
             'host'=>'localhost',
             'user'=>'cl822',
             'pass'=>'cl822',
-    		'trace'=>'3',
+            'trace'=>'3',
     ];
     
     protected $show = false;
@@ -87,7 +95,7 @@ class Controler_Perf
     {
 
 
-    	Log::reset();
+        Log::reset();
         Mod::reset();
         Hdl::reset();
         Usr::reset();
@@ -115,14 +123,14 @@ class Controler_Perf
     
     public function close()
     {
-    	$ctrl = new Controler($this->config, $this->ini);
-    	$ctrl->close();
+        $ctrl = new Controler($this->config, $this->ini);
+        $ctrl->close();
     }
     
     public function initRoot()
     {
-    	
-    	$path = '/';
+        
+        $path = '/';
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
@@ -204,7 +212,7 @@ class Controler_Perf
     
     public function depthBreadthNew($path, $n, $f)
     {
-    	$t = 0;
+        $t = 0;
         if ($n==0) {
             return $t;
         }
