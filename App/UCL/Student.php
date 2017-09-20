@@ -20,7 +20,7 @@ class Student extends CModel
 		}
 		return $this->mod->getValN($attr);
 	}
-	
+
 	
 	public function initMod($bindings)
 	{
@@ -32,7 +32,6 @@ class Student extends CModel
 		$sex='Sex';
 		$country='Country';
 		
-var_dump($bindings);
 
 		$obj = $this->mod;
 		

@@ -25,5 +25,11 @@ class Inscription extends CModel
 		}
 		return $res;
 	}
-	
+	public function initMod($bindings)
+	{
+		
+		throw new Exception(__CLASS__.' - '.__FUNCTION__);
+		
+		
+	}
 }

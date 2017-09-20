@@ -41,6 +41,15 @@ class ModBase_Case extends PHPUnit_Framework_TestCase
         
     
         $this->assertNotNull($sh = new ModBase($db));
+        
+        $res1= $sh->showState();
+        $this->assertNotNull($res1);
+        $res= json_decode($res1, true);
+        $this->assertEquals(1, count($res));
+
+        $res2= $sh->showState(self::$CName);
+        $this->assertEquals($res1, $res2);
+        
         $this->assertNotNull($mod = new Model(self::$CName));
         $this->assertTrue($sh->restoreMod($mod));
         $this->assertTrue($mod->existsAttr('Name'));

@@ -39,4 +39,12 @@ class Person extends CModel
 		return $this->mod->saveN();
 	}
 	
+	
+	public function initMod($bindings)
+	{
+		
+		throw new Exception(__CLASS__.' - '.__FUNCTION__);
+		
+		
+	}
 }

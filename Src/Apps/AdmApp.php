@@ -3,6 +3,7 @@ namespace ABridge\ABridge\Apps;
 
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstView;
+use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\App;
 use ABridge\ABridge\Adm\Adm;
 
@@ -77,7 +78,11 @@ class AdmApp extends App
                                             ],
                                             'navList' =>
                                             [
-                                                    CstMode::V_S_READ => [CstMode::V_S_UPDT],
+                                                    CstMode::V_S_READ =>
+                                                    [
+                                                            CstMode::V_S_UPDT
+                                                            
+                                                    ],
                                             ],
                                     ],
                                     'ModState' =>
@@ -90,9 +95,62 @@ class AdmApp extends App
                                                             
                                                     ],
                                             ],
+                                            'attrProp' =>
+                                            [
+                                                    CstMode::V_S_READ =>[CstView::V_P_VAL],
+                                            ],
+                                            'attrHtml' => [
+                                                    CstMode::V_S_READ =>
+                                                    [
+                                                     'ModState'=>[
+                                                        CstHTML::H_TYPE=>
+                                                         CstHTML::H_T_TEXTAREA,
+                                                        CstHTML::H_COL=>90,
+                                                        CstHTML::H_ROW=> 36,
+                                                            
+                                                     ]
+                                                            
+                                                    ],
+                                            ],
                                             'navList' =>
                                             [
                                                     CstMode::V_S_READ => [],
+                                            ],
+                                    ],
+                                    'StateHandler' =>
+                                    [
+                                            'attrList' =>
+                                            [
+                                                    CstMode::V_S_READ=>
+                                                    [
+                                                            'Model','StateHandler',
+                                                            
+                                                    ],
+                                                    CstMode::V_S_UPDT=>
+                                                    [
+                                                            'Model'
+                                                            
+                                                    ],
+                                            ],
+                                            'attrProp' =>
+                                            [
+                                                    CstMode::V_S_READ =>[CstView::V_P_VAL],
+                                            ],
+                                            'attrHtml' => [
+                                                    CstMode::V_S_READ =>
+                                                    [
+                                                     'StateHandler'=> [
+                                                        CstHTML::H_TYPE=>
+                                                         CstHTML::H_T_TEXTAREA,
+                                                        CstHTML::H_COL=>90,
+                                                        CstHTML::H_ROW=> 36
+                                                     ]
+                                                            
+                                                    ],
+                                            ],
+                                            'navList' =>
+                                            [
+                                                    CstMode::V_S_READ => [CstMode::V_S_UPDT],
                                             ],
                                     ],
                                     'Trace' =>

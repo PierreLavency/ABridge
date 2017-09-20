@@ -3,12 +3,13 @@ CMD
 pear install phpdoc/PhpDocumentor-2.8.1
 grep -ri '>reset' Src/* App/* Tests/*
 
-BUGS	27
+BUGS	28
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B22 EVALP in create dialog
+B27 session initial log in - menu not updated (see caching)
 
 DEV
 - develop component for abstract code (Cda).
@@ -22,7 +23,7 @@ DEV
 - clean up picture path
 
 - review property management in Model
-- review error Management in Model (execption rather than errolog)
+- review error Management in Model (exception rather than errolog)
 - combine temp/evalp reference.
  
 - Document the code!
@@ -34,7 +35,6 @@ DEV
 - develop a CLI / Python
 - selection for Ref / Java script 
 - set up modif logging / node.js ?
-
 
 - changed DB model independently of class model.
 - user Jason to save data rather than serilialisation (?).
@@ -59,7 +59,7 @@ DEV
 - graphics : include svg bit in view. /2
 
 PERF
-
+review getValues.
 optimize "is" method in Model.
 initMod rather than restoreMod
 
@@ -83,17 +83,29 @@ INT
 - set up jenkin
 
 DONE
-- role spec access in session
+add showstate in ModBase and Admin.
+B27 session initial log in - menu not updated (see caching)
+Clean up test DB.
+PERF  S1(1)on 2*20 : 0.380
+PERF* S1(1)on 4*10 : 0.105
+PERF* S1(1)on 3*10 : 0.103
+PERF* S1(1)on 2*20 : 0.089
+PERF* S1(1)on 2*50 : 0.111
+PERF* S1(1)on 2*100: 0.103
+PERF  S1(2)on 2*20 : 0.322
+--------------// 0.5
+- role spec access cached in session
 - backup 19/09/17
-- improve predef attributes managemnet with abstract class.
+- improve predef attributes management with abstract class (see getAttrList).
 --------------// 0.5
 optimize gettyp
-PERF on 2*20 : 0.354
+PERF  S1(2)on 2*20 : 0.354
 ---------------//1
 remove 'meta' for attr and types replaced by attributeTypes
-PERF on 2*20 : 0.491=>0.387
+PERF  S1(2)on 2*20 : 0.387
 ---------------// 0.25
 - remove reset from non testing code.
+PERF  S1(2)on 2*20 : 0.491
 ---------------// 0.25
 B26 reset must be static.
 --------------// 1 day

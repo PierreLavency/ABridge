@@ -30,8 +30,10 @@ class Admin extends CModel
         $res = $obj->addAttr('Meta', Mtype::M_BOOL, M_P_TEMP);
         $res = $obj->addAttr('Load', Mtype::M_BOOL, M_P_TEMP);
         $res = $obj->addAttr('Delta', Mtype::M_BOOL, M_P_TEMP);
+        $res = $obj->addAttr('Model', Mtype::M_STRING);
         $res = $obj->addAttr('MetaData', Mtype::M_TXT, M_P_EVAL);
         $res = $obj->addAttr('ModState', Mtype::M_TXT, M_P_EVAL);
+        $res = $obj->addAttr('StateHandler', Mtype::M_TXT, M_P_EVAL);
         
         return $obj->isErr();
     }
@@ -43,6 +45,16 @@ class Admin extends CModel
         }
         if ($attr == 'ModState') {
             return Mod::get()->showState();
+        }
+        if ($attr=='Model') {
+            if (is_null($this->mod->getValN($attr))) {
+                return $this->mod->getModName();
+            }
+        }
+        if ($attr == 'StateHandler') {
+            $modName=$this->getVal('Model');
+            $stateHandler=Mod::get()->getStateHandler($modName);
+            return $stateHandler->showState($modName);
         }
         return $this->mod->getValN($attr);
     }

@@ -221,6 +221,7 @@ class Session extends CModel
             }
         }
         
+        $this->roleSpecLoaded=false;
         $this->mod->setVal('Checked', 1);
         return $this->mod->saveN();
     }

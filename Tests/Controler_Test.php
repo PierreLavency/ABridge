@@ -22,8 +22,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     protected $config =  [
     'Handlers' => [
-    'Controler_Test_1'=>['dataBase','testb'],
-    'Controler_Test_2'=>['fileBase'],
+            'Controler_Test_1'=>['dataBase'],
+            'Controler_Test_2'=>['fileBase'],
     ],
 
     'View' => [
@@ -50,6 +50,25 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     protected $rootPath='/Controler_Test_1/1';
     protected $CName='Controler_Test_1';
 
+    protected static $prm;
+    
+    public static function setUpBeforeClass()
+    {
+                    
+        self::$prm=
+        [
+                'name'=>'test',
+                'base'=>'dataBase',
+                'dataBase'=>'test_'.__CLASS__,
+                'fileBase'=>'test_'.__CLASS__,
+                'memBase' =>'test_'.__CLASS__,
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'host'=>'localhost',
+                'user'=>'cl822',
+                'pass'=>'cl822'
+        ];
+    }
+    
     function testRoot()
     {
         Log::reset();
@@ -59,13 +78,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         Adm::reset();
         Vew::reset();
             
-        $ctrl = new Controler($this->config, [
-        'name'=>'UnitTest',
-        'path'=>'C:/Users/pierr/ABridge/Datastore/',
-        'host'=>'localhost',
-        'user'=>'cl822',
-        'pass'=>'cl822',
-        ]);
+        $ctrl = new Controler($this->config, self::$prm);
         
         $x=new Model($this->CName);
         $x->deleteMod();
@@ -129,12 +142,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     public function testRootErr($path)
     {
-        $ctrl = new Controler(
-            $this->config,
-            ['name'=>'UnitTest',
-                 'user'=>'cl822',
-                'pass'=>'cl822']
-        );
+        $ctrl = new Controler($this->config, self::$prm);
 
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']=$path;
@@ -155,11 +163,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     public function testSelect()
     {
-        $ctrl = new Controler($this->config, [
-                'name'=>'UnitTest',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ]);
+        $ctrl = new Controler($this->config, self::$prm);
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_SERVER['PATH_INFO']='/'.$this->CName;
@@ -190,11 +194,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     private function newSon($path)
     {
-        $ctrl = new Controler($this->config, [
-                'name'=>'UnitTest',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ]);
+        $ctrl = new Controler($this->config, self::$prm);
         $fpath = $path.'/Cref';
 
         $_SERVER['REQUEST_METHOD']='GET';
@@ -217,11 +217,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     public function testUpdSon($path)
     {
-        $ctrl = new Controler($this->config, [
-                'name'=>'UnitTest',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ]);
+        $ctrl = new Controler($this->config, self::$prm);
 
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
@@ -272,11 +268,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     private function delSon($path)
     {
-        $ctrl = new Controler($this->config, [
-                'name'=>'UnitTest',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ]);
+        $ctrl = new Controler($this->config, self::$prm);
         
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;

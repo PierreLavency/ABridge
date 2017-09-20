@@ -16,7 +16,7 @@ use ABridge\ABridge\View\Vew;
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
 
-$numberRun=2;
+$numberRun=1;
 $breath=20;
 $depth=2;
 //$bases= ['dataBase','memBase','fileBase'];
@@ -25,28 +25,27 @@ $bases =['dataBase'];
 $runTime=0;
 $previousTime=0;
 $currentTime=0;
-foreach ($bases as $base)
-{	
-	echo "\nrunning on $base\n";
-	$avg=0;
-	for ($i = 0; $i < $numberRun; $i++) {
-	    $x= new Controler_Perf();
-	    $x->config['Handlers']=['Controler_Test_1'=>[$base,'test_perf']];
-	    $x->initMod();
-	    $res= $x->initRoot();
-	    $n=$x->depthBreadthNew($res->getRPath(), $depth, $breath);
-	    $x->close();
-	    $currentTime=xdebug_time_index();
-	    $runTime=$currentTime-$previousTime;
-	    $previousTime=$currentTime;
-	    echo "\t run $i : $runTime \n";
-	    $avg=$avg+$runTime;
-	}
-	$avg=$avg/$numberRun;
-	echo "number of object/run : $n   \n";
-	echo "average run time     : $avg \n" ;
-	$avg=$avg/$n;
-	echo "average time/object  : $avg \n";
+foreach ($bases as $base) {
+    echo "\nrunning on $base\n";
+    $avg=0;
+    for ($i = 0; $i < $numberRun; $i++) {
+        $x= new Controler_Perf();
+        $x->config['Handlers']=['Controler_Test_1'=>[$base]];
+        $x->initMod();
+        $res= $x->initRoot();
+        $n=$x->depthBreadthNew($res->getRPath(), $depth, $breath);
+        $x->close();
+        $currentTime=xdebug_time_index();
+        $runTime=$currentTime-$previousTime;
+        $previousTime=$currentTime;
+        echo "\t run $i : $runTime \n";
+        $avg=$avg+$runTime;
+    }
+    $avg=$avg/$numberRun;
+    echo "number of object/run : $n   \n";
+    echo "average run time     : $avg \n" ;
+    $avg=$avg/$n;
+    echo "average time/object  : $avg \n";
 }
 
 class Controler_Perf
@@ -54,7 +53,7 @@ class Controler_Perf
     
     public $config =  [
     'Handlers' => [
-    'Controler_Test_1'=>['memBase','test_perf'],
+    'Controler_Test_1'=>[],
     ],
     'Views' => [
         'Home'=>['Controler_Test_1'],
@@ -70,13 +69,18 @@ class Controler_Perf
         ]
     ];
     
-    protected $ini = [
-            'name'=>'UnitTest',
+    public $ini = [
+            'name'=>'test_perf',
+            'base'=>'dataBase',
+            'dataBase'=>'test_perf',
+            'fileBase'=>'test_perf',
+            'memBase '=>'test_perf',
             'path'=>'C:/Users/pierr/ABridge/Datastore/',
             'host'=>'localhost',
             'user'=>'cl822',
             'pass'=>'cl822',
-            'trace'=>'3',
+            'trace'=>'0',
+            
     ];
     
     protected $show = false;

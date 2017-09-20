@@ -33,7 +33,8 @@ class UtilsC
                 'path'=>'C:/Users/pierr/ABridge/Datastore/',
                 'host'=>'localhost',
                 'user'=>'cl822',
-                'pass'=>'cl822'
+                'pass'=>'cl822',
+                'trace'=>'0',
         ];
         return $prm;
     }

@@ -17,7 +17,22 @@ class ModBase
     {
         $this->base=$base;
     }
-
+    
+    public function showState($modName = null)
+    {
+        $showState=[];
+        $modNameList=[];
+        if (is_null($modName)) {
+            $modNameList=$this->base->getAllMod();
+        } elseif ($this->base->existsMod($modName)) {
+            $modNameList=[$modName];
+        }
+        foreach ($modNameList as $modName) {
+            $showState[$modName] = $this->base->getMod($modName);
+        }
+        return json_encode($showState, JSON_PRETTY_PRINT);
+    }
+    
     public function eraseMod($mod)
     {
         $name = $mod->getModName();
@@ -125,6 +140,8 @@ class ModBase
         return ($this->base->putMod($modName, $newBaseMod, $addList, $delList));
     }
     
+
+    
     public function restoreMod($mod)
     {
         $name = $mod->getModName();
@@ -134,8 +151,8 @@ class ModBase
         }
         if (isset($values['meta'])) {
             $values = $values['meta'];
- //     } else {
- //        echo ' !!!! '.$name.' !!!! ';
+        } else {
+            echo ' !!!! '.$name.' !!!! ';
         }
         $attrlist=[];
         $attrtype=[];
