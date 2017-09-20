@@ -321,6 +321,7 @@ class Model
         return array_keys($this->attributeTypes);
     }
     
+    
     public function getAllPeristAttr()
     {
         $attrLst = $this->getAllAttr();
@@ -338,21 +339,20 @@ class Model
     
     public function getAttrList()
     {
-        $list = $this->getAllAttr();
-        $abstr = $this->getInhObj();
-        if (is_null($abstr)) {
-            return $list;
+        return array_keys($this->getAttrTypList());
+    }
+    
+    public function getAttrTypList()
+    {
+        $attributes=[];
+        $ownAttributes = $this->attributeTypes;
+        $abstractClass = $this->getInhObj();
+        if (is_null($abstractClass)) {
+            return $ownAttributes;
         }
-        $ilist = $abstr->getAllAttr();
-        $ilist = array_diff($ilist, $this->getAllPredef());
-        $res = ['id'];
-        $res = array_merge($res, $ilist);
-        $key = array_search('id', $list);
-        if ($key!==false) {
-            unset($list[$key]);
-        }
-        $res = array_merge($res, $list);
-        return $res ;
+        $inhertAttributes = $abstractClass->getAllTyp();
+        $attributes = array_merge($inhertAttributes, $ownAttributes);
+        return $attributes;
     }
 
     /**
@@ -439,16 +439,16 @@ class Model
      */
     public function getTyp($attr)
     {
-    	if (isset($this->attributeTypes[$attr])) {
-    		return $this->attributeTypes[$attr];
-    	};
-    	$abstr = $this->getInhObj();
-    	if (!is_null($abstr)) {
-    		$typ= $abstr->getTyp($attr);
-    		if($typ) {
-    			return $typ;
-    		}
-    	}
+        if (isset($this->attributeTypes[$attr])) {
+            return $this->attributeTypes[$attr];
+        };
+        $abstr = $this->getInhObj();
+        if (!is_null($abstr)) {
+            $typ= $abstr->getTyp($attr);
+            if ($typ) {
+                return $typ;
+            }
+        }
         $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
         return false;
     }
@@ -462,19 +462,19 @@ class Model
      */
     public function existsAttr($attr)
     {
-    	if (isset($this->attributeTypes[$attr])) {
-    		return true;
-    	} ;
-    	$abstr = $this->getInhObj();
-    	if (!is_null($abstr)) {
-    		return $abstr->existsAttr($attr);
-    	}
-    	return false;
+        if (isset($this->attributeTypes[$attr])) {
+            return true;
+        } ;
+        $abstr = $this->getInhObj();
+        if (!is_null($abstr)) {
+            return $abstr->existsAttr($attr);
+        }
+        return false;
     }
     
     protected function existsAttrLocal($attr)
     {
-    	return isset($this->attributeTypes[$attr]);
+        return isset($this->attributeTypes[$attr]);
     }
 
     /**

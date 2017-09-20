@@ -10,12 +10,7 @@ B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B22 EVALP in create dialog
 
-
-
-
 DEV
-- backup !!!
-- remove predef attributes from abstract class.
 - develop component for abstract code (Cda).
 - create Ctr Component.
 
@@ -64,9 +59,8 @@ DEV
 - graphics : include svg bit in view. /2
 
 PERF
-role access in Access
-getTyp : no call to attrExists
-attrExists : isset
+
+optimize "is" method in Model.
 initMod rather than restoreMod
 
 TEST
@@ -79,7 +73,7 @@ APP
 	- code postal / 3
 
 INT
-- migrate to 7 and upgrade phpunit etc.  
+- migrate to 7 and upgrade phpunit (use composer) etc.  
 - integrate with drupal ?
 - integrate MongoDB
 - integrate Redhiss
@@ -89,6 +83,9 @@ INT
 - set up jenkin
 
 DONE
+- role spec access in session
+- backup 19/09/17
+- improve predef attributes managemnet with abstract class.
 --------------// 0.5
 optimize gettyp
 PERF on 2*20 : 0.354

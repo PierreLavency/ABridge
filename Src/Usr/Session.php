@@ -16,10 +16,14 @@ class Session extends CModel
     protected $isNew=false;
     protected $Keep = false;
     protected $hdl = null;
+    protected $roleSpecLoaded=false;
+    protected $roleSpec=null;
     
     public function __construct($mod)
     {
         $this->mod=$mod;
+        $this->roleSpecLoaded=false;
+        $this->roleSpec=null;
         if (!$mod->getId()) {
             $this->bkey=uniqid();
             $this->isNew = true;
@@ -71,6 +75,10 @@ class Session extends CModel
  
     public function getRSpec()
     {
+        if ($this->roleSpecLoaded) {
+            return $this->roleSpec;
+        }
+        $this->roleSpecLoaded=true;
         $role = $this->mod->getRef('ActiveRole');
         if (! $role) {
             return null;
@@ -80,6 +88,7 @@ class Session extends CModel
             return null;
         }
         $val = json_decode($res, true);
+        $this->roleSpec=$val;
         return $val;
     }
     
