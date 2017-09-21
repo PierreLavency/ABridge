@@ -3,15 +3,17 @@ CMD
 pear install phpdoc/PhpDocumentor-2.8.1
 grep -ri '>reset' Src/* App/* Tests/*
 
-BUGS	28
+BUGS	29
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B22 EVALP in create dialog
 B27 session initial log in - menu not updated (see caching)
+B28 old format still in use in ModBase.
 
 DEV
+- move logic related to meta data savings from ModBase to Model
 - develop component for abstract code (Cda).
 - create Ctr Component.
 
@@ -83,7 +85,11 @@ INT
 - set up jenkin
 
 DONE
-add showstate in ModBase and Admin.
+- check on delete of distribution / Groups if used in default.
+- clean up index/controller for unit test.
+- first version of checkmod.
+--------------// 1
+add showstate() in ModBase and Admin.
 B27 session initial log in - menu not updated (see caching)
 Clean up test DB.
 PERF  S1(1)on 2*20 : 0.380

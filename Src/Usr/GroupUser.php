@@ -3,6 +3,7 @@ namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Mod\CModel;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\CstError;
 
 class GroupUser extends CModel
 {
@@ -36,5 +37,15 @@ class GroupUser extends CModel
             return $this->mod->getMeta();
         }
         return $this->mod->getValN($attr);
+    }
+    
+    public function delet()
+    {
+        $user = $this->mod->getRef('User');
+        if ($user->getVal('UserGroup')==$this->mod->getVal('UserGroup')) {
+            $this->mod->getErrLog()->logLine(CstError::E_ERC052.':UserGroup');
+            return false;
+        }
+        return $this->mod->deletN();
     }
 }

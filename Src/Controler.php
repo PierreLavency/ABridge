@@ -32,21 +32,8 @@ class Controler
     protected $appName ;
     protected $defVal=[];
      
-    public function __construct()
-    {
-        $a = func_get_args();
-        $i = func_num_args();
-        if (method_exists($this, $f = 'construct'.$i)) {
-            call_user_func_array(array($this, $f), $a);
-        }
-    }
- 
-    public function construct1($ini)
-    {
-        $this->initPrm([], $ini);
-    }
- 
-    public function construct2($spec, $ini)
+
+    public function __construct($spec, $ini)
     {
 //    	$spec=\Config::$config;
         

@@ -44,8 +44,7 @@ class ModBase_Case extends PHPUnit_Framework_TestCase
         
         $res1= $sh->showState();
         $this->assertNotNull($res1);
-        $res= json_decode($res1, true);
-        $this->assertEquals(1, count($res));
+        $this->assertEquals(1, count($res1));
 
         $res2= $sh->showState(self::$CName);
         $this->assertEquals($res1, $res2);

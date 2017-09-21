@@ -228,7 +228,7 @@ class Mod extends Comp
             }
             $showState[$baseType]=$showStateInstance;
         }
-        return json_encode($showState, JSON_PRETTY_PRINT);
+        return $showState;
     }
 
  

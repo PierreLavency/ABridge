@@ -65,7 +65,7 @@ class CstError
     const E_ERC060 = 'ERC060';  // role not allowed
     
     const E_ERC061 = 'ERC061';  // no custom class defined
-    const E_ERC062 = 'ERC062';  // no custom class defined
+    const E_ERC062 = 'ERC062';
     const E_ERC063 = 'ERC063';
     const E_ERC064 = 'ERC064';
     const E_ERC065 = 'ERC065';
@@ -129,7 +129,7 @@ class CstError
 
         self::E_ERC050 => 'null object in attribute path',
         self::E_ERC051 => 'illegal path',
-        self::E_ERC052 => 'Cannot delete object- referential integrity',
+        self::E_ERC052 => 'Cannot delete object (referential integrity), object referenced',
         self::E_ERC053 => 'Action not authorized on this object',
         self::E_ERC054 => 'Parameter must be a REF attribute',
         self::E_ERC055 => 'Parameter must be a CREF attribute',
@@ -141,7 +141,7 @@ class CstError
         self::E_ERC060 => 'Role is not allowed',
         
         self::E_ERC061 => 'Init Mod called without custom class',
-        self::E_ERC062 => 'Object has been changed',
+        self::E_ERC062 => 'Object has been changed (concurrency issue)',
         self::E_ERC063 => 'Invalid Base type',
         
         self::E_ERC064 => 'Object cannot be determined',

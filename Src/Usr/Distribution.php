@@ -3,6 +3,7 @@ namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Mod\CModel;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\CstError;
 
 class Distribution extends CModel
 {
@@ -25,5 +26,15 @@ class Distribution extends CModel
         $obj->setCkey(['Role','User'], true);
         
         return $obj->isErr();
+    }
+    
+    public function delet()
+    {
+        $user = $this->mod->getRef('User');
+        if ($user->getVal('Role')==$this->mod->getVal('Role')) {
+            $this->mod->getErrLog()->logLine(CstError::E_ERC052.':UserRole');
+            return false;
+        }
+        return $this->mod->deletN();
     }
 }

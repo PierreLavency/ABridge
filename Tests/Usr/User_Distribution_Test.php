@@ -7,6 +7,7 @@ use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Usr\User;
 use ABridge\ABridge\Usr\Role;
 use ABridge\ABridge\Usr\Distribution;
+use ABridge\ABridge\CstError;
 
 class User_Distribution_Test_dataBase_User extends User
 {
@@ -121,10 +122,14 @@ class User_Distribution_Test extends PHPUnit_Framework_TestCase
             $x->setVal('Role', 1);
             $x->save();
             $this->assertFalse($x->isErr());
-
             
             $res= $x->setVal('Role', 2);
             $this->assertFalse($res);
+
+            $d = new Model($bd['Distribution'], 1);
+            $res= $d->delet();
+            $this->assertFalse($res);
+            $this->assertEquals(CstError::E_ERC052.':UserRole', $d->getErrLine());
             
             $mod->end();
         }

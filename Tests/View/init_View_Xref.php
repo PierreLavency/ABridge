@@ -13,11 +13,12 @@ use ABridge\ABridge\View\View;
 use ABridge\ABridge\View\CstView;
 use ABridge\ABridge\View\CstHTML;
 
+require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 require_once 'View_case_Xref.php';
 
 $logName = basename(__FILE__, ".php");
 
-$log=new UnitTest('C:/Users/pierr/ABridge/Datastore/', $logName, 1);
+$log=new UnitTest('C:/Users/pierr/ABridge/Datastore/', $logName, 0);
 
 /**************************************/
 
@@ -57,4 +58,4 @@ Mod::get()->End();
 
 $log->saveTest();
 
-//$log->showTest();
+$log->showTest();

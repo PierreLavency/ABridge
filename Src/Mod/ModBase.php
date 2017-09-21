@@ -30,7 +30,7 @@ class ModBase
         foreach ($modNameList as $modName) {
             $showState[$modName] = $this->base->getMod($modName);
         }
-        return json_encode($showState, JSON_PRETTY_PRINT);
+        return $showState;
     }
     
     public function eraseMod($mod)

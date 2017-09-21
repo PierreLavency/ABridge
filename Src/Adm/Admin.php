@@ -44,7 +44,7 @@ class Admin extends CModel
             return $this->mod->getMeta();
         }
         if ($attr == 'ModState') {
-            return Mod::get()->showState();
+            return  json_encode(Mod::get()->showState(), JSON_PRETTY_PRINT);
         }
         if ($attr=='Model') {
             if (is_null($this->mod->getValN($attr))) {
@@ -54,7 +54,7 @@ class Admin extends CModel
         if ($attr == 'StateHandler') {
             $modName=$this->getVal('Model');
             $stateHandler=Mod::get()->getStateHandler($modName);
-            return $stateHandler->showState($modName);
+            return json_encode($stateHandler->showState($modName), JSON_PRETTY_PRINT);
         }
         return $this->mod->getValN($attr);
     }

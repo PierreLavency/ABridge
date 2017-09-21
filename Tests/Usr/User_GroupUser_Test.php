@@ -7,6 +7,7 @@ use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Usr\User;
 use ABridge\ABridge\Usr\UserGroup;
 use ABridge\ABridge\Usr\GroupUser;
+use ABridge\ABridge\CstError;
 
 class User_GroupUser_Test_dataBase_User extends User
 {
@@ -128,8 +129,10 @@ class User_GroupUser_Test extends PHPUnit_Framework_TestCase
             $res= $x->setVal('UserGroup', 2);
             $this->assertFalse($res);
             
-            
-
+            $d = new Model($bd['GroupUser'], 1);
+            $res= $d->delet();
+            $this->assertFalse($res);
+            $this->assertEquals(CstError::E_ERC052.':UserGroup', $d->getErrLine());
                         
             
             $mod->end();
