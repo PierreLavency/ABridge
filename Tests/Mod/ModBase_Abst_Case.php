@@ -56,11 +56,14 @@ class ModBase_Abst_Case extends PHPUnit_Framework_TestCase
         $this->assertTrue($mod->addAttr('Age', Mtype::M_STRING));
         $this->assertTrue($sh->saveMod($mod));
 
+
+        
         $this->assertNotNull($mod = new Model(self::$HName));
         $this->assertFalse($mod->setInhNme(self::$CName));
         $this->assertTrue($mod->addAttr('Sexe', Mtype::M_STRING));
         $this->assertTrue($sh->saveMod($mod));
-        
+
+
         $db->commit();
     }
 

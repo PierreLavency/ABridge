@@ -29,7 +29,7 @@ class FileBase extends Base
     
     public function remove()
     {
-        parent::erase();
+        parent::removeBase();
         return $this->close();
     }
     
@@ -76,6 +76,7 @@ class FileBase extends Base
         parent::commit(); // to align
         return $r;
     }
+    
     public function newModId($model, $meta, $idF)
     {
         $r=parent::newModId($model, $meta, $idF);

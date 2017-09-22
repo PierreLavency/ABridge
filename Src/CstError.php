@@ -123,7 +123,7 @@ class CstError
         self::E_ERC044 => 'Abstract class cannot be instanciated',
         self::E_ERC045 => 'Attempt to set attribute of Abstract class',
         self::E_ERC046 => 'NOT USED',
-        self::E_ERC047 => 'NOT USED',
+        self::E_ERC047 => 'inconsistent saved Model',
         self::E_ERC048 => 'Illegal action on this type of path',
         self::E_ERC049 => 'Action not authorized on this path',
 

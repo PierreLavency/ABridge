@@ -3,9 +3,6 @@
 use ABridge\ABridge\Controler;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mod;
-use ABridge\ABridge\Mod\Mtype;
-use ABridge\ABridge\Hdl\CstMode;
-use ABridge\ABridge\View\CstView;
 
 use ABridge\ABridge\Log\Log;
 use ABridge\ABridge\Hdl\Hdl;
@@ -15,9 +12,15 @@ use ABridge\ABridge\View\Vew;
 
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
+class dummy
+{
+}
+
+
 $baseTypeList=['dataBase','fileBase'];
-//$baseList=['ABB','ABBTEST','ADM','AFS','ALB','CDV','CSN','GEN','UCL','UCL_TEST','USR',];
-$baseList=['UCL','UCL_TEST',];
+$baseList=['ABB','ABBTEST','ADM','AFS','ALB','CDV','CSN','GEN','UCL','UCL_TEST','USR','genealogy',];
+//$baseList=['ABB','ABBTEST','UCL_TEST','USR',];
+
 $config =
 [
         'Handlers'=>[],
@@ -47,7 +50,8 @@ Adm::reset();
 Vew::reset();
 
 foreach ($baseList as $baseName) {
-    echo $baseName."\n";
+    Mod::reset();
+    echo "\n".$baseName."\n";
     foreach ($baseTypeList as $baseType) {
         $className=$baseName.'_'.$baseType.'_'.__FILE__;
         $config['Handlers']=[$className=>[$baseType]];
@@ -58,12 +62,15 @@ foreach ($baseList as $baseName) {
         echo "\t".$baseType."\n";
         foreach ($handlerState as $modName => $modState) {
             echo "\t\t".$modName."\n";
-//			echo "\t\t".json_encode($modState)."\n";
+//            echo "\t\t".json_encode($modState, JSON_PRETTY_PRINT)."\n";
             $config['Handlers']=[$modName=>[$baseType]];
             $ctrl = new Controler($config, $ini);
             $stateHandler=Mod::get()->getStateHandler($modName);
+            Mod::get()->assocClassMod($modName, 'dummy'); //Hack to by pass check on custum class.
             $mod=new Model($modName);
-            echo "\t\t".json_encode($mod->getAttrList())."\n";
+//            $mod->saveMod();
+            $mod->getErrLog()->show();
+//            echo "\t\t".json_encode($mod->getAttrList())."\n";
         }
     }
 }

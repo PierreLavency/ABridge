@@ -73,7 +73,7 @@ class SQLBase extends Base
     {
         $sql = "DROP DATABASE $this->dbname";
         $this->mysqli->query($sql);
-        parent::erase();
+        parent::removeBase();
         return $this->close();
     }
 

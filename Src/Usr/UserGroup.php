@@ -27,7 +27,7 @@ class UserGroup extends CModel
     public function getVal($attr)
     {
         if ($attr == 'MetaData') {
-            return $this->mod->getMeta();
+            return json_encode($this->mod->getMeta(), JSON_PRETTY_PRINT);
         }
         return $this->mod->getValN($attr);
     }

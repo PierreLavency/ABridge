@@ -1,7 +1,7 @@
 CMD
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri '>reset' Src/* App/* Tests/*
+grep -ri 'getMeta' Src/* App/* Tests/*
 
 BUGS	29
 B1 session with API.
@@ -10,16 +10,13 @@ B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B22 EVALP in create dialog
 B27 session initial log in - menu not updated (see caching)
-B28 old format still in use in ModBase.
 
 DEV
-- move logic related to meta data savings from ModBase to Model
+- avoid loading abstractMod in Mod base and rationalize interface with model.
 - develop component for abstract code (Cda).
 - create Ctr Component.
 
-- check on delete of distribution / Groups if used in default.
 - set up own exception
-
 - improve LC support (test/ dev Data Base etc.)
 	
 - clean up picture path
@@ -85,6 +82,11 @@ INT
 - set up jenkin
 
 DONE
+- move logic related to meta data savings from ModBase to Model
+PERF  S1(1)on 2*20 : 0.336
+B28 old format still in use in ModBase (bug in CheckMod);
+PERF  S1(1)on 2*20 : 0.359
+--------------//0.5
 - check on delete of distribution / Groups if used in default.
 - clean up index/controller for unit test.
 - first version of checkmod.

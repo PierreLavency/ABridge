@@ -33,7 +33,7 @@ abstract class Base
         $this->load();
     }
     
-    protected function erase()
+    protected function removeBase()
     {
         if ($this->memBase) {
             $this->objects = [];

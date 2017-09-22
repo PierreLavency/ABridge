@@ -199,18 +199,6 @@ class Model
         $this->modChgd=false;
     }
     
-    public function getMeta()
-    {
-        $this->meta['attr'] = $this->getAllAttr();
-        $this->meta['type'] = $this->getAllTyp();
-        $this->meta['isabstr'] = $this->isAbstr();
-        $this->meta['isabstr'] = $this->isAbstr();
-        $this->meta['inhnme']  = $this->getInhNme();
-        $res =json_encode($this->meta, JSON_PRETTY_PRINT);
-        return $res;
-    }
-    
-    
     public function initMod($bindings)
     {
         if ($this->obj) {
@@ -221,6 +209,79 @@ class Model
         }
         throw new Exception(CstError::E_ERC061.':'.$this->getModName());
     }
+    
+    public function getMeta()
+    {
+        $modelMetaData=[];
+        
+        $modelMetaData['attr_lst']  = $this->getAllAttr();
+        $modelMetaData['attr_typ']  = $this->getAllTyp();
+        $modelMetaData['attr_plst'] = $this->getAllPeristAttr();//to be removed
+        $modelMetaData['attr_dflt'] = $this->getAllDflt();
+        $modelMetaData['attr_path'] = $this->getAllRefParm();
+        $modelMetaData['attr_bkey'] = $this->getAllBkey();
+        $modelMetaData['attr_mdtr'] = $this->getAllMdtr();
+        $modelMetaData['attr_ckey'] = $this->getAllCkey();
+        $modelMetaData['inhnme']    = $this->getInhNme();
+        $modelMetaData['isabstr']   = $this->isAbstr();
+
+        return $modelMetaData;
+    }
+    
+    public function setMeta($modelMetaData)
+    {
+        $tagList=[
+                'attr_lst','attr_typ','attr_plst','attr_dflt',
+                'attr_path','attr_bkey','attr_mdtr','attr_ckey',
+                'inhnme','isabstr',];
+        
+        foreach ($tagList as $tag) {
+            if (!isset($modelMetaData[$tag])) {
+                throw new Exception(CstError::E_ERC047.':'.$this->getModName());
+            }
+        }
+
+        $abst=$modelMetaData['isabstr'];
+        if ($abst) {
+            $this-> setAbstr();
+        }
+        $inherit=$modelMetaData['inhnme'];
+        if ($inherit) {
+            $this->setInhNme($inherit);
+        }
+        $attrlist=$modelMetaData['attr_lst'];
+        $attrtype=$modelMetaData['attr_typ'];
+        $attrpath=$modelMetaData['attr_path'];
+        $attrckey=$modelMetaData['attr_ckey'];
+        $attrbkey=$modelMetaData['attr_bkey'];
+        $attrmdtr=$modelMetaData['attr_mdtr'];
+        $attrdflt=$modelMetaData['attr_dflt'];
+        $predef = $this->getAllPredef();
+        foreach ($attrlist as $attr) {
+            if (! in_array($attr, $predef) and isset($attrtype[$attr])) {
+                $typ= $attrtype[$attr];
+                $path=0;
+                if (array_key_exists($attr, $attrpath)) {
+                    $path=$attrpath[$attr];
+                }
+                $this->addAttr($attr, $typ, $path);
+                if (array_key_exists($attr, $attrdflt)) {
+                    $this->setDflt($attr, $attrdflt[$attr]);
+                }
+                if (in_array($attr, $attrbkey)) {
+                    $this->setBkey($attr, true);
+                }
+                if (in_array($attr, $attrmdtr)) {
+                    $this->setMdtr($attr, true);
+                }
+            }
+        }
+        foreach ($attrckey as $ckey) {
+            $this->setCkey($ckey, true);
+        }
+        return true;
+    }
+          
     /**
      * Returns the errorlogger.
 
@@ -324,17 +385,22 @@ class Model
     
     public function getAllPeristAttr()
     {
-        $attrLst = $this->getAllAttr();
-        $res= [];
-        foreach ($attrLst as $attr) {
-            if (($this->getTyp($attr) !=  Mtype::M_CREF)
-                    and (! $this->isEval($attr))
-                    and (! $this->isTemp($attr))
-                    ) {
-                        $res[]=$attr;
+        $allPeristAttr= [];
+        foreach ($this->getAllTyp() as $attribute => $type) {
+            if ($this->isStateType($attribute)) {
+                        $allPeristAttr[]=$attribute;
             }
         }
-        return $res;
+        return $allPeristAttr;
+    }
+    
+    private function isStateType($attr)
+    {
+        if (($this->getTyp($attr) !=  Mtype::M_CREF)
+                and (! $this->isEval($attr))
+                and (! $this->isTemp($attr))) {
+                    return true;
+        }
     }
     
     public function getAttrList()
@@ -355,6 +421,16 @@ class Model
         return $attributes;
     }
 
+    public function getStateAttrTypList()
+    {
+        $stateAttributeList=[];
+        foreach ($this->getAttrTypList() as $attribute => $type) {
+            if ($this->isStateType($attribute)) {
+                $stateAttributeList[$attribute]=$type;
+            }
+        }
+        return $stateAttributeList;
+    }
     /**
      * Returns the list of attribute types of a Model.
      *
@@ -808,8 +884,6 @@ class Model
         }
         return ($res);
     }
-
-
 
 
     /**
