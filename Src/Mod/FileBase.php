@@ -52,12 +52,12 @@ class FileBase extends Base
             return false;
         }
         $attrLst=[];
-        if (isset($delList['attr_lst'])) {
-            $attrLst = $delList['attr_lst'];
+        if (isset($delList['attr_typ'])) {
+            $attrLst = $delList['attr_typ'];
         }
         foreach ($this->objects[$model] as $id => $list) {
             if ($id) {
-                foreach ($attrLst as $attr) {
+                foreach ($attrLst as $attr => $typ) {
                     if (isset($list[$attr])) {
                         unset($list[$attr]);
                     }
@@ -77,9 +77,14 @@ class FileBase extends Base
         return $r;
     }
     
-    public function newModId($model, $meta, $idF)
+    public function newMod($model, $meta, $newList)
     {
-        $r=parent::newModId($model, $meta, $idF);
+        return $this->newModId($model, $meta, true, $newList);
+    }
+    
+    public function newModId($model, $meta, $idF, $newList)
+    {
+        $r=parent::newModelId($model, $meta, $idF);
         parent::commit(); // to align
         return $r;
     }

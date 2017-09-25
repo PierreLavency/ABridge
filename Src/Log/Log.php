@@ -45,7 +45,7 @@ class Log extends Comp
         return true;
     }
     
-    public function begin($appPrm = null, $bindings = null)
+    public function begin($appPrm = null, $logLevel = null)
     {
         $this->runLevel=$this->logLevel;
     }

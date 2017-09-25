@@ -2,20 +2,18 @@
 namespace ABridge\ABridge\Mod;
 
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Log\Log;
 
 class ModBase
 {
     private $base;
-    private $abstr = [
-        'attr_lst' => ['CName'],
-        'attr_plst'=> ['CName'],
-        'attr_typ' => ['CName'=>Mtype::M_STRING,],
-        'abstract' => true,
-    ];
+    private $logger;
+
     
     public function __construct($base)
     {
         $this->base=$base;
+        $this->logger=Log::Get();
     }
     
     public function showState($modName = null)
@@ -41,87 +39,85 @@ class ModBase
        
     public function saveMod($mod)
     {
+        $newList=[];
+        $addList=[];
+        $delList=[];
+        $newBaseMod=[];
+        $foreignKeyList=[];
+        
         $modName = $mod->getModName();
         $abstractMod = $mod->isAbstr();
         $inhertFromMod  = $mod->getInhNme();
-        $typ  = $mod->getAllTyp();
-        $plst = $mod->getAllPeristAttr();
+        $attrTypList  = $mod->getAllAttrStateTyp();
 
-        if ($abstractMod) { // Why ?
-            $predef = $mod->getAllPredef();
-            $plst   = array_diff($plst, $predef);
-        }
-        $frg=[];
-        
-        $modelMetaData=$mod->getMeta();
-
-        if ($inhertFromMod) {
+        if ($inhertFromMod) { // could be done in Model but introduce test dependency on stateHandler
             $metaInh=$this->base->getMod($inhertFromMod);
-            $iplst=$metaInh['attr_aplst'];
             $ityp =$metaInh['attr_atyp'];
-            $plst = array_merge($plst, $iplst);
-            $typ= $typ+$ityp;
-            $frg['id']=$inhertFromMod;
+            $attrTypList= array_merge($ityp, $attrTypList);
+            $foreignKeyList['id']=$inhertFromMod;
         }
+
+        $newBaseMod['attr_atyp']= $attrTypList;
+        $newBaseMod['attr_inhnme']=$inhertFromMod;
+        $newBaseMod['meta']=$mod->getMeta();
+
         
-        $newBaseMod['attr_plst'] = $plst;
-        $newBaseMod['attr_typ'] =  $typ;
-        if ($abstractMod) {
-            $newBaseMod=$this->abstr;
-        }
-        $newBaseMod['meta']=$modelMetaData;
-        $newBaseMod['attr_aplst']= $plst;
-        $newBaseMod['attr_atyp']= $typ;
-        
-        foreach ($plst as $persistAttribute) {
-            if ($mod->getTyp($persistAttribute) == Mtype::M_REF) {
-                $frg[$persistAttribute] = $mod->getModRef($persistAttribute);
+        foreach ($attrTypList as $attr => $typ) {
+            if ($typ == Mtype::M_REF) {
+                $foreignKeyList[$attr] = $mod->getModRef($attr);
             }
         }
-        
-        $newBaseMod['attr_frg']=$frg;
         
         if (! $this->base->existsMod($modName)) {
-            if ($inhertFromMod) {
-                return ($this->base->newModId($modName, $newBaseMod, false));
+            $newList['attr_typ']=$attrTypList;
+            if ($abstractMod) {
+                $newList['attr_typ'] = ['CName'=>Mtype::M_STRING,];
             }
-            return ($this->base->newMod($modName, $newBaseMod));
+            $newList['attr_frg']=$foreignKeyList;
+            if ($inhertFromMod) {
+                return ($this->base->newModId($modName, $newBaseMod, false, $newList));
+            }
+            return ($this->base->newMod($modName, $newBaseMod, $newList));
         }
         
         $oldBaseMod = $this->base->getMod($modName);
-        $iplst = $oldBaseMod['attr_aplst'];
         $ityp  = $oldBaseMod['attr_atyp'];
-       
-        $x = array_diff($plst, $iplst);
-        $addList['attr_plst'] = $x;
-        $addList['attr_typ'] = $typ;
-        $x = array_diff($iplst, $plst);
-        $delList['attr_plst'] = $x;
-        $delList['attr_typ'] = $ityp;
 
-        foreach ($delList['attr_plst'] as $persistAttribute) {
-            if ($delList['attr_typ'][$persistAttribute] == Mtype::M_REF) {
-                $frg[$persistAttribute] = 'XX';
+        $addList['attr_typ']= array_diff_assoc($attrTypList, $ityp);
+        $addList['attr_frg']=$foreignKeyList;
+
+        $delList['attr_typ']= array_diff_assoc($ityp, $attrTypList);
+        $delList['attr_frg']=[];
+        foreach ($delList['attr_typ'] as $attr => $typ) {
+            if ($typ == Mtype::M_REF) {
+                $delList['attr_frg'][$attr] = 'XX';
             }
         }
+      
+        $changed = false;
+        $addChange=count($addList['attr_typ']);
+        $delChange=count($delList['attr_typ']);
+        if ($addChange or $delChange) {
+            $changed = true;
+            $this->logger->logLine(
+                "$modName : Attribute Added:$addChange Attribute Deleted $delChange",
+                ['class'=>__CLASS__,'line'=>__LINE__]
+            );
+        }
         
-        $newBaseMod['attr_frg']=$frg;
         if ($abstractMod) {
             $res= $this->base->putMod($modName, $newBaseMod, [], []);
-            foreach ($this->base->getAllMod() as $smod) {
-                $svals = $this->base->getMod($smod);
-                if (isset($svals['meta'])) {
-                    $sval = $svals['meta'];
-                    if (isset($sval['inhnme'])) {
-                        if ($sval['inhnme']==$modName) {
-                            $svals['attr_frg']=$frg;
-                            $this->base->putMod(
-                                $smod,
-                                $svals,
-                                $addList,
-                                $delList
-                            );
-                        }
+            if ($changed) {
+                foreach ($this->base->getAllMod() as $smod) {
+                    $baseMod = $this->base->getMod($smod);
+                    if (isset($baseMod['attr_inhnme']) and $baseMod['attr_inhnme']==$modName) {
+                        $baseMod['attr_frg']=$foreignKeyList;
+                        $this->base->putMod(
+                            $smod,
+                            $baseMod,
+                            $addList,
+                            $delList
+                        );
                     }
                 }
             }
@@ -217,21 +213,4 @@ class ModBase
             $this->base->findObjWheOp($model, $attrList, $opList, $valList)
         );
     }
- 
- /*
-    public function copyMod($mod,$base) {
-        $meta = $this->base->getMod($mod);
-        $inh = false;
-        if (isset($meta['inhnme'])) {
-            $inh = $meta['inhnme']; 
-        }
-        if ($inh) {
-            $base->newModId($mod, $meta, false);
-        } else {
-            $base->newMod($mod, $meta);
-        }
-        
-    }
-    
-    */
 }

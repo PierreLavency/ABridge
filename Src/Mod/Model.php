@@ -193,7 +193,7 @@ class Model
         $this->meta['evalp']=[];
 
         $this->abstrct= false;
-        $this->inhNme=false;
+        $this->inhNme =false;
         
         $this->asCriteria = [];
         $this->modChgd=false;
@@ -407,6 +407,19 @@ class Model
     {
         return array_keys($this->getAttrTypList());
     }
+    
+    
+    public function getAllAttrStateTyp()
+    {
+        $allStateTyp= [];
+        foreach ($this->getAllTyp() as $attribute => $type) {
+            if ($this->isStateType($attribute)) {
+                $allStateTyp[$attribute]=$type;
+            }
+        }
+        return $allStateTyp;
+    }
+    
     
     public function getAttrTypList()
     {

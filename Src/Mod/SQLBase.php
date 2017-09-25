@@ -126,19 +126,19 @@ class SQLBase extends Base
         return (parent::close());
     }
  
-    public function newMod($model, $meta)
+    public function newMod($model, $meta, $newList)
     {
-        return $this->newModId($model, $meta, true);
+        return $this->newModId($model, $meta, true, $newList);
     }
  
-    public function newModId($model, $meta, $idF)
+    public function newModId($model, $meta, $idF, $newList)
     {
         if ($this->existsMod($model)) {
             return false;
         };
         $attrFrg=[];
-        if (isset($meta['attr_frg'])) {
-            $attrFrg = $meta['attr_frg'];
+        if (isset($newList['attr_frg'])) {
+            $attrFrg = $newList['attr_frg'];
         }
         $s = "\n CREATE TABLE $model ( " ;
         if ($idF) {
@@ -154,19 +154,12 @@ class SQLBase extends Base
             }
         }
         $attrLst=[];
-        $attrTyp =[];
-        if (isset($meta['attr_plst'])) {
-            $attrLst = $meta['attr_plst'];
-        }
-        if (isset($meta['attr_typ'])) {
-            $attrTyp = $meta['attr_typ'];
+        if (isset($newList['attr_typ'])) {
+            $attrLst= $newList['attr_typ'];
         }
 
-        $c = count($attrLst);
-        for ($i=0; $i<$c; $i++) {
-            if ($attrLst[$i] != 'id') {
-                $attr = $attrLst[$i];
-                $typ=$attrTyp[$attr];
+        foreach ($attrLst as $attr => $typ) {
+            if ($attr != 'id') {
                 $typ = Mtype::convertSqlType($typ);
                 $s = $s.", \n $attr $typ NULL";
                 if (isset($attrFrg[$attr])) {
@@ -181,7 +174,7 @@ class SQLBase extends Base
         if (! $this->mysqli->query($sql)) {
             throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
         };
-        $r = parent::newModId($model, $meta, $idF);
+        $r = parent::newModelId($model, $meta, $idF);
         parent::commit(); //DML always autocommited!!
         return $r;
     }
@@ -191,12 +184,9 @@ class SQLBase extends Base
         if (! $this->existsMod($model)) {
             return false;
         };
-        $attrFrg=[];
-        if (isset($meta['attr_frg'])) {
-            $attrFrg = $meta['attr_frg'];
-        }
         $sql = "\n ALTER TABLE $model ";
-        $sqlDrop = $this->dropAttr($model, $delList, $attrFrg);
+
+        $sqlDrop = $this->dropAttr($model, $delList);
         if ($sqlDrop) {
             $sqlDrop=$sql.$sqlDrop;
             $this->logger->logLine($sqlDrop, ['class'=>__CLASS__,'line'=>__LINE__]);
@@ -205,7 +195,7 @@ class SQLBase extends Base
             }
         }
         $sql = "\n ALTER TABLE $model ";
-        $sqlAdd = $this->addAttr($model, $addList, $attrFrg);
+        $sqlAdd = $this->addAttr($model, $addList);
         if ($sqlAdd) {
             $sqlAdd=$sql.$sqlAdd;
             $this->logger->logLine($sqlAdd, ['class'=>__CLASS__,'line'=>__LINE__]);
@@ -218,19 +208,23 @@ class SQLBase extends Base
         return $r;
     }
     
-    public function dropAttr($model, $delList, $attrFrg)
+    protected function dropAttr($model, $delList)
     {
         $sql = "";
         $attrLst=[];
-        if (isset($delList['attr_plst'])) {
-            $attrLst = $delList['attr_plst'];
+        if (isset($delList['attr_typ'])) {
+            $attrLst = $delList['attr_typ'];
+        }
+        $attrFrg=[];
+        if (isset($delList['attr_frg'])) {
+            $attrFrg = $delList['attr_frg'];
         }
         $c = count($attrLst);
         if (!$c) {
             return false;
         }
         $i=0;
-        foreach ($attrLst as $attr) {
+        foreach ($attrLst as $attr => $typ) {
             if (isset($attrFrg[$attr])) {
                 $cName= $model.'_'.$attr;
                 $sql=$sql."\n DROP FOREIGN KEY $cName ,";
@@ -244,24 +238,23 @@ class SQLBase extends Base
         return $sql;
     }
     
-    public function addAttr($model, $addList, $attrFrg)
+    protected function addAttr($model, $addList)
     {
-        $attrLst=[];
-        $attrTyp =[];
         $sql = "";
-        if (isset($addList['attr_plst'])) {
-            $attrLst = $addList['attr_plst'];
-        }
+        $attrLst=[];
         if (isset($addList['attr_typ'])) {
-            $attrTyp = $addList['attr_typ'];
+            $attrLst= $addList['attr_typ'];
+        }
+        $attrFrg=[];
+        if (isset($addList['attr_frg'])) {
+            $attrFrg = $addList['attr_frg'];
         }
         $c = count($attrLst);
         if (!$c) {
             return false;
         }
         $i=0;
-        foreach ($attrLst as $attr) {
-            $typ=$attrTyp[$attr];
+        foreach ($attrLst as $attr => $typ) {
             if ($i > 0) {
                 $sql = $sql . ",";
             }

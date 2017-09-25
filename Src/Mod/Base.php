@@ -135,12 +135,12 @@ abstract class Base
         return(array_key_exists($model, $this->objects));
     }
  
-    public function newMod($model, $meta)
+    public function newModel($model, $meta)
     {
-        return $this->newModId($model, $meta, true);
+        return $this->newModelId($model, $meta, true);
     }
     
-    public function newModId($model, $meta, $idF)
+    public function newModelId($model, $meta, $idF)
     {
         if ($this->existsMod($model)) {
             return false;
@@ -198,6 +198,10 @@ abstract class Base
 
     abstract protected static function exists($path, $name);
 
+    abstract protected function newMod($model, $meta, $newist);
+    
+    abstract protected function newModId($model, $meta, $id, $newist);
+    
     abstract protected function putMod($model, $meta, $addList, $delList);
     
     abstract protected function newObj($model, $values);

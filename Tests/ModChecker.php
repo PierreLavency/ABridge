@@ -19,7 +19,7 @@ class dummy
 
 $baseTypeList=['dataBase','fileBase'];
 $baseList=['ABB','ABBTEST','ADM','AFS','ALB','CDV','CSN','GEN','UCL','UCL_TEST','USR','genealogy',];
-//$baseList=['ABB','ABBTEST','UCL_TEST','USR',];
+//$baseList=['USR'];
 
 $config =
 [
@@ -38,7 +38,7 @@ $ini =
         'host'=>'localhost',
         'user'=>'cl822',
         'pass'=>'cl822',
-        'trace'=>'0',
+        'trace'=>'1',
         
 ];
 
@@ -67,8 +67,9 @@ foreach ($baseList as $baseName) {
             $ctrl = new Controler($config, $ini);
             $stateHandler=Mod::get()->getStateHandler($modName);
             Mod::get()->assocClassMod($modName, 'dummy'); //Hack to by pass check on custum class.
+            Log::get()->begin();
             $mod=new Model($modName);
-//            $mod->saveMod();
+            $mod->saveMod();
             $mod->getErrLog()->show();
 //            echo "\t\t".json_encode($mod->getAttrList())."\n";
         }

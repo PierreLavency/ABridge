@@ -12,7 +12,6 @@ B22 EVALP in create dialog
 B27 session initial log in - menu not updated (see caching)
 
 DEV
-- avoid loading abstractMod in Mod base and rationalize interface with model.
 - develop component for abstract code (Cda).
 - create Ctr Component.
 
@@ -36,16 +35,17 @@ DEV
 - set up modif logging / node.js ?
 
 - changed DB model independently of class model.
-- user Jason to save data rather than serilialisation (?).
 - implement unique index.
 - prefix all tables
 - database paging
 
-- implement CSS 
 
+- implement CSS 
+- avoid loading abstractMod in Mod base  (? dependency in test)
 - revisit dot attributes (?)
 - unify get code with get reference. (??)
 - support CREF on abstract (????)
+- user Jason to save data rather than serilialisation (?).
 
 - increase autorisations rule capability /2
 	- views and other parameters
@@ -82,11 +82,17 @@ INT
 - set up jenkin
 
 DONE
+
+--------------// 1.5
+- rationalize interface of ModBase with model and base.
+PERF  S1(1)on 2*20 : 0.346
+PERF  S1(1)on 2*20 : 0.344
+--------------// 1 
 - move logic related to meta data savings from ModBase to Model
 PERF  S1(1)on 2*20 : 0.336
 B28 old format still in use in ModBase (bug in CheckMod);
 PERF  S1(1)on 2*20 : 0.359
---------------//0.5
+--------------// 0.5
 - check on delete of distribution / Groups if used in default.
 - clean up index/controller for unit test.
 - first version of checkmod.
