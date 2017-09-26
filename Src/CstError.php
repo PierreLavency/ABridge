@@ -114,10 +114,10 @@ class CstError
         self::E_ERC036 => 'Url not correctly formated',
         self::E_ERC037 => 'Not allowed on object path',
         self::E_ERC038 => 'NOT USED',
-        self::E_ERC039 => 'Cannot set EVAL attribute',
+        self::E_ERC039 => 'not used - see 42',
 
-        self::E_ERC040 => 'Type of attribute requires a custom class',
-        self::E_ERC041 => 'No additionale parameter allowed for this type of attribute',
+        self::E_ERC040 => 'Type of attribute requires a custom class ?',
+        self::E_ERC041 => 'No additionale parameter allowed for this type of attribute ',
         self::E_ERC042 => 'Cannot set EVALP attribute',
         self::E_ERC043 => 'invalid base id',
         self::E_ERC044 => 'Abstract class cannot be instanciated',

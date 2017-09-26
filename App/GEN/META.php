@@ -65,8 +65,12 @@
 	$res = $person->addAttr('MotherOf',M_CREF,$path);
 
     $res = $person->addAttr('DeathDate',M_DATE);
-	$res = $person->addAttr('Age',M_INT,M_P_EVAL);
-	$res = $person->addAttr('DeathAge',M_INT,M_P_EVALP);	
+	$res = $person->addAttr('Age',M_INT);
+	$res = $obj->setProp('Age', Model::P_EVL);
+	$res = $obj->setProp('Age', Model::P_TMP);
+	
+	$res = $person->addAttr('DeathAge',M_INT);
+	$res = $person->setProp('DeathAge',Model::P_EVL);
 
     $res = $person->addAttr('text',M_TXT);
 	

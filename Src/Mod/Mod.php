@@ -260,7 +260,6 @@ class Mod extends Comp
         $x->saveMod();
         if ($x->isErr()) {
             $log = $x->getErrLog();
-
             return false;
         }
         return true;

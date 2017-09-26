@@ -19,10 +19,6 @@ use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Mod\Mod;
 
 use Exception;
- 
-define('M_P_EVAL', "M_P_EVAL");
-define('M_P_EVALP', "M_P_EVALP");
-define('M_P_TEMP', "M_P_TEMP");
 
 /**
  * Model class
@@ -68,10 +64,20 @@ class Model
     protected $inhObj;
     protected $inhNme;
     protected $vnum;
-
     
     protected $meta = [];
 
+
+    const P_TMP = 'tmp';
+    const P_EVL = 'eval';
+    const P_DFT = 'dflt';
+    const P_MDT = 'mdtr';
+    const P_BKY = 'bkey';
+    
+    
+    public $propList= [self::P_TMP,self::P_EVL];
+    
+    
     /**
     * Constructor
     */
@@ -188,9 +194,9 @@ class Model
         $this->meta['mdtr'] = [];
         $this->meta['ckey'] = [];
         $this->meta['protected'] = [];
-        $this->meta['eval']=[];
-        $this->meta['tmp']=[];
-        $this->meta['evalp']=[];
+        $this->meta[self::P_EVL]=[];
+        $this->meta[self::P_TMP]=[];
+
 
         $this->abstrct= false;
         $this->inhNme =false;
@@ -214,9 +220,7 @@ class Model
     {
         $modelMetaData=[];
         
-        $modelMetaData['attr_lst']  = $this->getAllAttr();
         $modelMetaData['attr_typ']  = $this->getAllTyp();
-        $modelMetaData['attr_plst'] = $this->getAllPeristAttr();//to be removed
         $modelMetaData['attr_dflt'] = $this->getAllDflt();
         $modelMetaData['attr_path'] = $this->getAllRefParm();
         $modelMetaData['attr_bkey'] = $this->getAllBkey();
@@ -224,20 +228,24 @@ class Model
         $modelMetaData['attr_ckey'] = $this->getAllCkey();
         $modelMetaData['inhnme']    = $this->getInhNme();
         $modelMetaData['isabstr']   = $this->isAbstr();
+        foreach ($this->propList as $prop) {
+            $modelMetaData[$prop]= $this->getallProp($prop);
+        }
 
+        
         return $modelMetaData;
     }
     
     public function setMeta($modelMetaData)
     {
         $tagList=[
-                'attr_lst','attr_typ','attr_plst','attr_dflt',
+                'attr_typ','attr_dflt',
                 'attr_path','attr_bkey','attr_mdtr','attr_ckey',
-                'inhnme','isabstr',];
+                'inhnme','isabstr',self::P_TMP,self::P_EVL];
         
         foreach ($tagList as $tag) {
             if (!isset($modelMetaData[$tag])) {
-                throw new Exception(CstError::E_ERC047.':'.$this->getModName());
+                throw new Exception(CstError::E_ERC047.':'.$this->getModName().':'.$tag);
             }
         }
 
@@ -249,35 +257,39 @@ class Model
         if ($inherit) {
             $this->setInhNme($inherit);
         }
-        $attrlist=$modelMetaData['attr_lst'];
-        $attrtype=$modelMetaData['attr_typ'];
+        $attrTypeList=$modelMetaData['attr_typ'];
         $attrpath=$modelMetaData['attr_path'];
         $attrckey=$modelMetaData['attr_ckey'];
         $attrbkey=$modelMetaData['attr_bkey'];
         $attrmdtr=$modelMetaData['attr_mdtr'];
         $attrdflt=$modelMetaData['attr_dflt'];
         $predef = $this->getAllPredef();
-        foreach ($attrlist as $attr) {
-            if (! in_array($attr, $predef) and isset($attrtype[$attr])) {
-                $typ= $attrtype[$attr];
+        foreach ($attrTypeList as $attr => $typ) {
+            if (! in_array($attr, $predef)) {
                 $path=0;
                 if (array_key_exists($attr, $attrpath)) {
                     $path=$attrpath[$attr];
                 }
                 $this->addAttr($attr, $typ, $path);
-                if (array_key_exists($attr, $attrdflt)) {
-                    $this->setDflt($attr, $attrdflt[$attr]);
-                }
-                if (in_array($attr, $attrbkey)) {
-                    $this->setBkey($attr, true);
-                }
-                if (in_array($attr, $attrmdtr)) {
-                    $this->setMdtr($attr, true);
-                }
             }
+        }
+        foreach ($attrbkey as $attr) {
+            $this->setBkey($attr, true);
+        }
+        foreach ($attrmdtr as $attr) {
+            $this->setMdtr($attr, true);
+        }
+        foreach ($attrdflt as $attr => $val) {
+            $this->setDflt($attr, $val);
         }
         foreach ($attrckey as $ckey) {
             $this->setCkey($ckey, true);
+        }
+        foreach ($this->propList as $prop) {
+            $attrList  = $modelMetaData[$prop];
+            foreach ($attrList as $attr) {
+                $this->setProp($attr, $prop);
+            }
         }
         return true;
     }
@@ -397,8 +409,7 @@ class Model
     private function isStateType($attr)
     {
         if (($this->getTyp($attr) !=  Mtype::M_CREF)
-                and (! $this->isEval($attr))
-                and (! $this->isTemp($attr))) {
+                and (! $this->isProp($attr, self::P_TMP))) {
                     return true;
         }
     }
@@ -471,7 +482,7 @@ class Model
     {
         $res=[];
         foreach ($this->attributeValues as $attr => $val) {
-            if (! $this->isTemp($attr)) {
+            if (! $this->isProp($attr, self::P_TMP)) {
                 $res[$attr]=$val;
             }
         }
@@ -811,10 +822,7 @@ class Model
         if ($this->isPredef($attr)) {
             return false;
         }
-        if ($this->isEval($attr)) {
-            return false;
-        }
-        if ($this->isEvalP($attr)) {
+        if ($this->isProp($attr, self::P_EVL)) {
             return false;
         }
         if ($this->isMdtr($attr)) {
@@ -837,7 +845,7 @@ class Model
         if ($this->isMdtr($attr) or $this->isOptl($attr)) {
             $res= true;
         }
-        if ($this->isProtected($attr)) {
+        if ($this->isProtected($attr)) { // shoul be first ?
             $res = false;
         }
         return $res;
@@ -852,50 +860,51 @@ class Model
         if ($attr == 'id') {
             return true;
         }
-        if ($this->isEvalP($attr)) {
+        if ($this->isProp($attr, self::P_TMP)) {
+            return false;
+        }
+        if ($this->isProp($attr, self::P_EVL)) {
             return true;
         }
         return $this->isModif($attr);
     }
 
-    public function isTemp($attr)
+    
+    public function setProp($attr, $prop)
     {
-        $res = in_array($attr, $this->meta['tmp']);
+        if (in_array($attr, $this->meta[$prop])) {
+            return true;
+        }
+        $this->meta[$prop][]=$attr;
+        return true;
+    }
+    
+    public function isProp($attr, $prop)
+    {
+        $res = in_array($attr, $this->meta[$prop]);
         if ($res) {
             return $res;
         }
         $abstr = $this->getInhObj();
         if (!is_null($abstr)) {
-            return $abstr->isTemp($attr);
+            return $abstr->isProp($attr, $prop);
         }
         return ($res);
     }
     
-    
-    public function isEvalP($attr)
+    protected function getallProp($prop)
     {
-        $res = in_array($attr, $this->meta['evalp']);
-        if ($res) {
-            return $res;
-        }
-        $abstr = $this->getInhObj();
-        if (!is_null($abstr)) {
-            return $abstr->isEvalP($attr);
-        }
-        return ($res);
+        return $this->meta[$prop];
+    }
+       
+    public function isTemp($attr)
+    {
+        return $this->isProp($attr, self::P_TMP);
     }
 
     public function isEval($attr)
     {
-        $res=in_array($attr, $this->meta['eval']);
-        if ($res) {
-            return $res;
-        }
-        $abstr = $this->getInhObj();
-        if (!is_null($abstr)) {
-            return $abstr->isEval($attr);
-        }
-        return ($res);
+        return $this->isProp($attr, self::P_EVL);
     }
 
 
@@ -967,6 +976,7 @@ class Model
         $this->modChgd=true;
         return true;
     }
+    
     public function setCkey($attrLst, $val)
     {
         if (! is_array($attrLst)) {
@@ -1067,18 +1077,6 @@ class Model
         if ($typ == Mtype::M_REF or $typ == Mtype::M_CREF or $typ == Mtype::M_CODE) {
             $this->meta['param'][$attr]=$path;
         }
-        if ($path === M_P_EVAL) {
-            $this->meta['param'][$attr]=$path;
-            $this->meta['eval'][]=$attr;
-        }
-        if ($path === M_P_EVALP) {
-            $this->meta['param'][$attr]=$path;
-            $this->meta['evalp'][]=$attr;
-        }
-        if ($path === M_P_TEMP) {
-            $this->meta['param'][$attr]=$path;
-            $this->meta['tmp'][]=$attr;
-        }
 
         $this->attributeTypes[$attr]=$typ;
 
@@ -1140,10 +1138,7 @@ class Model
         if ($key!==false) {
             unset($this->meta['eval'][$key]);
         }
-        $key = array_search($attr, $this->meta['evalp']);
-        if ($key!==false) {
-            unset($this->meta['evalp'][$key]);
-        }
+
         $this->modChgd=true;
         return true;
     }
@@ -1291,13 +1286,9 @@ class Model
             return false;
         };
         $check= ($check or $this->checkTrusted);
-        // Eval
-        if ($this->isEval($attr)) {
-            $this->errLog->logLine(CstError::E_ERC039.':'.$attr);
-            return false;
-        }
-        // EvalP
-        if ($this->isEvalP($attr)
+
+        // EvalP -> iseval
+        if ($this->isProp($attr, self::P_EVL)
             and (! $this->custom)
             and !($this->trusted)) {
             $this->errLog->logLine(CstError::E_ERC042.':'.$attr);
@@ -1474,17 +1465,7 @@ class Model
             $this->errLog->logLine(CstError::E_ERC004.':'.$typ);
             return false;
         }
-        if ($parm === M_P_TEMP) {
-            return true;
-        }
-        if ($parm === M_P_EVAL or $parm === M_P_EVALP) {
-            $cmodName = Mod::get()->getClassMod($this->getModName());
-            if (is_null($cmodName)) {
-                $this->errLog->logLine(CstError::E_ERC040.':'.$attr.':'.$typ);
-                return false;
-            }
-            return true;
-        }
+        
         if ($typ != Mtype::M_REF and $typ != Mtype::M_CREF and $typ != Mtype::M_CODE) {
             if ($parm) {
                 $this->errLog->logLine(CstError::E_ERC041.':'.$attr.':'.$typ.':'.$parm);

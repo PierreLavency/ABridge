@@ -1,6 +1,7 @@
 <?php
 namespace ABridge\ABridge\Usr;
 
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\CModel;
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mtype;
@@ -26,9 +27,16 @@ class User extends CModel
         
         $res = $obj->addAttr('UserId', Mtype::M_STRING);
         $res = $obj->addAttr('Password', Mtype::M_STRING);
-        $res = $obj->addAttr('NewPassword1', Mtype::M_STRING, M_P_TEMP);
-        $res = $obj->addAttr('NewPassword2', Mtype::M_STRING, M_P_TEMP);
-        $res = $obj->addAttr('MetaData', Mtype::M_TXT, M_P_EVAL);
+        
+        $res = $obj->addAttr('NewPassword1', Mtype::M_STRING);
+        $res = $obj->setProp('NewPassword1', Model::P_TMP);
+ 
+        $res = $obj->addAttr('NewPassword2', Mtype::M_STRING);
+        $res = $obj->setProp('NewPassword2', Model::P_TMP);
+        
+        $res = $obj->addAttr('MetaData', Mtype::M_TXT);
+        $res = $obj->setProp('MetaData', Model::P_EVL);
+        $res = $obj->setProp('MetaData', Model::P_TMP);
         
         $res = $obj->setBkey('UserId', true);
  

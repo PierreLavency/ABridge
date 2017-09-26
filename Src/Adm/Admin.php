@@ -4,6 +4,7 @@ namespace ABridge\ABridge\Adm;
 use ABridge\ABridge\Mod\CModel;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\Mod\Model;
 
 class Admin extends CModel
 {
@@ -27,13 +28,27 @@ class Admin extends CModel
             $res = $obj->addAttr($attr, Mtype::M_STRING);
         }
         
-        $res = $obj->addAttr('Meta', Mtype::M_BOOL, M_P_TEMP);
-        $res = $obj->addAttr('Load', Mtype::M_BOOL, M_P_TEMP);
-        $res = $obj->addAttr('Delta', Mtype::M_BOOL, M_P_TEMP);
+        $res = $obj->addAttr('Meta', Mtype::M_BOOL);
+        $res = $obj->setProp('Meta', Model::P_TMP);
+
+        $res = $obj->addAttr('Load', Mtype::M_BOOL);
+        $res = $obj->setProp('Load', Model::P_TMP);
+ 
+        $res = $obj->addAttr('Delta', Mtype::M_BOOL);
+        $res = $obj->setProp('Delta', Model::P_TMP);
+        
         $res = $obj->addAttr('Model', Mtype::M_STRING);
-        $res = $obj->addAttr('MetaData', Mtype::M_TXT, M_P_EVAL);
-        $res = $obj->addAttr('ModState', Mtype::M_TXT, M_P_EVAL);
-        $res = $obj->addAttr('StateHandler', Mtype::M_TXT, M_P_EVAL);
+        $res = $obj->addAttr('MetaData', Mtype::M_TXT);
+        $res = $obj->setProp('MetaData', Model::P_EVL);
+        $res = $obj->setProp('MetaData', Model::P_TMP);
+        
+        $res = $obj->addAttr('ModState', Mtype::M_TXT);
+        $res = $obj->setProp('ModState', Model::P_EVL);
+        $res = $obj->setProp('ModState', Model::P_TMP);
+        
+        $res = $obj->addAttr('StateHandler', Mtype::M_TXT);
+        $res = $obj->setProp('StateHandler', Model::P_EVL);
+        $res = $obj->setProp('StateHandler', Model::P_TMP);
         
         return $obj->isErr();
     }

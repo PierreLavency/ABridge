@@ -37,7 +37,10 @@ class Student extends CModel
 		$res = $obj->addAttr('SurName',Mtype::M_STRING);		
 		$res = $obj->addAttr('BirthDay',Mtype::M_DATE);		
 		$res = $obj->addAttr('Image',Mtype::M_STRING);
-		$res = $obj->addAttr('Jason',Mtype::M_TXT,M_P_EVAL);
+
+		$res = $obj->addAttr('Jason',Mtype::M_TXT);
+		$res = $obj->setProp('Jason', Model::P_EVL);
+		$res = $obj->setProp('Jason', Model::P_TMP);
 		
 		if (isset($bindings[$sex])) {
 			$sex=$bindings[$sex];
@@ -52,8 +55,13 @@ class Student extends CModel
 		if (isset($bindings[$inscription])) {
 			$inscription=$bindings[$inscription];
 			$res = $obj->addAttr('InscritA',Mtype::M_CREF,'/'.$inscription.'/De');
-			$obj->addAttr('NbrCours',Mtype::M_INT,M_P_EVAL);
-			$obj->addAttr('NbrCredits',Mtype::M_INT,M_P_EVALP);
+
+			$obj->addAttr('NbrCours',Mtype::M_INT);
+			$res = $obj->setProp('NbrCours', Model::P_EVL);
+			$res = $obj->setProp('NbrCours', Model::P_TMP);
+
+			$obj->addAttr('NbrCredits',Mtype::M_INT);
+			$obj->setProp('NbrCredits', Model::P_EVL);
 		}
 		
 		if (isset($bindings[$user])) {

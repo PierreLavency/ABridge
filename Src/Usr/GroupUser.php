@@ -2,6 +2,7 @@
 namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\CstError;
 
@@ -20,7 +21,9 @@ class GroupUser extends CModel
         
         $res = $obj->addAttr('User', Mtype::M_REF, '/'.$user);
         $res = $obj->addAttr('UserGroup', Mtype::M_REF, '/'.$group);
-        $res = $obj->addAttr('MetaData', Mtype::M_TXT, M_P_EVAL);
+        $res = $obj->addAttr('MetaData', Mtype::M_TXT);
+        $res = $obj->setProp('MetaData', Model::P_EVL);
+        $res = $obj->setProp('MetaData', Model::P_TMP);
         
         $res = $obj->setMdtr('User', true); // Mdtr
         $res = $obj->setMdtr('UserGroup', true); // Mdtr

@@ -5,6 +5,7 @@ use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\Log\Log;
 
 class Admin_Test_dataBase_Admin extends Admin
 {
@@ -25,6 +26,7 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
         $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
 
         Mod::reset();
+        Log::reset();
 
         $mod= Mod::get();
         
@@ -70,10 +72,11 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
         
         foreach ($prm['bindL'] as $bd) {
             $mod->begin();
-            
+            Log::get()->begin();
 
             $x = new Model($bd[Adm::ADMIN], 1);
             $x->setVal('Delta', true);
+
             $x->save();
             
             $this->assertFalse($x->isErr());

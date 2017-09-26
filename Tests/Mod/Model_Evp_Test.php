@@ -212,10 +212,13 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         
         $x->addAttr('a', Mtype::M_INT);
         $x->addAttr('b', Mtype::M_INT);
-        $x->addAttr('aplusb', Mtype::M_INT, M_P_EVALP);
+        $x->addAttr('aplusb', Mtype::M_INT);
+        $x->setProp('aplusb', Model::P_EVL);
+ 
         $cname = $this->Student;
         $x->addAttr('c', Mtype::M_CODE, "/$cname");
-        $x->addAttr('tmp', Mtype::M_INT, M_P_TEMP);
+        $x->addAttr('tmp', Mtype::M_INT);
+        $x->setProp('tmp', Model::P_TMP);
         
         $this->assertFalse($x->isErr());
 

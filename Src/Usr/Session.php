@@ -35,19 +35,26 @@ class Session extends CModel
         $obj = $this->mod;
 
         $res = $obj->addAttr('BKey', Mtype::M_STRING);
-        $res = $obj->addAttr('Checked', Mtype::M_INT, M_P_EVALP);
-        $res = $obj->addAttr('ValidStart', Mtype::M_INT, M_P_EVALP);
-        $res = $obj->addAttr('ValidFlag', Mtype::M_INT, M_P_EVALP);
-        $res = $obj->addAttr('Name', Mtype::M_STRING);
-        
         $res = $obj->setBkey('BKey', true);
         $res = $obj->setMdtr('BKey', true);
-
+        
+        $res = $obj->addAttr('Checked', Mtype::M_INT);
+        $res = $obj->setProp('Checked', Model::P_EVL);
+        
+        $res = $obj->addAttr('ValidStart', Mtype::M_INT);
+        $res = $obj->setProp('ValidStart', Model::P_EVL);
+        
+        $res = $obj->addAttr('ValidFlag', Mtype::M_INT);
+        $res = $obj->setProp('ValidFlag', Model::P_EVL);
+        
+        $res = $obj->addAttr('Name', Mtype::M_STRING);
+        
         if (isset($bindings['User'])) {
             $user = $bindings['User'];
             $res = $obj->addAttr('User', Mtype::M_REF, '/'.$user);
             $res = $obj->addAttr('UserId', Mtype::M_STRING);
-            $res = $obj->addAttr('Password', Mtype::M_STRING, M_P_TEMP);
+            $res = $obj->addAttr('Password', Mtype::M_STRING);
+            $res = $obj->setProp('Password', Model::P_TMP);
         }
         
         if (isset($bindings['Role'])) {

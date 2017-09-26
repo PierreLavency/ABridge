@@ -37,7 +37,9 @@ class Prof extends CModel
 		$res = $obj->addAttr('SurName',Mtype::M_STRING);		
 		$res = $obj->addAttr('BirthDay',Mtype::M_DATE);		
 		$res = $obj->addAttr('Image',Mtype::M_STRING);
-		$res = $obj->addAttr('Jason',Mtype::M_TXT,M_P_EVAL);
+		$res = $obj->addAttr('Jason',Mtype::M_TXT);
+		$res = $obj->setProp('Jason', Model::P_EVL);
+		$res = $obj->setProp('Jason', Model::P_TMP);
 		
 		if (isset($bindings[$sex])) {
 			$sex=$bindings[$sex];
@@ -52,8 +54,11 @@ class Prof extends CModel
 		if (isset($bindings[$charge])) {
 			$charge=$bindings[$charge];
 			$res = $obj->addAttr('Donne',Mtype::M_CREF,'/'.$charge.'/Par');
-			$obj->addAttr('NbrCours',Mtype::M_INT,M_P_EVAL);
-			$obj->addAttr('NbrCredits',Mtype::M_INT,M_P_EVALP);
+			$obj->addAttr('NbrCours', Mtype::M_INT);
+			$obj->setProp('NbrCours', Model::P_EVL);
+			$obj->setProp('NbrCours', Model::P_TMP);
+			$obj->addAttr('NbrCredits', Mtype::M_INT);
+			$obj->setProp('NbrCredits', Model::P_EVL);
 		}
 		
 		if (isset($bindings[$user])) {

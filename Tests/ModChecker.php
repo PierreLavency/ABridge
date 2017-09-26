@@ -18,8 +18,9 @@ class dummy
 
 
 $baseTypeList=['dataBase','fileBase'];
-$baseList=['ABB','ABBTEST','ADM','AFS','ALB','CDV','CSN','GEN','UCL','UCL_TEST','USR','genealogy',];
-//$baseList=['USR'];
+//$baseList=['ABB','ABBTEST','ADM','AFS','ALB','CDV','CSN','GEN','UCL','UCL_TEST','USR','genealogy',];
+$baseList=['test'];
+
 
 $config =
 [

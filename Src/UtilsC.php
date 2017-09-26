@@ -34,7 +34,7 @@ class UtilsC
                 'host'=>'localhost',
                 'user'=>'cl822',
                 'pass'=>'cl822',
-                'trace'=>'0',
+                'trace'=>'1',
         ];
         return $prm;
     }

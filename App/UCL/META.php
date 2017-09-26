@@ -72,9 +72,17 @@
 
 	$res = $obj->addAttr('InscritA',M_CREF,'/'.$Inscription.'/De');
 
-	$obj->addAttr('NbrCours',M_INT,M_P_EVAL);
-	$obj->addAttr('NbrCredits',M_INT,M_P_EVALP);
-	$obj->addAttr('Jason',M_TXT,M_P_EVAL);
+	$obj->addAttr('NbrCours',M_INT);
+	$obj->setProp('NbrCours',Model::P_EVL);
+	$obj->setProp('NbrCours',Model::P_TMP);
+	
+	$obj->addAttr('NbrCredits',M_INT);
+	$obj->setProp('NbrCredits',Model::P_EVL);
+	
+	$obj->addAttr('Jason',M_TXT);
+	$obj->setProp('Jason',Model::P_EVL);
+	$obj->setProp('Jason',Model::P_TMP);
+	
 	$obj->addAttr('Image',M_STRING);
 	
 	$obj->addAttr($User,M_REF,'/'.$User);

@@ -33,7 +33,9 @@ class Model_Evl_Test extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($x->addAttr('a', Mtype::M_INT));
         $this->assertTrue($x->addAttr('b', Mtype::M_INT));
-        $this->assertTrue($x->addAttr('aplusb', Mtype::M_INT, M_P_EVAL));
+        $this->assertTrue($x->addAttr('aplusb', Mtype::M_INT));
+        $res = $x->setProp('aplusb', Model::P_EVL);
+        $res = $x->setProp('aplusb', Model::P_TMP);
         $this->assertFalse($x->isErr());
         
         return $x;
@@ -66,14 +68,15 @@ class Model_Evl_Test extends PHPUnit_Framework_TestCase
     {
     
         $this->assertFalse($x->setVal('aplusb', 1));
-        $this->assertEquals($x->getErrLine(), CstError::E_ERC039.':aplusb');
-        
+        $this->assertEquals($x->getErrLine(), CstError::E_ERC042.':aplusb');
+       
         $this->assertTrue($x->delAttr('aplusb'));
         
         $this->assertNotNull(($y = new Model('toto')));
-        $this->assertFalse($y->addAttr('aplusb', Mtype::M_INT, M_P_EVAL));
+ /*
+        $this->assertTrue($y->addAttr('aplusb', Mtype::M_INT, M_P_EVAL));
         $this->assertEquals($y->getErrLine(), CstError::E_ERC040.':aplusb:'.Mtype::M_INT);
-        
+  */
         $this->assertFalse($y->addAttr('aplusb', Mtype::M_INT, '/xx'));
         $this->assertEquals($y->getErrLine(), CstError::E_ERC041.':aplusb:'.Mtype::M_INT.':/xx');
     }

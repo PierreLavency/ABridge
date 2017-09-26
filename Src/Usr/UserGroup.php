@@ -2,6 +2,7 @@
 namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 
 class UserGroup extends CModel
@@ -13,7 +14,9 @@ class UserGroup extends CModel
         $res = $obj->addAttr('Name', Mtype::M_STRING);
         $res = $obj->setBkey('Name', true);
         
-        $res = $obj->addAttr('MetaData', Mtype::M_TXT, M_P_EVAL);
+        $res = $obj->addAttr('MetaData', Mtype::M_TXT);
+        $res = $obj->setProp('MetaData', Model::P_EVL);
+        $res = $obj->setProp('MetaData', Model::P_TMP);
  
         if (isset($bindings['GroupUser'])) {
             $groupuser =$bindings['GroupUser'];
