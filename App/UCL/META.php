@@ -13,7 +13,7 @@
 	$res = $codeval->addAttr('Name',M_STRING);
 
 	$res = $codeval->addAttr('ValueOf',M_REF,'/'.$Code);
-	$res=$codeval->setMdtr('ValueOf',true); // Mdtr
+	$res=$codeval->setProp('ValueOf', Model::P_MDT); 
 		
 	
 	$res = $codeval->saveMod();
@@ -27,7 +27,7 @@
 	$res= $code->deleteMod();
 		
 	$res = $code->addAttr('Name',M_STRING); 
-	$res=$code->setBkey('Name',true);// Unique
+	$res=$code->setProp('Name',Model::P_BKY);// Unique
 		
 
 	$res = $code->addAttr('Values',M_CREF,'/'.$CodeVal.'/ValueOf');
@@ -86,7 +86,7 @@
 	$obj->addAttr('Image',M_STRING);
 	
 	$obj->addAttr($User,M_REF,'/'.$User);
-	$res=$obj->setBkey($User,true);
+	$res=$obj->setProp($User,Model::P_BKY);
 
 	$res = $obj->saveMod();	
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";	
@@ -115,9 +115,9 @@
 	
 
 	$res = $inscription->addAttr('De',M_REF,'/'.$Student);
-	$res = $inscription->setMdtr('De',true); // Mdtr
+	$res=$inscription->setProp('De', Model::P_MDT); 
 	$res = $inscription->addAttr('A',M_REF,'/'.$Cours);
-	$res = $inscription->setMdtr('A',true); // Mdtr
+	$res=$inscription->setProp('A', Model::P_MDT); 
 	$inscription->setCkey(['De','A'],true);
 
 	echo $Inscription."<br>";	
@@ -138,7 +138,7 @@
 	
 	
 	$prof->addAttr($User,M_REF,'/'.$User);
-	$res=$prof->setBkey($User,true);
+	$res=$prof->setProp($User,Model::P_BKY);
 	
 	echo "Prof<br>";	
 	$prof->saveMod();	

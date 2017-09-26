@@ -103,8 +103,8 @@ use ABridge\ABridge\Apps\AdmApp;
 	$res= $obj->deleteMod();
 
 	$res = $obj->addAttr('Value',Mtype::M_STRING);
-	$res = $obj->setMdtr('Value',true);
-    $res = $obj->setBkey('Value',true);	
+	$res=$obj->setProp('Value', Model::P_MDT); 
+    $res = $obj->setProp('Value',Model::P_BKY);	
 	$res = $obj->setAbstr();	
 
 	$res = $obj->saveMod();	

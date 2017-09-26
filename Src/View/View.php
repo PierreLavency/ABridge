@@ -143,8 +143,8 @@ class View
                 );
                 foreach ($res as $attr) {
                     $atyp=$this->handle->getTyp($attr);
-                    $eval = $this->handle->isEval($attr);
-                    if ($atyp != Mtype::M_CREF and Mtype::isStruct($atyp) and !$eval) {
+                    $tmp = $this->handle->isTmp($attr);
+                    if ($atyp != Mtype::M_CREF and Mtype::isStruct($atyp) and !$tmp) {
                         $dspec[]=$attr;
                     }
                 }

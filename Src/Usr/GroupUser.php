@@ -25,8 +25,8 @@ class GroupUser extends CModel
         $res = $obj->setProp('MetaData', Model::P_EVL);
         $res = $obj->setProp('MetaData', Model::P_TMP);
         
-        $res = $obj->setMdtr('User', true); // Mdtr
-        $res = $obj->setMdtr('UserGroup', true); // Mdtr
+        $res=$obj->setProp('User', Model::P_MDT);
+        $res=$obj->setProp('UserGroup', Model::P_MDT);
         
         $obj->setCkey(['User','UserGroup'], true);
         

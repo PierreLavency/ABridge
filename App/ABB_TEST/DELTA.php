@@ -22,7 +22,7 @@
 
  	$res = $obj->addAttr('Name',		M_STRING);
 	$res = $obj->addAttr('Users',		M_CREF,'/'.$User.'/'.$Group);
-    $res = $obj->setBkey('Name',true);	
+    $res = $obj->setProp('Name',Model::P_BKY);	
 	
 	$res = $obj->saveMod();			
 	echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";	

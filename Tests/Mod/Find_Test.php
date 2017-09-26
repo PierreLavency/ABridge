@@ -62,7 +62,7 @@ class Find_Test extends PHPUnit_Framework_TestCase
         $res= $mod->deleteMod();
         
         $res = $mod->addAttr('name', Mtype::M_STRING);
-        $res = $mod->setBkey('name', true);
+        $res = $mod->setProp('name', Model::P_BKY);
         
         $res = $mod->saveMod();
     

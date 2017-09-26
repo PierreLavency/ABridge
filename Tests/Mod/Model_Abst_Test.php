@@ -73,13 +73,13 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $res = $ABB->addAttr('Bkey', Mtype::M_STRING);
         $this->assertTrue($res);
 
-        $res=$ABB->setBkey('Bkey', true); // Mdtr
+        $res=$ABB->setProp('Bkey', Model::P_BKY);
         $this->assertTrue($res);
 
         $res = $ABB->addAttr('Name', Mtype::M_STRING);
         $this->assertTrue($res);
 
-        $res=$ABB->setMdtr('Name', true); // Mdtr
+        $res=$ABB->setProp('Name', Model::P_MDT);
         $this->assertTrue($res);
         
         $res = $ABB->addAttr('SurName', Mtype::M_STRING);
@@ -193,8 +193,8 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($obj->existsAttr('Outt'));
         
         $this->assertEquals($obj->getTyp('Name'), Mtype::M_STRING);
-        $this->assertTrue($obj->isMdtr('Name'));
-        $this->assertTrue($obj->isBkey('Bkey'));
+        $this->assertTrue($obj->isProp('Name', Model::P_MDT));
+        $this->assertTrue($obj->isProp('Bkey', Model::P_BKY));
         $this->assertEquals($obj->getTyp('Owner'), Mtype::M_STRING);
         $this->assertEquals($obj->getTyp('BuiltFrom'), Mtype::M_CREF);
         $this->assertEquals($obj->getTyp('Outt'), Mtype::M_CREF);

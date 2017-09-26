@@ -2,6 +2,7 @@
 
 use ABridge\ABridge\Mod\CModel;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Mod\Model;
 
 class Charge extends CModel
 {
@@ -16,8 +17,8 @@ class Charge extends CModel
         $res = $obj->addAttr('De', Mtype::M_REF, '/'.$cours);
         $res = $obj->addAttr('Par', Mtype::M_REF, '/'.$prof);
         
-        $res = $obj->setMdtr('De', true); // Mdtr
-        $res = $obj->setMdtr('Par', true); // Mdtr
+        $res=$obj->setProp('De', Model::P_MDT); 
+        $res=$obj->setProp('Par', Model::P_MDT); 
 
         $obj->setCkey(['De','Par'], true);
 

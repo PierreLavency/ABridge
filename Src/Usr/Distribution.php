@@ -2,6 +2,7 @@
 namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\CstError;
 
@@ -20,8 +21,8 @@ class Distribution extends CModel
         $res = $obj->addAttr('Role', Mtype::M_REF, '/'.$role);
         $res = $obj->addAttr('User', Mtype::M_REF, '/'.$user);
         
-        $res = $obj->setMdtr('Role', true); // Mdtr
-        $res = $obj->setMdtr('User', true); // Mdtr
+        $res=$obj->setProp('Role', Model::P_MDT);
+        $res=$obj->setProp('User', Model::P_MDT);
 
         $obj->setCkey(['Role','User'], true);
         

@@ -82,7 +82,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $res = $codeval->addAttr('ValueOf', Mtype::M_REF, $path);
         $this->assertTrue($res);
 
-        $res=$codeval->setMdtr('ValueOf', true); // Mdtr
+        $res=$codeval->setProp('ValueOf', Model::P_MDT);
         $this->assertTrue($res);
 
         $res = $codeval->saveMod();
@@ -101,7 +101,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $res = $code->addAttr('CodeName', Mtype::M_STRING);
         $this->assertTrue($res);
         
-        $res=$code->setBkey('CodeName', true);// unique
+        $res=$code->setProp('CodeName', Model::P_BKY);// unique
         $this->assertTrue($res);
         
         $path='/'.$this->CodeVal.'/ValueOf';
@@ -135,7 +135,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $code = new Model($this->Code);
         $this->assertNotNull($code);
         
-        $this->assertTrue($code->isBkey('CodeName'));
+        $this->assertTrue($code->isProp('CodeName', Model::P_BKY));
         
         $this->assertNull($code->getDflt('CodeName'));
         
@@ -207,7 +207,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         
         $this->assertTrue($codeval->isOptl('ValueName'));
         
-        $this->assertTrue($codeval->isMdtr('ValueOf'));
+        $this->assertTrue($codeval->isProp('ValueOf', Model::P_MDT));
         
         $this->assertFalse($codeval->isOptl('ValueOf'));
         
@@ -364,48 +364,48 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($id1, 0);
         
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(0), CstError::E_ERC019.':ValueOf');
+        $this->assertEquals($codeval->getErrLine(), CstError::E_ERC019.':ValueOf');
         
         $res = $codeval->setVal('ValueOf', null);
         $id1= $codeval->save();
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(1), CstError::E_ERC019.':ValueOf');
-
-        $res = $codeval->isBkey('notexists');
-
-        $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(2), CstError::E_ERC002.':notexists');
-    
-        $res = $codeval->isMdtr('notexists');
+        $this->assertEquals($codeval->getErrLine(), CstError::E_ERC019.':ValueOf');
+/*
+        $res = $codeval->isProp('notexists',Model::P_BKY);
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(3), CstError::E_ERC002.':notexists');
-        
+        $this->assertEquals($codeval->getErrLine(), CstError::E_ERC002.':notexists');
+
+        $res = $codeval->isProp('notexists', Model::P_MDT);
+
+        $r = $codeval-> getErrLog();
+        $this->assertEquals($codeval->getErrLine(), CstError::E_ERC002.':notexists');
+*/
         $res = $codeval->isOptl('notexists');
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(4), CstError::E_ERC002.':notexists');
-        
+        $this->assertEquals($codeval->getErrLine(), CstError::E_ERC002.':notexists');
+        /*
         $res = $codeval->setMdtr('notexists', false);
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(5), CstError::E_ERC002.':notexists');
-        
+        $this->assertEquals($codeval->getErrLine(), CstError::E_ERC002.':notexists');
+        */
         $res = $codeval->setDflt('notexists', false);
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(6), CstError::E_ERC002.':notexists');
+        $this->assertEquals($codeval->getErrLine(), CstError::E_ERC002.':notexists');
         
         $res = $codeval->getDflt('notexists');
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(7), CstError::E_ERC002.':notexists');
+        $this->assertEquals($codeval->getErrLine(), CstError::E_ERC002.':notexists');
 
-        $res = $codeval->setBkey('notexists', false);
+        $res = $codeval->unsetProp('notexists', Model::P_BKY);
 
         $r = $codeval-> getErrLog();
-        $this->assertEquals($log->getLine(8), CstError::E_ERC002.':notexists');
+        $this->assertEquals($codeval->getErrLine(), CstError::E_ERC002.':notexists');
         
         $this->assertFalse($codeval->isOptl('id'));
         
@@ -415,14 +415,14 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $r = $m-> getErrLog();
         
         $this->assertTrue($m->addAttr('A', Mtype::M_STRING));
-        
-        $res=$m->setBkey('A', true);
+/*        
+        $res=$m->setProp('A', Model::P_BKY);
         $this->assertFalse($res);
         $this->assertEquals($r->getLine(0), CstError::E_ERC017.':A');
-        
+ */
         $res=$m->setCkey(['A','A'], true);
         $this->assertFalse($res);
-        $this->assertEquals($r->getLine(1), CstError::E_ERC017);
+        $this->assertEquals($m->getErrLine(), CstError::E_ERC017);
     }
     /**
      * @dataProvider Provider1
@@ -438,8 +438,8 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         
         
         $code = new Model($this->Code);
-        $this->assertTrue($code->setBkey('CodeName', false));
-        $this->assertTrue($code->setBkey('CodeName', true));
+        $this->assertTrue($code->unsetProp('CodeName', Model::P_BKY));
+        $this->assertTrue($code->setProp('CodeName', Model::P_BKY));
 
         
         $this->assertTrue($code->delAttr('CodeName'));
@@ -451,8 +451,8 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         
         $codeval = new Model($this->CodeVal);
         
-        $this->assertTrue($codeval->setMdtr('ValueOf', false));
-        $this->assertTrue($codeval->setMdtr('ValueOf', true));
+        $this->assertTrue($codeval->unsetProp('ValueOf', Model::P_MDT));
+        $this->assertTrue($codeval->setProp('ValueOf', Model::P_MDT));
     
         $this->assertTrue($codeval->delAttr('ValueOf'));
         

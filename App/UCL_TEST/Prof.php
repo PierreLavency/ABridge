@@ -64,7 +64,7 @@ class Prof extends CModel
 		if (isset($bindings[$user])) {
 			$user = $bindings[$user];
 			$obj->addAttr('User',Mtype::M_REF,'/'.$user);
-			$res=$obj->setBkey('User',true);
+			$res=$obj->setProp('User',Model::P_BKY);
 		}
 		
 	}

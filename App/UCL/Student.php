@@ -67,7 +67,7 @@ class Student extends CModel
 		if (isset($bindings[$user])) {
 			$user = $bindings[$user];
 			$obj->addAttr($user,Mtype::M_REF,'/'.$user);
-			$res=$obj->setBkey($user,true);
+			$res=$obj->setProp($user,Model::P_BKY);
 		}
 		
 	}

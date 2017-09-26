@@ -35,8 +35,8 @@ class Session extends CModel
         $obj = $this->mod;
 
         $res = $obj->addAttr('BKey', Mtype::M_STRING);
-        $res = $obj->setBkey('BKey', true);
-        $res = $obj->setMdtr('BKey', true);
+        $res = $obj->setProp('BKey', Model::P_BKY);
+        $res= $obj->setProp('BKey', Model::P_MDT);
         
         $res = $obj->addAttr('Checked', Mtype::M_INT);
         $res = $obj->setProp('Checked', Model::P_EVL);

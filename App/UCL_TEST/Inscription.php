@@ -1,6 +1,7 @@
 <?php
 use ABridge\ABridge\Mod\CModel;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Mod\Model;
 
 class Inscription extends CModel 
 {
@@ -16,9 +17,9 @@ class Inscription extends CModel
 		$cours='Cours';
 		
 		$res = $obj->addAttr('De',Mtype::M_REF,'/'.$bindings[$student]);
-		$res = $obj->setMdtr('De',true); // Mdtr
+		$res=$obj->setProp('De', Model::P_MDT); 
 		$res = $obj->addAttr('A',Mtype::M_REF,'/'.$bindings[$cours]);
-		$res = $obj->setMdtr('A',true); // Mdtr
+		$res=$obj->setProp('A', Model::P_MDT); 
 		$obj->setCkey(['De','A'],true);
 		
 		

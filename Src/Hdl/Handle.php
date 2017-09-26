@@ -399,15 +399,15 @@ class Handle
     {
         return $this->obj->isProtected($attr);
     }
-      
+    
     public function isMdtr($attr)
     {
-        return $this->obj->isMdtr($attr);
+        return $this->obj->isProp($attr, Model::P_MDT);
     }
 
-    public function isEval($attr)
+    public function isTmp($attr)
     {
-        return $this->obj->isEval($attr);
+        return $this->obj->isProp($attr, Model::P_TMP);
     }
     
     public function isModif($attr)

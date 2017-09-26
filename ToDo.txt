@@ -1,7 +1,7 @@
 CMD
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'isEval' Src/* App/* Tests/*
+grep -ri 'setBkey' Src/* App/* Tests/*
 
 BUGS	29
 B1 session with API.
@@ -20,7 +20,6 @@ DEV
 
 - clean up picture path
 
-- review property management in Model
 - review error Management in Model (exception rather than errolog)
 - combine temp/evalp reference.
  
@@ -84,6 +83,11 @@ INT
 - set up jenkin
 
 DONE
+-------------// 1
+- review property management in Model
+PERF  S1(1)on 2*20 : 0.319
+PERF  S1(1)on 2*20 : 0.322
+--------------// 1
 - combine temp/evalp properties.
 PERF  S1(1)on 2*20 : 0.329
 PERF  S1(1)on 2*20 : 0.322

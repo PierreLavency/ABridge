@@ -12,7 +12,7 @@ class UserGroup extends CModel
         $obj = $this->mod;
         
         $res = $obj->addAttr('Name', Mtype::M_STRING);
-        $res = $obj->setBkey('Name', true);
+        $res = $obj->setProp('Name', Model::P_BKY);
         
         $res = $obj->addAttr('MetaData', Mtype::M_TXT);
         $res = $obj->setProp('MetaData', Model::P_EVL);

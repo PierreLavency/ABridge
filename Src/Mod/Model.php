@@ -75,7 +75,7 @@ class Model
     const P_BKY = 'bkey';
     
     
-    public $propList= [self::P_TMP,self::P_EVL];
+    public static $propList= [self::P_TMP,self::P_EVL,Self::P_MDT, self::P_BKY];
     
     
     /**
@@ -190,13 +190,11 @@ class Model
         $this->attributeValues = array('vnum' => 0);
         $this->meta['dflt'] = [];
         $this->meta['param'] = [];
-        $this->meta['bkey'] = [];
-        $this->meta['mdtr'] = [];
         $this->meta['ckey'] = [];
         $this->meta['protected'] = [];
-        $this->meta[self::P_EVL]=[];
-        $this->meta[self::P_TMP]=[];
-
+        foreach (self::$propList as $prop) {
+            $this->meta[$prop]=[];
+        }
 
         $this->abstrct= false;
         $this->inhNme =false;
@@ -223,26 +221,24 @@ class Model
         $modelMetaData['attr_typ']  = $this->getAllTyp();
         $modelMetaData['attr_dflt'] = $this->getAllDflt();
         $modelMetaData['attr_path'] = $this->getAllRefParm();
-        $modelMetaData['attr_bkey'] = $this->getAllBkey();
-        $modelMetaData['attr_mdtr'] = $this->getAllMdtr();
         $modelMetaData['attr_ckey'] = $this->getAllCkey();
         $modelMetaData['inhnme']    = $this->getInhNme();
         $modelMetaData['isabstr']   = $this->isAbstr();
-        foreach ($this->propList as $prop) {
+        foreach (self::$propList as $prop) {
             $modelMetaData[$prop]= $this->getallProp($prop);
         }
 
-        
         return $modelMetaData;
     }
     
     public function setMeta($modelMetaData)
     {
         $tagList=[
-                'attr_typ','attr_dflt',
-                'attr_path','attr_bkey','attr_mdtr','attr_ckey',
-                'inhnme','isabstr',self::P_TMP,self::P_EVL];
-        
+                'attr_typ','inhnme','isabstr',
+                'attr_dflt','attr_path','attr_ckey',
+                 self::P_TMP,self::P_EVL,self::P_BKY,self::P_MDT
+                
+        ];
         foreach ($tagList as $tag) {
             if (!isset($modelMetaData[$tag])) {
                 throw new Exception(CstError::E_ERC047.':'.$this->getModName().':'.$tag);
@@ -260,8 +256,6 @@ class Model
         $attrTypeList=$modelMetaData['attr_typ'];
         $attrpath=$modelMetaData['attr_path'];
         $attrckey=$modelMetaData['attr_ckey'];
-        $attrbkey=$modelMetaData['attr_bkey'];
-        $attrmdtr=$modelMetaData['attr_mdtr'];
         $attrdflt=$modelMetaData['attr_dflt'];
         $predef = $this->getAllPredef();
         foreach ($attrTypeList as $attr => $typ) {
@@ -273,19 +267,13 @@ class Model
                 $this->addAttr($attr, $typ, $path);
             }
         }
-        foreach ($attrbkey as $attr) {
-            $this->setBkey($attr, true);
-        }
-        foreach ($attrmdtr as $attr) {
-            $this->setMdtr($attr, true);
-        }
         foreach ($attrdflt as $attr => $val) {
             $this->setDflt($attr, $val);
         }
         foreach ($attrckey as $ckey) {
             $this->setCkey($ckey, true);
         }
-        foreach ($this->propList as $prop) {
+        foreach (self::$propList as $prop) {
             $attrList  = $modelMetaData[$prop];
             foreach ($attrList as $attr) {
                 $this->setProp($attr, $prop);
@@ -394,18 +382,7 @@ class Model
         return array_keys($this->attributeTypes);
     }
     
-    
-    public function getAllPeristAttr()
-    {
-        $allPeristAttr= [];
-        foreach ($this->getAllTyp() as $attribute => $type) {
-            if ($this->isStateType($attribute)) {
-                        $allPeristAttr[]=$attribute;
-            }
-        }
-        return $allPeristAttr;
-    }
-    
+
     private function isStateType($attr)
     {
         if (($this->getTyp($attr) !=  Mtype::M_CREF)
@@ -445,16 +422,6 @@ class Model
         return $attributes;
     }
 
-    public function getStateAttrTypList()
-    {
-        $stateAttributeList=[];
-        foreach ($this->getAttrTypList() as $attribute => $type) {
-            if ($this->isStateType($attribute)) {
-                $stateAttributeList[$attribute]=$type;
-            }
-        }
-        return $stateAttributeList;
-    }
     /**
      * Returns the list of attribute types of a Model.
      *
@@ -507,19 +474,6 @@ class Model
         return $this->meta['ckey'];
     }
     
-    public function getAllBkey()
-    {
-        return $this->meta['bkey'];
-    }
-    /**
-     * Returns the list of mandatory attributes of a Model.
-     *
-     * @return array
-     */
-    public function getAllMdtr()
-    {
-        return $this->meta['mdtr'];
-    }
     /**
      * Returns the list of Predefined attributes of a Model.
      *
@@ -659,7 +613,7 @@ class Model
             throw new Exception($this->getErrLine());
         }
         $m=new Model($patha[1]);
-        return $m->isBkey($patha[2]);
+        return $m->isProp($patha[2], self::P_BKY);
     }
     
     public function newCref($attr)
@@ -738,59 +692,10 @@ class Model
      */
     public function isProtected($attr)
     {
-        if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
-            return false;
-        }
         $res = in_array($attr, $this->meta['protected']);
         return ($res);
     }
-    /**
-     * Returns true if the attribute is a Business key.
-     *
-     * @param string $attr the attribute.
-     *
-     * @return boolean
-     */
-    public function isBkey($attr)
-    {
-        if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
-            return false;
-        }
-        $res = in_array($attr, $this->meta['bkey']);
-        if ($res) {
-            return $res;
-        }
-        $abstr = $this->getInhObj();
-        if (!is_null($abstr)) {
-            return $abstr->isBkey($attr);
-        }
-        return ($res);
-    }
-    /**
-     * Returns true if the attribute is a Mandatory.
-     *
-     * @param string $attr the attribute.
-     *
-     * @return boolean
-     */
-    public function isMdtr($attr)
-    {
-        if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
-            return false;
-        }
-        $res =in_array($attr, $this->meta['mdtr']);
-        if ($res) {
-            return $res;
-        }
-        $abstr = $this->getInhObj();
-        if (!is_null($abstr)) {
-            return $abstr->isMdtr($attr);
-        }
-        return ($res);
-    }
+    
     /**
      * Returns true if the attribute is a Pedefined attribute.
      *
@@ -825,7 +730,7 @@ class Model
         if ($this->isProp($attr, self::P_EVL)) {
             return false;
         }
-        if ($this->isMdtr($attr)) {
+        if ($this->isProp($attr, self::P_MDT)) {
             return false;
         }
         $typ = $this->getTyp($attr);
@@ -842,7 +747,7 @@ class Model
             return false;
         }
         $res = false;
-        if ($this->isMdtr($attr) or $this->isOptl($attr)) {
+        if ($this->isProp($attr, self::P_MDT) or $this->isOptl($attr)) {
             $res= true;
         }
         if ($this->isProtected($attr)) { // shoul be first ?
@@ -876,9 +781,20 @@ class Model
             return true;
         }
         $this->meta[$prop][]=$attr;
+        $this->modChgd=true;
         return true;
     }
     
+    public function unsetProp($attr, $prop)
+    {
+        $key = array_search($attr, $this->meta[$prop]);
+        if ($key!==false) {
+            unset($this->meta[$prop][$key]);
+        }
+        $this->modChgd=true;
+        return true;
+    }
+       
     public function isProp($attr, $prop)
     {
         $res = in_array($attr, $this->meta[$prop]);
@@ -896,18 +812,20 @@ class Model
     {
         return $this->meta[$prop];
     }
-       
-    public function isTemp($attr)
+    
+    protected function getListProp($prop)
     {
-        return $this->isProp($attr, self::P_TMP);
+        $listProp= $this->meta[$prop];
+        $abstr = $this->getInhObj();
+        if (!is_null($abstr)) {
+            $inheritedList=  $abstr->getallProp($prop);
+            $listProp=array_unique(array_merge($listProp, $inheritedList));
+        }
+        return $listProp;
     }
-
-    public function isEval($attr)
-    {
-        return $this->isProp($attr, self::P_EVL);
-    }
-
-
+    
+    
+    
     /**
      * Set the default value of an attribute.
      *
@@ -944,38 +862,7 @@ class Model
         }
         return true;
     }
-    /**
-     * Set an attribute value of a business key .
-     *
-     * @param string $attr the attribute.
-     * @param string $val  the value.
-     *
-     * @return boolean
-     */
-    public function setBkey($attr, $val)
-    {
-        if (! $x= $this->existsAttr($attr)) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
-            return false;
-        };
-        if (!$this->stateHdlr) {
-            $this->errLog->logLine(CstError::E_ERC017.':'.$attr);
-            return false;
-        }
-        if ($val) {
-            if (!in_array($attr, $this->meta['bkey'])) {
-                $this->meta['bkey'][]=$attr;
-            }
-        }
-        if (! $val) {
-            $key = array_search($attr, $this->meta['bkey']);
-            if ($key!==false) {
-                unset($this->meta['bkey'][$key]);
-            }
-        }
-        $this->modChgd=true;
-        return true;
-    }
+
     
     public function setCkey($attrLst, $val)
     {
@@ -1002,34 +889,6 @@ class Model
             $key = array_search($attrLst, $this->meta['ckey']);
             if ($key!==false) {
                 unset($this->meta['ckey'][$key]);
-            }
-        }
-        $this->modChgd=true;
-        return true;
-    }
-    /**
-     * Set an attribute value of a mandatory attribute .
-     *
-     * @param string $attr the attribute.
-     * @param string $val  the value.
-     *
-     * @return boolean
-     */
-    public function setMdtr($attr, $val)
-    {
-        if (! $x= $this->existsAttr($attr)) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
-            return false;
-        };
-        if ($val) {
-            if (!in_array($attr, $this->meta['mdtr'])) {
-                $this->meta['mdtr'][]=$attr;
-            }
-        }
-        if (! $val) {
-            $key = array_search($attr, $this->meta['mdtr']);
-            if ($key!==false) {
-                unset($this->meta['mdtr'][$key]);
             }
         }
         $this->modChgd=true;
@@ -1118,25 +977,17 @@ class Model
         if (isset($this->meta['dflt'][$attr])) {
             unset($this->meta['dflt'][$attr]);
         }
-        $key = array_search($attr, $this->meta['bkey']);
-        if ($key!==false) {
-            unset($this->meta['bkey'][$key]);
-        }
-        $key = array_search($attr, $this->meta['mdtr']);
-        if ($key!==false) {
-            unset($this->meta['mdtr'][$key]);
-        }
+
         $key = array_search($attr, $this->meta['protected']);
         if ($key!==false) {
             unset($this->meta['protected'][$key]);
         }
-        $key = array_search($attr, $this->meta['tmp']);
-        if ($key!==false) {
-            unset($this->meta['tmp'][$key]);
-        }
-        $key = array_search($attr, $this->meta['eval']);
-        if ($key!==false) {
-            unset($this->meta['eval'][$key]);
+
+        foreach (self::$propList as $prop) {
+            $key = array_search($attr, $this->meta[$prop]);
+            if ($key!==false) {
+                unset($this->meta[$prop][$key]);
+            }
         }
 
         $this->modChgd=true;
@@ -1219,12 +1070,10 @@ class Model
         if ($attr == 'id') {
             return $this->getId();
         }
-        $x= $this->existsAttr($attr);
-        if (!$x) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
+        $type=$this->getTyp($attr);
+        if (! $type) {
             return false;
         }
-        $type=$this->getTyp($attr);
         if ($type == Mtype::M_CREF) {
             $path = $this->getParm($attr);
             $patha=explode('/', $path);
@@ -1287,7 +1136,6 @@ class Model
         };
         $check= ($check or $this->checkTrusted);
 
-        // EvalP -> iseval
         if ($this->isProp($attr, self::P_EVL)
             and (! $this->custom)
             and !($this->trusted)) {
@@ -1354,7 +1202,7 @@ class Model
 
     public function getBkey($attr, $val)
     {
-        if (!$this->isBkey($attr)) {
+        if (!$this->isProp($attr, self::P_BKY)) {
             throw new Exception(CstError::E_ERC056.':'.$attr);
         };
         $res=$this->findObjAttr($this->getModName(), $attr, $val);
@@ -1766,32 +1614,22 @@ class Model
             return false;
         }
 
-        $attrL= $this->getAllMdtr();
+        $attrL= $this->getListProp(self::P_MDT);
         if (!$this->checkMdtr($attrL)) {
             return false;
         }
-        $abstr = $this->getInhObj();
-        if (!is_null($abstr)) {
-            $attrL= $abstr->getAllMdtr();
-            if (!$this->checkMdtr($attrL)) {
-                return false;
-            }
-        }
-
-        $keyList=$this->getAllBkey();
+        $keyList=$this->getListProp(self::P_BKY);
         if (!$this->checkBkeyList($keyList)) {
             return false;
         }
+        $abstr = $this->getInhObj();
         
         $ckeyList=$this->getAllCkey();
         if (!$this->checkCkeyList($ckeyList)) {
             return false;
         }
+        $abstr = $this->getInhObj();
         if (!is_null($abstr)) {
-            $keyList=$abstr->getAllBkey();
-            if (!$this->checkBkeyList($keyList)) {
-                return false;
-            }
             $ckeyList= $abstr->getAllCkey();
             if (!$this->checkCkeyList($ckeyList)) {
                 return false;

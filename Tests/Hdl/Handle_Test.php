@@ -198,7 +198,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(2, count($h->getValues('User')));
             $this->assertFalse($h->isProtected('User'));
             $this->assertFalse($h->isMdtr('User'));
-            $this->assertFalse($h->isEval('User'));
+            $this->assertFalse($h->isTmp('User'));
             $this->assertTrue($h->isModif('User'));
             $this->assertTrue($h->isSelect('User'));
             $this->assertTrue($h->existsAttr('User'));

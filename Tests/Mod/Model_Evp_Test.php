@@ -281,10 +281,10 @@ class Model_Evp_Test extends PHPUnit_Framework_TestCase
         $res=$x->isSelect('aplusb');
         $this->assertTrue($res);
 
-        $res=$x->isTemp('aplusb');
+        $res=$x->isProp('aplusb', Model::P_TMP);
         $this->assertFalse($res);
             
-        $res=$x->isTemp('tmp');
+        $res=$x->isProp('tmp', Model::P_TMP);
         $this->assertTrue($res);
         
         $res=$x->getVal('tmp');

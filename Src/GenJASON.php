@@ -3,6 +3,7 @@ namespace ABridge\ABridge;
 
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\FormatLib;
+use ABridge\ABridge\Mod\Model;
 
 class GenJason
 {
@@ -32,7 +33,7 @@ class GenJason
         $c= count($aList);
         foreach ($aList as $attr) {
             $typ = $h->getTyp($attr);
-            if ((! $h->isEval($attr))
+            if ((! $h->isProp($attr, Model::P_TMP))
                     and (!($typ==Mtype::M_CREF and $depth==0))
                     and ($tmst or ($attr!='ctstp' and $attr!='utstp'))) {
                 if (!$first and !$skip) {

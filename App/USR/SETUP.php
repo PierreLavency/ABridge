@@ -95,7 +95,7 @@ class Config extends App
 		
 		$res =$obj->addAttr(Usr::USER,Mtype::M_REF,'/'.Usr::USER);
 		
-		$res=$obj->setBkey(Usr::USER,true);
+		$res=$obj->setProp(Usr::USER,Model::P_BKY);
 		
 		$res = $obj->saveMod();
 		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";

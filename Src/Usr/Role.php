@@ -2,6 +2,7 @@
 namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 
 class Role extends CModel
@@ -15,7 +16,7 @@ class Role extends CModel
         $res = $obj->addAttr('Name', Mtype::M_STRING);
         $res = $obj->addAttr('JSpec', Mtype::M_JSON);
 
-        $res = $obj->setBkey('Name', true);
+        $res = $obj->setProp('Name', Model::P_BKY);
         
         if (isset($bindings['Distribution'])) {
             $distribution=$bindings['Distribution'];

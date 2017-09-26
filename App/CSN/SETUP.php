@@ -159,8 +159,8 @@ public static	function loadMeta($prm=null)
 		$res= $obj->deleteMod();
 		
 		$res = $obj->addAttr('Value',Mtype::M_STRING);
-		$res = $obj->setMdtr('Value',true);
-		$res = $obj->setBkey('Value',true);
+		$res=$obj->setProp('Value', Model::P_MDT); 
+		$res = $obj->setProp('Value',Model::P_BKY);
 		$res = $obj->setAbstr();
 		
 		$res = $obj->saveMod();
@@ -287,7 +287,7 @@ public static	function loadMeta($prm=null)
 		$res = $obj->addAttr($Role,Mtype::M_REF,'/'.$Role);
 		$res = $obj->addAttr('Comment',Mtype::M_STRING);
 		$res = $obj->addAttr('BKey',Mtype::M_STRING);
-		$res = $obj->setBkey('BKey',true);
+		$res = $obj->setProp('BKey',Model::P_BKY);
 		
 		
 		echo "<br>Session<br>";
@@ -302,11 +302,11 @@ public static	function loadMeta($prm=null)
 		
 		$path='/'.$Role;
 		$res = $obj->addAttr('ofRole',Mtype::M_REF,$path);
-		$res = $obj->setMdtr('ofRole',true); // Mdtr
+		$res=$obj->setProp('ofRole', Model::P_MDT); 
 		
 		$path='/'.$User;
 		$res = $obj->addAttr('toUser',Mtype::M_REF,$path);
-		$res = $obj->setMdtr('toUser',true); // Mdtr
+		$res=$obj->setProp('toUser', Model::P_MDT); 
 		
 		$obj->setCkey(['ofRole','toUser'],true);
 		

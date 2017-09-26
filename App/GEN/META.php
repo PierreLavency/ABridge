@@ -13,7 +13,7 @@
 
 	$path='/'.$Code;
 	$res = $codeval->addAttr('ValueOf',M_REF,$path);
-	$res=$codeval->setMdtr('ValueOf',true); // Mdtr
+	$res=$codeval->setProp('ValueOf', Model::P_MDT); 
 		
 	$res = $codeval->saveMod();	
 
@@ -26,7 +26,7 @@
 	$res= $code->deleteMod();
 		
 	$res = $code->addAttr('Name',M_STRING); 
-	$res=$code->setBkey('Name',true);// Unique
+	$res=$code->setProp('Name',Model::P_BKY);// Unique
 		
 	$path='/'.$CodeVal.'/ValueOf';
 	$res = $code->addAttr('Values',M_CREF,$path);

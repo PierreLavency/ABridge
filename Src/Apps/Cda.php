@@ -45,8 +45,7 @@ class Cda extends App
         
         $res = $obj->addAttr('Name', Mtype::M_STRING);
         $res = $obj->addAttr('ValueOf', Mtype::M_REF, '/'.self::CODE);
-        $res=$obj->setMdtr('ValueOf', true); // Mdtr
-        
+        $res=$obj->setProp('ValueOf', Model::P_MDT);
         
         $res = $obj->saveMod();
         echo $obj->getModName()."<br>";
@@ -59,7 +58,7 @@ class Cda extends App
         $res= $obj->deleteMod();
         
         $res = $obj->addAttr('Name', Mtype::M_STRING);
-        $res=$obj->setBkey('Name', true);// Unique
+        $res=$obj->setProp('Name', Model::P_BKY);// Unique
         $res = $obj->addAttr('Values', Mtype::M_CREF, '/'.self::CODEVAL.'/ValueOf');
         
         $res = $obj->saveMod();

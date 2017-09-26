@@ -38,7 +38,7 @@ class User extends CModel
         $res = $obj->setProp('MetaData', Model::P_EVL);
         $res = $obj->setProp('MetaData', Model::P_TMP);
         
-        $res = $obj->setBkey('UserId', true);
+        $res = $obj->setProp('UserId', Model::P_BKY);
  
         if (isset($bindings['UserGroup'])) {
             $usergroup = $bindings['UserGroup'];
