@@ -22,6 +22,7 @@ class FileBase_Test extends Base_Case
         $fpath=$prm['application']['path'];
             
         self::$db = new FileBase($fpath, self::$DBName);
+        self::$baseType='fileBase';
         
         if (self::$db->existsMod(self::$CName)) {
             self::$db ->delMod(self::$CName);

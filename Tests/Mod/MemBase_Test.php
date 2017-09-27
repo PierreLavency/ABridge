@@ -22,7 +22,8 @@ class MemBase_Test extends Base_Case
         $fpath=$prm['application']['path'];
         
         self::$db = new FileBase($fpath, null);
-        
+        self::$baseType='memBase';
+
         if (self::$db->existsMod(self::$CName)) {
             self::$db ->delMod(self::$CName);
         }

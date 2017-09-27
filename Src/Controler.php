@@ -34,7 +34,7 @@ class Controler
 
     public function __construct($spec, $ini)
     {
-//    	$spec=\Config::$config;
+//    	$spec=\Config::$config;    	
         
         $this->initPrm($spec, $ini);
         
@@ -99,7 +99,11 @@ class Controler
         $this->appName = $appName;
         $this->defVal['name']=$appName;
 
-        $paramList=['path','base','dataBase','memBase','fileBase','host','user','pass','trace'];
+        $paramList=[
+                'path','base','dataBase','memBase','fileBase','host','user','pass',
+                'trace','tclass','tfunction', 'tline', 'tdisp',
+                
+        ];
         foreach ($paramList as $param) {
             if (isset($ini[$param])) {
                 $this->defVal[$param]= $ini[$param];
@@ -139,11 +143,20 @@ class Controler
     {
         $log=Log::get();
         $urli = 'Uri : '.$this->handle->getDocRoot();
-        $log->logLine($urli, ['class'=>__CLASS__]);
+        $log->logLine(
+            $urli,
+            [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__]
+        );
         $urlp = 'Path : '.$this->handle->getRpath();
-        $log->logLine($urlp, ['class'=>__CLASS__]);
+        $log->logLine(
+            $urlp,
+            [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__]
+        );
         $method = 'Method: '.$this->handle->getMethod();
-        $log->logLine($method, ['class'=>__CLASS__]);
+        $log->logLine(
+            $method,
+            [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__]
+        );
     }
 
     

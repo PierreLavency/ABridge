@@ -12,16 +12,14 @@ B22 EVALP in create dialog
 B27 session initial log in - menu not updated (see caching)
 
 DEV
+- move attribute declaration checks out of Model when possible.
 - develop component for abstract code (Cda).
 - create Ctr Component.
 
 - set up own exception
 - improve LC support (test/ dev Data Base etc.)
 
-- clean up picture path
-
 - review error Management in Model (exception rather than errolog)
-- combine temp/evalp reference.
  
 - Document the code!
 - delete in list.
@@ -35,11 +33,11 @@ DEV
 
 - changed DB model independently of class model.
 - implement unique index.
-- prefix all tables
 - database paging
 
+- implement CSS
 
-- implement CSS 
+ - prefix all tables ?
 - avoid loading abstractMod in Mod base  (? dependency in test)
 - revisit dot attributes (?)
 - unify get code with get reference. (??)
@@ -54,13 +52,13 @@ DEV
 - multi language /2
 - delete all object in class /2
 - introduction of name space in Tests /2
+
 - graphics : include svg bit in view. /2
+- clean up picture path /2
 
 PERF
-develop perf scenario with code.
 develop perf scenario with role.
 review getValues.
-optimize "is" method in Model.
 initMod rather than restoreMod
 
 TEST
@@ -83,8 +81,16 @@ INT
 - set up jenkin
 
 DONE
+develop perf scenario with code.
+improve logger with filtering.
+PERF  S1(1)on 2*20*20: 0.558
+PERF* S1(4)on 2*50*20: 0.161
+PERF* S1(4)on 2*20*20: 0.146
+PERF* S1(4)on 2*20*10: 0.128
+PERF* S1(4)on 2*20   : 0.110
 -------------// 1
 - review property management in Model
+- optimize "is" method in Model.
 PERF  S1(1)on 2*20 : 0.319
 PERF  S1(1)on 2*20 : 0.322
 --------------// 1

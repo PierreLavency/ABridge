@@ -38,10 +38,9 @@ class Logger
      */
     public function __construct()
     {
+        $this->br="<br>";
         if (php_sapi_name()==='cli') {
             $this->br="\n";
-        } else {
-            $this->br="<br>";
         }
     }
 

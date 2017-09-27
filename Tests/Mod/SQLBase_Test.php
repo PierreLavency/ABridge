@@ -27,7 +27,7 @@ class SQLBase_Test extends Base_Case
             $prm['application']['pass'],
             self::$DBName
         );
-        
+        self::$baseType='dataBase';
         self::$db ->delMod(self::$CName);
         self::$db ->delMod(self::$CName2);
         

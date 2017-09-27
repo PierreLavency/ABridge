@@ -9,13 +9,18 @@ use ABridge\ABridge\Comp;
 
 class Log extends Comp
 {
-    const ADMIN='Admin';
+    const TCLASS='class';
+    const TFUNCT='function';
+    const TLINE='line';
     
+    public static $tproperty = [self::TCLASS,self::TFUNCT,self::TLINE];
     private static $instance = null;
     private $logger;
     private $logLevel=0;
     private $runLevel=0;
-    private $path;
+    private $propList=[];
+    private $tdisp=0;
+
     
     private function __construct()
     {
@@ -37,17 +42,52 @@ class Log extends Comp
         return true;
     }
     
+    public function getRunLevel()
+    {
+        return $this->runLevel;
+    }
+    
+    public function getLevel()
+    {
+        return $this->logLevel;
+    }
+    
+    public function getDisp()
+    {
+        return $this->tdisp;
+    }
     
     public function init($appPrm, $config)
     {
         $this->logLevel=$appPrm['trace'];
         $this->path=$appPrm['path'];
+        $this->propList=[];
+        foreach (self::$tproperty as $prop) {
+            $tprop='t'.$prop;
+            if (isset($appPrm[$tprop])) {
+                $this->propList[$prop]=$appPrm[$tprop];
+            }
+        }
+        $this->tdisp=0;
+        if (isset($appPrm['tdisp'])) {
+            $this->tdisp=(int) $appPrm['tdisp'];
+        }
         return true;
     }
     
     public function begin($appPrm = null, $logLevel = null)
     {
         $this->runLevel=$this->logLevel;
+    }
+ 
+    private function evalcond($attributes)
+    {
+        foreach ($this->propList as $prop => $val) {
+            if ($attributes[$prop] != $val) {
+                return false;
+            }
+        }
+        return true;
     }
     
     public function logLine($line, $attributes)
@@ -57,6 +97,9 @@ class Log extends Comp
         }
         if (! $this->logger) {
             $this->logger=new Logger();
+        }
+        if (! $this->evalcond($attributes)) {
+            return true;
         }
         $lineNumber= $this->logger->logLine($line, $attributes);
         if ($this->runLevel == 1) {
@@ -79,9 +122,17 @@ class Log extends Comp
     public function end($appPrm = null, $bindings = null)
     {
         if ($this->runLevel == 2) {
-            $this->logger->show();
+            if ($this->tdisp==0) {
+                $this->logger->show();
+            }
+            if ($this->tdisp==1) {
+                $line = $this->logger->logSize().' lines with ';
+                foreach ($this->propList as $prop => $val) {
+                    $line= $line . $prop. ' : ' . $val;
+                }
+                echo $line."\n";
+            }
         }
-        
         $this->runLevel=0;
     }
     

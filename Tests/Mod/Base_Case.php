@@ -22,10 +22,12 @@ class Base_Case extends PHPUnit_Framework_TestCase
     protected static $CName2;
     protected static $DBName;
     protected static $db;
+    protected static $baseType;
 
     public function testNewMod()
     {
         $db=self::$db;
+        $this->assertEquals(self::$baseType, $db->getBaseType());
         $db->beginTrans();
         $this->assertTrue($db->newMod(self::$CName, $this->meta, $this->meta));
         $this->assertTrue($db->newMod(self::$CName2, [], []));

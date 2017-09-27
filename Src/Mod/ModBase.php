@@ -101,7 +101,7 @@ class ModBase
             $changed = true;
             $this->logger->logLine(
                 "$modName : Attribute Added:$addChange Attribute Deleted $delChange",
-                ['class'=>__CLASS__,'line'=>__LINE__]
+                [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__]
             );
         }
         
