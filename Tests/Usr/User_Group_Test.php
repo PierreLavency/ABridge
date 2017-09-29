@@ -6,6 +6,7 @@ use ABridge\ABridge\Mod\Mod;
 
 use ABridge\ABridge\Usr\User;
 use ABridge\ABridge\Usr\UserGroup;
+use ABridge\ABridge\Mod\ModUtils;
 
 class User_Group_Test_dataBase_User extends User
 {
@@ -37,8 +38,8 @@ class User_Group_Test extends PHPUnit_Framework_TestCase
         
         $mod->begin();
         
-        $res = $mod->initModBindings($prm['dataBase']);
-        $res = ($res && $mod->initModBindings($prm['fileBase']));
+        $res = ModUtils::initModBindings($prm['dataBase']);
+        $res = ($res && ModUtils::initModBindings($prm['fileBase']));
         
         $mod->end();
         

@@ -427,6 +427,11 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
 
         $comp = new Model($this->Application);
 
+        $attr ='NotExists';
+        $comp->getTyp($attr);
+        $this->assertEquals(CstError::E_ERC002.':'.$attr, $comp->getErrLine());
+        
+        
         $comp->setVal('Name', 'newName');
         $comp->setVal('Surname', 'same');
         $comp->setVal('Bkey', 'App_0');

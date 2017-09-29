@@ -4,6 +4,7 @@ namespace ABridge\ABridge\Adm;
 use ABridge\ABridge\Comp;
 
 use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\Mod\ModUtils;
 use ABridge\ABridge\Mod\Model;
 
 //use ABridge\ABridge\Handler;
@@ -39,8 +40,8 @@ class Adm extends Comp
         if ($bindings==[]) {
             $bindings[self::ADMIN]=self::ADMIN;
         }
-        $bindings = self::normBindings($bindings);
-        Mod::get()->init($appPrm, self::defltHandlers($bindings));
+        $bindings = ModUtils::normBindings($bindings);
+        Mod::get()->init($appPrm, ModUtils::defltHandlers($bindings));
         if ($bindings[self::ADMIN]==self::ADMIN) {
             $className = __NAMESPACE__.'\\'.self::ADMIN;
             Mod::get()->assocClassMod(self::ADMIN, $className);
@@ -82,7 +83,7 @@ class Adm extends Comp
         if ($bindings==[]) {
             $bindings[self::ADMIN]=self::ADMIN;
         }
-        $bindings = self::normBindings($bindings);
+        $bindings = ModUtils::normBindings($bindings);
         foreach ($bindings as $logicalName => $physicalName) {
             $x = new Model($physicalName);
             $x->deleteMod();

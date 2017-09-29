@@ -134,12 +134,7 @@ abstract class Base
         }
         return(array_key_exists($model, $this->objects));
     }
- 
-    public function newModel($model, $meta)
-    {
-        return $this->newModelId($model, $meta, true);
-    }
-    
+
     public function newModelId($model, $meta, $idF)
     {
         if ($this->existsMod($model)) {

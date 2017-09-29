@@ -24,6 +24,20 @@ class Base_Rmv_Test extends PHPUnit_Framework_TestCase
         $this->assertFalse(FileBase::exists($fpath, $name));
     }
 
+    public function testMem()
+    {
+        $fpath = 'C:/Users/pierr/ABridge/Datastore/';
+ 
+        $x = new FileBase($fpath, null);
+        $this->assertNotNull($x);
+        $x->commit();
+        
+        $res=$x->remove();
+        $this->assertTrue($res);
+    }
+    
+    
+    
     public function testSql()
     {
         $prm=[

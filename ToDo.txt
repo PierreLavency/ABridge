@@ -1,7 +1,7 @@
 CMD
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'setBkey' Src/* App/* Tests/*
+grep -ri 'initModBindings' Src/* App/* Tests/*
 
 BUGS	29
 B1 session with API.
@@ -12,35 +12,34 @@ B22 EVALP in create dialog
 B27 session initial log in - menu not updated (see caching)
 
 DEV
-- move attribute declaration checks out of Model when possible.
 - develop component for abstract code (Cda).
 - create Ctr Component.
 
-- set up own exception
-- improve LC support (test/ dev Data Base etc.)
+- improve LC support (release, test/ dev Data Base etc.)
 
+- set up own exception
 - review error Management in Model (exception rather than errolog)
  
 - Document the code!
-- delete in list.
 - order in list query and attr.
-- confirmation requested on META load / Java Script
+- delete in list.
 
 - set up rest services / Python
 - develop a CLI / Python
-- selection for Ref / Java script 
+- selection for Ref / Java script
+- confirmation requested on META load / Java Script
 - set up modif logging / node.js ?
 
-- changed DB model independently of class model.
+- changed class model independently of DB model.
 - implement unique index.
 - database paging
 
 - implement CSS
 
- - prefix all tables ?
+- prefix all tables (?)
 - avoid loading abstractMod in Mod base  (? dependency in test)
 - revisit dot attributes (?)
-- unify get code with get reference. (??)
+- unify get code with get reference. (????)
 - support CREF on abstract (????)
 - user Jason to save data rather than serilialisation (?).
 
@@ -58,7 +57,7 @@ DEV
 
 PERF
 develop perf scenario with role.
-review getValues.
+review getValues/Ref View
 initMod rather than restoreMod
 
 TEST
@@ -81,6 +80,10 @@ INT
 - set up jenkin
 
 DONE
+- move attribute declaration checks out of Model when possible.
+PERF  S1(5)on 2*20*20: 0.533
+PERF* S1(5)on 2*20*20: 0.145
+--------------// 1
 develop perf scenario with code.
 improve logger with filtering.
 PERF  S1(1)on 2*20*20: 0.558

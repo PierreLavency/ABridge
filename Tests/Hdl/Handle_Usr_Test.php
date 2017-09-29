@@ -59,7 +59,7 @@ class Handle_Usr_Test extends PHPUnit_Framework_TestCase
         $mod->begin();
         
         $res = usr::initMeta($prm['application'], $prm['dataBase']);
-        $res = $res and usr::initMeta($prm['application'], $prm['fileBase']);
+        $res = ($res and usr::initMeta($prm['application'], $prm['fileBase']));
                 
         $mod->end();
         

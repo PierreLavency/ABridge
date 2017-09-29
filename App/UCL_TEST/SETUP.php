@@ -9,7 +9,7 @@ use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\Usr\Usr;
 use ABridge\ABridge\Mod\Mod;
-
+use ABridge\ABridge\Mod\ModUtils;
 
 
 use ABridge\ABridge\Apps\AdmApp;
@@ -288,7 +288,7 @@ class Config extends App
 				self::CHARGE,
 		];
 			
-		Mod::initModBindings($bindings,$logicalNames);		
+		ModUtils::initModBindings($bindings,$logicalNames);		
 
 	}
 	

@@ -16,7 +16,7 @@ class Model_Bse_Test extends PHPUnit_Framework_TestCase
     
     public static function setUpBeforeClass()
     {
-        $classes = ['Student'];
+        $classes = ['Student',];
         $baseTypes=['dataBase','fileBase','memBase'];
         $baseName='test';
         

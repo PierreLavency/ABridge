@@ -36,6 +36,9 @@ class Model_Evl_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($x->addAttr('aplusb', Mtype::M_INT));
         $res = $x->setProp('aplusb', Model::P_EVL);
         $res = $x->setProp('aplusb', Model::P_TMP);
+        $this->assertTrue($res);
+        $res = $x->setProp('aplusb', Model::P_TMP);
+        $this->assertTrue($res);
         $this->assertFalse($x->isErr());
         
         return $x;
@@ -48,6 +51,7 @@ class Model_Evl_Test extends PHPUnit_Framework_TestCase
     public function testval($x)
     {
 
+        $this->assertFalse($x->isSelect('aplusb'));
         $this->assertTrue($x->setVal('a', 1));
         $this->assertTrue($x->setVal('b', 1));
         $this->assertEquals(2, $x->getVal('aplusb'));
@@ -76,8 +80,9 @@ class Model_Evl_Test extends PHPUnit_Framework_TestCase
  /*
         $this->assertTrue($y->addAttr('aplusb', Mtype::M_INT, M_P_EVAL));
         $this->assertEquals($y->getErrLine(), CstError::E_ERC040.':aplusb:'.Mtype::M_INT);
-  */
+
         $this->assertFalse($y->addAttr('aplusb', Mtype::M_INT, '/xx'));
         $this->assertEquals($y->getErrLine(), CstError::E_ERC041.':aplusb:'.Mtype::M_INT.':/xx');
+        */
     }
 }

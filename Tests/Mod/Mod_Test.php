@@ -26,7 +26,30 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
         $mod->init($prm['application'], $config);
         $this->assertTrue($mod->isNew());
         $this->assertEquals(['test1','test2','test3','test4'], $mod->getMods());
-                
+        
+        $res= [
+            'dataBase' => [
+                    [
+                            'test',
+                            [
+                                'test1',
+                                'test2',
+                                'test4',
+                            ]
+                    ]
+            ],
+            'fileBase' => [
+                    [
+                            'test',
+                            [
+                                'test3',
+                            ]
+                    ]
+            ],
+        ];
+        
+ //       var_dump($mod->showState());
+        $this->assertEquals($res, $mod->showState());
         
         Mod::reset();
         $mod= Mod::get();
@@ -59,18 +82,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
         $res=$mod->end();
         $this->assertTrue($res);
     }
-    
-    public function testBindings()
-    {
-        $mod= Mod::get();
-        try {
-            $mod->initModBindings(['notexist']);
-        } catch (Exception $e) {
-            $res= $e->getMessage();
-        }
-        $this->assertEquals(CstError::E_ERC061.':notexist', $res);
-    }
-    
+
     
     public function testBaseHandler1()
     {
@@ -81,6 +93,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
                 'pass'=>'cl822'
         ];
         $this->assertTrue(Mod::reset());
+        $this->assertTrue(Mod::get()->initMeta(null, null));
         $this->assertNotNull($db1 = Mod::get()->setBase('dataBase', 'test', $prm));
         $this->assertNotNull($db2 = Mod::get()->getBase('dataBase', 'test'));
         $this->assertNull(Mod::get()->getBase('dataBase', 'test2'));
@@ -122,10 +135,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
         $this->assertnull($db2 = Mod::get()->getBase('NOTEXISTS', 'NOTEXISTS'));
         $this->assertNotEquals($db1, $db2);
     }
-    
-
-    
-    
+       
     public function testModHandler()
     {
         $this->assertTrue(Mod::reset());

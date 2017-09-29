@@ -16,7 +16,7 @@ use ABridge\ABridge\View\Vew;
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
 
-$numberRun=1;
+$numberRun=2;
 $breath=20;
 $depth=2;
 //$bases= ['dataBase','memBase','fileBase'];

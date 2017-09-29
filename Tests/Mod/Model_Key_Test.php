@@ -247,11 +247,11 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
 
         $res=$codeval->setCkey(['ValueName','ValueOf'], true);
         $this->assertTrue($res);
-        
+/*        
         $res=$codeval->getAllCkey();
         $l=implode(':', $res[0]);
         $this->assertEquals('ValueName:ValueOf', $l);
-
+*/
         $res=$codeval->saveMod();
         $this->assertTrue($res);
         
@@ -297,7 +297,7 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         
         $n = 0;
         $r = $codeval-> getErrLog();
-        $this->assertEquals($r->getLine($n), CstError::E_ERC031.':'.$l);
+        $this->assertEquals($r->getLine($n), CstError::E_ERC031.':'.'ValueName:ValueOf');
 
         $this->assertFalse($codeval->delAttr('ValueOf'));
         $n++;

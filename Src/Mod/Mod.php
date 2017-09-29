@@ -3,7 +3,6 @@ namespace ABridge\ABridge\Mod;
 
 use ABridge\ABridge\Comp;
 use ABridge\ABridge\CstError;
-
 use Exception;
 
 class Mod extends Comp
@@ -81,6 +80,7 @@ class Mod extends Comp
                     break;
             }
         }
+        return true;
     }
     
     public function begin($appPrm = null, $config = null)
@@ -147,8 +147,6 @@ class Mod extends Comp
             case 'dataBase':
                 $baseObj = new $className($path, $prm['host'],$prm['user'],$prm['pass'],$baseName);
                 break;
-            default:
-                throw Exception($baseType);
         }
         $instances[$baseName]=$baseObj;
         $this->baseTypeInstances[$baseType]=$instances;
@@ -210,7 +208,6 @@ class Mod extends Comp
         $this->cmod[$modName]=$className;
         return true;
     }
-    
 
     public function showState()
     {
@@ -229,54 +226,5 @@ class Mod extends Comp
             $showState[$baseType]=$showStateInstance;
         }
         return $showState;
-    }
-
- 
-
-//    
-    public static function initModBindings($bindings, $logicalModNames = null)
-    {
-        $normBindings=self::normBindings($bindings);
-        if (is_null($logicalModNames)) {
-            $logicalModNames = array_keys($normBindings);
-        }
-        foreach ($logicalModNames as $logicalName) {
-            $res = self::initModBinding($logicalName, $normBindings);
-            if (!$res) {
-                return false;
-            }
-        }
-        $res = self::checkMods($logicalModNames, $normBindings);
-        return $res;
-    }
-      
-    
-    public static function initModBinding($logicalModName, $normBindings)
-    {
-        $physicalModName=$normBindings[$logicalModName];
-        $x = new Model($physicalModName);
-        $x->deleteMod();
-        $x->initMod($normBindings);
-        $x->saveMod();
-        if ($x->isErr()) {
-            $log = $x->getErrLog();
-            return false;
-        }
-        return true;
-    }
-    
-    public static function checkMods($logicalModNames, $normBindings)
-    {
-        foreach ($logicalModNames as $logicalModName) {
-            $physicalModName=$normBindings[$logicalModName];
-            $x = new Model($physicalModName);
-            $res = $x->checkMod();
-            if (!$res) {
-                $log = $x->getErrLog();
-
-                return false;
-            }
-        }
-        return true;
     }
 }

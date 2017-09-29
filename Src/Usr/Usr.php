@@ -3,7 +3,7 @@ namespace ABridge\ABridge\Usr;
 
 use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Mod\Mod;
-
+use ABridge\ABridge\Mod\ModUtils;
 use ABridge\ABridge\Comp;
 
 class Usr extends Comp
@@ -44,14 +44,14 @@ class Usr extends Comp
 
     public function init($appPrm, $bindings)
     {
-        $bindings = self::normBindings($bindings);
+        $bindings = ModUtils::normBindings($bindings);
         foreach ($bindings as $mod => $physicalName) {
             if ($mod == $physicalName) {
                 $className= __NAMESPACE__.'\\'.$mod;
                 Mod::get()->assocClassMod($mod, $className);
             }
         }
-        Mod::get()->init($appPrm, self::defltHandlers($bindings));
+        Mod::get()->init($appPrm, ModUtils::defltHandlers($bindings));
     }
     
     public function begin($appPrm, $bindings)
@@ -101,6 +101,6 @@ class Usr extends Comp
     
     public function initMeta($appPrm, $bindings)
     {
-        return Mod::get()->initModBindings($bindings);
+        return ModUtils::initModBindings($bindings);
     }
 }
