@@ -8,6 +8,7 @@ use ABridge\ABridge\Hdl\Hdl;
 use ABridge\ABridge\Log\Log;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Usr\Usr;
 use ABridge\ABridge\View\Vew;
 use ABridge\ABridge\View\View;
 
@@ -74,6 +75,11 @@ class Controler
             $config=$spec['Adm'];
             Adm::get()->init($prm, $config);
             $this->isInit['Adm']=true;
+        }
+        if (isset($spec['Usr'])) {
+        	$config=$spec['Usr'];
+        	Usr::get()->init($prm, $config);
+        	$this->isInit['Usr']=true;
         }
         if (isset($spec['Hdl'])) {
             $config=$spec['Hdl'];
@@ -204,7 +210,13 @@ class Controler
             $adm=Adm::get()->begin();
             $frccommit=Adm::get()->isNew();
         }
-
+       
+        if (isset($this->isInit['Usr'])) {
+        	$usr=Usr::get()->begin();
+        	$frccommit=Usr::get()->isNew();
+        }
+        
+        
         $this->handle= Hdl::get()->begin();
         $frccommit=($frccommit || Hdl::get()->isNew());
 

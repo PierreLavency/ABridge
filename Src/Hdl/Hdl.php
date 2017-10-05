@@ -42,9 +42,8 @@ class Hdl extends Comp
     
     public function begin($prm = null)
     {
-        $appPrm=$this->appPrm;
         if (isset($this->prm)) {
-            $sessionHdl= Usr::get()->begin($appPrm, $this->prm);
+            $sessionHdl= Usr::get()->begin();
             if (Usr::get()->isNew()) {
                 $handle = new Handle('/Session/~', CstMode::V_S_UPDT, $sessionHdl);
                 $this->isNew=true;

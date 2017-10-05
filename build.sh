@@ -52,6 +52,7 @@ rm ~/ABridge/Bld/Tmp/Src/ABridge_init.php
 
 cp -R ~/ABridge/Datastore ~/ABridge/Bld/Tmp
 cp -R ~/ABridge/App ~/ABridge/Bld/Tmp
+cp -R ~/ABridge/vendor ~/ABridge/Bld/Tmp
 
 php ~/ABridge/Src/BuildPhar.php
 cp ~/ABridge/Bld/*.*  /C/xampp/htdocs
