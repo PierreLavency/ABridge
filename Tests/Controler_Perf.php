@@ -233,25 +233,7 @@ class Controler_Perf
         return $res;
     }
      
-    public function depthNew($path, $n)
-    {
-        $x=$path;
-        for ($i = 1; $i <= $n; $i++) {
-            $x=$this->createSon($x, $i);
-            $x=$x->getRPath();
-        }
-        return $x;
-    }
 
-    public function breadthNew($path, $n)
-    {
-        $x=$path;
-        for ($i = 1; $i <= $n; $i++) {
-            $this->createSon($x, $i);
-        }
-        return $x;
-    }
-    
     public function depthBreadthNew($path, $n, $f)
     {
         $t = 0;

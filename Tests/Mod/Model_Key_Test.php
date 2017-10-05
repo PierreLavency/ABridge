@@ -307,11 +307,6 @@ class Model_Key_Test extends PHPUnit_Framework_TestCase
         $this->assertFalse($res);
         $n++;
         $this->assertEquals($r->getLine($n), CstError::E_ERC002.':Notexist');
-        
-        $res=$codeval->setCkey('ValueName', true);
-        $this->assertFalse($res);
-        $n++;
-        $this->assertEquals($r->getLine($n), CstError::E_ERC029);
 
         try {
             $res = $codeval->getBkey('Notexist', 'x');

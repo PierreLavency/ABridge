@@ -29,12 +29,9 @@ class Controler
     protected $defVal=[];
     protected $isInit= [];
      
-
-    
-    
+  
     public function __construct($spec, $ini)
     {
-//        $spec=\Config::$config;
         
         $this->defVal=$this->defaultValues($spec, $ini);
         
@@ -77,9 +74,9 @@ class Controler
             $this->isInit['Adm']=true;
         }
         if (isset($spec['Usr'])) {
-        	$config=$spec['Usr'];
-        	Usr::get()->init($prm, $config);
-        	$this->isInit['Usr']=true;
+            $config=$spec['Usr'];
+            Usr::get()->init($prm, $config);
+            $this->isInit['Usr']=true;
         }
         if (isset($spec['Hdl'])) {
             $config=$spec['Hdl'];
@@ -212,8 +209,8 @@ class Controler
         }
        
         if (isset($this->isInit['Usr'])) {
-        	$usr=Usr::get()->begin();
-        	$frccommit=Usr::get()->isNew();
+            $usr=Usr::get()->begin();
+            $frccommit=Usr::get()->isNew();
         }
         
         

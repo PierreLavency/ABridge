@@ -75,9 +75,7 @@ class Model
     public static $propList= [self::P_TMP,self::P_EVL,Self::P_MDT, self::P_BKY];
     
     
-    /**
-    * Constructor
-    */
+
     public function __construct()
     {
         $a = func_get_args();
@@ -86,13 +84,7 @@ class Model
             call_user_func_array(array($this, $f), $a);
         }
     }
-    /**
-     * Constructor of a new object that does not exists (id is equal to 0).
-     *
-     * @param string $name The model name.
-     *
-     * @return void
-     */
+
     public function construct1($name)
     {
         $this->init($name, 0);
@@ -105,14 +97,7 @@ class Model
         $this->modChgd=false;
         $this->initObj($name);
     }
-    /**
-     * Constructor of an existing object (id must be different from 0).
-     *
-     * @param string $name The model name.
-     * @param int    $id   The object id.
-     *
-     * @return void
-     */
+
     public function construct2($name, $id)
     {
         if (! Mtype::checkType($id, Mtype::M_INTP)) {
@@ -147,14 +132,7 @@ class Model
         $this->custom=false;
         return $this->obj;
     }
-     /**
-     * Initialise the attributes and the errologger
-     *
-     * @param string $name The model name.
-     * @param int    $id   The object id.
-     *
-     * @return void
-     */
+
     protected function init($name, $id)
     {
         if (! Mtype::checkIdentifier($name)) {
@@ -169,11 +147,7 @@ class Model
         $this->obj=null;
         $this->stateHdlr=Mod::get()->getStateHandler($name);
     }
-    /**
-     * Re/Initialise the attributes and their properties
-     *
-     * @return void
-     */
+ 
     protected function initattr()
     {
         $this->meta['modname'] = $this->getModName();
@@ -200,7 +174,7 @@ class Model
         $this->modChgd=false;
     }
     
-    public function initMod($bindings)
+    public function initMod(array $bindings)
     {
         if ($this->obj) {
             $this->custom=true;
@@ -228,7 +202,7 @@ class Model
         return $modelMetaData;
     }
     
-    public function setMeta($modelMetaData)
+    public function setMeta(array $modelMetaData)
     {
         $tagList=[
                 'attr_typ','inhnme','isabstr',
@@ -440,12 +414,8 @@ class Model
         return $this->meta['dflt'];
     }
     
-    public function setCkey($attrLst, $val)
+    public function setCkey(array $attrLst, $val)
     {
-        if (! is_array($attrLst)) {
-            $this->errLog->logLine(CstError::E_ERC029);
-            return false;
-        }
         foreach ($attrLst as $attr) {
             if (! $x= $this->existsAttr($attr)) {
                 $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
@@ -721,7 +691,7 @@ class Model
         return ($res);
     }
 
-    protected function setRef($attr, $mod)
+    protected function setRef($attr, Model $mod)
     {
         $modA = $this->getModRef($attr);
         $modN = $mod->getModName();
@@ -899,7 +869,7 @@ class Model
         return $this->isModif($attr);
     }
     
-    public function setCriteria($attrL, $opL, $valL)
+    public function setCriteria(array $attrL, $opL, $valL)
     {
         foreach ($attrL as $attr) {
             if (! $x= $this->existsAttr($attr)) {
@@ -1108,7 +1078,7 @@ class Model
         return $res;
     }
     
-    protected function checkCkey($attrLst)
+    protected function checkCkey(array $attrLst)
     {
         $valLst=[];
         $res=[];
@@ -1158,13 +1128,7 @@ class Model
         $patha=explode('/', $path);
         return ($patha[1]);
     }
-       /**
-     * Get the possible values of a code attribute.
-     *
-     * @param string $Attr the attribute.
-     *
-     * @return array
-     */
+
     public function getValues($attr)
     {
         if ((! is_null($this->obj)) and (! $this->custom)) {
@@ -1226,7 +1190,7 @@ class Model
         return true;
     }
 
-    protected function checkMdtr($attrList)
+    protected function checkMdtr(array $attrList)
     {
         foreach ($attrList as $attr) {
             if (array_key_exists($attr, $this->attributeValues)) {
@@ -1243,7 +1207,7 @@ class Model
         return true;
     }
 
-    protected function checkBkeyList($keyList)
+    protected function checkBkeyList(array $keyList)
     {
         foreach ($keyList as $attr) {
             $val =$this->getVal($attr);
@@ -1256,7 +1220,7 @@ class Model
         return true;
     }
     
-    protected function checkCkeyList($ckeyList)
+    protected function checkCkeyList(array $ckeyList)
     {
         foreach ($ckeyList as $attrLst) {
             $res=$this->checkCkey($attrLst);
