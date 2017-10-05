@@ -80,12 +80,23 @@ class User_GroupUser_Test extends PHPUnit_Framework_TestCase
             $x = new Model($bd['UserGroup']);
             $res=$x->save();
             $this->assertEquals(2, $res);
+            
+            $x = new Model($bd['UserGroup']);
+            $res=$x->save();
+            $this->assertEquals(3, $res);
+            
 
             $x = new Model($bd['GroupUser']);
             $x->setVal('UserGroup', 1);
             $x->setVal('User', 1);
             $res=$x->save();
             $this->assertEquals(1, $res);
+            
+            $x = new Model($bd['GroupUser']);
+            $x->setVal('UserGroup', 3);
+            $x->setVal('User', 1);
+            $res=$x->save();
+            $this->assertEquals(2, $res);
 
             $res=$x->getVal('MetaData');
             $this->assertNotNull($res);
@@ -113,7 +124,7 @@ class User_GroupUser_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['User'], 1);
             $res= $x->getValues('UserGroup');
-            $this->assertEquals([1], $res);
+            $this->assertEquals([1,3], $res);
             
             $obj=$x->getCobj();
             $res = $obj->checkAttr('UserGroup', 2);
@@ -135,7 +146,10 @@ class User_GroupUser_Test extends PHPUnit_Framework_TestCase
             $this->assertFalse($res);
             $this->assertEquals(CstError::E_ERC052.':UserGroup', $d->getErrLine());
                         
-            
+            $d = new Model($bd['GroupUser'], 2);
+            $res= $d->delet();
+            $this->assertTrue($res);
+
             $mod->end();
         }
         return $prm;

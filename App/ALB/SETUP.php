@@ -97,7 +97,7 @@ class Config extends App
 		],
 	];
 	
-	public static function loadMeta($prm=null)
+	public static function initMeta($config)
 	{
 		$ACode = 'AbstractCode';
 		
@@ -223,7 +223,7 @@ class Config extends App
 		$r->show();	
 	}
 
-	public static function loadData($prm=null)
+	public static function initData($prm=null)
 	{
 		
 	}

@@ -5,7 +5,12 @@ abstract class App
 {
     public static $config;
     
-    abstract public static function loadMeta($prm);
+    public static function init($prm, $config)
+    {
+        return self::$config;
+    }
     
-    abstract public static function loadData($prm);
+    abstract public static function initMeta($config);
+    
+    abstract public static function initData($config);
 }

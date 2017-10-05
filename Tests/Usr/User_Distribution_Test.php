@@ -81,6 +81,10 @@ class User_Distribution_Test extends PHPUnit_Framework_TestCase
             $x = new Model($bd['Role']);
             $res=$x->save();
             $this->assertEquals(2, $res);
+            
+            $x = new Model($bd['Role']);
+            $res=$x->save();
+            $this->assertEquals(3, $res);
 
             $x = new Model($bd['Distribution']);
             $x->setVal('Role', 1);
@@ -88,6 +92,12 @@ class User_Distribution_Test extends PHPUnit_Framework_TestCase
             $res=$x->save();
             $this->assertEquals(1, $res);
 
+            $x = new Model($bd['Distribution']);
+            $x->setVal('Role', 3);
+            $x->setVal('User', 1);
+            $res=$x->save();
+            $this->assertEquals(2, $res);
+            
             $obj = $x->getCobj();
             $res= $obj->initMod([]);
             $this->assertFalse($res);
@@ -111,7 +121,7 @@ class User_Distribution_Test extends PHPUnit_Framework_TestCase
             
             $x = new Model($bd['User'], 1);
             $res= $x->getValues('Role');
-            $this->assertEquals([1], $res);
+            $this->assertEquals([1,3], $res);
             
             $obj=$x->getCobj();
             $res = $obj->checkAttr('Role', 2);
@@ -132,6 +142,10 @@ class User_Distribution_Test extends PHPUnit_Framework_TestCase
             $this->assertFalse($res);
             $this->assertEquals(CstError::E_ERC052.':UserRole', $d->getErrLine());
             
+            $d = new Model($bd['Distribution'], 2);
+            $res= $d->delet();
+            $this->assertTrue($res);
+
             $mod->end();
         }
         return $prm;

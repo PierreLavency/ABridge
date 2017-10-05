@@ -70,6 +70,9 @@ class CstError
     const E_ERC064 = 'ERC064';
     const E_ERC065 = 'ERC065';
     const E_ERC066 = 'ERC066';
+    const E_ERC067 = 'ERC067';
+    const E_ERC068 = 'ERC068';
+        
     
     protected static $disp =
     [
@@ -147,7 +150,9 @@ class CstError
         self::E_ERC064 => 'Object cannot be determined',
         self::E_ERC065 => 'illigal condition in Role',
         self::E_ERC066 => 'illigal operator in Role',
-        
+        self::E_ERC067 => 'Component not initialiazed',
+        self::E_ERC068 => 'Component alread initialized',
+                
     ];
         
     public static function subst($mes)

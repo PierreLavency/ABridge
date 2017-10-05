@@ -1,17 +1,13 @@
 <?php
 namespace ABridge\ABridge;
 
+use ABridge\ABridge\Adm\Adm;
+use ABridge\ABridge\Hdl\CstMode;
+use ABridge\ABridge\Hdl\Handle;
+use ABridge\ABridge\Hdl\Hdl;
 use ABridge\ABridge\Log\Log;
 use ABridge\ABridge\Mod\Mod;
-
 use ABridge\ABridge\Mod\Mtype;
-
-use ABridge\ABridge\Hdl\Hdl;
-use ABridge\ABridge\Hdl\Handle;
-use ABridge\ABridge\Hdl\CstMode;
-
-use ABridge\ABridge\Adm\Adm;
-
 use ABridge\ABridge\View\Vew;
 use ABridge\ABridge\View\View;
 
@@ -30,18 +26,21 @@ class Controler
     protected $logLevel = 0;
     protected $appName ;
     protected $defVal=[];
+    protected $isInit= [];
      
 
+    
+    
     public function __construct($spec, $ini)
     {
-//    	$spec=\Config::$config;    	
+//        $spec=\Config::$config;
         
-        $this->initPrm($spec, $ini);
+        $this->defVal=$this->defaultValues($spec, $ini);
         
         $this->spec=$spec;
         $bases = [];
         
-        $this->initConf($spec);
+        $this->initConf($this->defVal, $spec);
         
         if (! isset($this->spec['Hdl'])) {
             $this->spec['Hdl']=[];
@@ -51,91 +50,62 @@ class Controler
         }
         $this->bases = Mod::get()->getBaseClasses();
     }
- 
-    protected function initConf($spec)
+
+    
+    protected function initConf($prm, $spec)
     {
         if (isset($spec['Handlers'])) {
             $config=$spec['Handlers'];
-            Mod::get()->init($this->defVal, $config);
+            Mod::get()->init($prm, $config);
         }
         if (isset($spec['Apps'])) {
             $specv = $spec['Apps'];
-            foreach ($specv as $name) {
+            foreach ($specv as $name => $config) {
                 $className = 'ABridge\ABridge\Apps\\'.$name;
-                $spece=$className::$config;
-                $this->initConf($spece);
+                $spece=$className::init($prm, $config);
+                $this->initConf($prm, $spece);
             }
         }
         if (isset($spec['View'])) {
             $specv = $spec['View'];
-            Vew::get()->init($this->defVal, $specv);
+            Vew::get()->init($prm, $specv);
         }
         if (isset($spec['Adm'])) {
             $config=$spec['Adm'];
-            Adm::get()->init($this->defVal, $config);
-            $this->spec['Adm']=$config;
+            Adm::get()->init($prm, $config);
+            $this->isInit['Adm']=true;
         }
         if (isset($spec['Hdl'])) {
             $config=$spec['Hdl'];
-            Hdl::get()->init($this->defVal, $config);
-            $this->spec['Hdl']=$config;
+            Hdl::get()->init($prm, $config);
         }
         if (isset($spec['Log'])) {
             $config=$spec['Log'];
-            Log::get()->init($this->defVal, $config);
-            $this->spec['Log']=$config;
+            Log::get()->init($prm, $config);
         }
     }
     
-    private function initPrm($spec, $ini)
+    private function defaultValues($spec, $ini)
     {
-        // priority : init - spec[Default] - default
-        
-        if (isset($spec['Default'])) {
-            $this->defVal=$spec['Default'];
-        }
-        
         $appName = $ini['name'];
         $this->appName = $appName;
-        $this->defVal['name']=$appName;
-
-        $paramList=[
-                'path','base','dataBase','memBase','fileBase','host','user','pass',
-                'trace','tclass','tfunction', 'tline', 'tdisp',
-                
+        // priority : init - spec[Default] - default
+        $defaultValues=[
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'base'=>'dataBase',
+                'dataBase'=>$appName,
+                'memBase'=>$appName,
+                'fileBase'=>$appName,
+                'host'=>'localhost',
+                'user'=>$appName,
+                'pass'=>$appName,
+                'trace'=>0,
         ];
-        foreach ($paramList as $param) {
-            if (isset($ini[$param])) {
-                $this->defVal[$param]= $ini[$param];
-            }
+        if (isset($spec['Default'])) {
+            $defaultValues=array_merge($defaultValues, $spec['Default']);
         }
-        if (!isset($this->defVal['path'])) {
-            $this->defVal['path']='C:/Users/pierr/ABridge/Datastore/';
-        }
-        if (!isset($this->defVal['base'])) {
-            $this->defVal['base']='dataBase';
-        }
-        if (!isset($this->defVal['dataBase'])) {
-            $this->defVal['dataBase']=$appName;
-        }
-        if (!isset($this->defVal['memBase'])) {
-            $this->defVal['memBase']=$appName;
-        }
-        if (!isset($this->defVal['fileBase'])) {
-            $this->defVal['fileBase']=$appName;
-        }
-        if (!isset($this->defVal['host'])) {
-            $this->defVal['host']='localhost';
-        }
-        if (!isset($this->defVal['user'])) {
-            $this->defVal['user']=$appName;
-        }
-        if (!isset($this->defVal['pass'])) {
-            $this->defVal['pass']=$this->defVal['user'];
-        }
-        if (!isset($this->defVal['trace'])) {
-            $this->defVal['trace']=0;
-        }
+        $defaultValues=array_merge($defaultValues, $ini);
+        return $defaultValues;
     }
  
 
@@ -229,16 +199,15 @@ class Controler
         Mod::get()->begin();
         
         $frccommit=false;
-              
-        if (isset($this->spec['Adm'])) {
-            $adm=Adm::get()->begin($this->defVal, $this->spec['Adm']);
+        
+        if (isset($this->isInit['Adm'])) {
+            $adm=Adm::get()->begin();
             $frccommit=Adm::get()->isNew();
         }
- 
-        if (isset($this->spec['Hdl'])) {
-            $this->handle= Hdl::get()->begin($this->defVal, $this->spec['Hdl']);
-            $frccommit=($frccommit || Hdl::get()->isNew());
-        }
+
+        $this->handle= Hdl::get()->begin();
+        $frccommit=($frccommit || Hdl::get()->isNew());
+
         $this->logUrl();
         
         $method=$this->handle->getMethod();
@@ -250,7 +219,7 @@ class Controler
         }
         
         if ($this->handle->nullobj()) {
-            Vew::get()->begin($show, $this->handle);
+            Vew::get()->begin([$show, $this->handle]);
             if ($frccommit) {
                 Mod::get()->end();
             }
@@ -302,7 +271,7 @@ class Controler
             Mod::get()->end();
         }
         
-        Vew::get()->begin($show, $this->handle);
+        Vew::get()->begin([$show, $this->handle]);
 
         Log::get()->end();
         

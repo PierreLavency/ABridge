@@ -15,7 +15,7 @@ class Log_Test extends \PHPUnit_Framework_TestCase
         $log= Log::get();
         
         $this->assertFalse($log->isNew());
-        $this->assertTrue($log->initMeta());
+        $this->assertEquals([], $log->initMeta());
         $this->assertEquals($log->getLevel(), 0);
         $this->assertEquals($log->getRunLevel(), 0);
         

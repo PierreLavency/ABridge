@@ -2,6 +2,7 @@
 namespace ABridge\ABridge\Mod;
 
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Log\Log;
 
 class Find
 {
@@ -23,6 +24,10 @@ class Find
     
     public static function byKey($mod, $bkey, $val)
     {
+        Log::get()->logLine(
+            "mod : $mod bkey: $bkey val: $val",
+            [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__]
+        );
         $obj = new Model($mod);
         $obj= $obj->getBkey($bkey, $val);
         return ($obj);

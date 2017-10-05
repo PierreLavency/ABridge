@@ -23,8 +23,8 @@ class Config extends App
 	static $config = [
 	'Apps'	=>
 			[
-					'UsrApp',
-					'AdmApp',				
+					'UsrApp'=>[],
+					'AdmApp'=>[],				
 			],
 	'Handlers' =>
 			[
@@ -71,10 +71,10 @@ class Config extends App
 		],
 	];
 	
-	public static function loadMeta($prm=null)
+	public static function initMeta($config)
 	{
-		UsrApp::loadMeta();
-		AdmApp::loadMeta();
+		UsrApp::initMeta(self::$config['Apps']['UsrApp']);
+		AdmApp::initMeta(self::$config['Apps']['AdmApp']);
 		
 		$obj = new Model(Usr::USER);		
 		$res = $obj->addAttr('Of',Mtype::M_CREF,'/'.self::PDATA.'/'.Usr::USER);		
@@ -101,10 +101,10 @@ class Config extends App
 		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 	}
 	
-	public static function loadData($prm=null)
+	public static function initData($prm=null)
 	{
-		UsrApp::loadData();
-		AdmApp::loadData();
+		UsrApp::initData();
+		AdmApp::initData();
 		
 		$RSpec ='[
 [["Read"],"true", "true"],

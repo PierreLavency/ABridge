@@ -9,6 +9,8 @@ class Hdl extends Comp
 {
     private static $instance = null;
     protected $isNew=false;
+    protected $prm=null;
+    protected $appPrm;
     
     private function __construct()
     {
@@ -33,13 +35,16 @@ class Hdl extends Comp
     {
         if (isset($prm['Usr'])) {
             Usr::get()->init($appPrm, $prm['Usr']);
+            $this->prm=$prm['Usr'];
         }
+        $this->appPrm=$appPrm;
     }
     
-    public function begin($appPrm, $prm)
+    public function begin($prm = null)
     {
-        if (isset($prm['Usr'])) {
-            $sessionHdl= Usr::get()->begin($appPrm, $prm['Usr']);
+        $appPrm=$this->appPrm;
+        if (isset($this->prm)) {
+            $sessionHdl= Usr::get()->begin($appPrm, $this->prm);
             if (Usr::get()->isNew()) {
                 $handle = new Handle('/Session/~', CstMode::V_S_UPDT, $sessionHdl);
                 $this->isNew=true;
@@ -57,8 +62,8 @@ class Hdl extends Comp
         return $this->isNew;
     }
     
-    public function initMeta($appPrm, $config)
+    public function initMeta()
     {
-        return true;
+        return [];
     }
 }

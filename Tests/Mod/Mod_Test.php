@@ -93,7 +93,7 @@ class Mod_Test extends \PHPUnit_Framework_TestCase
                 'pass'=>'cl822'
         ];
         $this->assertTrue(Mod::reset());
-        $this->assertTrue(Mod::get()->initMeta(null, null));
+        $this->assertEquals([], Mod::get()->initMeta());
         $this->assertNotNull($db1 = Mod::get()->setBase('dataBase', 'test', $prm));
         $this->assertNotNull($db2 = Mod::get()->getBase('dataBase', 'test'));
         $this->assertNull(Mod::get()->getBase('dataBase', 'test2'));

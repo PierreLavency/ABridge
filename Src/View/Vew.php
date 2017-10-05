@@ -9,6 +9,7 @@ class Vew extends Comp
 {
     private static $instance = null;
     private $viewHandler=[]; // mod => spec
+    private $isInit=false;
     
     private function __construct()
     {
@@ -46,6 +47,7 @@ class Vew extends Comp
     
     public function init($app, $config)
     {
+        $this->isInit=true;
         foreach ($config as $mod => $modConf) {
             if ($mod != 'Home' and $mod !='MenuExcl' and $mod !='modLblList') {
                 $speci = $this->getViewPrm($mod);
@@ -69,8 +71,9 @@ class Vew extends Comp
         }
     }
     
-    public function begin($show, $handle)
+    public function begin($prm)
     {
+        list($show,$handle)=$prm;
         $v=new View($handle);
         $action = $handle->getAction();
         $v->show($action, $show);
@@ -82,8 +85,8 @@ class Vew extends Comp
         return false;
     }
     
-    public function initMeta($appPrm, $config)
+    public function initMeta()
     {
-        return true;
+        return [];
     }
 }

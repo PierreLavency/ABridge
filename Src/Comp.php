@@ -9,9 +9,9 @@ abstract class Comp
     
     abstract public function init($appPrm, $config);
     
-    abstract public function begin($appPrm, $config);
+    abstract public function begin($prm);
     
     abstract public function isNew();
     
-    abstract public function initMeta($appPrm, $config);
+    abstract public function initMeta();
 }

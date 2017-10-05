@@ -37,13 +37,12 @@ class Handle_Usr_Test_fileBase_Session extends Session
 class Handle_Usr_Test extends PHPUnit_Framework_TestCase
 {
 
-    
    
     public function testInit()
     {
         $classes = [Usr::SESSION,Usr::USER,Usr::ROLE];
         
-        $prm=UtilsC::genPrm($classes, get_called_class());
+        $prm=UtilsC::genPrm($classes, get_called_class(), ['dataBase']);
                 
         Mod::reset();
         Usr::reset();
@@ -51,24 +50,21 @@ class Handle_Usr_Test extends PHPUnit_Framework_TestCase
         $mod= Mod::get();
         $usr= Usr::get();
         
-        $prm['application']['base']='fileBase';
-        $usr->init($prm['application'], $prm['fileBase']);
         $prm['application']['base']='dataBase';
         $usr->init($prm['application'], $prm['dataBase']);
         
         $mod->begin();
         
-        $res = usr::initMeta($prm['application'], $prm['dataBase']);
-        $res = ($res and usr::initMeta($prm['application'], $prm['fileBase']));
+        $res = $usr->initMeta();
                 
         $mod->end();
         
         $classes=['Name',Usr::SESSION,Usr::USER,Usr::ROLE];
-        $prm=UtilsC::genPrm($classes, get_called_class());
+        $prm=UtilsC::genPrm($classes, get_called_class(), ['dataBase']);
         
         $mod->init($prm['application'], $prm['handlers']);
 
-        $this->assertTrue($res);
+        $this->assertEquals(3, count($res));
         
         return $prm;
     }
@@ -86,12 +82,14 @@ class Handle_Usr_Test extends PHPUnit_Framework_TestCase
 
     
     // User
-            $hu1 = new Handle('/'.$bd['User'], CstMode::V_S_CREA, $ho);
+
+            $hu1 = new Handle('/'.$bd[Usr::USER], CstMode::V_S_CREA, $ho);
             $hu1->setVal('UserId', 'U1');
             $hu1->save();
+            $hu1->getErrLog()->show();
             $this->assertEquals(1, $hu1->getId());
             
-            $hu2 = new Handle('/'.$bd['User'], CstMode::V_S_CREA, $ho);
+            $hu2 = new Handle('/'.$bd[Usr::USER], CstMode::V_S_CREA, $ho);
             $hu2->setVal('UserId', 'U2');
             $hu2->save();
             $this->assertEquals(2, $hu2->getId());

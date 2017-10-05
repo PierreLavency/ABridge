@@ -10,26 +10,26 @@ use ABridge\ABridge\Mod\CModel;
 
 class ModUtils_Test_dataBase_Prof extends CModel
 {
-	public function initMod($bindings)
-	{
-		$this->mod->addAttr('AttrX',Mtype::M_REF,'x');
-	}
+    public function initMod($bindings)
+    {
+        $this->mod->addAttr('AttrX', Mtype::M_REF, 'x');
+    }
 }
 
 class ModUtils_Test_fileBase_Prof extends CModel
 {
-	public function initMod($bindings)
-	{
-		$this->mod->addAttr('AttrX',Mtype::M_REF,'x');
-	}
+    public function initMod($bindings)
+    {
+        $this->mod->addAttr('AttrX', Mtype::M_REF, 'x');
+    }
 }
 
 class ModUtils_Test_memBase_Prof extends CModel
 {
-	public function initMod($bindings)
-	{
-		$this->mod->addAttr('AttrX',Mtype::M_REF,'x');
-	}
+    public function initMod($bindings)
+    {
+        $this->mod->addAttr('AttrX', Mtype::M_REF, 'x');
+    }
 }
 
 class ModUtils_Test extends PHPUnit_Framework_TestCase
@@ -224,6 +224,4 @@ class ModUtils_Test extends PHPUnit_Framework_TestCase
                 [['X'=>'X'],['X'=>'X']],
         ];
     }
-    
-
 }

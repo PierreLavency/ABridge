@@ -1,7 +1,7 @@
 CMD
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'initModBindings' Src/* App/* Tests/*
+grep -ri 'initMeta' Src/* App/* Tests/*
 
 BUGS	29
 B1 session with API.
@@ -12,17 +12,17 @@ B22 EVALP in create dialog
 B27 session initial log in - menu not updated (see caching)
 
 DEV
-- develop component for abstract code (Cda).
+- improve LC support (release, test/ dev Data Base etc.)
 - create Ctr Component.
 
-- improve LC support (release, test/ dev Data Base etc.)
+- develop Log application
 
+- support CREF on abstract (????)
 - set up own exception
 - review error Management in Model (exception rather than errolog)
  
 - Document the code!
 - order in list query and attr.
-- delete in list.
 
 - set up rest services / Python
 - develop a CLI / Python
@@ -36,13 +36,7 @@ DEV
 
 - implement CSS
 
-- prefix all tables (?)
-- avoid loading abstractMod in Mod base  (? dependency in test)
-- revisit dot attributes (?)
-- unify get code with get reference. (????)
-- support CREF on abstract (????)
-- user Jason to save data rather than serilialisation (?).
-
+- delete in list./2
 - increase autorisations rule capability /2
 	- views and other parameters
 	- handle user preference.
@@ -51,14 +45,20 @@ DEV
 - multi language /2
 - delete all object in class /2
 - introduction of name space in Tests /2
-
 - graphics : include svg bit in view. /2
 - clean up picture path /2
 
+- prefix all tables (?)
+- avoid loading abstractMod in Mod base  (? dependency in test)
+- revisit dot attributes (?)
+- unify get code with get reference. (????)
+- support CREF on abstract (????)
+- user Jason to save data rather than serilialisation (?).
+
 PERF
 develop perf scenario with role.
-review getValues/Ref View
-initMod rather than restoreMod
+review getValues/Ref View.
+initMod rather than restoreMod.
 
 TEST
 - improve view test coverage - need to separate view show and build // some progress
@@ -80,6 +80,11 @@ INT
 - set up jenkin
 
 DONE
+---------------// 3 
+- develop component for abstract code (Cda).
+- check init condition in Adm and Usr.
+PERF  S1(5)on 2*20*20: 0.554
+--------------// 1
 - move attribute declaration checks out of Model when possible.
 PERF  S1(5)on 2*20*20: 0.533
 PERF* S1(5)on 2*20*20: 0.145

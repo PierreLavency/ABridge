@@ -12,21 +12,19 @@ class Admin extends CModel
     public function __construct($mod)
     {
         $this->mod=$mod;
-        if (! $mod->existsAttr('name')) {
+        if (! $mod->existsAttr('Name')) {
             $this->initMod([]);
             $this->mod->saveMod();
         }
     }
     
-    protected $attrList = ['name','path','base','dBase','fileBase','memBase','host','user','pass'];
 
     public function initMod($bindings)
     {
         $obj = $this->mod;
         
-        foreach ($this->attrList as $attr) {
-            $res = $obj->addAttr($attr, Mtype::M_STRING);
-        }
+        $res = $obj->addAttr('Name', Mtype::M_STRING);
+        $res = $obj->addAttr('Parameters', Mtype::M_TXT);
         
         $res = $obj->addAttr('Meta', Mtype::M_BOOL);
         $res = $obj->setProp('Meta', Model::P_TMP);
@@ -38,6 +36,7 @@ class Admin extends CModel
         $res = $obj->setProp('Delta', Model::P_TMP);
         
         $res = $obj->addAttr('Model', Mtype::M_STRING);
+        
         $res = $obj->addAttr('MetaData', Mtype::M_TXT);
         $res = $obj->setProp('MetaData', Model::P_EVL);
         $res = $obj->setProp('MetaData', Model::P_TMP);
@@ -69,7 +68,10 @@ class Admin extends CModel
         if ($attr == 'StateHandler') {
             $modName=$this->getVal('Model');
             $stateHandler=Mod::get()->getStateHandler($modName);
-            return json_encode($stateHandler->showState($modName), JSON_PRETTY_PRINT);
+            if ($stateHandler) {
+                return json_encode($stateHandler->showState($modName), JSON_PRETTY_PRINT);
+            }
+            return '';
         }
         return $this->mod->getValN($attr);
     }
@@ -77,12 +79,10 @@ class Admin extends CModel
     public function save()
     {
         $attrVal = [];
-        foreach ($this->attrList as $attr) {
-            $attrVal[$attr] = $this->mod->getVal($attr);
-        }
         
-        $app = $this->mod->getVal('name');
+        $app = $this->mod->getVal('Name');
         $path = "App/$app/";
+        $prm = $this->mod->getVal('Parameters');
         
         if ($this->mod->getVal('Load')) {
             require_once $path.'LOAD.php';
@@ -102,9 +102,8 @@ class Admin extends CModel
                 $this->mod->deleteMod();
                 $this->initMod([]);
                 $this->mod->saveMod();
-                foreach ($attrVal as $attr => $val) {
-                    $this->mod->setValN($attr, $val);
-                }
+                $this->mod->setValN('Name', $app);
+                $this->mod->setValN('Parameters', $prm);
                 $id=$this->mod->saveN();
                 $this->mod->getErrlog()->show();
                 return $id;

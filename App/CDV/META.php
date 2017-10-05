@@ -1,4 +1,4 @@
 <?php
-require_once 'SETUP.php';
 
-config::loadMeta();
+require_once 'SETUP.php';
+Config::initMeta([]);

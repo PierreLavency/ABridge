@@ -11,13 +11,10 @@ namespace ABridge\ABridge\Mod;
  * @author   Pierre Lavency <pierrelavency@hotmail.com>
  * @link     No
  */
-use ABridge\ABridge\Log\Logger;
-
 use ABridge\ABridge\CstError;
-
-use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Log\Logger;
 use ABridge\ABridge\Mod\Mod;
-
+use ABridge\ABridge\Mod\Mtype;
 use Exception;
 
 /**

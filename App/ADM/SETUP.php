@@ -1,15 +1,13 @@
 <?php
-use ABridge\ABridge\Hdl\CstMode;
-use ABridge\ABridge\View\CstView;
 
 use ABridge\ABridge\App;
 use ABridge\ABridge\Apps\AdmApp;
+use ABridge\ABridge\Adm\Adm;
 
 class Config extends App
 {
 	const DBDEC = 'ADM';	
-	const Admin ='Admin';
-	
+		
 	static $config = [
 
 	'Hdl' 	=> [
@@ -17,23 +15,25 @@ class Config extends App
 	],
 	'View' => [
 		'Home' => [
-				'/',"/".self::Admin."/1",
+				'/',"/".Adm::ADMIN."/1",
 		],
-		'MenuExcl' =>["/Admin"],
+			'MenuExcl' =>["/".Adm::ADMIN],
 		
 		],
 						
 	'Apps' => [
-		'AdmApp',	
+			'AdmApp'=>[],	
 	]
 	];
-	
-	public  static function loadMeta($prm=null)
+
+	public static function initMeta($prm,$config)
 	{
-		AdmApp::loadMeta();
+		AdmApp::initMeta(self::$config['Apps']['AdmApp']);
+		echo "ADM initialized\n";
 	}
 	
-	public  static function loadData($prm=null)
+
+	public  static function initData($prm=null)
 	{
 		echo 'LoadData ';
 	}

@@ -1,6 +1,6 @@
 <?php
 
-use ABridge\ABridge\Apps\Cdv;
+use ABridge\ABridge\Apps\Cda;
 use ABridge\ABridge\Apps\AdmApp;
 use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\App;
@@ -11,13 +11,10 @@ class Config extends App
 	static $config = [
 	'Apps'	=>
 			[
-					'AdmApp'=>[],
-		
-					'Cdv'=>[
-							Cdv::CODE=>'PersonCodes',
-							Cdv::CODEVAL=>'PersonCodeValues',
-							Cdv::CODELIST=>['Sexe','Country'],
-							cdv::CODEDATA=>[
+					'AdmApp'=>[],		
+					'Cda'=>[
+							Cda::CODELIST=>['Sexe','Country'],
+							cda::CODEDATA=>[
 									'Sexe'=>['Male','Female'],
 									'Country'=>['Belgium','France','Italy'],
 							],
@@ -35,8 +32,6 @@ class Config extends App
 		'MenuExcl' =>
 			[
 					"/".Adm::ADMIN,
-					"/".Cdv::CODEVAL,
-
 					
 			],
 			
@@ -47,14 +42,14 @@ class Config extends App
 	public static function initMeta($config)
 	{
 		AdmApp::initMeta($prm,self::$config['Apps']['AdmApp']);		
-		Cdv::initMeta($prm,self::$config['Apps']['Cdv']);
+		Cda::initMeta($prm,self::$config['Apps']['Cda']);
 		
 	}
 	
 	public static function initData($prm=null)
 	{
 		AdmApp::initData();
-		Cdv::initData(self::$config['Apps']['Cdv']);
+		Cda::initData(self::$config['Apps']['Cda']);
 		
 		
 	}

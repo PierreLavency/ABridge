@@ -1,90 +1,97 @@
 <?php
 namespace ABridge\ABridge\Apps;
 
-use ABridge\ABridge\View\CstView;
-
+use ABridge\ABridge\App;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
-use ABridge\ABridge\Mod\Find;
-use ABridge\ABridge\App;
+use ABridge\ABridge\View\CstView;
 
 class Cda extends App
 {
-    const CODE='Code';
-    const CODEVAL='CodeValue';
+    const CODE='AbstractCode';
+    const CODELIST='CodeList';
+    const CODEDATA='CodeData';
     
-    public static $config = [
-            'Handlers' => [
-                    self::CODE => [],
-                    self::CODEVAL => [],
-            ],
-            
-            'View' => [
-                    self::CODE=> [
-                            'attrList' => [
-                                    CstView::V_S_REF        => ['Name'],
-                            ]
-                            
-                    ],
-                    self::CODEVAL=>[
-                            'attrList' => [
-                                    CstView::V_S_REF        => ['Name'],
-                            ]
-                            
-                    ],
-                    
-            ],
-    ];
-    
-    public static function loadMeta($prm)
+    public static function init($prm, $config)
     {
-        // CodeVal
+        $handlerList= [];
+        $viewList = [];
         
-        $obj = new Model(self::CODEVAL);
+        $code = self::CODE;
+        if (isset($config[self::CODE])) {
+            $code = $config[self::CODE];
+        }
+        $handlerList[$code]=[];
+        
+        $codelist = $config[self::CODELIST];
+        foreach ($codelist as $codeName) {
+            $handlerList[$codeName]=[];
+            $viewList[$codeName]=['attrList' => [CstView::V_S_REF=> ['Value']]];
+        }
+        
+        $res = [
+                
+                'Handlers' => $handlerList,
+                'View' => $viewList,
+        ];
+        return $res;
+    }
+    
+    
+    public static function initMeta($config)
+    {
+        $bindings=[];
+        $code = self::CODE;
+        if (isset($config[self::CODE])) {
+            $code = $config[self::CODE];
+        }
+
+        // Abstract
+        
+        $obj = new Model($code);
         $res= $obj->deleteMod();
         
-        $res = $obj->addAttr('Name', Mtype::M_STRING);
-        $res = $obj->addAttr('ValueOf', Mtype::M_REF, '/'.self::CODE);
-        $res=$obj->setProp('ValueOf', Model::P_MDT);
-        
-        $res = $obj->saveMod();
-        echo $obj->getModName()."<br>";
-        $obj->getErrLog()->show();
-        echo "<br>";
-        
-        // Code
-        
-        $obj = new Model(self::CODE);
-        $res= $obj->deleteMod();
-        
-        $res = $obj->addAttr('Name', Mtype::M_STRING);
-        $res=$obj->setProp('Name', Model::P_BKY);// Unique
-        $res = $obj->addAttr('Values', Mtype::M_CREF, '/'.self::CODEVAL.'/ValueOf');
+        $res = $obj->addAttr('Value', Mtype::M_STRING);
+        $res=$obj->setProp('Value', Model::P_MDT);
+        $res = $obj->setProp('Value', Model::P_BKY);
+        $res = $obj->setAbstr();
         
         $res = $obj->saveMod();
         echo $obj->getModName()."<br>";
         $obj->getErrLog()->show();
         echo "<br>";
 
-        foreach ($prm as $codeName) {
-            $codeMobj = new Model(self::CODE);
-            $codeMobj->setVal('Name', $codeName);
-            $codeMobj->save();
-            echo $codeMobj->getVal('Name')."<br>";
-            $codeMobj->getErrLog()->show();
-            echo "<br>";
+        $bindings[self::CODE]=$code;
+        
+        
+        // Concretes
+        
+        $codelist = [];
+        if (isset($config[self::CODELIST])) {
+            $codelist= $config[self::CODELIST];
         }
+        
+        foreach ($codelist as $codeName) {
+            $obj = new Model($codeName);
+            $res= $obj->deleteMod();
+            $res = $obj->setInhNme($code);
+            $res = $obj->saveMod();
+            echo $obj->getModName()."<br>";
+            $obj->getErrLog()->show();
+            echo "<br>";
+            $bindings[$codeName]=$codeName;
+        }
+        
+        return $bindings;
     }
     
-    public static function loadData($prm)
+    public static function initData($prm)
     {
-        foreach ($prm as $code => $values) {
-            $codeMobj = Find::byKey(self::CODE, 'Name', $code);
-            $codeId= $codeMobj->getId();
+        $codeData=$prm[self::CODEDATA];
+        foreach ($codeData as $codeName => $values) {
             foreach ($values as $value) {
-                $valMobj= new Model(self::CODEVAL);
-                $valMobj->setVal('Name', $value);
-                $valMobj->setVal('ValueOf', $codeId);
+                $valMobj= new Model($codeName);
+                $valMobj->setVal('Value', $value);
                 $valMobj->save();
             }
         }

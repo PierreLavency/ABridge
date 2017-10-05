@@ -83,7 +83,7 @@ class Mod extends Comp
         return true;
     }
     
-    public function begin($appPrm = null, $config = null)
+    public function begin($prm = null)
     {
         $bases =$this->getBaseClasses();
         foreach ($bases as $base) {
@@ -107,9 +107,9 @@ class Mod extends Comp
         return true;
     }
     
-    public function initMeta($appPrm, $config)
+    public function initMeta()
     {
-        return true;
+        return [];
     }
            
     public function getBase($baseType, $baseName)

@@ -1,22 +1,17 @@
 <?php
 
-use ABridge\ABridge\Hdl\CstMode;
-use ABridge\ABridge\View\CstView;
-use ABridge\ABridge\View\CstHTML;
-
-use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Adm\Adm;
-use ABridge\ABridge\Usr\Usr;
-use ABridge\ABridge\Mod\Mod;
-use ABridge\ABridge\Mod\ModUtils;
-
-
-use ABridge\ABridge\Apps\AdmApp;
-use ABridge\ABridge\Apps\UsrApp;
-use ABridge\ABridge\Apps\Cdv;
-
 use ABridge\ABridge\App;
+use ABridge\ABridge\Apps\AdmApp;
+use ABridge\ABridge\Apps\Cdv;
+use ABridge\ABridge\Apps\UsrApp;
+use ABridge\ABridge\Hdl\CstMode;
+use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\ModUtils;
+use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Usr\Usr;
+use ABridge\ABridge\View\CstHTML;
+use ABridge\ABridge\View\CstView;
 
 require_once 'Student.php';
 require_once 'Cours.php';
@@ -38,9 +33,15 @@ class Config extends App
 	static $config = [
 	'Apps'	=>
 			[
-					'UsrApp',
-					'AdmApp',
-					'Cdv'
+					'UsrApp'=>[],
+					'AdmApp'=>[],
+					'Cdv'=>[
+							Cdv::CODELIST=>['Sexe','Country'],
+							cdv::CODEDATA=>[
+									'Sexe'=>['Male','Female'],
+									'Country'=>['Belgium','France','Italy'],
+							],
+					],
 			],
 	'Handlers' =>
 			[
@@ -252,33 +253,8 @@ class Config extends App
 			]
 	];
 	
-	public static function loadMeta($prm=null)
+	public static function initMeta($config)
 	{
-		UsrApp::loadMeta();
-		
-		$obj = new Model(Usr::USER);
-		$res = $obj->addAttr('Student',Mtype::M_CREF,'/'.self::STUDENT.'/'.Usr::USER);
-		$res = $obj->addAttr('Prof',Mtype::M_CREF,'/'.self::PROF.'/'.Usr::USER);
-		$res = $obj->saveMod();
-		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-		
-		AdmApp::loadMeta();
-		Cdv::loadMeta([self::SEXE,self::COUNTRY]);
-
-		$bindings=
-		[
-				self::SEXE=>Cdv::CODE.'/1',
-				self::COUNTRY=>Cdv::CODE.'/2',
-				Usr::USER=>Usr::USER,
-				Usr::USERGROUP=>Usr::USERGROUP,
-				self::INSCRIPTION=>self::INSCRIPTION,
-				self::CHARGE=>self::CHARGE,
-				self::COURS=>self::COURS,
-				self::STUDENT=>self::STUDENT,
-				self::PROF=>self::PROF,
-				
-		];
-
 		$logicalNames =
 		[
 				self::STUDENT,
@@ -287,20 +263,33 @@ class Config extends App
 				self::PROF,
 				self::CHARGE,
 		];
+		
+		$admList= AdmApp::initMeta(self::$config['Apps']['AdmApp']);
+		$usrList=UsrApp::initMeta(self::$config['Apps']['UsrApp']);
+		$cdvList=Cdv::initMeta(self::$config['Apps']['Cdv']);
+		$list = ModUtils::normBindings($logicalNames);
+		
+		$bindings = array_merge($admList,$usrList,$cdvList,$list);
+
+		
+		$obj = new Model($bindings[Usr::USER]);
+		$res = $obj->addAttr('Student',Mtype::M_CREF,'/'.self::STUDENT.'/'.$bindings[Usr::USER]);
+		$res = $obj->addAttr('Prof',Mtype::M_CREF,'/'.self::PROF.'/'.$bindings[Usr::USER]);
+		$res = $obj->saveMod();
+		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
+
+		$bindings=ModUtils::normBindings($logicalNames);
+		
 			
 		ModUtils::initModBindings($bindings,$logicalNames);		
 
 	}
 	
-	public static function loadData($prm=null)
+	public static function initData($prm=null)
 	{
-		usrApp::loadData();
-		admApp::loadData();
-		Cdv::loadData(
-				[
-						self::SEXE=>['Male','Female'],
-						self::COUNTRY=>['Belgium','France','Italy'],
-				]);
+		UsrApp::initData(self::$config['Apps']['UsrApp']);
+		AdmApp::initData(self::$config['Apps']['AdmApp']);
+		Cdv::initData(self::$config['Apps']['Cdv']);
 		self::loadDataRole();
 	}
 

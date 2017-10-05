@@ -17,12 +17,12 @@ class Config extends App
 	const User = 'User';
 	const Group = 'UGroup';
 	
-	public  static function loadMeta($prm=null)
+	public  static function initMeta($config)
 	{
 		return true;
 	}
 	
-	public  static function loadData($prm=null)
+	public  static function initData($prm=null)
 	{
 		return  true;
 	}

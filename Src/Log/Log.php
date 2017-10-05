@@ -75,7 +75,7 @@ class Log extends Comp
         return true;
     }
     
-    public function begin($appPrm = null, $logLevel = null)
+    public function begin($prm = null)
     {
         $this->runLevel=$this->logLevel;
     }
@@ -142,8 +142,8 @@ class Log extends Comp
         return false;
     }
     
-    public function initMeta($appPrm = null, $bindings = null)
+    public function initMeta()
     {
-        return true;
+        return [];
     }
 }

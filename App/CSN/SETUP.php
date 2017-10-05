@@ -10,7 +10,6 @@ use ABridge\ABridge\App;
 class Config extends App
 {
 	
-
 	static $config = [
 	'Handlers' =>
 		[
@@ -136,7 +135,7 @@ class Config extends App
 		],
 	];
 	
-public static	function loadMeta($prm=null)
+public static	function initMeta($config)
 	{
 		$ACode = 'AbstractCode';
 		
@@ -316,7 +315,7 @@ public static	function loadMeta($prm=null)
 		$r->show();
 	}
 	
-public static 	function loadData($prm=null)
+public static 	function initData($prm=null)
 	{
 		
 		$ACode = 'AbstractCode';

@@ -5,6 +5,8 @@ use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\ModUtils;
 use ABridge\ABridge\Comp;
+use ABridge\ABridge\CstError;
+use Exception;
 
 class Usr extends Comp
 {
@@ -21,7 +23,10 @@ class Usr extends Comp
     public static $timer= 0; // 0 when connected
     private static $instance = null;
     
+    protected $bindings;
+    protected $appPrm;
     protected $isNew = false;
+    protected $isInit=false;
     
     private function __construct()
     {
@@ -44,7 +49,12 @@ class Usr extends Comp
 
     public function init($appPrm, $bindings)
     {
+        if ($this->isInit) {
+            throw new Exception(CstError::E_ERC068.':Usr');
+        }
         $bindings = ModUtils::normBindings($bindings);
+        $this->bindings=$bindings;
+        $this->appPrm=$appPrm;
         foreach ($bindings as $mod => $physicalName) {
             if ($mod == $physicalName) {
                 $className= __NAMESPACE__.'\\'.$mod;
@@ -52,10 +62,18 @@ class Usr extends Comp
             }
         }
         Mod::get()->init($appPrm, ModUtils::defltHandlers($bindings));
+        $this->isInit=true;
     }
     
-    public function begin($appPrm, $bindings)
+    public function begin($prm = null)
     {
+        if (! $this->isInit) {
+            throw new Exception(CstError::E_ERC067.':Usr');
+        }
+        
+        $bindings = $this->bindings;
+        $appPrm = $this->appPrm;
+        
         $className = self::DEFAUTCLASSNAME;
         $cookieName = self::SESSION;
         if (isset($bindings[self::SESSION])) {
@@ -66,28 +84,28 @@ class Usr extends Comp
             }
         }
         $name = $appPrm['name'].$cookieName;
-        $id=0;
+        $key=0;
         if (self::$cleanUp) {
             if (isset($_COOKIE[$name])) {
                 unset($_COOKIE[$name]);
             }
         }
         if (isset($_COOKIE[$name])) {
-            $id=$_COOKIE[$name];
+            $key=$_COOKIE[$name];
         }
         $this->isNew=false;
-        $sessionHdl = $className::getSession($id, ['Name'=>$name]);
+        $sessionHdl = $className::getSession($key, ['Name'=>$name]);
         if ($sessionHdl->isNew()) {
             $this->isNew=true;
-            $id = $sessionHdl->getKey();
+            $key = $sessionHdl->getKey();
             $end = 0;
             if (self::$timer) {
                 $end = time() + self::$timer;
             }
             if (php_sapi_name()==='cli') {
-                $_COOKIE[$name]=$id;
+                $_COOKIE[$name]=$key;
             } else {
-                setcookie($name, $id, $end, "/");
+                setcookie($name, $key, $end, "/");
             }
         }
         return $sessionHdl;
@@ -99,8 +117,13 @@ class Usr extends Comp
     }
     
     
-    public function initMeta($appPrm, $bindings)
+    public function initMeta()
     {
-        return ModUtils::initModBindings($bindings);
+        if (! $this->isInit) {
+            throw new Exception(CstError::E_ERC067.':Usr');
+        }
+        $bindings=$this->bindings;
+        $res= ModUtils::initModBindings($bindings);
+        return $bindings;
     }
 }

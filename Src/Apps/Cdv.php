@@ -12,42 +12,76 @@ class Cdv extends App
 {
     const CODE='Code';
     const CODEVAL='CodeValue';
-    
-    public static $config = [
-            'Handlers' => [
-                    self::CODE => [],
-                    self::CODEVAL => [],
-            ],
-            
-            'View' => [
-                    self::CODE=> [
-                            'attrList' => [
-                                    CstView::V_S_REF        => ['Name'],
-                            ]
-                            
-                    ],
-                    self::CODEVAL=>[
-                            'attrList' => [
-                                    CstView::V_S_REF        => ['Name'],
-                            ]
-                            
-                    ],
-                    
-            ],
-    ];
-    
-    
-    
-    public static function loadMeta($prm)
+    const CODELIST='CodeList';
+    const CODEDATA='CodeData';
+        
+    public static function init($prm, $config)
     {
+        $code = self::CODE;
+        if (isset($config[self::CODE])) {
+            $code = $config[self::CODE];
+        }
+        
+        $codeval = self::CODEVAL;
+        if (isset($config[self::CODEVAL])) {
+            $codeval = $config[self::CODEVAL];
+        }
+              
+        $res = [
+                
+                'Handlers' => [
+                        $code => [],
+                        $codeval => [],
+                ],
+                    
+                'View' => [
+                        $code=> [
+                                'attrList' => [
+                                        CstView::V_S_REF        => ['Name'],
+                                ]
+                                
+                        ],
+                        $codeval=>[
+                                'attrList' => [
+                                        CstView::V_S_REF        => ['Name'],
+                                ]
+                                    
+                        ],
+                            
+                ],
+        ];
+
+        return $res;
+    }
+    
+    
+    public static function initMeta($config)
+    {
+        $bindings=[];
+        $code = self::CODE;
+        if (isset($config[self::CODE])) {
+            $code = $config[self::CODE];
+        }
+        $bindings[self::CODE]=$code;
+        $codeval = self::CODEVAL;
+        if (isset($config[self::CODEVAL])) {
+            $codeval = $config[self::CODEVAL];
+        }
+        $bindings[self::CODEVAL]=$codeval;
+        
+        $codelist = [];
+        if (isset($config[self::CODELIST])) {
+            $codelist= $config[self::CODELIST];
+        }
+        
         // CodeVal
         
-        $obj = new Model(self::CODEVAL);
+        $obj = new Model($codeval);
         $res= $obj->deleteMod();
         
         $res = $obj->addAttr('Name', Mtype::M_STRING);
-        $res = $obj->addAttr('ValueOf', Mtype::M_REF, '/'.self::CODE);
-        $res=$obj->setProp('ValueOf', Model::P_MDT);
+        $res = $obj->addAttr('ValueOf', Mtype::M_REF, '/'.$code);
+        $res = $obj->setProp('ValueOf', Model::P_MDT);
         
         
         $res = $obj->saveMod();
@@ -57,35 +91,46 @@ class Cdv extends App
         
         // Code
         
-        $obj = new Model(self::CODE);
+        $obj = new Model($code);
         $res= $obj->deleteMod();
         
         $res = $obj->addAttr('Name', Mtype::M_STRING);
-        $res=$obj->setProp('Name', Model::P_BKY);// Unique
-        $res = $obj->addAttr('Values', Mtype::M_CREF, '/'.self::CODEVAL.'/ValueOf');
+        $res = $obj->setProp('Name', Model::P_BKY);// Unique
+        $res = $obj->addAttr('Values', Mtype::M_CREF, '/'.$codeval.'/ValueOf');
         
         $res = $obj->saveMod();
         echo $obj->getModName()."<br>";
         $obj->getErrLog()->show();
         echo "<br>";
-
-        foreach ($prm as $codeName) {
-            $codeMobj = new Model(self::CODE);
+               
+        foreach ($codelist as $codeName) {
+            $codeMobj = new Model($code);
             $codeMobj->setVal('Name', $codeName);
-            $codeMobj->save();
+            $codeId=$codeMobj->save();
+            $bindings[$codeName]=$code.'/'.$codeId;
             echo $codeMobj->getVal('Name')."<br>";
             $codeMobj->getErrLog()->show();
             echo "<br>";
         }
+        return $bindings;
     }
     
-    public static function loadData($prm)
+    public static function initData($prm)
     {
-        foreach ($prm as $code => $values) {
-            $codeMobj = Find::byKey(self::CODE, 'Name', $code);
+        $code = self::CODE;
+        if (isset($prm[self::CODE])) {
+            $code = $prm[self::CODE];
+        }
+        $codeval = self::CODEVAL;
+        if (isset($prm[self::CODEVAL])) {
+            $codeval = $prm[self::CODEVAL];
+        }
+        $codeData=$prm[self::CODEDATA];
+        foreach ($codeData as $codeName => $values) {
+            $codeMobj = Find::byKey($code, 'Name', $codeName);
             $codeId= $codeMobj->getId();
             foreach ($values as $value) {
-                $valMobj= new Model(self::CODEVAL);
+                $valMobj= new Model($codeval);
                 $valMobj->setVal('Name', $value);
                 $valMobj->setVal('ValueOf', $codeId);
                 $valMobj->save();

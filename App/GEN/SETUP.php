@@ -9,12 +9,12 @@ require_once 'Person.php';
 
 class Config extends App
 {
-	public  static function loadMeta($prm=null)
+	public  static function initMeta($config)
 	{
 		return true;
 	}
 	
-	public  static function loadData($prm=null)
+	public  static function initData($prm=null)
 	{
 		return  true;
 	}

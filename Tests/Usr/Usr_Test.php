@@ -1,11 +1,10 @@
 <?php
-use ABridge\ABridge\UtilsC;
-
-use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mod;
-
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Usr\Usr;
+use ABridge\ABridge\UtilsC;
 
 class Usr_Test_dataBase_Session extends Session
 {
@@ -23,27 +22,55 @@ class Usr_Test extends PHPUnit_Framework_TestCase
     {
         $classes = [Usr::SESSION];
         
-        $prm=UtilsC::genPrm($classes, get_called_class());
+        $prm=UtilsC::genPrm($classes, get_called_class(), ['dataBase']);
 
         Mod::reset();
         Usr::reset();
         
         $mod= Mod::get();
         $usr= Usr::get();
-
+        
+        try {
+            $r='';
+            $usr->begin();
+        } catch (Exception $e) {
+            $r= $e->getMessage();
+        }
+        $this->assertEquals(CstError::E_ERC067.':Usr', $r);
+        
+        try {
+            $r='';
+            $usr->initMeta();
+        } catch (Exception $e) {
+            $r= $e->getMessage();
+        }
+        $this->assertEquals(CstError::E_ERC067.':Usr', $r);
+        
+        
+/*
         $prm['application']['base']='fileBase';
         $usr->init($prm['application'], $prm['fileBase']);
+        */
         $prm['application']['base']='dataBase';
         $usr->init($prm['application'], $prm['dataBase']);
- 
+        
+        try {
+            $r='';
+            $usr->init($prm['application'], $prm['dataBase']);
+        } catch (Exception $e) {
+            $r= $e->getMessage();
+        }
+        $this->assertEquals(CstError::E_ERC068.':Usr', $r);
+        
         $mod->begin();
         
-        $res = usr::initMeta($prm['application'], $prm['dataBase']);
-        $res = $res and usr::initMeta($prm['application'], $prm['fileBase']);
+        $res = $usr->initMeta();
+//        $res = $res and usr::initMeta($prm['application'], $prm['fileBase']);
         
         $mod->end();
+
         
-        $this->assertTrue($res);
+        $this->assertEquals(1, count($res));
         
         return $prm;
     }
@@ -149,5 +176,30 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             $mod->end();
         }
         return $prm;
+    }
+    /**
+     * @depends testCleanUp
+     */
+    public function testNoBindings($prm)
+    {
+        $prm=UtilsC::genPrm([Usr::SESSION], get_called_class());
+        $prm['application']['base']='memBase';
+        
+        Usr::reset();
+        Usr::get()->init($prm['application'], [Usr::SESSION]);
+
+        
+        $this->assertEquals('ABridge\ABridge\Usr\Session', Mod::get()->getClassMod(Usr::SESSION));
+        
+        Mod::get()->begin();
+        
+        $res = Usr::get()->initMeta();
+        //        $res = $res and usr::initMeta($prm['application'], $prm['fileBase']);
+        
+        Mod::get()->end();
+        
+        $hdl= Usr::get()->begin();
+        
+        $this->assertNotNull($hdl);
     }
 }

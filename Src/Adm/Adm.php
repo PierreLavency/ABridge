@@ -2,12 +2,11 @@
 namespace ABridge\ABridge\Adm;
 
 use ABridge\ABridge\Comp;
-
+use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mod;
-use ABridge\ABridge\Mod\ModUtils;
 use ABridge\ABridge\Mod\Model;
-
-//use ABridge\ABridge\Handler;
+use ABridge\ABridge\Mod\ModUtils;
+use Exception;
 
 class Adm extends Comp
 {
@@ -15,6 +14,9 @@ class Adm extends Comp
     
     protected $isNew = false; // not reentrent
     private static $instance = null;
+    private $bindings;
+    private $appPrm;
+    private $isInit = false;
     
     private function __construct()
     {
@@ -37,10 +39,17 @@ class Adm extends Comp
     
     public function init($appPrm, $bindings)
     {
+        if ($this->isInit) {
+            throw new Exception(CstError::E_ERC068.':Adm');
+        }
+        $this->isInit=true;
         if ($bindings==[]) {
             $bindings[self::ADMIN]=self::ADMIN;
         }
         $bindings = ModUtils::normBindings($bindings);
+        $this->bindings=$bindings;
+        $this->appPrm=$appPrm;
+
         Mod::get()->init($appPrm, ModUtils::defltHandlers($bindings));
         if ($bindings[self::ADMIN]==self::ADMIN) {
             $className = __NAMESPACE__.'\\'.self::ADMIN;
@@ -48,10 +57,15 @@ class Adm extends Comp
         }
     }
     
-    public function begin($appPrm, $bindings)
+    public function begin($prm = null)
     {
+        if (! $this->isInit) {
+            throw new Exception(CstError::E_ERC067.':Adm');
+        }
         $this->isNew = false;
         $mod =self::ADMIN;
+        $bindings=$this->bindings;
+        $appPrm=$this->appPrm;
         if (isset($bindings[self::ADMIN])) {
             $mod=$bindings[self::ADMIN];
         }
@@ -59,12 +73,8 @@ class Adm extends Comp
         $obj->setCriteria([], [], []);
         $res = $obj->select();
         if (count($res)==0) {
-            foreach ($appPrm as $attr => $val) {
-                if ($attr == 'dataBase') {
-                    $attr='dBase';
-                }
-                $obj->setVal($attr, $val);
-            }
+            $obj->setVal('Name', $appPrm['name']);
+            $obj->setVal('Parameters', json_encode($appPrm, JSON_PRETTY_PRINT));
             $obj->save();
             $this->isNew = true;
         } else {
@@ -78,15 +88,17 @@ class Adm extends Comp
         return $this->isNew;
     }
     
-    public function initMeta($appPrm, $bindings)
+    public function initMeta()
     {
-        if ($bindings==[]) {
-            $bindings[self::ADMIN]=self::ADMIN;
+        if (! $this->isInit) {
+            throw new Exception(CstError::E_ERC067.':Adm');
         }
+        $bindings=$this->bindings;
         $bindings = ModUtils::normBindings($bindings);
         foreach ($bindings as $logicalName => $physicalName) {
             $x = new Model($physicalName);
             $x->deleteMod();
         }
+        return $bindings;
     }
 }

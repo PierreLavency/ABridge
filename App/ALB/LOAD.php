@@ -1,4 +1,4 @@
 <?php
-require_once 'SETUP.php';
 
-config::loadData();
+require_once 'SETUP.php';
+Config::initData([]);

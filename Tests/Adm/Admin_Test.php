@@ -1,11 +1,11 @@
 <?php
 
-use ABridge\ABridge\Adm\Admin;
 use ABridge\ABridge\Adm\Adm;
-use ABridge\ABridge\UtilsC;
-use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\Adm\Admin;
 use ABridge\ABridge\Log\Log;
+use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\UtilsC;
 
 class Admin_Test_dataBase_Admin extends Admin
 {
@@ -22,7 +22,7 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
     public function testInit()
     {
         $classes = [Adm::ADMIN];
-        $baseTypes=['dataBase','fileBase','memBase'];
+        $baseTypes=['memBase'];
         $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
 
         Mod::reset();
@@ -31,13 +31,6 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
         $mod= Mod::get();
         
         $mod->init($prm['application'], $prm['handlers']);
-
-        $mod->begin();
-        
-        $res = Adm::get()->initMeta($prm['application'], $prm['dataBase']);
-        $res = Adm::get()->initMeta($prm['application'], $prm['fileBase']);
-        $res = Adm::get()->initMeta($prm['application'], $prm['memBase']);
-        $mod->end();
        
         return $prm;
     }
@@ -53,7 +46,7 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
             $mod->begin();
           
             $x = new Model($bd[Adm::ADMIN]);
-            $x->setVal('name', '../Tests/Adm');
+            $x->setVal('Name', '../Tests/Adm');
             $res=$x->save();
             $this->assertEquals(1, $res);
      
@@ -81,7 +74,7 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
             
             $this->assertFalse($x->isErr());
             
-            $res= $x->getVal('name');
+            $res= $x->getVal('Name');
             $this->assertEquals('../Tests/Adm', $res);
                        
             $mod->end();
@@ -102,11 +95,13 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
             $mod->begin();
             
             $x = new Model($bd[Adm::ADMIN], 1);
-            $res= $x->getVal('name');
+            $res= $x->getVal('Name');
             $this->assertEquals('../Tests/Adm', $res);
             
             $x->setVal('Meta', true);
-            $res = Adm::get()->InitMeta([], $bd); //to simulate
+            
+            $y = new Model($bd[Adm::ADMIN]);
+            $res = $y->deleteMod(); //to simulate
             
             $res=$x->save();
             $this->assertEquals(1, $res);
@@ -129,7 +124,7 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
             $mod->begin();
             
             $x = new Model($bd[Adm::ADMIN], 1);
-            $res= $x->getVal('name');
+            $res= $x->getVal('Name');
             $this->assertEquals('../Tests/Adm', $res);
             $this->assertNotNull($x->getVal('MetaData'));
             
@@ -137,6 +132,23 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
             
             $res=$x->save();
             $this->assertEquals(1, $res);
+            
+            $res = $x->getVal('ModState');
+            $this->assertNotNull($res);
+            
+            $res = $x->getVal('Model');
+            $this->assertNotNull($res);
+            
+            $res = $x->getVal('StateHandler');
+            $this->assertNotNull($res);
+            
+            $res = $x->setVal('Model', 'notexists');
+
+            $res = $x->getVal('Model');
+            $this->assertEquals('notexists', $res);
+            
+            $res = $x->getVal('StateHandler');
+            $this->assertEquals('', $res);
             
             $res=$x->delet();
             $this->assertFalse($res);

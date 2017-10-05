@@ -9,20 +9,26 @@ use ABridge\ABridge\Adm\Adm;
 
 class AdmApp extends App
 {
-    const ADMIN='Admin';
     
-    public static $config = [
+    public static function init($prm, $config)
+    {
+        $adm=Adm::ADMIN;
+        if (isset($config[Adm::ADMIN])) {
+            $adm = $config[Adm::ADMIN];
+        }
+        
+        $res = [
 
             'Handlers' => [
-                    self::ADMIN => ['memBase',],
+                    $adm => ['memBase',],
             ],
                   
             'Adm' => [
-                    
+                    Adm::ADMIN=>$adm,
             ],
             
             'View' => [
-                    self::ADMIN =>[
+                    $adm =>[
                             'attrList' =>
                             [
                                     CstView::V_S_REF    => ['id'],
@@ -33,22 +39,15 @@ class AdmApp extends App
                             ],
                             'viewList' =>
                             [
-                                    'Parameters'=>
+                                    'Parameter'=>
                                     [
                                             'attrList' =>
                                             [
                                                     CstMode::V_S_READ=>
                                                     [
                                                             'id',
-                                                            'name',
-                                                            'base',
-                                                            'dBase',
-                                                            'fileBase',
-                                                            'memBase',
-                                                            'path',
-                                                            'host',
-                                                            'user',
-                                                            'pass',
+                                                            'Name',
+                                                            'Parameters',
                                                     ],
                                                     
                                             ],
@@ -64,7 +63,7 @@ class AdmApp extends App
                                                     CstMode::V_S_READ=>
                                                     [
                                                             'id',
-                                                            'name',
+                                                            'Name',
                                                             'Load',
                                                             'Meta',
                                                             'Delta',
@@ -104,7 +103,7 @@ class AdmApp extends App
                                                     [
                                                      'ModState'=>[
                                                         CstHTML::H_TYPE=>
-                                                         CstHTML::H_T_TEXTAREA,
+                                                        CstHTML::H_T_TEXTAREA,
                                                         CstHTML::H_COL=>90,
                                                         CstHTML::H_ROW=> 36,
                                                             
@@ -141,7 +140,7 @@ class AdmApp extends App
                                                     [
                                                      'StateHandler'=> [
                                                         CstHTML::H_TYPE=>
-                                                         CstHTML::H_T_TEXTAREA,
+                                                        CstHTML::H_T_TEXTAREA,
                                                         CstHTML::H_COL=>90,
                                                         CstHTML::H_ROW=> 36
                                                      ]
@@ -176,14 +175,16 @@ class AdmApp extends App
                     ],
                     
             ],
-    ];
-    
-    public static function loadMeta($prm = null)
-    {
-        return Adm::get()->InitMeta([], []);
+        ];
+        return $res;
     }
     
-    public static function loadData($prm = null)
+    public static function initMeta($config)
+    {
+        return Adm::get()->InitMeta();
+    }
+    
+    public static function initData($prm = null)
     {
         return true;
     }

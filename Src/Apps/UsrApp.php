@@ -19,9 +19,14 @@ class UsrApp extends App
     const USERGROUP ='UserGroup';
     const GROUPUSER ='GroupUser';
     
-    public static function loadMeta($prm = null)
+    public static function initMeta($config)
     {
-        Usr::initMeta([], self::$config['Hdl']['Usr']);
+        return Usr::get()->initMeta();
+    }
+    
+    public static function init($prm, $config)
+    {
+        return self::$config;
     }
     
     static public $config = [
@@ -304,10 +309,8 @@ class UsrApp extends App
                     ],
             ],
     ];
-        
-
-    
-    public static function loadData($prm = null)
+            
+    public static function initData($prm = null)
     {
         // Role
         
