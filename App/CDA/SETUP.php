@@ -41,8 +41,8 @@ class Config extends App
 	
 	public static function initMeta($config)
 	{
-		AdmApp::initMeta($prm,self::$config['Apps']['AdmApp']);		
-		Cda::initMeta($prm,self::$config['Apps']['Cda']);
+		AdmApp::initMeta(self::$config['Apps']['AdmApp']);		
+		Cda::initMeta(self::$config['Apps']['Cda']);
 		
 	}
 	

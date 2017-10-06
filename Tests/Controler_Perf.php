@@ -14,6 +14,7 @@ use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\View\Vew;
 
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
+$stypes = [CstMode::V_S_CREA,CstMode::V_S_READ, CstMode::V_S_UPDT];
 
 
 $numberRun=2;
@@ -21,9 +22,22 @@ $breath=20;
 $depth=2;
 //$bases= ['dataBase','memBase','fileBase'];
 $bases =['dataBase'];
-$size=20;
+$size=10;
 $cummulative=false;
+$scenario = [
+        CstMode::V_S_CREA,
+        /*
+		CstMode::V_S_READ, 
+		CstMode::V_S_UPDT,
+		*/
+        
+];
 
+
+
+$numberRun=count($scenario)*$numberRun;
+$runTimeList=[];
+$numList=[];
 $init=true;
 $runTime=0;
 $previousTime=0;
@@ -33,40 +47,87 @@ foreach ($bases as $base) {
     if ($cummulative) {
         $mes='cumulative';
     }
-    echo "\nrunning on $base $mes $numberRun times with breath: $breath depth: $depth code: $size\n";
+    echo "\nrunning on $base $mes $numberRun times with breath: $breath depth: $depth code: $size\n\n";
     $avg=0;
+    $srun=0;
     for ($i = 0; $i < $numberRun; $i++) {
         $x= new Controler_Perf();
         $x->config['Handlers']=['Controler_Test_1'=>[$base],'Controler_Test_2'=>[$base]];
-        $runinit=($init || (! $cummulative));
-        $x->initMod($runinit, $size);
-        $init=false;
-        if ($runinit) {
-            $res= $x->initRoot();
+        
+        $s=$i % count($scenario);
+        $sc = $scenario[$s];
+        if (!$s) {
+            $srun++;
+        }
+        $j=$s+1;
+        
+        if (!$s) {
+            if ($i) {
+                $x->close();
+            }
+            $runinit=($init || (! $cummulative));
+            $x->initMod($runinit, $size);
+            $init=false;
+            if ($runinit) {
+                $res= $x->initRoot();
+            }
+            $previousTime=xdebug_time_index();
+        }
+        
+        if ($sc == CstMode::V_S_CREA) {
+            $n=$x->depthBreadthNew($res->getRPath(), $depth, $breath);
+        }
+        if ($sc == CstMode::V_S_READ) {
+            $n=$x->depthRead($res->getRPath(), $depth+1);
+        }
+        if ($sc == CstMode::V_S_UPDT) {
+            $n=$x->depthUpd($res->getRPath(), $depth+1);
         }
 
-        $n=$x->depthBreadthNew($res->getRPath(), $depth, $breath);
-
-        $x->close();
         $currentTime=xdebug_time_index();
         $runTime=$currentTime-$previousTime;
         $previousTime=$currentTime;
-        $j=$i+1;
         $lavg = round($runTime/$n, 3);
+        $runTimeList[$i]=$runTime;
+        $numList[$i]=$n;
         $lrunTime= round($runTime, 3);
-        echo "\t run $j : $lrunTime average : $lavg\n";
+        if (!$s) {
+            echo "scenario run $srun \n";
+        }
+        echo "\t step $j type : $sc \t number of object : $n \t time : $lrunTime \t average : $lavg\n";
         $avg=$avg+$runTime;
     }
-    $avg=round($avg/$numberRun, 3);
-    echo "number of objects/run : $n   \n";
-    echo "average run time      : $avg \n" ;
-    $avg=round($avg/$n, 3);
-    echo "average time/object   : $avg \n";
-    $tn = $n;
-    if ($cummulative) {
-        $tn = $n * $numberRun;
+    foreach ($stypes as $stype) {
+        $aggrNum[$stype]=0;
+        $aggrRunTime[$stype]=0;
     }
-    echo "number of objects at end  : $tn \n";
+    for ($i = 0; $i < $numberRun; $i++) {
+        $s=$i % count($scenario);
+        $sc = $scenario[$s];
+        $aggrNum[$sc]=$aggrNum[$sc]+$numList[$i];
+        $aggrRunTime[$sc]=$aggrRunTime[$sc]+ $runTimeList[$i];
+    }
+    
+    echo "\ntotals and averages on different runs \n";
+    
+    $j=1;
+    $totalTime=0;
+    $totalNum=0;
+    foreach ($stypes as $stype) {
+        if (in_array($stype, $scenario)) {
+            $average= round($aggrRunTime[$stype]/$aggrNum[$stype], 3);
+            $totalTime = $totalTime+$aggrRunTime[$stype];
+            $totalNum=$totalNum+$aggrNum[$stype];
+            $timeAggr = round($aggrRunTime[$stype], 3);
+            echo "\t step type : $stype \t number of object : $aggrNum[$stype] \t time : $timeAggr \t average : $average \n";
+        }
+    }
+    
+    echo "\ntotals and averages on different types \n";
+    
+    $average=round($totalTime/$totalNum, 3);
+    $totalTime=round($totalTime, 3);
+    echo "\t step type : All \t number of object : $totalNum \t time : $totalTime \t average : $average \n";
 }
 
 class Controler_Perf
@@ -161,8 +222,7 @@ class Controler_Perf
             Mod::get()->end();
         }
     }
-    
-    
+        
     public function close()
     {
         $ctrl = new Controler($this->config, $this->ini);
@@ -195,22 +255,6 @@ class Controler_Perf
         return $res;
     }
     
-    public function select($path, $i)
-    {
-        $_SERVER['REQUEST_METHOD']='GET';
-        $_SERVER['PATH_INFO']=$path;
-        $_GET['Action']=CstMode::V_S_SLCT;
-
-        $this->ctrlrun();
-        
-        
-        $_SERVER['REQUEST_METHOD']='POST';
-        $_POST['Ref']=$i;
-
-        $this->ctrlrun();
-    }
-
- 
     protected function createSon($path, $i)
     {
         $_SERVER['REQUEST_METHOD']='GET';
@@ -248,15 +292,59 @@ class Controler_Perf
         }
         return $t;
     }
+ 
+    public function depthRead($path, $n)
+    {
+        $t=0;
+        if ($n==0) {
+            return $t;
+        }
+        $list = $this->getSonIds($path);
+        $t++;
+        foreach ($list as $id) {
+            $sonPath=$path.'/Cref/'.$id;
+            $t=$t+$this->depthRead($sonPath, $n-1);
+        }
+        return $t;
+    }
+
+       
+    public function getSonIds($path)
+    {
+        $_SERVER['REQUEST_METHOD']='GET';
+        $_SERVER['PATH_INFO']=$path;
+        $_GET['Action']=CstMode::V_S_READ;
+        
+        $handle = $this->ctrlrun();
+        $sons = $handle->getVal('Cref');
+        return $sons;
+    }
     
-    protected function Upd($path, $i)
+    public function depthUpd($path, $n)
+    {
+        $t=0;
+        if ($n==0) {
+            return $t;
+        }
+        $list = $this->upd($path, $n);
+        $t++;
+        foreach ($list as $id) {
+            $sonPath=$path.'/Cref/'.$id;
+            $t=$t+$this->depthUpd($sonPath, $n-1);
+        }
+        return $t;
+    }
+    
+    protected function upd($path, $i)
     {
         
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
         
-        $this->ctrlrun();
+        $handle = $this->ctrlrun();
+        $sons = $handle->getVal('Cref');
+
         
         $_GET['Action']=CstMode::V_S_UPDT;
         
@@ -267,10 +355,24 @@ class Controler_Perf
         
         $res=$this->ctrlrun();
         
-        return $res;
+        return $sons;
+    }
+        
+    public function select($path, $i)
+    {
+        $_SERVER['REQUEST_METHOD']='GET';
+        $_SERVER['PATH_INFO']=$path;
+        $_GET['Action']=CstMode::V_S_SLCT;
+        
+        $this->ctrlrun();
+        
+        $_SERVER['REQUEST_METHOD']='POST';
+        $_POST['Ref']=$i;
+        
+        $this->ctrlrun();
     }
     
-    
+
     protected function del($path)
     {
         

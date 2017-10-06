@@ -31,7 +31,7 @@ class CstError
     const E_ERC026 = 'ERC026';  // not a ref
     const E_ERC027 = 'ERC027';  // not a cref
     const E_ERC028 = 'ERC028';  // not a code
-    const E_ERC029 = 'ERC029';  // Ckey must be an array
+    const E_ERC029 = 'ERC029';  // NOT Used
     const E_ERC030 = 'ERC030';  // attr in Ckey
     const E_ERC031 = 'ERC031';  // Ckey violation
     const E_ERC032 = 'ERC032';  // id not in CREF

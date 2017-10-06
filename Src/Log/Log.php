@@ -57,6 +57,11 @@ class Log extends Comp
         return $this->tdisp;
     }
     
+    public function getPath()
+    {
+        return $this->path;
+    }
+    
     public function init($appPrm, $config)
     {
         $this->logLevel=$appPrm['trace'];

@@ -3,19 +3,19 @@ CMD
 pear install phpdoc/PhpDocumentor-2.8.1
 grep -ri 'initMeta' Src/* App/* Tests/*
 
-BUGS	29
+BUGS	31
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
-B22 EVALP in create dialog
-B27 session initial log in - menu not updated (see caching)
+B22 EVALP in create dialog.
+B29 escaping "value" in HTLM type for SQL.
+B30 thow exception when model does not exists in Bases.
 
 DEV
+- review init of handle / Usr.
 - improve LC support (release, test/ dev Data Base etc.)
 - create Ctr Component.
-
-- develop Log application
 
 - support CREF on abstract (????)
 - set up own exception
@@ -36,6 +36,7 @@ DEV
 
 - implement CSS
 
+- parameterize Cref menu actions. /2
 - delete in list./2
 - increase autorisations rule capability /2
 	- views and other parameters
@@ -80,6 +81,15 @@ INT
 - set up jenkin
 
 DONE
+---------------// 1 day
+- develop Log application
+PERF  S1(2)on 2*20*10: 0.448
+PERF* S1(4)on 2*20*10: 0.123
+---------------//0.1
+-type checking in Model
+PERF  S1(2)on 2*20*10: 0.458
+---------------//0.1
+- update build script with class loader and vendor
 ---------------// 3 
 - develop component for abstract code (Cda).
 - check init condition in Adm and Usr.

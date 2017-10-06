@@ -31,11 +31,7 @@ class Logger
     public $name;
     protected $br;
 
-    /**
-     * Constructor
-     *
-     * @param string $name file name to be used if saved.
-     */
+
     public function __construct()
     {
         $this->br="<br>";
@@ -43,7 +39,6 @@ class Logger
             $this->br="\n";
         }
     }
-
     
     /**
      * Log a line

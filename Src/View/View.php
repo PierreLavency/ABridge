@@ -1025,7 +1025,7 @@ class View
         return $r;
     }
     
-    protected function buildList($attr, $list, $viewState)
+    protected function buildList($attr, array $list, $viewState)
     {
         $view = [];
         $prm = $this->getAttrHtml($attr, $viewState);
@@ -1073,7 +1073,7 @@ class View
         ];
     }
         
-    protected function getSlice($attr, $list, $viewL, $viewState, $prm)
+    protected function getSlice($attr, array $list, $viewL, $viewState, $prm)
     {
         $view[]=$viewL[0];
         $c=count($list);

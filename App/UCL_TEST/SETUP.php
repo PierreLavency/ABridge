@@ -29,6 +29,14 @@ class Config extends App
 	const INSCRIPTION ='Inscription';
 	const PROF = 'Prof';
 	const CHARGE = 'Charge';
+	protected  static $logicalNames =
+	[
+			self::STUDENT,
+			self::COURS,
+			self::INSCRIPTION,
+			self::PROF,
+			self::CHARGE,
+	];
 	
 	static $config = [
 	'Apps'	=>
@@ -255,19 +263,12 @@ class Config extends App
 	
 	public static function initMeta($config)
 	{
-		$logicalNames =
-		[
-				self::STUDENT,
-				self::COURS,
-				self::INSCRIPTION,
-				self::PROF,
-				self::CHARGE,
-		];
+
 		
 		$admList= AdmApp::initMeta(self::$config['Apps']['AdmApp']);
 		$usrList=UsrApp::initMeta(self::$config['Apps']['UsrApp']);
 		$cdvList=Cdv::initMeta(self::$config['Apps']['Cdv']);
-		$list = ModUtils::normBindings($logicalNames);
+		$list = ModUtils::normBindings(self::$logicalNames);
 		
 		$bindings = array_merge($admList,$usrList,$cdvList,$list);
 
@@ -276,12 +277,9 @@ class Config extends App
 		$res = $obj->addAttr('Student',Mtype::M_CREF,'/'.self::STUDENT.'/'.$bindings[Usr::USER]);
 		$res = $obj->addAttr('Prof',Mtype::M_CREF,'/'.self::PROF.'/'.$bindings[Usr::USER]);
 		$res = $obj->saveMod();
-		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-
-		$bindings=ModUtils::normBindings($logicalNames);
-		
+		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";		
 			
-		ModUtils::initModBindings($bindings,$logicalNames);		
+		ModUtils::initModBindings($bindings,self::$logicalNames);		
 
 	}
 	
