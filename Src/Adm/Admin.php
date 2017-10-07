@@ -97,7 +97,11 @@ class Admin extends CModel
         
         if ($this->mod->getId() != 0) {
             $this->mod->setCriteria([], [], []);
-            $res = $this->mod->select();
+            try {
+            	$res = $this->mod->select();
+            } catch (\Exception $e) {
+            	$res=false;
+            }
             if (!$res) {
                 $this->mod->deleteMod();
                 $this->initMod([]);

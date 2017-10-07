@@ -24,7 +24,7 @@ class CstError
     const E_ERC019 = 'ERC019';  // Mdtr violation -
     const E_ERC020 = 'ERC020';  // Invalid Path - 'syntax error'
     const E_ERC021 = 'ERC021';  // mysqli errors
-    const E_ERC022 = 'ERC022';  // NOT USED
+    const E_ERC022 = 'ERC022';  // Model does not exists
     const E_ERC023 = 'ERC023';  // Invalid Path NOT USED
     const E_ERC024 = 'ERC024';  // can'save model has changed
     const E_ERC025 = 'ERC025';  // No connection open FB
@@ -99,7 +99,7 @@ class CstError
 
         self::E_ERC020 => 'Invalid path syntaxe',
         self::E_ERC021 => 'mysqli errors',
-        self::E_ERC022 => 'NOT USED',
+        self::E_ERC022 => 'Model does not exist',
         self::E_ERC023 => 'NOT USED',
         self::E_ERC024 => 'Model has changed and must be saved before value can be saved',
         self::E_ERC025 => 'No connection open',

@@ -3,6 +3,7 @@
 use ABridge\ABridge\Mod\Mtype;
 
 use ABridge\ABridge\Mod\SQLBase;
+use ABridge\ABridge\CstError;
 
 class Base_Case extends PHPUnit_Framework_TestCase
 {
@@ -200,11 +201,21 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $this->assertFalse($x->delObj('NOTEXISTS', $this->id2));
         $this->assertFalse($x->putObj('NOTEXISTS', $this->id1, 1, $this->test2));
         $this->assertFalse($x->findObj('NOTEXISTS', 'CODE', '01'));
-        $this->assertFalse($x->findObjWheOp('NOTEXISTS', ['CODE'], [], ['01']));
-        $this->assertFalse($x->findObjWheOp('NOTEXISTS', ['CODE'], ['='], ['01']));
+ 		$r='';
+        try {
+        	$x->findObjWheOp('NOTEXISTS', ['CODE'], [], ['01']);
+        } catch (Exception $e) {
+        	$r = $e->getMessage();
+        }
+        $this->assertEquals(CstError::E_ERC022.':NOTEXISTS',$r);
+ 		$r='';
+        try {
+        	$x->findObjWheOp('NOTEXISTS', ['CODE'], ['='], ['01']);
+        } catch (Exception $e) {
+        	$r = $e->getMessage();
+        }
+        $this->assertEquals(CstError::E_ERC022.':NOTEXISTS',$r);
 
-
-        
         $x->commit();
     }
 

@@ -17,20 +17,17 @@ require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 $stypes = [CstMode::V_S_CREA,CstMode::V_S_READ, CstMode::V_S_UPDT];
 
 
-$numberRun=2;
-$breath=20;
+$numberRun=30;
+$breath=5;
 $depth=2;
 //$bases= ['dataBase','memBase','fileBase'];
 $bases =['dataBase'];
 $size=10;
-$cummulative=false;
+$cummulative=true;
 $scenario = [
         CstMode::V_S_CREA,
-        /*
 		CstMode::V_S_READ, 
-		CstMode::V_S_UPDT,
-		*/
-        
+		CstMode::V_S_UPDT,      
 ];
 
 
