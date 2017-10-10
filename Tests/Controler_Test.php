@@ -1,75 +1,41 @@
 <?php
 
+use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\Controler;
+use ABridge\ABridge\Hdl\CstMode;
+use ABridge\ABridge\Hdl\Hdl;
+use ABridge\ABridge\Log\Log;
+use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
-use ABridge\ABridge\Mod\Mod;
-use ABridge\ABridge\Log\Log;
-use ABridge\ABridge\Hdl\Hdl;
+use ABridge\ABridge\Mod\ModUtils;
 use ABridge\ABridge\Usr\Usr;
-use ABridge\ABridge\Adm\Adm;
+use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\View\Vew;
 
+use ABridge\ABridge\Usr\User;
+use ABridge\ABridge\Usr\Role;
+use ABridge\ABridge\Usr\Session;
 
-use ABridge\ABridge\Hdl\CstMode;
+class Controler_Test_dataBase_User extends User
+{
+}
 
+class Controler_Test_dataBase_Role extends Role
+{
+}
 
-use ABridge\ABridge\View\CstHTML;
-use ABridge\ABridge\View\CstView;
+class Controler_Test_dataBase_Session extends Session
+{
+}
 
 class Controler_Test extends PHPUnit_Framework_TestCase
 {
     
-    protected $config =  [
-    'Handlers' => [
-            'Controler_Test_1'=>['dataBase'],
-            'Controler_Test_2'=>['fileBase'],
-    ],
 
-    'View' => [
-        'Home'=>['Controler_Test_1'],
-        'Controler_Test_1' =>[
-                'attrList' => [
-                    CstView::V_S_REF => ['id'],
-                    ],
-                'attrHtml' => [
-                    CstMode::V_S_READ => ['Name'=>CstHTML::H_T_PLAIN],
-                ],
-                'attrProp' => [
-                    CstMode::V_S_SLCT =>[CstView::V_P_LBL,CstView::V_P_OP,CstView::V_P_VAL],
-                ],
-                'navList' => [CstMode::V_S_READ => [CstMode::V_S_UPDT,CstMode::V_S_SLCT],
-                ],
-                'lblList' => [
-                    'id'        => 'Noma',
-                ],
-            ],
-        ]
-    ];
     protected $show = false;
-    protected $rootPath='/Controler_Test_1/1';
-    protected $CName='Controler_Test_1';
-
-    protected static $prm;
     
-    public static function setUpBeforeClass()
-    {
-                    
-        self::$prm=
-        [
-                'name'=>'test',
-                'base'=>'dataBase',
-                'dataBase'=>'test_'.__CLASS__,
-                'fileBase'=>'test_'.__CLASS__,
-                'memBase' =>'test_'.__CLASS__,
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'host'=>'localhost',
-                'user'=>'cl822',
-                'pass'=>'cl822'
-        ];
-    }
-    
-    function testRoot()
+    protected function reset()
     {
         Log::reset();
         Mod::reset();
@@ -77,29 +43,120 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         Usr::reset();
         Adm::reset();
         Vew::reset();
-            
-        $ctrl = new Controler($this->config, self::$prm);
+    }
+       
+    public function testInit()
+    {
+        $classes = ['Student'];
+        $baseTypes=['dataBase'];
         
-        $x=new Model($this->CName);
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
+        
+        $this->reset();
+        
+        Mod::get()->init($prm['application'], $prm['handlers']);
+        
+        Mod::get()->begin();
+        
+        $name = $prm['dataBase']['Student'];
+        
+        $x=new Model($name);
         $x->deleteMod();
-        $x=new Model($this->CName);
         $x->addAttr('Name', Mtype::M_INT);
-        $x->addAttr('Ref', Mtype::M_REF, '/'.$this->CName);
-        $x->addAttr('Cref', Mtype::M_CREF, '/'.$this->CName.'/Ref');
+        $x->addAttr('Ref', Mtype::M_REF, '/'.$name);
+        $x->addAttr('Cref', Mtype::M_CREF, '/'.$name.'/Ref');
         $x->saveMod();
         
+        $classes = ['Session','User','Role',];
+        
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
+            
+        Mod::get()->init($prm['application'], $prm['handlers']);
+        
+        $res = ModUtils::initModBindings($prm['dataBase']);
+        
+        $role = $prm['dataBase']['Role'];
+        $x = new Model($role);
+        $x->setVal('Name', 'Default');
+        $x->setVal('JSpec', json_encode([["true","true","true"]]));
+        $res=$x->save();
+        $this->assertEquals(1, $res);
+        
+        $user = $prm['dataBase']['User'];
+        $x = new Model($user);
+        $x->setVal('UserId', 'test');
+        $res=$x->save();
+        $this->assertEquals(1, $res);
+        
+        $session = $prm['dataBase']['Session'];
+        $x = new Model($session);
+        $x->setVal('UserId', 'test');
+        $x->setVal('RoleName', 'Default');
+        $res=$x->save();
+        $this->assertEquals(1, $res);
+        
+        $res=$x->save();
+        $this->assertFalse($x->isErr());
+    
+        Mod::get()->end();
+        
+        
+        $classes=['Session','User','Role','Student'];
+        $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
+        $prm['key']=$x->getCobj()->getKey();
+        
+        $config =
+        [
+                'Handlers' => [
+                        $name=>['dataBase'],
+                ],
+                'Hdl' => [
+                        'Usr'=>['Session'=>$session,'User'=>$user,'Role'=>$role]
+                ]
+        ];
+        
+        
+        $cookiename = $prm['application']['name'].$session;
+        $prm['cookieName']=$cookiename;
+        $prm['config']=$config;
+        $prm['rootPath']='/'.$name;
+        return $prm;
+    }
+    
+    /**
+     * @depends testInit
+     */
+    
+    function testRoot($prm)
+    {
+        $this->reset();
+        $ctrl = new Controler($prm['config'], $prm['application']);
+       
         $path = '/';
+        $_COOKIE[$prm['cookieName']]=$prm['key'];
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
-
         
         $resc = $ctrl->run($this->show, 0);
 
-
+/*
+        $this->assertFalse($resc->isErr());
+        $this->assertEquals(CstMode::V_S_UPDT, $resc->getAction());
+        $this->assertEquals($resc->getId(), 0);
+        
+        $_SERVER['REQUEST_METHOD']='POST';
+        $_SERVER['PATH_INFO']='/Session/~';
+        $_POST['UserId']='test';
+        $_POST['RoleName']='Default';    
+        $_GET['Action']=CstMode::V_S_UPDT;
+        
+  */
+        
         $this->assertTrue($resc->nullobj());
-
-        $path='/'.$this->CName;
+        
+        
+        $path=$prm['rootPath'];
 
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
@@ -131,72 +188,81 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals(CstMode::V_S_READ, $reso->getAction());
         $this->assertEquals($reso->getId(), 1);
 
-        return $reso->getRPath();
-        
-        $ctrl->close();
+        return $prm;
     }
 
     /**
     * @depends testRoot
     */
     
-    public function testRootErr($path)
+    public function testRootErr($prm)
     {
-        $ctrl = new Controler($this->config, self::$prm);
-
+        $this->reset();
+        $ctrl = new Controler($prm['config'], $prm['application']);
+        
+        $_COOKIE[$prm['cookieName']]=$prm['key'];
         $_SERVER['REQUEST_METHOD']='POST';
-        $_SERVER['PATH_INFO']=$path;
+        $_SERVER['PATH_INFO']= $prm['rootPath'].'/1';
         $_GET['Action']=CstMode::V_S_UPDT;
         $_POST['Name']='a';
 
-
         $res = $ctrl->run($this->show, 0);
-
 
         $this->assertEquals($res->getVal('Name'), 0);
         $this->assertTrue($res->isErr());
         $this->assertEquals(CstMode::V_S_UPDT, $res->getAction());
+        
+        return $prm;
     }
     /**
     * @depends testRootErr
     */
     
-    public function testSelect()
+    public function testSelect($prm)
     {
-        $ctrl = new Controler($this->config, self::$prm);
+        $this->reset();
+        $ctrl = new Controler($prm['config'], $prm['application']);
         
+        $_COOKIE[$prm['cookieName']]=$prm['key'];
         $_SERVER['REQUEST_METHOD']='POST';
-        $_SERVER['PATH_INFO']='/'.$this->CName;
+        $_SERVER['PATH_INFO']=$prm['rootPath'];
         $_GET['Action']=CstMode::V_S_SLCT;
         $_POST['Name']=0;
         $_POST['Name_OP']='=';
         
         $reso = $ctrl->run($this->show, 0);
         $this->assertEquals(1, count($reso->select()));
+        return $prm;
     }
 
     /**
     * @depends testRoot
     */
     
-    public function testNewSon($path)
+    public function testNewSon($prm)
     {
  
-        $res = $this->newSon($path);
+        $prm['rootPath']=$prm['rootPath'].'/1';
+        
+        $res = $this->newSon($prm);
         
         $this->assertEquals($res->getVal('Name'), 1);
         $this->assertFalse($res->isErr());
         $this->assertEquals(CstMode::V_S_READ, $res->getAction());
   
-        return $res->getRpath();
+        $prm['sonPath']=$res->getRpath();
+        return $prm;
     }
 
     
-    private function newSon($path)
+    private function newSon($prm)
     {
-        $ctrl = new Controler($this->config, self::$prm);
-        $fpath = $path.'/Cref';
-
+        $this->reset();
+        $ctrl = new Controler($prm['config'], $prm['application']);
+        
+        $fpath = $prm['rootPath'].'/Cref';
+        
+        $_COOKIE[$prm['cookieName']]=$prm['key'];
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$fpath;
         $_GET['Action']=CstMode::V_S_CREA;
@@ -207,7 +273,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_POST['Name']=1;
         
         $res = $ctrl->run($this->show, 0);
-        
+             
         return $res;
     }
     
@@ -215,10 +281,14 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     * @depends testNewSon
     */
     
-    public function testUpdSon($path)
+    public function testUpdSon($prm)
     {
-        $ctrl = new Controler($this->config, self::$prm);
+        $this->reset();
+        $ctrl = new Controler($prm['config'], $prm['application']);
+        
+        $path=$prm['sonPath'];
 
+        $_COOKIE[$prm['cookieName']]=$prm['key'];
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
@@ -246,16 +316,16 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $this->assertFalse($res->isErr());
         $this->assertEquals(CstMode::V_S_READ, $res->getAction());
 
-        return $res->getRPath();
+        return $prm;
     }
     
     /**
     * @depends testUpdSon
     */
     
-    public function testDelSon($path)
+    public function testDelSon($prm)
     {
-        $r= $this->delSon($path);
+        $r= $this->delSon($prm);
         $x=$r[1];
         $res=$r[0];
         
@@ -266,10 +336,13 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         return $x;
     }
     
-    private function delSon($path)
+    private function delSon($prm)
     {
-        $ctrl = new Controler($this->config, self::$prm);
-        
+        $this->reset();
+        $ctrl = new Controler($prm['config'], $prm['application']);
+        $path=$prm['sonPath'];
+
+        $_COOKIE[$prm['cookieName']]=$prm['key'];
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
@@ -286,46 +359,5 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $res = $ctrl->run($this->show, 0);
         
         return [$res,$x];
-    }
-    
-    /**
-    * @depends testDelSon
-    */
-    
-    public function testDepthNew($path)
-    {
-        $x=$path;
-        $date = new DateTime();
-        $s=$date->getTimestamp();
-        for ($i = 1; $i <= 15; $i++) {
-            $x=$this->NewSon($x);
-            $x=$x->getRPath();
-        }
-        $date = new DateTime();
-        $ss= $date->getTimestamp();
-//		echo $ss-$s; echo "\n";
-        return $x;
-    }
-
-
-    /**
-    * @depends testDepthNew
-    */
-    
-    public function testDepthDel($path)
-    {
-        $x=$path;
-        $date = new DateTime();
-        $s=$date->getTimestamp();
-        for ($i = 1; $i <= 15; $i++) {
-            $x=$this->delSon($x);
-            $x=$x[0];
-            $x=$x->getRpath();
-        }
-        $date = new DateTime();
-        $ss= $date->getTimestamp();
-//		echo $ss-$s; echo "\n";
-
-        return $x;
     }
 }

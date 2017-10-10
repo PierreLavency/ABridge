@@ -13,5 +13,8 @@ class Vew_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals('xx', $y);
         $y = Vew::get()->getViewPrm('yy');
         $this->assertNull($y);
+        
+        $this->assertEquals([], Vew::get()->initMeta());
+        $this->assertFalse(Vew::get()->isNew());
     }
 }

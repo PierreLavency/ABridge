@@ -150,7 +150,7 @@ class Session_Role_Test extends PHPUnit_Framework_TestCase
             $sessionHdl = $x->getCobj();
             $this->assertNull($sessionHdl->getRSpec());
 
-            $res = $sessionHdl->getObj($bd['Session']);
+            $res = $sessionHdl->getObj('Session');
             $this->assertEquals(2, $res->getId());
             
             $mod->end();

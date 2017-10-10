@@ -80,6 +80,11 @@ class Session extends CModel
         return $this->mod->getValN('BKey');
     }
  
+    public function hasRole()
+    {
+        return $this->mod->existsAttr('RoleName');
+    }
+    
     public function getRSpec()
     {
         if ($this->roleSpecLoaded) {
@@ -303,7 +308,7 @@ class Session extends CModel
     
     public function getObj($mod)
     {
-        if ($mod == $this->mod->getModName()) {
+        if ($mod == 'Session') {
             return $this->mod;
         }
         return $this->mod->getRef($mod);

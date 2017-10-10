@@ -46,11 +46,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
         }
         $this->assertEquals(CstError::E_ERC067.':Usr', $r);
         
-        
-/*
-        $prm['application']['base']='fileBase';
-        $usr->init($prm['application'], $prm['fileBase']);
-        */
+
         $prm['application']['base']='dataBase';
         $usr->init($prm['application'], $prm['dataBase']);
         
@@ -65,7 +61,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
         $mod->begin();
         
         $res = $usr->initMeta();
-//        $res = $res and usr::initMeta($prm['application'], $prm['fileBase']);
+
         
         $mod->end();
 
@@ -85,7 +81,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
         foreach ($prm['bindL'] as $bd) {
             $mod->begin();
             
-            $cobj = $usr->begin($prm['application'], $bd);
+            $cobj = $usr->begin();
  
             $session = $cobj->getMod();
 
@@ -112,7 +108,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             $name = $prm['application']['name'].$bd['Session'];
             $_COOKIE[$name]= $x->getVal('BKey');
             
-            $cobj = Usr::get()->begin($prm['application'], $bd);
+            $cobj = Usr::get()->begin();
 
             $this->assertFalse(Usr::get()->isNew());
      
@@ -137,7 +133,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             $_COOKIE[$name]= $x->getVal('BKey');
             $x->delet();
                         
-            $cobj = Usr::get()->begin($prm['application'], $bd);
+            $cobj = Usr::get()->begin();
             $session = $cobj->getMod();
 
             $this->assertTrue($cobj->isNew());
@@ -165,7 +161,7 @@ class Usr_Test extends PHPUnit_Framework_TestCase
             
             Usr::$cleanUp=true;
                         
-            $cobj = Usr::get()->begin($prm['application'], $bd);
+            $cobj = Usr::get()->begin();
             $session = $cobj->getMod();
             
             $this->assertTrue($cobj->isNew());

@@ -936,10 +936,8 @@ class Model
             $res=$this->findObjAttr($patha[1], $patha[2], $this->getId());
             return $res;
         }
-        foreach ($this->attributeValues as $x => $val) {
-            if ($x==$attr) {
-                return $val;
-            }
+        if (isset($this->attributeValues[$attr])) {
+            return $this->attributeValues[$attr];
         }
         return null;
     }

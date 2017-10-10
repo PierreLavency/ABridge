@@ -83,6 +83,7 @@ class Log_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals($log->getLevel(), 2);
         $this->assertEquals($log->getRunLevel(), 0);
         $this->assertEquals(1, $log->getDisp());
+        $this->assertNotNull($log->getPath());
         
         $log->begin();
         $this->assertEquals($log->getRunLevel(), 2);

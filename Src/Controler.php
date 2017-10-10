@@ -73,11 +73,6 @@ class Controler
             Adm::get()->init($prm, $config);
             $this->isInit['Adm']=true;
         }
-        if (isset($spec['Usr'])) {
-            $config=$spec['Usr'];
-            Usr::get()->init($prm, $config);
-            $this->isInit['Usr']=true;
-        }
         if (isset($spec['Hdl'])) {
             $config=$spec['Hdl'];
             Hdl::get()->init($prm, $config);
@@ -208,11 +203,6 @@ class Controler
             $frccommit=Adm::get()->isNew();
         }
        
-        if (isset($this->isInit['Usr'])) {
-            $usr=Usr::get()->begin();
-            $frccommit=Usr::get()->isNew();
-        }
-        
         
         $this->handle= Hdl::get()->begin();
         $frccommit=($frccommit || Hdl::get()->isNew());

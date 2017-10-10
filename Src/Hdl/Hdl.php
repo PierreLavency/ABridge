@@ -1,9 +1,9 @@
 <?php
 namespace ABridge\ABridge\Hdl;
 
+use ABridge\ABridge\Comp;
 use ABridge\ABridge\Hdl\Handle;
 use ABridge\ABridge\Usr\Usr;
-use ABridge\ABridge\Comp;
 
 class Hdl extends Comp
 {
@@ -42,6 +42,7 @@ class Hdl extends Comp
     
     public function begin($prm = null)
     {
+        $this->isNew=false;
         if (isset($this->prm)) {
             $sessionHdl= Usr::get()->begin();
             if (Usr::get()->isNew()) {

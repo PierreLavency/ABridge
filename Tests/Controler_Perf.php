@@ -1,36 +1,52 @@
 <?php
 
-use ABridge\ABridge\Controler;
-use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Mod\Mod;
-use ABridge\ABridge\Mod\Mtype;
-use ABridge\ABridge\Hdl\CstMode;
-use ABridge\ABridge\View\CstView;
-
-use ABridge\ABridge\Log\Log;
-use ABridge\ABridge\Hdl\Hdl;
-use ABridge\ABridge\Usr\Usr;
 use ABridge\ABridge\Adm\Adm;
+use ABridge\ABridge\Controler;
+use ABridge\ABridge\Hdl\CstMode;
+use ABridge\ABridge\Hdl\Hdl;
+use ABridge\ABridge\Log\Log;
+use ABridge\ABridge\Mod\Mod;
+use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\ModUtils;
+use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Usr\Role;
+use ABridge\ABridge\Usr\Session;
+use ABridge\ABridge\Usr\User;
+use ABridge\ABridge\Usr\Usr;
+use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\View\Vew;
 
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 $stypes = [CstMode::V_S_CREA,CstMode::V_S_READ, CstMode::V_S_UPDT];
 
+class Controler_Perf_dataBase_User extends User
+{
+}
 
-$numberRun=30;
-$breath=5;
+class Controler_Perf_dataBase_Role extends Role
+{
+}
+
+class Controler_Perf_dataBase_Session extends Session
+{
+}
+
+$numberRun=1;
+$breath=20;
 $depth=2;
 //$bases= ['dataBase','memBase','fileBase'];
 $bases =['dataBase'];
 $size=10;
-$cummulative=true;
+$cummulative=false;
 $scenario = [
         CstMode::V_S_CREA,
+        /*
 		CstMode::V_S_READ, 
-		CstMode::V_S_UPDT,      
+		CstMode::V_S_UPDT,     
+		*/
+
 ];
-
-
+$accessRight=2;
 
 $numberRun=count($scenario)*$numberRun;
 $runTimeList=[];
@@ -39,17 +55,25 @@ $init=true;
 $runTime=0;
 $previousTime=0;
 $currentTime=0;
+
+
 foreach ($bases as $base) {
     $mes = 'non cumulative';
     if ($cummulative) {
         $mes='cumulative';
     }
-    echo "\nrunning on $base $mes $numberRun times with breath: $breath depth: $depth code: $size\n\n";
+    $mes2='witout access control';
+    if ($accessRight==1) {
+        $mes2="with Root access";
+    }
+    if ($accessRight==2) {
+        $mes2="with User access";
+    }
+    echo "\nrunning on $base $mes $numberRun times with breath: $breath depth: $depth code: $size $mes2\n\n";
     $avg=0;
     $srun=0;
     for ($i = 0; $i < $numberRun; $i++) {
-        $x= new Controler_Perf();
-        $x->config['Handlers']=['Controler_Test_1'=>[$base],'Controler_Test_2'=>[$base]];
+        $x= new Controler_Perf($accessRight);
         
         $s=$i % count($scenario);
         $sc = $scenario[$s];
@@ -62,15 +86,16 @@ foreach ($bases as $base) {
             if ($i) {
                 $x->close();
             }
+            $x->reset();
             $runinit=($init || (! $cummulative));
-            $x->initMod($runinit, $size);
-            $init=false;
             if ($runinit) {
+                $x->initMod($accessRight, $size);
                 $res= $x->initRoot();
             }
-            $previousTime=xdebug_time_index();
+            $init=false;
         }
         
+        $previousTime=xdebug_time_index();
         if ($sc == CstMode::V_S_CREA) {
             $n=$x->depthBreadthNew($res->getRPath(), $depth, $breath);
         }
@@ -80,10 +105,8 @@ foreach ($bases as $base) {
         if ($sc == CstMode::V_S_UPDT) {
             $n=$x->depthUpd($res->getRPath(), $depth+1);
         }
-
         $currentTime=xdebug_time_index();
         $runTime=$currentTime-$previousTime;
-        $previousTime=$currentTime;
         $lavg = round($runTime/$n, 3);
         $runTimeList[$i]=$runTime;
         $numList[$i]=$n;
@@ -94,6 +117,7 @@ foreach ($bases as $base) {
         echo "\t step $j type : $sc \t number of object : $n \t time : $lrunTime \t average : $lavg\n";
         $avg=$avg+$runTime;
     }
+    
     foreach ($stypes as $stype) {
         $aggrNum[$stype]=0;
         $aggrRunTime[$stype]=0;
@@ -132,19 +156,9 @@ class Controler_Perf
     
     public $config =  [
     'Handlers' => [],
-    'Log'=>[],
-    'Views' => [
-        'Home'=>['Controler_Test_1'],
-        'Controler_Test_1' =>[
-                'attrList' => [
-                    CstView::V_S_REF         => ['id'],
-                    ],
-
-                'attrProp' => [
-                    CstMode::V_S_SLCT =>[CstView::V_P_LBL,CstView::V_P_OP,CstView::V_P_VAL],
-                ],
-            ],
-        ]
+    'Hdl'=> [],
+    'Log'=> [],
+    'Views' => []
     ];
     
     private $ini = [
@@ -157,71 +171,166 @@ class Controler_Perf
             'host'=>'localhost',
             'user'=>'cl822',
             'pass'=>'cl822',
-            'trace'=>'0',
 
+            'trace'=>'0',
  //   		'tclass'=>'ABridge\ABridge\Controler',
             'tfunction'=>'getObj',
             'tdisp'=>'1',
  //  		'tline'=>'443',
 
     ];
+      
     
     protected $show = false;
+    protected $baseTypes= ['dataBase'];
     protected $rootPath='/Controler_Test_1/1';
-    protected $CName='Controler_Test_1';
-    protected $code= 'Controler_Test_2';
+    protected $CName;
+    protected $code;
+    protected $cookieName;
+    protected $ckey;
     
-    protected function ctrlrun()
+    public function __construct($accessRight)
     {
-        $ctrl = new Controler($this->config, $this->ini);
-        $resc = $ctrl->run($this->show, 0);
-        return $resc;
-    }
+        $classes = ['Student','Code','Role','Session','User'];
+        $prm=UtilsC::genPrm($classes, get_called_class(), $this->baseTypes);
         
-    public function initMod($init, $size)
-    {
+        $this->config['Handlers']=$prm['handlers'];
+        
+        if ($accessRight != 0) {
+            $usr=[
+                    'Role' => $prm['dataBase']['Role'],
+                    'User' => $prm['dataBase']['User'],
+                    'Session' => $prm['dataBase']['Session'],
+            ];
+            $this->config['Hdl']= ['Usr'=>$usr];
+        }
+    }
 
+    public function reset()
+    {
         Log::reset();
         Mod::reset();
         Hdl::reset();
         Usr::reset();
         Adm::reset();
         Vew::reset();
-    
-        $ctrl = new Controler($this->config, $this->ini);
-        if ($init) {
-            Mod::get()->begin();
-            
-            if ($size > 0) {
-                $x=new Model($this->code);
-                $x->deleteMod();
-                $x->addAttr('Name', Mtype::M_STRING);
-                $x->saveMod();
-                $x->getErrLog()->show();
-                for ($i=0; $i<$size; $i++) {
-                    $x = new Model($this->code);
-                    $x->setVal('Name', (string) $i);
-                    $x->save();
-                }
-            }
-            $x=new Model($this->CName);
-            $x->getErrLog()->show();
-            $x->deleteMod();
-            
-            $x->addAttr('Name', Mtype::M_STRING);
-            $x->addAttr('Ref', Mtype::M_REF, '/'.$this->CName);
-            $x->addAttr('Cref', Mtype::M_CREF, '/'.$this->CName.'/Ref');
-            if ($size > 0) {
-                $x->addAttr('Code', Mtype::M_CODE, '/'.$this->code);
-            }
-            $x->saveMod();
-            
-            Mod::get()->end();
-        }
     }
+    
+    public function initMod($accessRight, $size)
+    {
+       
+        $classes = ['Student','Code',];
+        $prm=UtilsC::genPrm($classes, get_called_class(), $this->baseTypes);
+        $prm['application']= $this->ini;
         
+        
+        Mod::get()->init($prm['application'], $prm['handlers']);
+        
+        $this->CName=$prm['dataBase']['Student'];
+        $this->code=$prm['dataBase']['Code'];
+
+        
+        $rolespec =[["true","true","true"]];
+        $role1= json_encode($rolespec);
+        
+        $homep='|'.$this->CName;
+        $home = $this->CName;
+
+        $rolespec =[
+                [[CstMode::V_S_SLCT],                     $homep,                             'true'],
+                [[CstMode::V_S_READ],                     'true',                             'true'],
+                [CstMode::V_S_UPDT,                       $homep,                             [$home=>':User<==>:User']],
+                [CstMode::V_S_CREA,                       $homep,                             [$home=>':User<>:User']],
+                [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  [$homep.'|Cref'],                    [$home=>':User','Cref'=>':User']],
+                [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  [$homep.'|Cref|Cref'],               [$home=>':User','Cref'=>':User']],
+                [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  "|Session",                          ["Session"=>":id"]],
+                [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  "|User",                             ["User"=>":id<==>:User"]]
+        ];
+        $role2=json_encode($rolespec);
+
+        Mod::get()->begin();
+        
+        //Users
+        
+        $classes = ['Session','User','Role',];
+        $prm=UtilsC::genPrm($classes, get_called_class(), $this->baseTypes);
+        $prm['application']= $this->ini;
+            
+        Mod::get()->init($prm['application'], $prm['handlers']);
+            
+        $res = ModUtils::initModBindings($prm['dataBase']);
+            
+        $role = $prm['dataBase']['Role'];
+        $x = new Model($role);
+        $x->setVal('Name', 'Default');
+        $x->setVal('JSpec', $role1);
+        if ($accessRight==2) {
+            $x->setVal('JSpec', $role2);
+        }
+        $res=$x->save();
+        echo $x->getErrLog()->show();
+            
+        $user = $prm['dataBase']['User'];
+        $x = new Model($user);
+        $x->setVal('UserId', 'test');
+        $res=$x->save();
+           
+        $session = $prm['dataBase']['Session'];
+        $x = new Model($session);
+        $x->setVal('UserId', 'test');
+        $x->setVal('RoleName', 'Default');
+        $res=$x->save();
+            
+        $res=$x->save();
+       
+        $this->cookieName=$prm['application']['name'].$prm['dataBase']['Session'];
+        $this->ckey=$x->getCobj()->getKey();
+       
+        //code
+        
+        if ($size > 0) {
+            $x=new Model($this->code);
+            $x->deleteMod();
+            $x->addAttr('Name', Mtype::M_STRING);
+            $x->saveMod();
+            $x->getErrLog()->show();
+            for ($i=0; $i<$size; $i++) {
+                $x = new Model($this->code);
+                $x->setVal('Name', (string) $i);
+                $x->save();
+            }
+        }
+       
+       // Student
+       
+        $x=new Model($this->CName);
+        $x->getErrLog()->show();
+        $x->deleteMod();
+        $x->addAttr('Name', Mtype::M_STRING);
+        $x->addAttr('Ref', Mtype::M_REF, '/'.$this->CName);
+        $x->addAttr('User', Mtype::M_REF, '/'.$user);
+        $x->addAttr('Cref', Mtype::M_CREF, '/'.$this->CName.'/Ref');
+        if ($size > 0) {
+            $x->addAttr('Code', Mtype::M_CODE, '/'.$this->code);
+        }
+        $x->saveMod();
+        $x->getErrLog()->show();
+       
+       
+        Mod::get()->end();
+    }
+    
+    protected function ctrlrun()
+    {
+        Usr::reset();
+        $ctrl = new Controler($this->config, $this->ini);
+        $resc = $ctrl->run($this->show, 0);
+        return $resc;
+    }
+    
     public function close()
     {
+        Usr::reset();
         $ctrl = new Controler($this->config, $this->ini);
         $ctrl->close();
     }
@@ -230,6 +339,8 @@ class Controler_Perf
     {
         
         $path = '/';
+        
+        $_COOKIE[$this->cookieName]=$this->ckey;
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
@@ -254,6 +365,8 @@ class Controler_Perf
     
     protected function createSon($path, $i)
     {
+        $_COOKIE[$this->cookieName]=$this->ckey;
+        
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
@@ -283,6 +396,7 @@ class Controler_Perf
         }
         for ($i = 1; $i <= $f; $i++) {
             $name=$path.'_'.$i;
+ //           echo "$path \n";
             $x=$this->createSon($path, $name);
             $t++;
             $t=$t+$this->depthBreadthNew($x->getRPath(), $n-1, $f);
@@ -308,6 +422,7 @@ class Controler_Perf
        
     public function getSonIds($path)
     {
+        $_COOKIE[$this->cookieName]=$this->ckey;
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
@@ -334,7 +449,7 @@ class Controler_Perf
     
     protected function upd($path, $i)
     {
-        
+        $_COOKIE[$this->cookieName]=$this->ckey;
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
@@ -357,6 +472,7 @@ class Controler_Perf
         
     public function select($path, $i)
     {
+        $_COOKIE[$this->cookieName]=$this->ckey;
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_SLCT;
@@ -372,7 +488,7 @@ class Controler_Perf
 
     protected function del($path)
     {
-        
+        $_COOKIE[$this->cookieName]=$this->ckey;
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;

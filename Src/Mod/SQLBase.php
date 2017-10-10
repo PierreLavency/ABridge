@@ -474,7 +474,7 @@ class SQLBase extends Base
     public function findObjWheOp($model, $attrList, $opList, $valList)
     {
         if (! $this->existsMod($model)) {
-        	throw new Exception(CstError::E_ERC022.':'.$model);
+            throw new Exception(CstError::E_ERC022.':'.$model);
         }
         $res = [];
         $w= $this->buildWheOp($attrList, $opList, $valList);

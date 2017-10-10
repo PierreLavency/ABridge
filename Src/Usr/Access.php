@@ -13,14 +13,14 @@ class Access
     
     protected static function matchEval($elm, $patrn)
     {
-        if (is_array($patrn)) {
-            return in_array($elm, $patrn, true);
-        }
         if ($patrn === 'true') {
             return true;
         }
         if ($patrn === $elm) {
             return true;
+        }
+        if (is_array($patrn)) {
+            return in_array($elm, $patrn, true);
         }
         return false;
     }
@@ -55,6 +55,9 @@ class Access
     protected static function getCondPath($session, $action, $modpath)
     {
         $sessionCobj = $session->getCobj();
+        if (!$sessionCobj->hasRole()) {
+            return true;
+        }
         $roleSpec=$sessionCobj->getRSpec();
         if (!$roleSpec || !$session->getVal('Checked') || !$session->getVal('ValidFlag')) {
             $roleSpec=[
@@ -237,7 +240,6 @@ class Access
     {
         $attrPathList=explode(':', $attrPath);
         if ($attrPathList[0] != "") {
-//            echo $attrPath."\n";
             return $attrPath;
         }
         return self::getAttrPathArrayVal($obj, $attrPathList, $attrPath);

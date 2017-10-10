@@ -207,7 +207,7 @@ class FileBase extends Base
     public function findObjWheOp($model, $attrList, $opList, $valList)
     {
         if (! $this->existsMod($model)) {
-        	throw new Exception(CstError::E_ERC022.':'.$model);
+            throw new Exception(CstError::E_ERC022.':'.$model);
         }
         $res= $this->evalWheOp($model, $attrList, $opList, $valList);
         return $res;
