@@ -12,16 +12,17 @@ B22 EVALP in create dialog.
 B29 escaping "value" in HTLM type for SQL (Log app does not work on MariaDB).
 
 DEV
+- order in list query and attr.
+- implement unique index.
+
 - review init of Handle / Usr.
 - improve LC support (release, test/ dev Data Base etc.)
 - create Ctr Component.
-
 - support CREF on abstract (????)
 - set up own exception
 - review error Management in Model (exception rather than errolog)
  
 - Document the code!
-- order in list query and attr.
 
 - set up rest services / Python
 - develop a CLI / Python
@@ -30,7 +31,7 @@ DEV
 - set up modif logging / node.js ?
 
 - changed class model independently of DB model.
-- implement unique index.
+
 - database paging
 
 - implement CSS
@@ -69,7 +70,13 @@ APP
 	- code postal / 3
 
 INT
-- migrate to 7 and upgrade phpunit (use composer) etc.  
+- migrate to 7.1 and upgrade phpunit (use composer) etc.  
+-> Xammp
+-> Xdebug
+-> phpunit 3.7.21 (6.4)
+-> pdepend 2.5.0 (no change).
+-> PHP_CodeSniffer 2.7.1 (3.1.0)
+
 - integrate with drupal ?
 - integrate MongoDB
 - integrate Redhiss
@@ -79,53 +86,57 @@ INT
 - set up jenkin
 
 DONE
+---------------//1
+manage dependencies with composer.
+PERF  CSU-(1)on 2*20*10*U: 0.522
+---------------// 3
 develop perf scenario with role.
-PERF  S1(1)on 1*20*10*U: 0.83
+PERF  C-(1)on 2*20*10*U: 0.83
 ---------------//0.25
 B30 thow exception when model does not exists in Bases.
 ---------------// 1 day
 - develop Log application
-PERF  S1(2)on 2*20*10: 0.448
-PERF* S1(4)on 2*20*10: 0.123
+PERF  C-(2)on 2*20*10: 0.448
+PERF* C-(4)on 2*20*10: 0.123
 ---------------//0.1
 -type checking in Model
-PERF  S1(2)on 2*20*10: 0.458
+PERF  C-(2)on 2*20*10: 0.458
 ---------------//0.1
 - update build script with class loader and vendor
 ---------------// 3 
 - develop component for abstract code (Cda).
 - check init condition in Adm and Usr.
-PERF  S1(5)on 2*20*20: 0.554
+PERF  C-(5)on 2*20*20: 0.554
 --------------// 1
 - move attribute declaration checks out of Model when possible.
-PERF  S1(5)on 2*20*20: 0.533
-PERF* S1(5)on 2*20*20: 0.145
+PERF  C-(5)on 2*20*20: 0.533
+PERF* C-(5)on 2*20*20: 0.145
 --------------// 1
 develop perf scenario with code.
 improve logger with filtering.
-PERF  S1(1)on 2*20*20: 0.558
-PERF* S1(4)on 2*50*20: 0.161
-PERF* S1(4)on 2*20*20: 0.146
-PERF* S1(4)on 2*20*10: 0.128
-PERF* S1(4)on 2*20   : 0.110
+PERF  C-(1)on 2*20*20: 0.558
+PERF* C-(4)on 2*50*20: 0.161
+PERF* C-(4)on 2*20*20: 0.146
+PERF* C-(4)on 2*20*10: 0.128
+PERF* C-(4)on 2*20   : 0.110
 -------------// 1
 - review property management in Model
 - optimize "is" method in Model.
-PERF  S1(1)on 2*20 : 0.319
-PERF  S1(1)on 2*20 : 0.322
+PERF  C-(1)on 2*20 : 0.319
+PERF  C-(1)on 2*20 : 0.322
 --------------// 1
 - combine temp/evalp properties.
-PERF  S1(1)on 2*20 : 0.329
-PERF  S1(1)on 2*20 : 0.322
+PERF  C-(1)on 2*20 : 0.329
+PERF  C-(1)on 2*20 : 0.322
 --------------// 1.5
 - rationalize interface of ModBase with model and base.
-PERF  S1(1)on 2*20 : 0.346
-PERF  S1(1)on 2*20 : 0.344
+PERF  C-(1)on 2*20 : 0.346
+PERF  C-(1)on 2*20 : 0.344
 --------------// 1 
 - move logic related to meta data savings from ModBase to Model
-PERF  S1(1)on 2*20 : 0.336
+PERF  C-(1)on 2*20 : 0.336
 B28 old format still in use in ModBase (bug in CheckMod);
-PERF  S1(1)on 2*20 : 0.359
+PERF  C-(1)on 2*20 : 0.359
 --------------// 0.5
 - check on delete of distribution / Groups if used in default.
 - clean up index/controller for unit test.
@@ -134,26 +145,26 @@ PERF  S1(1)on 2*20 : 0.359
 add showstate() in ModBase and Admin.
 B27 session initial log in - menu not updated (see caching)
 Clean up test DB.
-PERF  S1(1)on 2*20 : 0.380
-PERF* S1(1)on 4*10 : 0.105
-PERF* S1(1)on 3*10 : 0.103
-PERF* S1(1)on 2*20 : 0.089
-PERF* S1(1)on 2*50 : 0.111
-PERF* S1(1)on 2*100: 0.103
-PERF  S1(2)on 2*20 : 0.322
+PERF  C-(1)on 2*20 : 0.380
+PERF* C-(1)on 4*10 : 0.105
+PERF* C-(1)on 3*10 : 0.103
+PERF* C-(1)on 2*20 : 0.089
+PERF* C-(1)on 2*50 : 0.111
+PERF* C-(1)on 2*100: 0.103
+PERF  C-(2)on 2*20 : 0.322
 --------------// 0.5
 - role spec access cached in session
 - backup 19/09/17
 - improve predef attributes management with abstract class (see getAttrList).
 --------------// 0.5
 optimize gettyp
-PERF  S1(2)on 2*20 : 0.354
+PERF  C-(2)on 2*20 : 0.354
 ---------------//1
 remove 'meta' for attr and types replaced by attributeTypes
-PERF  S1(2)on 2*20 : 0.387
+PERF  C-(2)on 2*20 : 0.387
 ---------------// 0.25
 - remove reset from non testing code.
-PERF  S1(2)on 2*20 : 0.491
+PERF  C-(2)on 2*20 : 0.491
 ---------------// 0.25
 B26 reset must be static.
 --------------// 1 day

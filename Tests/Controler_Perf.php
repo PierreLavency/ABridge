@@ -32,7 +32,7 @@ class Controler_Perf_dataBase_Session extends Session
 }
 
 $numberRun=1;
-$breath=20;
+$breath=10;
 $depth=2;
 //$bases= ['dataBase','memBase','fileBase'];
 $bases =['dataBase'];
@@ -40,11 +40,8 @@ $size=10;
 $cummulative=false;
 $scenario = [
         CstMode::V_S_CREA,
-        /*
-		CstMode::V_S_READ, 
-		CstMode::V_S_UPDT,     
-		*/
-
+        CstMode::V_S_READ,
+        CstMode::V_S_UPDT,
 ];
 $accessRight=2;
 

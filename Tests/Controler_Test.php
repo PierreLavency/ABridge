@@ -7,15 +7,15 @@ use ABridge\ABridge\Hdl\Hdl;
 use ABridge\ABridge\Log\Log;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Mod\ModUtils;
+use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Usr\Usr;
 use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\View\Vew;
 
-use ABridge\ABridge\Usr\User;
 use ABridge\ABridge\Usr\Role;
 use ABridge\ABridge\Usr\Session;
+use ABridge\ABridge\Usr\User;
 
 class Controler_Test_dataBase_User extends User
 {
@@ -112,7 +112,10 @@ class Controler_Test extends PHPUnit_Framework_TestCase
                 ],
                 'Hdl' => [
                         'Usr'=>['Session'=>$session,'User'=>$user,'Role'=>$role]
-                ]
+                ],
+                'Log' => [],
+                'Adm' => [],
+                'View'=> [],
         ];
         
         
