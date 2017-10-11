@@ -19,7 +19,12 @@ class Config extends App
 		
 	const DBDEC = 'USR';
 	const PDATA = 'ProfileData';
-		
+	
+	public static function  init($prm, $config)
+	{
+		return $config;
+	}
+	
 	static $config = [
 	'Apps'	=>
 			[

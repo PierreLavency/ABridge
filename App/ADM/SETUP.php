@@ -6,8 +6,13 @@ use ABridge\ABridge\Adm\Adm;
 
 class Config extends App
 {
-	const DBDEC = 'ADM';	
-		
+	const DBDEC = 'ADM';
+	
+	public static function  init($prm, $config)
+	{
+		return $config;
+	}
+	
 	static $config = [
 
 	'Hdl' 	=> [

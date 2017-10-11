@@ -38,6 +38,11 @@ class Config extends App
 			self::CHARGE,
 	];
 	
+	public static function  init($prm, $config)
+	{
+		return $config;
+	}
+	
 	static $config = [
 	'Apps'	=>
 			[

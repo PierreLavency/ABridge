@@ -2,7 +2,6 @@
 namespace ABridge\ABridge;
 
 use ABridge\ABridge\Mod\Mtype;
-use ABridge\ABridge\FormatLib;
 use ABridge\ABridge\Mod\Model;
 
 class GenJason
@@ -15,12 +14,24 @@ class GenJason
         return self::genJasLvl($h, $depth, 0, $show, $mod, $id, $tmst);
     }
     
+    private static function getTab($level)
+    {
+        $tab = "";
+        if ($level >= 0) {
+            for ($i=0; $i<$level; $i++) {
+                $tab=$tab."\t";
+            }
+        }
+        return $tab;
+    }
+    
+    
     public static function genJasLvl($h, $depth, $level, $show, $tmod, $tid, $tmst)
     {
-        $nl=FormatLib::getNl($level);
-        $tbs=FormatLib::getTab($level);
-        $tbss=FormatLib::getTab($level+1);
-        $tbsss=FormatLib::getTab($level+2);
+        $nl  = ($level >= 0) ? "\n" : '';
+        $tbs=self::getTab($level);
+        $tbss=self::getTab($level+1);
+        $tbsss=self::getTab($level+2);
         if ($level == 0) {
             $res= $nl. $tbs.'{' .$nl ;
             $res=$res.$tbs.'"'.$h->getModName().'"' . ' : {' .$nl ;

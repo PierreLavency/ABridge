@@ -9,6 +9,11 @@ require_once 'Person.php';
 
 class Config extends App
 {
+	public static function  init($prm, $config)
+	{
+		return $config;
+	}
+	
 	public  static function initMeta($config)
 	{
 		return true;

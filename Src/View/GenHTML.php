@@ -2,11 +2,20 @@
 namespace ABridge\ABridge\View;
 
 use ABridge\ABridge\View\CstHTML;
-use ABridge\ABridge\FormatLib;
 
 class GenHTML
 {
    
+    private static function getTab($level)
+    {
+        $tab = "";
+        if ($level >= 0) {
+            for ($i=0; $i<$level; $i++) {
+                $tab=$tab."\t";
+            }
+        }
+        return $tab;
+    }
     
     protected static function genFormL($action, $url, $hidden, $dspecL, $level)
     {
@@ -18,8 +27,8 @@ class GenHTML
         
         $formES = '</form>  ';
         $endS    = ' > '     ;
-        $tab = FormatLib::getTab($level);
-        $nl  = FormatLib::getNl($level);
+        $tab =self::getTab($level);
+        $nl  = ($level >= 0) ? "\n" : '';
     
         $result=$tab.$formS.$nl;
         foreach ($dspecL as $dspec) {
@@ -35,9 +44,9 @@ class GenHTML
         $tableSE = '</table>';
         $elementS   = '<tr>'  ;
         $elementES   = '</tr>'  ;
-        $tab = FormatLib::getTab($level);
-        $nl  = FormatLib::getNl($level);
-        $tabn=FormatLib::getTab($level+1);
+        $tab =self::getTab($level);
+        $nl  = ($level >= 0) ? "\n" : '';
+        $tabn=self::getTab($level+1);
         
         $c=array_chunk($dspecL, $tablen);
         
@@ -56,8 +65,8 @@ class GenHTML
         $elementS   = '<td>'  ;
         $elementES   = '</td>'  ;
         $result = "";
-        $tab = FormatLib::getTab($level);
-        $nl  = FormatLib::getNl($level);
+        $tab =self::getTab($level);
+        $nl  = ($level >= 0) ? "\n" : '';
         
         foreach ($dspecL as $elm) {
             $result=$result.$tab.$elementS.$nl;
@@ -74,9 +83,9 @@ class GenHTML
         $tableSE = '</tr> </table>';
         $elementS   = '<td>'  ;
         $elementES   = '</td>'  ;
-        $tab = FormatLib::getTab($level);
-        $nl  = FormatLib::getNl($level);
-        $tabn= FormatLib::getTab($level+1);
+        $tab =self::getTab($level);
+        $nl  = ($level >= 0) ? "\n" : '';
+        $tabn=self::getTab($level+1);
         
         $result= $tab.$tableS;
         foreach ($dspecL as $dspec) {
@@ -93,9 +102,9 @@ class GenHTML
         $tableSE = '</table>';
         $elementS   = '<tr>'  ;
         $elementES   = '</tr>'  ;
-        $tab = FormatLib::getTab($level);
-        $nl  = FormatLib::getNl($level);
-        $tabn=FormatLib::getTab($level+1);
+        $tab =self::getTab($level);
+        $nl  = ($level >= 0) ? "\n" : '';
+        $tabn=self::getTab($level+1);
         
         $result= $tab.$tableS;
         foreach ($dspecL as $dspec) {
@@ -111,8 +120,8 @@ class GenHTML
         $elementS   = '<td>'  ;
         $elementES   = '</td>'  ;
         $result = "";
-        $tab = FormatLib::getTab($level);
-        $nl  = FormatLib::getNl($level);
+        $tab =self::getTab($level);
+        $nl  = ($level >= 0) ? "\n" : '';
     
         if (isset($dspecL[CstHTML::H_ARG])) {
             $elmL = $dspecL[CstHTML::H_ARG];
@@ -135,9 +144,9 @@ class GenHTML
         $listES = '</ul>';
         $elementS   = '<li>'  ;
         $elementES   = '</li>'  ;
-        $tab = FormatLib::getTab($level);
-        $nl  = FormatLib::getNl($level);
-        $tabn=FormatLib::getTab($level+1);
+        $tab =self::getTab($level);
+        $nl  = ($level >= 0) ? "\n" : '';
+        $tabn=self::getTab($level+1);
         
         $result = $tab.$listS;
         foreach ($dspecL as $dspec) {
@@ -207,8 +216,8 @@ class GenHTML
         $colp = 70;
         $rowp = 70;
         $label="";
-        $tab = FormatLib::getTab($level);
-        $nl  = FormatLib::getNl($level);
+        $tab =self::getTab($level);
+        $nl  = ($level >= 0) ? "\n" : '';
     
         foreach ($dspec as $t => $v) {
             switch ($t) {

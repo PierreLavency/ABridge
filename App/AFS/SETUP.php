@@ -9,7 +9,11 @@ use ABridge\ABridge\View\CstView;
 
 class Config extends App
 {
-
+	public static function  init($prm, $config)
+	{
+		return $config;
+	}
+	
 	static $config = [
 	'Apps'	=>
 			[

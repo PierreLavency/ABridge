@@ -10,6 +10,10 @@ use ABridge\ABridge\App;
 
 class Config extends App
 {
+	public static function  init($prm, $config)
+	{
+		return $config;
+	}
 	
 	static $config = [
 	'Handlers' =>

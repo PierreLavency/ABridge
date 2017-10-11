@@ -8,7 +8,6 @@ use ABridge\ABridge\Hdl\Hdl;
 use ABridge\ABridge\Log\Log;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Mtype;
-use ABridge\ABridge\Usr\Usr;
 use ABridge\ABridge\View\Vew;
 use ABridge\ABridge\View\View;
 
@@ -150,12 +149,12 @@ class Controler
     
     public function begin()
     {
-        Mod::get()->begin();
+        return Mod::get()->begin();
     }
     
     public function end()
     {
-        Mod::get()->end();
+        return Mod::get()->end();
     }
     
     protected function setVal($action)
@@ -194,7 +193,7 @@ class Controler
     {
         Log::get()->begin();
     
-        Mod::get()->begin();
+        $this->begin();
         
         $frccommit=false;
         
@@ -220,7 +219,7 @@ class Controler
         if ($this->handle->nullobj()) {
             Vew::get()->begin([$show, $this->handle]);
             if ($frccommit) {
-                Mod::get()->end();
+                $this->end();
             }
             return $this->handle;
         }
@@ -248,7 +247,7 @@ class Controler
                 }
             }
             if (!$this->handle->isErr()) {
-                $res=Mod::get()->end();
+                $res=$this->end();
                 $frccommit=false;
                 if ($res) {
                     $actionExec=true;
@@ -267,7 +266,7 @@ class Controler
         }
         
         if ($frccommit) {
-            Mod::get()->end();
+            $this->end();
         }
         
         Vew::get()->begin([$show, $this->handle]);

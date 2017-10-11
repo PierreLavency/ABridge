@@ -142,19 +142,6 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_GET['Action']=CstMode::V_S_READ;
         
         $resc = $ctrl->run($this->show, 0);
-
-/*
-        $this->assertFalse($resc->isErr());
-        $this->assertEquals(CstMode::V_S_UPDT, $resc->getAction());
-        $this->assertEquals($resc->getId(), 0);
-        
-        $_SERVER['REQUEST_METHOD']='POST';
-        $_SERVER['PATH_INFO']='/Session/~';
-        $_POST['UserId']='test';
-        $_POST['RoleName']='Default';    
-        $_GET['Action']=CstMode::V_S_UPDT;
-        
-  */
         
         $this->assertTrue($resc->nullobj());
         
@@ -336,9 +323,20 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $this->assertFalse($res->isErr());
         $this->assertEquals(CstMode::V_S_READ, $res->getAction());
         
-        return $x;
+        return $prm;
     }
     
+    /**
+     * @depends testDelSon
+     */
+    
+    public function testClose($prm)
+    {
+        $this->reset();
+        $ctrl = new Controler($prm['config'], $prm['application']);
+        $this->assertTrue($ctrl->close());
+    }
+
     private function delSon($prm)
     {
         $this->reset();

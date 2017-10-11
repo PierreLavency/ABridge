@@ -21,6 +21,11 @@ class Config extends App
 			self::LOGLINE,
 	];
 	
+	public static function  init($prm, $config)
+	{
+		return $config;
+	}
+	
 	static $config = [
 	'Default' =>
 			['base'=>'fileBase'],

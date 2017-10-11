@@ -178,11 +178,9 @@ class ModBase
             return $id;
         }
         foreach ($values as $attr => $val) {
-            if ($mod->existsAttr($attr)) {
-                $typ=$mod->getTyp($attr);
-                $valn=Mtype::convertString($val, $typ);
-                $mod->setVal($attr, $valn);
-            }
+            $typ=$mod->getTyp($attr);
+            $valn=Mtype::convertString($val, $typ);
+            $mod->setVal($attr, $valn);
         };
         return $id;
     }

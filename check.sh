@@ -25,8 +25,10 @@ then
 	phpcbf --standard=PSR2 --no-patch  Src
 	echo "phpcs"
 	phpcs -p --standard=PSR2 --report=summary  Src
+	echo "pdepend"
+	pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg Src	
 	echo "phpunit"
-	phpunit --coverage-html Testcoverage
+	phpunit --coverage-html tmp/Testcoverage
 exit
 fi
 
@@ -39,7 +41,7 @@ pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview
 echo "phpcs"
 phpcs -p --standard=PSR2 --report=summary  Src
 echo "phpunit"
-phpunit --coverage-html Testcoverage
+phpunit --coverage-html tmp/Testcoverage
 echo "performance"
 php -d xdebug.profiler_enable=1  -d xdebug.profiler_output_dir=./tmp tests/Controler_Perf.php
 

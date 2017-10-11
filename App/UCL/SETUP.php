@@ -17,6 +17,11 @@ class Config extends App
 	const User = 'User';
 	const Group = 'UGroup';
 	
+	public static function  init($prm, $config)
+	{
+		return $config;
+	}
+	
 	public  static function initMeta($config)
 	{
 		return true;

@@ -3,6 +3,20 @@
 	<php>
 	  <ini name="xdebug.collect_params" value="2"/>
 	</php>
+  <filter>
+        <whitelist
+                addUncoveredFilesFromWhitelist="true"
+                processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">Src</directory>
+			<exclude>
+				<file>Src/ABridge_init.php</file>
+				<file>Src/ABridge_prod.php</file>
+				<file>Src/ABridge_dev.php</file>
+				<file>Src/BuildPhar.php</file>				
+				<file>Src/testAPI.php</file>			
+			</exclude>
+        </whitelist>				
+  </filter>
   <testsuites>
 	<testsuite name="ABridge">
 		<directory>Tests</directory>

@@ -54,7 +54,12 @@ class Config extends App
 		self::loadRole();
 		return true;
 	}
-
+	
+	public static function  init($prm, $config)
+	{
+		return $config;
+	}
+	
 	static $config = [
 			
 	'Default'	=> [

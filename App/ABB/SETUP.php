@@ -24,6 +24,12 @@ class Config extends App
 	const IType='IType';
 	const IUse='IUse';
 	
+	public static function  init($prm, $config)
+	{
+		return $config;
+	}
+	
+	
 	public static function initMeta($config)
 	{
 		return true;
