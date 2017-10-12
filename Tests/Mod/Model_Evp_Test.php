@@ -26,7 +26,7 @@ class Model_Evp_Test_dataBase_Student extends CModel
             $this->_fsave = false;
             return false;
         }
-        $res =  Parent::save();
+        $res =  parent::save();
         if (!$this->_fsave) {
             $this->mod->getErrLog()->logLine('Awrong');
             return false;
@@ -42,7 +42,7 @@ class Model_Evp_Test_dataBase_Student extends CModel
             $this->_fdel = false;
             return false;
         }
-        $res =  Parent::delet();
+        $res =  parent::delet();
         if (!$this->_fdel) {
             $this->mod->getErrLog()->logLine('DDwrong');
             return false;

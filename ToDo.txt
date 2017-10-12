@@ -3,7 +3,7 @@ CMD
 pear install phpdoc/PhpDocumentor-2.8.1
 grep -ri 'Hdl' Src/* App/* Tests/*
 
-BUGS	31
+BUGS	32
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
@@ -11,9 +11,12 @@ B12 in ABB - txt on application 5.
 B22 EVALP in create dialog.
 B29 escaping "value" in HTLM type for SQL (Log app does not work on MariaDB).
 
+
+
 DEV
 - order in list query and attr.
 - implement unique index.
+- develop app to manage perf results
 
 - review init of Handle / Usr.
 - improve LC support (release, test/ dev Data Base etc.)
@@ -70,20 +73,6 @@ APP
 	- code postal / 3
 
 INT
-- migrate to 7.1 . 
--> Xammp 			5.6.28 		-->> 7.1.9
--> php  			5.6.28		-->> 7.1.9
--> Xdebug 			2.5.0 		-->>(see info provided)
--> phpunit 			5.7.21 		-->> ^6.4
--> pdepend 			2.5.0  		-->> 2.5.0
--> PHP_CodeSniffer 	2.7.1 		-->> 3.*
-
-;HERE FOR XDEBUG in .ini;
-zend_extension = C:\xampp\php\ext\php_xdebug-2.5.0-5.6-vc11.dll
-xdebug.remote_enable=On
-xdebug.collect_params=4
-
-
 - set mess detection.
 - integrate with drupal ?
 - integrate MongoDB
@@ -94,6 +83,25 @@ xdebug.collect_params=4
 - set up jenkin
 
 DONE
+-----------------//1
+Migrate to 7.1 . 
+B31 view unit test init does not work 
+PERF*  C-(5)   on 2*20*20*U: 0.158
+PERF*  CSU-(5) on 2*20*20*U: 0.103
+PERF  C-(1)on 2*20*10*U: 0.66
+
+-> Xammp 			5.6.28 		-->> 7.1.9
+-> php  			5.6.28		-->> 7.1.9
+-> Xdebug 			2.5.0 		-->> 2.5.4-7.1
+-> phpunit 			5.7.21 		-->> ^6.4
+-> pdepend 			2.5.0  		-->> 2.5.0
+-> PHP_CodeSniffer 	2.7.1 		-->> 3.*
+on 5.6
+PERF*  C-(5)   on 2*20*20*U: 0.194
+PERF*  CSU-(5) on 2*20*20*U: 0.128
+PERF** CSU-(10)on 2*20*20*U: 0.107
+PERF** CSU-(5) on 2*20*20*U: 0.108
+----------------//1
 migrate to phpunit 5.7.21
 use composer for phpunit/codesniffer/pdepend
 PERF  CSU-(1)on 2*20*10*U: 0.504

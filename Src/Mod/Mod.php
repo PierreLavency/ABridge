@@ -139,13 +139,13 @@ class Mod extends Comp
         $path = $prm['path'];
         switch ($baseType) {
             case 'memBase':
-                $baseObj = new $className($path,null);
+                $baseObj = new $className($path, null);
                 break;
             case 'fileBase':
-                $baseObj = new $className($path,$baseName);
+                $baseObj = new $className($path, $baseName);
                 break;
             case 'dataBase':
-                $baseObj = new $className($path, $prm['host'],$prm['user'],$prm['pass'],$baseName);
+                $baseObj = new $className($path, $prm['host'], $prm['user'], $prm['pass'], $baseName);
                 break;
         }
         $instances[$baseName]=$baseObj;

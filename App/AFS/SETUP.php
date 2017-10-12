@@ -62,7 +62,7 @@ class Config extends App
 	
 	public static function initMeta($config)
 	{
-		AdmApp::initMeta($prm, self::$config['Apps']['AdmApp']);
+		AdmApp::initMeta(self::$config['Apps']['AdmApp']);
 		
 		$x = new Model('Elm');
 		$x->deleteMod();

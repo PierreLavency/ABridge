@@ -1,6 +1,7 @@
 <?php
 
 use ABridge\ABridge\Adm\Adm;
+use ABridge\ABridge\Adm\Admin;
 use ABridge\ABridge\Controler;
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\Hdl\Hdl;
@@ -26,6 +27,10 @@ class Controler_Test_dataBase_Role extends Role
 }
 
 class Controler_Test_dataBase_Session extends Session
+{
+}
+
+class Controler_Test_dataBase_Admin extends Admin
 {
 }
 
@@ -97,9 +102,9 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $res=$x->save();
         $this->assertFalse($x->isErr());
-    
-        Mod::get()->end();
+           
         
+        Mod::get()->end();
         
         $classes=['Session','User','Role','Student'];
         $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
@@ -114,7 +119,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
                         'Usr'=>['Session'=>$session,'User'=>$user,'Role'=>$role]
                 ],
                 'Log' => [],
-                'Adm' => [],
+                'Adm' => [Adm::ADMIN=>'Controler_Test_dataBase_Admin'],
                 'View'=> [],
         ];
         

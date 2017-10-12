@@ -50,8 +50,8 @@ class Config extends App
 	
 	public static function initMeta($config)
 	{
-		AdmApp::initMeta($prm,self::$config['Apps']['AdmApp']);		
-		Cdv::initMeta($prm,self::$config['Apps']['Cdv']);
+		AdmApp::initMeta(self::$config['Apps']['AdmApp']);		
+		Cdv::initMeta(self::$config['Apps']['Cdv']);
 		
 	}
 	
@@ -59,7 +59,6 @@ class Config extends App
 	{
 		AdmApp::initData();
 		Cdv::initData(self::$config['Apps']['Cdv']);
-		
 		
 	}
 	

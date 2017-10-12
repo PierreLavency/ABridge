@@ -32,7 +32,7 @@ class Controler_Perf_dataBase_Session extends Session
 }
 
 $numberRun=1;
-$breath=10;
+$breath=20;
 $depth=2;
 //$bases= ['dataBase','memBase','fileBase'];
 $bases =['dataBase'];
@@ -53,20 +53,21 @@ $runTime=0;
 $previousTime=0;
 $currentTime=0;
 
-
 foreach ($bases as $base) {
     $mes = 'non cumulative';
     if ($cummulative) {
         $mes='cumulative';
     }
-    $mes2='witout access control';
+    $mes2='Access Rights: Disabled';
     if ($accessRight==1) {
-        $mes2="with Root access";
+        $mes2='Access Rights: Root';
     }
     if ($accessRight==2) {
-        $mes2="with User access";
+        $mes2='Access Rights: User';
     }
-    echo "\nrunning on $base $mes $numberRun times with breath: $breath depth: $depth code: $size $mes2\n\n";
+    $Nstep=count($scenario);
+    echo "\nrunning on $base $mes $numberRun times $Nstep secenario with breath: $breath depth: $depth code: $size $mes2\n\n";
+    $numberRun=count($scenario)*$numberRun;
     $avg=0;
     $srun=0;
     for ($i = 0; $i < $numberRun; $i++) {

@@ -72,7 +72,7 @@ class Model
     const P_BKY = 'bkey';
     
     
-    public static $propList= [self::P_TMP,self::P_EVL,Self::P_MDT, self::P_BKY];
+    public static $propList= [self::P_TMP,self::P_EVL,self::P_MDT, self::P_BKY];
     
     
 

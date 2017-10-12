@@ -22,7 +22,7 @@ done
 if [ $Phase = "dev" ]
 then
 	echo "pchpcbf"
-	phpcbf --standard=PSR2 --no-patch  Src
+	phpcbf --standard=PSR2 Src
 	echo "phpcs"
 	phpcs -p --standard=PSR2 --report=summary  Src
 	echo "pdepend"
@@ -34,8 +34,8 @@ fi
 
 echo -e "full check \n"
 echo "pchpcbf"
-phpcbf --standard=PSR2 --no-patch  Src
-phpcbf --standard=PSR2 --no-patch  Tests
+phpcbf --standard=PSR2 Src
+phpcbf --standard=PSR2 Tests
 echo "pdepend"
 pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg Src
 echo "phpcs"

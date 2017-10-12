@@ -31,7 +31,7 @@ class Config extends App
 	]
 	];
 
-	public static function initMeta($prm,$config)
+	public static function initMeta($config)
 	{
 		AdmApp::initMeta(self::$config['Apps']['AdmApp']);
 		echo "ADM initialized\n";

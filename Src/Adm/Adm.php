@@ -70,6 +70,7 @@ class Adm extends Comp
             $mod=$bindings[self::ADMIN];
         }
         $obj = new Model($mod);
+
         $obj->setCriteria([], [], []);
         $res = $obj->select();
         if (count($res)==0) {

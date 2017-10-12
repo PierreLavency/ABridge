@@ -9,7 +9,7 @@ require_once 'GenHTML_case.php';
 
 $logName = basename(__FILE__, ".php");
 
-$log=new UnitTest('C:/Users/pierr/ABridge/Datastore/', $logName, 0);
+$log=new UnitTest('C:/Users/pierr/ABridge/Datastore/', $logName, 1);
 
 
 /**************************************/
@@ -29,4 +29,4 @@ for ($i=0; $i<count($test); $i++) {
     
 $log->saveTest();
 
-$log->showTest();
+//$log->showTest();
