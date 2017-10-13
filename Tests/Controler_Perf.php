@@ -32,12 +32,11 @@ class Controler_Perf_dataBase_Session extends Session
 }
 
 $numberRun=1;
-$breath=20;
+$breath=10;
 $depth=2;
 //$bases= ['dataBase','memBase','fileBase'];
 $bases =['dataBase'];
-$size=10;
-$cummulative=false;
+$size=20;
 $scenario = [
         CstMode::V_S_CREA,
         CstMode::V_S_READ,
@@ -45,13 +44,18 @@ $scenario = [
 ];
 $accessRight=2;
 
-$numberRun=count($scenario)*$numberRun;
+$init=true;
+$cummulative=true;
+
+
 $runTimeList=[];
 $numList=[];
-$init=true;
+
 $runTime=0;
 $previousTime=0;
 $currentTime=0;
+
+$rpath='/Controler_Perf_dataBase_Student/1';
 
 foreach ($bases as $base) {
     $mes = 'non cumulative';
@@ -66,7 +70,7 @@ foreach ($bases as $base) {
         $mes2='Access Rights: User';
     }
     $Nstep=count($scenario);
-    echo "\nrunning on $base $mes $numberRun times $Nstep secenario with breath: $breath depth: $depth code: $size $mes2\n\n";
+    echo "\nrunning on $base $mes $numberRun times $Nstep step secenario with breath: $breath depth: $depth code: $size $mes2\n\n";
     $numberRun=count($scenario)*$numberRun;
     $avg=0;
     $srun=0;
@@ -88,20 +92,20 @@ foreach ($bases as $base) {
             $runinit=($init || (! $cummulative));
             if ($runinit) {
                 $x->initMod($accessRight, $size);
-                $res= $x->initRoot();
+                $x->initRoot();
             }
             $init=false;
         }
         
         $previousTime=xdebug_time_index();
         if ($sc == CstMode::V_S_CREA) {
-            $n=$x->depthBreadthNew($res->getRPath(), $depth, $breath);
+            $n=$x->depthBreadthNew($rpath, $depth, $breath);
         }
         if ($sc == CstMode::V_S_READ) {
-            $n=$x->depthRead($res->getRPath(), $depth+1);
+            $n=$x->depthRead($rpath, $depth+1);
         }
         if ($sc == CstMode::V_S_UPDT) {
-            $n=$x->depthUpd($res->getRPath(), $depth+1);
+            $n=$x->depthUpd($rpath, $depth+1);
         }
         $currentTime=xdebug_time_index();
         $runTime=$currentTime-$previousTime;
@@ -182,7 +186,7 @@ class Controler_Perf
     protected $show = false;
     protected $baseTypes= ['dataBase'];
     protected $rootPath='/Controler_Test_1/1';
-    protected $CName;
+    public $CName;
     protected $code;
     protected $cookieName;
     protected $ckey;
@@ -241,6 +245,7 @@ class Controler_Perf
                 [CstMode::V_S_CREA,                       $homep,                             [$home=>':User<>:User']],
                 [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  [$homep.'|Cref'],                    [$home=>':User','Cref'=>':User']],
                 [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  [$homep.'|Cref|Cref'],               [$home=>':User','Cref'=>':User']],
+                [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  [$homep.'|Cref|Cref|Cref'],          [$home=>':User','Cref'=>':User']],
                 [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  "|Session",                          ["Session"=>":id"]],
                 [[CstMode::V_S_CREA,CstMode::V_S_UPDT],  "|User",                             ["User"=>":id<==>:User"]]
         ];

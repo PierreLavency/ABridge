@@ -1,24 +1,23 @@
 <?php
 
-use ABridge\ABridge\UnitTest;
 
-use ABridge\ABridge\Hdl\Request;
-use ABridge\ABridge\Hdl\Handle;
 use ABridge\ABridge\Hdl\CstMode;
-
+use ABridge\ABridge\Hdl\Handle;
+use ABridge\ABridge\Hdl\Request;
+use ABridge\ABridge\Log\Logger;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\UtilsC;
-
-use ABridge\ABridge\View\View;
-use ABridge\ABridge\View\CstView;
 use ABridge\ABridge\View\CstHTML;
+use ABridge\ABridge\View\CstView;
+use ABridge\ABridge\View\View;
 
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 require_once 'View_case_Xref.php';
 
-$logName = basename(__FILE__, ".php");
 
-$log=new UnitTest('C:/Users/pierr/ABridge/Datastore/', $logName, 1);
+$testRun = true;
+
+$log=new Logger();
 
 /**************************************/
 
@@ -56,6 +55,9 @@ for ($i=0; $i<count($test); $i++) {
 }
 Mod::get()->End();
 
-$log->saveTest();
 
-//$log->showTest();
+if ($testRun) {
+    $log->save('C:/Users/pierr/ABridge/Datastore/', 'View_init_Xref_testRun');
+} else {
+    $log->save('C:/Users/pierr/ABridge/Datastore/', 'View_init_Xre');
+}

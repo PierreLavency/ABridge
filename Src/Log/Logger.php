@@ -1,27 +1,6 @@
 <?php
 namespace ABridge\ABridge\Log;
 
-/**
- * Logger  class file
- *
- * PHP Version 5.6
- *
- * @category PHP
- * @package  ABridge
- * @author   Pierre Lavency <pierrelavency@hotmail.com>
- * @link     No
- */
- 
- /**
- * Logger class
- *
- * Loggers are used in many classes to log errors or trace executions
- *
- * @category PHP
- * @package  ABridge
- * @author   Pierre Lavency <pierrelavency@hotmail.com>
- * @link     No
- */
 class Logger
 {
     public $lines = [];

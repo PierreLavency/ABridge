@@ -6,6 +6,7 @@ use ABridge\ABridge\Apps\AdmApp;
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\Mod\ModUtils;
 use ABridge\ABridge\View\CstView;
+use ABridge\ABridge\Mod\Model;
 
 require_once 'LogMgr.php';
 require_once 'LogLine.php';
@@ -132,7 +133,28 @@ class Config extends App
 	
 	public static function initData($prm=null)
 	{
-		AdmApp::initData();	
+		AdmApp::initData();
+		
+		$logs = [
+				'View_init',
+				'View_init_testRun',
+				'View_init_Xref',
+				'View_init_Xref_testRun',
+				'GenHTML_init',
+				'GenHTML_init_testRun',
+				'GenJason_init',
+				'GenJason_init_testRun',
+		];
+		
+		foreach ($logs as $log) {
+			$x= new Model(self::LOGMGR);
+			$x->setVal('Name',$log);
+			$x->setVal('Load', 'true');
+			$x->save();
+		}
+		
+
+		
 		
 	}
 	

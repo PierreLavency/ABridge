@@ -3,15 +3,14 @@ CMD
 pear install phpdoc/PhpDocumentor-2.8.1
 grep -ri 'Hdl' Src/* App/* Tests/*
 
-BUGS	32
+BUGS	33
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B22 EVALP in create dialog.
 B29 escaping "value" in HTLM type for SQL (Log app does not work on MariaDB).
-
-
+B32 tmp variables not correctly handled in create Mode (see Log app).
 
 DEV
 - order in list query and attr.
@@ -65,7 +64,7 @@ initMod rather than restoreMod.
 
 TEST
 - improve view test coverage - need to separate view show and build // some progress
-- set up unit test for unittest
+- set up app tests.
 
 APP
 - beef up test apps with relationships tables 
@@ -73,7 +72,7 @@ APP
 	- code postal / 3
 
 INT
-- set mess detection.
+- set up mess detection.
 - integrate with drupal ?
 - integrate MongoDB
 - integrate Redhiss
@@ -83,6 +82,9 @@ INT
 - set up jenkin
 
 DONE
+-----------------//0.5
+- set up unit test for unittest (unit test removed !)
+PERF** CSU-(10)on 2*20*20*U: 0.086
 -----------------//1
 Migrate to 7.1 . 
 B31 view unit test init does not work 

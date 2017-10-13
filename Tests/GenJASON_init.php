@@ -1,6 +1,6 @@
 <?php
 
-use ABridge\ABridge\UnitTest;
+use ABridge\ABridge\Log\Logger;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\GenJason;
@@ -9,9 +9,10 @@ use ABridge\ABridge\UtilsC;
 require_once("GenJASON_case.php");
 
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
-$logName = basename(__FILE__, ".php");
 
-$log=new UnitTest('C:/Users/pierr/ABridge/Datastore/', $logName, 1);
+$testRun = true;
+
+$log=new Logger();
 
 /**************************************/
 $classes = ['testDir','testFile','CodeVal','Code'];
@@ -40,6 +41,9 @@ for ($i=0; $i<count($test); $i++) {
 
 Mod::get()->end();
 
-$log->saveTest();
 
-//$log->showTest();
+if ($testRun) {
+    $log->save('C:/Users/pierr/ABridge/Datastore/', 'GenJASON_init_Xref_testRun');
+} else {
+    $log->save('C:/Users/pierr/ABridge/Datastore/', 'GenJASON_init_Xre');
+}

@@ -1,0 +1,438 @@
+a:2:{i:0;a:8:{i:0;s:186:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ <table > <tr>
+	<td>
+		<a href="/ABridge.php/test?Action=Select" >test</a>
+	</td>
+</tr> </table>
+
+
+ </body> 
+ </html>";i:1;s:983:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+	<table > <tr>
+		<td>
+			<a href="/ABridge.php/test?Action=Select" >test</a>
+		</td>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			test
+		</td>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			<input type="submit" value = Create >
+		</td>
+		<td>
+			<a href="/ABridge.php/test/1" >Cancel</a>
+		</td>
+	</tr> </table>
+	<table >
+		<tr>
+			<td>
+				id
+			</td>
+			<td>
+				0
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A1
+			</td>
+			<td>
+				<input type = "text" name = "A1"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A2
+			</td>
+			<td>
+				<input type = "text" name = "A2"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A3
+			</td>
+			<td>
+				<input type = "text" name = "A3"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A4
+			</td>
+			<td>
+				<textarea name = "A4"  cols="90"  rows="20"  ></textarea>
+			</td>
+		</tr>
+	</table>
+</form>  
+
+ </body> 
+ </html>";i:2;s:925:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ <table > <tr>
+	<td>
+		<a href="/ABridge.php/test?Action=Select" >test</a>
+	</td>
+</tr> </table>
+
+<table > <tr>
+	<td>
+		test
+	</td>
+</tr> </table>
+
+<table > <tr>
+	<td>
+		<a href="/ABridge.php/test/1?Action=Update" >Update</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/test/1?Action=Delete" >Delete</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/test?Action=Create" >Create</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/test?Action=Select" >Select</a>
+	</td>
+</tr> </table>
+
+<table >
+	<tr>
+		<td>
+			id
+		</td>
+		<td>
+			0
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A1
+		</td>
+		<td>
+			5
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A2
+		</td>
+		<td>
+			aa
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A3
+		</td>
+		<td>
+			2016-12-08
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A4
+		</td>
+		<td>
+			<textarea name = "" disabled cols="90"  rows="20"  >ceci est un texte</textarea>
+		</td>
+	</tr>
+</table>
+
+
+
+ </body> 
+ </html>";i:3;s:1046:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+	<table > <tr>
+		<td>
+			<a href="/ABridge.php/test?Action=Select" >test</a>
+		</td>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			test
+		</td>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			<input type="submit" value = Update >
+		</td>
+		<td>
+			<a href="/ABridge.php/test/1" >Cancel</a>
+		</td>
+	</tr> </table>
+	<table >
+		<tr>
+			<td>
+				id
+			</td>
+			<td>
+				0
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A1
+			</td>
+			<td>
+				<input type = "text" name = "A1" value = "5"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A2
+			</td>
+			<td>
+				<input type = "text" name = "A2" value = "aa"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A3
+			</td>
+			<td>
+				<input type = "text" name = "A3" value = "2016-12-08"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A4
+			</td>
+			<td>
+				<textarea name = "A4"  cols="90"  rows="20"  >ceci est un texte</textarea>
+			</td>
+		</tr>
+	</table>
+</form>  
+
+ </body> 
+ </html>";i:4;s:914:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+	<table > <tr>
+		<td>
+			<a href="/ABridge.php/test?Action=Select" >test</a>
+		</td>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			test
+		</td>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			<input type="submit" value = Delete >
+		</td>
+		<td>
+			<a href="/ABridge.php/test/1" >Cancel</a>
+		</td>
+	</tr> </table>
+	<table >
+		<tr>
+			<td>
+				id
+			</td>
+			<td>
+				0
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A1
+			</td>
+			<td>
+				5
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A2
+			</td>
+			<td>
+				aa
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A3
+			</td>
+			<td>
+				2016-12-08
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A4
+			</td>
+			<td>
+				<textarea name = "" disabled cols="90"  rows="20"  >ceci est un texte</textarea>
+			</td>
+		</tr>
+	</table>
+</form>  
+
+ </body> 
+ </html>";i:5;s:1926:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+	<table > <tr>
+		<td>
+			<a href="/ABridge.php/test?Action=Select" >test</a>
+		</td>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			test
+		</td>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			<input type="submit" value = Select >
+		</td>
+		<td>
+			<a href="/ABridge.php/test?Action=Select" >Refresh</a>
+		</td>
+		<td>
+			<a href="/ABridge.php/test/1" >Cancel</a>
+		</td>
+		<td>
+			<a href="/ABridge.php/test?Action=Create" >Create</a>
+		</td>
+	</tr> </table>
+	<table >
+		<tr>
+			<td>
+				id
+			</td>
+			<td>
+				<select name = "id_OP"  >
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
+			</td>
+			<td>
+				<input type = "text" name = "id"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A1
+			</td>
+			<td>
+				<select name = "A1_OP"  >
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
+			</td>
+			<td>
+				<input type = "text" name = "A1"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A2
+			</td>
+			<td>
+				<select name = "A2_OP"  >
+					<option  value = "::"  >::</option>
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
+			</td>
+			<td>
+				<input type = "text" name = "A2"  >
+			</td>
+		</tr>
+		<tr>
+			<td>
+				A3
+			</td>
+			<td>
+				<select name = "A3_OP"  >
+					<option  value = "="  selected  >=</option>
+					<option  value = ">"  >></option>
+					<option  value = "<"  ><</option>
+				</select>
+			</td>
+			<td>
+				<input type = "text" name = "A3"  >
+			</td>
+		</tr>
+	</table>
+<table > <tr>
+	<td>
+		Select
+	</td>
+	<td>
+		0
+	</td>
+</tr> </table>
+
+<table >
+</table>
+
+
+</form>  
+
+ </body> 
+ </html>";i:6;s:95:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ 5
+ aa
+
+ </body> 
+ </html>";i:7;s:144:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+</head>
+<body> 
+ <a href="/ABridge.php/test/1" >5
+ aa
+</a>
+
+2016-12-08
+
+
+ </body> 
+ </html>";}i:1;a:8:{i:0;a:0:{}i:1;a:0:{}i:2;a:0:{}i:3;a:0:{}i:4;a:0:{}i:5;a:0:{}i:6;a:0:{}i:7;a:0:{}}}
