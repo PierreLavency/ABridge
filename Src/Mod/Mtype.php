@@ -28,18 +28,17 @@ class Mtype
     const M_FORMAT_T = 'Y-m-d H:i:s';
     const M_FORMAT_D = 'Y-m-d';
     
-    
+    protected static $typeList = [
+            self::M_INT,self::M_INTP,self::M_FLOAT,self::M_BOOL,
+            self::M_STRING,self::M_TXT,self::M_RTXT,
+            self::M_JSON, self::M_HTML,
+            self::M_ID,self::M_REF,self::M_CREF,self::M_CODE,
+            self::M_TMSTP,self::M_DATE, self::M_ALPHA,self::M_ALNUM,
+    ];
     
     public static function isMtype($x)
     {
-        $l=[
-                self::M_INT,self::M_INTP,self::M_FLOAT,self::M_BOOL,
-                self::M_STRING,self::M_TXT,self::M_RTXT,
-                self::M_JSON, self::M_HTML,
-                self::M_ID,self::M_REF,self::M_CREF,self::M_CODE,
-                self::M_TMSTP,self::M_DATE, self::M_ALPHA,self::M_ALNUM,
-        ];
-        return (in_array($x, $l));
+        return (in_array($x, self::$typeList));
     }
     
     
@@ -66,11 +65,11 @@ class Mtype
     
     public static function convertString($x, $typ)
     {
-        $type = self::baseType($typ);
-        if ($type== self::M_INTP) {
-            $type=self::M_INT;
-        }
         if (is_string($x)) {
+            $type = self::baseType($typ);
+            if ($type== self::M_INTP) {
+                $type=self::M_INT;
+            }
             if ($x=='') {
                 return null;
             }
@@ -103,24 +102,7 @@ class Mtype
         };
         return $x;
     }
-    
-    /* not used
-	function convertTime($x) 
-	{
-	    if (($timestamp=strtotime($x))==false) {
-	        return false;
-	    }
-	    $t = date(self::M_FORMAT_T, $timestamp);
-	    return $t;
-	}
-	function convertDate($x) 
-	{
-	    $d=DateTime::createFromFormat(self::M_FORMAT_D, $x);
-	    $t = date(self::M_FORMAT_D, $timestamp);
-	    return $t;
-	}
-	*/
-    
+        
     public static function checkType($x, $type)
     {
         if (is_null($x)) {

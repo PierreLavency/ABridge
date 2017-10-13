@@ -39,5 +39,8 @@
 	<testsuite name="Mod">
 		<directory>Tests/Mod</directory>
 	</testsuite>
+	<testsuite name="Apps">
+		<directory>Tests/Apps</directory>
+	</testsuite>
   </testsuites>
 </phpunit>

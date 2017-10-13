@@ -5,6 +5,7 @@ use ABridge\ABridge\App;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\View\CstView;
+use ABridge\ABridge\Mod\ModUtils;
 
 class Cda extends App
 {
@@ -24,7 +25,8 @@ class Cda extends App
         $handlerList[$code]=[];
         
         $codelist = $config[self::CODELIST];
-        foreach ($codelist as $codeName) {
+        $codeList = ModUtils::normBindings($codelist);
+        foreach ($codelist as $logicalName => $codeName) {
             $handlerList[$codeName]=[];
             $viewList[$codeName]=['attrList' => [CstView::V_S_REF=> ['Value']]];
         }
@@ -57,12 +59,7 @@ class Cda extends App
         $res = $obj->setAbstr();
         
         $res = $obj->saveMod();
-        echo $obj->getModName()."<br>";
         $obj->getErrLog()->show();
-        echo "<br>";
-
-        $bindings[self::CODE]=$code;
-        
         
         // Concretes
         
@@ -71,29 +68,32 @@ class Cda extends App
             $codelist= $config[self::CODELIST];
         }
         
-        foreach ($codelist as $codeName) {
+        $codeList = ModUtils::normBindings($codelist);
+        
+        foreach ($codelist as $logicalName => $codeName) {
             $obj = new Model($codeName);
             $res= $obj->deleteMod();
             $res = $obj->setInhNme($code);
             $res = $obj->saveMod();
-            echo $obj->getModName()."<br>";
             $obj->getErrLog()->show();
-            echo "<br>";
-            $bindings[$codeName]=$codeName;
         }
         
-        return $bindings;
+        $codelist[self::CODE]=$code;
+        return $codelist;
     }
     
     public static function initData($prm)
     {
+        $i=0;
         $codeData=$prm[self::CODEDATA];
         foreach ($codeData as $codeName => $values) {
             foreach ($values as $value) {
                 $valMobj= new Model($codeName);
                 $valMobj->setVal('Value', $value);
                 $valMobj->save();
+                $i++;
             }
         }
+        return $i;
     }
 }

@@ -74,6 +74,10 @@ class Adm_Test extends \PHPUnit_Framework_TestCase
         
         $res = Adm::get()->initMeta();
         
+        $this->assertEquals($res, $prm['dataBase']);
+        
+        $mod->end();
+        
         return $prm;
     }
     /**

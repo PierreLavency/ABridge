@@ -8,17 +8,17 @@ use ABridge\ABridge\Mod\ModUtils;
 use ABridge\ABridge\View\CstView;
 use ABridge\ABridge\Mod\Model;
 
-require_once 'LogMgr.php';
+require_once 'LogFile.php';
 require_once 'LogLine.php';
 
 class Config extends App
 {
-	const LOGMGR = 'LogMgr';
+	const LOGFILE = 'LogFile';
 	const LOGLINE = 'LogLine';
 	
 	protected static $logicalNames =
 	[
-			self::LOGMGR,
+			self::LOGFILE,
 			self::LOGLINE,
 	];
 	
@@ -37,7 +37,7 @@ class Config extends App
 			],
 	'Handlers' =>
 			[
-					self::LOGMGR=> [],
+					self::LOGFILE=> [],
 					self::LOGLINE=>[],
 			
 			],
@@ -50,7 +50,7 @@ class Config extends App
 					"/".Adm::ADMIN,
 					
 			],
-		self::LOGMGR=>[
+		self::LOGFILE=>[
 				'attrList' => [
 							CstView::V_S_REF        => ['Name'],
 					],
@@ -73,6 +73,7 @@ class Config extends App
 										[
 												'id',
 												'Name',
+												'LoadedLines',
 												'Load',
 												'Path',
 										],
@@ -147,7 +148,7 @@ class Config extends App
 		];
 		
 		foreach ($logs as $log) {
-			$x= new Model(self::LOGMGR);
+			$x= new Model(self::LOGFILE);
 			$x->setVal('Name',$log);
 			$x->setVal('Load', 'true');
 			$x->save();

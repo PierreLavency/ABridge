@@ -5,7 +5,7 @@ use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Log\Logger;
 use ABridge\ABridge\Log\Log;
 
-class LogMgr extends CModel 
+class LogFile extends CModel 
 {
 
 	public function initMod($bindings)
@@ -22,7 +22,11 @@ class LogMgr extends CModel
 		$res = $obj->setProp('Path', Model::P_EVL);		
 		$res = $obj->setProp('Path', Model::P_TMP);
 		
-		$res = $obj->addAttr('Lines', Mtype::M_CREF,"/".$bindings['LogLine']."/".'LogMgr');
+		$res = $obj->addAttr('LoadedLines', Mtype::M_INT);
+		$res = $obj->setProp('LoadedLines', Model::P_EVL);		
+		$res = $obj->setProp('LoadedLines', Model::P_TMP);
+		
+		$res = $obj->addAttr('Lines', Mtype::M_CREF,"/".$bindings['LogLine']."/".'LogFile');
 	}
 	
 	public function getVal($attr)
@@ -30,7 +34,11 @@ class LogMgr extends CModel
 		if ($attr == 'Path') {
 			return Log::get()->getPath();
 		}
-
+		
+		if ($attr == 'LoadedLines') {
+			return count($this->mod->getVal('Lines'));
+		}
+		
 		return $this->mod->getValN($attr);
 	}
 	
@@ -52,7 +60,7 @@ class LogMgr extends CModel
 				$LineObj=new Model('LogLine');
 				$val=$logger->getLine($i);
 				$LineObj->setVal('Content',$val);
-				$LineObj->setVal('LogMgr', $this->mod->getId());
+				$LineObj->setVal('LogFile', $this->mod->getId());
 				$LineObj->save();
 			}
 		}

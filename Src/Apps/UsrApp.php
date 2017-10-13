@@ -8,16 +8,19 @@ use ABridge\ABridge\View\CstView;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Usr\Usr;
 use ABridge\ABridge\App;
+use ABridge\ABridge\Mod\ModUtils;
 
 class UsrApp extends App
 {
-
-    const USER ='User';
-    const ROLE = 'Role';
-    const SESSION ='Session';
-    const DISTRIBUTION = 'Distribution';
-    const USERGROUP ='UserGroup';
-    const GROUPUSER ='GroupUser';
+    
+    static protected $defBind= [
+            Usr::USER          ,
+            Usr::ROLE          ,
+            Usr::DISTRIBUTION  ,
+            Usr::SESSION       ,
+            Usr::USERGROUP     ,
+            Usr::GROUPUSER     ,
+    ];
     
     public static function initMeta($config)
     {
@@ -26,28 +29,34 @@ class UsrApp extends App
     
     public static function init($prm, $config)
     {
-        return self::$config;
+        $bindings = self::$defBind;
+        if ($config != []) {
+            $bindings=$config;
+        }
+        $res= self::$config;
+        $res['Hdl']['Usr']=$bindings;
+        return $res;
     }
     
     static public $config = [
 
             'Hdl'   => [
                     'Usr'   => [
-                            self::USER          ,
-                            self::ROLE          ,
-                            self::DISTRIBUTION  ,
-                            self::SESSION       ,
-                            self::USERGROUP     ,
-                            self::GROUPUSER     ,
+                            Usr::USER          ,
+                            Usr::ROLE          ,
+                            Usr::DISTRIBUTION  ,
+                            Usr::SESSION       ,
+                            Usr::USERGROUP     ,
+                            Usr::GROUPUSER     ,
                     ],
             ],
             'View' => [
-                    self::USERGROUP => [
+                    Usr::USERGROUP => [
                             'attrList' => [
                                     CstView::V_S_REF        => ['Name'],
                             ],
                     ],
-                    self::USER =>[
+                    Usr::USER =>[
                             'lblList'  => [
                                     'Role'          => 'Default Role',
                                     'UserGroup'     =>'Default Group',
@@ -173,7 +182,7 @@ class UsrApp extends App
 
                             ],
                     ],
-                    self::ROLE =>[
+                    Usr::ROLE =>[
                             'attrList' => [
                                     CstView::V_S_REF        => ['Name'],
                             ],
@@ -195,7 +204,7 @@ class UsrApp extends App
                                             ]],
                             ]
                     ],
-                    self::SESSION =>[
+                    Usr::SESSION =>[
                             'attrList' => [
                                     CstView::V_S_CREF=> [
                                             'id',
@@ -266,7 +275,7 @@ class UsrApp extends App
                             ]
                             
                     ],
-                    self::DISTRIBUTION =>[
+                    Usr::DISTRIBUTION =>[
                             'attrList' => [
                                     CstView::V_S_CREF=> [
                                             'id',
@@ -290,7 +299,7 @@ class UsrApp extends App
                             ],
                             
                     ],
-                    self::GROUPUSER =>[
+                    Usr::GROUPUSER =>[
                             'attrHtml' => [
                                     CstMode::V_S_CREA => [
                                             'User'=>CstHTML::H_T_SELECT,
@@ -310,61 +319,73 @@ class UsrApp extends App
             ],
     ];
             
-    public static function initData($prm = null)
+    public static function initData($config)
     {
         // Role
-        
+        $bindings = self::$defBind;
+        if ($config != []) {
+            $bindings=$config;
+        }
+        $bindings=ModUtils::normBindings($bindings);
+ 
         $RSpec ='[["true","true","true"]]';
-        
-        $obj=new Model(self::ROLE);
-        $obj->setVal('Name', 'Root');
-        $obj->setVal('JSpec', $RSpec);
-        $RootRole=$obj->save();
-        echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
-        echo "<br>";
+ 
+        if (isset($bindings[Usr::ROLE])) {
+            $obj=new Model($bindings[Usr::ROLE]);
+            $obj->setVal('Name', 'Root');
+            $obj->setVal('JSpec', $RSpec);
+            $RootRole=$obj->save();
+            $obj->getErrLog()->show();
+        }
  
         // Group
-        
-        $obj=new Model(self::USERGROUP);
-        $obj->setVal('Name', 'Root');
-        $RootGroup=$obj->save();
-        echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
-        echo "<br>";
-        
+        if (isset($bindings[Usr::USERGROUP])) {
+            $obj=new Model($bindings[Usr::USERGROUP]);
+            $obj->setVal('Name', 'Root');
+            $RootGroup=$obj->save();
+            $obj->getErrLog()->show();
+        }
+       
         // User
-        
-        $obj=new Model(self::USER);
-        $obj->setVal('UserId', 'Root');
-        $RootUser=$obj->save();
-        echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
-        echo "<br>";
+        if (isset($bindings[Usr::USER])) {
+            $obj=new Model($bindings[Usr::USER]);
+            $obj->setVal('UserId', 'Root');
+            $RootUser=$obj->save();
+            $obj->getErrLog()->show();
+        }
+
         
         // Distribution
-        
-        $obj=new Model(self::DISTRIBUTION);
-        $obj->setVal('Role', $RootRole);
-        $obj->setVal('User', $RootUser);
-        $res=$obj->save();
-        echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
-        echo "<br>";
-        
+        if (isset($bindings[Usr::DISTRIBUTION])) {
+            $obj=new Model($bindings[Usr::DISTRIBUTION]);
+            $obj->setVal('Role', $RootRole);
+            $obj->setVal('User', $RootUser);
+            $res=$obj->save();
+            $obj->getErrLog()->show();
+        }
+       
         // GroupUser
-        
-        $obj=new Model(self::GROUPUSER);
-        $obj->setVal('UserGroup', $RootGroup);
-        $obj->setVal('User', $RootUser);
-        $res=$obj->save();
-        echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
-        echo "<br>";
- 
-        
+        if (isset($bindings[Usr::GROUPUSER])) {
+            $obj=new Model($bindings[Usr::GROUPUSER]);
+            $obj->setVal('UserGroup', $RootGroup);
+            $obj->setVal('User', $RootUser);
+            $res=$obj->save();
+            $obj->getErrLog()->show();
+        }
+       
         // Root Default
-        
-        $obj=new Model(self::USER, $RootUser);
-        $obj->setVal('Role', $RootRole);
-        $obj->setVal('UserGroup', $RootGroup);
-        $RootUser=$obj->save();
-        echo $obj->getModName().':'.$obj->getId().' '.$obj->getErrLog()->show();
-        echo "<br>";
+        if (isset($bindings[Usr::USER])) {
+            $obj=new Model($bindings[Usr::USER], $RootUser);
+            if (isset($bindings[Usr::ROLE])) {
+                $obj->setVal('Role', $RootRole);
+            };
+            if (isset($bindings[Usr::USERGROUP])) {
+                $obj->setVal('UserGroup', $RootGroup);
+            };
+            
+            $RootUser=$obj->save();
+            $obj->getErrLog()->show();
+        }
+        return $RootUser;
     }
 }

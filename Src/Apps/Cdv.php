@@ -82,12 +82,9 @@ class Cdv extends App
         $res = $obj->addAttr('Name', Mtype::M_STRING);
         $res = $obj->addAttr('ValueOf', Mtype::M_REF, '/'.$code);
         $res = $obj->setProp('ValueOf', Model::P_MDT);
-        
-        
+               
         $res = $obj->saveMod();
-        echo $obj->getModName()."<br>";
         $obj->getErrLog()->show();
-        echo "<br>";
         
         // Code
         
@@ -99,18 +96,14 @@ class Cdv extends App
         $res = $obj->addAttr('Values', Mtype::M_CREF, '/'.$codeval.'/ValueOf');
         
         $res = $obj->saveMod();
-        echo $obj->getModName()."<br>";
         $obj->getErrLog()->show();
-        echo "<br>";
                
         foreach ($codelist as $codeName) {
             $codeMobj = new Model($code);
             $codeMobj->setVal('Name', $codeName);
             $codeId=$codeMobj->save();
             $bindings[$codeName]=$code.'/'.$codeId;
-            echo $codeMobj->getVal('Name')."<br>";
             $codeMobj->getErrLog()->show();
-            echo "<br>";
         }
         return $bindings;
     }
@@ -126,6 +119,7 @@ class Cdv extends App
             $codeval = $prm[self::CODEVAL];
         }
         $codeData=$prm[self::CODEDATA];
+        $i=0;
         foreach ($codeData as $codeName => $values) {
             $codeMobj = Find::byKey($code, 'Name', $codeName);
             $codeId= $codeMobj->getId();
@@ -134,7 +128,9 @@ class Cdv extends App
                 $valMobj->setVal('Name', $value);
                 $valMobj->setVal('ValueOf', $codeId);
                 $valMobj->save();
+                $i++;
             }
         }
+        return $i;
     }
 }

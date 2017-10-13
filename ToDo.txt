@@ -9,7 +9,7 @@ B2 ' in txt fields.
 B9 Race condition in test suite (connection management).
 B12 in ABB - txt on application 5.
 B22 EVALP in create dialog.
-B29 escaping "value" in HTLM type for SQL (Log app does not work on MariaDB).
+B29 escaping "value" in HTLM type for SQL (Log app does not work with MariaDB).
 B32 tmp variables not correctly handled in create Mode (see Log app).
 
 DEV
@@ -64,7 +64,6 @@ initMod rather than restoreMod.
 
 TEST
 - improve view test coverage - need to separate view show and build // some progress
-- set up app tests.
 
 APP
 - beef up test apps with relationships tables 
@@ -82,8 +81,13 @@ INT
 - set up jenkin
 
 DONE
+-----------------//1
+- set up app tests.
+PERF   CSU-(1) on 2*10*20*U: 0.524
+PERF   CSU-(1) on 2*10*20*U: 0.465
 -----------------//0.5
-- set up unit test for unittest (unit test removed !)
+- unit test removed
+PERF   CSU-(1) on 2*10*20*U: 0.588
 PERF** CSU-(10)on 2*20*20*U: 0.086
 -----------------//1
 Migrate to 7.1 . 

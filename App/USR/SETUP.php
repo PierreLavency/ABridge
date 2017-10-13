@@ -108,7 +108,7 @@ class Config extends App
 	
 	public static function initData($prm=null)
 	{
-		UsrApp::initData();
+		UsrApp::initData(self::$config['Apps']['UsrApp']);
 		AdmApp::initData();
 		
 		$RSpec ='[
@@ -118,7 +118,7 @@ class Config extends App
 [["Read","Create","Update","Delete"],"|User|Of",{"User":":id<>:User"}]
 ]';
 		
-		$obj=new Model(usr::ROLE);
+		$obj=new Model(Usr::ROLE);
 		$obj->setVal('Name', 'Default');
 		$obj->setVal('JSpec', $RSpec);
 		$obj->save();
