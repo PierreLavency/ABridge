@@ -16,7 +16,6 @@ use ABridge\ABridge\GenJASON;
 
 class Controler
 {
-    protected $bases=[];
 
     protected $handle=null;
     protected $spec = [];
@@ -33,19 +32,9 @@ class Controler
     {
         
         $this->defVal=$this->defaultValues($spec, $ini);
-        
         $this->spec=$spec;
-        $bases = [];
-        
+        Log::get()->init($this->defVal, []);
         $this->initConf($this->defVal, $spec);
-        
-        if (! isset($this->spec['Hdl'])) {
-            $this->spec['Hdl']=[];
-        }
-        if (! isset($this->spec['Log'])) {
-            Log::get()->init($this->defVal, []);
-        }
-        $this->bases = Mod::get()->getBaseClasses();
     }
 
     
@@ -110,41 +99,25 @@ class Controler
     {
         $log=Log::get();
         $urli = 'Uri : '.$this->handle->getDocRoot();
-        $log->logLine(
-            $urli,
-            [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__]
-        );
+        $lineInfo = [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
+        $log->logLine($urli, $lineInfo);
         $urlp = 'Path : '.$this->handle->getRpath();
-        $log->logLine(
-            $urlp,
-            [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__]
-        );
+        $lineInfo = [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
+        $log->logLine($urlp, $lineInfo);
         $method = 'Method: '.$this->handle->getMethod();
-        $log->logLine(
-            $method,
-            [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__]
-        );
+        $lineInfo = [Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
+        $log->logLine($method, $lineInfo);
     }
 
     
     public function close()
     {
-        $res = true;
-        foreach ($this->bases as $base) {
-            $r =$base->close();
-            $res = ($res and $r);
-        }
-        return $res;
+        return Mod::get()->close();
     }
     
     public function rollback()
     {
-        $res = true;
-        foreach ($this->bases as $base) {
-            $r =$base->rollback();
-            $res = ($res and $r);
-        }
-        return $res;
+        return Mod::get()->rollback();
     }
     
     public function begin()
@@ -189,7 +162,7 @@ class Controler
         return (!$c->isErr());
     }
  
-    public function run($show, $logLevel)
+    public function run($show)
     {
         Log::get()->begin();
     
@@ -198,11 +171,10 @@ class Controler
         $frccommit=false;
         
         if (isset($this->isInit['Adm'])) {
-            $adm=Adm::get()->begin();
+            Adm::get()->begin();
             $frccommit=Adm::get()->isNew();
         }
-       
-        
+               
         $this->handle= Hdl::get()->begin();
         $frccommit=($frccommit || Hdl::get()->isNew());
 

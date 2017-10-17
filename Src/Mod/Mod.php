@@ -71,12 +71,10 @@ class Mod extends Comp
                     }
                     // default set
                 case 2:
-                    $this->setBase($handlerSpec[0], $handlerSpec[1], $appPrm);
-                    $res = $this->setStateHandler(
-                        $className,
-                        $handlerSpec[0],
-                        $handlerSpec[1]
-                    );
+                    $base = $handlerSpec[0];
+                    $name = $handlerSpec[1];
+                    $this->setBase($base, $name, $appPrm);
+                    $this->setStateHandler($className, $base, $name);
                     break;
             }
         }
@@ -101,7 +99,30 @@ class Mod extends Comp
         }
         return $res;
     }
-
+    
+    public function close()
+    {
+        $res = true;
+        $bases =$this->getBaseClasses();
+        foreach ($bases as $base) {
+            $r =$base->close();
+            $res = ($res and $r);
+        }
+        return $res;
+    }
+    
+    public function rollback()
+    {
+        $res = true;
+        $bases =$this->getBaseClasses();
+        foreach ($bases as $base) {
+            $r =$base->rollback();
+            $res = ($res and $r);
+        }
+        return $res;
+    }
+    
+    
     public function isNew()
     {
         return true;

@@ -86,7 +86,7 @@ class Handle
             if (is_null($obj)) {
                 if ($this->request->isT()) {
                     if (is_null($this->sessionHdl)) {
-                        return;
+                        throw new Exception(CstError::E_ERC035);
                     }
                     $obj=$this->sessionHdl->getObj($mod);
                     if (is_null($obj)) {
@@ -255,10 +255,6 @@ class Handle
     {
          // in selection list
         $req = $this->request->getObjReq($id, CstMode::V_S_READ);
-        $res = $this->checkReq($req);
-        if (!$res) {
-            return null;
-        }
         $mod=$this->obj->getModName();
         $obj = new Model($mod, (int) $id);
         $objs= $this->attrObjs;

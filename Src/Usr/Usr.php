@@ -20,7 +20,8 @@ class Usr extends Comp
     const DEFAUTCLASSNAME = __NAMESPACE__.'\\'.self::SESSION;
     
     public static $cleanUp = false;
-    public static $timer= 0; // 0 when connected
+    public static $cookieTimer= 0; // 0 when connected
+    public static $sessionTimer = 6000;
     private static $instance = null;
     
     protected $bindings;
@@ -94,13 +95,13 @@ class Usr extends Comp
             $key=$_COOKIE[$name];
         }
         $this->isNew=false;
-        $sessionHdl = $className::getSession($key, ['Name'=>$name]);
+        $sessionHdl = $className::getSession($key, ['Name'=>$name], self::$sessionTimer);
         if ($sessionHdl->isNew()) {
             $this->isNew=true;
             $key = $sessionHdl->getKey();
             $end = 0;
-            if (self::$timer) {
-                $end = time() + self::$timer;
+            if (self::$cookieTimer) {
+                $end = time() + self::$cookieTimer;
             }
             if (php_sapi_name()==='cli') {
                 $_COOKIE[$name]=$key;
@@ -115,7 +116,6 @@ class Usr extends Comp
     {
         return $this->isNew;
     }
-    
     
     public function initMeta()
     {

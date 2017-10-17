@@ -40,12 +40,14 @@ DEV
 
 - parameterize Cref menu actions. /2
 - delete in list./2
+- view sort out persistence/2
+- multi language /2
+
 - increase autorisations rule capability /2
 	- views and other parameters
 	- handle user preference.
 - extend path with reference (// and get rid of getObj in session)
-- view sort out persistence/2
-- multi language /2
+
 - delete all object in class /2
 - introduction of name space in Tests /2
 - graphics : include svg bit in view. /2
@@ -55,7 +57,6 @@ DEV
 - avoid loading abstractMod in Mod base  (? dependency in test)
 - revisit dot attributes (?)
 - unify get code with get reference. (????)
-- support CREF on abstract (????)
 - user Jason to save data rather than serilialisation (?).
 
 PERF
@@ -71,7 +72,6 @@ APP
 	- code postal / 3
 
 INT
-- set up mess detection.
 - integrate with drupal ?
 - integrate MongoDB
 - integrate Redhiss
@@ -81,6 +81,9 @@ INT
 - set up jenkin
 
 DONE
+-----------------//1 
+set up mess detector and improve coverage.
+PERF   CSU-(1) on 2*10*20*U: 0.473
 -----------------//1
 - set up app tests.
 PERF   CSU-(1) on 2*10*20*U: 0.524

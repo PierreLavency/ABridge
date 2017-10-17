@@ -362,7 +362,7 @@ class Model
         if (! is_null($abstr)) {
             return $abstr->getParm($attr);
         }
-        return 0;
+        return null;
     }
        
     private function getAllParm()
@@ -417,7 +417,7 @@ class Model
     public function setCkey(array $attrLst, $val)
     {
         foreach ($attrLst as $attr) {
-            if (! $x= $this->existsAttr($attr)) {
+            if (! $this->existsAttr($attr)) {
                 $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
                 return false;
             };
@@ -691,21 +691,6 @@ class Model
         return ($res);
     }
 
-    protected function setRef($attr, Model $mod)
-    {
-        $modA = $this->getModRef($attr);
-        $modN = $mod->getModName();
-        if ($modA != $modN) {
-            $abstr = $mod->getInhObj();
-            if (is_null($abstr) or $modA != $abstr->getModName()) {
-                throw new Exception(CstError::E_ERC033.':'.$attr.':'.$modA.':'.$modN);
-            }
-        }
-        $id = $mod->getId();
-        if ($id) {
-            $this->setValNoCheck($attr, $id);
-        }
-    }
 
     public function getModCref($attr)
     {
@@ -747,12 +732,30 @@ class Model
         if (!$patha) {
             throw new Exception($this->getErrLine());
         }
-        $m=new Model($patha[1]);
-        $m->setRef($patha[2], $this);
-        $m->protect($patha[2]);
+        $modRef= $patha[1];
+        $attrRef=$patha[2];
+        $m=new Model($modRef);
+        $m->setRef($attrRef, $this);
+        $m->protect($attrRef);
         return $m;
     }
-
+    
+    protected function setRef($attr, Model $mod)
+    {
+        $modA = $this->getModRef($attr);
+        $modN = $mod->getModName();
+        if ($modA != $modN) {
+            $abstr = $mod->getInhObj();
+            if (is_null($abstr) or $modA != $abstr->getModName()) {
+                throw new Exception(CstError::E_ERC033.':'.$attr.':'.$modA.':'.$modN);
+            }
+        }
+        $id = $mod->getId();
+        if ($id) {
+            $this->setValNoCheck($attr, $id);
+        }
+    }
+    
     public function getCref($attr, $id)
     {
         $patha=$this->getCrefMod($attr);
@@ -797,7 +800,7 @@ class Model
 
     public function protect($attr)
     {
-        if (! $x= $this->existsAttr($attr)) {
+        if (!$this->existsAttr($attr)) {
             $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         };
@@ -872,7 +875,7 @@ class Model
     public function setCriteria(array $attrL, $opL, $valL)
     {
         foreach ($attrL as $attr) {
-            if (! $x= $this->existsAttr($attr)) {
+            if (! $this->existsAttr($attr)) {
                 $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
                 return false;
             };
@@ -1180,7 +1183,7 @@ class Model
 
         $mod = $this->getModRef($attr);
         try {
-            $res = new Model($mod, $id);
+            new Model($mod, $id);
         } catch (Exception $e) {
             $this->errLog->logLine($e->getMessage());
             return false;

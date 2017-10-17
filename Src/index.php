@@ -42,7 +42,7 @@ if (isset($init)) {
 
     //require_once("testAPI.php");
 
-    $ctrl->run(true, 0);
+    $ctrl->run(true);
     $ctrl->close();
     return;
 /*    

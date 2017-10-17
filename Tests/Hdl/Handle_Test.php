@@ -5,6 +5,7 @@ use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\CstError;
 
 class Handle_Test extends PHPUnit_Framework_TestCase
 {
@@ -20,7 +21,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
     
     public function testInit()
     {
-        $classes = ['Name','User','Code'];
+        $classes = ['Name','User','Code', 'abstractName'];
         $prm=UtilsC::genPrm($classes, get_called_class());
         
         Mod::reset();
@@ -78,9 +79,15 @@ class Handle_Test extends PHPUnit_Framework_TestCase
     
     // Class
             
+            $mod = new Model($bd['abstractName']);
+            $res= $mod->deleteMod();
+            $mod->setAbstr();
+            $mod->saveMod();
+            
             $mod = new Model($bd['Name']);
             $res= $mod->deleteMod();
-            $res = $mod->addAttr('Ref', Mtype::M_REF, '/'.$bd['Name']);
+            $res= $mod->setInhNme($bd['abstractName']);
+            $res = $mod->addAttr('Ref', Mtype::M_REF, '/'.$bd['abstractName']);
             $res = $mod->addAttr('CRef', Mtype::M_CREF, '/'.$bd['Name'].'/Ref');
             $res = $mod->addAttr('Code', Mtype::M_CODE, '/'.$bd['Code']);
             $res = $mod->addAttr('User', Mtype::M_REF, '/'.$bd['User']);
@@ -136,6 +143,13 @@ class Handle_Test extends PHPUnit_Framework_TestCase
             $path0= '/'.$bd['Name'];
             $path1 = $path0.'/1';
         
+            try {
+                $h = new Handle('/Session/~', CstMode::V_S_READ, null);
+            } catch (Exception $e) {
+                $res= $e->getMessage();
+            }
+            $this->assertEquals(CstError::E_ERC035, $res);
+            
             $h1 = new Handle($path1, CstMode::V_S_READ, $ho);
             $this->assertNotNull($h1);
             $this->assertTrue($h1->isMain());
@@ -207,6 +221,8 @@ class Handle_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals(0, $h->getErrLog()->logSize());
             $this->assertTrue($h->setCriteria(['Ref'], ['='], [1]));
             $this->assertEquals(1, count($h->select()));
+            
+            $this->assertEquals(8, count($h->getSelPath()));
             
             $vnum= $h->getVal('vnum');
             $this->assertTrue($h->checkVers($vnum));

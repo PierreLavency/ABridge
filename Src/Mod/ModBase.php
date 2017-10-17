@@ -112,12 +112,7 @@ class ModBase
                     $baseMod = $this->base->getMod($smod);
                     if (isset($baseMod['attr_inhnme']) and $baseMod['attr_inhnme']==$modName) {
                         $baseMod['attr_frg']=$foreignKeyList;
-                        $this->base->putMod(
-                            $smod,
-                            $baseMod,
-                            $addList,
-                            $delList
-                        );
+                        $this->base->putMod($smod, $baseMod, $addList, $delList);
                     }
                 }
             }
@@ -135,11 +130,7 @@ class ModBase
         if (!$values) {
             return false;
         }
-        if (isset($values['meta'])) {
-            $values = $values['meta'];
-        } else {
-            throw new Exception(CstError::E_ERC047.':'.$mod);
-        }
+        $values = $values['meta'];
         return $mod->setMeta($values);
     }
 

@@ -1,15 +1,14 @@
 <?php
 namespace ABridge\ABridge\Usr;
 
-use ABridge\ABridge\Mod\CModel;
-use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Mod\Find;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\Mod\Find;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 
 class Session extends CModel
 {
-    protected static $timer= 6000;
     protected $bkey = 0;
     protected $user;
     protected $role;
@@ -247,8 +246,8 @@ class Session extends CModel
         $this->mod->setValN('ValidFlag', 0);
         return $this->mod->saveN();
     }
-
-    public static function getSession($id, $attrValList = [])
+        
+    public static function getSession($id, $attrValList, $timer)
     {
         $modName=  get_called_class();
         if ($name =substr(strrchr($modName, '\\'), 1)) {
@@ -265,12 +264,12 @@ class Session extends CModel
             return $sessionHdl;
         }
         $flag = $obj->getValN('ValidFlag');
-        $valid = $obj->getValN('ValidStart')+self::$timer;
+        $valid = $obj->getValN('ValidStart')+$timer;
         if ($flag and ($valid > time())) {
             $sessionHdl=$obj->getCObj();
             return $sessionHdl;
         }
-        if ($flag) {
+        if ($flag) { //to set flag to false
             $obj->delet();
         }
         $sessionHdl->initPrev($obj);

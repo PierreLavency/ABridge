@@ -113,7 +113,7 @@ class CstError
         self::E_ERC032 => 'id not in CREF values of this attribute',
         self::E_ERC033 => 'Object type does not match expected reference type',
         self::E_ERC034 => 'Attempt to change protected attribute',
-        self::E_ERC035 => 'NOT USED',
+        self::E_ERC035 => 'No session',
         self::E_ERC036 => 'Url not correctly formated',
         self::E_ERC037 => 'Not allowed on object path',
         self::E_ERC038 => 'NOT USED',

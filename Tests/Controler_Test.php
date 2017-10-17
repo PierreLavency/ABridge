@@ -112,8 +112,11 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         
         $config =
         [
+                'Default'  => [],
+                'Apps'=> [],
                 'Handlers' => [
                         $name=>['dataBase'],
+                        'Controler_Test_dataBase_Admin'=>['memBase'],
                 ],
                 'Hdl' => [
                         'Usr'=>['Session'=>$session,'User'=>$user,'Role'=>$role]
@@ -146,7 +149,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
         
-        $resc = $ctrl->run($this->show, 0);
+        $resc = $ctrl->run($this->show);
         
         $this->assertTrue($resc->nullobj());
         
@@ -157,16 +160,16 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_CREA;
         
-        $resc = $ctrl->run($this->show, 0);
+        $resc = $ctrl->run($this->show);
  
         $this->assertFalse($resc->isErr());
         $this->assertEquals(CstMode::V_S_CREA, $resc->getAction());
-        $this->assertEquals($resc->getId(), 0);
+        $this->assertEquals(0, $resc->getId());
         
         $_SERVER['REQUEST_METHOD']='POST';
         $_POST['Name']=0;
         
-        $res = $ctrl->run($this->show, 0);
+        $res = $ctrl->run($this->show);
 
         $this->assertEquals($res->getId(), 1);
         $this->assertFalse($res->isErr());
@@ -176,7 +179,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO']=$res->getRPath();
         unset($_GET['Action']);
     
-        $reso = $ctrl->run($this->show, 0);
+        $reso = $ctrl->run($this->show);
         
         $this->assertEquals($res->getUrl(), $reso->getUrl());
         $this->assertFalse($res->isErr());
@@ -201,7 +204,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_GET['Action']=CstMode::V_S_UPDT;
         $_POST['Name']='a';
 
-        $res = $ctrl->run($this->show, 0);
+        $res = $ctrl->run($this->show);
 
         $this->assertEquals($res->getVal('Name'), 0);
         $this->assertTrue($res->isErr());
@@ -225,7 +228,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_POST['Name']=0;
         $_POST['Name_OP']='=';
         
-        $reso = $ctrl->run($this->show, 0);
+        $reso = $ctrl->run($this->show);
         $this->assertEquals(1, count($reso->select()));
         return $prm;
     }
@@ -262,12 +265,12 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO']=$fpath;
         $_GET['Action']=CstMode::V_S_CREA;
         
-        $res = $ctrl->run($this->show, 0);
+        $res = $ctrl->run($this->show);
 
         $_SERVER['REQUEST_METHOD']='POST';
         $_POST['Name']=1;
         
-        $res = $ctrl->run($this->show, 0);
+        $res = $ctrl->run($this->show);
              
         return $res;
     }
@@ -288,7 +291,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
 
-        $res = $ctrl->run($this->show, 0);
+        $res = $ctrl->run($this->show);
         
         $this->assertFalse($res->isErr());
         $this->assertEquals(CstMode::V_S_READ, $res->getAction());
@@ -297,15 +300,16 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_UPDT;
         
-        $res = $ctrl->run($this->show, 0);
+        $res = $ctrl->run($this->show);
         
         $this->assertFalse($res->isErr());
         $this->assertEquals(CstMode::V_S_UPDT, $res->getAction());
  
         $_SERVER['REQUEST_METHOD']='POST';
         $_POST['Name']=2;
+        $_POST['vnum']=1;
         
-        $res = $ctrl->run($this->show, 0);
+        $res = $ctrl->run($this->show);
 
         $this->assertEquals($res->getVal('Name'), 2);
         $this->assertFalse($res->isErr());
@@ -320,7 +324,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     
     public function testDelSon($prm)
     {
-        $r= $this->delSon($prm);
+        $path=$prm['sonPath'];
+        $r= $this->delPath($prm, $path);
         $x=$r[1];
         $res=$r[0];
         
@@ -335,6 +340,32 @@ class Controler_Test extends PHPUnit_Framework_TestCase
      * @depends testDelSon
      */
     
+    public function testDelRoot($prm)
+    {
+        $path=$prm['rootPath'];
+        $r= $this->delPath($prm, $path);
+        $x=$r[1];
+        $res=$r[0];
+        
+        $this->assertEquals($x, '/');
+
+        $this->assertTrue($res->nullObj());
+        $this->assertEquals(CstMode::V_S_READ, $res->getAction());
+        $this->assertEquals('/', $res->getRPath());
+        
+        $res= $res->getDD();
+        $this->assertTrue($res->nullObj());
+        $this->assertEquals(CstMode::V_S_READ, $res->getAction());
+        $this->assertEquals('/', $res->getRPath());
+        
+        return $prm;
+    }
+    
+    
+    /**
+     * @depends testDelRoot
+     */
+    
     public function testClose($prm)
     {
         $this->reset();
@@ -342,27 +373,26 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($ctrl->close());
     }
 
-    private function delSon($prm)
+    private function delPath($prm, $path)
     {
         $this->reset();
         $ctrl = new Controler($prm['config'], $prm['application']);
-        $path=$prm['sonPath'];
 
         $_COOKIE[$prm['cookieName']]=$prm['key'];
         $_SERVER['REQUEST_METHOD']='GET';
         $_SERVER['PATH_INFO']=$path;
         $_GET['Action']=CstMode::V_S_READ;
 
-        $res = $ctrl->run($this->show, 0);
+        $res = $ctrl->run($this->show);
         
         $x=$res->getDD()->getRPath();
             
         $_GET['Action']=CstMode::V_S_DELT;
 
-        $res = $ctrl->run($this->show, 0);
+        $res = $ctrl->run($this->show);
             
         $_SERVER['REQUEST_METHOD']='POST';
-        $res = $ctrl->run($this->show, 0);
+        $res = $ctrl->run($this->show);
         
         return [$res,$x];
     }

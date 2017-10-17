@@ -101,6 +101,11 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
         $path='/'.$this->CodeVal.'/ValueOf';
         $res = $code->addAttr('Values', Mtype::M_CREF, $path);
         $this->assertTrue($res);
+        
+        $this->assertEquals($path, $code->getParm('Values'));
+        $this->assertEquals($this->CodeVal, $code->getModCref('Values'));
+
+
 
         $res = $code->addAttr('DefaultVal', Mtype::M_CODE, '/./Values');
         $this->assertTrue($res);
@@ -327,6 +332,10 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
         $log = $student->getErrLog();
         
         $this->assertFalse($student->getErrLine());
+        
+        $this->assertNull($student->getParm('Id'));
+        $res = $student->getModCref('Id');
+        $this->assertFalse($res);
 
         $res = $student->addAttr('xxx', Mtype::M_CODE);
         $this->assertFalse($res);
@@ -356,7 +365,7 @@ class Model_Xref_Test extends PHPUnit_Framework_TestCase
         $res = $codeval->setVal('ValueOf', 1000);
         $this->assertFalse($res);
         $this->assertEquals($log->getLine(0), CstError::E_ERC007.':'.$this->Code.':1000');
-    
+
         $log = $student->getErrLog();
         $res = $student->setVal('Sexe', 1000);
         $this->assertFalse($res);

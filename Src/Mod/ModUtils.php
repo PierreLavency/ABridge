@@ -169,8 +169,6 @@ class ModUtils
     {
         $parm= $mod->getParm($attr);
         $path=explode('/', $parm);
-        $c = count($path)-1;
-
        /* 			/ClassName 			*/
         $modName = $path[1];
         $obj = new Model($modName);
@@ -197,6 +195,7 @@ class ModUtils
             $mod->getErrLog()->logLine(CstError::E_ERC054.':'.$modRef);
             return false;
         }
+        
         return true;
     }
 }

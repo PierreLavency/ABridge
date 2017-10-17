@@ -1,10 +1,9 @@
 <?php
-use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Find;
 use ABridge\ABridge\Mod\Mod;
-
-use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Mod\ModUtils;
+use ABridge\ABridge\Usr\Session;
+use ABridge\ABridge\UtilsC;
 
 class Session_Test_dataBase_Session extends Session
 {
@@ -51,7 +50,7 @@ class Session_Test extends PHPUnit_Framework_TestCase
         foreach ($prm['bindL'] as $bd) {
             $modS->begin();
             
-            $obj=$bd['Session']::getSession(0);
+            $obj=$bd['Session']::getSession(0, [], 6000);
             $x = $obj->getMod();
 
             $idl[] = $obj->getKey();
@@ -79,7 +78,7 @@ class Session_Test extends PHPUnit_Framework_TestCase
         foreach ($prm['bindL'] as $bd) {
             $modS->begin();
             
-            $obj = $bd['Session']::getSession($idl[$i]);
+            $obj = $bd['Session']::getSession($idl[$i], [], 6000);
 
         
             $this->assertEquals($idl[$i], $obj->getKey());
@@ -106,7 +105,7 @@ class Session_Test extends PHPUnit_Framework_TestCase
         foreach ($prm['bindL'] as $bd) {
             $modS->begin();
         
-            $obj = $bd['Session']::getSession($idl[$i]);
+            $obj = $bd['Session']::getSession($idl[$i], [], 6000);
             $mod= $obj->getMod();
         
             $mod->delet();
@@ -134,7 +133,8 @@ class Session_Test extends PHPUnit_Framework_TestCase
         foreach ($prm['bindL'] as $bd) {
             $modS->begin();
 
-            $obj = $bd['Session']::getSession($idl[$i]);
+            $obj = $bd['Session']::getSession($idl[$i], [], 6000);
+            $key= $obj->getKey();
             $mod= $obj->getMod();
   
             $this->assertTrue($obj->isNew());
@@ -142,9 +142,13 @@ class Session_Test extends PHPUnit_Framework_TestCase
             
             $this->assertEquals(2, $res);
             
-            $mod->delet();
-
             $x = Find::byKey($bd['Session'], 'BKey', $idl[$i]);
+            $this->assertNull($x);
+            
+            $obj =$bd['Session']::getSession($key, [], 0);
+            $this->assertTrue($obj->isNew());
+            
+            $x = Find::byKey($bd['Session'], 'BKey', $key);
             $this->assertNull($x);
             
             $i++;

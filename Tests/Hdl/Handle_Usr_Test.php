@@ -96,11 +96,13 @@ class Handle_Usr_Test extends PHPUnit_Framework_TestCase
 
     // Role
             $path='|'.$bd['Name'];
+            $userPath = '|'.$bd[Usr::USER];
             $rolespec =[
                     [CstMode::V_S_SLCT,                         $path,                    'true'],
                     [CstMode::V_S_READ,                         $path,                    'true'],
-                    [CstMode::V_S_CREA,                         $path,                [$bd['Name']=>":User"]],
-                    [CstMode::V_S_UPDT,                         $path,                [$bd['Name']=>":User"]],
+                    [CstMode::V_S_CREA,                         $path,                [$bd['Name']    =>":User"]],
+                    [CstMode::V_S_UPDT,                         $path,                [$bd['Name']    =>":User"]],
+                    [CstMode::V_S_READ,                         $userPath,            [$bd[Usr::USER] =>":id<==>:User"]],
 
             ];
             $rlspec = json_encode($rolespec);
@@ -207,6 +209,7 @@ class Handle_Usr_Test extends PHPUnit_Framework_TestCase
             $this->assertNull($ho1->getCrefUrl('CRef', CstMode::V_S_CREA, null));
             $this->assertNull($ho1->getCref('CRef', 2));
             $this->assertEquals(['/'.$bd['Name']], $ho1->getSelPath());
+            $this->assertNull($ho1->getRef('User'));
             
             $res="";
             try {
