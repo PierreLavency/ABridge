@@ -46,15 +46,12 @@ class Hdl extends Comp
         if (isset($this->prm)) {
             $sessionHdl= Usr::get()->begin();
             if (Usr::get()->isNew()) {
-                $handle = new Handle('/Session/~', CstMode::V_S_UPDT, $sessionHdl);
                 $this->isNew=true;
-            } else {
-                $handle = new Handle($sessionHdl);
+                return new Handle('/Session/~', CstMode::V_S_UPDT, $sessionHdl);
             }
-        } else {
-            $handle = new Handle(null);
+            return new Handle($sessionHdl);
         }
-        return $handle;
+        return new Handle(null);
     }
     
     public function isNew()

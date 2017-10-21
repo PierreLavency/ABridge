@@ -233,9 +233,9 @@ class Mod extends Comp
     public function showState()
     {
         $showState= [];
-        foreach ($this->baseTypeInstances as $baseType => $Instances) {
+        foreach ($this->baseTypeInstances as $baseType => $instances) {
             $showStateInstance=[];
-            foreach ($Instances as $instanceName => $baseObj) {
+            foreach ($instances as $instanceName => $baseObj) {
                 $classList=[];
                 foreach ($this->handlerDetailList as $modName => $handlerDetail) {
                     if ($handlerDetail[0]==$baseType and $handlerDetail[1]==$instanceName) {

@@ -145,9 +145,8 @@ class ModBase
             if ($abstr) {
                 $id = $this->base->newObj($abstr, ['CName'=>$name]);
                 return ($this->base->newObjId($name, $values, $id));
-            } else {
-                return ($this->base->newObj($name, $values));
             }
+            return ($this->base->newObj($name, $values));
         }
         return ($this->base->putObj($name, $id, $vnum, $values));
     }

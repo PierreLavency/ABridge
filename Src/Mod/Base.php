@@ -23,9 +23,8 @@ abstract class Base
         $this->logLevl=0;
         $this->logger=Log::Get();
         $this->fileN = $path . $id;
-        if (is_null($id)) {
-            $this->memBase= true;
-        } else {
+        $this->memBase= true;
+        if (! is_null($id)) {
             $this->fileName = $path . $id .'.txt';
             $this->memBase=false;
         }
@@ -49,8 +48,8 @@ abstract class Base
 
     protected static function existsBase($path, $id)
     {
-        $f = $path . $id.'.txt';
-        return file_exists($f);
+        $fileName = $path . $id.'.txt';
+        return file_exists($fileName);
     }
     
     
@@ -110,8 +109,8 @@ abstract class Base
             return true;
         }
         $file = serialize($this->objects);
-        $r=file_put_contents($this->fileName, $file, FILE_USE_INCLUDE_PATH);
-        return $r;
+        $res=file_put_contents($this->fileName, $file, FILE_USE_INCLUDE_PATH);
+        return $res;
     }
 
     public function rollback()

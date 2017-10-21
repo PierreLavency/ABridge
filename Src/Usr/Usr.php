@@ -21,7 +21,7 @@ class Usr extends Comp
     
     public static $cleanUp = false;
     public static $cookieTimer= 0; // 0 when connected
-    public static $sessionTimer = 6000;
+    public static $sessionTimer = 60000;
     private static $instance = null;
     
     protected $bindings;
@@ -123,7 +123,7 @@ class Usr extends Comp
             throw new Exception(CstError::E_ERC067.':Usr');
         }
         $bindings=$this->bindings;
-        $res= ModUtils::initModBindings($bindings);
+        ModUtils::initModBindings($bindings);
         return $bindings;
     }
 }

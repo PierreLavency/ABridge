@@ -2,11 +2,11 @@
     
 use ABridge\ABridge\Log\Logger;
 
-use ABridge\ABridge\Hdl\Request;
 use ABridge\ABridge\Hdl\Handle;
 use ABridge\ABridge\Hdl\CstMode;
 
 use ABridge\ABridge\View\View;
+use ABridge\ABridge\View\Vew;
 use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
 
@@ -19,6 +19,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
 {
 
     protected static $log;
+    protected static $runLog;
     protected static $db;
     public static function setUpBeforeClass()
     {
@@ -29,7 +30,8 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
         
         Mod::reset();
         Mod::get()->init($prm['application'], $prm['handlers']);
-        
+        Vew::reset();
+       
         self::$log=new Logger();
         self::$log->load('C:/Users/pierr/ABridge/Datastore/', 'View_init_Xref');
     }
@@ -44,12 +46,29 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
         
         Mod::get()->begin();
 
-        $request = new Request($p, CstMode::V_S_READ);
         $handle = new Handle($p, CstMode::V_S_READ, null);
+        $cname=$handle->getModName();
+
+        Vew::reset();
+        $cname=$handle->getModName();
+        $config = [
+                $cname=> [
+                        'attrList' => [
+                                CstView::V_S_REF        => ['Name'],
+                                
+                        ],
+                        'attrHtml'=> [
+                                CstMode::V_S_CREA => [
+                                        'Mother'=>CstHTML::H_T_SELECT,
+                                ]
+                        ],
+                ]
+                
+        ];
+        Vew::get()->init([], $config);
+        
         $v = new View($handle);
         $v->setTopMenu(['/dir']);
-        $v->setAttrList(['Name'], CstView::V_S_REF);
-        $v->setAttrListHtml(['Mother'=>CstHTML::H_T_SELECT], CstMode::V_S_CREA);
         
         $this->expectOutputString(self::$log->getLine(0));
         $this->assertNotNull($v->show($s, true));
@@ -67,16 +86,29 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
 
         Mod::get()->begin();
     
-        $home= null;
-        $request = new Request($p, CstMode::V_S_READ);
-        $handle = new Handle($p, CstMode::V_S_READ, $home);
+        $handle = new Handle($p, CstMode::V_S_READ, null);
+        Vew::reset();
+        $cname=$handle->getModName();
+        $config = [
+                $cname=> [
+                        'attrList' => [
+                                CstView::V_S_REF        => ['Name'],
+                                
+                        ],
+                        'attrHtml'=> [
+                                CstMode::V_S_CREA => [
+                                        'Mother'=>CstHTML::H_T_SELECT,
+                                ]
+                        ],
+                ]
+                
+        ];
+        Vew::get()->init([], $config);
         $v = new View($handle);
-    
         $v->setTopMenu(['/dir']);
-        $v->setAttrList(['Name'], CstView::V_S_REF);
-        $v->setAttrListHtml(['Mother'=>CstHTML::H_T_SELECT], CstMode::V_S_CREA);
-    
-        $this->assertEquals(self::$log->getLine($expected), $v->show($s, false));
+        $res = $v->show($s, false);
+        
+        $this->assertEquals(self::$log->getLine($expected), $res);
         Mod::get()->end();
     }
  

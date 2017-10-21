@@ -46,10 +46,9 @@ class Request
                 self::$docRoot='/'.$uri[1];
             }
         }
+        $path='/';
         if (isset($_SERVER['PATH_INFO'])) {
             $path = trim($_SERVER['PATH_INFO']);
-        } else {
-            $path='/';
         }
         $this->getp   = $this->cleanInputs($_GET);
         $this->postp  = $this->cleanInputs($_POST);
@@ -93,7 +92,6 @@ class Request
         $this->modPath="";
         $c = count($pathArr);
         $r = $c%2;
-        $obj = null;
         $this->pathArr=[];
         $this->length=$c;
         $this->isClassPath = $r;
@@ -372,9 +370,8 @@ class Request
             if ($action == CstMode::V_S_READ) {
                 $res = $this->pathArr;
                 array_pop($res);
-                if (count($res)==0) {
-                    $path= '/';
-                } else {
+                $path= '/';
+                if (count($res)>0) {
                     $path = $this->arrToPath($res);
                 }
                 return new request($path, $action);

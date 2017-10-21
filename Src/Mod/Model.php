@@ -676,23 +676,22 @@ class Model
         return ($res);
     }
 
-
     public function getModCref($attr)
     {
-        $res = $this->getCrefMod($attr);
-        if (!$res) {
+        $patha=$this->getCrefMod($attr);
+        if (!$patha) {
             return false;
         }
-        return $res[1];
+        return $patha[1];
     }
 
     private function getCrefMod($attr)
     {
-        if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
+        $typ = $this->getTyp($attr);
+        if (!$typ) {
             return false;
         }
-        if ($this->getTyp($attr)!= Mtype::M_CREF) {
+        if ($typ!= Mtype::M_CREF) {
             $this->errLog->logLine(CstError::E_ERC027.':'.$attr);
             return false;
         }
@@ -755,21 +754,30 @@ class Model
         $res->protect($patha[2]);
         return ($res);
     }
-
+  
+    public function getCodeRef($attr)
+    {
+        $id=$this->getVal($attr);
+        if (is_null($id)) {
+            return null;
+        }
+        return $this->getCode($attr, $id);
+    }
+    
+    
     public function getCode($attr, $id)
     {
-        if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
+        $type = $this->getTyp($attr);
+        if (!$type) {
             return false;
         }
-        $typ = $this->getTyp($attr);
-        if ($typ != Mtype::M_CODE and $typ != Mtype::M_REF) {
+        if ($type != Mtype::M_CODE and $type != Mtype::M_REF) {
             $this->errLog->logLine(CstError::E_ERC028.':'.$attr);
             return false;
         }
         $path=$this->getParm($attr);
         $patha=explode('/', $path);
-        if ($typ == Mtype::M_CODE) {
+        if ($type == Mtype::M_CODE) {
             $pathLength = count($patha);
             if ($pathLength == 4) {
                 $mod = new Model($patha[1], (int) $patha[2]);
@@ -803,8 +811,8 @@ class Model
     
     public function isOptl($attr)
     {
-        if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
+        $type = $this->getTyp($attr);
+        if (!$type) {
             return false;
         }
         if ($this->isPredef($attr)) {
@@ -816,8 +824,7 @@ class Model
         if ($this->isProp($attr, self::P_MDT)) {
             return false;
         }
-        $typ = $this->getTyp($attr);
-        if ($typ == Mtype::M_CREF) {
+        if ($type == Mtype::M_CREF) {
             return false;
         }
         return true;
@@ -829,14 +836,13 @@ class Model
             $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
             return false;
         }
-        $res = false;
+        if ($this->isProtected($attr)) {
+            return false;
+        }
         if ($this->isProp($attr, self::P_MDT) or $this->isOptl($attr)) {
-            $res= true;
+            return true;
         }
-        if ($this->isProtected($attr)) { // shoul be first ?
-            $res = false;
-        }
-        return $res;
+        return false;
     }
 
     public function isSelect($attr)
@@ -876,7 +882,7 @@ class Model
         if ($res == []) {
             return $result;
         }
-
+        
         foreach ($this->getAllAttr() as $attr) {
             if ($this->isProtected($attr)) {
                 $val = $this->getVal($attr);
@@ -1097,17 +1103,31 @@ class Model
  
     public function getModRef($attr)
     {
-        if (! $this->existsAttr($attr)) {
-            $this->errLog->logLine(CstError::E_ERC002.':'.$attr);
+        $type=$this->getTyp($attr);
+        if (! $type) {
             return false;
         }
-        if ($this->getTyp($attr)!= Mtype::M_REF) {
-             $this->errLog->logLine(CstError::E_ERC026.':'.$attr);
-            return false;
+        if ($type== Mtype::M_REF) {
+            $path=$this->getParm($attr);
+            $patha=explode('/', $path);
+            return ($patha[1]);
         }
-        $path=$this->getParm($attr);
-        $patha=explode('/', $path);
-        return ($patha[1]);
+/*     
+        if ($type == Mtype::M_CODE) {
+        	$path=$this->getParm($attr);
+        	$apath = explode('/', $path);
+        	$pathLength = count($apath)-1;
+        	if ($pathLength==1) {
+        		return $apath[1];
+        	}
+        	if ($pathLength==3) {
+        		return $apath[1];
+        	}
+ 
+        }
+        */
+        $this->errLog->logLine(CstError::E_ERC026.':'.$attr);
+        return false;
     }
 
     public function getValues($attr)

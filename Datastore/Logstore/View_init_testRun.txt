@@ -421,15 +421,13 @@ a:2:{i:0;a:8:{i:0;s:186:"<!DOCTYPE html>
  aa
 
  </body> 
- </html>";i:7;s:144:"<!DOCTYPE html>
+ </html>";i:7;s:142:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <a href="/ABridge.php/test/1" >5
- aa
-</a>
+ <a href="/ABridge.php/test/1" >5 aa</a>
 
 2016-12-08
 

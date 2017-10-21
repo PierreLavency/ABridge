@@ -26,7 +26,6 @@ class GenHTML
         }
         
         $formES = '</form>  ';
-        $endS    = ' > '     ;
         $tab =self::getTab($level);
         $nl  = ($level >= 0) ? "\n" : '';
     
@@ -183,7 +182,6 @@ class GenHTML
     protected static function genFormElemL($dspec, $level)
     {
         $buttonS    = '<input type="submit" value = ';
-        $buttonES   = '</button>';
         $altS       = ' alt="';
         $textareaS  = '<textarea ' ;
         $textareaES = '</textarea>';
@@ -242,7 +240,7 @@ class GenHTML
                     $default = $v;
                     break;
                 case CstHTML::H_TABLEN:
-                    $tabeln = $v;
+                    $tablen = $v;
                     break;
                 case CstHTML::H_COL:
                     $col = $v;

@@ -31,6 +31,7 @@ class Vew extends Comp
         return true;
     }
     
+    
     public function getViewPrm($modName)
     {
         if (isset($this->viewHandler[$modName])) {
@@ -74,9 +75,9 @@ class Vew extends Comp
     public function begin($prm)
     {
         list($show,$handle)=$prm;
-        $v=new View($handle);
+        $view=new View($handle);
         $action = $handle->getAction();
-        $v->show($action, $show);
+        $view->show($action, $show);
         return true;
     }
     
@@ -88,5 +89,63 @@ class Vew extends Comp
     public function initMeta()
     {
         return [];
+    }
+  
+    public function getViewList($modName, $viewState)
+    {
+        $specMod=$this->getViewPrm($modName);
+        if (is_null($specMod)) {
+            return null;
+        }
+        if ($viewState != CstView::V_S_REF and $viewState != CstView::V_S_CREF and isset($specMod['viewList'])) {
+            $viewList=$specMod['viewList'];
+            return array_keys($viewList);
+        }
+        return null;
+    }
+    
+    public function getDefViewName($modName, $viewState)
+    {
+        $viewList = $this->getViewList($modName, $viewState);
+        if ($viewList) {
+            return $viewList[0];
+        }
+        return null;
+    }
+    
+    public function getSpec($modName, $viewName, $viewState, $specName)
+    {
+        $specMod=$this->getViewPrm($modName);
+        if (is_null($specMod)) {
+            return null;
+        }
+        if ($viewState != CstView::V_S_REF and $viewState != CstView::V_S_CREF and isset($specMod['viewList'])) {
+            $viewList=$specMod['viewList'];
+            if (isset($viewList[$viewName])) {
+                $specView=$viewList[$viewName];
+                $res=$this->getSpecElm($specView, $viewState, $specName);
+                if ($res) {
+                    return $res;
+                }
+            }
+        }
+        return $this->getSpecElm($specMod, $viewState, $specName);
+    }
+    
+    private function getSpecElm($specMod, $viewState, $specName)
+    {
+        if (is_null($specMod)) {
+            return null;
+        }
+        if (isset($specMod[$specName])) {
+            $specList=$specMod[$specName];
+            if (is_null($viewState)) {
+                return $specList;
+            }
+            if (isset($specList[$viewState])) {
+                return $specList[$viewState];
+            }
+        }
+        return null;
     }
 }

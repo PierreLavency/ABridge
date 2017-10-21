@@ -3,23 +3,30 @@
 use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\App;
 use ABridge\ABridge\Apps\AdmApp;
+use ABridge\ABridge\Apps\Cdv;
 use ABridge\ABridge\Hdl\CstMode;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\ModUtils;
 use ABridge\ABridge\View\CstView;
-use ABridge\ABridge\Mod\Model;
 
 require_once 'LogFile.php';
 require_once 'LogLine.php';
+require_once 'PrfFile.php';
+require_once 'PrfLine.php';
 
 class Config extends App
 {
 	const LOGFILE = 'LogFile';
 	const LOGLINE = 'LogLine';
+	const PRFFILE = 'PrfFile';
+	const PRFLINE = 'PrfLine';
 	
 	protected static $logicalNames =
 	[
 			self::LOGFILE,
 			self::LOGLINE,
+			self::PRFFILE,
+			self::PRFLINE,
 	];
 	
 	public static function  init($prm, $config)
@@ -32,14 +39,25 @@ class Config extends App
 			['base'=>'fileBase'],
 	'Apps'	=>
 			[
-					'AdmApp'=>[],		
+					'AdmApp'=>[],
+					'Cdv'=>[
+							Cdv::CODE=>'Codes',
+							Cdv::CODEVAL=>'CodeValues',
+							Cdv::CODELIST=>['Operation','Base','Access'],
+							cdv::CODEDATA=>[
+									'Operation'=>[CstMode::V_S_READ,CstMode::V_S_UPDT,CstMode::V_S_CREA,CstMode::V_S_DELT,],
+									'Base'=>['dataBase','fileBase','memBase',],
+									'Access'=>['NA','Root','Usr',],
+							],
+					],
 					
 			],
 	'Handlers' =>
 			[
 					self::LOGFILE=> [],
 					self::LOGLINE=>[],
-			
+					self::PRFFILE=> [],
+					self::PRFLINE=>[],
 			],
 			
 	'View' => [
@@ -47,7 +65,7 @@ class Config extends App
 			['/',"/".Adm::ADMIN."/1"],
 		'MenuExcl' =>
 			[
-					"/".Adm::ADMIN,
+					"/".Adm::ADMIN,"/".Self::LOGLINE,
 					
 			],
 		self::LOGFILE=>[
@@ -117,7 +135,13 @@ class Config extends App
 				'attrList' => [
 						CstView::V_S_CREF	=> ['id','Content'],
 				],
-		]
+		],
+		self::PRFFILE => [
+					'attrList' => [
+							CstView::V_S_REF	=> ['id','Scenario'],
+							CstView::V_S_CREF => ['id','ExecTime','LoadedLines']
+					],
+			],
 
 		],
 	];
@@ -125,9 +149,12 @@ class Config extends App
 	public static function initMeta($config)
 	{
 		AdmApp::initMeta(self::$config['Apps']['AdmApp']);	
+		$cdvList=Cdv::initMeta(self::$config['Apps']['Cdv']);
 		
-		$bindings = ModUtils::normBindings(self::$logicalNames);
+		$list = ModUtils::normBindings(self::$logicalNames);
 		
+		$bindings = array_merge($cdvList,$list);
+
 		ModUtils::initModBindings($bindings,self::$logicalNames);		
 		
 	}
@@ -135,6 +162,7 @@ class Config extends App
 	public static function initData($prm=null)
 	{
 		AdmApp::initData();
+		Cdv::initData(self::$config['Apps']['Cdv']);
 		
 		$logs = [
 				'View_init',
@@ -153,9 +181,6 @@ class Config extends App
 			$x->setVal('Load', 'true');
 			$x->save();
 		}
-		
-
-		
 		
 	}
 	

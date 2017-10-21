@@ -21,7 +21,7 @@ for ($i=0; $i<count($test); $i++) {
     $v = $test[$i][0];
     $p = $test[$i][1];
     $s = $test[$i][2];
-    $res = $v->show($s, $show);
+    $res= $v->show($s, $show);
     $log->logLine($res);
 }
 

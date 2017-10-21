@@ -3,6 +3,7 @@ vendor/
 Datastore/fileBase/
 Datastore/sqlBase/
 Datastore/Test/
+Datastore/Logstore/
 TestCoverage/
 DataSource/
 Bld/

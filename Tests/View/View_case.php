@@ -8,6 +8,7 @@ use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 
 use ABridge\ABridge\View\View;
+use ABridge\ABridge\View\Vew;
 use ABridge\ABridge\View\CstView;
 
 function viewCases()
@@ -49,14 +50,26 @@ function viewCases()
     $request = new Request('/test/1', CstMode::V_S_READ);
     $objs=[['test',$x]];
     $handle = new Handle($request, null, $objs, $x, null);
+    
+    Vew::reset();
+    $config = [
+            'test'=> [
+                    'attrList' => [CstView::V_S_REF        => ['A1','A2'],
+                    'lblList'=>['A1'=>'A1','A2'=>'A2'],
+                    ],
+            ]
+            
+    ];
+    Vew::get()->init([], $config);
+    
     $v = new View($handle);
     
     $v->setTopMenu(['/test']);
-
+/*
     $v->setAttrList(['A1','A2'], CstView::V_S_REF);
     $v->setLblList(['A1'=>'A1','A2'=>'A2']);
     
-    
+  */
     $n=1;
     $test[$n]=[$v,$path,CstMode::V_S_CREA,$n];
     $n++;

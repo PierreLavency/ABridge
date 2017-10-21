@@ -21,15 +21,12 @@ if (isset($conf['name'])) {
 if ($application == 'UnitTest') {
     return;
 }
-
- //try {
     
-    $path = "App/".$application .'/';
-    require_once $path.'SETUP.php' ;
+$path = "App/".$application .'/';
+require_once $path.'SETUP.php' ;
 
-    $ctrl = new Controler(Config::$config, $conf);
-//    $ctrl = new Controler('x', $conf);
-    
+$ctrl = new Controler(Config::$config, $conf);
+
 if (isset($init)) {
     $ctrl->begin();
     require_once $path.'META.php';
@@ -40,14 +37,6 @@ if (isset($init)) {
     return;
 }
 
-    //require_once("testAPI.php");
-
-    $ctrl->run(true);
-    $ctrl->close();
-    return;
-/*    
-} catch (Exception $e) {
-    $mes = CstError::subst($e->getmessage());
-    throw new Exception($mes);
-}
-*/
+$ctrl->run(true);
+$ctrl->close();
+return;

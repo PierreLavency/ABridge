@@ -140,17 +140,17 @@ class SQLBase extends Base
         if (isset($newList['attr_frg'])) {
             $attrFrg = $newList['attr_frg'];
         }
-        $s = "\n CREATE TABLE $model ( " ;
+        $sql = "\n CREATE TABLE $model ( " ;
         if ($idF) {
-            $s=$s. "\n id INT(11) UNSIGNED NOT NULL";
-            $s=$s." AUTO_INCREMENT PRIMARY KEY ";
+            $sql=$sql. "\n id INT(11) UNSIGNED NOT NULL";
+            $sql=$sql." AUTO_INCREMENT PRIMARY KEY ";
         } else {
-            $s = $s. "\n id INT(11) UNSIGNED NOT NULL PRIMARY KEY ";
+            $sql = $sql. "\n id INT(11) UNSIGNED NOT NULL PRIMARY KEY ";
             if (isset($attrFrg['id'])) {
                 $cName= $model.'_id';
                 $ref = $attrFrg['id'];
-                $s=$s.", \n CONSTRAINT $cName ";
-                $s=$s. "FOREIGN KEY (id) REFERENCES $ref(id)";
+                $sql=$sql.", \n CONSTRAINT $cName ";
+                $sql=$sql. "FOREIGN KEY (id) REFERENCES $ref(id)";
             }
         }
         $attrLst=[];
@@ -161,23 +161,23 @@ class SQLBase extends Base
         foreach ($attrLst as $attr => $typ) {
             if ($attr != 'id') {
                 $typ = Mtype::convertSqlType($typ);
-                $s = $s.", \n $attr $typ NULL";
+                $sql = $sql.", \n $attr $typ NULL";
                 if (isset($attrFrg[$attr])) {
                     $cName= $model.'_'.$attr;
-                    $s=$s.", \n CONSTRAINT $cName ";
-                    $s=$s." FOREIGN KEY ($attr) REFERENCES $attrFrg[$attr](id)";
+                    $sql=$sql.", \n CONSTRAINT $cName ";
+                    $sql=$sql." FOREIGN KEY ($attr) REFERENCES $attrFrg[$attr](id)";
                 }
             }
         }
-        $sql=$s. " ) \n";
+        $sql=$sql. " ) \n";
         $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
         $this->logger->logLine($sql, $linfo);
         if (! $this->mysqli->query($sql)) {
             throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
         };
-        $r = parent::newModelId($model, $meta, $idF);
+        $res = parent::newModelId($model, $meta, $idF);
         parent::commit(); //DML always autocommited!!
-        return $r;
+        return $res;
     }
 
     public function putMod($model, $meta, $addList, $delList)
@@ -206,9 +206,9 @@ class SQLBase extends Base
                 throw new Exception(CstError::E_ERC021. ':' . $this->mysqli->error);
             }
         }
-        $r = parent::putModel($model, $meta);
+        $res = parent::putModel($model, $meta);
         parent::commit();
-        return $r;
+        return $res;
     }
     
     protected function dropAttr($model, $delList)
@@ -222,8 +222,8 @@ class SQLBase extends Base
         if (isset($delList['attr_frg'])) {
             $attrFrg = $delList['attr_frg'];
         }
-        $c = count($attrLst);
-        if (!$c) {
+        $listSize = count($attrLst);
+        if (!$listSize) {
             return false;
         }
         $i=0;
@@ -233,7 +233,7 @@ class SQLBase extends Base
                 $sql=$sql."\n DROP FOREIGN KEY $cName ,";
             }
             $sql = $sql."\n DROP $attr " ;
-            if ($i+1<$c) {
+            if ($i+1<$listSize) {
                 $sql=$sql.",";
             }
             $i++;
@@ -252,8 +252,8 @@ class SQLBase extends Base
         if (isset($addList['attr_frg'])) {
             $attrFrg = $addList['attr_frg'];
         }
-        $c = count($attrLst);
-        if (!$c) {
+        $listSize = count($attrLst);
+        if (!$listSize) {
             return false;
         }
         $i=0;
@@ -281,9 +281,9 @@ class SQLBase extends Base
         if (! $this->mysqli->query($sql)) {
  //           echo E_ERC021.":$sql" . ":".$this->mysqli->error."<br>";
         };// if does not exist ok !!
-        $r = parent::delMod($model);
+        $res = parent::delMod($model);
         parent::commit();
-        return $r;
+        return $res;
     }
     
     public function getObj($model, $id)
@@ -305,9 +305,8 @@ class SQLBase extends Base
                 }
             }
             return $res;
-        } else {
-            return false;
         }
+        return false;
     }
     
     public function putObj($model, $id, $vnum, $values)
@@ -318,22 +317,22 @@ class SQLBase extends Base
         if ($id == 0) {
             return false;
         }
-        $lv = '';
+        $listVal = '';
         $i = 0;
-        $c = count($values);
+        $listSize = count($values);
         foreach ($values as $key => $val) {
             $i++;
             if (is_null($val)) {
-                $v="NULL";
+                $sqlVal="NULL";
             } else {
-                $v="'". $val."'";
+                $sqlVal="'". $val."'";
             }
-            $lv = $lv . $key. '=' . $v;
-            if ($i<$c) {
-                $lv = $lv . ',';
+            $listVal = $listVal . $key. '=' . $sqlVal;
+            if ($i<$listSize) {
+                $listVal = $listVal . ',';
             }
         }
-        $sql = "\n UPDATE $model SET $lv WHERE id= $id and vnum= $vnum \n" ;
+        $sql = "\n UPDATE $model SET $listVal WHERE id= $id and vnum= $vnum \n" ;
         $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
         $this->logger->logLine($sql, $linfo);
         if (! $this->mysqli->query($sql)) {

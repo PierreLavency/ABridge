@@ -1,6 +1,5 @@
 <?php
 use ABridge\ABridge\Mod\CModel;
-use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 
 class PrfLine extends CModel 

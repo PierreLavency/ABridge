@@ -74,7 +74,7 @@ class Config extends App
 						"/".Adm::ADMIN,"/".Usr::USER,"/".Usr::SESSION,
 						"/".Usr::DISTRIBUTION,"/".Usr::GROUPUSER,
 						"/".Cdv::CODEVAL,
-						"/".self::INSCRIPTION,
+//						"/".self::INSCRIPTION,
 						"/".self::CHARGE,
 				],
 			'modLblList'=>[Usr::USERGROUP=>'Group'],

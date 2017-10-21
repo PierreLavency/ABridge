@@ -68,7 +68,15 @@ class LogFile extends CModel
 		return $this->mod->saveN();
 	}
 	
-	
+	public function delet()
+	{
+		$lineList = $this->mod->getVal('Lines');
+		foreach ($lineList as $LineId) {
+			$LineObj = new Model('LogLine',(int) $LineId);
+			$LineObj->deletN();
+		}
+		return $this->mod->deletN();
+	}
 	
 	
 }

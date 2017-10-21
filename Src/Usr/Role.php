@@ -11,7 +11,6 @@ class Role extends CModel
     {
         $obj = $this->mod;
         $distribution = null;
-        $role = null;
 
         $res = $obj->addAttr('Name', Mtype::M_STRING);
         $res = $obj->addAttr('JSpec', Mtype::M_JSON);

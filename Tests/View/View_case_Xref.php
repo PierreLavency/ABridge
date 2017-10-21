@@ -81,6 +81,5 @@ function viewCasesXref()
     $n++;
     $test[$n]=[$v,$path,CstView::V_S_CREF,$n];
     
-
     return $test;
 }

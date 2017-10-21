@@ -33,9 +33,8 @@ class Access
         $res= self::getCondPath($session, $req->getAction(), $req->getModpath());
         if ($res) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public static function getSelMenu($session, $classList)
@@ -179,11 +178,11 @@ class Access
             $parseCond[]=$str[0];
             $str = explode('>', $str[1]);
             if (count($str)==2) {
-                $op = $str[0];
-                if ($op == "") {
-                    $op=$defltOp;
+                $opr = $str[0];
+                if ($opr == "") {
+                    $opr=$defltOp;
                 }
-                $parseCond[]=$op;
+                $parseCond[]=$opr;
                 $parseCond[]=$str[1];
                 return $parseCond;
             }
@@ -192,9 +191,9 @@ class Access
     }
      
     
-    private static function evalCond($sessVal, $op, $objVal)
+    private static function evalCond($sessVal, $opr, $objVal)
     {
-        switch ($op) {
+        switch ($opr) {
             case '==':
                 return ($sessVal == $objVal);
             break;
@@ -202,23 +201,22 @@ class Access
                 return ($sessVal != $objVal);
             break;
             default:
-                throw new Exception(CstError::E_ERC066.':'.$op);
+                throw new Exception(CstError::E_ERC066.':'.$opr);
         }
     }
     
-    protected static function checkLinkAttr($session, $action, $obj, $objAttrPath, $sessAttrPath, $op, $protect, $last)
+    protected static function checkLinkAttr($session, $action, $obj, $objAttrPath, $sessAttrPath, $opr, $protect, $last)
     {
         $attrPathList=explode(':', $objAttrPath);
         if ($attrPathList[0] != "") {
             throw new Exception(CstError::E_ERC051.':'.$objAttrPath);
-        } else {
-            $attr=$attrPathList[1];
         }
+        $attr=$attrPathList[1];
  
         $objVal = self::getAttrPathArrayVal($obj, $attrPathList, $objAttrPath);
         $sessVal= self::getAttrPathVal($session, $sessAttrPath);
         
-        if (self::evalCond($sessVal, $op, $objVal)) {
+        if (self::evalCond($sessVal, $opr, $objVal)) {
             if ($protect) {
                 $obj->protect($attr);
             }
@@ -226,7 +224,7 @@ class Access
         }
         if ((
                 $action == CstMode::V_S_CREA or $action ==CstMode::V_S_SLCT)
-                and is_null($objVal) and $last and $op == '==') {
+                and is_null($objVal) and $last and $opr == '==') {
             if ($protect) {
                 $obj->setVal($attr, $sessVal);
                 $obj->protect($attr);

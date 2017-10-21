@@ -155,9 +155,8 @@ class Handle
         $res = $this->mainObj;
         if (is_null($res)) {
             return $this;
-        } else {
-            return $res->getMain();
         }
+        return $res->getMain();
     }
     
     public function isMainRef($attr)
@@ -224,7 +223,7 @@ class Handle
    
 // Handle
 
-    protected function newHdl($req, $sessionHdl, $objs, $obj, $robj)
+    protected function newHdl($req, $objs, $obj)
     {
         $res = $this->checkARight($req, $objs, false, true); // all access in read so false
         if (!$res) {
@@ -241,13 +240,13 @@ class Handle
         }
         $req = $this->request->popReq();
         if ($req ->isRoot()) {
-            return $this->newHdl($req, $this->sessionHdl, [], null, $this);
+            return $this->newHdl($req, [], null);
         }
         $objs= $this->attrObjs;
         array_pop($objs);
         $obje=$objs[count($objs)-1];
         $obj=$obje[1];
-        return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
+        return $this->newHdl($req, $objs, $obj);
     }
     
     
@@ -260,7 +259,7 @@ class Handle
         $objs= $this->attrObjs;
         $lobjs= array_pop($objs);
         $objs[] = [$lobjs[0],$obj];
-        return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
+        return $this->newHdl($req, $objs, $obj);
     }
     
     public function getCref($attr, $id)
@@ -274,12 +273,18 @@ class Handle
         $obj = $this->obj->getCref($attr, (int) $id);
         $objs = $this->attrObjs;
         $objs[]=[$attr,$obj];
-        return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
+        return $this->newHdl($req, $objs, $obj);
     }
 
     public function getCode($attr, $id)
     {
         $obj = $this->obj->getCode($attr, $id);
+        return $this->getRefHdl($obj);
+    }
+    
+    public function getCodeRef($attr)
+    {
+        $obj = $this->obj->getCodeRef($attr);
         return $this->getRefHdl($obj);
     }
     
@@ -300,7 +305,6 @@ class Handle
         $resN = $this->pathNrmArr;
         $res  = $this->request->pathArr();
         $objs = $this->attrObjs;
-        $c = count($res);
         $found = false;
         while ((count($res) > 1) and (! $found)) {
             $rid  = array_pop($resN);
@@ -320,7 +324,7 @@ class Handle
             $objs[]=[$mod,$obj];
         }
         $req = new Request($path, CstMode::V_S_READ);
-        return $this->newHdl($req, $this->sessionHdl, $objs, $obj, $this);
+        return $this->newHdl($req, $objs, $obj);
     }
      
 // obj  : access should be controlled here 
@@ -484,9 +488,9 @@ class Handle
         return  $this->request->getAction();
     }
  
-    public function getUrl($Prm = [])
+    public function getUrl($prm = [])
     {
-        return $this->request->getUrl($Prm);
+        return $this->request->getUrl($prm);
     }
 
     public function getMethod()

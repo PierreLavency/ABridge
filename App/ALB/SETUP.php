@@ -26,6 +26,10 @@ class Config extends App
 		'Distribution'	=> ['dataBase',],
 		'Session'		=> ['dataBase',],		
 		],
+	'Apps'	=>[
+					'AdmApp'=>[],
+			
+	],
 	'View' => [
 		'Home' =>
 			['/',],
@@ -50,7 +54,9 @@ class Config extends App
 												CstView::V_SLICE=>4,
 												CstView::V_COUNTF=>true,
 												CstView::V_CTYP=>CstView::V_C_TYPN,
-												CstView::V_CVAL=>[CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,CstHTML::H_TABLEN=>2]
+												CstView::V_CVAL=>[
+														CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,
+														CstHTML::H_TABLEN=>2]
 												
 										]
 								],

@@ -1,8 +1,7 @@
 CMD
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'Hdl' Src/* App/* Tests/*
-phpmd Src/Mod/Model.php html unusedcode,codesize,naming --reportfile tmp/phpmd.html
+grep -ri 'X' Src/* App/* Tests/*
 
 BUGS	33
 B1 session with API.
@@ -16,7 +15,6 @@ B32 tmp variables not correctly handled in create Mode (see Log app).
 DEV
 - order in list query and attr.
 - implement unique index.
-- develop app to manage perf results
 
 - review init of Handle / Usr.
 - improve LC support (release, test/ dev Data Base etc.)
@@ -82,6 +80,9 @@ INT
 - set up jenkin
 
 DONE
+-----------------//2
+- develop app to manage perf results
+- improve perf and quality checks process
 -----------------//1 
 set up mess detector and improve coverage.
 PERF   CSU-(1) on 2*10*20*U: 0.473

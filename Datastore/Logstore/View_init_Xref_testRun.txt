@@ -1,4 +1,4 @@
-a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
+a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -55,46 +55,26 @@ a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
 			<td>
 				<select name = "Mother"  >
 					<option  value = ""  selected  ></option>
-					<option  value = "1"  >1
-</option>
-					<option  value = "2"  >2
-</option>
-					<option  value = "3"  >3
-</option>
-					<option  value = "4"  >4
-</option>
-					<option  value = "5"  >5
-</option>
-					<option  value = "6"  >6
-</option>
-					<option  value = "7"  >7
-</option>
-					<option  value = "8"  >8
-</option>
-					<option  value = "9"  >9
-</option>
-					<option  value = "10"  >10
-</option>
-					<option  value = "11"  >11
-</option>
-					<option  value = "12"  >12
-</option>
-					<option  value = "13"  >13
-</option>
-					<option  value = "14"  >14
-</option>
-					<option  value = "15"  >15
-</option>
-					<option  value = "16"  >16
-</option>
-					<option  value = "17"  >17
-</option>
-					<option  value = "18"  >18
-</option>
-					<option  value = "19"  >19
-</option>
-					<option  value = "20"  >20
-</option>
+					<option  value = "1"  >Name_1</option>
+					<option  value = "2"  >Name_2</option>
+					<option  value = "3"  >Name_3</option>
+					<option  value = "4"  >Name_4</option>
+					<option  value = "5"  >Name_5</option>
+					<option  value = "6"  >Name_6</option>
+					<option  value = "7"  >Name_7</option>
+					<option  value = "8"  >Name_8</option>
+					<option  value = "9"  >Name_9</option>
+					<option  value = "10"  >Name_21</option>
+					<option  value = "11"  >Name_22</option>
+					<option  value = "12"  >Name_23</option>
+					<option  value = "13"  >Name_24</option>
+					<option  value = "14"  >Name_25</option>
+					<option  value = "15"  >Name_26</option>
+					<option  value = "16"  >Name_27</option>
+					<option  value = "17"  >Name_28</option>
+					<option  value = "18"  >Name_29</option>
+					<option  value = "19"  >Name_30</option>
+					<option  value = "20"  >Name_31</option>
 				</select>
 			</td>
 		</tr>
@@ -102,7 +82,7 @@ a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:1;s:4412:"<!DOCTYPE html>
+ </html>";i:1;s:3980:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -157,8 +137,7 @@ a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
 			Father
 		</td>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
-</a>
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
 		</td>
 	</tr>
 	<tr>
@@ -166,8 +145,7 @@ a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
 			Mother
 		</td>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
-</a>
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
 		</td>
 	</tr>
 </table>
@@ -193,92 +171,52 @@ a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
 <table >
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/10" >10
-</a>
-		</td>
-		<td>
-			Name_21
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/10" >Name_21</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/11" >11
-</a>
-		</td>
-		<td>
-			Name_22
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/11" >Name_22</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/12" >12
-</a>
-		</td>
-		<td>
-			Name_23
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/12" >Name_23</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/13" >13
-</a>
-		</td>
-		<td>
-			Name_24
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/13" >Name_24</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/14" >14
-</a>
-		</td>
-		<td>
-			Name_25
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/14" >Name_25</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/15" >15
-</a>
-		</td>
-		<td>
-			Name_26
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/15" >Name_26</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/16" >16
-</a>
-		</td>
-		<td>
-			Name_27
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/16" >Name_27</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/17" >17
-</a>
-		</td>
-		<td>
-			Name_28
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/17" >Name_28</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/18" >18
-</a>
-		</td>
-		<td>
-			Name_29
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/18" >Name_29</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/19" >19
-</a>
-		</td>
-		<td>
-			Name_30
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf/19" >Name_30</a>
 		</td>
 	</tr>
 </table>
@@ -305,92 +243,52 @@ a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
 <table >
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/10" >10
-</a>
-		</td>
-		<td>
-			Name_21
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/10" >Name_21</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/11" >11
-</a>
-		</td>
-		<td>
-			Name_22
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/11" >Name_22</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/12" >12
-</a>
-		</td>
-		<td>
-			Name_23
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/12" >Name_23</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/13" >13
-</a>
-		</td>
-		<td>
-			Name_24
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/13" >Name_24</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/14" >14
-</a>
-		</td>
-		<td>
-			Name_25
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/14" >Name_25</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/15" >15
-</a>
-		</td>
-		<td>
-			Name_26
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/15" >Name_26</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/16" >16
-</a>
-		</td>
-		<td>
-			Name_27
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/16" >Name_27</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/17" >17
-</a>
-		</td>
-		<td>
-			Name_28
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/17" >Name_28</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/18" >18
-</a>
-		</td>
-		<td>
-			Name_29
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/18" >Name_29</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/19" >19
-</a>
-		</td>
-		<td>
-			Name_30
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf/19" >Name_30</a>
 		</td>
 	</tr>
 </table>
@@ -461,7 +359,7 @@ a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:3;s:963:"<!DOCTYPE html>
+ </html>";i:3;s:971:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -508,8 +406,7 @@ a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
 				Father
 			</td>
 			<td>
-				<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
-</a>
+				<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
 			</td>
 		</tr>
 		<tr>
@@ -517,8 +414,7 @@ a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
 				Mother
 			</td>
 			<td>
-				<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
-</a>
+				<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
 			</td>
 		</tr>
 	</table>
@@ -644,20 +540,17 @@ a:2:{i:0;a:7:{i:0;s:1822:"<!DOCTYPE html>
  Name_2
 
  </body> 
- </html>";i:6;s:280:"<!DOCTYPE html>
+ </html>";i:6;s:287:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2
-</a>
+ <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
 
-<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
-</a>
+<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
 
-<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >1
-</a>
+<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
 
 
  </body> 

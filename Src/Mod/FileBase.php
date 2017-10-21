@@ -13,9 +13,8 @@ class FileBase extends Base
 
     public function __construct($path, $id)
     {
-        if (is_null($id)) {
-            $fileName = null;
-        } else {
+        $fileName = null;
+        if (! is_null($id)) {
             $fileName = 'fileBase/'.$id;
         }
         parent::__construct($path, $fileName);
@@ -23,7 +22,6 @@ class FileBase extends Base
     
     public function checkFKey($flag)
     {
-
         return true;
     }
     
@@ -64,9 +62,9 @@ class FileBase extends Base
                 }
             }
         }
-        $r = parent::putModel($model, $meta);
+        $res = parent::putModel($model, $meta);
         parent::commit(); // to align
-        return $r;
+        return $res;
     }
     
     
@@ -84,9 +82,9 @@ class FileBase extends Base
     
     public function newModId($model, $meta, $idF, $newList)
     {
-        $r=parent::newModelId($model, $meta, $idF);
+        $res=parent::newModelId($model, $meta, $idF);
         parent::commit(); // to align
-        return $r;
+        return $res;
     }
     
     
@@ -226,38 +224,38 @@ class FileBase extends Base
         }
         $attr= array_pop($attrList);
         $val = array_pop($valList);
-        $op = '=';
+        $opr = '=';
         if (isset($opList[$attr])) {
-            $op = $opList[$attr];
+            $opr = $opList[$attr];
         }
-        $res = $this->findObjOp($model, $attr, $op, $val);
+        $res = $this->findObjOp($model, $attr, $opr, $val);
         $result = $this->evalWheOp($model, $attrList, $opList, $valList);
         $result = array_intersect($result, $res);
         return $result;
     }
     
-    private function findObjOp($model, $attr, $op, $val)
+    private function findObjOp($model, $attr, $opr, $val)
     {
         $result = [];
         foreach ($this->objects[$model] as $id => $list) {
             if ($id) {
                 foreach ($list as $a => $v) {
-                    if ($attr == $a and $this->evalOp($v, $op, $val)) {
+                    if ($attr == $a and $this->evalOp($v, $opr, $val)) {
                         $result[]=$id;
                     }
                 }
-                if ($attr == 'id' and $this->evalOp($id, $op, $val)) {
+                if ($attr == 'id' and $this->evalOp($id, $opr, $val)) {
                     $result[]=$id;
                 }
             }
         }
-        $this->logger->logLine("findObjOp $model $attr $op $val  \n", ['class'=>__CLASS__,'line'=>__LINE__]);
+        $this->logger->logLine("findObjOp $model $attr $opr $val  \n", ['class'=>__CLASS__,'line'=>__LINE__]);
         return $result;
     }
     
-    private function evalOp($attrVal, $op, $val)
+    private function evalOp($attrVal, $opr, $val)
     {
-        switch ($op) {
+        switch ($opr) {
             case '=':
                 if ($attrVal == $val) {
                     return true ;

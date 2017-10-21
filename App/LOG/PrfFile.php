@@ -72,11 +72,7 @@ class PrfFile extends CModel
 		$this->mod->setValN('ExecTime',$execTime);
 		
 		if ($this->mod->getVal('Load')) {
-			$lineList = $this->mod->getVal('Lines'); 
-			foreach ($lineList as $LineId) {
-				$LineObj = new Model('PrfLine',(int) $LineId);
-				$LineObj->deletN();
-			}
+			$this->delLines();
 			$path = Log::get()->getPath();
 			$logger = new Logger();
 			$logger->load($path, '/PerfRun/'.$name);
@@ -105,13 +101,18 @@ class PrfFile extends CModel
 		return $this->mod->saveN();
 	}
 	
+	protected function delLines() 
+	{
+		$lineList = $this->mod->getVal('Lines');
+		foreach ($lineList as $LineId) {
+			$LineObj = new Model('PrfLine',(int) $LineId);
+			$LineObj->deletN();
+		}		
+	}
+	
 	public function delet()
 	{	
-	  $lineList = $this->mod->getVal('Lines');
-	  foreach ($lineList as $LineId) {
-				$LineObj = new Model('PrfLine',(int) $LineId);
-				$LineObj->deletN();
-	  }
+	  $this->delLines();
 	  return $this->mod->deletN();
 	}
 	
