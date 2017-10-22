@@ -97,10 +97,18 @@ class Config extends App
 			['/','/'.self::Session.'/~','/'.self::User.'/~',"/Admin/1"],
 		'MenuExcl' =>
 			["/".self::ABB,"/Admin"],			
-		self::Application=> [
-		
+		self::Application=> [		
 				'attrList' => [
 					CstView::V_S_REF		=> ['CodeNm'],
+				],
+				'listHtml' => [
+						CstMode::V_S_SLCT => [
+								CstView::V_ALIST         => [
+										CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,
+										CstHTML::H_TABLEN=>9
+								],
+								CstView::V_ATTR          => CstHTML::H_T_LIST_BR,
+						]
 				],
 				'attrHtml' => [
 					CstMode::V_S_CREA => ['Authenticity'=>CstHTML::H_T_SELECT,'Confidentiality'=>CstHTML::H_T_SELECT,'Availability'=>CstHTML::H_T_SELECT,'Integrity'=>CstHTML::H_T_SELECT,'Style'=>CstHTML::H_T_SELECT,],
@@ -164,6 +172,15 @@ class Config extends App
 		
 				'attrList' => [
 					CstView::V_S_REF		=> ['CodeNm'],
+				],
+				'listHtml' => [
+						CstMode::V_S_SLCT => [
+								CstView::V_ALIST         => [
+										CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,
+										CstHTML::H_TABLEN=>9
+								],
+								CstView::V_ATTR          => CstHTML::H_T_LIST_BR,
+						]
 				],
 				'attrHtml' => [
 					CstMode::V_S_CREA => ['CType'=>CstHTML::H_T_SELECT,'SourceControl'=>CstHTML::H_T_SELECT],

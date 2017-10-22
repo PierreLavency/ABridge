@@ -194,6 +194,9 @@ class Handle_Test extends PHPUnit_Framework_TestCase
             
             $id = $h1->getVal('Code');
             $hc1r=$h1->getCode('Code', $id);
+            $htt=$h1->getCodeRef('Code');
+            $this->assertEquals($id, $htt->getId());
+            
             $hc2=new Handle('/'.$bd['Code'].'/2', CstMode::V_S_READ, $ho);
             $this->assertEquals($hc2->getUrl(), $hc1r->getUrl());
     

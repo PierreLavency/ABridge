@@ -47,7 +47,16 @@ class GenHTML
         $nl  = ($level >= 0) ? "\n" : '';
         $tabn=self::getTab($level+1);
         
-        $c=array_chunk($dspecL, $tablen);
+        $flatList = [];
+        foreach ($dspecL as $dspecElm) {
+            if (isset($dspecElm[CstHTML::H_ARG])) {
+                $flatList=array_merge($flatList, $dspecElm[CstHTML::H_ARG]);
+            } else {
+                $flatList[]=$dspecElm;
+            }
+        }
+        
+        $c=array_chunk($flatList, $tablen);
         
         $result= $tab.$tableS;
         

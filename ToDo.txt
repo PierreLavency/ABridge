@@ -3,7 +3,7 @@ CMD
 pear install phpdoc/PhpDocumentor-2.8.1
 grep -ri 'X' Src/* App/* Tests/*
 
-BUGS	33
+BUGS	34
 B1 session with API.
 B2 ' in txt fields. 
 B9 Race condition in test suite (connection management).
@@ -11,6 +11,7 @@ B12 in ABB - txt on application 5.
 B22 EVALP in create dialog.
 B29 escaping "value" in HTLM type for SQL (Log app does not work with MariaDB).
 B32 tmp variables not correctly handled in create Mode (see Log app).
+B33 < in selection.
 
 DEV
 - order in list query and attr.
@@ -80,6 +81,8 @@ INT
 - set up jenkin
 
 DONE
+-----------------//2
+improvement and clean up view
 -----------------//2
 - develop app to manage perf results
 - improve perf and quality checks process

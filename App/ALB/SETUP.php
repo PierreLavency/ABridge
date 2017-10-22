@@ -56,7 +56,7 @@ class Config extends App
 												CstView::V_CTYP=>CstView::V_C_TYPN,
 												CstView::V_CVAL=>[
 														CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,
-														CstHTML::H_TABLEN=>2]
+														CstHTML::H_TABLEN=>4]
 												
 										]
 								],

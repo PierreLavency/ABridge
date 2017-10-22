@@ -531,13 +531,13 @@ a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:5;s:96:"<!DOCTYPE html>
+ </html>";i:5;s:154:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 </head>
 <body> 
- Name_2
+ <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
 
  </body> 
  </html>";i:6;s:287:"<!DOCTYPE html>

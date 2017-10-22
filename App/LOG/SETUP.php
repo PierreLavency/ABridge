@@ -8,6 +8,7 @@ use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\ModUtils;
 use ABridge\ABridge\View\CstView;
+use ABridge\ABridge\View\CstHTML;
 
 require_once 'LogFile.php';
 require_once 'LogLine.php';
@@ -78,7 +79,7 @@ class Config extends App
 										CstView::V_SLICE=>1,
 										CstView::V_COUNTF=>true,
 										CstView::V_CTYP=>CstView::V_C_TYPN,
-										
+										CstView::V_B_NEW=>false,
 								]
 						],
 				],
@@ -136,10 +137,54 @@ class Config extends App
 						CstView::V_S_CREF	=> ['id','Content'],
 				],
 		],
+	
+		self::PRFLINE => [
+				'listHtml' => [
+						CstMode::V_S_SLCT => [
+								CstView::V_ALIST         => [
+										CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,
+										CstHTML::H_TABLEN=>9
+								],
+								CstView::V_ATTR          => CstHTML::H_T_LIST_BR,
+						]
+				],
+				'attrHtml' => [
+						CstMode::V_S_SLCT => [
+								CstMode::V_S_SLCT=>[
+										CstView::V_SLICE=>15,
+										CstView::V_COUNTF=>true,
+										CstView::V_CTYP=>CstView::V_C_TYPN,
+										CstView::V_B_NEW=>false,
+										
+								]
+						],
+				],
+		],
 		self::PRFFILE => [
 					'attrList' => [
 							CstView::V_S_REF	=> ['id','Scenario'],
 							CstView::V_S_CREF => ['id','ExecTime','LoadedLines']
+					],
+
+					'attrHtml' => [
+							CstMode::V_S_READ => [
+									'Lines'=>[
+											CstView::V_SLICE=>10,
+											CstView::V_COUNTF=>true,
+											CstView::V_CTYP=>CstView::V_C_TYPN,
+											CstView::V_B_NEW=>false,
+											
+									]
+							],
+							CstMode::V_S_SLCT => [
+									CstMode::V_S_SLCT=>[
+											CstView::V_SLICE=>5,
+											CstView::V_COUNTF=>true,
+											CstView::V_CTYP=>CstView::V_C_TYPN,
+											CstView::V_B_NEW=>false,
+											
+									]
+							],
 					],
 			],
 
