@@ -27,13 +27,13 @@ class GenHTML
         
         $formES = '</form>  ';
         $tab =self::getTab($level);
-        $nl  = ($level >= 0) ? "\n" : '';
+        $newLine  = ($level >= 0) ? "\n" : '';
     
-        $result=$tab.$formS.$nl;
+        $result=$tab.$formS.$newLine;
         foreach ($dspecL as $dspec) {
             $result=$result. self::genFormElemL($dspec, $level+1);
         }
-        $result=$result.$tab.$formES.$nl;
+        $result=$result.$tab.$formES.$newLine;
         return $result;
     }
     
@@ -44,7 +44,7 @@ class GenHTML
         $elementS   = '<tr>'  ;
         $elementES   = '</tr>'  ;
         $tab =self::getTab($level);
-        $nl  = ($level >= 0) ? "\n" : '';
+        $newLine  = ($level >= 0) ? "\n" : '';
         $tabn=self::getTab($level+1);
         
         $flatList = [];
@@ -61,10 +61,10 @@ class GenHTML
         $result= $tab.$tableS;
         
         foreach ($c as $dspec) {
-            $result=$result . $nl . $tabn. $elementS. $nl;
+            $result=$result . $newLine . $tabn. $elementS. $newLine;
             $result=$result .self::genLineNL($dspec, $level+1).$tabn.$elementES;
         }
-        $result = $result.$nl.$tab.$tableSE.$nl;
+        $result = $result.$newLine.$tab.$tableSE.$newLine;
         return $result;
     }
     
@@ -74,12 +74,12 @@ class GenHTML
         $elementES   = '</td>'  ;
         $result = "";
         $tab =self::getTab($level);
-        $nl  = ($level >= 0) ? "\n" : '';
+        $newLine  = ($level >= 0) ? "\n" : '';
         
         foreach ($dspecL as $elm) {
-            $result=$result.$tab.$elementS.$nl;
+            $result=$result.$tab.$elementS.$newLine;
             $result=$result.self::genFormElemL($elm, $level+1);
-            $result=$result.$tab.$elementES.$nl;
+            $result=$result.$tab.$elementES.$newLine;
         }
      
         return $result;
@@ -92,15 +92,15 @@ class GenHTML
         $elementS   = '<td>'  ;
         $elementES   = '</td>'  ;
         $tab =self::getTab($level);
-        $nl  = ($level >= 0) ? "\n" : '';
+        $newLine  = ($level >= 0) ? "\n" : '';
         $tabn=self::getTab($level+1);
         
         $result= $tab.$tableS;
         foreach ($dspecL as $dspec) {
-            $result=$result . $nl . $tabn. $elementS. $nl;
+            $result=$result . $newLine . $tabn. $elementS. $newLine;
             $result=$result .self::genFormElemL($dspec, $level+2).$tabn.$elementES;
         }
-        $result = $result.$nl.$tab.$tableSE.$nl;
+        $result = $result.$newLine.$tab.$tableSE.$newLine;
         return $result;
     }
     
@@ -111,15 +111,15 @@ class GenHTML
         $elementS   = '<tr>'  ;
         $elementES   = '</tr>'  ;
         $tab =self::getTab($level);
-        $nl  = ($level >= 0) ? "\n" : '';
+        $newLine  = ($level >= 0) ? "\n" : '';
         $tabn=self::getTab($level+1);
         
         $result= $tab.$tableS;
         foreach ($dspecL as $dspec) {
-            $result=$result . $nl . $tabn. $elementS. $nl;
+            $result=$result . $newLine . $tabn. $elementS. $newLine;
             $result=$result .self::genLineL($dspec, $level+2).$tabn.$elementES;
         }
-        $result = $result.$nl.$tab.$tableSE.$nl;
+        $result = $result.$newLine.$tab.$tableSE.$newLine;
         return $result;
     }
     
@@ -129,19 +129,19 @@ class GenHTML
         $elementES   = '</td>'  ;
         $result = "";
         $tab =self::getTab($level);
-        $nl  = ($level >= 0) ? "\n" : '';
+        $newLine  = ($level >= 0) ? "\n" : '';
     
         if (isset($dspecL[CstHTML::H_ARG])) {
             $elmL = $dspecL[CstHTML::H_ARG];
             foreach ($elmL as $elm) {
-                $result=$result.$tab.$elementS.$nl;
+                $result=$result.$tab.$elementS.$newLine;
                 $result=$result.self::genFormElemL($elm, $level+1);
-                $result=$result.$tab.$elementES.$nl;
+                $result=$result.$tab.$elementES.$newLine;
             }
         } else {
-            $result=$result.$tab.$elementS. $nl;
+            $result=$result.$tab.$elementS. $newLine;
             $result=$result.self::genFormElemL($dspecL, $level+1);
-            $result=$result.$tab.$elementES.$nl;
+            $result=$result.$tab.$elementES.$newLine;
         }
         return $result;
     }
@@ -153,15 +153,15 @@ class GenHTML
         $elementS   = '<li>'  ;
         $elementES   = '</li>'  ;
         $tab =self::getTab($level);
-        $nl  = ($level >= 0) ? "\n" : '';
+        $newLine  = ($level >= 0) ? "\n" : '';
         $tabn=self::getTab($level+1);
         
         $result = $tab.$listS;
         foreach ($dspecL as $dspec) {
-            $result=$result . $nl . $tabn. $elementS. $nl;
+            $result=$result . $newLine . $tabn. $elementS. $newLine;
             $result=$result .self::genFormElemL($dspec, $level+2).$tabn.$elementES;
         }
-        $result = $result.$nl.$tab.$listES.$nl;
+        $result = $result.$newLine.$tab.$listES.$newLine;
         return $result;
     }
     
@@ -224,7 +224,7 @@ class GenHTML
         $rowp = 70;
         $label="";
         $tab =self::getTab($level);
-        $nl  = ($level >= 0) ? "\n" : '';
+        $newLine  = ($level >= 0) ? "\n" : '';
     
         foreach ($dspec as $t => $v) {
             switch ($t) {
@@ -301,7 +301,7 @@ class GenHTML
                 if (is_array($label)) {
                     $label = self::genFormElemL($label, $level);
                 }
-                $result = $tab.$linkS.$name.$endS.$label.$linkES.$nl;
+                $result = $tab.$linkS.$name.$endS.$label.$linkES.$newLine;
                 break;
             case CstHTML::H_T_LIST_BR:
                 $result = "";
@@ -344,14 +344,14 @@ class GenHTML
                 if ($default) {
                     $result = $result.$default;
                 };
-                $result = $tab.$result . $textareaES . $nl;
+                $result = $tab.$result . $textareaES . $newLine;
                 break;
             case CstHTML::H_T_SUBMIT:
                 $result = $tab.$buttonS.$label;
                 if (isset($baction)) {
                     $result = $result.' formaction='.$baction;
                 }
-                $result = $result.$endS.$nl;
+                $result = $result.$endS.$newLine;
                 break;
             case CstHTML::H_T_TEXT:
                 $result = $inputS;
@@ -363,7 +363,7 @@ class GenHTML
                 };
                 $result = $result . $valueS;
                 $result = $result . $endS;
-                $result = $tab.$result . $nl;
+                $result = $tab.$result . $newLine;
                 break;
             case CstHTML::H_T_RADIO:
                 $result = "";
@@ -378,12 +378,12 @@ class GenHTML
                     $result = $result.$tab . $inputS . $typeS . $nameS;
                     $result = $result. $valueS . $checkedS . $endS;
                     $result = $result . $valuelbl. $separator;
-                    $result = $result. $nl;
+                    $result = $result. $newLine;
                 };
                 break;
             case CstHTML::H_T_SELECT:
                 $result = $selectS;
-                $result = $tab.$result. $nameS . $endS . $nl ;
+                $result = $tab.$result. $nameS . $endS . $newLine ;
                 foreach ($values as $valueA) {
                     $value=array_shift($valueA);
                     $valuelbl = array_shift($valueA);
@@ -394,15 +394,15 @@ class GenHTML
                     };
                     $result = $result.$tab . "\t". $optionS . $valueS;
                     $result = $result . $selectedS . $endS .$valuelbl;
-                    $result = $result.$optionES. $nl;
+                    $result = $result.$optionES. $newLine;
                 };
-                $result = $result . $tab.$selectES. $nl;
+                $result = $result . $tab.$selectES. $newLine;
                 break;
             case CstHTML::H_T_IMG:
                 $result = $imgS.$default.'"'.$altS.$default.'"'.$widthS.$colp.'"'.$heightS.$rowp.'"'.$endS;
                 break;
             case CstHTML::H_T_PLAIN:
-                $result = $tab.$default.$nl;
+                $result = $tab.$default.$newLine;
                 break;
             default:
                 $result = ' Unknown H_TYPE ';

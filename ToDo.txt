@@ -60,7 +60,6 @@ DEV
 - user Jason to save data rather than serilialisation (?).
 
 PERF
-review getValues/Ref View.
 initMod rather than restoreMod.
 
 TEST
@@ -83,6 +82,7 @@ INT
 DONE
 -----------------//2
 improvement and clean up view
+review getValues/Ref View.
 -----------------//2
 - develop app to manage perf results
 - improve perf and quality checks process

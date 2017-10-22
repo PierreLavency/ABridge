@@ -623,6 +623,14 @@ class View
                 }
                 $result[CstHTML::H_NAME]=$path;
                 break;
+            case CstView::V_B_SLC:
+                $result[CstHTML::H_TYPE]=CstHTML::H_T_LINK;
+                $path=$this->handle->getCrefUrl($attr, CstMode::V_S_SLCT, $prm);
+                if (is_null($path)) {
+                    return false;
+                }
+                $result[CstHTML::H_NAME]=$path;
+                break;
             case CstView::V_C_TYP1:
                 $id=$spec[CstView::V_ID];
                 $nh=$this->handle->getCref($attr, $id);
@@ -751,7 +759,7 @@ class View
   
     protected function showRec($name)
     {
-    	$this->name=$name;
+        $this->name=$name;
         $r = $this->buildView(CstMode::V_S_READ, true);
         $r=GenHTML::genFormElem($r, false);
         return $r;
@@ -911,6 +919,16 @@ class View
         $prm = $this->getAttrHtml($attr, $viewState);
         $view[]=[CstView::V_TYPE=>CstView::V_ELEM,CstView::V_ATTR => $attr, CstView::V_PROP => CstView::V_P_LBL];
         $ctyp=$prm[CstView::V_CTYP];
+        $vSlc=false;
+        if (isset($prm[CstView::V_B_SLC])) {
+            $vSlc=$prm[CstView::V_B_SLC];
+        }
+        if ($vSlc) {
+            $view[]=[
+                    CstView::V_TYPE=>CstView::V_CREFMENU,
+                    CstView::V_ATTR => $attr,
+                    CstView::V_P_VAL=>CstView::V_B_SLC];
+        }
         $vNew=true;
         if ($viewState == CstMode::V_S_SLCT) {
             $vNew=false;
@@ -960,7 +978,7 @@ class View
     protected function getSlice($attr, array $list, $viewL, $prm)
     {
         $view[]=$viewL[0];
-        $c=count($list);
+        $listSize=count($list);
         $pos=0;
         $slice = $prm[CstView::V_SLICE];
         $npos = $this->handle->getPrm($attr); //not work
@@ -972,11 +990,11 @@ class View
                     $pos=0;
                 }
             }
-            if ($pos > $c) {
-                $pos=$c-$slice;
+            if ($pos > $listSize) {
+                $pos=$listSize-$slice;
             }
         }
-        if ($c > $slice) {
+        if ($listSize > $slice) {
                 $list= array_slice($list, $pos, $slice);
         }
         $viewe=[];
@@ -986,34 +1004,43 @@ class View
         }
         $countf=$prm[CstView::V_COUNTF];
         if ($countf) {
-            $ind = $c;
-            if ($c > $slice) {
+            $ind = $listSize;
+            if ($listSize > $slice) {
                 $nc=count($list)+$pos;
-                $ind=$c.' : '.$pos.'-'.$nc;
+                $ind=$listSize.' : '.$pos.'-'.$nc;
             }
             $view[]=[CstView::V_TYPE=>CstView::V_PLAIN,CstView::V_STRING=>$ind];
         }
-        if ($c > $slice) {
+        if ($listSize > $slice) {
             $npos= $pos+$slice;
-            if ($npos>=$c) {
+            if ($npos>=$listSize) {
                 $npos=$pos;
             }
-            $view[]=
-            [
-                    CstView::V_TYPE=>CstView::V_CREFMENU,
-                    CstView::V_ATTR => $attr,
-                    CstView::V_P_VAL=>CstView::V_B_PRV,
-                    CstView::V_ID=>-$pos
-                    
-            ];
-            $view[]=
-            [
-                    CstView::V_TYPE=>CstView::V_CREFMENU,
-                    CstView::V_ATTR => $attr,
-                    CstView::V_P_VAL=>CstView::V_B_NXT,
-                    CstView::V_ID=>$npos
-                    
-            ];
+            $btnList= [CstView::V_B_BGN,cstView::V_B_PRV,CstView::V_B_NXT,CstView::V_B_END];
+            foreach ($btnList as $btn) {
+                switch ($btn) {
+                    case CstView::V_B_BGN:
+                        $rpos=0;
+                        break;
+                    case CstView::V_B_PRV:
+                        $rpos=-$pos;
+                        break;
+                    case CstView::V_B_NXT:
+                        $rpos=$npos;
+                        break;
+                    case CstView::V_B_END:
+                        $rpos=-$listSize;
+                        break;
+                }
+                $view[]=
+                [
+                        CstView::V_TYPE=>CstView::V_CREFMENU,
+                        CstView::V_ATTR => $attr,
+                        CstView::V_P_VAL=>$btn,
+                        CstView::V_ID=>$rpos
+                        
+                ];
+            }
         }
         $first = true;
         foreach ($viewL as $elm) {

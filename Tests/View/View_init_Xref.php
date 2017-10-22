@@ -15,7 +15,7 @@ require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 require_once 'View_case_Xref.php';
 
 
-$testRun = true;
+$testRun = 0;
 
 $log=new Logger();
 

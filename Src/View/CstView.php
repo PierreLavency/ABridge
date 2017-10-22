@@ -47,8 +47,11 @@ class CstView
     const V_B_SUBM =  "Submit"; // "buttons"
     const V_B_CANC =  "Cancel";
     const V_B_RFCH =  "Refresh";
+    const V_B_BGN =  "Begin";
+    const V_B_END =  "End";
     const V_B_NXT =  "Next";
     const V_B_PRV =  "Previous";
+    const V_B_SLC =  "Select";
     const V_B_NEW =  "Add";
     const V_COUNTF =  "v_countf";
     const V_CTYP =  "v_ctyp";

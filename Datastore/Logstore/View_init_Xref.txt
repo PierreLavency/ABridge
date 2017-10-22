@@ -82,7 +82,7 @@ a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:1;s:3980:"<!DOCTYPE html>
+ </html>";i:1;s:4340:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -158,10 +158,16 @@ a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
 		11 : 0-10
 	</td>
 	<td>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?FatherOf=0" >Begin</a>
+	</td>
+	<td>
 		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?FatherOf=0" >Previous</a>
 	</td>
 	<td>
 		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?FatherOf=10" >Next</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?FatherOf=-11" >End</a>
 	</td>
 	<td>
 		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/FatherOf?Action=Create" >Add</a>
@@ -230,10 +236,16 @@ a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
 		11 : 0-10
 	</td>
 	<td>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?MotherOf=0" >Begin</a>
+	</td>
+	<td>
 		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?MotherOf=0" >Previous</a>
 	</td>
 	<td>
 		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?MotherOf=10" >Next</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2?MotherOf=-11" >End</a>
 	</td>
 	<td>
 		<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2/MotherOf?Action=Create" >Add</a>

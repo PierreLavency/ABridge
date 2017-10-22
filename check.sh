@@ -51,6 +51,10 @@ echo " Log"
 phpmd Src/Log/ html unusedcode,codesize,naming,design,cleancode,controversial --reportfile tmp/phpMD/Log.html
 echo " View"
 phpmd Src/View/ html unusedcode,codesize,naming,design,cleancode,controversial --reportfile tmp/phpMD/View.html
+echo " Adm"
+phpmd Src/Adm/ html unusedcode,codesize,naming,design,cleancode,controversial --reportfile tmp/phpMD/Adm.html
+echo " Apps"
+phpmd Src/Apps/ html unusedcode,codesize,naming,design,cleancode,controversial --reportfile tmp/phpMD/Apps.html
 echo ""
 echo "phpunit"
 phpunit --coverage-html tmp/Testcoverage
