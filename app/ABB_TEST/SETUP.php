@@ -107,7 +107,9 @@ class Config extends App
 										CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,
 										CstHTML::H_TABLEN=>9
 								],
-								CstView::V_ATTR          => CstHTML::H_T_LIST_BR,
+								CstView::V_ATTR          => [
+										CstHTML::H_TYPE=>CstHTML::H_T_LIST_BR,
+								],
 						]
 				],
 				'attrHtml' => [
@@ -179,7 +181,9 @@ class Config extends App
 										CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,
 										CstHTML::H_TABLEN=>9
 								],
-								CstView::V_ATTR          => CstHTML::H_T_LIST_BR,
+								CstView::V_ATTR          => [
+										CstHTML::H_TYPE=>CstHTML::H_T_LIST_BR,
+								],
 						]
 				],
 				'attrHtml' => [

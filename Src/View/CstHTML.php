@@ -18,6 +18,7 @@ class CstHTML
     const H_T_FORM = "form";
     const H_T_LIST_BR = "listbr";
     const H_T_TABLE = "table";
+    const H_T_TABELBL = "tableLbl";
     const H_T_1TABLE = "1table";
     const H_T_NTABLE = "Ntable";
     const H_T_IMG = "img";

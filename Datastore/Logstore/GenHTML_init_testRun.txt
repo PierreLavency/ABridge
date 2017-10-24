@@ -93,7 +93,7 @@ a:2:{i:0;a:21:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checke
 	</select>
 	<input type="submit" value = Submit >
 </form>  
-";i:19;s:16:" Unknown H_TYPE ";i:20;s:233:"<table >
+";i:19;s:18:" Unknown H_TYPE : ";i:20;s:233:"<table >
 	<tr>
 	<td>
 		<input type = "text" name = "A" value = "a1"  >

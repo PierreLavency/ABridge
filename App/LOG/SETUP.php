@@ -145,17 +145,16 @@ class Config extends App
 										CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,
 										CstHTML::H_TABLEN=>9
 								],
-								CstView::V_ATTR          => CstHTML::H_T_LIST_BR,
+								CstView::V_ATTR          => [
+										CstHTML::H_TYPE=>CstHTML::H_T_LIST_BR,
+										],
 						]
 				],
 				'attrHtml' => [
 						CstMode::V_S_SLCT => [
 								CstMode::V_S_SLCT=>[
 										CstView::V_SLICE=>17,
-										CstView::V_COUNTF=>true,
-										CstView::V_CTYP=>CstView::V_C_TYPN,
-										CstView::V_B_NEW=>false,
-										
+										CstView::V_CREFLBL=>true,
 								]
 						],
 				],
@@ -169,19 +168,14 @@ class Config extends App
 					'attrHtml' => [
 							CstMode::V_S_READ => [
 									'Lines'=>[
-											CstView::V_SLICE=>10,
-											CstView::V_COUNTF=>true,
-											CstView::V_CTYP=>CstView::V_C_TYPN,
 											CstView::V_B_NEW=>false,
 											CstView::V_B_SLC=>true,
+											CstView::V_CREFLBL=>true,
 									]
 							],
 							CstMode::V_S_SLCT => [
 									CstMode::V_S_SLCT=>[
 											CstView::V_SLICE=>15,
-											CstView::V_COUNTF=>true,
-											CstView::V_CTYP=>CstView::V_C_TYPN,
-											CstView::V_B_NEW=>false,
 											
 									]
 							],

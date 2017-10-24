@@ -24,6 +24,7 @@ class CstView
     const V_CLIST =  "v_clist";
     const V_VLIST =  "v_vlist";
     const V_CREF_MLIST =  "v_cref_mlist";
+    const V_CREFLBL =  "v_crfLbl";
     
     const V_ID =  "v_id";
     const V_STRING =  "v_string";
