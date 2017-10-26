@@ -202,12 +202,37 @@ class FileBase extends Base
         return $result;
     }
 
-    public function findObjWheOp($model, $attrList, $opList, $valList)
+    public function findObjWheOp($model, $attrList, $opList, $valList, $ordList)
     {
         if (! $this->existsMod($model)) {
             throw new Exception(CstError::E_ERC022.':'.$model);
         }
         $res= $this->evalWheOp($model, $attrList, $opList, $valList);
+        if ($ordList == []) {
+            return $res;
+        }
+        return $this->buildOrderList($model, $res, $ordList);
+    }
+    
+    private function buildOrderList($model, $list, $ordList)
+    {
+        $sortList=[];
+        $attrSpec= $ordList[0];
+        $attr=$attrSpec[0];
+        foreach ($list as $id) {
+            $sortVal=$id;
+            if ($attr != 'id') {
+                $sortVal=$this->objects[$model][$id][$attr];
+            }
+            $sortList[$id]=$sortVal;
+        }
+        $desc= $attrSpec[1];
+        if ($desc) {
+            arsort($sortList);
+        } else {
+            asort($sortList);
+        }
+        $res= array_keys($sortList);
         return $res;
     }
     

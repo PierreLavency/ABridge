@@ -210,5 +210,5 @@ abstract class Base
     
     abstract protected function findObj($model, $attr, $val);
 
-    abstract protected function findObjWheOp($model, $attrList, $opList, $valList);
+    abstract protected function findObjWheOp($model, $attrList, $opList, $valList, $ordList);
 }

@@ -222,7 +222,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals($id, $h->save());
             $this->assertFalse($h->isErr());
             $this->assertEquals(0, $h->getErrLog()->logSize());
-            $this->assertTrue($h->setCriteria(['Ref'], ['='], [1]));
+            $this->assertTrue($h->setCriteria(['Ref'], ['='], [1], []));
             $this->assertEquals(1, count($h->select()));
             
             $this->assertEquals(8, count($h->getSelPath()));

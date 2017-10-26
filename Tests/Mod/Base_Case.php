@@ -155,27 +155,34 @@ class Base_Case extends PHPUnit_Framework_TestCase
             $j=$i;
             if ($i < ($n/2)) {
                 $j=1;
+            } else {
+                $j=-$i;
             }
             $test= ['CODE'=>$code,'SEVERITY'=>$j];
             $id = $x->newObj(self::$CName, $test);
         }
+        $n2= $n/2;
         $this->assertEquals($id, ($n+2));
         $this->assertEquals(($n/2), count($x->findObj(self::$CName, 'SEVERITY', 1)));
         $this->assertEquals(1, count($x->findObj(self::$CName, 'CODE', '01')));
         $this->assertEquals(1, count($x->findObj(self::$CName, 'id', 1)));
         
-        $this->assertEquals($n+1, count($x->findObjWheOp(self::$CName, [], [], [])));
-        $this->assertEquals(1, count($x->findObjWheOp(self::$CName, ['CODE','SEVERITY'], [], ['01',1])));
+        $this->assertEquals($n+1, count($x->findObjWheOp(self::$CName, [], [], [], [])));
+        $this->assertEquals(1, count($x->findObjWheOp(self::$CName, ['CODE','SEVERITY'], [], ['01',1], [])));
         
-        $this->assertEquals(1, count($x->findObjWheOp(self::$CName, ['CODE','SEVERITY'], [], ['01',1])));
-        $this->assertEquals($n+1, count($x->findObjWheOp(self::$CName, ['SEVERITY'], ['SEVERITY'=>'>'], [0])));
-        $this->assertEquals(0, count($x->findObjWheOp(self::$CName, ['SEVERITY'], ['SEVERITY'=>'<'], [0])));
-        $this->assertEquals(0, count($x->findObjWheOp(self::$CName, ['SEVERITY'], ['SEVERITY'=>'<'], [1])));
-        $this->assertEquals(1, count($x->findObjWheOp(self::$CName, ['id'], ['id'=>'='], [1])));
-        $this->assertEquals(1, count($x->findObjWheOp(self::$CName, ['id'], ['id'=>'<'], [2])));
-        $this->assertEquals(0, count($x->findObjWheOp(self::$CName, ['id'], ['id'=>'>'], [1000])));
-        $this->assertEquals($n+1, count($x->findObjWheOp(self::$CName, ['CODE'], ['CODE'=>'::'], ['0'])));
-        $this->assertEquals(0, count($x->findObjWheOp(self::$CName, ['CODE'], ['CODE'=>'::'], ['x'])));
+        $this->assertEquals(1, count($x->findObjWheOp(self::$CName, ['CODE','SEVERITY'], [], ['01',1], [])));
+        $this->assertEquals($n2+1, count($x->findObjWheOp(self::$CName, ['SEVERITY'], ['SEVERITY'=>'>'], [0], [])));
+        $this->assertEquals($n2, count($x->findObjWheOp(self::$CName, ['SEVERITY'], ['SEVERITY'=>'<'], [0], [])));
+        $this->assertEquals($n2, count($x->findObjWheOp(self::$CName, ['SEVERITY'], ['SEVERITY'=>'<'], [1], [])));
+        $this->assertEquals(1, count($x->findObjWheOp(self::$CName, ['id'], ['id'=>'='], [1], [])));
+        $this->assertEquals(1, count($x->findObjWheOp(self::$CName, ['id'], ['id'=>'<'], [2], [])));
+        $this->assertEquals(0, count($x->findObjWheOp(self::$CName, ['id'], ['id'=>'>'], [1000], [])));
+        $this->assertEquals($n+1, count($x->findObjWheOp(self::$CName, ['CODE'], ['CODE'=>'::'], ['0'], [])));
+        $this->assertEquals(0, count($x->findObjWheOp(self::$CName, ['CODE'], ['CODE'=>'::'], ['x'], [])));
+        
+        $res = $x->findObjWheOp(self::$CName, ['SEVERITY'], ['SEVERITY'=>'<'], [0], [['SEVERITY',false]]);
+        $this->assertEquals($n2, count($res));
+        $this->assertEquals($id, $res[0]);
         
         $x->commit();
     }
@@ -203,14 +210,14 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $this->assertFalse($x->findObj('NOTEXISTS', 'CODE', '01'));
         $r='';
         try {
-            $x->findObjWheOp('NOTEXISTS', ['CODE'], [], ['01']);
+            $x->findObjWheOp('NOTEXISTS', ['CODE'], [], ['01'], []);
         } catch (Exception $e) {
             $r = $e->getMessage();
         }
         $this->assertEquals(CstError::E_ERC022.':NOTEXISTS', $r);
         $r='';
         try {
-            $x->findObjWheOp('NOTEXISTS', ['CODE'], ['='], ['01']);
+            $x->findObjWheOp('NOTEXISTS', ['CODE'], ['='], ['01'], []);
         } catch (Exception $e) {
             $r = $e->getMessage();
         }

@@ -161,7 +161,7 @@ class Config extends App
 		],
 		self::PRFFILE => [
 					'attrList' => [
-							CstView::V_S_REF	=> ['id','Scenario'],
+							CstView::V_S_REF	=> ['ExecTime'],
 							CstView::V_S_CREF => ['id','ExecTime','LoadedLines']
 					],
 
@@ -169,8 +169,8 @@ class Config extends App
 							CstMode::V_S_READ => [
 									'Lines'=>[
 											CstView::V_B_NEW=>false,
-											CstView::V_B_SLC=>true,
 											CstView::V_CREFLBL=>true,
+											CstView::V_B_SLC=>true,
 									]
 							],
 							CstMode::V_S_SLCT => [

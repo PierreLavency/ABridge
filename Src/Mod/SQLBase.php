@@ -8,6 +8,7 @@ use ABridge\ABridge\CstError;
 
 use Exception;
 use Mysqli;
+use function False\tRUE;
 
 class SQLBase extends Base
 {
@@ -359,7 +360,6 @@ class SQLBase extends Base
         return true;
     }
     
-    
     public function newObj($model, $values)
     {
         return $this->newObjId($model, $values, 0);
@@ -451,15 +451,37 @@ class SQLBase extends Base
         }
         return $res;
     }
-        
-    public function findObjWheOp($model, $attrList, $opList, $valList)
+    
+    private function buildOrd($ordList)
+    {
+        $ordString = '';
+        if ($ordList==[]) {
+            return $ordString;
+        }
+        $ordString=' ORDER BY ';
+        $first=true;
+        foreach ($ordList as $attrSpec) {
+            if (! $first) {
+                $ordString= $ordString.' , ';
+            }
+            $ordString=$ordString.$attrSpec[0];
+            if ($attrSpec[1]) {
+                $ordString=$ordString.' DESC ';
+            }
+        }
+        return $ordString;
+    }
+    
+    
+    public function findObjWheOp($model, $attrList, $opList, $valList, $ordList)
     {
         if (! $this->existsMod($model)) {
             throw new Exception(CstError::E_ERC022.':'.$model);
         }
         $res = [];
         $w= $this->buildWheOp($attrList, $opList, $valList);
-        $sql = "SELECT id FROM $model where ". $w;
+        $ordString= $this->buildOrd($ordList);
+        $sql = "SELECT id FROM $model where ". $w.$ordString;
         $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
         $this->logger->logLine($sql, $linfo);
 

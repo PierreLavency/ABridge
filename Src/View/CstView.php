@@ -3,6 +3,7 @@ namespace ABridge\ABridge\View;
 
 class CstView
 {
+    // types of list
     const V_TYPE =  "v_type";
     const V_ELEM =  "v_elem";
     const V_LIST =  "v_list";
@@ -41,6 +42,13 @@ class CstView
     const V_P_REF =  "v_p_ref";
     const V_P_OP =  "v_p_op";
     
+    // Url parameter
+    
+    const V_P_SRT = "Sort";
+    const V_P_DSC = "Desc";
+    const V_P_VEW = "View";
+    
+    // tyeps of views
     
     const V_S_REF =  "reference"; // reference view
     const V_S_CREF =  "creference"; // collection view

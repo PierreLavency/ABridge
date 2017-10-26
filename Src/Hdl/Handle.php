@@ -437,9 +437,9 @@ class Handle
         return $id;
     }
 
-    public function setCriteria($attrL, $opL, $valL)
+    public function setCriteria($attrL, $opL, $valL, $ordL)
     {
-        return $this->obj->setCriteria($attrL, $opL, $valL);
+        return $this->obj->setCriteria($attrL, $opL, $valL, $ordL);
     }
 
     public function select()

@@ -71,7 +71,7 @@ class Adm extends Comp
         }
         $obj = new Model($mod);
 
-        $obj->setCriteria([], [], []);
+        $obj->setCriteria([], [], [], []);
         $res = $obj->select();
         if (count($res)==0) {
             $obj->setVal('Name', $appPrm['name']);

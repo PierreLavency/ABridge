@@ -17,7 +17,7 @@ class Find
     public static function allId($mod)
     {
         $obj = new Model($mod);
-        $obj->setCriteria([], [], []);
+        $obj->setCriteria([], [], [], []);
         $res = $obj->select();
         return $res;
     }

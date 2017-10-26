@@ -1,7 +1,8 @@
 CMD
+h4669ghx
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'X' Src/* App/* Tests/*
+grep -ri 'listHtml' Src/* App/* Tests/*
 
 BUGS	34
 B1 session with API.
@@ -14,7 +15,6 @@ B32 tmp variables not correctly handled in create Mode (see Log app).
 B33 < in selection.
 
 DEV
-- order in list query and attr.
 - implement unique index.
 
 - review init of Handle / Usr.
@@ -80,6 +80,12 @@ INT
 - set up jenkin
 
 DONE
+-----------------//2
+order is selection list
+-----------------//2
+label for tables
+-----------------//0.5
+add end / begin in list
 -----------------//2
 improvement and clean up view
 review getValues/Ref View.

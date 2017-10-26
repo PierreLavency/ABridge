@@ -25,6 +25,7 @@ class View
     protected $name;
 
     protected $topMenu=[];
+    protected $urlPrm=[];
     
     // constructors
 
@@ -257,10 +258,10 @@ class View
     {
         $defList = [
                 CstView::V_SLICE=>10,
-        		CstView::V_CTYP=>CstView::V_C_TYPN,
+                CstView::V_CTYP=>CstView::V_C_TYPN,
                 CstView::V_CVAL=>[CstHTML::H_TYPE=>CstHTML::H_T_TABLE],
-        		CstView::V_CREFLBL=>false,
-        		CstView::V_COUNTF=>true,
+                CstView::V_CREFLBL=>false,
+                CstView::V_COUNTF=>true,
                 CstView::V_B_NEW=>false,
                 CstView::V_B_SLC=>false,
                 CstView::V_B_BGN=>true,
@@ -271,6 +272,7 @@ class View
         $oneList = [
                 CstView::V_CTYP=>CstView::V_C_TYP1,
                 CstView::V_B_SLC=>true,
+                CstView::V_B_NEW=>true,
         ];
         $resList=[];
         if ($res=$this->vew->getSpec($this->modName, $this->name, $viewState, 'attrHtml')) {
@@ -432,7 +434,7 @@ class View
             }
             $v = new View($nh);
             if (isset($spec[CstView::V_CREFLBL]) and  $spec[CstView::V_CREFLBL]) {
-            	return $v->getCrefLbls($viewState);
+                return $v->getCrefLbls($this->handle, $viewState, $this->urlPrm);
             }
             return $v->buildView(CstView::V_S_CREF, true);
         }
@@ -492,13 +494,36 @@ class View
         return $res;
     }
 
-    protected function getCrefLbls($viewState)
+    protected function getCrefLbls($handle, $viewState, $prm)
     {
-    	$lblList= [];
+        $lblList= [];
         $attrList=$this->getAttrList($viewState);
+        if ($viewState != CstMode::V_S_SLCT) {
+            foreach ($attrList as $attr) {
+                $lbl=$this->getLbl($attr);
+                $lblElm=[CstHTML::H_TYPE=>CstHTML::H_T_PLAIN,CstHTML::H_DEFAULT=>$lbl];
+                $lblList[]=$lblElm;
+            }
+            return [CstHTML::H_TYPE=>CstHTML::H_T_TABELBL, CstHTML::H_ARG=>$lblList];
+        }
+        $attrSort = $handle->getPrm(CstView::V_P_SRT, false);
+        $dsc =  $handle->getPrm(CstView::V_P_DSC, false);
+        $prm = [];
+
         foreach ($attrList as $attr) {
-        	$lbl=$this->getLbl($attr);
-        	$lblList[]=[CstHTML::H_TYPE=>CstHTML::H_T_PLAIN, CstHTML::H_DEFAULT=>$lbl];
+            $lbl=$this->getLbl($attr);
+            $prm[CstView::V_P_SRT]=$attr;
+            if ($attr == $attrSort) {
+                if ($dsc) {
+                    $lbl = $lbl . "(-)";
+                } else {
+                    $lbl = $lbl . "(+)";
+                    $prm[CstView::V_P_DSC]=true;
+                }
+            }
+            $lblElm=[CstHTML::H_TYPE=>CstHTML::H_T_SUBMIT,CstHTML::H_LABEL=>$lbl];
+            $lblElm[CstHTML::H_BACTION]=$handle->getUrl($prm);
+            $lblList[]=$lblElm;
         }
         return [CstHTML::H_TYPE=>CstHTML::H_T_TABELBL, CstHTML::H_ARG=>$lblList];
     }
@@ -632,9 +657,9 @@ class View
         $nav=$spec[CstView::V_P_VAL];
         $result[CstHTML::H_LABEL]=$this->getLbl($nav);
         $attr=$spec[CstView::V_ATTR];
-        $prm = [];
+        $prm = $this->urlPrm;
         if (!is_null($this->name)) {
-            $prm['View']=$this->name;
+            $prm[CstView::V_P_VEW]=$this->name;
         }
         switch ($nav) {
             case CstView::V_B_NEW:
@@ -667,7 +692,7 @@ class View
             default:
                 $pos = $spec[CstView::V_ID];
                 $prm[$attr] = $pos;
-                $path=$this->handle->getUrl($prm, $prm);
+                $path=$this->handle->getUrl($prm);
                 if ($viewState == CstMode::V_S_SLCT) {
                     $result[CstHTML::H_TYPE]=CstHTML::H_T_SUBMIT;
                     $result[CstHTML::H_BACTION]=$path;
@@ -729,7 +754,7 @@ class View
             case CstView::V_FORM:
                 $result[CstHTML::H_TYPE]=CstHTML::H_T_FORM;
                 $result[CstHTML::H_ACTION]="POST";
-                $hid = [];
+                $hid = $this->urlPrm;
                 if (!is_null($this->name)) {
                     $hid['View']=$this->name;
                 }
@@ -804,7 +829,6 @@ class View
         $specL=[];
         $specS=[];
         $arg = [];
-        
 
         if (is_null($this->handle) or $this->handle->nullObj()) {
             $topMenu= $this->getTopMenu($viewState);
@@ -927,16 +951,19 @@ class View
     protected function buildList($attr, array $list, $viewState)
     {
         $view = [];
+        $sortAttr=$this->handle->getPrm(CstView::V_P_SRT);
+        if ($sortAttr) {
+            $this->urlPrm[CstView::V_P_SRT]=$sortAttr;
+            $desc=$this->handle->getPrm(CstView::V_P_DSC);
+            if ($desc) {
+                $this->urlPrm[CstView::V_P_DSC]=$desc;
+            }
+        }
         $prm = $this->getAttrHtml($attr, $viewState);
         $view[]=[CstView::V_TYPE=>CstView::V_ELEM,CstView::V_ATTR => $attr, CstView::V_PROP => CstView::V_P_LBL];
         $ctyp=$prm[CstView::V_CTYP];
-        if ($prm[CstView::V_B_SLC]) {
-            $view[]=[
-                    CstView::V_TYPE => CstView::V_CREFMENU,
-                    CstView::V_ATTR => $attr,
-                    CstView::V_P_VAL=> CstView::V_B_SLC];
-        }
-        if ($prm[CstView::V_B_NEW] and ($ctyp == CstView::V_C_TYPN or count($list)==0)) {
+        if ($prm[CstView::V_B_NEW] and
+                ($ctyp == CstView::V_C_TYPN or count($list)==0)) {
             $view[]=[
                     CstView::V_TYPE => CstView::V_CREFMENU,
                     CstView::V_ATTR => $attr,
@@ -949,6 +976,13 @@ class View
                     CstView::V_P_VAL=> CstView::V_C_TYP1,
                     CstView::V_ID=>$list[0]
             ];
+        }
+        if ($prm[CstView::V_B_SLC] and $ctyp == CstView::V_C_TYPN) {
+        	$view[]=[
+        			CstView::V_TYPE => CstView::V_CREFMENU,
+        			CstView::V_ATTR => $attr,
+        			CstView::V_P_VAL=> CstView::V_B_SLC, 
+        	];
         }
         $valList=[];
         if ($ctyp==CstView::V_C_TYPN) {
@@ -979,8 +1013,9 @@ class View
         $listSize=count($list);
         $pos=0;
         $slice = $prm[CstView::V_SLICE];
-        $npos = $this->handle->getPrm($attr); //not work
+        $npos = $this->handle->getPrm($attr);
         if (!is_null($npos)) {
+            $this->urlPrm[$attr]=$npos;
             $pos=(int) $npos;
             if ($pos<0) {
                 $pos=-$pos-$slice;
@@ -998,21 +1033,21 @@ class View
         $viewe=[];
         $first = $prm[CstView::V_CREFLBL];
         foreach ($list as $id) {
-        	if ($first) {
-        		$viewe[]=[
-        				CstView::V_TYPE=>CstView::V_ELEM,
-        				CstView::V_ATTR => $attr,
-        				CstView::V_PROP => CstView::V_P_VAL,
-        				CstView::V_ID=>$id, 
-        				CstView::V_CREFLBL=>true];
-        		$first=false;
-        	}
+            if ($first) {
+                $viewe[]=[
+                        CstView::V_TYPE=>CstView::V_ELEM,
+                        CstView::V_ATTR => $attr,
+                        CstView::V_PROP => CstView::V_P_VAL,
+                        CstView::V_ID=>$id,
+                        CstView::V_CREFLBL=>true];
+                $first=false;
+            }
             $viewe[]=[
-            		CstView::V_TYPE=>CstView::V_ELEM,
-            		CstView::V_ATTR => $attr,
-            		CstView::V_PROP => CstView::V_P_VAL,
-            		CstView::V_ID=>$id
-            		
+                    CstView::V_TYPE=>CstView::V_ELEM,
+                    CstView::V_ATTR => $attr,
+                    CstView::V_PROP => CstView::V_P_VAL,
+                    CstView::V_ID=>$id
+                    
             ];
         }
         if ($prm[CstView::V_COUNTF]) {

@@ -79,18 +79,18 @@ class Model_Slc_Test extends PHPUnit_Framework_TestCase
             $x->setVal('b', $i);
 
             $x->setVal('c', '1959-05-26');
-            $x->save();
+            $id=$x->save();
             $x->getErrLog()->show();
             $this->assertFalse($x->isErr());
         }
 
-        $this->assertTrue($x->setCriteria(['a','b','c'], [], ['Name_1',1,'1959-05-26']));
+        $this->assertTrue($x->setCriteria(['a','b','c'], [], ['Name_1',1,'1959-05-26'], []));
         $this->assertEquals(1, count($x->select()));
-        $this->assertTrue($x->setCriteria(['a'], ['a'=>'>'], ['Name_1']));
+        $this->assertTrue($x->setCriteria(['a'], ['a'=>'>'], ['Name_1'], []));
         $this->assertEquals(18, count($x->select()));
-        $this->assertTrue($x->setCriteria(['b'], ['b'=>'>'], [1]));
+        $this->assertTrue($x->setCriteria(['b'], ['b'=>'>'], [1], []));
         $this->assertEquals(18, count($x->select()));
-        $this->assertTrue($x->setCriteria(['c'], ['b'=>'>'], ['1959-05-26']));
+        $this->assertTrue($x->setCriteria(['c'], ['b'=>'>'], ['1959-05-26'], []));
         $this->assertEquals(20, count($x->select()));
         $x->protect('a');
         $this->assertEquals(1, count($x->select()));
@@ -111,7 +111,7 @@ class Model_Slc_Test extends PHPUnit_Framework_TestCase
         $db->beginTrans();
         
         $x = new Model($this->Student, 1);
-        $this->assertFalse($x->setCriteria(['a','b','xx'], [], ['Name_1',1,'1959-05-26']));
+        $this->assertFalse($x->setCriteria(['a','b','xx'], [], ['Name_1',1,'1959-05-26'], []));
         $this->assertEquals($x->getErrLine(), CstError::E_ERC002.':'.'xx');
         
         $db->commit();

@@ -13,6 +13,7 @@ use ABridge\ABridge\View\View;
 
 
 use ABridge\ABridge\GenJASON;
+use ABridge\ABridge\View\CstView;
 
 class Controler
 {
@@ -21,7 +22,8 @@ class Controler
     protected $spec = [];
     protected $attrL = [];
     protected $valL = [];
-    protected $opL = [];
+    protected $oprL = [];
+    protected $ordL = [];
     protected $logLevel = 0;
     protected $appName ;
     protected $defVal=[];
@@ -152,12 +154,20 @@ class Controler
             $name=$attr.'_OP';
             $val=$c->getPrm($name);
             if (!is_null($val)) {
-                $this->opL[$attr]=$val;
+                $this->oprL[$attr]=$val;
             }
             if ($c->isProtected($attr)) {
                 $this->attrL[]=$attr;
                 $this->valL[]=$c->getVal($attr);
             }
+        }
+        $val = $c->getPrm(CstView::V_P_SRT, false);
+        if ($val) {
+            $desc = $c->getPrm(CstView::V_P_DSC, false);
+            if (is_null($desc)) {
+                $desc=false;
+            }
+            $this->ordL= [[$val,$desc]];
         }
         return (!$c->isErr());
     }
@@ -214,8 +224,9 @@ class Controler
                 if ($action == CstMode::V_S_SLCT) {
                     $valL=$this->valL;
                     $attrL=$this->attrL;
-                    $opL=$this->opL;
-                    $res = $this->handle->setCriteria($attrL, $opL, $valL);
+                    $oprL=$this->oprL;
+                    $ordL=$this->ordL;
+                    $res = $this->handle->setCriteria($attrL, $oprL, $valL, $ordL);
                 }
             }
             if (!$this->handle->isErr()) {

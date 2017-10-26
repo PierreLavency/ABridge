@@ -863,7 +863,7 @@ class Model
         return $this->isModif($attr);
     }
     
-    public function setCriteria(array $attrL, $opL, $valL)
+    public function setCriteria(array $attrL, $opL, $valL, $ordL)
     {
         foreach ($attrL as $attr) {
             if (! $this->existsAttr($attr)) {
@@ -871,7 +871,7 @@ class Model
                 return false;
             };
         }
-        $this->asCriteria=[$attrL,$opL,$valL];
+        $this->asCriteria=[$attrL,$opL,$valL,$ordL];
         return true;
     }
      
@@ -898,7 +898,7 @@ class Model
         }
 
         $mod=$this->getModName();
-        $result=$this->findObjWhe($mod, $res[0], $res[1], $res[2]);
+        $result=$this->findObjWhe($mod, $res[0], $res[1], $res[2], $res[3]);
         return $result;
     }
 
@@ -1051,7 +1051,7 @@ class Model
     }
 
 
-    protected function findObjWhe($mod, $attrLst, $opLst, $valLst)
+    protected function findObjWhe($mod, $attrLst, $opLst, $valLst, $ordLst)
     {
         $hdl = $this->stateHdlr;
         if ($mod != $this->getModName()) {
@@ -1061,7 +1061,7 @@ class Model
         if (!$hdl) {
             throw new exception(CstError::E_ERC017.':'.$mod);
         }
-        $res=$hdl->findObjWheOp($mod, $attrLst, $opLst, $valLst);
+        $res=$hdl->findObjWheOp($mod, $attrLst, $opLst, $valLst, $ordLst);
         return $res;
     }
     
@@ -1076,7 +1076,7 @@ class Model
             }
             $valLst[]=$val;
         }
-        $res=$this->findObjWhe($this->getModName(), $attrLst, [], $valLst);
+        $res=$this->findObjWhe($this->getModName(), $attrLst, [], $valLst, []);
         if ($res == []) {
             return true;
         }
@@ -1159,7 +1159,7 @@ class Model
                 $mod = new Model($apath[1], (int) $apath[2]);
                 $val = $mod->getVal($apath[3]);
             } elseif ($pathLength==2) {
-                $val=$this->findObjWhe($apath[1], [], [], []);
+                $val=$this->findObjWhe($apath[1], [], [], [], []);
             } elseif ($pathLength==3) {
                 $val  = [];
                 if ($this->getid()) {
@@ -1169,7 +1169,7 @@ class Model
         }
         if ($type == Mtype::M_REF) {
             $mod = $this->getModRef($attr);
-            $val=$this->findObjWhe($mod, [], [], []);
+            $val=$this->findObjWhe($mod, [], [], [], []);
         }
         return $val;
     }

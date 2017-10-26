@@ -132,10 +132,10 @@ class GenHTML
         $newLine  = ($level >= 0) ? "\n" : '';
     
         if (isset($dspecL[CstHTML::H_ARG])) {
-        	if ($dspecL[CstHTML::H_TYPE]==CstHTML::H_T_TABELBL) {
-        		$elementS   = '<th>'  ;
-        		$elementES   = '</th>'  ;
-        	}
+            if ($dspecL[CstHTML::H_TYPE]==CstHTML::H_T_TABELBL) {
+                $elementS   = '<th>'  ;
+                $elementES   = '</th>'  ;
+            }
             $elmL = $dspecL[CstHTML::H_ARG];
             foreach ($elmL as $elm) {
                 $result=$result.$tab.$elementS.$newLine;
@@ -409,7 +409,7 @@ class GenHTML
                 $result = $tab.$default.$newLine;
                 break;
             default:
-                $result = ' Unknown H_TYPE : '.$type;
+                $result = ' Unknown H_TYPE '.$type;
         }
         return $result;
     }

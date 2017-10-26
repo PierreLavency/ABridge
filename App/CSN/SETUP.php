@@ -19,15 +19,12 @@ class Config extends App
 		[
 		'Recette'		=> ['dataBase',],
 		'Ingredient' 	=> ['dataBase',],
+		'Step' 			=> ['dataBase',],
 		'UniteMesure'	=> ['dataBase',],
 		'UniteTemps'	=> ['dataBase',],
 		'TypeRecette'	=> ['dataBase',],
 		'NiveauDifficulte' =>['dataBase',],
 		'AbstractCode'	=> ['dataBase','CSN'],	
-		'User'	 	 	=> ['dataBase',],
-		'Role'	 	 	=> ['dataBase',],
-		'Distribution'	=> ['dataBase',],
-		'Session'		=> ['dataBase',],		
 		],
 
 	'View' => [
@@ -62,14 +59,17 @@ class Config extends App
 					],
 					'Description'  => [
 						'attrList' => [
-							CstMode::V_S_READ=> ['Nom','Ingredients','Description',],
+							CstMode::V_S_READ=> ['Nom','Steps','Ingredients','Description',],
 							CstMode::V_S_UPDT=> ['Nom','Description',],							
 						],
 						'attrProp' => [
 								CstMode::V_S_READ =>[CstView::V_P_VAL],
 						],		
 						'attrHtml' => [
-								CstMode::V_S_READ => ['Ingredients'=>[CstView::V_SLICE=>20,CstView::V_COUNTF=>false,CstView::V_CTYP=>CstView::V_C_TYPN]]
+								CstMode::V_S_READ => [
+										'Ingredients'=>[CstView::V_SLICE=>2,CstView::V_COUNTF=>false,CstView::V_CTYP=>CstView::V_C_TYPN],
+										'Steps'=>[CstView::V_SLICE=>2,CstView::V_COUNTF=>false,CstView::V_CTYP=>CstView::V_C_TYPN],
+								]
 						],	
 						'navList' => [CstMode::V_S_READ => [CstMode::V_S_UPDT],
 						],
@@ -91,6 +91,12 @@ class Config extends App
 //					V_S_REF		=> ['Nom'],
 				],
 				'attrHtml' => [
+						CstMode::V_S_SLCT => [
+								CstMode::V_S_SLCT=>[
+										CstView::V_SLICE=>3,
+										CstView::V_CREFLBL=>true,
+								]
+						],
 				],
 				'lblList'  => [
 				],	
@@ -117,25 +123,7 @@ class Config extends App
 				]
 				
 		],
-		'User' =>[		
-			'attrList' => [
-					CstView::V_S_REF		=> ['SurName','Name'],
-				],
-		],
-		'Role' =>[	
-				'attrList' => [
-						CstView::V_S_REF		=> ['Name'],
-				]
 
-		],
-		'Distribution' =>[
-			'attrHtml' => [
-				CstMode::V_S_CREA => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
-				CstMode::V_S_UPDT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
-				CstMode::V_S_SLCT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
-			],
-
-		],
 		],
 	];
 	
@@ -150,12 +138,9 @@ public static	function initMeta($config)
 		
 		$Recette ='Recette';
 		$Ingredient='Ingredient';
+		$Step='Step';
 		
-		$User ='User';
-		$Role = 'Role';
-		$Session ='Session';
-		$Distribution = 'Distribution';
-		
+	
 		// Abstract
 		
 		$obj = new Model($ACode);
@@ -229,9 +214,9 @@ public static	function initMeta($config)
 		$res = $obj->addAttr('Minutes',Mtype::M_INT);
 		$res = $obj->addAttr('Resume',Mtype::M_HTML);
 		$res = $obj->addAttr('Description',Mtype::M_HTML);
+		$res = $obj->addAttr($Step.'s',Mtype::M_CREF,'/'.$Step.'/'.'De');
 		$res = $obj->addAttr($Ingredient.'s',Mtype::M_CREF,'/'.$Ingredient.'/'.'De');
 		$res = $obj->addAttr('Photo',Mtype::M_STRING);
-		$res = $obj->addAttr($User,Mtype::M_REF,'/'.$User);
 		
 		$res = $obj->saveMod();
 		$r = $obj->getErrLog ();
@@ -250,73 +235,19 @@ public static	function initMeta($config)
 		$r = $obj->getErrLog ();
 		$r->show();
 		echo "<br>".$Ingredient."<br>";
+
 		
-		// User
-		
-		$obj = new Model($User);
+		// Steps
+		$obj = new Model($Step);
 		$res= $obj->deleteMod();
+		$res = $obj->addAttr('Nom',Mtype::M_STRING);
+		$res = $obj->addAttr('De',Mtype::M_REF,'/'.$Recette);
 		
-		$res = $obj->addAttr('Name',Mtype::M_STRING);
-		$res = $obj->addAttr('SurName',Mtype::M_STRING);
-		$res = $obj->addAttr('Play',Mtype::M_CREF,'/'.$Distribution.'/toUser');
-		
-		
-		echo "<br>User<br>";
 		$res = $obj->saveMod();
 		$r = $obj->getErrLog ();
 		$r->show();
-		
-		// Role
-		
-		$obj = new Model($Role);
-		$res= $obj->deleteMod();
-		
-		$res = $obj->addAttr('Name',Mtype::M_STRING);
-		$res = $obj->addAttr('JSpec',Mtype::M_JSON);
-		$res = $obj->addAttr('PlayedBy',Mtype::M_CREF,'/'.$Distribution.'/ofRole');
-		
-		echo "<br>$Role<br>";
-		$res = $obj->saveMod();
-		$r = $obj->getErrLog ();
-		$r->show();
-		
-		
-		// Session
-		
-		$obj = new Model($Session);
-		$res= $obj->deleteMod();
-		
-		$res = $obj->addAttr($User,Mtype::M_REF,'/'.$User);
-		$res = $obj->addAttr($Role,Mtype::M_REF,'/'.$Role);
-		$res = $obj->addAttr('Comment',Mtype::M_STRING);
-		$res = $obj->addAttr('BKey',Mtype::M_STRING);
-		$res = $obj->setProp('BKey',Model::P_BKY);
-		
-		
-		echo "<br>Session<br>";
-		$res = $obj->saveMod();
-		$r = $obj->getErrLog ();
-		$r->show();
-		
-		// Distribution
-		
-		$obj = new Model($Distribution);
-		$res= $obj->deleteMod();
-		
-		$path='/'.$Role;
-		$res = $obj->addAttr('ofRole',Mtype::M_REF,$path);
-		$res=$obj->setProp('ofRole', Model::P_MDT); 
-		
-		$path='/'.$User;
-		$res = $obj->addAttr('toUser',Mtype::M_REF,$path);
-		$res=$obj->setProp('toUser', Model::P_MDT); 
-		
-		$obj->setCkey(['ofRole','toUser'],true);
-		
-		echo "<br>Distribution<br>";
-		$res = $obj->saveMod();
-		$r = $obj->getErrLog ();
-		$r->show();
+		echo "<br>".$Ingredient."<br>";
+	
 	}
 	
 public static 	function initData($prm=null)
