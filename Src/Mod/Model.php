@@ -69,10 +69,10 @@ class Model
 
     public function __construct()
     {
-        $a = func_get_args();
-        $i = func_num_args();
-        if (method_exists($this, $f = 'construct'.$i)) {
-            call_user_func_array(array($this, $f), $a);
+        $arg = func_get_args();
+        $argN = func_num_args();
+        if (method_exists($this, $fct = 'construct'.$argN)) {
+            call_user_func_array(array($this, $fct), $arg);
         }
     }
 

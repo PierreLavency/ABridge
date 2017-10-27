@@ -30,8 +30,8 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $db=self::$db;
         $this->assertEquals(self::$baseType, $db->getBaseType());
         $db->beginTrans();
-        $this->assertTrue($db->newMod(self::$CName, $this->meta, $this->meta));
-        $this->assertTrue($db->newMod(self::$CName2, [], []));
+        $this->assertTrue($db->newModId(self::$CName, $this->meta, true, $this->meta));
+        $this->assertTrue($db->newModId(self::$CName2, [], true, []));
         $db->commit();
     }
 
@@ -195,7 +195,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $x = self::$db;
         $x->beginTrans();
         
-        $this->assertFalse($x->newMod(self::$CName, $this->meta, $this->meta));
+        $this->assertFalse($x->newModId(self::$CName, $this->meta, true, $this->meta));
         $this->assertFalse($x->getObj(self::$CName, 0));
         $this->assertTrue($x->delObj(self::$CName, 0));
         $this->assertTrue($x->delObj(self::$CName, 10000));
@@ -301,7 +301,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $this->assertTrue($r);
         $r=false;
         try {
-            $x->newMod('notexists', [], []);
+            $x->newModId('notexists', [], true, []);
         } catch (Exception $e) {
             $r = true;
         }
@@ -378,7 +378,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
             $r=false;
             $x->delMod('test');
             try {
-                $x->newMod('test', $err, $err);
+                $x->newModId('test', $err, true, $err);
             } catch (Exception $e) {
                 $r = true;
             }

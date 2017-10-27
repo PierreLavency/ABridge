@@ -151,7 +151,6 @@ class Type_Test extends PHPUnit_Framework_TestCase
             [Mtype::M_DATE,    'DATE'],
             [Mtype::M_TXT,     'TEXT'],
             [Mtype::M_RTXT,    'TEXT'],
-            ['notexists',   false],
             ];
     }
     

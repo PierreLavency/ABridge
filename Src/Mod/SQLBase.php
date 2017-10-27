@@ -63,9 +63,9 @@ class SQLBase extends Base
     {
         if ($flag) {
             $this->mysqli->query('SET foreign_key_checks = 1');
-        } else {
-            $this->mysqli->query('SET foreign_key_checks = 0');
+            return true;
         }
+        $this->mysqli->query('SET foreign_key_checks = 0');
         return true;
     }
     
@@ -127,11 +127,6 @@ class SQLBase extends Base
         return (parent::close());
     }
  
-    public function newMod($model, $meta, $newList)
-    {
-        return $this->newModId($model, $meta, true, $newList);
-    }
- 
     public function newModId($model, $meta, $idF, $newList)
     {
         if ($this->existsMod($model)) {
@@ -158,7 +153,6 @@ class SQLBase extends Base
         if (isset($newList['attr_typ'])) {
             $attrLst= $newList['attr_typ'];
         }
-
         foreach ($attrLst as $attr => $typ) {
             if ($attr != 'id') {
                 $typ = Mtype::convertSqlType($typ);
@@ -323,10 +317,9 @@ class SQLBase extends Base
         $listSize = count($values);
         foreach ($values as $key => $val) {
             $i++;
+            $sqlVal="'". $val."'";
             if (is_null($val)) {
                 $sqlVal="NULL";
-            } else {
-                $sqlVal="'". $val."'";
             }
             $listVal = $listVal . $key. '=' . $sqlVal;
             if ($i<$listSize) {
@@ -370,35 +363,35 @@ class SQLBase extends Base
         if (! $this->existsMod($model)) {
             return false;
         };
-        $la = '(';
-        $lv = $la;
+        $attrString = '(';
+        $valueString = '(';
+        ;
         $c = count($values);
         if ($id) {
-            $la='(id';
-            $lv="($id";
+            $attrString='(id';
+            $valueString="($id";
             if ($c) {
-                $la=$la.',';
-                $lv=$lv.',';
+                $attrString=$attrString.',';
+                $valueString=$valueString.',';
             }
         }
         $i = 0;
-        foreach ($values as $key => $val) {
+        foreach ($values as $attr => $val) {
             $i++;
-            $la = $la . $key;
+            $attrString = $attrString . $attr;
+            $sqlVal="'". $val."'";
             if (is_null($val)) {
-                $v="NULL";
-            } else {
-                $v="'". $val."'";
+                $sqlVal="NULL";
             }
-            $lv = $lv .$v;
+            $valueString = $valueString .$sqlVal;
             if ($i<$c) {
-                $la = $la.',';
-                $lv = $lv.',';
+                $attrString = $attrString.',';
+                $valueString = $valueString.',';
             }
         }
-        $la = $la. ')';
-        $lv = $lv. ')';
-        $sql = "\n INSERT INTO $model \n $la \n VALUES \n $lv \n";
+        $attrString = $attrString. ')';
+        $valueString = $valueString. ')';
+        $sql = "\n INSERT INTO $model \n $attrString \n VALUES \n $valueString \n";
         $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
         $this->logger->logLine($sql, $linfo);
         if (! $this->mysqli->query($sql)) {
@@ -439,17 +432,15 @@ class SQLBase extends Base
         }
         $attr= array_pop($attrLst);
         $val = array_pop($valLst);
-        $op = '=';
+        $opr = '=';
         if (isset($opLst[$attr])) {
-            $op = $opLst[$attr];
+            $opr = $opLst[$attr];
         }
         $res = $this->buildWheOp($attrLst, $opLst, $valLst);
-        if ($op == '::') {
-            $res = " $attr LIKE '%$val%' and  " . $res;
-        } else {
-            $res = " $attr $op '$val' and  " . $res;
+        if ($opr == '::') {
+            return " $attr LIKE '%$val%' and  " . $res;
         }
-        return $res;
+        return " $attr $opr '$val' and  " . $res;
     }
     
     private function buildOrd($ordList)
@@ -479,12 +470,11 @@ class SQLBase extends Base
             throw new Exception(CstError::E_ERC022.':'.$model);
         }
         $res = [];
-        $w= $this->buildWheOp($attrList, $opList, $valList);
+        $sqlWhere= $this->buildWheOp($attrList, $opList, $valList);
         $ordString= $this->buildOrd($ordList);
-        $sql = "SELECT id FROM $model where ". $w.$ordString;
+        $sql = "SELECT id FROM $model where ". $sqlWhere.$ordString;
         $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
         $this->logger->logLine($sql, $linfo);
-
         $result = $this->mysqli->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {

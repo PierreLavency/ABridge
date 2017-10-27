@@ -978,11 +978,11 @@ class View
             ];
         }
         if ($prm[CstView::V_B_SLC] and $ctyp == CstView::V_C_TYPN) {
-        	$view[]=[
-        			CstView::V_TYPE => CstView::V_CREFMENU,
-        			CstView::V_ATTR => $attr,
-        			CstView::V_P_VAL=> CstView::V_B_SLC, 
-        	];
+            $view[]=[
+                    CstView::V_TYPE => CstView::V_CREFMENU,
+                    CstView::V_ATTR => $attr,
+                    CstView::V_P_VAL=> CstView::V_B_SLC,
+            ];
         }
         $valList=[];
         if ($ctyp==CstView::V_C_TYPN) {

@@ -77,7 +77,7 @@ class ModBase
             if ($inhertFromMod) {
                 return ($this->base->newModId($modName, $newBaseMod, false, $newList));
             }
-            return ($this->base->newMod($modName, $newBaseMod, $newList));
+            return ($this->base->newModId($modName, $newBaseMod, true, $newList));
         }
         
         $oldBaseMod = $this->base->getMod($modName);
@@ -120,9 +120,7 @@ class ModBase
         }
         return ($this->base->putMod($modName, $newBaseMod, $addList, $delList));
     }
-    
-
-    
+       
     public function restoreMod($mod)
     {
         $name = $mod->getModName();

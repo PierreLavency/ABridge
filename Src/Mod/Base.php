@@ -191,9 +191,7 @@ abstract class Base
     abstract protected function remove();
 
     abstract protected static function exists($path, $name);
-
-    abstract protected function newMod($model, $meta, $newist);
-    
+   
     abstract protected function newModId($model, $meta, $id, $newist);
     
     abstract protected function putMod($model, $meta, $addList, $delList);

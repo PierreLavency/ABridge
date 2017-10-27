@@ -33,12 +33,10 @@ DEV
 - set up modif logging / node.js ?
 
 - changed class model independently of DB model.
-
 - database paging
 
 - implement CSS
 
-- parameterize Cref menu actions. /2
 - delete in list./2
 - view sort out persistence/2
 - multi language /2
@@ -80,10 +78,13 @@ INT
 - set up jenkin
 
 DONE
+-----------------//0.5
+clean up of Mod.
 -----------------//2
 order is selection list
 -----------------//2
 label for tables
+parameterize Cref menu actions. /2
 -----------------//0.5
 add end / begin in list
 -----------------//2

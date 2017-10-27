@@ -75,11 +75,6 @@ class FileBase extends Base
         return $r;
     }
     
-    public function newMod($model, $meta, $newList)
-    {
-        return $this->newModId($model, $meta, true, $newList);
-    }
-    
     public function newModId($model, $meta, $idF, $newList)
     {
         $res=parent::newModelId($model, $meta, $idF);
@@ -229,11 +224,10 @@ class FileBase extends Base
         $desc= $attrSpec[1];
         if ($desc) {
             arsort($sortList);
-        } else {
-            asort($sortList);
+            return array_keys($sortList);
         }
-        $res= array_keys($sortList);
-        return $res;
+        asort($sortList);
+        return array_keys($sortList);
     }
     
     private function evalWheOp($model, $attrList, $opList, $valList)

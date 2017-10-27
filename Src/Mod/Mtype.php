@@ -36,9 +36,9 @@ class Mtype
             self::M_TMSTP,self::M_DATE, self::M_ALPHA,self::M_ALNUM,
     ];
     
-    public static function isMtype($x)
+    public static function isMtype($type)
     {
-        return (in_array($x, self::$typeList));
+        return (in_array($type, self::$typeList));
     }
     
     
@@ -63,69 +63,69 @@ class Mtype
         return (! Mtype::isStruct($type));
     }
     
-    public static function convertString($x, $typ)
+    public static function convertString($val, $typ)
     {
-        if (is_string($x)) {
+        if (is_string($val)) {
             $type = self::baseType($typ);
             if ($type== self::M_INTP) {
                 $type=self::M_INT;
             }
-            if ($x=='') {
+            if ($val=='') {
                 return null;
             }
             switch ($type) {
                 case self::M_INT:
-                    if (ctype_digit($x)) {
-                        $x = (int) $x;
-                        return $x;
+                    if (ctype_digit($val)) {
+                        $val = (int) $val;
+                        return $val;
                     };
                     break;
                 case self::M_FLOAT:
-                    if (is_numeric($x)) {
-                        $x = (float) $x;
-                        return $x;
+                    if (is_numeric($val)) {
+                        $val = (float) $val;
+                        return $val;
                     };
                     break;
                 case self::M_BOOL:
-                    if ($x == "false") {
-                        $x = false;
-                        return $x;
+                    if ($val == "false") {
+                        $val = false;
+                        return $val;
                     };
-                    if ($x == "true") {
-                        $x = true;
-                        return $x;
+                    if ($val == "true") {
+                        $val = true;
+                        return $val;
                     };
                     break;
                 default:
-                    return $x;
+                    return $val;
             }
         };
-        return $x;
+        return $val;
     }
         
-    public static function checkType($x, $type)
+    public static function checkType($val, $type)
     {
-        if (is_null($x)) {
+        if (is_null($val)) {
             return true;
         }
         switch ($type) {
             case self::M_DATE:
-                $d=DateTime::createFromFormat(self::M_FORMAT_D, $x);
-                return ($d && $d->format(self::M_FORMAT_D)==$x);
+                $dat=DateTime::createFromFormat(self::M_FORMAT_D, $val);
+                return ($dat && $dat->format(self::M_FORMAT_D)==$val);
             case self::M_TMSTP:
-                $d=DateTime::createFromFormat(self::M_FORMAT_T, $x);
-                return ($d && $d->format(self::M_FORMAT_T)==$x);
+                $dat=DateTime::createFromFormat(self::M_FORMAT_T, $val);
+                return ($dat && $dat->format(self::M_FORMAT_T)==$val);
             case self::M_INT:
-                return is_int($x);
+                return is_int($val);
                 break;
             case self::M_FLOAT:
-                return is_float($x);
+                return is_float($val);
                 break;
             case self::M_BOOL:
-                return is_bool($x);
+                return is_bool($val);
                 break;
             case self::M_STRING:
-                return (is_string($x));
+                return (is_string($val));
                 return false;
                 break;
             case self::M_HTML:
@@ -133,27 +133,27 @@ class Mtype
                 return true;
                 break;
             case self::M_JSON:
-                $r= json_decode($x);
-                return (! is_null($r));
+                $res= json_decode($val);
+                return (! is_null($res));
                 break;
             case self::M_TXT:
-                return ($x===trim(strip_tags($x)));
+                return ($val===trim(strip_tags($val)));
                 break;
             case self::M_ALNUM:
-                if (is_string($x)) {
-                    return ctype_alnum($x);
+                if (is_string($val)) {
+                    return ctype_alnum($val);
                 }
                 return false;
                 break;
             case self::M_ALPHA:
-                if (is_string($x)) {
-                    return ctype_alpha($x);
+                if (is_string($val)) {
+                    return ctype_alpha($val);
                 }
                 return false;
                 break;
             case self::M_INTP:
-                if (is_int($x)) {
-                    return ($x>0);
+                if (is_int($val)) {
+                    return ($val>0);
                 }
                 return false;
                 break;
@@ -174,33 +174,22 @@ class Mtype
     
     public static function convertSqlType($typ)
     {
+        $conv = [
+                self::M_DATE=>'DATE',
+                self::M_TMSTP=>'TIMESTAMP',
+                self::M_INT=>'INT(11)',
+                self::M_FLOAT=>'FLOAT',
+                self::M_BOOL=>'BOOLEAN',
+                self::M_STRING=>'VARCHAR(255)',
+                self::M_TXT=>'TEXT',
+                self::M_RTXT=>'TEXT',
+                self::M_HTML=>'TEXT',
+                self::M_JSON=>'TEXT',
+                self::M_ALNUM=>'VARCHAR(255)',
+                self::M_ALPHA=>'VARCHAR(255)',
+                self::M_INTP=>'INT(11) UNSIGNED',
+        ];
         $type = self::baseType($typ);
-        switch ($type) {
-            case self::M_DATE:
-                return 'DATE';
-            case self::M_TMSTP:
-                return 'TIMESTAMP';
-            case self::M_INT:
-                return 'INT(11)';
-            case self::M_FLOAT:
-                return 'FLOAT';
-            case self::M_BOOL:
-                return 'BOOLEAN';
-            case self::M_STRING:
-                return 'VARCHAR(255)';
-            case self::M_RTXT:
-            case self::M_HTML:
-            case self::M_JSON:
-            case self::M_TXT:
-                return 'TEXT';
-            case self::M_ALNUM:
-                return 'VARCHAR(255)';
-            case self::M_ALPHA:
-                return 'VARCHAR(255)';
-            case self::M_INTP:
-                return 'INT(11) UNSIGNED';
-            default:
-                return false;
-        }
+        return $conv[$type];
     }
 }
