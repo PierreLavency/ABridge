@@ -1,7 +1,8 @@
 
 <?php
 	
-	
+use ABridge\ABridge\Mod\Model;
+
 	$sex = new Model($Code);
 	$res = $sex->setVal('Name','Sexe');
 	$sex_id = $sex->save();	

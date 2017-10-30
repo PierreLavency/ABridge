@@ -1039,6 +1039,7 @@ class Model
     protected function findObjAttr($mod, $attr, $val)
     {
         $hdl = $this->stateHdlr;
+        $obj=$this;
         if ($mod != $this->getModName()) {
             $obj = new Model($mod);
             $hdl = $obj->stateHdlr;
@@ -1046,14 +1047,14 @@ class Model
         if (!$hdl) {
             throw new exception(CstError::E_ERC017.':'.$mod);
         }
-        $res=$hdl->findObj($mod, $attr, $val);
+        $res=$hdl->findObj($obj, $attr, $val);
         return $res;
     }
-
 
     protected function findObjWhe($mod, $attrLst, $opLst, $valLst, $ordLst)
     {
         $hdl = $this->stateHdlr;
+        $obj=$this;
         if ($mod != $this->getModName()) {
             $obj = new Model($mod);
             $hdl = $obj->stateHdlr;
@@ -1061,7 +1062,7 @@ class Model
         if (!$hdl) {
             throw new exception(CstError::E_ERC017.':'.$mod);
         }
-        $res=$hdl->findObjWheOp($mod, $attrLst, $opLst, $valLst, $ordLst);
+        $res=$hdl->findObjWheOp($obj, $attrLst, $opLst, $valLst, $ordLst);
         return $res;
     }
     

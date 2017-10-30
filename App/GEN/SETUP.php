@@ -52,7 +52,7 @@ class Config extends App
 				],
 				'attrList' => [
 					CstView::V_S_CREF 	=> ['id','Sexe','BirthDay','DeathDate','Age','DeathAge','Father','Mother'],
-					CstView::V_S_REF		=> ['SurName','Name'],
+					CstView::V_S_REF	=> ['SurName','Name'],
 				],
 				'attrProp' => [
 					CstMode::V_S_SLCT =>[CstView::V_P_LBL,CstView::V_P_OP,CstView::V_P_VAL],

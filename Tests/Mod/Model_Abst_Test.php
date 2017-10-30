@@ -259,6 +259,7 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals(5, count($x->getVal('BuiltFrom')));
         $db->commit();
     }
+
     /**
      * @dataProvider Provider1
      *
@@ -317,12 +318,36 @@ class Model_Abst_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($tnc, $nc);
         $db->commit();
     }
-    
+    /**
+     * @dataProvider Provider1
+     *
+     /**
+    * @depends testGetMod
+     */
+    public function testSelect($typ)
+    {
+        $this->setTyp($typ);
+        $db=$this->db;
+        $db->beginTrans();
+ 
+        $obj=new Model($this->ABB);
+        $obj->setCriteria([], [], [], []);
+        $res = $obj->select();
+        $na=  $this->napp + $this->ncomp * $this->napp ;
+        $this->assertEquals($na, count($res));
+        
+        $obj->setCriteria(['Name'], ['Name'=>'::'], ['App'], []);
+        $res = $obj->select();
+        $na=  $this->napp;
+        $this->assertEquals($na, count($res));
+        
+        $db->commit();
+    }
     /**
      * @dataProvider Provider1
      *
     /**
-    * @depends testGetMod
+    * @depends testSelect
     */
     public function testDelMod($typ)
     {

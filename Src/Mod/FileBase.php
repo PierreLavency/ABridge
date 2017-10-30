@@ -178,7 +178,7 @@ class FileBase extends Base
             throw new Exception(CstError::E_ERC025);
         }
         if (! $this->existsMod($model)) {
-            return false;
+            throw new Exception(CstError::E_ERC022.':'.$model);
         };
         $result = [];
         foreach ($this->objects[$model] as $id => $list) {
@@ -199,6 +199,32 @@ class FileBase extends Base
 
     public function findObjWheOp($model, $attrList, $opList, $valList, $ordList)
     {
+        $modList=[$model];
+        if (is_array($model)) {
+            $modList=$model;
+        }
+        $sortList=[];
+        if (is_array($model) and $ordList==[]) {
+            $ordList=[['id',false]];
+        }
+        foreach ($modList as $mod) {
+            $res=$this->execFind($mod, $attrList, $opList, $valList, $ordList);
+            $sortList= $sortList+$res;
+        }
+        if ($ordList == []) {
+            return $sortList;
+        }
+        $desc = $ordList[0][1];
+        if ($desc) {
+            arsort($sortList);
+            return array_keys($sortList);
+        }
+        asort($sortList);
+        return array_keys($sortList);
+    }
+    
+    private function execFind($model, $attrList, $opList, $valList, $ordList)
+    {
         if (! $this->existsMod($model)) {
             throw new Exception(CstError::E_ERC022.':'.$model);
         }
@@ -206,14 +232,13 @@ class FileBase extends Base
         if ($ordList == []) {
             return $res;
         }
-        return $this->buildOrderList($model, $res, $ordList);
+        $sortAttr=$ordList[0][0];
+        return $this->buildOrderList($model, $res, $sortAttr);
     }
-    
-    private function buildOrderList($model, $list, $ordList)
+        
+    private function buildOrderList($model, $list, $attr)
     {
         $sortList=[];
-        $attrSpec= $ordList[0];
-        $attr=$attrSpec[0];
         foreach ($list as $id) {
             $sortVal=$id;
             if ($attr != 'id') {
@@ -221,13 +246,7 @@ class FileBase extends Base
             }
             $sortList[$id]=$sortVal;
         }
-        $desc= $attrSpec[1];
-        if ($desc) {
-            arsort($sortList);
-            return array_keys($sortList);
-        }
-        asort($sortList);
-        return array_keys($sortList);
+        return $sortList;
     }
     
     private function evalWheOp($model, $attrList, $opList, $valList)

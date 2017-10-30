@@ -48,6 +48,7 @@ class View
             case CstView::V_S_REF:
                 $dspec = ['id'];
                 return $dspec;
+ 
             case CstMode::V_S_SLCT:
                 $res = array_diff(
                     $this->handle->getAttrList(),
@@ -61,17 +62,13 @@ class View
                     }
                 }
                 return $dspec;
+                
             case CstView::V_S_CREF:
                 $res = array_diff(
                     $this->handle->getAttrList(),
                     ['vnum','ctstp','utstp']
                 );
                 $ref = $this->getAttrList(CstView::V_S_REF);
-                $key = array_search('id', $ref);
-                if ($key!==false) {
-                    unset($ref[$key]);
-                }
-                $res = array_diff($res, $ref);
                 foreach ($res as $attr) {
                     $atyp=$this->handle->getTyp($attr);
                     if ($atyp != Mtype::M_CREF and Mtype::isStruct($atyp)) {
@@ -365,7 +362,7 @@ class View
         $prop = $spec[CstView::V_PROP];
         $res = [];
         
-        if ($prop!=CstView::V_P_VAL) {
+        if ($prop != CstView::V_P_VAL) {
             return $this->elementProp($typ, $attr, $prop, $viewState);
         }
         if (((($viewState == CstMode::V_S_CREA or $viewState == CstMode::V_S_UPDT)
@@ -497,7 +494,7 @@ class View
     protected function getCrefLbls($handle, $viewState, $prm)
     {
         $lblList= [];
-        $attrList=$this->getAttrList($viewState);
+        $attrList=$this->getAttrList(CstView::V_S_CREF);
         if ($viewState != CstMode::V_S_SLCT) {
             foreach ($attrList as $attr) {
                 $lbl=$this->getLbl($attr);

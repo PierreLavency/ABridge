@@ -1,7 +1,6 @@
 <?php
 namespace ABridge\ABridge\Mod;
 
-use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Log\Log;
 
 class ModBase
@@ -108,17 +107,26 @@ class ModBase
         if ($abstractMod) {
             $res= $this->base->putMod($modName, $newBaseMod, [], []);
             if ($changed) {
-                foreach ($this->base->getAllMod() as $smod) {
-                    $baseMod = $this->base->getMod($smod);
-                    if (isset($baseMod['attr_inhnme']) and $baseMod['attr_inhnme']==$modName) {
-                        $baseMod['attr_frg']=$foreignKeyList;
-                        $this->base->putMod($smod, $baseMod, $addList, $delList);
-                    }
+                foreach ($this->getInhMod($modName) as $smod => $baseMod) {
+                    $baseMod['attr_frg']=$foreignKeyList;
+                    $this->base->putMod($smod, $baseMod, $addList, $delList);
                 }
             }
             return $res;
         }
         return ($this->base->putMod($modName, $newBaseMod, $addList, $delList));
+    }
+    
+    protected function getInhMod($modName)
+    {
+        $modNameList=[];
+        foreach ($this->base->getAllMod() as $smod) {
+            $baseMod = $this->base->getMod($smod);
+            if (isset($baseMod['attr_inhnme']) and $baseMod['attr_inhnme']==$modName) {
+                $modNameList[$smod]=$baseMod;
+            }
+        }
+        return $modNameList;
     }
        
     public function restoreMod($mod)
@@ -188,15 +196,25 @@ class ModBase
     }
     
     
-    public function findObj($modN, $attr, $val)
+    public function findObj($mod, $attr, $val)
     {
-        return ($this->base->findObj($modN, $attr, $val));
+        $modName=$mod->getModName();
+        return ($this->base->findObj($modName, $attr, $val));
     }
 
-    public function findObjWheOp($model, $attrList, $opList, $valList, $ordList)
+    public function findObjWheOp($mod, $attrList, $opList, $valList, $ordList)
     {
+        $modName=$mod->getModName();
+        if ($mod->isAbstr()) {
+            $modList=$this->getInhMod($modName);
+            $modNameList=[];
+            foreach ($modList as $modName => $base) {
+                $modNameList[]=$modName;
+            }
+            $modName=$modNameList;
+        }
         return (
-            $this->base->findObjWheOp($model, $attrList, $opList, $valList, $ordList)
+            $this->base->findObjWheOp($modName, $attrList, $opList, $valList, $ordList)
         );
     }
 }

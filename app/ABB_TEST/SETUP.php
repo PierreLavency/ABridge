@@ -96,7 +96,7 @@ class Config extends App
 		'Home' =>
 			['/','/'.self::Session.'/~','/'.self::User.'/~',"/Admin/1"],
 		'MenuExcl' =>
-			["/".self::ABB,"/Admin"],			
+			["/Admin"],			
 		self::Application=> [		
 				'attrList' => [
 					CstView::V_S_REF		=> ['CodeNm'],
@@ -115,7 +115,9 @@ class Config extends App
 				'attrHtml' => [
 					CstMode::V_S_CREA => ['Authenticity'=>CstHTML::H_T_SELECT,'Confidentiality'=>CstHTML::H_T_SELECT,'Availability'=>CstHTML::H_T_SELECT,'Integrity'=>CstHTML::H_T_SELECT,'Style'=>CstHTML::H_T_SELECT,],
 					CstMode::V_S_UPDT => ['Authenticity'=>CstHTML::H_T_SELECT,'Confidentiality'=>CstHTML::H_T_SELECT,'Availability'=>CstHTML::H_T_SELECT,'Integrity'=>CstHTML::H_T_SELECT,'Style'=>CstHTML::H_T_SELECT,],
-					CstMode::V_S_SLCT => ['Authenticity'=>CstHTML::H_T_SELECT,'Confidentiality'=>CstHTML::H_T_SELECT,'Availability'=>CstHTML::H_T_SELECT,'Integrity'=>CstHTML::H_T_SELECT,'Style'=>CstHTML::H_T_SELECT,],
+					CstMode::V_S_SLCT => [								
+								CstMode::V_S_SLCT=>[CstView::V_SLICE=>17,CstView::V_CREFLBL=>true,],
+								'Authenticity'=>CstHTML::H_T_SELECT,'Confidentiality'=>CstHTML::H_T_SELECT,'Availability'=>CstHTML::H_T_SELECT,'Integrity'=>CstHTML::H_T_SELECT,'Style'=>CstHTML::H_T_SELECT,],
 					CstMode::V_S_READ => ['Authenticity'=>CstHTML::H_T_PLAIN,'Confidentiality'=>CstHTML::H_T_PLAIN,'Availability'=>CstHTML::H_T_PLAIN,'Integrity'=>CstHTML::H_T_PLAIN,'Style'=>CstHTML::H_T_PLAIN,],					CstView::V_S_CREF => ['Authenticity'=>CstHTML::H_T_PLAIN,'Confidentiality'=>CstHTML::H_T_PLAIN,'Availability'=>CstHTML::H_T_PLAIN,'Integrity'=>CstHTML::H_T_PLAIN,'Style'=>CstHTML::H_T_PLAIN,],
 				],
 				'lblList'  => [

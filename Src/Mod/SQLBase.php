@@ -410,10 +410,11 @@ class SQLBase extends Base
     public function findObj($model, $attr, $val)
     {
         if (! $this->existsMod($model)) {
-            return false;
+            throw new Exception(CstError::E_ERC022.':'.$model);
         }
         $res = [];
-        $sql = "SELECT id FROM $model where $attr= '$val'";
+        $sqlWhere= " where $attr= '$val' ";
+        $sql = "SELECT id FROM $model". $sqlWhere;
         $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
         $this->logger->logLine($sql, $linfo);
         $result = $this->mysqli->query($sql);
@@ -443,36 +444,63 @@ class SQLBase extends Base
         return " $attr $opr '$val' and  " . $res;
     }
     
-    private function buildOrd($ordList)
+    private function buildOrd($model, $ordList)
     {
-        $ordString = '';
-        if ($ordList==[]) {
-            return $ordString;
+        $sqlOrder = '';
+        if (is_array($model) and $ordList==[]) {
+            $ordList=[['id',false]];
         }
-        $ordString=' ORDER BY ';
+        if ($ordList==[]) {
+            return $sqlOrder;
+        }
+        $sqlOrder=' ORDER BY ';
         $first=true;
         foreach ($ordList as $attrSpec) {
             if (! $first) {
-                $ordString= $ordString.' , ';
+                $sqlOrder= $sqlOrder.' , ';
             }
-            $ordString=$ordString.$attrSpec[0];
+            $sqlOrder=$sqlOrder.$attrSpec[0];
             if ($attrSpec[1]) {
-                $ordString=$ordString.' DESC ';
+                $sqlOrder=$sqlOrder.' DESC ';
             }
         }
-        return $ordString;
+        return $sqlOrder;
     }
     
-    
-    public function findObjWheOp($model, $attrList, $opList, $valList, $ordList)
+    protected function buildUnion($mods, $sqlWhere, $ordList)
     {
+        $sql='';
+        $first=true;
+        foreach ($mods as $mod) {
+            if (! $first) {
+                $sql=$sql.'UNION ( '.$this->buildSelect($mod, $sqlWhere, $ordList).' )';
+            }
+            if ($first) {
+                $sql='('.$this->buildSelect($mod, $sqlWhere, $ordList, $ordList).')';
+                $first=false;
+            }
+        }
+        return $sql;
+    }
+    
+    protected function buildSelect($model, $sqlWhere, $ordList)
+    {
+        if (is_array($model)) {
+            return $this->buildUnion($model, $sqlWhere, $ordList);
+        }
         if (! $this->existsMod($model)) {
             throw new Exception(CstError::E_ERC022.':'.$model);
         }
-        $res = [];
-        $sqlWhere= $this->buildWheOp($attrList, $opList, $valList);
-        $ordString= $this->buildOrd($ordList);
-        $sql = "SELECT id FROM $model where ". $sqlWhere.$ordString;
+        $attrList='id';
+        if ($ordList != [] and $ordList[0][0]!='id') {
+            $attrList=$attrList.','.$ordList[0][0];
+        }
+        return "SELECT $attrList FROM $model where ". $sqlWhere;
+    }
+    
+    protected function execFind($sql)
+    {
+        $res=[];
         $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
         $this->logger->logLine($sql, $linfo);
         $result = $this->mysqli->query($sql);
@@ -482,5 +510,14 @@ class SQLBase extends Base
             }
         }
         return $res;
+    }
+    
+    public function findObjWheOp($model, $attrList, $opList, $valList, $ordList)
+    {
+        $sqlWhere= $this->buildWheOp($attrList, $opList, $valList);
+        $sqlSelect=$this->buildSelect($model, $sqlWhere, $ordList);
+        $sqlOrder= $this->buildOrd($model, $ordList);
+        $sql = $sqlSelect. $sqlOrder;
+        return $this->execFind($sql);
     }
 }

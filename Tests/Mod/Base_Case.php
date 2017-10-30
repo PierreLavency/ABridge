@@ -95,6 +95,8 @@ class Base_Case extends PHPUnit_Framework_TestCase
         }
         $this->assertTrue($r);
         
+        
+        
         self::$db->commit();
     }
     
@@ -160,6 +162,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
             }
             $test= ['CODE'=>$code,'SEVERITY'=>$j];
             $id = $x->newObj(self::$CName, $test);
+            $x->newObjId(self::$CName2, $test, $n+$id);
         }
         $n2= $n/2;
         $this->assertEquals($id, ($n+2));
@@ -184,6 +187,16 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $this->assertEquals($n2, count($res));
         $this->assertEquals($id, $res[0]);
         
+        $res = $x->findObjWheOp([self::$CName2], ['SEVERITY'], ['SEVERITY'=>'<'], [0], [['SEVERITY',false]]);
+        $this->assertEquals($n2, count($res));
+        $this->assertEquals($n+$id, $res[0]);
+        $x->commit();
+        
+        $res = $x->findObjWheOp([self::$CName, self::$CName2], ['SEVERITY'], ['SEVERITY'=>'<'], [0], [['SEVERITY',false]]);
+        $this->assertEquals(2*$n2, count($res));
+        $res = $x->findObjWheOp([self::$CName, self::$CName2], ['SEVERITY'], ['SEVERITY'=>'<'], [0], [['id',true]]);
+        $this->assertEquals(2*$n2, count($res));
+        $this->assertEquals($n+$id, $res[0]);
         $x->commit();
     }
     /**
@@ -207,7 +220,14 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $this->assertFalse($x->newObj('NOTEXISTS', $this->id2));
         $this->assertFalse($x->delObj('NOTEXISTS', $this->id2));
         $this->assertFalse($x->putObj('NOTEXISTS', $this->id1, 1, $this->test2));
-        $this->assertFalse($x->findObj('NOTEXISTS', 'CODE', '01'));
+ //       $this->assertFalse($x->findObj('NOTEXISTS', 'CODE', '01'));
+        $r='';
+        try {
+            $x->findObj('NOTEXISTS', 'CODE', '01');
+        } catch (Exception $e) {
+            $r = $e->getMessage();
+        }
+        $this->assertEquals(CstError::E_ERC022.':NOTEXISTS', $r);
         $r='';
         try {
             $x->findObjWheOp('NOTEXISTS', ['CODE'], [], ['01'], []);
