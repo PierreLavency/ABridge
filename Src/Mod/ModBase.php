@@ -199,6 +199,9 @@ class ModBase
     public function findObj($mod, $attr, $val)
     {
         $modName=$mod->getModName();
+        if ($mod->isAbstr()) {
+            return $this->findObjWheOp($mod, [$attr], [], [$val], []);
+        }
         return ($this->base->findObj($modName, $attr, $val));
     }
 

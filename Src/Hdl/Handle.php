@@ -379,10 +379,15 @@ class Handle
     {
         return $this->obj->getModCref($attr);
     }
-   
-    public function getAbstrNme()
+
+    protected function getAbstrNme()
     {
         return $this->obj->getAbstrNme();
+    }
+    
+    public function isAbstr()
+    {
+        return $this->obj->isAbstr();
     }
    
     public function getModRef($attr)

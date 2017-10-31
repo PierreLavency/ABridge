@@ -1,10 +1,11 @@
 <?php
 
-use ABridge\ABridge\Mod\Mtype;
-use ABridge\ABridge\Mod\Model;
-use ABridge\ABridge\Apps\AdmApp;
 use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\App;
+use ABridge\ABridge\Apps\AdmApp;
+use ABridge\ABridge\Hdl\CstMode;
+use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\View\CstView;
 
 class Config extends App
@@ -25,7 +26,6 @@ class Config extends App
 		'Elm'  => ['dataBase',],
 		'Dir'  => ['dataBase',],
 		'Fle'  => ['dataBase',],
-		'DirElm'  => ['dataBase',],
 		],
 	'View'=> [
 		'Home' =>
@@ -41,19 +41,27 @@ class Config extends App
 					'attrList' =>
 					[
 							CstView::V_S_REF    => ['Name'],
+							CstMode::V_S_READ   => ['id','Name','Of','Dir','Fle','Elements'],
+					],
+					'attrHtml' => [
+							CstMode::V_S_READ => [
+									'Elements'=>[
+											CstView::V_B_NEW=>false,
+											CstView::V_B_SLC=>true,
+									],
+									'Dir'=>[
+											CstView::V_SLICE=>0,
+									],
+									'Fle'=>[
+											CstView::V_SLICE=>0,
+									],
+							],
 					],
 			],
 			'Fle' => [
 					'attrList' =>
 					[
 							CstView::V_S_REF    => ['Name'],
-					],
-			],
-			'DirElm' => [
-					'attrList' =>
-					[
-							CstView::V_S_REF    => ['Dir'],
-							CstView::V_S_CREF   => ['Elm'],
 					],
 			],
 		]
@@ -69,6 +77,7 @@ class Config extends App
 
 		$x->setAbstr();
 		$x->addAttr('Name',Mtype::M_STRING);
+		$x->addAttr('Of', Mtype::M_REF, '/Elm');		
 		
 		$x->saveMod();
 		$x->getErrLog()->show();
@@ -76,10 +85,10 @@ class Config extends App
 		
 		$x=new Model('Dir');
 		$x->deleteMod();		
-		$x->setInhNme('Elm');
-		
-		$x->addAttr('Elments', 	Mtype::M_CREF,	'/DirElm/Dir');
-		$x->addAttr('DotDot',	Mtype::M_CREF,	'/DirElm/Elm');
+		$x->setInhNme('Elm');	
+		$x->addAttr('Elements', 	Mtype::M_CREF,	'/Elm/Of');
+		$x->addAttr('Dir', 		Mtype::M_CREF,	'/Dir/Of');
+		$x->addAttr('Fle', 		Mtype::M_CREF,	'/Fle/Of');
 		
 		$x->saveMod();
 		$x->getErrLog()->show();
@@ -89,25 +98,10 @@ class Config extends App
 		$x->deleteMod();		
 		$x->setInhNme('Elm');
 		
-		$x->addAttr('DotDot',Mtype::M_CREF,'/DirElm/Elm');
 		$x->addAttr('Content', Mtype::M_TXT);
 		
 		$x->saveMod();
-		$x->getErrLog()->show();
-		
-		
-		$obj=new Model('DirElm');
-		$obj->deleteMod();
-		
-		$res = $obj->addAttr('Dir', Mtype::M_REF, '/Dir');
-		$res = $obj->addAttr('Elm', Mtype::M_REF, '/Elm');		
-		$res=$obj->setProp('Dir', Model::P_MDT);
-		$res=$obj->setProp('Elm', Model::P_MDT);	
-		$res=$obj->setProp('Elm', Model::P_BKY);	
-		$obj->setCkey(['Dir','Elm'], true);
-		
-		$obj->saveMod();
-		
+		$x->getErrLog()->show();	
 		
 	}
 	

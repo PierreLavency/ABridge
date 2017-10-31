@@ -860,8 +860,7 @@ class View
                 }
             }
             if ($typ == Mtype::M_CREF) {
-                $list = $this->handle->getVal($attr);
-                $specL[]=$this->buildList($attr, $list, $viewState);
+                $specL[]=$this->buildList($attr, $viewState);
             }
         }
         if ($viewState == CstView::V_S_CREF) {
@@ -903,8 +902,7 @@ class View
                 
         ];
         if ($viewState == CstMode::V_S_SLCT) {
-            $list=$this->handle->select();
-            $specS[]=$this->buildList(CstMode::V_S_SLCT, $list, $viewState);
+            $specS[]=$this->buildList(CstMode::V_S_SLCT, $viewState);
             $arg[] = [
                     CstView::V_TYPE=>CstView::V_LIST,
                     CstView::V_LT=>CstView::V_CLIST,
@@ -945,7 +943,7 @@ class View
         return $r;
     }
     
-    protected function buildList($attr, array $list, $viewState)
+    protected function buildList($attr, $viewState)
     {
         $view = [];
         $sortAttr=$this->handle->getPrm(CstView::V_P_SRT);
@@ -958,31 +956,39 @@ class View
         }
         $prm = $this->getAttrHtml($attr, $viewState);
         $view[]=[CstView::V_TYPE=>CstView::V_ELEM,CstView::V_ATTR => $attr, CstView::V_PROP => CstView::V_P_LBL];
+
+        $slice = $prm[CstView::V_SLICE];
+        $listSize=0;
+        if ($slice) {
+            if ($viewState==CstMode::V_S_SLCT) {
+                $list=$this->handle->select();
+            } else {
+                $list = $this->handle->getVal($attr);
+            }
+            $listSize=count($list);
+        }
         $ctyp=$prm[CstView::V_CTYP];
-        if ($prm[CstView::V_B_NEW] and
-                ($ctyp == CstView::V_C_TYPN or count($list)==0)) {
+        if ($prm[CstView::V_B_NEW] and !$this->handle->isAbstr() and
+                ($ctyp == CstView::V_C_TYPN or $listSize==0)) {
             $view[]=[
                     CstView::V_TYPE => CstView::V_CREFMENU,
                     CstView::V_ATTR => $attr,
                     CstView::V_P_VAL=> CstView::V_B_NEW];
         }
-        if ($prm[CstView::V_B_SLC] and $ctyp == CstView::V_C_TYP1 and count($list)>0) {
-            $view[]=[
+        if ($prm[CstView::V_B_SLC] and count($list) >0) {
+            $viewElm=[
                     CstView::V_TYPE=> CstView::V_CREFMENU,
-                    CstView::V_ATTR => $attr,
-                    CstView::V_P_VAL=> CstView::V_C_TYP1,
-                    CstView::V_ID=>$list[0]
-            ];
-        }
-        if ($prm[CstView::V_B_SLC] and $ctyp == CstView::V_C_TYPN) {
-            $view[]=[
-                    CstView::V_TYPE => CstView::V_CREFMENU,
                     CstView::V_ATTR => $attr,
                     CstView::V_P_VAL=> CstView::V_B_SLC,
             ];
+            if ($ctyp==CstView::V_C_TYP1) {
+                $viewElm[CstView::V_P_VAL]= CstView::V_C_TYP1;
+                $viewElm[CstView::V_ID]=$list[0];
+            }
+            $view[]=$viewElm;
         }
         $valList=[];
-        if ($ctyp==CstView::V_C_TYPN) {
+        if ($ctyp==CstView::V_C_TYPN and $slice > 0) {
             $res = $this->getSlice($attr, $list, $view, $prm);
             $view = $res[0];
             $valList=$res[1];

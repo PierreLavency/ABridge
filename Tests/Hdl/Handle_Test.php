@@ -221,6 +221,7 @@ class Handle_Test extends PHPUnit_Framework_TestCase
             $this->assertTrue($h->existsAttr('User'));
             $this->assertEquals($id, $h->save());
             $this->assertFalse($h->isErr());
+            $this->assertFalse($h->isAbstr());
             $this->assertEquals(0, $h->getErrLog()->logSize());
             $this->assertTrue($h->setCriteria(['Ref'], ['='], [1], []));
             $this->assertEquals(1, count($h->select()));
