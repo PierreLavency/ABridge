@@ -12,6 +12,7 @@ class CstView
     const V_REF =  "v_ref";
     const V_ARG =  "v_arg";
     const V_OBJ =  "v_obj";
+    const V_HEADLIST =  "v_headlist";
     const V_OBJVIEWMENU =  "v_objViewMenu";
     const V_OBJACTIONMENU =  "v_objactionmenu";
     const V_CREFMENU =  "new";

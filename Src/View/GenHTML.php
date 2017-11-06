@@ -171,8 +171,11 @@ class GenHTML
     
     public static function genHTML($dspec, $show = true)
     {
-        $htmlS="<!DOCTYPE html>\n<html>\n<head>\n<title>ABridge</title>";
-        $htmlS= $htmlS."\n</head>\n<body> \n ";
+        $htmlS="<!DOCTYPE html>\n<html>\n<head>\n";
+        $htmlS=$htmlS."<title>ABridge</title>\n";
+        $htmlS=$htmlS.'<link rel="stylesheet" type="text/css" href="/mystyle.css">'."\n";
+        $htmlS= $htmlS."</head>\n";
+        $htmls=$htmlS."<body>\n";
         $htmlSE="\n </body> \n </html>";
         $res=self::genFormElemL($dspec, 0);
         $result = $htmlS.$res.$htmlSE;
@@ -194,6 +197,8 @@ class GenHTML
     
     protected static function genFormElemL($dspec, $level)
     {
+        $divS       ='';
+        $divE       ='';
         $buttonS    = '<input type="submit" value = ';
         $altS       = ' alt="';
         $textareaS  = '<textarea ' ;
@@ -234,6 +239,10 @@ class GenHTML
             switch ($t) {
                 case CstHTML::H_TYPE:
                     $type = $v;
+                    break;
+                case CstHTML::H_DIV:
+                    $divS       ='<div class="'.$v.'">'."\n";
+                    $divE       ='</div>'."\n";
                     break;
                 case CstHTML::H_NAME:
                     $name = $v;
@@ -410,6 +419,10 @@ class GenHTML
                 break;
             default:
                 $result = ' Unknown H_TYPE '.$type;
+        }
+        
+        if ($divS) {
+            $result = $divS . $result . $divE;
         }
         return $result;
     }

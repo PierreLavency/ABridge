@@ -15,7 +15,7 @@ require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 require_once 'View_case_Xref.php';
 
 
-$testRun = true;
+$testRun = false;
 
 $log=new Logger();
 
@@ -60,7 +60,7 @@ for ($i=0; $i<count($test); $i++) {
             ]
             
     ];
-    Vew::get()->init([], $config);
+    Vew::get()->init(['name'=>"test"], $config);
     $v = new View($handle);
     $v->setTopMenu(['/dir']);
     $res = $v->show($s, false);

@@ -99,7 +99,7 @@ class Config extends App
 			["/Admin"],			
 		self::Application=> [		
 				'attrList' => [
-					CstView::V_S_REF		=> ['CodeNm'],
+						CstView::V_S_REF		=> ['CodeNm'],
 				],
 				'listHtml' => [
 						CstMode::V_S_SLCT => [

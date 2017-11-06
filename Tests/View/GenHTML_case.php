@@ -54,6 +54,9 @@ function GenHTLMCases()
     
     $n++;
     $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,CstHTML::H_TABLEN=>2,CstHTML::H_ARG=>[$test[1][0],$test[1][0],$test[1][0]]],$n];
+
+    $n++;
+    $test[$n] = [[CstHTML::H_DIV=>'header', CstHTML::H_TYPE=>CstHTML::H_T_PLAIN,               CstHTML::H_DEFAULT=>"this is a text string in a div"],$n];
     
     return $test;
 }

@@ -65,7 +65,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
                 ]
                 
         ];
-        Vew::get()->init([], $config);
+        Vew::get()->init(['name'=>"test"], $config);
         
         $v = new View($handle);
         $v->setTopMenu(['/dir']);
@@ -103,7 +103,7 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
                 ]
                 
         ];
-        Vew::get()->init([], $config);
+        Vew::get()->init(['name'=>"test"], $config);
         $v = new View($handle);
         $v->setTopMenu(['/dir']);
         $res = $v->show($s, false);

@@ -5,7 +5,7 @@ require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 require_once 'View_case.php';
 
 
-$testRun = true;
+$testRun = false;
 
 $log=new Logger();
 

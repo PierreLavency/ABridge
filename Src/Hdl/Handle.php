@@ -21,10 +21,10 @@ class Handle
  
     public function __construct()
     {
-        $a = func_get_args();
-        $i = func_num_args();
-        if (method_exists($this, $f = 'construct'.$i)) {
-            call_user_func_array(array($this, $f), $a);
+        $arg = func_get_args();
+        $argN = func_num_args();
+        if (method_exists($this, $fct = 'construct'.$argN)) {
+            call_user_func_array(array($this, $fct), $arg);
         }
     }
 
@@ -103,9 +103,9 @@ class Handle
             $this->attrObjs[]=[$mod,$obj];
         }
         if ($this->request->isClassPath()) {
-            $c = count($pathArr);
-            $mod =  $pathArr[$c-1];
-            if ($c == 1) {
+            $pathLength = count($pathArr);
+            $mod =  $pathArr[$pathLength-1];
+            if ($pathLength == 1) {
                 $obj = new Model($mod);
             } else {
                 $obj = $obj->newCref($mod);
@@ -131,11 +131,11 @@ class Handle
         $classL=Mod::get()->getMods();
         if ($this->sessionHdl) {
             $selmenu = $this->sessionHdl->getSelMenu($classL);
-        } else {
-            $selmenu = [];
-            foreach ($classL as $classElm) {
-                $selmenu[]='/'.$classElm;
-            }
+            return $selmenu;
+        }
+        $selmenu = [];
+        foreach ($classL as $classElm) {
+            $selmenu[]='/'.$classElm;
         }
         return $selmenu;
     }
@@ -229,8 +229,7 @@ class Handle
         if (!$res) {
             return null;
         }
-        $h= new Handle($req, $this->sessionHdl, $objs, $obj, $this);
-        return $h;
+        return new Handle($req, $this->sessionHdl, $objs, $obj, $this);
     }
 
     public function getDD()

@@ -1,10 +1,12 @@
-a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
+a:2:{i:0;a:7:{i:0;s:1959:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
+<form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
+test
+
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -82,13 +84,16 @@ a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:1;s:4860:"<!DOCTYPE html>
+ </html>";i:1;s:4918:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <table > <tr>
+test
+
+
+<table > <tr>
 	<td>
 		<a href="/ABridge.php/dir?Action=Select" >dir</a>
 	</td>
@@ -369,13 +374,15 @@ a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
 
 
  </body> 
- </html>";i:2;s:993:"<!DOCTYPE html>
+ </html>";i:2;s:1050:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
+<form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
+test
+
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -431,13 +438,15 @@ a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:3;s:971:"<!DOCTYPE html>
+ </html>";i:3;s:1028:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
+<form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
+test
+
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -493,13 +502,15 @@ a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:4;s:2069:"<!DOCTYPE html>
+ </html>";i:4;s:2126:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
+<form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
+test
+
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
@@ -603,22 +614,22 @@ a:2:{i:0;a:7:{i:0;s:1902:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:5;s:154:"<!DOCTYPE html>
+ </html>";i:5;s:205:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
+<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
 
  </body> 
- </html>";i:6;s:295:"<!DOCTYPE html>
+ </html>";i:6;s:346:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
+<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
 
 Name_2
 

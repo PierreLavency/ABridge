@@ -1,24 +1,38 @@
-a:2:{i:0;a:8:{i:0;s:186:"<!DOCTYPE html>
+a:2:{i:0;a:8:{i:0;s:323:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <table > <tr>
+test
+
+
+<table > <tr>
 	<td>
 		<a href="/ABridge.php/test?Action=Select" >test</a>
 	</td>
 </tr> </table>
 
+<table > <tr>
+</tr> </table>
+
+<table > <tr>
+</tr> </table>
+
+<table >
+</table>
+
 
  </body> 
- </html>";i:1;s:983:"<!DOCTYPE html>
+ </html>";i:1;s:1040:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+test
+
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/test?Action=Select" >test</a>
@@ -82,13 +96,16 @@ a:2:{i:0;a:8:{i:0;s:186:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:2;s:925:"<!DOCTYPE html>
+ </html>";i:2;s:983:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <table > <tr>
+test
+
+
+<table > <tr>
 	<td>
 		<a href="/ABridge.php/test?Action=Select" >test</a>
 	</td>
@@ -161,13 +178,15 @@ a:2:{i:0;a:8:{i:0;s:186:"<!DOCTYPE html>
 
 
  </body> 
- </html>";i:3;s:1046:"<!DOCTYPE html>
+ </html>";i:3;s:1103:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+test
+
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/test?Action=Select" >test</a>
@@ -231,13 +250,15 @@ a:2:{i:0;a:8:{i:0;s:186:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:4;s:914:"<!DOCTYPE html>
+ </html>";i:4;s:971:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+test
+
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/test?Action=Select" >test</a>
@@ -301,13 +322,15 @@ a:2:{i:0;a:8:{i:0;s:186:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:5;s:1926:"<!DOCTYPE html>
+ </html>";i:5;s:1983:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+test
+
 	<table > <tr>
 		<td>
 			<a href="/ABridge.php/test?Action=Select" >test</a>
@@ -411,22 +434,22 @@ a:2:{i:0;a:8:{i:0;s:186:"<!DOCTYPE html>
 </form>  
 
  </body> 
- </html>";i:6;s:129:"<!DOCTYPE html>
+ </html>";i:6;s:180:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <a href="/ABridge.php/test/1" >5 aa</a>
+<a href="/ABridge.php/test/1" >5 aa</a>
 
  </body> 
- </html>";i:7;s:149:"<!DOCTYPE html>
+ </html>";i:7;s:200:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
-<body> 
- <a href="/ABridge.php/test/1" >5 aa</a>
+<a href="/ABridge.php/test/1" >5 aa</a>
 
 5
 

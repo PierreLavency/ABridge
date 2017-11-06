@@ -33,7 +33,16 @@ function viewCases()
     $x->setVal('A3', '2016-12-08');
 
     $x->setVal('A4', 'ceci est un texte');
-    
+    Vew::reset();
+    $config = [
+            'test'=> [
+                    'attrList' => [CstView::V_S_REF        => ['A1','A2'],
+                            'lblList'=>['A1'=>'A1','A2'=>'A2'],
+                    ],
+            ]
+            
+    ];
+    Vew::get()->init(['name'=>"test"], $config);
 
     $request = new Request('/', CstMode::V_S_READ);
     $handle = new Handle('/', CstMode::V_S_READ, null);
@@ -51,16 +60,7 @@ function viewCases()
     $objs=[['test',$x]];
     $handle = new Handle($request, null, $objs, $x, null);
     
-    Vew::reset();
-    $config = [
-            'test'=> [
-                    'attrList' => [CstView::V_S_REF        => ['A1','A2'],
-                    'lblList'=>['A1'=>'A1','A2'=>'A2'],
-                    ],
-            ]
-            
-    ];
-    Vew::get()->init([], $config);
+
     
     $v = new View($handle);
     

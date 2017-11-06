@@ -30,15 +30,38 @@ class Config extends App
 	'View' => [
 		'Home' => ['/',],
 		'MenuExcl' =>["/AbstractCode"],
+		'listHtmlClass' => [
+					CstView::V_HEADLIST=>'header',
+					CstView::V_TOPMENU=>'topnav'
+			],
+		'listHtml'=> [
+					CstMode::V_S_READ=> [
+							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+					],
+					CstMode::V_S_UPDT=> [
+							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+					],
+					CstMode::V_S_CREA=> [
+							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+					],
+					CstMode::V_S_DELT=> [
+							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+					],
+					CstMode::V_S_SLCT=> [
+							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+					],
+		],
+		'modLblList'=>[
+				'CSN' =>'Livre de Recette',	
+			],
 		'Recette'=> [
-		
 				'attrList' => [
 					CstView::V_S_REF		=> ['Nom'],
 					CstView::V_S_CREF	=> ['id','TypeRecette','NiveauDifficulte','Minutes'],
 				],
 				'attrHtml' => [
-
 				],
+
 				'lblList'  => [
 					'NiveauDifficulte'=>'Niveau de difficulte:',
 					'TypeRecette' => 'Type de recette:',
@@ -71,7 +94,10 @@ class Config extends App
 										'Steps'=>[CstView::V_SLICE=>2,CstView::V_COUNTF=>false,CstView::V_CTYP=>CstView::V_C_TYPN],
 								]
 						],	
-						'navList' => [CstMode::V_S_READ => [CstMode::V_S_UPDT],
+						'navList' => [
+								CstMode::V_S_READ => [
+										CstMode::V_S_UPDT
+								],
 						],
 					],
 					'Ingredients' => [

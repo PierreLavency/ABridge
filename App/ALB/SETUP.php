@@ -78,7 +78,7 @@ class Config extends App
 				],
 				'attrHtml' => [
 					CstMode::V_S_READ => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 600,CstHTML::H_COLP=> 400]],
-					CstView::V_S_CREF => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 300,CstHTML::H_COLP=> 100]],
+					CstView::V_S_CREF => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 200,CstHTML::H_COLP=> 50]],
 
 				],	
 				'lblList'  => [

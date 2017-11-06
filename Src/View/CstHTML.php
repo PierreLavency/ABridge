@@ -5,6 +5,7 @@ class CstHTML
 {
     
     const H_TYPE = "type";
+    const H_DIV = "div";
     const H_T_TEXTAREA = "textarea";
     const H_T_SUBMIT = "submit";
     const H_T_TEXT = "text";

@@ -10,6 +10,7 @@ class Vew extends Comp
     private static $instance = null;
     private $viewHandler=[]; // mod => spec
     private $isInit=false;
+    private $appPrm;
     
     private function __construct()
     {
@@ -49,6 +50,7 @@ class Vew extends Comp
     public function init($app, $config)
     {
         $this->isInit=true;
+        $this->appPrm=$app;
         foreach ($config as $mod => $modConf) {
             if ($mod != 'Home' and $mod !='MenuExcl' and $mod !='modLblList') {
                 $speci = $this->getViewPrm($mod);
@@ -71,6 +73,12 @@ class Vew extends Comp
             }
         }
     }
+    
+    public function getAppName()
+    {
+        return $this->appPrm['name'];
+    }
+    
     
     public function begin($prm)
     {
@@ -113,38 +121,34 @@ class Vew extends Comp
         return null;
     }
     
-    public function getSpec($modName, $viewName, $viewState, $specName)
+    public function getSpecState($modName, $viewName, $viewState, $specName)
     {
-        $specMod=$this->getViewPrm($modName);
-        if (is_null($specMod)) {
-            return null;
-        }
-        if ($viewState != CstView::V_S_REF and $viewState != CstView::V_S_CREF and isset($specMod['viewList'])) {
-            $viewList=$specMod['viewList'];
-            if (isset($viewList[$viewName])) {
-                $specView=$viewList[$viewName];
-                $res=$this->getSpecElm($specView, $viewState, $specName);
-                if ($res) {
-                    return $res;
-                }
+        if ($viewState != CstView::V_S_REF and $viewState != CstView::V_S_CREF) {
+            if (isset($this->viewHandler[$modName]['viewList'][$viewName][$specName][$viewState])) {
+                return $this->viewHandler[$modName]['viewList'][$viewName][$specName][$viewState];
             }
         }
-        return $this->getSpecElm($specMod, $viewState, $specName);
+        if (isset($this->viewHandler[$modName][$specName][$viewState])) {
+            return $this->viewHandler[$modName][$specName][$viewState];
+        }
+        if (isset($this->viewHandler[$specName][$viewState])) {
+            return $this->viewHandler[$specName][$viewState];
+        }
+        return null;
     }
     
-    private function getSpecElm($specMod, $viewState, $specName)
+    public function getSpec($modName, $viewName, $specName)
     {
-        if (is_null($specMod)) {
-            return null;
+
+        if (isset($this->viewHandler[$modName]['viewList'][$viewName][$specName])) {
+            return $this->viewHandler[$modName]['viewList'][$viewName][$specName];
         }
-        if (isset($specMod[$specName])) {
-            $specList=$specMod[$specName];
-            if (is_null($viewState)) {
-                return $specList;
-            }
-            if (isset($specList[$viewState])) {
-                return $specList[$viewState];
-            }
+
+        if (isset($this->viewHandler[$modName][$specName])) {
+            return $this->viewHandler[$modName][$specName];
+        }
+        if (isset($this->viewHandler[$specName])) {
+            return $this->viewHandler[$specName];
         }
         return null;
     }
