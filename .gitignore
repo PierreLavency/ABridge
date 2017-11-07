@@ -1,9 +1,9 @@
 tmp/
 vendor/
 Datastore/fileBase/
+Datastore/Logstore/PerfRun/
 Datastore/sqlBase/
 Datastore/Test/
-Datastore/Logstore/
 TestCoverage/
 DataSource/
 Bld/

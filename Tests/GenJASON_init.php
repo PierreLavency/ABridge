@@ -43,7 +43,7 @@ Mod::get()->end();
 
 
 if ($testRun) {
-    $log->save('C:/Users/pierr/ABridge/Datastore/', 'GenJASON_init_Xref_testRun');
+    $log->save('C:/Users/pierr/ABridge/Datastore/', 'GenJASON_init_testRun');
 } else {
-    $log->save('C:/Users/pierr/ABridge/Datastore/', 'GenJASON_init_Xre');
+    $log->save('C:/Users/pierr/ABridge/Datastore/', 'GenJASON_init');
 }
