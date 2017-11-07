@@ -111,7 +111,7 @@ class View
                 CstView::V_CREF          => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
                 CstView::V_CREF_MLIST    => [CstHTML::H_TYPE =>CstHTML::H_T_1TABLE],
                 CstView::V_CVAL          => [CstHTML::H_TYPE =>CstHTML::H_T_TABLE],
-                CstView::V_S_REF         => [CstHTML::H_TYPE =>CstHTML::H_T_CONCAT], // do not change
+//                CstView::V_S_REF         => [CstHTML::H_TYPE =>CstHTML::H_T_CONCAT], // do not change
                 CstView::V_S_CREF        => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR], // caller or callee ?
                 CstView::V_ERROR         => [CstHTML::H_TYPE =>CstHTML::H_T_LIST],
                 
