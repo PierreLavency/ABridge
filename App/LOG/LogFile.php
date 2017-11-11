@@ -45,7 +45,7 @@ class LogFile extends CModel
 	public function save()
 	{
 		$name = $this->mod->getVal('Name');
-		
+		$id = $this->mod->saveN();
 		if ($this->mod->getVal('Load')) {
 			$lineList = $this->mod->getVal('Lines'); 
 			foreach ($lineList as $LineId) {
@@ -60,12 +60,11 @@ class LogFile extends CModel
 				$LineObj=new Model('LogLine');
 				$val=$logger->getLine($i);
 				$LineObj->setVal('Content',$val);
-				$LineObj->setVal('LogFile', $this->mod->getId());
+				$LineObj->setVal('LogFile', $id);
 				$LineObj->save();
 			}
-		}
-		
-		return $this->mod->saveN();
+		}		
+		return $id;
 	}
 	
 	public function delet()

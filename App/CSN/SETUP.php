@@ -31,90 +31,159 @@ class Config extends App
 		'Home' => ['/',],
 		'MenuExcl' =>["/AbstractCode"],
 		'listHtmlClass' => [
-					CstView::V_HEADLIST=>'header',
-					CstView::V_TOPMENU=>'topnav'
+				CstView::V_APPLBLLIST=>[CstHTML::H_DIV,'header'],
+				CstView::V_TOPMENU=>[CstHTML::H_DIV,'topnav'],
+				CstView::V_OBJLBLLIST=>[CstHTML::H_DIV,'subheader'],
+				CstView::V_OBJACTIONMENU=>[CstHTML::H_DIV,'objactionmenu'],
+				CstView::V_VIEWLIST=>[CstHTML::H_DIV,'viewmenu'],
+				CstView::V_OBJLISTVIEW=>[CstHTML::H_DIV,'objlistview'],
+				CstView::V_CREDIT=>[CstHTML::H_DIV,'footer'],
 			],
 		'listHtml'=> [
 					CstMode::V_S_READ=> [
-							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+							cstView::V_OBJACTIONMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
 					],
 					CstMode::V_S_UPDT=> [
-							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+							cstView::V_OBJACTIONMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
 					],
 					CstMode::V_S_CREA=> [
-							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+							cstView::V_OBJACTIONMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
 					],
 					CstMode::V_S_DELT=> [
-							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+							cstView::V_OBJACTIONMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
 					],
 					CstMode::V_S_SLCT=> [
-							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+							cstView::V_TOPMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+							cstView::V_OBJACTIONMENU=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
 					],
 		],
+		'objLblList'=>[CstView::V_OBJLBL, CstView::V_OBJNME],
 		'modLblList'=>[
 				'CSN' =>'Livre de Recette',	
+				'TypeRecette' => 'Type de Recette',
+				'UniteMesure' => 'Unite de Mesure',
+				'NiveauDifficulte'=>'Niveau de Difficulte',
 			],
 		'Recette'=> [
 				'attrList' => [
 					CstView::V_S_REF		=> ['Nom'],
-					CstView::V_S_CREF	=> ['id','TypeRecette','NiveauDifficulte','Minutes'],
+					CstView::V_S_CREF		=> ['id','Photo'],
 				],
 				'attrHtml' => [
+					CstMode::V_S_READ => [
+							'Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 350,CstHTML::H_COLP=> 100]
+					],
+					CstView::V_S_CREF => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 200,CstHTML::H_COLP=> 50]],
+					CstMode::V_S_SLCT => [
+							CstMode::V_S_SLCT =>[
+									CstView::V_SLICE=>4,
+									CstView::V_COUNTF=>true,
+									CstView::V_CTYP=>CstView::V_C_TYPN,
+									CstView::V_CVAL=>[
+											CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,
+											CstHTML::H_TABLEN=>8]
+							]
+					]
 				],
-
 				'lblList'  => [
 					'NiveauDifficulte'=>'Niveau de difficulte:',
 					'TypeRecette' => 'Type de recette:',
 					'Nom'=>'Nom de la recette:',
 					'New'=>'Ajouter',
+					CstView::V_B_BGN=>'Debut',
+					cstView::V_B_PRV=>'Precedent',
+					CstView::V_B_NXT=>'Suivant',
+					CstView::V_B_END=>'Fin',
+						'Steps'=>'Etapes',
+						CstView::V_B_NEW=>'Ajouter',
 				],
 				'viewList' => [
-					'Resume'  => [
-						'attrList' => [
-							CstMode::V_S_READ=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],
-							CstMode::V_S_UPDT=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],
-							CstMode::V_S_CREA=> ['Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],
-							CstMode::V_S_DELT=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Resume','Photo'],							
-						],
-						'attrHtml' => [
-							CstMode::V_S_READ => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 80],0],
-						],	
-					],
-					'Description'  => [
-						'attrList' => [
-							CstMode::V_S_READ=> ['Nom','Steps','Ingredients','Description',],
-							CstMode::V_S_UPDT=> ['Nom','Description',],							
-						],
-						'attrProp' => [
-								CstMode::V_S_READ =>[CstView::V_P_VAL],
-						],		
-						'attrHtml' => [
-								CstMode::V_S_READ => [
-										'Ingredients'=>[CstView::V_SLICE=>2,CstView::V_COUNTF=>false,CstView::V_CTYP=>CstView::V_C_TYPN],
-										'Steps'=>[CstView::V_SLICE=>2,CstView::V_COUNTF=>false,CstView::V_CTYP=>CstView::V_C_TYPN],
-								]
-						],	
-						'navList' => [
-								CstMode::V_S_READ => [
-										CstMode::V_S_UPDT
+	
+					'Caracteristiques'  => [								
+							'beforeViews'=>[
+									'Photo',
+									
+							],
+							'afterViews'=>[
+									'Ingredients',
+									
+							],
+							'attrList' => [
+									CstMode::V_S_READ=> ['TypeRecette','NiveauDifficulte','Minutes','Description',],
+									CstMode::V_S_UPDT=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Description',],
+									CstMode::V_S_CREA=> ['Nom','TypeRecette','NiveauDifficulte','Minutes','Description',],
+									CstMode::V_S_DELT=> ['id','Nom','TypeRecette','NiveauDifficulte','Minutes','Description',],							
+							],
+
+					],						
+						'Description'  => [
+								'beforeViews'=>[
+										'Photo',
+										
 								],
-						],
-					],
+								'afterViews'=>[
+										'Ingredients',
+										
+								],
+								'attrList' => [
+										CstMode::V_S_READ=> ['Steps'],
+										CstMode::V_S_UPDT=> ['Nom'],
+								],
+								'attrProp' => [
+										CstMode::V_S_READ =>[CstView::V_P_VAL],
+								],
+								'attrHtml' => [
+										CstMode::V_S_READ => [
+												'Steps'=>[CstView::V_SLICE=>5,CstView::V_COUNTF=>false,CstView::V_CTYP=>CstView::V_C_TYPN],
+										]
+								],
+								
+						],					
 					'Ingredients' => [
+							'afterViews'=>[
+									'Photo',
+									
+							],
 						'attrList' => [
-							CstMode::V_S_READ=> ['Nom','Ingredients'],							
+							CstMode::V_S_READ=> ['Ingredients'],							
 						],
 						'navList' => [CstMode::V_S_READ => []
 						],
+						'attrHtml' => [
+								CstMode::V_S_READ => [
+										'Ingredients'=>[
+												CstView::V_P_LBL=>true,
+												CstView::V_SLICE=>15,
+												CstView::V_COUNTF=>false,
+												CstView::V_CTYP=>CstView::V_C_TYPN],
+
+								]
+						],	
 					],
-				]
-				
+						
+					'Photo'  => [
+						'attrList' => [
+								CstMode::V_S_READ=> ['Resume','Photo',],
+								CstMode::V_S_UPDT=> ['Resume','Photo'],
+								CstMode::V_S_CREA=> ['Resume','Photo'],
+								CstMode::V_S_DELT=> ['Resume','Photo'],
+								],
+						'attrProp' => [
+								CstMode::V_S_READ =>[CstView::V_P_VAL],
+						],
+					],
+				],
 		],
-		
+						
 		'Ingredient'=> [
 		
 				'attrList' => [
-//					V_S_REF		=> ['Nom'],
+//					CstView::V_S_REF		=> ['Nom'],
+					CstView::V_S_CREF		=> ['id','Nom','Quantite','UniteMesure'],
 				],
 				'attrHtml' => [
 						CstMode::V_S_SLCT => [

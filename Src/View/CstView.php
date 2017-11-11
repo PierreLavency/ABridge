@@ -11,11 +11,11 @@ class CstView
     const V_CVAL =  "v_cval";
     const V_REF =  "v_ref";
     const V_ARG =  "v_arg";
-    const V_OBJ =  "v_obj";
-    const V_HEADLIST =  "v_headlist";
+    const V_TOPLIST =  "v_toplist";
+    const V_APPLBLLIST =  "v_applbllist";
     const V_OBJVIEWMENU =  "v_objViewMenu";
     const V_OBJACTIONMENU =  "v_objactionmenu";
-    const V_CREFMENU =  "new";
+    const V_CREFMENU =  "v_crefmenu";
     const V_TOPMENU =  "v_topMenu";
     const V_ERROR =  "v_error";
     const V_PLAIN =  "v_plain";
@@ -24,9 +24,15 @@ class CstView
     const V_LT =  "v_lt"; // list type
     const V_ALIST =  "v_alist";
     const V_CLIST =  "v_clist";
-    const V_VLIST =  "v_vlist";
+    const V_VIEWLIST =  "v_viewlist";
+    const V_OBJLBLLIST =  "v_objlbllist";
+    const V_OBJVIEWLIST =  "v_objviewlist";
+    const V_OBJLISTVIEW =  "v_objlistview";
+    const V_OBJLBL =  "v_objlbl";
+    const V_OBJNME =  "v_objnme";
     const V_CREF_MLIST =  "v_cref_mlist";
     const V_CREFLBL =  "v_crfLbl";
+    const V_CREDIT =  "v_credit";
     
     const V_ID =  "v_id";
     const V_STRING =  "v_string";

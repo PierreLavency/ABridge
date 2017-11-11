@@ -76,11 +76,12 @@ class UsrApp extends App
                                     ],
                                     CstMode::V_S_SLCT => [
                                             'Role'      =>CstHTML::H_T_SELECT,
-                                            'UserGroup'     =>CstHTML::H_T_SELECT,
+                                            'UserGroup' =>CstHTML::H_T_SELECT,
                                     ],
                             ],
                             'attrList' => [
                                     CstView::V_S_REF        => ['UserId'],
+                                    CstView::V_S_CREF       => ['id','Role','UserGroup'],
                                     CstMode::V_S_SLCT       => ['UserId'],
                             ],
                             'viewList' => [

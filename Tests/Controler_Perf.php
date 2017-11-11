@@ -262,14 +262,6 @@ function saveLog($LogName)
     $_SERVER['PATH_INFO']='/PrfFile';
     $_SERVER['REQUEST_METHOD']='POST';
     $_POST['Name']=$LogName;
-    
-    $hdl=$ctrl->run(false);
-    $hdl->getErrLog()->show();
-    
-    $id=$hdl->getId();
-    $_GET['Action']=CstMode::V_S_UPDT;
-    $_SERVER['PATH_INFO']='/PrfFile/'.$id;
-    $_SERVER['REQUEST_METHOD']='POST';
     $_POST['Load']='true';
     
     $hdl=$ctrl->run(false);

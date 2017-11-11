@@ -244,6 +244,12 @@ class GenHTML
                     $divS       ='<div class="'.$v.'">'."\n";
                     $divE       ='</div>'."\n";
                     break;
+                case CstHTML::H_DIV_S:
+                    $divS       ='<div class="'.$v.'">'."\n";
+                    break;
+                case CstHTML::H_DIV_E:
+                    $divE       ='</div>'."\n";
+                    break;
                 case CstHTML::H_NAME:
                     $name = $v;
                     break;
@@ -422,7 +428,10 @@ class GenHTML
         }
         
         if ($divS) {
-            $result = $divS . $result . $divE;
+            $result = $divS . $result ;
+        }
+        if ($divE) {
+            $result = $result . $divE;
         }
         return $result;
     }

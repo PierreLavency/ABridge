@@ -38,9 +38,9 @@ class View
         $this->vew=Vew::get();
     }
 
-    protected function getAttrList($viewState)
+    protected function getAttrList($viewName, $viewState)
     {
-        if ($res=$this->vew->getSpecState($this->modName, $this->name, $viewState, 'attrList')) {
+        if ($res=$this->vew->getSpecState($this->modName, $viewName, $viewState, 'attrList')) {
             return $res;
         }
         $dspec = [];
@@ -95,14 +95,17 @@ class View
     }
     
     
- 
     protected function getHtmlList($listType, $viewState)
     {
         $htmlList = [
-                CstView::V_VLIST         => [CstHTML::H_TYPE => CstHTML::H_T_1TABLE],
-                CstView::V_OBJ           => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
-                CstView::V_HEADLIST      => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
-                CstView::V_TOPMENU       => [CstHTML::H_TYPE => CstHTML::H_T_1TABLE],
+                CstView::V_CREDIT        => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+                CstView::V_OBJLBLLIST    => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+                CstView::V_OBJVIEWLIST   => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+                CstView::V_OBJLISTVIEW   => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+                CstView::V_VIEWLIST      => [CstHTML::H_TYPE =>CstHTML::H_T_1TABLE],
+                CstView::V_TOPLIST       => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+                CstView::V_APPLBLLIST    => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+                CstView::V_TOPMENU       => [CstHTML::H_TYPE =>CstHTML::H_T_1TABLE],
                 CstView::V_OBJACTIONMENU => [CstHTML::H_TYPE =>CstHTML::H_T_1TABLE],
                 CstView::V_ALIST         => [CstHTML::H_TYPE =>CstHTML::H_T_TABLE],
                 CstView::V_ATTR          => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
@@ -111,9 +114,9 @@ class View
                 CstView::V_CREF          => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
                 CstView::V_CREF_MLIST    => [CstHTML::H_TYPE =>CstHTML::H_T_1TABLE],
                 CstView::V_CVAL          => [CstHTML::H_TYPE =>CstHTML::H_T_TABLE],
-//                CstView::V_S_REF         => [CstHTML::H_TYPE =>CstHTML::H_T_CONCAT], // do not change
-                CstView::V_S_CREF        => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR], // caller or callee ?
                 CstView::V_ERROR         => [CstHTML::H_TYPE =>CstHTML::H_T_LIST],
+                CstView::V_S_CREF        => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR], // caller or callee ?
+                
                 
         ];
         $res=$this->vew->getSpecState($this->modName, $this->name, $viewState, 'listHtml');
@@ -125,7 +128,7 @@ class View
         return $htmlList[$listType];
     }
 
-    protected function getPropList($viewState)
+    protected function getPropList($viewName, $viewState)
     {
         $attrProp=[
                 CstMode::V_S_READ =>[CstView::V_P_LBL,CstView::V_P_VAL],
@@ -137,7 +140,7 @@ class View
                 CstView::V_S_CREF =>[CstView::V_P_VAL],
         ];
         
-        if ($res=$this->vew->getSpecState($this->modName, $this->name, $viewState, 'attrProp')) {
+        if ($res=$this->vew->getSpecState($this->modName, $viewName, $viewState, 'attrProp')) {
             return $res;
         }
         return $attrProp[$viewState];
@@ -166,7 +169,7 @@ class View
                 $action = $classN[1];
             }
             $this->topMenu[]=
-            [CstView::V_TYPE=>CstView::V_TOPMENU,CstView::V_OBJ=>$path,CstView::V_P_VAL=>$action];
+            [CstView::V_TYPE=>CstView::V_TOPMENU,CstView::V_TOPLIST=>$path,CstView::V_P_VAL=>$action];
         }
         return true;
     }
@@ -228,6 +231,17 @@ class View
         return $attr;
     }
 
+    protected function getRelViews($viewName, $rel)
+    {
+        $prop=$rel.'Views';
+        if ($res=$this->vew->getSpec($this->modName, $viewName, $prop)) {
+            if (isset($res)) {
+                return $res;
+            }
+        }
+        return [];
+    }
+    
     protected function getModLbl($mod)
     {
         $lblList = $this->vew->getViewPrm('modLblList');
@@ -261,9 +275,10 @@ class View
         }
     }
 
-    protected function getAttrHtml($attr, $viewState)
+    protected function getAttrHtml($attr, $viewName, $viewState)
     {
         $defList = [
+                CstView::V_P_LBL=>true,
                 CstView::V_SLICE=>10,
                 CstView::V_CTYP=>CstView::V_C_TYPN,
                 CstView::V_CVAL=>[CstHTML::H_TYPE=>CstHTML::H_T_TABLE],
@@ -277,14 +292,16 @@ class View
                 CstView::V_B_END=>true,
         ];
         $oneList = [
+                CstView::V_P_LBL=>true,
                 CstView::V_CTYP=>CstView::V_C_TYP1,
+                CstView::V_SLICE=>1,
                 CstView::V_B_SLC=>true,
                 CstView::V_B_NEW=>true,
         ];
         $resList=[];
-        if ($res=$this->vew->getSpecState($this->modName, $this->name, $viewState, 'attrHtml')) {
-            if (isset($res[$attr])) {
-                $resList= $res[$attr];
+        if ($res=$this->vew->getSpecStateAttr($this->modName, $viewName, $viewState, 'attrHtml', $attr)) {
+            if (isset($res)) {
+                $resList= $res;
             }
         }
         if ($attr == CstMode::V_S_SLCT) { //bof
@@ -315,9 +332,9 @@ class View
     
     protected function getUpAttrHtml($attr, $viewState)
     {
-        if ($res=$this->vew->getSpecState($this->modName, $this->name, $viewState, 'attrHtml')) {
-            if (isset($res[$attr])) {
-                return $res[$attr];
+        if ($res=$this->vew->getSpecStateAttr($this->modName, $this->name, $viewState, 'attrHtml', $attr)) {
+            if (isset($res)) {
+                return $res;
             }
         }
         $typ = $this->handle->getTyp($attr);
@@ -331,36 +348,35 @@ class View
         return $res;
     }
     
-    protected function elementProp($typ, $attr, $prop, $viewState)
+    protected function getObjLblList($viewState)
     {
-        if ($prop == CstView::V_P_OP and $viewState == CstMode::V_S_SLCT) {
-            if ($this->handle->isProtected($attr)) {
-                $res[CstHTML::H_TYPE]=CstHTML::H_T_PLAIN;
-                $res[CstHTML::H_DEFAULT]= '';
-                return $res;
-            }
-            $res[CstHTML::H_TYPE]=CstHTML::H_T_SELECT;
-            $name=$attr.'_OP';
-            $res[CstHTML::H_NAME]=$name;
-            $res[CstHTML::H_VALUES]=[['=','='],['>','>'],['<','<']];
-            if ($typ == Mtype::M_CODE) {
-                $res[CstHTML::H_VALUES]=[['=','=']];
-            }
-            if ($typ == Mtype::M_STRING) {
-                $res[CstHTML::H_VALUES]=[['::','::'],['=','='],['>','>'],['<','<']];
-            }
-            $default=$this->handle->getPrm($name);
-            if (is_null($default)) {
-                $default= '=';
-            }
-            $res[CstHTML::H_DEFAULT]=$default;
-            return $res;
+        $result = [];
+        $lblList = $this->vew->getViewPrm('objLblList');
+        if (! $lblList) {
+            $lblList=[CstView::V_OBJLBL];
         }
-        $lbl=$this->getProp($attr, $prop);
-        $res =[CstHTML::H_TYPE =>CstHTML::H_T_PLAIN, CstHTML::H_DEFAULT=>$lbl];
-        return $res;
+        foreach ($lblList as $lbl) {
+            if ($lbl==CstView::V_OBJLBL) {
+                $name = $this->getModLbl($this->handle->getModName());
+            }
+            if ($lbl==CstView::V_OBJNME) {
+                $name='';
+                if ($viewState != CstMode::V_S_CREA and $viewState != CstMode::V_S_SLCT) {
+                    $name = $this->getRefLbl($this->handle);
+                }
+            }
+            $result[] = [CstView::V_TYPE=> CstView::V_PLAIN,CstView::V_STRING=>$name,];
+        }
+        return $result;
     }
-        
+    
+    protected function getAppLblList($viewState)
+    {
+        $name=$this->getModLbl($this->vew->getAppName());
+        $res = [CstView::V_TYPE=> CstView::V_PLAIN,CstView::V_STRING=>$name,];
+        return [$res];
+    }
+    
     protected function element($spec, $viewState)
     {
         $attr = $spec[CstView::V_ATTR];
@@ -419,31 +435,29 @@ class View
             }
             return $res ;
         }
-        
+      
+        if ($viewState == CstMode::V_S_CREA or $viewState==CstMode::V_S_UPDT) {
+            // Select ?
+            $viewState=CstMode::V_S_READ;
+        }
+    
         if ($viewState == CstView::V_S_CREF and $typ == Mtype::M_REF
         and $this->handle->isMainRef($attr)
         ) {
             return false;
         }
+        
         if ($attr == 'id' and $viewState == CstView::V_S_CREF) {
             return $this->elemRefView($this->handle, CstView::V_S_REF);
         }
         
         if ($typ==Mtype::M_CREF) {
             $id=$spec[CstView::V_ID];
-            if ($attr != CstMode::V_S_SLCT) {
-                $crefHandle=$this->handle->getCref($attr, $id);
-            } else {
-                $crefHandle=$this->handle->getObjId($id);
-            }
-            if (is_null($crefHandle)) {
-                return false;
-            }
-            $v = new View($crefHandle);
+            $lbl=false;
             if (isset($spec[CstView::V_CREFLBL]) and  $spec[CstView::V_CREFLBL]) {
-                return $v->getCrefLbls($this->handle, $viewState, $this->urlPrm);
+                $lbl=true;
             }
-            return $v->buildView(CstView::V_S_CREF, true);
+            return $this->elemCref($attr, $id, $viewState, $lbl);
         }
         
         if ($typ==Mtype::M_REF) {
@@ -454,7 +468,8 @@ class View
         }
 
         $attrVal=$this->handle->getVal($attr);
-        $htyp = $this->getAttrHtml($attr, $viewState);
+        $htyp = $this->getAttrHtml($attr, $this->name, $viewState);
+
         if (is_array($htyp)) {
             $res= $htyp;
         } else {
@@ -500,16 +515,121 @@ class View
         }
         return $res;
     }
-
+    
+    protected function elemLink($url, $lbl)
+    {
+        return [CstHTML::H_TYPE=>CstHTML::H_T_LINK,CstHTML::H_NAME=>$url,CstHTML::H_LABEL=>$lbl];
+    }
+    
+    protected function elemPlain($lbl)
+    {
+        return [CstHTML::H_TYPE=>CstHTML::H_T_PLAIN,CstHTML::H_DEFAULT=>$lbl];
+    }
+    
+    protected function elementProp($typ, $attr, $prop, $viewState)
+    {
+        if ($prop == CstView::V_P_OP and $viewState == CstMode::V_S_SLCT) {
+            if ($this->handle->isProtected($attr)) {
+                return $this->elemPlain('');
+            }
+            $res[CstHTML::H_TYPE]=CstHTML::H_T_SELECT;
+            $name=$attr.'_OP';
+            $res[CstHTML::H_NAME]=$name;
+            $res[CstHTML::H_VALUES]=[['=','='],['>','>'],['<','<']];
+            if ($typ == Mtype::M_CODE) {
+                $res[CstHTML::H_VALUES]=[['=','=']];
+            }
+            if ($typ == Mtype::M_STRING) {
+                $res[CstHTML::H_VALUES]=[['::','::'],['=','='],['>','>'],['<','<']];
+            }
+            $default=$this->handle->getPrm($name);
+            if (is_null($default)) {
+                $default= '=';
+            }
+            $res[CstHTML::H_DEFAULT]=$default;
+            return $res;
+        }
+        $lbl=$this->getProp($attr, $prop);
+        return $this->elemPlain($lbl);
+    }
+    
+    protected function elemCode($attr, $viewState)
+    {
+        $codeHdl=$this->handle->getCodeRef($attr);
+        if (is_null($codeHdl)) {
+            return $this->elemPlain('');
+        }
+        $rep=$this->getAttrHtml($attr, $this->name, $viewState);
+        return $this->elemRefView($codeHdl, $rep);
+    }
+    
+    protected function elemRef($attr, $viewState)
+    {
+        $refHdl=$this->handle->getRef($attr);
+        if (is_null($refHdl)) {
+            return $this->elemPlain('');
+        }
+        $rep=$this->getAttrHtml($attr, $this->name, $viewState);
+        return $this->elemRefView($refHdl, $rep);
+    }
+        
+    protected function elemRefView($refHdl, $rep)
+    {
+        // can be ref / plain / or an object view
+        if ($rep==CstView::V_S_REF) {
+            $refpath = $refHdl->getUrl();
+            $lbl= $this->getRefLbl($refHdl);
+            return $this->elemLink($refpath, $lbl);
+        }
+        if ($rep==CstHTML::H_T_PLAIN) {
+            $lbl= $this->getRefLbl($refHdl);
+            return $this->elemPlain($lbl);
+        }
+        $view= new View($refHdl);
+        $lbl=$view->showRec($rep);
+        return $this->elemPlain($lbl);
+    }
+    
+    protected function getRefLbl($handle)
+    {
+        $elmList=[];
+        if ($res=$this->vew->getSpecState($handle->getmodName(), null, CstView::V_S_REF, 'attrList')) {
+            foreach ($res as $attr) {
+                $elmList[]=$handle->getVal($attr);
+            }
+            $refLbl=implode(' ', $elmList);
+            if (!ctype_space($refLbl)) {
+                return $refLbl;
+            }
+        }
+        return $this->handle->getid();
+    }
+    
+    protected function elemCref($attr, $id, $viewState, $lbl)
+    {
+        if ($attr != CstMode::V_S_SLCT) {
+            $crefHandle=$this->handle->getCref($attr, $id);
+        } else {
+            $crefHandle=$this->handle->getObjId($id);
+        }
+        if (is_null($crefHandle)) {
+            return false;
+        }
+        $v = new View($crefHandle);
+        if ($lbl) {
+            return $v->getCrefLbls($this->handle, $viewState, $this->urlPrm);
+        }
+        return $v->buildView(CstView::V_S_CREF, true);
+    }
+          
     protected function getCrefLbls($handle, $viewState, $prm)
     {
         $lblList= [];
-        $attrList=$this->getAttrList(CstView::V_S_CREF);
+        $attrList=$this->getAttrList($this->name, CstView::V_S_CREF);
         if ($viewState != CstMode::V_S_SLCT) {
             foreach ($attrList as $attr) {
                 $lbl=$this->getLbl($attr);
-                $lblElm=[CstHTML::H_TYPE=>CstHTML::H_T_PLAIN,CstHTML::H_DEFAULT=>$lbl];
-                $lblList[]=$lblElm;
+                $lblList[]=$this->elemPlain($lbl);
             }
             return [CstHTML::H_TYPE=>CstHTML::H_T_TABELBL, CstHTML::H_ARG=>$lblList];
         }
@@ -535,62 +655,8 @@ class View
         return [CstHTML::H_TYPE=>CstHTML::H_T_TABELBL, CstHTML::H_ARG=>$lblList];
     }
     
-    protected function getRefLbl($handle)
-    {
-        $elmList=[];
-        if ($res=$this->vew->getSpecState($handle->getmodName(), null, CstView::V_S_REF, 'attrList')) {
-            foreach ($res as $attr) {
-                $elmList[]=$handle->getVal($attr);
-            }
-            $refLbl=implode(' ', $elmList);
-            if (!ctype_space($refLbl)) {
-                return $refLbl;
-            }
-        }
-        return $this->handle->getid();
-    }
+
      
-    protected function elemCode($attr, $viewState)
-    {
-        $codeHdl=$this->handle->getCodeRef($attr);
-        if (is_null($codeHdl)) {
-            return [CstHTML::H_TYPE =>CstHTML::H_T_PLAIN, CstHTML::H_DEFAULT=>""];
-        }
-        $rep=$this->getAttrHtml($attr, $viewState);
-        return $this->elemRefView($codeHdl, $rep);
-    }
-    
-    protected function elemRef($attr, $viewState)
-    {
-        $refHdl=$this->handle->getRef($attr);
-        if (is_null($refHdl)) {
-            return [CstHTML::H_TYPE =>CstHTML::H_T_PLAIN, CstHTML::H_DEFAULT=>""];
-        }
-        $rep=$this->getAttrHtml($attr, $viewState);
-        return $this->elemRefView($refHdl, $rep);
-    }
- 
-    protected function elemRefView($refHdl, $rep)
-    {
-        // can be ref / plain / or an object view
-        if ($rep==CstView::V_S_REF) {
-            $refpath = $refHdl->getUrl();
-            $res[CstHTML::H_TYPE]= CstHTML::H_T_LINK;
-            $res[CstHTML::H_NAME]= $refpath;
-            $res[CstHTML::H_LABEL]= $this->getRefLbl($refHdl);
-            return $res;
-        }
-        if ($rep==CstHTML::H_T_PLAIN) {
-            $res[CstHTML::H_TYPE]=CstHTML::H_T_PLAIN;
-            $res[CstHTML::H_DEFAULT]= $this->getRefLbl($refHdl);
-            return $res;
-        }
-        $view= new View($refHdl);
-        $res[CstHTML::H_TYPE] = CstHTML::H_T_PLAIN;
-        $res[CstHTML::H_DEFAULT]=$view->showRec($rep);
-        return $res;
-    }
-    
     protected function menuObjView($spec, $viewState)
     {
         if ($viewState != CstMode::V_S_READ) {
@@ -599,14 +665,12 @@ class View
         $viewn=$spec[CstView::V_P_VAL];
         $res= [];
         if ($viewn != $this->name) {
-            $res[CstHTML::H_LABEL]=$this->getLbl($viewn);
-            $res[CstHTML::H_NAME]=$this->handle->getUrl(['View'=>$viewn]);
-            $res[CstHTML::H_TYPE]=CstHTML::H_T_LINK;
-            return $res;
+            $lbl=$this->getLbl($viewn);
+            $url=$this->handle->getUrl(['View'=>$viewn]);
+            return $this->elemLink($url, $lbl);
         }
-        $res[CstHTML::H_TYPE]=CstHTML::H_T_PLAIN;
-        $res[CstHTML::H_DEFAULT]=$this->getLbl($viewn);
-        return $res;
+        $lbl=$this->getLbl($viewn);
+        return $this->elemPlain($lbl);
     }
 
     protected function menuObjAction($nav, $viewState)
@@ -619,7 +683,7 @@ class View
             return $res;
         }
         $res[CstHTML::H_TYPE]=CstHTML::H_T_LINK;
-        $res[CstHTML::H_LABEL]=$this->getLbl($nav);
+        $lbl=$this->getLbl($nav);
         if ($nav==CstView::V_B_CANC) {
                 $nav=CstMode::V_S_READ;
         }
@@ -634,14 +698,13 @@ class View
         if (is_null($path)) {
                 return false;
         }
-        $res[CstHTML::H_NAME]=$path;
-        return $res;
+        return $this->elemLink($path, $lbl);
     }
     
     protected function menuTop($spec, $viewState)
     {
         $res=[];
-        $path=$spec[CstView::V_OBJ];
+        $path=$spec[CstView::V_TOPLIST];
         $res[CstHTML::H_TYPE]=CstHTML::H_T_LINK;
         try {
             $hdl = $this->handle->getNewHdl($path);
@@ -693,7 +756,7 @@ class View
                 $view = new View($crefHandle);
                 $result[CstHTML::H_TYPE]=CstHTML::H_T_LINK;
                 $result[CstHTML::H_NAME]=$crefHandle->getUrl([]);
-                $result[CstHTML::H_LABEL]= $$view->buildView(CstView::V_S_REF, true);
+                $result[CstHTML::H_LABEL]= $view->buildView(CstView::V_S_REF, true);
                 break;
             default:
                 $pos = $spec[CstView::V_ID];
@@ -709,14 +772,6 @@ class View
         }
         return $result;
     }
-    
-    protected function evalo($dspec, $viewState)
-    {
-        $name = $this->handle->getModName();
-        $res =[CstHTML::H_TYPE =>CstHTML::H_T_PLAIN, CstHTML::H_DEFAULT=>$name];
-        return $res;
-    }
-    
     protected function subst($spec, $viewState)
     {
         $type = $spec[CstView::V_TYPE];
@@ -734,21 +789,25 @@ class View
             case CstView::V_TOPMENU:
                 $result= $this->menuTop($spec, $viewState);
                 break;
-            case CstView::V_OBJ:
-                $result= $this->evalo($spec, $viewState);
+            case CstView::V_CREFMENU:
+                $result= $this->menuCref($spec, $viewState);
                 break;
             case CstView::V_LIST:
+                $argSpecList = $spec[CstView::V_ARG];
+                if (is_null($argSpecList)) {
+                    return false;
+                }
                 $listTyp=$spec[CstView::V_LT];
                 if (isset($spec[CstView::V_ATTR])) {
                     $attr = $spec[CstView::V_ATTR];
-                    $aspec = $this->getAttrHtml($attr, $viewState);
+                    $aspec = $this->getAttrHtml($attr, $this->name, $viewState);
                     $result=$aspec[$listTyp];
                 } else {
                     $result= $this->getHtmlList($listTyp, $viewState);
                 }
                 $result[CstHTML::H_SEPARATOR]= ' ';
                 $arg=[];
-                foreach ($spec[CstView::V_ARG] as $elem) {
+                foreach ($argSpecList as $elem) {
                     $r=$this->subst($elem, $viewState);
                     if ($r) {
                         $arg[]=$r;
@@ -757,7 +816,7 @@ class View
                 $result[CstHTML::H_ARG]=$arg;
                 $htmlClass = $this->getHtmlClassList($listTyp);
                 if ($htmlClass) {
-                    $result[CstHTML::H_DIV]=$htmlClass;
+                    $result[$htmlClass[0]]=$htmlClass[1];
                 }
                 break;
             case CstView::V_FORM:
@@ -768,7 +827,7 @@ class View
                     $hid['View']=$this->name;
                 }
                 $path = $this->handle->getUrl($hid);
-                $result[CstHTML::H_HIDDEN]=['vnum'=>$this->handle->getVal('vnum')];
+                $result[CstHTML::H_HIDDEN]=['vnum'=>$this->handle->getVal('vnum')];//??
                 if ($vn = $this->handle->getPrm('vnum', false)) {
                     $result[CstHTML::H_HIDDEN]=['vnum'=>$vn];
                 }
@@ -781,9 +840,6 @@ class View
                     }
                 }
                 $result[CstHTML::H_ARG]=$arg;
-                break;
-            case CstView::V_CREFMENU:
-                    $result= $this->menuCref($spec, $viewState);
                 break;
             case CstView::V_PLAIN:
             case CstView::V_ERROR:
@@ -831,29 +887,31 @@ class View
         $menu = array_unique(array_merge($home, $selmenu));
         $this->setTopMenu($menu);
     }
-
+    
     protected function buildView($viewState, $rec)
     {
         $spec=[];
         $specL=[];
         $specS=[];
         $arg = [];
-        $appName=$this->getModLbl($this->vew->getAppName());
-        $appN=[[CstView::V_TYPE=>CstView::V_PLAIN,CstView::V_STRING=>$appName]];
-        $topMenu= $this->getTopMenu($viewState);
         
+        $appName=$this->getAppLblList($viewState);
+        $topMenu= $this->getTopMenu($viewState);
+        $credit = [[CstView::V_TYPE=>CstView::V_PLAIN,CstView::V_STRING=>'ABridge']];
+               
         $argList=[
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_HEADLIST,CstView::V_ARG=>$appN],
+            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_APPLBLLIST,CstView::V_ARG=>$appName],
             [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_TOPMENU,CstView::V_ARG=>$topMenu],
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_VLIST,CstView::V_ARG=>[]],
+            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJLBLLIST,CstView::V_ARG=>[]],
+            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_VIEWLIST,CstView::V_ARG=>[]],
             [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJACTIONMENU,CstView::V_ARG=>[]],
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_ALIST,CstView::V_ARG=>[]],
+            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_ERROR,CstView::V_ARG=>null],
+            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJVIEWLIST,CstView::V_ARG=>[]],
+            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_CREDIT,CstView::V_ARG=>$credit],
         ];
         
-
-        
         if (is_null($this->handle) or $this->handle->nullObj()) {
-            $speci = [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJ,CstView::V_ARG=>$argList];
+            $speci = [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_TOPLIST,CstView::V_ARG=>$argList];
             return $this->subst($speci, $viewState);
         }
    
@@ -869,7 +927,7 @@ class View
         }
         
         if ($viewState == CstView::V_S_CREF) {
-            foreach ($this->getAttrList($viewState) as $attr) {
+            foreach ($this->getAttrList($this->name, $viewState) as $attr) {
                 $spec[]=[
                         CstView::V_TYPE=>CstView::V_ELEM,CstView::V_ATTR => $attr, CstView::V_PROP => CstView::V_P_VAL
                         
@@ -879,71 +937,92 @@ class View
             return $this->subst($specf, $viewState);
         }
         
-        foreach ($this->getAttrList($viewState) as $attr) {
-            $view =[];
-            $typ= $this->handle->getTyp($attr);
-            if ($typ != Mtype::M_CREF) {
-                foreach ($this->getPropList($viewState) as $prop) {
-                    $view[] = [CstView::V_TYPE=>CstView::V_ELEM,CstView::V_ATTR => $attr, CstView::V_PROP => $prop];
-                }
-                 $spec[]=[CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_ATTR,CstView::V_ARG=>$view];
-            }
-            if ($typ == Mtype::M_CREF and $viewState==CstMode::V_S_READ) {
-                $specL[]=$this->buildList($attr, $viewState);
-            }
-        }
         if ($rec) {
-            $specf = [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_ALIST,CstView::V_ARG=>$spec];
-            return $this->subst($specf, $viewState);
+            $spec=$this->buildViewObj($this->name, $viewState, $rec);
+            return $this->subst($spec, $viewState);
         }
-
-        $menuObjView[]=[CstView::V_TYPE=>CstView::V_OBJ];
-        $menuObjView = array_merge($menuObjView, $this->getMenuObjView($viewState));
-        $argList[2][CstView::V_ARG]=$menuObjView;
         
-        $menuObjAction = $this->getMenuObjAction($viewState);
-        $argList[3][CstView::V_ARG]= $menuObjAction;
-        
-        $argList[4][CstView::V_ARG]= $spec;
-        $arg=$argList;
-        
-        if ($viewState == CstMode::V_S_SLCT) {
-            $specS[]=$this->buildList(CstMode::V_S_SLCT, $viewState);
-            $arg[] = [
-                    CstView::V_TYPE=>CstView::V_LIST,
-                    CstView::V_LT=>CstView::V_CLIST,
-                    CstView::V_ARG=>$specS
-                    
-            ];
-        }
-        if ($this->handle->isErr()) {
-            $arg[]=$this->viewErr();
-        }
-        if ($viewState != CstMode::V_S_READ) {
-            $speci = [
-                    CstView::V_TYPE=>CstView::V_FORM,
-                    CstView::V_LT=>CstView::V_OBJ,
-                    CstView::V_ARG=>$arg
-                    
-            ];
-            return $this->subst($speci, $viewState);
-        }
-        $arg[] = [
+        $argList[2][CstView::V_ARG]=$this->getObjLblList($viewState);
+        $argList[3][CstView::V_ARG]=$this->getMenuObjView($viewState);
+        $argList[4][CstView::V_ARG]=$this->getMenuObjAction($viewState);
+        $argList[5][CstView::V_ARG]=$this->viewErr();
+        $argList[6][CstView::V_ARG]=$this->buildObjView($this->name, $viewState);
+                            
+        $speco =[
                 CstView::V_TYPE=>CstView::V_LIST,
-                CstView::V_LT=>CstView::V_CLIST,
-                CstView::V_ARG=>$specL
+                CstView::V_LT=>CstView::V_TOPLIST,
+                CstView::V_ARG=>$argList
                 
         ];
         $speci = [
-                CstView::V_TYPE=>CstView::V_LIST,
-                CstView::V_LT=>CstView::V_OBJ,
-                CstView::V_ARG=>$arg
+                CstView::V_TYPE=>CstView::V_FORM,
+                CstView::V_ARG=>[$speco]
                 
         ];
         return $this->subst($speci, $viewState);
     }
     
-    protected function buildList($attr, $viewState)
+    protected function buildObjView($viewName, $viewState)
+    {
+        $result = [];
+        $objListView=[CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJLISTVIEW,CstView::V_ARG=>[]];
+        if ($viewState==CstMode::V_S_READ) {
+            $viewList= $this->getRelViews($viewName, 'before');
+            foreach ($viewList as $viewN) {
+                $res= $this->buildViewObj($viewN, $viewState, false);
+                $objListView[CstView::V_ARG]=$res;
+                $result[] = $objListView;
+            }
+        }
+        $objListView[CstView::V_ARG]=$this->buildViewObj($viewName, $viewState, false);
+        $result[] = $objListView;
+        if ($viewState==CstMode::V_S_READ) {
+            $viewList= $this->getRelViews($viewName, 'after');
+            foreach ($viewList as $viewN) {
+                $res= $this->buildViewObj($viewN, $viewState, false);
+                $objListView[CstView::V_ARG]=$res;
+                $result[] = $objListView;
+            }
+        }
+        return $result;
+    }
+    
+    protected function buildViewObj($viewName, $viewState, $rec)
+    {
+        $result=[
+                [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_ALIST,CstView::V_ARG=>[]],
+                [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_CLIST,CstView::V_ARG=>null],
+        ];
+        $spec=[];
+        $specL=[];
+        foreach ($this->getAttrList($viewName, $viewState) as $attr) {
+            $view =[];
+            $typ= $this->handle->getTyp($attr);
+            if ($typ != Mtype::M_CREF) {
+                foreach ($this->getPropList($viewName, $viewState) as $prop) {
+                    $view[] = [CstView::V_TYPE=>CstView::V_ELEM,CstView::V_ATTR => $attr, CstView::V_PROP => $prop];
+                }
+                $spec[]=[CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_ATTR,CstView::V_ARG=>$view];
+            }
+            if ($typ == Mtype::M_CREF and $viewState==CstMode::V_S_READ) {
+                $specL[]=$this->buildList($attr, $viewName, $viewState);
+            }
+        }
+        $result[0][CstView::V_ARG]=$spec;
+        if ($rec) {
+            return $result[0];
+        }
+        if ($viewState == CstMode::V_S_SLCT) {
+            $specS[]=$this->buildList(CstMode::V_S_SLCT, $viewName, $viewState);
+            $result[1][CstView::V_ARG]=$specS;
+        }
+        if ($viewState == CstMode::V_S_READ) {
+            $result[1][CstView::V_ARG]=$specL;
+        }
+        return $result;
+    }
+    
+    protected function buildList($attr, $viewName, $viewState)
     {
         $view = [];
         $valList=[];
@@ -955,7 +1034,7 @@ class View
                 $this->urlPrm[CstView::V_P_DSC]=$desc;
             }
         }
-        $prm = $this->getAttrHtml($attr, $viewState);
+        $prm = $this->getAttrHtml($attr, $viewName, $viewState);
         $slice = $prm[CstView::V_SLICE];
         $ctyp=$prm[CstView::V_CTYP];
         $listSize=0;
@@ -968,14 +1047,17 @@ class View
             $listSize=count($list);
         }
         if ($ctyp==CstView::V_C_TYPN and $slice > 0) {
-            $res = $this->getSlice($attr, $list, $prm);
+            $res = $this->sliceList($attr, $list, $prm);
             $view = $res[0];
             $valList=$res[1];
         }
-        array_unshift(
-            $view,
-            [CstView::V_TYPE=>CstView::V_ELEM,CstView::V_ATTR => $attr, CstView::V_PROP => CstView::V_P_LBL]
-        );
+        if ($prm[CstView::V_P_LBL]) {
+            array_unshift(
+                $view,
+                [CstView::V_TYPE=>CstView::V_ELEM,CstView::V_ATTR => $attr, CstView::V_PROP => CstView::V_P_LBL]
+            );
+        }
+        
         $btnArg=[CstView::V_TYPE=>CstView::V_CREFMENU,CstView::V_ATTR => $attr,];
         if ($prm[CstView::V_B_NEW] and !$this->handle->isAbstr() and
                 ($ctyp == CstView::V_C_TYPN or $listSize==0)) {
@@ -1010,7 +1092,7 @@ class View
         ];
     }
         
-    protected function getSlice($attr, array $list, $prm)
+    protected function sliceList($attr, array $list, $prm)
     {
         $view=[];
         $listSize=count($list);
@@ -1110,7 +1192,7 @@ class View
         $log = $this->handle->getErrLog();
         $logSize=$log->logSize();
         if (!$logSize) {
-            return 0;
+            return null;
         }
         $result=[];
         for ($i=0; $i<$logSize; $i++) {
@@ -1121,12 +1203,6 @@ class View
                     CstView::V_STRING=>$res
             ];
         }
-        $result = [
-                CstView::V_TYPE =>CstView::V_LIST,
-                CstView::V_LT=>CstView::V_ERROR,
-                CstView::V_ARG=>$result
-                
-        ];
         return $result;
     }
 }

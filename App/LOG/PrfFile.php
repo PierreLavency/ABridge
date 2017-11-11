@@ -70,6 +70,7 @@ class PrfFile extends CModel
 		$time = (int) $name;
 		$execTime= date(Mtype::M_FORMAT_T,$time);
 		$this->mod->setValN('ExecTime',$execTime);
+		$id = $this->mod->saveN();
 		
 		if ($this->mod->getVal('Load')) {
 			$this->delLines();
@@ -86,7 +87,7 @@ class PrfFile extends CModel
 				$LineObj=new Model('PrfLine');
 				$val=$logger->getLine($i);
 				$LineObj->setVal('Content',$val);
-				$LineObj->setVal('PrfFile', $this->mod->getId());
+				$LineObj->setVal('PrfFile', $id);
 				$attributes=$logger->getAttributes($i);
 				foreach(self::$attrListCode as $attr) {
 					$LineObj->setVal($attr,self::$decList[$attributes[$attr]]);
@@ -98,7 +99,7 @@ class PrfFile extends CModel
 			}
 		}
 		
-		return $this->mod->saveN();
+		return $id;
 	}
 	
 	protected function delLines() 

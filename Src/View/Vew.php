@@ -121,6 +121,24 @@ class Vew extends Comp
         return null;
     }
     
+    
+    public function getSpecStateAttr($modName, $viewName, $viewState, $specName, $attr)
+    {
+        if ($viewState != CstView::V_S_REF and $viewState != CstView::V_S_CREF) {
+            if (isset($this->viewHandler[$modName]['viewList'][$viewName][$specName][$viewState][$attr])) {
+                return $this->viewHandler[$modName]['viewList'][$viewName][$specName][$viewState][$attr];
+            }
+        }
+        if (isset($this->viewHandler[$modName][$specName][$viewState][$attr])) {
+            return $this->viewHandler[$modName][$specName][$viewState][$attr];
+        }
+        if (isset($this->viewHandler[$specName][$viewState][$attr])) {
+            return $this->viewHandler[$specName][$viewState][$attr];
+        }
+        return null;
+    }
+    
+    
     public function getSpecState($modName, $viewName, $viewState, $specName)
     {
         if ($viewState != CstView::V_S_REF and $viewState != CstView::V_S_CREF) {

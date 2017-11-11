@@ -1,4 +1,4 @@
-a:2:{i:0;a:8:{i:0;s:323:"<!DOCTYPE html>
+a:2:{i:0;a:8:{i:0;s:306:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -13,18 +13,17 @@ test
 	</td>
 </tr> </table>
 
-<table > <tr>
-</tr> </table>
 
 <table > <tr>
 </tr> </table>
 
-<table >
-</table>
+<table > <tr>
+</tr> </table>
+
 
 
  </body> 
- </html>";i:1;s:1040:"<!DOCTYPE html>
+ </html>";i:1;s:973:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -33,75 +32,82 @@ test
 <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
-	<table > <tr>
+
+<table > <tr>
+	<td>
+		<a href="/ABridge.php/test?Action=Select" >test</a>
+	</td>
+</tr> </table>
+
+test
+
+
+<table > <tr>
+	<td>
+		<input type="submit" value = Create >
+	</td>
+	<td>
+		<a href="/ABridge.php/test/1" >Cancel</a>
+	</td>
+</tr> </table>
+
+<table > <tr>
+</tr> </table>
+
+<table >
+	<tr>
 		<td>
-			<a href="/ABridge.php/test?Action=Select" >test</a>
-		</td>
-	</tr> </table>
-	<table > <tr>
-		<td>
-			test
-		</td>
-	</tr> </table>
-	<table > <tr>
-		<td>
-			<input type="submit" value = Create >
+			id
 		</td>
 		<td>
-			<a href="/ABridge.php/test/1" >Cancel</a>
+			0
 		</td>
-	</tr> </table>
-	<table >
-		<tr>
-			<td>
-				id
-			</td>
-			<td>
-				0
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A1
-			</td>
-			<td>
-				<input type = "text" name = "A1"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A2
-			</td>
-			<td>
-				<input type = "text" name = "A2"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A3
-			</td>
-			<td>
-				<input type = "text" name = "A3"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A4
-			</td>
-			<td>
-				<textarea name = "A4"  cols="90"  rows="20"  ></textarea>
-			</td>
-		</tr>
-	</table>
+	</tr>
+	<tr>
+		<td>
+			A1
+		</td>
+		<td>
+			<input type = "text" name = "A1"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A2
+		</td>
+		<td>
+			<input type = "text" name = "A2"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A3
+		</td>
+		<td>
+			<input type = "text" name = "A3"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A4
+		</td>
+		<td>
+			<textarea name = "A4"  cols="90"  rows="20"  ></textarea>
+		</td>
+	</tr>
+</table>
+
+
 </form>  
 
  </body> 
- </html>";i:2;s:983:"<!DOCTYPE html>
+ </html>";i:2;s:1075:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 <link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
 
@@ -111,11 +117,8 @@ test
 	</td>
 </tr> </table>
 
-<table > <tr>
-	<td>
-		test
-	</td>
-</tr> </table>
+test
+
 
 <table > <tr>
 	<td>
@@ -130,6 +133,9 @@ test
 	<td>
 		<a href="/ABridge.php/test?Action=Select" >Select</a>
 	</td>
+</tr> </table>
+
+<table > <tr>
 </tr> </table>
 
 <table >
@@ -177,80 +183,10 @@ test
 
 
 
- </body> 
- </html>";i:3;s:1103:"<!DOCTYPE html>
-<html>
-<head>
-<title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
-</head>
-<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
-test
-
-	<table > <tr>
-		<td>
-			<a href="/ABridge.php/test?Action=Select" >test</a>
-		</td>
-	</tr> </table>
-	<table > <tr>
-		<td>
-			test
-		</td>
-	</tr> </table>
-	<table > <tr>
-		<td>
-			<input type="submit" value = Update >
-		</td>
-		<td>
-			<a href="/ABridge.php/test/1" >Cancel</a>
-		</td>
-	</tr> </table>
-	<table >
-		<tr>
-			<td>
-				id
-			</td>
-			<td>
-				0
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A1
-			</td>
-			<td>
-				<input type = "text" name = "A1" value = "5"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A2
-			</td>
-			<td>
-				<input type = "text" name = "A2" value = "aa"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A3
-			</td>
-			<td>
-				<input type = "text" name = "A3" value = "2016-12-08"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A4
-			</td>
-			<td>
-				<textarea name = "A4"  cols="90"  rows="20"  >ceci est un texte</textarea>
-			</td>
-		</tr>
-	</table>
 </form>  
 
  </body> 
- </html>";i:4;s:971:"<!DOCTYPE html>
+ </html>";i:3;s:1036:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -259,70 +195,76 @@ test
 <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
-	<table > <tr>
+
+<table > <tr>
+	<td>
+		<a href="/ABridge.php/test?Action=Select" >test</a>
+	</td>
+</tr> </table>
+
+test
+
+
+<table > <tr>
+	<td>
+		<input type="submit" value = Update >
+	</td>
+	<td>
+		<a href="/ABridge.php/test/1" >Cancel</a>
+	</td>
+</tr> </table>
+
+<table > <tr>
+</tr> </table>
+
+<table >
+	<tr>
 		<td>
-			<a href="/ABridge.php/test?Action=Select" >test</a>
-		</td>
-	</tr> </table>
-	<table > <tr>
-		<td>
-			test
-		</td>
-	</tr> </table>
-	<table > <tr>
-		<td>
-			<input type="submit" value = Delete >
+			id
 		</td>
 		<td>
-			<a href="/ABridge.php/test/1" >Cancel</a>
+			0
 		</td>
-	</tr> </table>
-	<table >
-		<tr>
-			<td>
-				id
-			</td>
-			<td>
-				0
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A1
-			</td>
-			<td>
-				5
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A2
-			</td>
-			<td>
-				aa
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A3
-			</td>
-			<td>
-				2016-12-08
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A4
-			</td>
-			<td>
-				<textarea name = "" disabled cols="90"  rows="20"  >ceci est un texte</textarea>
-			</td>
-		</tr>
-	</table>
+	</tr>
+	<tr>
+		<td>
+			A1
+		</td>
+		<td>
+			<input type = "text" name = "A1" value = "5"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A2
+		</td>
+		<td>
+			<input type = "text" name = "A2" value = "aa"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A3
+		</td>
+		<td>
+			<input type = "text" name = "A3" value = "2016-12-08"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A4
+		</td>
+		<td>
+			<textarea name = "A4"  cols="90"  rows="20"  >ceci est un texte</textarea>
+		</td>
+	</tr>
+</table>
+
+
 </form>  
 
  </body> 
- </html>";i:5;s:1983:"<!DOCTYPE html>
+ </html>";i:4;s:904:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -331,93 +273,176 @@ test
 <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
-	<table > <tr>
+
+<table > <tr>
+	<td>
+		<a href="/ABridge.php/test?Action=Select" >test</a>
+	</td>
+</tr> </table>
+
+test
+
+
+<table > <tr>
+	<td>
+		<input type="submit" value = Delete >
+	</td>
+	<td>
+		<a href="/ABridge.php/test/1" >Cancel</a>
+	</td>
+</tr> </table>
+
+<table > <tr>
+</tr> </table>
+
+<table >
+	<tr>
 		<td>
-			<a href="/ABridge.php/test?Action=Select" >test</a>
-		</td>
-	</tr> </table>
-	<table > <tr>
-		<td>
-			test
-		</td>
-	</tr> </table>
-	<table > <tr>
-		<td>
-			<input type="submit" value = Select >
+			id
 		</td>
 		<td>
-			<a href="/ABridge.php/test?Action=Select" >Refresh</a>
+			0
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A1
 		</td>
 		<td>
-			<a href="/ABridge.php/test/1" >Cancel</a>
+			5
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A2
 		</td>
 		<td>
-			<a href="/ABridge.php/test?Action=Create" >Create</a>
+			aa
 		</td>
-	</tr> </table>
-	<table >
-		<tr>
-			<td>
-				id
-			</td>
-			<td>
-				<select name = "id_OP"  >
-					<option  value = "="  selected  >=</option>
-					<option  value = ">"  >></option>
-					<option  value = "<"  ><</option>
-				</select>
-			</td>
-			<td>
-				<input type = "text" name = "id"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A1
-			</td>
-			<td>
-				<select name = "A1_OP"  >
-					<option  value = "="  selected  >=</option>
-					<option  value = ">"  >></option>
-					<option  value = "<"  ><</option>
-				</select>
-			</td>
-			<td>
-				<input type = "text" name = "A1"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A2
-			</td>
-			<td>
-				<select name = "A2_OP"  >
-					<option  value = "::"  >::</option>
-					<option  value = "="  selected  >=</option>
-					<option  value = ">"  >></option>
-					<option  value = "<"  ><</option>
-				</select>
-			</td>
-			<td>
-				<input type = "text" name = "A2"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				A3
-			</td>
-			<td>
-				<select name = "A3_OP"  >
-					<option  value = "="  selected  >=</option>
-					<option  value = ">"  >></option>
-					<option  value = "<"  ><</option>
-				</select>
-			</td>
-			<td>
-				<input type = "text" name = "A3"  >
-			</td>
-		</tr>
-	</table>
+	</tr>
+	<tr>
+		<td>
+			A3
+		</td>
+		<td>
+			2016-12-08
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A4
+		</td>
+		<td>
+			<textarea name = "" disabled cols="90"  rows="20"  >ceci est un texte</textarea>
+		</td>
+	</tr>
+</table>
+
+
+</form>  
+
+ </body> 
+ </html>";i:5;s:1890:"<!DOCTYPE html>
+<html>
+<head>
+<title>ABridge</title>
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
+</head>
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+test
+
+
+<table > <tr>
+	<td>
+		<a href="/ABridge.php/test?Action=Select" >test</a>
+	</td>
+</tr> </table>
+
+test
+
+
+<table > <tr>
+	<td>
+		<input type="submit" value = Select >
+	</td>
+	<td>
+		<a href="/ABridge.php/test?Action=Select" >Refresh</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/test/1" >Cancel</a>
+	</td>
+	<td>
+		<a href="/ABridge.php/test?Action=Create" >Create</a>
+	</td>
+</tr> </table>
+
+<table > <tr>
+</tr> </table>
+
+<table >
+	<tr>
+		<td>
+			id
+		</td>
+		<td>
+			<select name = "id_OP"  >
+				<option  value = "="  selected  >=</option>
+				<option  value = ">"  >></option>
+				<option  value = "<"  ><</option>
+			</select>
+		</td>
+		<td>
+			<input type = "text" name = "id"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A1
+		</td>
+		<td>
+			<select name = "A1_OP"  >
+				<option  value = "="  selected  >=</option>
+				<option  value = ">"  >></option>
+				<option  value = "<"  ><</option>
+			</select>
+		</td>
+		<td>
+			<input type = "text" name = "A1"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A2
+		</td>
+		<td>
+			<select name = "A2_OP"  >
+				<option  value = "::"  >::</option>
+				<option  value = "="  selected  >=</option>
+				<option  value = ">"  >></option>
+				<option  value = "<"  ><</option>
+			</select>
+		</td>
+		<td>
+			<input type = "text" name = "A2"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			A3
+		</td>
+		<td>
+			<select name = "A3_OP"  >
+				<option  value = "="  selected  >=</option>
+				<option  value = ">"  >></option>
+				<option  value = "<"  ><</option>
+			</select>
+		</td>
+		<td>
+			<input type = "text" name = "A3"  >
+		</td>
+	</tr>
+</table>
+
 <table > <tr>
 	<td>
 		Select
@@ -429,6 +454,8 @@ test
 
 <table >
 </table>
+
+
 
 
 </form>  
