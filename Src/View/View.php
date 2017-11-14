@@ -88,7 +88,7 @@ class View
     protected function getHtmlClassList($listType)
     {
         $classList = $this->vew->getViewPrm('listHtmlClass');
-        if ($classList and isset($classList[$listType])) {
+        if (isset($classList[$listType])) {
             return $classList[$listType];
         }
         return null;
@@ -97,7 +97,7 @@ class View
     protected function getHtmlClassListElem($viewName, $listType)
     {
         $classList = $this->vew->getSpec($this->modName, $viewName, 'listHtmlClassElem');
-        if ($classList and isset($classList[$listType])) {
+        if (isset($classList[$listType])) {
             return $classList[$listType];
         }
         return null;
@@ -482,13 +482,7 @@ class View
         } else {
             $res[CstHTML::H_TYPE] = $htyp;
         }
- /*
-        if ($res[CstHTML::H_TYPE]==CstHTML::H_T_LINK) {
-            $res[CstHTML::H_NAME]=$attrVal;
-            $res[CstHTML::H_LABEL]=$attrVal;
-            return $res;
-        }
- */
+ 
         $res[CstHTML::H_DEFAULT]=$attrVal;
         $res[CstHTML::H_DISABLED]=true;
         
@@ -958,18 +952,22 @@ class View
         $argList[4][CstView::V_ARG]=$this->getMenuObjAction($viewState);
         $argList[5][CstView::V_ARG]=$this->viewErr();
         $argList[6][CstView::V_ARG]=$this->buildObjView($this->name, $viewState);
-                            
-        $speco =[
+        
+        $speci=$argList;
+        if ($viewState != CstMode::V_S_READ) {
+            $speci = [[
+                    CstView::V_TYPE=>CstView::V_FORM,
+                    CstView::V_ARG=>$speci
+                    
+            ]];
+        }
+        $speci =[
                 CstView::V_TYPE=>CstView::V_LIST,
                 CstView::V_LT=>CstView::V_TOPLIST,
-                CstView::V_ARG=>$argList
+                CstView::V_ARG=>$speci
                 
         ];
-        $speci = [
-                CstView::V_TYPE=>CstView::V_FORM,
-                CstView::V_ARG=>[$speco]
-                
-        ];
+
         return $this->subst($speci, $viewState);
     }
     
