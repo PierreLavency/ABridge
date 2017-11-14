@@ -32,7 +32,7 @@ class CstView
     const V_OBJNME =  "v_objnme";
     const V_CREF_MLIST =  "v_cref_mlist";
     const V_CREFLBL =  "v_crfLbl";
-    const V_CREDIT =  "v_credit";
+    const V_CREDITLIST =  "v_creditlist";
     
     const V_ID =  "v_id";
     const V_STRING =  "v_string";

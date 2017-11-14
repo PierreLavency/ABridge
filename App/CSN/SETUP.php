@@ -9,9 +9,10 @@ use ABridge\ABridge\App;
 
 class Config extends App
 {
+		
 	public static function  init($prm, $config)
 	{
-		return $config;
+		return self::$config;
 	}
 	
 	static $config = [
@@ -37,7 +38,10 @@ class Config extends App
 				CstView::V_OBJACTIONMENU=>[CstHTML::H_DIV,'objactionmenu'],
 				CstView::V_VIEWLIST=>[CstHTML::H_DIV,'viewmenu'],
 				CstView::V_OBJLISTVIEW=>[CstHTML::H_DIV,'objlistview'],
-				CstView::V_CREDIT=>[CstHTML::H_DIV,'footer'],
+				CstView::V_CREDITLIST=>[CstHTML::H_DIV,'footer'],
+
+				CstView::V_ALIST=>[CstHTML::H_DIV,'csnimg'],
+				
 			],
 		'listHtml'=> [
 					CstMode::V_S_READ=> [
@@ -75,7 +79,7 @@ class Config extends App
 				],
 				'attrHtml' => [
 					CstMode::V_S_READ => [
-							'Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 350,CstHTML::H_COLP=> 100]
+							'Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG]
 					],
 					CstView::V_S_CREF => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 200,CstHTML::H_COLP=> 50]],
 					CstMode::V_S_SLCT => [
@@ -101,6 +105,7 @@ class Config extends App
 						'Steps'=>'Etapes',
 						CstView::V_B_NEW=>'Ajouter',
 				],
+
 				'viewList' => [
 	
 					'Caracteristiques'  => [								
@@ -166,6 +171,7 @@ class Config extends App
 					],
 						
 					'Photo'  => [
+
 						'attrList' => [
 								CstMode::V_S_READ=> ['Resume','Photo',],
 								CstMode::V_S_UPDT=> ['Resume','Photo'],
@@ -222,7 +228,14 @@ class Config extends App
 		],
 	];
 	
-public static	function initMeta($config)
+	
+	public static function getStyle()
+	{
+		$file = file_get_contents('appStyle.css', FILE_USE_INCLUDE_PATH);
+		echo $file;
+	}
+	
+	public static	function initMeta($config)
 	{
 		$ACode = 'AbstractCode';
 		
@@ -345,7 +358,7 @@ public static	function initMeta($config)
 	
 	}
 	
-public static 	function initData($prm=null)
+	public static 	function initData($prm=null)
 	{
 		
 		$ACode = 'AbstractCode';

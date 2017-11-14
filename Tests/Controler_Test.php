@@ -1,5 +1,6 @@
 <?php
 
+use ABridge\ABridge\App;
 use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\Adm\Admin;
 use ABridge\ABridge\Controler;
@@ -17,6 +18,7 @@ use ABridge\ABridge\View\Vew;
 use ABridge\ABridge\Usr\Role;
 use ABridge\ABridge\Usr\Session;
 use ABridge\ABridge\Usr\User;
+use phpDocumentor\Reflection\Types\This;
 
 class Controler_Test_dataBase_User extends User
 {
@@ -33,6 +35,32 @@ class Controler_Test_dataBase_Session extends Session
 class Controler_Test_dataBase_Admin extends Admin
 {
 }
+
+class Controler_Test_config extends App
+{
+    public static $config;
+    
+    public function __construct($config)
+    {
+        self::$config=$config;
+    }
+    
+    
+    public static function init($prm, $config)
+    {
+        return self::$config;
+    }
+    
+    public static function initMeta($config)
+    {
+    }
+    
+    public static function initData($config)
+    {
+    }
+}
+
+
 
 class Controler_Test extends PHPUnit_Framework_TestCase
 {
@@ -126,10 +154,11 @@ class Controler_Test extends PHPUnit_Framework_TestCase
                 'View'=> [],
         ];
         
-        
+        $cconfig = new Controler_Test_config($config);
+               
         $cookiename = $prm['application']['name'].$session;
         $prm['cookieName']=$cookiename;
-        $prm['config']=$config;
+        $prm['config']=$cconfig;
         $prm['rootPath']='/'.$name;
         return $prm;
     }

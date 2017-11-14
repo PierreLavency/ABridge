@@ -40,7 +40,7 @@ class Config extends App
 	
 	public static function  init($prm, $config)
 	{
-		return $config;
+		return self::$config;
 	}
 	
 	static $config = [
@@ -275,6 +275,7 @@ class Config extends App
 		$admList= AdmApp::initMeta(self::$config['Apps']['AdmApp']);
 		$usrList=UsrApp::initMeta(self::$config['Apps']['UsrApp']);
 		$cdvList=Cdv::initMeta(self::$config['Apps']['Cdv']);
+
 		$list = ModUtils::normBindings(self::$logicalNames);
 		
 		$bindings = array_merge($admList,$usrList,$cdvList,$list);

@@ -94,11 +94,19 @@ class View
         return null;
     }
     
+    protected function getHtmlClassListElem($viewName, $listType)
+    {
+        $classList = $this->vew->getSpec($this->modName, $viewName, 'listHtmlClassElem');
+        if ($classList and isset($classList[$listType])) {
+            return $classList[$listType];
+        }
+        return null;
+    }
     
     protected function getHtmlList($listType, $viewState)
     {
         $htmlList = [
-                CstView::V_CREDIT        => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
+                CstView::V_CREDITLIST    => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
                 CstView::V_OBJLBLLIST    => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
                 CstView::V_OBJVIEWLIST   => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
                 CstView::V_OBJLISTVIEW   => [CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR],
@@ -233,8 +241,7 @@ class View
 
     protected function getRelViews($viewName, $rel)
     {
-        $prop=$rel.'Views';
-        if ($res=$this->vew->getSpec($this->modName, $viewName, $prop)) {
+        if ($res=$this->vew->getSpec($this->modName, $viewName, $rel.'Views')) {
             if (isset($res)) {
                 return $res;
             }
@@ -475,13 +482,13 @@ class View
         } else {
             $res[CstHTML::H_TYPE] = $htyp;
         }
-        
+ /*
         if ($res[CstHTML::H_TYPE]==CstHTML::H_T_LINK) {
             $res[CstHTML::H_NAME]=$attrVal;
             $res[CstHTML::H_LABEL]=$attrVal;
             return $res;
         }
-        
+ */
         $res[CstHTML::H_DEFAULT]=$attrVal;
         $res[CstHTML::H_DISABLED]=true;
         
@@ -807,9 +814,13 @@ class View
                 }
                 $result[CstHTML::H_SEPARATOR]= ' ';
                 $arg=[];
+                $htmlClassElem = $this->getHtmlClassListElem($this->name, $listTyp);
                 foreach ($argSpecList as $elem) {
                     $r=$this->subst($elem, $viewState);
                     if ($r) {
+                        if ($htmlClassElem) {
+                            $r[$htmlClassElem[0]]=$htmlClassElem[1];
+                        }
                         $arg[]=$r;
                     }
                 }
@@ -907,7 +918,7 @@ class View
             [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJACTIONMENU,CstView::V_ARG=>[]],
             [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_ERROR,CstView::V_ARG=>null],
             [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJVIEWLIST,CstView::V_ARG=>[]],
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_CREDIT,CstView::V_ARG=>$credit],
+            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_CREDITLIST,CstView::V_ARG=>$credit],
         ];
         
         if (is_null($this->handle) or $this->handle->nullObj()) {

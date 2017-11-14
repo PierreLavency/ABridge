@@ -1,5 +1,6 @@
 <?php
 
+use ABridge\ABridge\App;
 use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\Controler;
 use ABridge\ABridge\Hdl\CstMode;
@@ -20,7 +21,29 @@ use phpDocumentor\Reflection\Types\Boolean;
 
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
-
+class Controler_Test_Perf_config extends App
+{
+    public static $config;
+    
+    public function __construct($config)
+    {
+        self::$config=$config;
+    }
+    
+    
+    public static function init($prm, $config)
+    {
+        return self::$config;
+    }
+    
+    public static function initMeta($config)
+    {
+    }
+    
+    public static function initData($config)
+    {
+    }
+}
 class Controler_Perf_dataBase_User extends User
 {
 }
@@ -58,6 +81,8 @@ class Controler_Perf_fileBase_Role extends Role
 class Controler_Perf_fileBase_Session extends Session
 {
 }
+
+
 $stypes = [CstMode::V_S_CREA,CstMode::V_S_READ, CstMode::V_S_UPDT];
 
 $conf = parse_ini_file($home.'/Tests/perf.ini');
@@ -256,7 +281,8 @@ function saveLog($LogName)
     
     $path = "App/LOG/SETUP.php";
     require_once $path;
-    $ctrl = new Controler(Config::$config, ['name'=>'LOG']);
+    $Config = new Config(['name'=>'LOG'], []);
+    $ctrl = new Controler($Config, ['name'=>'LOG']);
     
     $_GET['Action']=CstMode::V_S_CREA;
     $_SERVER['PATH_INFO']='/PrfFile';
@@ -277,6 +303,7 @@ class Controler_Perf
     'Log'=> [],
     'Views' => []
     ];
+    public $cconfig;
     
     private $ini = [
             'name'=>'test_perf',
@@ -322,6 +349,7 @@ class Controler_Perf
             ];
             $this->config['Hdl']= ['Usr'=>$usr];
         }
+        $this->cconfig=new Controler_Test_Perf_config($this->config);
         
         $this->cookieName='test_perf'.$prm[$baseType]['Session'];
     }
@@ -461,7 +489,7 @@ class Controler_Perf
     protected function ctrlrun()
     {
         Usr::reset();
-        $ctrl = new Controler($this->config, $this->ini);
+        $ctrl = new Controler($this->cconfig, $this->ini);
         $resc = $ctrl->run($this->show);
         return $resc;
     }
@@ -469,7 +497,7 @@ class Controler_Perf
     public function close()
     {
         Usr::reset();
-        $ctrl = new Controler($this->config, $this->ini);
+        $ctrl = new Controler($this->cconfig, $this->ini);
         $ctrl->close();
     }
     

@@ -10,31 +10,31 @@ use ABridge\ABridge\App;
 
 class Config extends App
 {
+	
+	public function __construct ($prm,$config) {
+		self::init($prm, $config);
+	}
+		
 	public static function  init($prm, $config)
 	{
-		return $config;
+		return self::$config;
 	}
 	
 	static $config = [
-	'Handlers' =>
-		[
+	'Handlers' =>[
 		'Album'		=> ['dataBase',],
 		'Photo' 	=> ['dataBase',],
-		'AbstractCode'	=> ['dataBase',],	
-		'User'	 	 	=> ['dataBase',],
-		'Role'	 	 	=> ['dataBase',],
-		'Distribution'	=> ['dataBase',],
-		'Session'		=> ['dataBase',],		
 		],
 	'Apps'	=>[
 					'AdmApp'=>[],
 			
 	],
+			
 	'View' => [
-		'Home' =>
-			['/',],
+		'Home' => ['/',],
+
 		'Album'=> [
-		
+
 				'attrList' => [
 					CstView::V_S_REF	=> ['Nom'],
 				],			
@@ -76,9 +76,12 @@ class Config extends App
 				'attrList' => [			
 					CstView::V_S_CREF	=> ['id','Photo'],					
 				],
+				'listHtmlClassElem' => [
+					CstView::V_S_CREF =>[CstHTML::H_DIV,'test'],
+				],
 				'attrHtml' => [
 					CstMode::V_S_READ => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 600,CstHTML::H_COLP=> 400]],
-					CstView::V_S_CREF => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 200,CstHTML::H_COLP=> 50]],
+					CstView::V_S_CREF => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 100,CstHTML::H_COLP=> 100]],
 
 				],	
 				'lblList'  => [
@@ -86,25 +89,6 @@ class Config extends App
 				],	
 		],	
 
-		'User' =>[		
-			'attrList' => [
-				CstView::V_S_REF		=> ['SurName','Name'],
-				],
-		],
-		'Role' =>[	
-				'attrList' => [
-					CstView::V_S_REF		=> ['Name'],
-				]
-
-		],
-		'Distribution' =>[
-			'attrHtml' => [
-				CstMode::V_S_CREA => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
-				CstMode::V_S_UPDT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
-				CstMode::V_S_SLCT => ['ofRole'=>CstHTML::H_T_SELECT,'toUser'=>CstHTML::H_T_SELECT],
-			],
-
-		],
 		],
 	];
 	
@@ -119,21 +103,6 @@ class Config extends App
 		$Role = 'Role';
 		$Session ='Session';
 		$Distribution = 'Distribution';
-		
-		// Abstract
-		
-		$obj = new Model($ACode);
-		$res= $obj->deleteMod();
-		
-		$res = $obj->addAttr('Value',Mtype::M_STRING);
-		$res=$obj->setProp('Value', Model::P_MDT); 
-		$res = $obj->setProp('Value',Model::P_BKY);
-		$res = $obj->setAbstr();
-		
-		$res = $obj->saveMod();
-		$r = $obj->getErrLog ();
-		$r->show();
-		echo "<br>".$ACode."<br>";
 		
 		
 		// Album
@@ -166,72 +135,7 @@ class Config extends App
 		$r->show();
 		echo "<br>".$Photo."<br>";
 		
-		// User
-		
-		$obj = new Model($User);
-		$res= $obj->deleteMod();
-		
-		$res = $obj->addAttr('Name',Mtype::M_STRING);
-		$res = $obj->addAttr('SurName',Mtype::M_STRING);
-		$res = $obj->addAttr('Play',Mtype::M_CREF,'/'.$Distribution.'/toUser');
-		
-		
-		echo "<br>User<br>";
-		$res = $obj->saveMod();
-		$r = $obj->getErrLog ();
-		$r->show();
-		
-		// Role
-		
-		$obj = new Model($Role);
-		$res= $obj->deleteMod();
-		
-		$res = $obj->addAttr('Name',Mtype::M_STRING);
-		$res = $obj->addAttr('JSpec',Mtype::M_JSON);
-		$res = $obj->addAttr('PlayedBy',Mtype::M_CREF,'/'.$Distribution.'/ofRole');
-		
-		echo "<br>$Role<br>";
-		$res = $obj->saveMod();
-		$r = $obj->getErrLog ();
-		$r->show();
-		
-		
-		// Session
-		
-		$obj = new Model($Session);
-		$res= $obj->deleteMod();
-		
-		$res = $obj->addAttr($User,Mtype::M_REF,'/'.$User);
-		$res = $obj->addAttr($Role,Mtype::M_REF,'/'.$Role);
-		$res = $obj->addAttr('Comment',Mtype::M_STRING);
-		$res = $obj->addAttr('BKey',Mtype::M_STRING);
-		$res = $obj->setProp('BKey',Model::P_BKY);
-		
-		
-		echo "<br>Session<br>";
-		$res = $obj->saveMod();
-		$r = $obj->getErrLog ();
-		$r->show();
-		
-		// Distribution
-		
-		$obj = new Model($Distribution);
-		$res= $obj->deleteMod();
-		
-		$path='/'.$Role;
-		$res = $obj->addAttr('ofRole',Mtype::M_REF,$path);
-		$res=$obj->setProp('OfRole', Model::P_MDT); 
-		
-		$path='/'.$User;
-		$res = $obj->addAttr('toUser',Mtype::M_REF,$path);
-		$res=$obj->setProp('toUser', Model::P_MDT); 
-		
-		$obj->setCkey(['ofRole','toUser'],true);
-		
-		echo "<br>Distribution<br>";
-		$res = $obj->saveMod();
-		$r = $obj->getErrLog ();
-		$r->show();	
+
 	}
 
 	public static function initData($prm=null)

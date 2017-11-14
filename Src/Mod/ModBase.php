@@ -214,6 +214,9 @@ class ModBase
             foreach ($modList as $modName => $base) {
                 $modNameList[]=$modName;
             }
+            if ($modNameList===[]) {
+                return  [];
+            }
             $modName=$modNameList;
         }
         return (

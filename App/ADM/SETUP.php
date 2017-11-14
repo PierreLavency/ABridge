@@ -10,7 +10,7 @@ class Config extends App
 	
 	public static function  init($prm, $config)
 	{
-		return $config;
+		return self::$config;
 	}
 	
 	static $config = [

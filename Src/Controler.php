@@ -27,18 +27,16 @@ class Controler
     protected $logLevel = 0;
     protected $appName ;
     protected $defVal=[];
-    protected $isInit= [];
      
   
-    public function __construct($spec, $ini)
+    public function __construct($config, $ini)
     {
-        
+        $spec= $config::init($ini, []);
         $this->defVal=$this->defaultValues($spec, $ini);
         $this->spec=$spec;
         Log::get()->init($this->defVal, []);
         $this->initConf($this->defVal, $spec);
     }
-
     
     protected function initConf($prm, $spec)
     {
@@ -61,7 +59,6 @@ class Controler
         if (isset($spec['Adm'])) {
             $config=$spec['Adm'];
             Adm::get()->init($prm, $config);
-            $this->isInit['Adm']=true;
         }
         if (isset($spec['Hdl'])) {
             $config=$spec['Hdl'];
@@ -180,7 +177,7 @@ class Controler
         
         $frccommit=false;
         
-        if (isset($this->isInit['Adm'])) {
+        if (Adm::get()->isInit()) {
             Adm::get()->begin();
             $frccommit=Adm::get()->isNew();
         }

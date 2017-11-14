@@ -32,7 +32,6 @@ class Cda extends App
         }
         
         $res = [
-                
                 'Handlers' => $handlerList,
                 'View' => $viewList,
         ];

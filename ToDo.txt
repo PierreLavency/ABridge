@@ -2,7 +2,7 @@ CMD
 h4669ghx
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'V_OBJ' Src/* App/* Tests/*
+grep -ri 'V_CREDIT' Src/* App/* Tests/*
 
 BUGS	36
 B1 session with API.
@@ -50,7 +50,7 @@ DEV
 - delete all object in class /2
 - introduction of name space in Tests /2
 - graphics : include svg bit in view. /2
-- clean up picture path /2
+
 
 - prefix all tables (?)
 - avoid loading abstractMod in Mod base  (? dependency in test)
@@ -79,6 +79,8 @@ INT
 - set up jenkin
 
 DONE
+----------------//2
+style list elements and images
 ----------------//3
 CSS - action/view menu and mutiple views (before/after)
 B32 tmp variables not correctly handled in create Mode (see Log app)-> use id when mod not yet created 

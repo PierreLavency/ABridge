@@ -102,4 +102,9 @@ class Adm extends Comp
         }
         return $bindings;
     }
+    
+    public function isInit()
+    {
+        return $this->isInit;
+    }
 }
