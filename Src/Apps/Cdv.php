@@ -112,7 +112,7 @@ class Cdv extends AppComp
         return $bindings;
     }
     
-    public function initOwnData($prm)
+    public function initOwnData()
     {
         $prm=$this->bindings;
         $code = self::CODE;

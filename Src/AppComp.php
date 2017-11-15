@@ -116,14 +116,14 @@ abstract class AppComp
     {
         $result = [];
         foreach ($this->apps as $name => $app) {
-            $result=array_merge($result, $app->initData());
+            $app->initData();
         }
-        return $this->initOwnData($result);
+        return $this->initOwnData();
     }
     
-    public function initOwnData($prm)
+    public function initOwnData()
     {
-        return $prm;
+        return true;
     }
     
     public function initDelta()

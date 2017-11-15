@@ -82,7 +82,6 @@ on config branch
 
 migration of USR
 migration of CDA
-migration of CDV
 
 test case for compApp.
 
