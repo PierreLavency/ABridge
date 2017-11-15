@@ -1,6 +1,6 @@
 <?php
 
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\Controler;
 use ABridge\ABridge\Hdl\CstMode;
@@ -21,28 +21,9 @@ use phpDocumentor\Reflection\Types\Boolean;
 
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
-class Controler_Test_Perf_config extends App
+class Controler_Test_Perf_config extends AppComp
 {
-    public static $config;
-    
-    public function __construct($config)
-    {
-        self::$config=$config;
-    }
-    
-    
-    public static function init($prm, $config)
-    {
-        return self::$config;
-    }
-    
-    public static function initMeta($config)
-    {
-    }
-    
-    public static function initData($config)
-    {
-    }
+
 }
 class Controler_Perf_dataBase_User extends User
 {
@@ -281,8 +262,8 @@ function saveLog($LogName)
     
     $path = "App/LOG/SETUP.php";
     require_once $path;
-    $Config = new Config(['name'=>'LOG'], []);
-    $ctrl = new Controler($Config, ['name'=>'LOG']);
+    $config = new Config([], []);
+    $ctrl = new Controler($config, ['name'=>'LOG']);
     
     $_GET['Action']=CstMode::V_S_CREA;
     $_SERVER['PATH_INFO']='/PrfFile';
@@ -349,7 +330,9 @@ class Controler_Perf
             ];
             $this->config['Hdl']= ['Usr'=>$usr];
         }
-        $this->cconfig=new Controler_Test_Perf_config($this->config);
+        $cconfig = new Controler_Test_Perf_config(null, null);
+        $cconfig->setConfig($this->config);
+        $this->cconfig=$cconfig;
         
         $this->cookieName='test_perf'.$prm[$baseType]['Session'];
     }

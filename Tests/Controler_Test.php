@@ -135,7 +135,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
                 'View'=> [],
         ];
         
-        $cconfig = new Controler_Test_config(null,null);
+        $cconfig = new Controler_Test_config(null, null);
         $cconfig->setConfig($config);
         $cconfig->setPrm($prm['application']);
                

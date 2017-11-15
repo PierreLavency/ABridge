@@ -18,7 +18,7 @@ class Adm_Test_memBase_Admin extends Admin
 }
 class Adm_Test_Config extends AppComp
 {
-	
+    
 }
 
 
@@ -65,7 +65,7 @@ class Adm_Test extends \PHPUnit_Framework_TestCase
         
         $prm['application']['base']='dataBase';
         
-        $config = new Adm_Test_Config([],[]);
+        $config = new Adm_Test_Config([], []);
         $config->setPrm($prm['application']);
         
         $adm->init($config->getPrm(), $prm['dataBase']);

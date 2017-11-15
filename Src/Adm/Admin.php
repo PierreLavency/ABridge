@@ -87,14 +87,14 @@ class Admin extends CModel
         $config = Adm::get()->getConfig();
         
         if ($this->mod->getVal('Load')) {
-        	$config->initData();
+            $config->initData();
         }
         if ($this->mod->getVal('Meta')) {
-        	$config->initMeta();
-        	$config->initData();
+            $config->initMeta();
+            $config->initData();
         }
         if ($this->mod->getVal('Delta')) {
-        	$config->initDelta();
+            $config->initDelta();
         }
         
         if ($this->mod->getId() != 0) {

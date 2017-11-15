@@ -9,7 +9,7 @@ use ABridge\ABridge\View\Vew;
 
 class AdmApp_Test_Config extends AppComp
 {
-	
+    
 }
 
 class AdmApp_Test extends PHPUnit_Framework_TestCase
@@ -17,18 +17,18 @@ class AdmApp_Test extends PHPUnit_Framework_TestCase
     
     public function testInit()
     {
-    	Mod::reset();
-    	Adm::reset();
-    	Vew::reset();
-    	
+        Mod::reset();
+        Adm::reset();
+        Vew::reset();
+        
         $classes = [Adm::ADMIN];
         
         $prm=UtilsC::genPrm($classes, get_called_class(), ['dataBase']);
         
-        $config = new AdmApp_Test_Config([],[]);
+        $config = new AdmApp_Test_Config([], []);
         $config->setPrm($prm['application']);
         
-        $adminApp = new AdmApp($config->getPrm(),$prm['dataBase']);
+        $adminApp = new AdmApp($config->getPrm(), $prm['dataBase']);
         
         $mod= Mod::get();
         $adm= Adm::get();
@@ -41,11 +41,11 @@ class AdmApp_Test extends PHPUnit_Framework_TestCase
  
         $mod->begin();
         
-        $this->assertEquals([],$adminApp->initData());              
+        $this->assertEquals([], $adminApp->initData());
         
         $res= $adminApp->initMeta();
 
-        $this->assertEquals($prm['dataBase'],$res);
+        $this->assertEquals($prm['dataBase'], $res);
         
         $mod->end();
     }

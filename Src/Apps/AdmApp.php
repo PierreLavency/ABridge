@@ -10,15 +10,15 @@ use ABridge\ABridge\Adm\Adm;
 class AdmApp extends AppComp
 {
     
-	public function initOwnMeta($prm)
-	{
-		return Adm::get()->initMeta();
-	}	
-	
-	public function __construct($prm, $bindings)
+    public function initOwnMeta($prm)
     {
-    	$this->prm=$prm;
-    	$this->bindings=$bindings;
+        return Adm::get()->initMeta();
+    }
+    
+    public function __construct($prm, $bindings)
+    {
+        $this->prm=$prm;
+        $this->bindings=$bindings;
         $adm=Adm::ADMIN;
         if (isset($bindings[Adm::ADMIN])) {
             $adm = $bindings[Adm::ADMIN];
@@ -184,5 +184,4 @@ class AdmApp extends AppComp
             ],
         ];
     }
-    
 }

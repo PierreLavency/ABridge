@@ -15,7 +15,7 @@ abstract class AppComp
     protected $apps = [];
     protected $appName;
     
-    public function __construct($prm,$bindings)
+    public function __construct($prm, $bindings)
     {
         $this->bindings=$bindings;
         $this->prm = $prm;
@@ -31,38 +31,38 @@ abstract class AppComp
     
     public function setConfig($config)
     {
-    	$this->config=$config;
+        $this->config=$config;
     }
     
     
-    public function setPrm ($ini)
+    public function setPrm($ini)
     {
-    	$appName = $ini['name'];
-    	$this->appName = $appName;
-    	// priority : init - spec[Default] - default
-    	$defaultValues=[
-    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
-    			'base'=>'dataBase',
-    			'dataBase'=>$appName,
-    			'memBase'=>$appName,
-    			'fileBase'=>$appName,
-    			'host'=>'localhost',
-    			'user'=>$appName,
-    			'pass'=>$appName,
-    			'trace'=>0,
-    			'config'=>$this,
-    	];
-    	if ($spec=$this->getProp('Default')) {
-    		$defaultValues=array_merge($defaultValues, $spec);
-    	}
-    	$defaultValues=array_merge($defaultValues, $ini);
-    	$this->prm=$defaultValues;
-    	return $defaultValues;
+        $appName = $ini['name'];
+        $this->appName = $appName;
+        // priority : init - spec[Default] - default
+        $defaultValues=[
+                'path'=>'C:/Users/pierr/ABridge/Datastore/',
+                'base'=>'dataBase',
+                'dataBase'=>$appName,
+                'memBase'=>$appName,
+                'fileBase'=>$appName,
+                'host'=>'localhost',
+                'user'=>$appName,
+                'pass'=>$appName,
+                'trace'=>0,
+                'config'=>$this,
+        ];
+        if ($spec=$this->getProp('Default')) {
+            $defaultValues=array_merge($defaultValues, $spec);
+        }
+        $defaultValues=array_merge($defaultValues, $ini);
+        $this->prm=$defaultValues;
+        return $defaultValues;
     }
     
-    public function getPrm() 
+    public function getPrm()
     {
-    	return $this->prm;
+        return $this->prm;
     }
            
     public function init()
@@ -101,8 +101,8 @@ abstract class AppComp
     public function initMeta()
     {
         $result = [];
-        foreach ($this->apps as $name=>$app) {
-        	$result=array_merge($result, $app->initMeta());
+        foreach ($this->apps as $name => $app) {
+            $result=array_merge($result, $app->initMeta());
         }
         return $this->initOwnMeta($result);
     }
@@ -115,7 +115,7 @@ abstract class AppComp
     public function initData()
     {
         $result = [];
-        foreach ($this->apps as $name=>$app) {
+        foreach ($this->apps as $name => $app) {
             $result=array_merge($result, $app->initData());
         }
         return $this->initOwnData($result);
@@ -128,6 +128,6 @@ abstract class AppComp
     
     public function initDelta()
     {
-    	return true;
+        return true;
     }
 }

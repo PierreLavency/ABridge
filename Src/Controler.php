@@ -31,7 +31,7 @@ class Controler
   
     public function __construct($config, $ini)
     {
-    	$defVal=$this->defVal=$config->setPrm($ini);
+        $defVal=$this->defVal=$config->setPrm($ini);
         Log::get()->init($defVal, []);
         $config->init();
     }

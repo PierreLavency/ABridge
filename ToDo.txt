@@ -78,7 +78,19 @@ INT
 - set up a git server
 - set up jenkin
 
+on config branch 
+
+migration of USR
+migration of CDA
+migration of CDV
+
+test case for compApp.
+
 DONE
+------------------//1
+migration of CDV and LOG
+-----------------//2
+migration of ADM on new config.
 ----------------//2
 style list elements and images
 ----------------//3

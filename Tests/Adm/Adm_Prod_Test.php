@@ -7,10 +7,9 @@ use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\AppComp;
 
-
 class Adm_Prod_Config extends AppComp
 {
-	
+    
 }
 class Adm_Prod_Test extends \PHPUnit_Framework_TestCase
 {
@@ -33,7 +32,7 @@ class Adm_Prod_Test extends \PHPUnit_Framework_TestCase
         
         $prm['application']['base']='memBase';
         
-        $config = new Admin_Test_Config([],[]);
+        $config = new Admin_Test_Config([], []);
         $config->setPrm($prm['application']);
         
         $adm->init($config->getPrm(), []);

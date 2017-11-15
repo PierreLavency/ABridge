@@ -20,7 +20,7 @@ class Admin_Test_memBase_Admin extends Admin
 
 class Admin_Test_Config extends AppComp
 {
-	
+    
 }
 
 
@@ -37,7 +37,7 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
         Log::reset();
         Adm::reset();
 
-        $config = new Admin_Test_Config([],[]);
+        $config = new Admin_Test_Config([], []);
         $config->setPrm($prm['application']);
         
         $mod= Mod::get();

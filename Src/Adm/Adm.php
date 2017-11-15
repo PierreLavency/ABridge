@@ -60,7 +60,7 @@ class Adm extends Comp
     
     public function getConfig()
     {
-    	return $this->appPrm['config'];
+        return $this->appPrm['config'];
     }
     
     public function begin($prm = null)

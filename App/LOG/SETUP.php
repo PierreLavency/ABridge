@@ -1,7 +1,7 @@
 <?php
 
 use ABridge\ABridge\Adm\Adm;
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 use ABridge\ABridge\Apps\AdmApp;
 use ABridge\ABridge\Apps\Cdv;
 use ABridge\ABridge\Hdl\CstMode;
@@ -15,7 +15,7 @@ require_once 'LogLine.php';
 require_once 'PrfFile.php';
 require_once 'PrfLine.php';
 
-class Config extends App
+class Config extends AppComp
 {
 	const LOGFILE = 'LogFile';
 	const LOGLINE = 'LogLine';
@@ -30,12 +30,8 @@ class Config extends App
 			self::PRFLINE,
 	];
 	
-	public static function  init($prm, $config)
-	{
-		return self::$config;
-	}
 	
-	static $config = [
+	protected $config = [
 	'Default' =>
 			['base'=>'fileBase'],
 	'Apps'	=>
@@ -185,24 +181,21 @@ class Config extends App
 		],
 	];
 	
-	public static function initMeta($config)
+	public function initOwnMeta($bindings)
 	{
-		AdmApp::initMeta(self::$config['Apps']['AdmApp']);	
-		$cdvList=Cdv::initMeta(self::$config['Apps']['Cdv']);
-		
+	
 		$list = ModUtils::normBindings(self::$logicalNames);
 		
-		$bindings = array_merge($cdvList,$list);
+		$bindings = array_merge($bindings,$list);
 
-		ModUtils::initModBindings($bindings,self::$logicalNames);		
+		ModUtils::initModBindings($bindings,self::$logicalNames);
+		
+		return $bindings;
 		
 	}
 	
-	public static function initData($prm=null)
-	{
-		AdmApp::initData();
-		Cdv::initData(self::$config['Apps']['Cdv']);
-		
+	public function initOwnData($prm)
+	{		
 		$logs = [
 				'View_init',
 				'View_init_testRun',

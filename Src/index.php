@@ -24,7 +24,7 @@ if ($application == 'UnitTest') {
     
 $path = "App/".$application .'/';
 require_once $path.'SETUP.php' ;
-$config = new Config($conf, []);
+$config = new Config([], []);
 
 $ctrl = new Controler($config, $conf);
 

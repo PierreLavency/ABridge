@@ -3,16 +3,12 @@
 use ABridge\ABridge\Apps\Cdv;
 use ABridge\ABridge\Apps\AdmApp;
 use ABridge\ABridge\Adm\Adm;
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 
-class Config extends App
+class Config extends AppComp
 {
-	public static function  init($prm, $config)
-	{
-		return self::$config;
-	}
 	
-	static $config = [
+	protected $config = [
 	'Apps'	=>
 			[
 					'AdmApp'=>[],
@@ -48,19 +44,6 @@ class Config extends App
 		],
 	];
 	
-	public static function initMeta($config)
-	{
-		AdmApp::initMeta(self::$config['Apps']['AdmApp']);		
-		Cdv::initMeta(self::$config['Apps']['Cdv']);
-		
-	}
-	
-	public static function initData($prm=null)
-	{
-		AdmApp::initData();
-		Cdv::initData(self::$config['Apps']['Cdv']);
-		
-	}
 	
 }
 	

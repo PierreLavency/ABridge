@@ -6,28 +6,34 @@ use ABridge\ABridge\View\CstView;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Mod\Find;
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 
-class Cdv extends App
+class Cdv extends AppComp
 {
     const CODE='Code';
     const CODEVAL='CodeValue';
     const CODELIST='CodeList';
     const CODEDATA='CodeData';
+    
+    protected $code;
+    protected $codeval;
+    
         
-    public static function init($prm, $config)
+    public function __construct($prm, $bindings)
     {
+        $this->bindings=$bindings;
+        $this->prm = $prm;
         $code = self::CODE;
-        if (isset($config[self::CODE])) {
-            $code = $config[self::CODE];
+        if (isset($bindings[self::CODE])) {
+            $code = $bindings[self::CODE];
         }
         
         $codeval = self::CODEVAL;
-        if (isset($config[self::CODEVAL])) {
-            $codeval = $config[self::CODEVAL];
+        if (isset($bindings[self::CODEVAL])) {
+            $codeval = $bindings[self::CODEVAL];
         }
               
-        $res = [
+        $this->config= [
                 
                 'Handlers' => [
                         $code => [],
@@ -50,28 +56,26 @@ class Cdv extends App
                             
                 ],
         ];
-
-        return $res;
     }
     
     
-    public static function initMeta($config)
+    public function initOwnMeta($prm)
     {
         $bindings=[];
         $code = self::CODE;
-        if (isset($config[self::CODE])) {
-            $code = $config[self::CODE];
+        if (isset($this->bindings[self::CODE])) {
+            $code = $this->bindings[self::CODE];
         }
         $bindings[self::CODE]=$code;
         $codeval = self::CODEVAL;
-        if (isset($config[self::CODEVAL])) {
-            $codeval = $config[self::CODEVAL];
+        if (isset($this->bindings[self::CODEVAL])) {
+            $codeval = $this->bindings[self::CODEVAL];
         }
         $bindings[self::CODEVAL]=$codeval;
         
         $codelist = [];
-        if (isset($config[self::CODELIST])) {
-            $codelist= $config[self::CODELIST];
+        if (isset($this->bindings[self::CODELIST])) {
+            $codelist= $this->bindings[self::CODELIST];
         }
         
         // CodeVal
@@ -108,8 +112,9 @@ class Cdv extends App
         return $bindings;
     }
     
-    public static function initData($prm)
+    public function initOwnData($prm)
     {
+        $prm=$this->bindings;
         $code = self::CODE;
         if (isset($prm[self::CODE])) {
             $code = $prm[self::CODE];

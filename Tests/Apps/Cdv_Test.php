@@ -10,6 +10,7 @@ class Cdv_Test extends PHPUnit_Framework_TestCase
     
     public function testInit()
     {
+        Mod::reset();
         $classes = [Cdv::CODE,Cdv::CODEVAL];
         
         $prm=UtilsC::genPrm($classes, get_called_class(), ['fileBase']);
@@ -24,23 +25,18 @@ class Cdv_Test extends PHPUnit_Framework_TestCase
                 
         ];
         
-        $res = Cdv::init($prm, $config);
+        $cdv = new Cdv($prm['application'], $config);
+        $cdv->init();
         
-        $this->assertEquals([], $res['Handlers'][$codeName]);
-
-        Mod::reset();
-               
-        $mod= Mod::get();
-        
-        $mod->init($prm['application'], $res['Handlers']);
+        $mod=Mod::get();
         
         $mod->begin();
         
-        $res= cdv::initMeta($config);
+        $res= $cdv->initMeta();
         $this->assertEquals($prm['fileBase'][cdv::CODE].'/1', $res['test']);
   
         
-        $res= cdv::initData($config);
+        $res= $cdv->initData();
         $this->assertEquals(1, $res);
         
         $mod->end();
