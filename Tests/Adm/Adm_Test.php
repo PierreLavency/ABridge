@@ -5,6 +5,7 @@ use ABridge\ABridge\Adm\Admin;
 use ABridge\ABridge\CstError;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\UtilsC;
+use ABridge\ABridge\AppComp;
 
 class Adm_Test_dataBase_Admin extends Admin
 {
@@ -15,6 +16,11 @@ class Adm_Test_fileBase_Admin extends Admin
 class Adm_Test_memBase_Admin extends Admin
 {
 }
+class Adm_Test_Config extends AppComp
+{
+	
+}
+
 
 class Adm_Test extends \PHPUnit_Framework_TestCase
 {
@@ -58,7 +64,11 @@ class Adm_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(CstError::E_ERC067.':Adm', $r);
         
         $prm['application']['base']='dataBase';
-        $adm->init($prm['application'], $prm['dataBase']);
+        
+        $config = new Adm_Test_Config([],[]);
+        $config->setPrm($prm['application']);
+        
+        $adm->init($config->getPrm(), $prm['dataBase']);
         $this->assertEquals(1, count($mod->getMods()));
         
         try {

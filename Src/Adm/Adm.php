@@ -17,6 +17,7 @@ class Adm extends Comp
     private $bindings;
     private $appPrm;
     private $isInit = false;
+
     
     private function __construct()
     {
@@ -57,6 +58,11 @@ class Adm extends Comp
         }
     }
     
+    public function getConfig()
+    {
+    	return $this->appPrm['config'];
+    }
+    
     public function begin($prm = null)
     {
         if (! $this->isInit) {
@@ -66,11 +72,11 @@ class Adm extends Comp
         $mod =self::ADMIN;
         $bindings=$this->bindings;
         $appPrm=$this->appPrm;
+
         if (isset($bindings[self::ADMIN])) {
             $mod=$bindings[self::ADMIN];
         }
         $obj = new Model($mod);
-
         $obj->setCriteria([], [], [], []);
         $res = $obj->select();
         if (count($res)==0) {

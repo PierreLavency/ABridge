@@ -7,28 +7,65 @@ use ABridge\ABridge\Log\Log;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\View\Vew;
 
-abstract class AppCom
+abstract class AppComp
 {
     protected $config;
     protected $prm;
     protected $bindings;
     protected $apps = [];
+    protected $appName;
     
-    public function __construct($prm, $bindings)
+    public function __construct($prm,$bindings)
     {
-        $this->prm=$prm;
         $this->bindings=$bindings;
+        $this->prm = $prm;
     }
     
     protected function getProp($prop)
     {
-        if (isset($config[$prop])) {
-            return $config[$prop];
+        if (isset($this->config[$prop])) {
+            return $this->config[$prop];
         }
         return null;
     }
-        
-    protected function init()
+    
+    public function setConfig($config)
+    {
+    	$this->config=$config;
+    }
+    
+    
+    public function setPrm ($ini)
+    {
+    	$appName = $ini['name'];
+    	$this->appName = $appName;
+    	// priority : init - spec[Default] - default
+    	$defaultValues=[
+    			'path'=>'C:/Users/pierr/ABridge/Datastore/',
+    			'base'=>'dataBase',
+    			'dataBase'=>$appName,
+    			'memBase'=>$appName,
+    			'fileBase'=>$appName,
+    			'host'=>'localhost',
+    			'user'=>$appName,
+    			'pass'=>$appName,
+    			'trace'=>0,
+    			'config'=>$this,
+    	];
+    	if ($spec=$this->getProp('Default')) {
+    		$defaultValues=array_merge($defaultValues, $spec);
+    	}
+    	$defaultValues=array_merge($defaultValues, $ini);
+    	$this->prm=$defaultValues;
+    	return $defaultValues;
+    }
+    
+    public function getPrm() 
+    {
+    	return $this->prm;
+    }
+           
+    public function init()
     {
         if ($spec=$this->getProp('Handlers')) {
             $result=  Mod::get()->init($this->prm, $spec);
@@ -64,8 +101,8 @@ abstract class AppCom
     public function initMeta()
     {
         $result = [];
-        foreach ($this->apps as $app) {
-            $result=array_merge($result, $app->initMeta());
+        foreach ($this->apps as $name=>$app) {
+        	$result=array_merge($result, $app->initMeta());
         }
         return $this->initOwnMeta($result);
     }
@@ -78,15 +115,19 @@ abstract class AppCom
     public function initData()
     {
         $result = [];
-        foreach ($this->apps as $app) {
+        foreach ($this->apps as $name=>$app) {
             $result=array_merge($result, $app->initData());
         }
-        $this->initOwnData($result);
-        return true;
+        return $this->initOwnData($result);
     }
     
     public function initOwnData($prm)
     {
         return $prm;
+    }
+    
+    public function initDelta()
+    {
+    	return true;
     }
 }

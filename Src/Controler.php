@@ -31,68 +31,11 @@ class Controler
   
     public function __construct($config, $ini)
     {
-        $spec= $config::init($ini, []);
-        $this->defVal=$this->defaultValues($spec, $ini);
-        $this->spec=$spec;
-        Log::get()->init($this->defVal, []);
-        $this->initConf($this->defVal, $spec);
+    	$defVal=$this->defVal=$config->setPrm($ini);
+        Log::get()->init($defVal, []);
+        $config->init();
     }
     
-    protected function initConf($prm, $spec)
-    {
-        if (isset($spec['Handlers'])) {
-            $config=$spec['Handlers'];
-            Mod::get()->init($prm, $config);
-        }
-        if (isset($spec['Apps'])) {
-            $specv = $spec['Apps'];
-            foreach ($specv as $name => $config) {
-                $className = 'ABridge\ABridge\Apps\\'.$name;
-                $spece=$className::init($prm, $config);
-                $this->initConf($prm, $spece);
-            }
-        }
-        if (isset($spec['View'])) {
-            $specv = $spec['View'];
-            Vew::get()->init($prm, $specv);
-        }
-        if (isset($spec['Adm'])) {
-            $config=$spec['Adm'];
-            Adm::get()->init($prm, $config);
-        }
-        if (isset($spec['Hdl'])) {
-            $config=$spec['Hdl'];
-            Hdl::get()->init($prm, $config);
-        }
-        if (isset($spec['Log'])) {
-            $config=$spec['Log'];
-            Log::get()->init($prm, $config);
-        }
-    }
-    
-    private function defaultValues($spec, $ini)
-    {
-        $appName = $ini['name'];
-        $this->appName = $appName;
-        // priority : init - spec[Default] - default
-        $defaultValues=[
-                'path'=>'C:/Users/pierr/ABridge/Datastore/',
-                'base'=>'dataBase',
-                'dataBase'=>$appName,
-                'memBase'=>$appName,
-                'fileBase'=>$appName,
-                'host'=>'localhost',
-                'user'=>$appName,
-                'pass'=>$appName,
-                'trace'=>0,
-        ];
-        if (isset($spec['Default'])) {
-            $defaultValues=array_merge($defaultValues, $spec['Default']);
-        }
-        $defaultValues=array_merge($defaultValues, $ini);
-        return $defaultValues;
-    }
- 
 
     protected function logUrl()
     {
@@ -179,7 +122,7 @@ class Controler
         
         if (Adm::get()->isInit()) {
             Adm::get()->begin();
-            $frccommit=Adm::get()->isNew();
+            $frccommit=($frccommit ||Adm::get()->isNew());
         }
                
         $this->handle= Hdl::get()->begin();

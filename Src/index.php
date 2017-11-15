@@ -24,15 +24,14 @@ if ($application == 'UnitTest') {
     
 $path = "App/".$application .'/';
 require_once $path.'SETUP.php' ;
-$Config = new Config($conf, []);
+$config = new Config($conf, []);
 
-$ctrl = new Controler($Config, $conf);
+$ctrl = new Controler($config, $conf);
 
 if (isset($init)) {
     $ctrl->begin();
-    require_once $path.'META.php';
-    $path = "App/".$application .'/';
-    require_once $path.'LOAD.php';
+    $config->initMeta();
+    $config->initData();
     $ctrl->end();
     $ctrl->close();
     return;

@@ -1,6 +1,6 @@
 <?php
 
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\Adm\Admin;
 use ABridge\ABridge\Controler;
@@ -36,28 +36,9 @@ class Controler_Test_dataBase_Admin extends Admin
 {
 }
 
-class Controler_Test_config extends App
+class Controler_Test_config extends AppComp
 {
-    public static $config;
-    
-    public function __construct($config)
-    {
-        self::$config=$config;
-    }
-    
-    
-    public static function init($prm, $config)
-    {
-        return self::$config;
-    }
-    
-    public static function initMeta($config)
-    {
-    }
-    
-    public static function initData($config)
-    {
-    }
+ 
 }
 
 
@@ -154,7 +135,9 @@ class Controler_Test extends PHPUnit_Framework_TestCase
                 'View'=> [],
         ];
         
-        $cconfig = new Controler_Test_config($config);
+        $cconfig = new Controler_Test_config(null,null);
+        $cconfig->setConfig($config);
+        $cconfig->setPrm($prm['application']);
                
         $cookiename = $prm['application']['name'].$session;
         $prm['cookieName']=$cookiename;

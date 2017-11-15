@@ -4,20 +4,27 @@ namespace ABridge\ABridge\Apps;
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstView;
 use ABridge\ABridge\View\CstHTML;
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 use ABridge\ABridge\Adm\Adm;
 
-class AdmApp extends App
+class AdmApp extends AppComp
 {
     
-    public static function init($prm, $config)
+	public function initOwnMeta($prm)
+	{
+		return Adm::get()->initMeta();
+	}	
+	
+	public function __construct($prm, $bindings)
     {
+    	$this->prm=$prm;
+    	$this->bindings=$bindings;
         $adm=Adm::ADMIN;
-        if (isset($config[Adm::ADMIN])) {
-            $adm = $config[Adm::ADMIN];
+        if (isset($bindings[Adm::ADMIN])) {
+            $adm = $bindings[Adm::ADMIN];
         }
         
-        $res = [
+        $this->config = [
 
             'Handlers' => [
                     $adm => ['memBase',],
@@ -176,16 +183,6 @@ class AdmApp extends App
                     
             ],
         ];
-        return $res;
     }
     
-    public static function initMeta($config)
-    {
-        return Adm::get()->InitMeta();
-    }
-    
-    public static function initData($prm = null)
-    {
-        return true;
-    }
 }

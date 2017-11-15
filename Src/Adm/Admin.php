@@ -52,6 +52,7 @@ class Admin extends CModel
         return $obj->isErr();
     }
     
+    
     public function getVal($attr)
     {
         if ($attr == 'MetaData') {
@@ -83,16 +84,17 @@ class Admin extends CModel
         $app = $this->mod->getVal('Name');
         $path = "App/$app/";
         $prm = $this->mod->getVal('Parameters');
+        $config = Adm::get()->getConfig();
         
         if ($this->mod->getVal('Load')) {
-            require_once $path.'LOAD.php';
+        	$config->initData();
         }
         if ($this->mod->getVal('Meta')) {
-            require_once $path.'META.php';
-            require_once $path.'LOAD.php';
+        	$config->initMeta();
+        	$config->initData();
         }
         if ($this->mod->getVal('Delta')) {
-            require_once $path.'DELTA.php';
+        	$config->initDelta();
         }
         
         if ($this->mod->getId() != 0) {

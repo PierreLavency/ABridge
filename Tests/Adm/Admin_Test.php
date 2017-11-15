@@ -6,6 +6,7 @@ use ABridge\ABridge\Log\Log;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\UtilsC;
+use ABridge\ABridge\AppComp;
 
 class Admin_Test_dataBase_Admin extends Admin
 {
@@ -16,6 +17,13 @@ class Admin_Test_fileBase_Admin extends Admin
 class Admin_Test_memBase_Admin extends Admin
 {
 }
+
+class Admin_Test_Config extends AppComp
+{
+	
+}
+
+
 class Admin_Test extends \PHPUnit_Framework_TestCase
 {
 
@@ -27,11 +35,17 @@ class Admin_Test extends \PHPUnit_Framework_TestCase
 
         Mod::reset();
         Log::reset();
+        Adm::reset();
 
-        $mod= Mod::get();
+        $config = new Admin_Test_Config([],[]);
+        $config->setPrm($prm['application']);
         
-        $mod->init($prm['application'], $prm['handlers']);
-       
+        $mod= Mod::get();
+        $adm= Adm::get();
+        
+        $mod->init($config->getPrm(), $prm['handlers']);
+        $adm->init($config->getPrm(), $prm['memBase']);
+        
         return $prm;
     }
     /**
