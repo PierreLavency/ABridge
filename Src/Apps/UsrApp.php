@@ -7,10 +7,10 @@ use ABridge\ABridge\View\CstView;
 
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Usr\Usr;
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 use ABridge\ABridge\Mod\ModUtils;
 
-class UsrApp extends App
+class UsrApp extends AppComp
 {
     
     static protected $defBind= [
@@ -22,23 +22,8 @@ class UsrApp extends App
             Usr::GROUPUSER     ,
     ];
     
-    public static function initMeta($config)
-    {
-        return Usr::get()->initMeta();
-    }
-    
-    public static function init($prm, $config)
-    {
-        $bindings = self::$defBind;
-        if ($config != []) {
-            $bindings=$config;
-        }
-        $res= self::$config;
-        $res['Hdl']['Usr']=$bindings;
-        return $res;
-    }
-    
-    static public $config = [
+   
+    protected $config = [
 
             'Hdl'   => [
                     'Usr'   => [
@@ -319,15 +304,28 @@ class UsrApp extends App
                     ],
             ],
     ];
-            
-    public static function initData($config)
+
+    public function initOwnMeta($config)
     {
-        // Role
+        return Usr::get()->initMeta();
+    }
+    
+    public function __construct($prm, $config)
+    {
+        $this->prm = $prm;
         $bindings = self::$defBind;
         if ($config != []) {
             $bindings=$config;
         }
-        $bindings=ModUtils::normBindings($bindings);
+        $this->bindings=ModUtils::normBindings($bindings);
+        $this->config['Hdl']['Usr']=$this->bindings;
+    }
+       
+    
+    public function initOwnData($config)
+    {
+
+        $bindings=$this->bindings;
  
         $RSpec ='[["true","true","true"]]';
  
@@ -387,6 +385,6 @@ class UsrApp extends App
             $RootUser=$obj->save();
             $obj->getErrLog()->show();
         }
-        return $RootUser;
+        return [$RootUser];
     }
 }

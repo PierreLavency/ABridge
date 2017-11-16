@@ -41,37 +41,37 @@ class UserApp_Test extends PHPUnit_Framework_TestCase
     
     public function testInit()
     {
+        Mod::reset();
+        Usr::reset();
+        
         $classes = [
                 Usr::USER          ,
                 Usr::ROLE          ,
                 Usr::DISTRIBUTION  ,
                 Usr::SESSION       ,
                 Usr::USERGROUP     ,
-                Usr::GROUPUSER     ,];
+                Usr::GROUPUSER     ,
+                
+        ];
         
         $prm=UtilsC::genPrm($classes, get_called_class(), ['fileBase']);
         
         $usrName=$prm['fileBase'][Usr::USER];
         
-        $res = UsrApp::init($prm, $prm['fileBase']);
-        
-        $this->assertEquals($prm['fileBase'], $res['Hdl']['Usr']);
-
-        Mod::reset();
-        Usr::reset();
-               
+        $usr = new UsrApp($prm['application'], $prm['fileBase']);
+        $usr->init();
+                       
         $mod= Mod::get();
         
-        Usr::get()->init($prm['application'], $prm['fileBase']);
         
         $mod->begin();
         
-        $res= UsrApp::initMeta($prm['fileBase']);
+        $res= $usr->initMeta();
         $this->assertEquals($prm['fileBase'], $res);
   
         
-        $res= UsrApp::initData($prm['fileBase']);
-        $this->assertEquals(1, $res);
+        $res= $usr->initData();
+        $this->assertEquals([1], $res);
         
         $mod->end();
     }

@@ -1,7 +1,6 @@
 <?php
 
 use ABridge\ABridge\Apps\Cda;
-use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\UtilsC;
 
@@ -10,6 +9,7 @@ class Cda_Test extends PHPUnit_Framework_TestCase
     
     public function testInit()
     {
+        Mod::reset();
         $classes = [Cda::CODE,'test'];
         
         $prm=UtilsC::genPrm($classes, get_called_class(), ['fileBase']);
@@ -23,24 +23,19 @@ class Cda_Test extends PHPUnit_Framework_TestCase
                 
         ];
         
-        $res = Cda::init($prm, $config);
+        $cda = new Cda($prm['application'], $config);
+        $cda->init();
         
-        $this->assertEquals([], $res['Handlers'][$testName]);
-
-        Mod::reset();
-               
+              
         $mod= Mod::get();
-        
-        $mod->init($prm['application'], $res['Handlers']);
         
         $mod->begin();
         
-        $res= cda::initMeta($config);
-        $this->assertEquals($prm['fileBase'], $res);
-  
-        
-        $res= cda::initData($config);
-        $this->assertEquals(1, $res);
+        $res= $cda->initMeta();
+        $this->assertEquals([cda::CODE=>$codeName,'test'=>$testName], $res);
+         
+        $res= $cda->initData();
+        $this->assertEquals([1], $res);
         
         $mod->end();
     }

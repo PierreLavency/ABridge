@@ -1,21 +1,17 @@
 <?php
 
 use ABridge\ABridge\Adm\Adm;
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 use ABridge\ABridge\Apps\AdmApp;
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\View\CstView;
 
-class Config extends App
+class Config extends AppComp
 {
-	public static function  init($prm, $config)
-	{
-		return self::$config;
-	}
-	
-	static $config = [
+
+	protected $config = [
 	'Apps'	=>
 			[
 					'AdmApp'=> [],
@@ -68,9 +64,8 @@ class Config extends App
 	];
 
 	
-	public static function initMeta($config)
+	public function initOwnMeta($config)
 	{
-		AdmApp::initMeta(self::$config['Apps']['AdmApp']);
 		
 		$x = new Model('Elm');
 		$x->deleteMod();
@@ -104,12 +99,7 @@ class Config extends App
 		$x->getErrLog()->show();	
 		
 	}
-	
-	public static function initData($prm=null)
-	{
-		AdmApp::initData(self::$config['Apps']['AdmApp']);
-	}
-	
+
 	private static function  createData($id,$B,$D)
 	{
 		for ($i=1;$i<$B;$i++) {

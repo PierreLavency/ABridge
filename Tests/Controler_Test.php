@@ -135,9 +135,8 @@ class Controler_Test extends PHPUnit_Framework_TestCase
                 'View'=> [],
         ];
         
-        $cconfig = new Controler_Test_config(null, null);
+        $cconfig = new Controler_Test_config($prm['application']);
         $cconfig->setConfig($config);
-        $cconfig->setPrm($prm['application']);
                
         $cookiename = $prm['application']['name'].$session;
         $prm['cookieName']=$cookiename;
@@ -153,7 +152,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     function testRoot($prm)
     {
         $this->reset();
-        $ctrl = new Controler($prm['config'], $prm['application']);
+        $ctrl = new Controler($prm['config']);
        
         $path = '/';
         $_COOKIE[$prm['cookieName']]=$prm['key'];
@@ -208,7 +207,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     public function testRootErr($prm)
     {
         $this->reset();
-        $ctrl = new Controler($prm['config'], $prm['application']);
+        $ctrl = new Controler($prm['config']);
         
         $_COOKIE[$prm['cookieName']]=$prm['key'];
         $_SERVER['REQUEST_METHOD']='POST';
@@ -231,7 +230,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     public function testSelect($prm)
     {
         $this->reset();
-        $ctrl = new Controler($prm['config'], $prm['application']);
+        $ctrl = new Controler($prm['config']);
         
         $_COOKIE[$prm['cookieName']]=$prm['key'];
         $_SERVER['REQUEST_METHOD']='POST';
@@ -294,7 +293,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     public function testUpdSon($prm)
     {
         $this->reset();
-        $ctrl = new Controler($prm['config'], $prm['application']);
+        $ctrl = new Controler($prm['config']);
         
         $path=$prm['sonPath'];
 
@@ -381,14 +380,14 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     public function testClose($prm)
     {
         $this->reset();
-        $ctrl = new Controler($prm['config'], $prm['application']);
+        $ctrl = new Controler($prm['config']);
         $this->assertTrue($ctrl->close());
     }
 
     private function delPath($prm, $path)
     {
         $this->reset();
-        $ctrl = new Controler($prm['config'], $prm['application']);
+        $ctrl = new Controler($prm['config']);
 
         $_COOKIE[$prm['cookieName']]=$prm['key'];
         $_SERVER['REQUEST_METHOD']='GET';

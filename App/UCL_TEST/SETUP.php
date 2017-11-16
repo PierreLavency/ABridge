@@ -1,7 +1,7 @@
 <?php
 
 use ABridge\ABridge\Adm\Adm;
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 use ABridge\ABridge\Apps\AdmApp;
 use ABridge\ABridge\Apps\Cdv;
 use ABridge\ABridge\Apps\UsrApp;
@@ -19,7 +19,7 @@ require_once 'Inscription.php';
 require_once 'Prof.php';
 require_once 'Charge.php';
 
-class Config extends App
+class Config extends AppComp
 {
 		
 	const STUDENT = 'Student';
@@ -38,12 +38,9 @@ class Config extends App
 			self::CHARGE,
 	];
 	
-	public static function  init($prm, $config)
-	{
-		return self::$config;
-	}
+
 	
-	static $config = [
+	protected $config = [
 	'Apps'	=>
 			[
 					'UsrApp'=>[],
@@ -268,17 +265,12 @@ class Config extends App
 			]
 	];
 	
-	public static function initMeta($config)
+	public function initOwnMeta($config)
 	{
-
-		
-		$admList= AdmApp::initMeta(self::$config['Apps']['AdmApp']);
-		$usrList=UsrApp::initMeta(self::$config['Apps']['UsrApp']);
-		$cdvList=Cdv::initMeta(self::$config['Apps']['Cdv']);
 
 		$list = ModUtils::normBindings(self::$logicalNames);
 		
-		$bindings = array_merge($admList,$usrList,$cdvList,$list);
+		$bindings = array_merge($config,$list);
 
 		
 		$obj = new Model($bindings[Usr::USER]);
@@ -287,20 +279,12 @@ class Config extends App
 		$res = $obj->saveMod();
 		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";		
 			
-		ModUtils::initModBindings($bindings,self::$logicalNames);		
 
 	}
 	
-	public static function initData($prm=null)
+	public function initOwnData($prm)
 	{
-		UsrApp::initData(self::$config['Apps']['UsrApp']);
-		AdmApp::initData(self::$config['Apps']['AdmApp']);
-		Cdv::initData(self::$config['Apps']['Cdv']);
-		self::loadDataRole();
-	}
 
-	public  static function loadDataRole()
-	{		
 		$RSpec =
 '[
  [["Read"],                    "true",                        "true"],

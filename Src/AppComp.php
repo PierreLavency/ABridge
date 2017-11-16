@@ -10,12 +10,27 @@ use ABridge\ABridge\View\Vew;
 abstract class AppComp
 {
     protected $config;
-    protected $prm;
-    protected $bindings;
+    protected $prm=[];
+    protected $bindings=[];
     protected $apps = [];
     protected $appName;
     
-    public function __construct($prm, $bindings)
+    
+    public function __construct()
+    {
+        $arg = func_get_args();
+        $argN = func_num_args();
+        if (method_exists($this, $fct = 'construct'.$argN)) {
+            call_user_func_array(array($this, $fct), $arg);
+        }
+    }
+    
+    protected function construct1($prm)
+    {
+        $this->setPrm($prm);
+    }
+    
+    protected function construct2($prm, $bindings)
     {
         $this->bindings=$bindings;
         $this->prm = $prm;
@@ -116,14 +131,14 @@ abstract class AppComp
     {
         $result = [];
         foreach ($this->apps as $name => $app) {
-            $app->initData();
+            $result=array_merge($result, $app->initData());
         }
-        return $this->initOwnData();
+        return $this->initOwnData($result);
     }
     
-    public function initOwnData()
+    public function initOwnData($prm)
     {
-        return true;
+        return $prm;
     }
     
     public function initDelta()

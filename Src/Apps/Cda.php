@@ -1,50 +1,51 @@
 <?php
 namespace ABridge\ABridge\Apps;
 
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\View\CstView;
 use ABridge\ABridge\Mod\ModUtils;
 
-class Cda extends App
+class Cda extends AppComp
 {
     const CODE='AbstractCode';
     const CODELIST='CodeList';
     const CODEDATA='CodeData';
     
-    public static function init($prm, $config)
+    public function __construct($prm, $bindings)
     {
+        $this->bindings=$bindings;
+        $this->prm = $prm;
         $handlerList= [];
         $viewList = [];
         
         $code = self::CODE;
-        if (isset($config[self::CODE])) {
-            $code = $config[self::CODE];
+        if (isset($bindings[self::CODE])) {
+            $code = $bindings[self::CODE];
         }
         $handlerList[$code]=[];
         
-        $codelist = $config[self::CODELIST];
+        $codelist = $bindings[self::CODELIST];
         $codeList = ModUtils::normBindings($codelist);
         foreach ($codelist as $logicalName => $codeName) {
             $handlerList[$codeName]=[];
             $viewList[$codeName]=['attrList' => [CstView::V_S_REF=> ['Value']]];
         }
         
-        $res = [
+        $this->config = [
                 'Handlers' => $handlerList,
                 'View' => $viewList,
         ];
-        return $res;
     }
     
     
-    public static function initMeta($config)
+    public function initOwnMeta($prm)
     {
-        $bindings=[];
+        $bindings=$this->bindings;
         $code = self::CODE;
-        if (isset($config[self::CODE])) {
-            $code = $config[self::CODE];
+        if (isset($bindings[self::CODE])) {
+            $code = $bindings[self::CODE];
         }
 
         // Abstract
@@ -63,8 +64,8 @@ class Cda extends App
         // Concretes
         
         $codelist = [];
-        if (isset($config[self::CODELIST])) {
-            $codelist= $config[self::CODELIST];
+        if (isset($bindings[self::CODELIST])) {
+            $codelist= $bindings[self::CODELIST];
         }
         
         $codeList = ModUtils::normBindings($codelist);
@@ -81,10 +82,10 @@ class Cda extends App
         return $codelist;
     }
     
-    public static function initData($prm)
+    public function initOwnData($prm)
     {
         $i=0;
-        $codeData=$prm[self::CODEDATA];
+        $codeData=$this->bindings[self::CODEDATA];
         foreach ($codeData as $codeName => $values) {
             foreach ($values as $value) {
                 $valMobj= new Model($codeName);
@@ -93,6 +94,6 @@ class Cda extends App
                 $i++;
             }
         }
-        return $i;
+        return [$i];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 use ABridge\ABridge\Apps\AdmApp;
 use ABridge\ABridge\Apps\Cda;
 use ABridge\ABridge\Apps\UsrApp;
@@ -10,7 +10,7 @@ use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
 
-class Config extends App
+class Config extends AppComp
 {
 	
 	const DBDEC = 'abb';
@@ -36,31 +36,7 @@ class Config extends App
 	
 	const Adm ='Admin';
 	
-	public static function initMeta($config)
-	{
-		AdmApp::initMeta(self::$config['Apps']['AdmApp']);
-		UsrApp::initMeta(self::$config['Apps']['UsrApp']);
-		Cda::initMeta(self::$config['Apps']['Cda']);
-		self::loadMeta();
-		return true;
-	}
-	
-	
-	public static function initData($prm)
-	{		
-		UsrApp::initData(self::$config['Apps']['UsrApp']);	
-		AdmApp::initData(self::$config['Apps']['AdmApp']);
-		Cda::initData(self::$config['Apps']['Cda']);
-		self::loadRole();
-		return true;
-	}
-	
-	public static function  init($prm, $config)
-	{
-		return self::$config;
-	}
-	
-	static $config = [
+	protected $config = [
 			
 	'Default'	=> [
 			'dataBase'=>self::DBDEC,
@@ -252,7 +228,7 @@ class Config extends App
 	];		
 	
 	
-	protected static function loadMeta()
+	public  function initOwnMeta($prm)
 	{
 		$obj = new Model(Config::ABB);
 		$res= $obj->deleteMod();
@@ -333,11 +309,9 @@ class Config extends App
 		
 		$res = $obj->saveMod();
 		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
-	}
+	}		
 	
-	
-	
-	protected static function loadRole()
+	public function initOwnData($prm)
 	{
 		
 		// Roles

@@ -80,12 +80,16 @@ INT
 
 on config branch 
 
-migration of USR
-migration of CDA
+
+
 
 test case for compApp.
 
 DONE
+------------------//0.5
+migration remaining APP
+------------------//0.5
+migration of CDA
 ------------------//1
 migration of CDV and LOG
 -----------------//2

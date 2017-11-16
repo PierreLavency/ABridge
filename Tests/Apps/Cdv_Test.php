@@ -37,7 +37,7 @@ class Cdv_Test extends PHPUnit_Framework_TestCase
   
         
         $res= $cdv->initData();
-        $this->assertEquals(1, $res);
+        $this->assertEquals([1], $res);
         
         $mod->end();
     }

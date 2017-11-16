@@ -6,21 +6,12 @@ use ABridge\ABridge\View\CstView;
 
 use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 
-class Config extends App
+class Config extends AppComp
 {
 	
-	public function __construct ($prm,$config) {
-		self::init($prm, $config);
-	}
-		
-	public static function  init($prm, $config)
-	{
-		return self::$config;
-	}
-	
-	static $config = [
+	protected  $config = [
 	'Handlers' =>[
 		'Album'		=> ['dataBase',],
 		'Photo' 	=> ['dataBase',],
@@ -92,7 +83,7 @@ class Config extends App
 		],
 	];
 	
-	public static function initMeta($config)
+	public function initOwnMeta($config)
 	{
 		$ACode = 'AbstractCode';
 		
@@ -138,9 +129,5 @@ class Config extends App
 
 	}
 
-	public static function initData($prm=null)
-	{
-		
-	}
 	
 }

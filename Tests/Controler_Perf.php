@@ -262,8 +262,8 @@ function saveLog($LogName)
     
     $path = "App/LOG/SETUP.php";
     require_once $path;
-    $config = new Config([], []);
-    $ctrl = new Controler($config, ['name'=>'LOG']);
+    $config = new Config(['name'=>'LOG']);
+    $ctrl = new Controler($config);
     
     $_GET['Action']=CstMode::V_S_CREA;
     $_SERVER['PATH_INFO']='/PrfFile';
@@ -330,7 +330,7 @@ class Controler_Perf
             ];
             $this->config['Hdl']= ['Usr'=>$usr];
         }
-        $cconfig = new Controler_Test_Perf_config(null, null);
+        $cconfig = new Controler_Test_Perf_config($this->ini);
         $cconfig->setConfig($this->config);
         $this->cconfig=$cconfig;
         
@@ -472,7 +472,7 @@ class Controler_Perf
     protected function ctrlrun()
     {
         Usr::reset();
-        $ctrl = new Controler($this->cconfig, $this->ini);
+        $ctrl = new Controler($this->cconfig);
         $resc = $ctrl->run($this->show);
         return $resc;
     }
@@ -480,7 +480,7 @@ class Controler_Perf
     public function close()
     {
         Usr::reset();
-        $ctrl = new Controler($this->cconfig, $this->ini);
+        $ctrl = new Controler($this->cconfig);
         $ctrl->close();
     }
     

@@ -3,16 +3,12 @@
 use ABridge\ABridge\Apps\Cda;
 use ABridge\ABridge\Apps\AdmApp;
 use ABridge\ABridge\Adm\Adm;
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppCOmp;
 
-class Config extends App
+class Config extends AppComp
 {
-	public static function  init($prm, $config)
-	{
-		return self::$config;
-	}
 	
-	static $config = [
+	protected $config = [
 	'Apps'	=>
 			[
 					'AdmApp'=>[],		
@@ -43,20 +39,6 @@ class Config extends App
 		],
 	];
 	
-	public static function initMeta($config)
-	{
-		AdmApp::initMeta(self::$config['Apps']['AdmApp']);		
-		Cda::initMeta(self::$config['Apps']['Cda']);
-		
-	}
-	
-	public static function initData($prm=null)
-	{
-		AdmApp::initData();
-		Cda::initData(self::$config['Apps']['Cda']);
-		
-		
-	}
 	
 }
 	

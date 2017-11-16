@@ -12,20 +12,16 @@ use ABridge\ABridge\Apps\UsrApp;
 use ABridge\ABridge\Adm\Adm;
 use ABridge\ABridge\Usr\Usr;
 
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 
-class Config extends App
+class Config extends AppComp
 {
 		
 	const DBDEC = 'USR';
 	const PDATA = 'ProfileData';
 	
-	public static function  init($prm, $config)
-	{
-		return self::$config;
-	}
 	
-	static $config = [
+	protected $config = [
 	'Apps'	=>
 			[
 					'UsrApp'=>[],
@@ -76,11 +72,8 @@ class Config extends App
 		],
 	];
 	
-	public static function initMeta($config)
-	{
-		UsrApp::initMeta(self::$config['Apps']['UsrApp']);
-		AdmApp::initMeta(self::$config['Apps']['AdmApp']);
-		
+	public function initOwnMeta($config)
+	{		
 		$obj = new Model(Usr::USER);		
 		$res = $obj->addAttr('Of',Mtype::M_CREF,'/'.self::PDATA.'/'.Usr::USER);		
 		$res = $obj->saveMod();
@@ -106,10 +99,8 @@ class Config extends App
 		echo $obj->getModName()."<br>";$obj->getErrLog()->show();echo "<br>";
 	}
 	
-	public static function initData($prm=null)
+	public function initOwnData($prm)
 	{
-		UsrApp::initData(self::$config['Apps']['UsrApp']);
-		AdmApp::initData();
 		
 		$RSpec ='[
 [["Read"],"true", "true"],

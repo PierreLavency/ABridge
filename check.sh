@@ -29,7 +29,16 @@ then
 	pdepend --summary-xml=tmp/summary.xml --jdepend-chart=tmp/jdepend.svg --overview-pyramid=tmp/pyramid.svg Src	
 	echo "phpunit"
 	phpunit --coverage-html tmp/Testcoverage
-exit
+	exit
+fi
+if [ $Phase = "perf" ]
+then
+	echo "performance Logging"
+	cp ~/ABridge/Tests/perf.ini ~/ABridge/Tests/perfTmp.ini
+	cp ~/ABridge/Tests/perfLog.ini ~/ABridge/Tests/perf.ini
+	php tests/Controler_Perf.php
+	cp ~/ABridge/Tests/perfTmp.ini ~/ABridge/Tests/perf.ini
+	exit
 fi
 
 echo -e "full check \n"

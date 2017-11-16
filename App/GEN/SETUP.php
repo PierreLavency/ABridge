@@ -3,28 +3,14 @@
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\View\CstHTML;
 use ABridge\ABridge\View\CstView;
-use ABridge\ABridge\App;
+use ABridge\ABridge\AppComp;
 
 require_once 'Person.php';
 
-class Config extends App
+class Config extends AppComp
 {
-	public static function  init($prm, $config)
-	{
-		return self::$config;
-	}
 	
-	public  static function initMeta($config)
-	{
-		return true;
-	}
-	
-	public  static function initData($prm=null)
-	{
-		return  true;
-	}
-	
-	static $config = [
+	protected  $config = [
 	'Handlers' =>
 		[
 		'Person'	 => ['dataBase'],

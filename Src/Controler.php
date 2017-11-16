@@ -9,7 +9,7 @@ use ABridge\ABridge\Log\Log;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\View\Vew;
-use ABridge\ABridge\View\View;
+
 
 
 use ABridge\ABridge\GenJASON;
@@ -29,14 +29,12 @@ class Controler
     protected $defVal=[];
      
   
-    public function __construct($config, $ini)
+    public function __construct($config)
     {
-        $defVal=$this->defVal=$config->setPrm($ini);
-        Log::get()->init($defVal, []);
+        Log::get()->init($config->getPrm(), []);
         $config->init();
     }
     
-
     protected function logUrl()
     {
         $log=Log::get();
