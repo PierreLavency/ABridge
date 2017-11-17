@@ -82,10 +82,10 @@ abstract class AppComp
            
     public function init()
     {
-        if ($spec=$this->getProp('Handlers')) {
+        if (!is_null($spec = $this->getProp('Handlers'))) {
             $result=  Mod::get()->init($this->prm, $spec);
         }
-        if ($spec=$this->getProp('Apps')) {
+        if (!is_null($spec = $this->getProp('Apps'))) {
             foreach ($spec as $name => $config) {
                 $className = 'ABridge\ABridge\Apps\\'.$name;
                 $app=new $className($this->prm, $config);
@@ -93,16 +93,16 @@ abstract class AppComp
                 $app->init();
             }
         }
-        if ($spec=$this->getProp('View')) {
+        if (!is_null($spec = $this->getProp('View'))) {
             Vew::get()->init($this->prm, $spec);
         }
-        if ($spec=$this->getProp('Adm')) {
+        if (!is_null($spec = $this->getProp('Adm'))) {
             Adm::get()->init($this->prm, $spec);
         }
-        if ($spec=$this->getProp('Hdl')) {
+        if (!is_null($spec = $this->getProp('Hdl'))) {
             Hdl::get()->init($this->prm, $spec);
         }
-        if ($spec=$this->getProp('Log')) {
+        if (!is_null($spec = $this->getProp('Log'))) {
             Log::get()->init($this->prm, $spec);
         }
         $this->initOwn();

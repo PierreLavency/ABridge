@@ -81,11 +81,9 @@ INT
 on config branch 
 
 
-
-
-test case for compApp.
-
 DONE
+------------------//0.5
+test case for compApp.
 ------------------//0.5
 migration remaining APP
 ------------------//0.5
