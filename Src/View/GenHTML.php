@@ -169,11 +169,14 @@ class GenHTML
         return $result;
     }
     
-    public static function genHTML($dspec, $show = true)
+    public static function genHTML($dspec, $css, $show = true)
     {
         $htmlS="<!DOCTYPE html>\n<html>\n<head>\n";
         $htmlS=$htmlS."<title>ABridge</title>\n";
-        $htmlS=$htmlS.'<link rel="stylesheet" type="text/css" href="/mystyle.css">'."\n";
+//        $htmlS=$htmlS.'<link rel="stylesheet" type="text/css" href="'.$css.')">'."\n";
+        $htmlS=$htmlS."<style>\n";
+        $htmlS=$htmlS.$css;
+        $htmlS=$htmlS."</style>\n";
         $htmlS= $htmlS."</head>\n";
         $htmls=$htmlS."<body>\n";
         $htmlSE="\n </body> \n </html>";

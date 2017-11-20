@@ -2,7 +2,6 @@
 namespace ABridge\ABridge\View;
 
 use ABridge\ABridge\View\View;
-
 use ABridge\ABridge\Comp;
 
 class Vew extends Comp
@@ -167,6 +166,18 @@ class Vew extends Comp
         }
         if (isset($this->viewHandler[$specName])) {
             return $this->viewHandler[$specName];
+        }
+        return null;
+    }
+    
+    public function getCssFileName()
+    {
+        if (isset($this->appPrm['cssName'])) {
+            $cssName = $this->appPrm['cssName'];
+            $fpath= $this->appPrm['fpath'];
+            $cssfileName = $fpath . $cssName;
+            $file = file_get_contents($cssfileName, FILE_USE_INCLUDE_PATH);
+            return $file;
         }
         return null;
     }

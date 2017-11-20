@@ -7,10 +7,6 @@ require_once 'vendor/autoload.php';
 
 use ABridge\ABridge\Controler;
 
-//use ABridge\ABridge\CstError;
-//phpinfo();
-
-
 if (isset($conf['name'])) {
     $application= $conf['name'];
 } else {
@@ -21,7 +17,13 @@ if (isset($conf['name'])) {
 if ($application == 'UnitTest') {
     return;
 }
-    
+
+if ($phase=='dev') {
+    $fpath= "C:\Users\pierr\ABridge\App\\".$application."\\";
+    $conf['fpath']=$fpath;
+}
+
+
 $path = "App/".$application .'/';
 require_once $path.'SETUP.php' ;
 $config = new Config($conf);
@@ -29,10 +31,7 @@ $config = new Config($conf);
 $ctrl = new Controler($config);
 
 if (isset($init)) {
-    $ctrl->begin();
-    $config->initMeta();
-    $config->initData();
-    $ctrl->end();
+    $ctrl->initMeta();
     $ctrl->close();
     return;
 }

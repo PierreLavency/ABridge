@@ -859,7 +859,8 @@ class View
     {
         $this->initMenu();
         $res = $this->buildView($viewState, false);
-        $res=GenHTML::genHTML($res, $show);
+        $css = $this->vew->getCssFileName();
+        $res=GenHTML::genHTML($res, $css, $show);
         return $res;
     }
   

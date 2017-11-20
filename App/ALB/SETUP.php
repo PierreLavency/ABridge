@@ -20,10 +20,13 @@ class Config extends AppComp
 					'AdmApp'=>[],
 			
 	],
+	'Default'=> [
+		'cssName' => 'ALBstyle.css'
+	],
+			
 			
 	'View' => [
 		'Home' => ['/',],
-
 		'Album'=> [
 
 				'attrList' => [
@@ -68,7 +71,7 @@ class Config extends AppComp
 					CstView::V_S_CREF	=> ['id','Photo'],					
 				],
 				'listHtmlClassElem' => [
-					CstView::V_S_CREF =>[CstHTML::H_DIV,'test'],
+						CstView::V_S_CREF =>[CstHTML::H_DIV,'albimg'],
 				],
 				'attrHtml' => [
 					CstMode::V_S_READ => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 600,CstHTML::H_COLP=> 400]],

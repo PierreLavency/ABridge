@@ -51,7 +51,6 @@ DEV
 - introduction of name space in Tests /2
 - graphics : include svg bit in view. /2
 
-
 - prefix all tables (?)
 - avoid loading abstractMod in Mod base  (? dependency in test)
 - revisit dot attributes (?)
@@ -78,10 +77,20 @@ INT
 - set up a git server
 - set up jenkin
 
-on config branch 
+on config branch:
 
+
+
+clean up app files (remove meta etc).
+hide/show some basic views
+style tables
+style photo galery
+multiple "vertical" views 
+review menu management
 
 DONE
+------------------// 1
+application specific css.
 ------------------//0.5
 test case for compApp.
 ------------------//0.5

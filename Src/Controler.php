@@ -19,20 +19,22 @@ class Controler
 {
 
     protected $handle=null;
-    protected $spec = [];
     protected $attrL = [];
     protected $valL = [];
     protected $oprL = [];
     protected $ordL = [];
     protected $logLevel = 0;
-    protected $appName ;
     protected $defVal=[];
+    protected $config;
+    protected $mod;
      
   
     public function __construct($config)
     {
         Log::get()->init($config->getPrm(), []);
         $config->init();
+        $this->config=$config;
+        $this->mod=Mod::get();
     }
     
     protected function logUrl()
@@ -53,21 +55,6 @@ class Controler
     public function close()
     {
         return Mod::get()->close();
-    }
-    
-    public function rollback()
-    {
-        return Mod::get()->rollback();
-    }
-    
-    public function begin()
-    {
-        return Mod::get()->begin();
-    }
-    
-    public function end()
-    {
-        return Mod::get()->end();
     }
     
     protected function setVal($action)
@@ -110,11 +97,20 @@ class Controler
         return (!$c->isErr());
     }
  
+    public function initMeta()
+    {
+        $this->mod->begin();
+        $this->config->initMeta();
+        $this->config->initData();
+        $this->mod->end();
+    }
+    
+    
     public function run($show)
     {
         Log::get()->begin();
     
-        $this->begin();
+        $this->mod->begin();
         
         $frccommit=false;
         
@@ -139,7 +135,7 @@ class Controler
         if ($this->handle->nullobj()) {
             Vew::get()->begin([$show, $this->handle]);
             if ($frccommit) {
-                $this->end();
+                $this->mod->end();
             }
             return $this->handle;
         }
@@ -168,13 +164,13 @@ class Controler
                 }
             }
             if (!$this->handle->isErr()) {
-                $res=$this->end();
+                $res=$this->mod->end();
                 $frccommit=false;
                 if ($res) {
                     $actionExec=true;
                 }
             } else {
-                $this->rollback();
+                $this->mod->rollback();
             }
         }
         if ($actionExec) {
@@ -187,7 +183,7 @@ class Controler
         }
         
         if ($frccommit) {
-            $this->end();
+            $this->mod->end();
         }
         
         Vew::get()->begin([$show, $this->handle]);

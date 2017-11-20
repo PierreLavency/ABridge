@@ -66,6 +66,7 @@ abstract class AppComp
                 'pass'=>$appName,
                 'trace'=>0,
                 'config'=>$this,
+                'fpath'=>"/",
         ];
         if ($spec=$this->getProp('Default')) {
             $defaultValues=array_merge($defaultValues, $spec);

@@ -11,6 +11,10 @@ class Config extends AppComp
 {
 			
 	protected $config = [
+	'Default'=> [
+			'cssName' => 'CSNstyle.css'
+	],
+			
 	'Handlers' =>
 		[
 		'Recette'		=> ['dataBase',],
@@ -34,7 +38,6 @@ class Config extends AppComp
 				CstView::V_VIEWLIST=>[CstHTML::H_DIV,'viewmenu'],
 				CstView::V_OBJLISTVIEW=>[CstHTML::H_DIV,'objlistview'],
 				CstView::V_CREDITLIST=>[CstHTML::H_DIV,'footer'],
-
 				CstView::V_ALIST=>[CstHTML::H_DIV,'csnimg'],
 				
 			],
@@ -222,13 +225,6 @@ class Config extends AppComp
 
 		],
 	];
-	
-	
-	public static function getStyle()
-	{
-		$file = file_get_contents('appStyle.css', FILE_USE_INCLUDE_PATH);
-		echo $file;
-	}
 	
 	public function initOwnMeta($config)
 	{

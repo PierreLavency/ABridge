@@ -1,8 +1,9 @@
-a:2:{i:0;a:7:{i:0;s:1898:"<!DOCTYPE html>
+a:2:{i:0;a:7:{i:0;s:1855:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 test
@@ -88,11 +89,12 @@ ABridge
 
 
  </body> 
- </html>";i:1;s:4917:"<!DOCTYPE html>
+ </html>";i:1;s:4874:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 test
 
@@ -383,11 +385,12 @@ ABridge
 
 
  </body> 
- </html>";i:2;s:1011:"<!DOCTYPE html>
+ </html>";i:2;s:968:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 test
@@ -451,11 +454,12 @@ ABridge
 
 
  </body> 
- </html>";i:3;s:989:"<!DOCTYPE html>
+ </html>";i:3;s:946:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 test
@@ -519,11 +523,12 @@ ABridge
 
 
  </body> 
- </html>";i:4;s:2059:"<!DOCTYPE html>
+ </html>";i:4;s:2016:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 test
@@ -636,20 +641,22 @@ ABridge
 
 
  </body> 
- </html>";i:5;s:205:"<!DOCTYPE html>
+ </html>";i:5;s:162:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
 
  </body> 
- </html>";i:6;s:346:"<!DOCTYPE html>
+ </html>";i:6;s:303:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
 
