@@ -79,8 +79,7 @@ INT
 
 on config branch:
 
-
-
+parameterize topview
 clean up app files (remove meta etc).
 hide/show some basic views
 style tables
