@@ -1,11 +1,29 @@
 <?php
 use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\Mod\Mtype;
+use ABridge\ABridge\Mod\Model;
 
 class Inscription extends CModel 
 {
 
 	private $_student;
 	
+	public function initMod($bindings)
+	{
+		
+		$obj = $this->mod;
+		
+		$student = 'Student';
+		$cours='Cours';
+		
+		$res = $obj->addAttr('De',Mtype::M_REF,'/'.$bindings[$student]);
+		$res=$obj->setProp('De', Model::P_MDT); 
+		$res = $obj->addAttr('A',Mtype::M_REF,'/'.$bindings[$cours]);
+		$res=$obj->setProp('A', Model::P_MDT); 
+		$obj->setCkey(['De','A'],true);
+		
+		
+	}
 	public function delet()
 	{
 		$this->_student = $this->mod->getRef('De');
@@ -15,7 +33,7 @@ class Inscription extends CModel
 		}
 		return $res;
 	}
-
+	
 	public function save()
 	{
 		$res=$this->mod->saveN();
@@ -25,11 +43,5 @@ class Inscription extends CModel
 		}
 		return $res;
 	}
-	public function initMod($bindings)
-	{
-		
-		throw new Exception(__CLASS__.' - '.__FUNCTION__);
-		
-		
-	}
+
 }

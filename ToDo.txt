@@ -16,8 +16,6 @@ B34 order when slice size = 1
 B35 pdepend does not count line correctly (?)
 
 DEV
-- implement unique index.
-
 - review init of Handle / Usr.
 - improve LC support (release, test/ dev Data Base etc.)
 - create Ctr Component.
@@ -33,14 +31,7 @@ DEV
 - confirmation requested on META load / Java Script
 - set up modif logging / node.js ?
 
-- changed class model independently of DB model.
-- database paging
-
-- implement CSS
-
 - delete in list./2
-- view sort out persistence/2
-- multi language /2
 
 - increase autorisations rule capability /2
 	- views and other parameters
@@ -49,19 +40,36 @@ DEV
 
 - delete all object in class /2
 - introduction of name space in Tests /2
-- graphics : include svg bit in view. /2
 
-- prefix all tables (?)
 - avoid loading abstractMod in Mod base  (? dependency in test)
 - revisit dot attributes (?)
 - unify get code with get reference. (????)
 - user Jason to save data rather than serilialisation (?).
 
+on DB branch:
+
+- get metadata from DB
+- implement unique index.
+- changed class model independently of DB model.
+- database paging
+- prefix all tables (?)
+
+on VIEW branch:
+
+-parameterize topview lists.
+-improve test view
+-hide/show some basic views
+-style tables
+-style photo galery
+-multiple "vertical" views 
+-review menu management
+-define standard ABridge style.
+-include svg bit in view.
+-view sort out persistence/2
+-multi language /2
+ 
 PERF
 initMod rather than restoreMod.
-
-TEST
-- improve view test coverage - need to separate view show and build // some progress
 
 APP
 - beef up test apps with relationships tables 
@@ -77,17 +85,11 @@ INT
 - set up a git server
 - set up jenkin
 
-on config branch:
 
-parameterize topview
-clean up app files (remove meta etc).
-hide/show some basic views
-style tables
-style photo galery
-multiple "vertical" views 
-review menu management
 
 DONE
+------------------//0.5
+clean up app directories (remove meta etc).
 ------------------// 1
 application specific css.
 ------------------//0.5

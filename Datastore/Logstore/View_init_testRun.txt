@@ -1,8 +1,9 @@
-a:2:{i:0;a:8:{i:0;s:306:"<!DOCTYPE html>
+a:2:{i:0;a:8:{i:0;s:273:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 test
 
@@ -19,41 +20,40 @@ test
 
 <table > <tr>
 </tr> </table>
+
+
+ABridge
 
 
 
  </body> 
- </html>";i:1;s:973:"<!DOCTYPE html>
+ </html>";i:1;s:950:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
-
-<table > <tr>
-	<td>
-		<a href="/ABridge.php/test?Action=Select" >test</a>
-	</td>
-</tr> </table>
-
+	<table > <tr>
+		<td>
+			<a href="/ABridge.php/test?Action=Select" >test</a>
+		</td>
+	</tr> </table>
 test
 
-
-<table > <tr>
-	<td>
-		<input type="submit" value = Create >
-	</td>
-	<td>
-		<a href="/ABridge.php/test/1" >Cancel</a>
-	</td>
-</tr> </table>
-
-<table > <tr>
-</tr> </table>
-
+	<table > <tr>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			<input type="submit" value = Create >
+		</td>
+		<td>
+			<a href="/ABridge.php/test/1" >Cancel</a>
+		</td>
+	</tr> </table>
 <table >
 	<tr>
 		<td>
@@ -98,16 +98,19 @@ test
 </table>
 
 
+ABridge
+
 </form>  
 
+
  </body> 
- </html>";i:2;s:1075:"<!DOCTYPE html>
+ </html>";i:2;s:939:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
-<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
 
@@ -119,6 +122,9 @@ test
 
 test
 
+
+<table > <tr>
+</tr> </table>
 
 <table > <tr>
 	<td>
@@ -133,9 +139,6 @@ test
 	<td>
 		<a href="/ABridge.php/test?Action=Select" >Select</a>
 	</td>
-</tr> </table>
-
-<table > <tr>
 </tr> </table>
 
 <table >
@@ -183,40 +186,39 @@ test
 
 
 
-</form>  
+
+ABridge
+
+
 
  </body> 
- </html>";i:3;s:1036:"<!DOCTYPE html>
+ </html>";i:3;s:1013:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
-
-<table > <tr>
-	<td>
-		<a href="/ABridge.php/test?Action=Select" >test</a>
-	</td>
-</tr> </table>
-
+	<table > <tr>
+		<td>
+			<a href="/ABridge.php/test?Action=Select" >test</a>
+		</td>
+	</tr> </table>
 test
 
-
-<table > <tr>
-	<td>
-		<input type="submit" value = Update >
-	</td>
-	<td>
-		<a href="/ABridge.php/test/1" >Cancel</a>
-	</td>
-</tr> </table>
-
-<table > <tr>
-</tr> </table>
-
+	<table > <tr>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			<input type="submit" value = Update >
+		</td>
+		<td>
+			<a href="/ABridge.php/test/1" >Cancel</a>
+		</td>
+	</tr> </table>
 <table >
 	<tr>
 		<td>
@@ -261,40 +263,39 @@ test
 </table>
 
 
+ABridge
+
 </form>  
 
+
  </body> 
- </html>";i:4;s:904:"<!DOCTYPE html>
+ </html>";i:4;s:881:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
-
-<table > <tr>
-	<td>
-		<a href="/ABridge.php/test?Action=Select" >test</a>
-	</td>
-</tr> </table>
-
+	<table > <tr>
+		<td>
+			<a href="/ABridge.php/test?Action=Select" >test</a>
+		</td>
+	</tr> </table>
 test
 
-
-<table > <tr>
-	<td>
-		<input type="submit" value = Delete >
-	</td>
-	<td>
-		<a href="/ABridge.php/test/1" >Cancel</a>
-	</td>
-</tr> </table>
-
-<table > <tr>
-</tr> </table>
-
+	<table > <tr>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			<input type="submit" value = Delete >
+		</td>
+		<td>
+			<a href="/ABridge.php/test/1" >Cancel</a>
+		</td>
+	</tr> </table>
 <table >
 	<tr>
 		<td>
@@ -339,46 +340,45 @@ test
 </table>
 
 
+ABridge
+
 </form>  
 
+
  </body> 
- </html>";i:5;s:1890:"<!DOCTYPE html>
+ </html>";i:5;s:1873:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
-
-<table > <tr>
-	<td>
-		<a href="/ABridge.php/test?Action=Select" >test</a>
-	</td>
-</tr> </table>
-
+	<table > <tr>
+		<td>
+			<a href="/ABridge.php/test?Action=Select" >test</a>
+		</td>
+	</tr> </table>
 test
 
-
-<table > <tr>
-	<td>
-		<input type="submit" value = Select >
-	</td>
-	<td>
-		<a href="/ABridge.php/test?Action=Select" >Refresh</a>
-	</td>
-	<td>
-		<a href="/ABridge.php/test/1" >Cancel</a>
-	</td>
-	<td>
-		<a href="/ABridge.php/test?Action=Create" >Create</a>
-	</td>
-</tr> </table>
-
-<table > <tr>
-</tr> </table>
-
+	<table > <tr>
+	</tr> </table>
+	<table > <tr>
+		<td>
+			<input type="submit" value = Select >
+		</td>
+		<td>
+			<a href="/ABridge.php/test?Action=Select" >Refresh</a>
+		</td>
+		<td>
+			<a href="/ABridge.php/test/1" >Cancel</a>
+		</td>
+		<td>
+			<a href="/ABridge.php/test?Action=Create" >Create</a>
+		</td>
+	</tr> </table>
 <table >
 	<tr>
 		<td>
@@ -458,23 +458,28 @@ test
 
 
 
+ABridge
+
 </form>  
 
+
  </body> 
- </html>";i:6;s:180:"<!DOCTYPE html>
+ </html>";i:6;s:137:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <a href="/ABridge.php/test/1" >5 aa</a>
 
  </body> 
- </html>";i:7;s:200:"<!DOCTYPE html>
+ </html>";i:7;s:157:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <a href="/ABridge.php/test/1" >5 aa</a>
 

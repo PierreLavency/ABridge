@@ -1,7 +1,7 @@
 <?php
-use ABridge\ABridge\Mod\CModel;
 use ABridge\ABridge\GenJason;
-use ABridge\ABridge\CstError;
+use ABridge\ABridge\Mod\CModel;
+use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 
 class Student extends CModel 
@@ -20,16 +20,14 @@ class Student extends CModel
 		}
 		return $this->mod->getValN($attr);
 	}
-
+	
 	
 	public function initMod($bindings)
 	{
 		$Code = 'Code';	
-		$sex_id=1;
-		$country_id=2;
 		$inscription = 'Inscription';
 		$user ='User';
-		$sex='Sex';
+		$sex='Sexe';
 		$country='Country';
 		
 
@@ -39,10 +37,10 @@ class Student extends CModel
 		$res = $obj->addAttr('SurName',Mtype::M_STRING);		
 		$res = $obj->addAttr('BirthDay',Mtype::M_DATE);		
 		$res = $obj->addAttr('Image',Mtype::M_STRING);
+
 		$res = $obj->addAttr('Jason',Mtype::M_TXT);
 		$res = $obj->setProp('Jason', Model::P_EVL);
 		$res = $obj->setProp('Jason', Model::P_TMP);
-		
 		
 		if (isset($bindings[$sex])) {
 			$sex=$bindings[$sex];
@@ -50,24 +48,26 @@ class Student extends CModel
 		
 		}
 		if (isset($bindings[$country])) {
+			$country=$bindings[$country];
 			$res = $obj->addAttr('Country',Mtype::M_CODE,"/$country/Values");
 		}
 		
 		if (isset($bindings[$inscription])) {
 			$inscription=$bindings[$inscription];
-			$res = $obj->addAttr('InscritA',M_CREF,'/'.$inscription.'/De');
+			$res = $obj->addAttr('InscritA',Mtype::M_CREF,'/'.$inscription.'/De');
+
 			$obj->addAttr('NbrCours',Mtype::M_INT);
 			$res = $obj->setProp('NbrCours', Model::P_EVL);
 			$res = $obj->setProp('NbrCours', Model::P_TMP);
-			
+
 			$obj->addAttr('NbrCredits',Mtype::M_INT);
 			$obj->setProp('NbrCredits', Model::P_EVL);
 		}
 		
 		if (isset($bindings[$user])) {
 			$user = $bindings[$user];
-			$obj->addAttr($user,Mtype::M_REF,'/'.$user);
-			$res=$obj->setProp($user,Model::P_BKY);
+			$obj->addAttr('User',Mtype::M_REF,'/'.$user);
+			$res=$obj->setProp('User',Model::P_BKY);
 		}
 		
 	}

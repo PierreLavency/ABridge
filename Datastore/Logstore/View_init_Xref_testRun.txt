@@ -1,8 +1,9 @@
-a:2:{i:0;a:7:{i:0;s:1959:"<!DOCTYPE html>
+a:2:{i:0;a:7:{i:0;s:1855:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 test
@@ -12,10 +13,9 @@ test
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
 		</td>
 	</tr> </table>
+View_Xref_Test_dataBase_Dir
+
 	<table > <tr>
-		<td>
-			View_Xref_Test_dataBase_Dir
-		</td>
 	</tr> </table>
 	<table > <tr>
 		<td>
@@ -25,70 +25,76 @@ test
 			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Cancel</a>
 		</td>
 	</tr> </table>
-	<table >
-		<tr>
-			<td>
-				id
-			</td>
-			<td>
-				2
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Name
-			</td>
-			<td>
-				<input type = "text" name = "Name"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Father
-			</td>
-			<td>
-				<input type = "text" name = "Father"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Mother
-			</td>
-			<td>
-				<select name = "Mother"  >
-					<option  value = ""  selected  ></option>
-					<option  value = "1"  >Name_1</option>
-					<option  value = "2"  >Name_2</option>
-					<option  value = "3"  >Name_3</option>
-					<option  value = "4"  >Name_4</option>
-					<option  value = "5"  >Name_5</option>
-					<option  value = "6"  >Name_6</option>
-					<option  value = "7"  >Name_7</option>
-					<option  value = "8"  >Name_8</option>
-					<option  value = "9"  >Name_9</option>
-					<option  value = "10"  >Name_21</option>
-					<option  value = "11"  >Name_22</option>
-					<option  value = "12"  >Name_23</option>
-					<option  value = "13"  >Name_24</option>
-					<option  value = "14"  >Name_25</option>
-					<option  value = "15"  >Name_26</option>
-					<option  value = "16"  >Name_27</option>
-					<option  value = "17"  >Name_28</option>
-					<option  value = "18"  >Name_29</option>
-					<option  value = "19"  >Name_30</option>
-					<option  value = "20"  >Name_31</option>
-				</select>
-			</td>
-		</tr>
-	</table>
+<table >
+	<tr>
+		<td>
+			id
+		</td>
+		<td>
+			2
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Name
+		</td>
+		<td>
+			<input type = "text" name = "Name"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Father
+		</td>
+		<td>
+			<input type = "text" name = "Father"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Mother
+		</td>
+		<td>
+			<select name = "Mother"  >
+				<option  value = ""  selected  ></option>
+				<option  value = "1"  >Name_1</option>
+				<option  value = "2"  >Name_2</option>
+				<option  value = "3"  >Name_3</option>
+				<option  value = "4"  >Name_4</option>
+				<option  value = "5"  >Name_5</option>
+				<option  value = "6"  >Name_6</option>
+				<option  value = "7"  >Name_7</option>
+				<option  value = "8"  >Name_8</option>
+				<option  value = "9"  >Name_9</option>
+				<option  value = "10"  >Name_21</option>
+				<option  value = "11"  >Name_22</option>
+				<option  value = "12"  >Name_23</option>
+				<option  value = "13"  >Name_24</option>
+				<option  value = "14"  >Name_25</option>
+				<option  value = "15"  >Name_26</option>
+				<option  value = "16"  >Name_27</option>
+				<option  value = "17"  >Name_28</option>
+				<option  value = "18"  >Name_29</option>
+				<option  value = "19"  >Name_30</option>
+				<option  value = "20"  >Name_31</option>
+			</select>
+		</td>
+	</tr>
+</table>
+
+
+ABridge
+
 </form>  
 
+
  </body> 
- </html>";i:1;s:4918:"<!DOCTYPE html>
+ </html>";i:1;s:4874:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 test
 
@@ -99,10 +105,10 @@ test
 	</td>
 </tr> </table>
 
+View_Xref_Test_dataBase_Dir
+
+
 <table > <tr>
-	<td>
-		View_Xref_Test_dataBase_Dir
-	</td>
 </tr> </table>
 
 <table > <tr>
@@ -373,12 +379,18 @@ test
 
 
 
+
+ABridge
+
+
+
  </body> 
- </html>";i:2;s:1050:"<!DOCTYPE html>
+ </html>";i:2;s:968:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 test
@@ -388,10 +400,9 @@ test
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
 		</td>
 	</tr> </table>
+View_Xref_Test_dataBase_Dir
+
 	<table > <tr>
-		<td>
-			View_Xref_Test_dataBase_Dir
-		</td>
 	</tr> </table>
 	<table > <tr>
 		<td>
@@ -401,48 +412,54 @@ test
 			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Cancel</a>
 		</td>
 	</tr> </table>
-	<table >
-		<tr>
-			<td>
-				id
-			</td>
-			<td>
-				2
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Name
-			</td>
-			<td>
-				<input type = "text" name = "Name" value = "Name_2"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Father
-			</td>
-			<td>
-				<input type = "text" name = "Father" value = "1"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Mother
-			</td>
-			<td>
-				<input type = "text" name = "Mother" value = "1"  >
-			</td>
-		</tr>
-	</table>
+<table >
+	<tr>
+		<td>
+			id
+		</td>
+		<td>
+			2
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Name
+		</td>
+		<td>
+			<input type = "text" name = "Name" value = "Name_2"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Father
+		</td>
+		<td>
+			<input type = "text" name = "Father" value = "1"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Mother
+		</td>
+		<td>
+			<input type = "text" name = "Mother" value = "1"  >
+		</td>
+	</tr>
+</table>
+
+
+ABridge
+
 </form>  
 
+
  </body> 
- </html>";i:3;s:1028:"<!DOCTYPE html>
+ </html>";i:3;s:946:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 test
@@ -452,10 +469,9 @@ test
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
 		</td>
 	</tr> </table>
+View_Xref_Test_dataBase_Dir
+
 	<table > <tr>
-		<td>
-			View_Xref_Test_dataBase_Dir
-		</td>
 	</tr> </table>
 	<table > <tr>
 		<td>
@@ -465,48 +481,54 @@ test
 			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Cancel</a>
 		</td>
 	</tr> </table>
-	<table >
-		<tr>
-			<td>
-				id
-			</td>
-			<td>
-				2
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Name
-			</td>
-			<td>
-				Name_2
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Father
-			</td>
-			<td>
-				<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Mother
-			</td>
-			<td>
-				<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
-			</td>
-		</tr>
-	</table>
+<table >
+	<tr>
+		<td>
+			id
+		</td>
+		<td>
+			2
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Name
+		</td>
+		<td>
+			Name_2
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Father
+		</td>
+		<td>
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Mother
+		</td>
+		<td>
+			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
+		</td>
+	</tr>
+</table>
+
+
+ABridge
+
 </form>  
 
+
  </body> 
- </html>";i:4;s:2126:"<!DOCTYPE html>
+ </html>";i:4;s:2016:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <form method=POST action= "/ABridge.php/View_Xref_Test_dataBase_Dir/2" ><input type='hidden' name='vnum' value='1' >
 test
@@ -516,10 +538,9 @@ test
 			<a href="/ABridge.php/dir?Action=Select" >dir</a>
 		</td>
 	</tr> </table>
+View_Xref_Test_dataBase_Dir
+
 	<table > <tr>
-		<td>
-			View_Xref_Test_dataBase_Dir
-		</td>
 	</tr> </table>
 	<table > <tr>
 		<td>
@@ -535,69 +556,70 @@ test
 			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir?Action=Create" >Create</a>
 		</td>
 	</tr> </table>
-	<table >
-		<tr>
-			<td>
-				id
-			</td>
-			<td>
-				<select name = "id_OP"  >
-					<option  value = "="  selected  >=</option>
-					<option  value = ">"  >></option>
-					<option  value = "<"  ><</option>
-				</select>
-			</td>
-			<td>
-				<input type = "text" name = "id"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Name
-			</td>
-			<td>
-				<select name = "Name_OP"  >
-					<option  value = "::"  >::</option>
-					<option  value = "="  selected  >=</option>
-					<option  value = ">"  >></option>
-					<option  value = "<"  ><</option>
-				</select>
-			</td>
-			<td>
-				<input type = "text" name = "Name"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Father
-			</td>
-			<td>
-				<select name = "Father_OP"  >
-					<option  value = "="  selected  >=</option>
-					<option  value = ">"  >></option>
-					<option  value = "<"  ><</option>
-				</select>
-			</td>
-			<td>
-				<input type = "text" name = "Father"  >
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Mother
-			</td>
-			<td>
-				<select name = "Mother_OP"  >
-					<option  value = "="  selected  >=</option>
-					<option  value = ">"  >></option>
-					<option  value = "<"  ><</option>
-				</select>
-			</td>
-			<td>
-				<input type = "text" name = "Mother"  >
-			</td>
-		</tr>
-	</table>
+<table >
+	<tr>
+		<td>
+			id
+		</td>
+		<td>
+			<select name = "id_OP"  >
+				<option  value = "="  selected  >=</option>
+				<option  value = ">"  >></option>
+				<option  value = "<"  ><</option>
+			</select>
+		</td>
+		<td>
+			<input type = "text" name = "id"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Name
+		</td>
+		<td>
+			<select name = "Name_OP"  >
+				<option  value = "::"  >::</option>
+				<option  value = "="  selected  >=</option>
+				<option  value = ">"  >></option>
+				<option  value = "<"  ><</option>
+			</select>
+		</td>
+		<td>
+			<input type = "text" name = "Name"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Father
+		</td>
+		<td>
+			<select name = "Father_OP"  >
+				<option  value = "="  selected  >=</option>
+				<option  value = ">"  >></option>
+				<option  value = "<"  ><</option>
+			</select>
+		</td>
+		<td>
+			<input type = "text" name = "Father"  >
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Mother
+		</td>
+		<td>
+			<select name = "Mother_OP"  >
+				<option  value = "="  selected  >=</option>
+				<option  value = ">"  >></option>
+				<option  value = "<"  ><</option>
+			</select>
+		</td>
+		<td>
+			<input type = "text" name = "Mother"  >
+		</td>
+	</tr>
+</table>
+
 <table > <tr>
 	<td>
 		Select
@@ -611,23 +633,30 @@ test
 </table>
 
 
+
+
+ABridge
+
 </form>  
 
+
  </body> 
- </html>";i:5;s:205:"<!DOCTYPE html>
+ </html>";i:5;s:162:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
 
  </body> 
- </html>";i:6;s:346:"<!DOCTYPE html>
+ </html>";i:6;s:303:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
-<link rel="stylesheet" type="text/css" href="/mystyle.css">
+<style>
+</style>
 </head>
 <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
 
