@@ -1,4 +1,4 @@
-a:2:{i:0;a:8:{i:0;s:273:"<!DOCTYPE html>
+a:2:{i:0;a:8:{i:0;s:263:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -22,19 +22,16 @@ test
 </tr> </table>
 
 
-ABridge
-
-
 
  </body> 
- </html>";i:1;s:950:"<!DOCTYPE html>
+ </html>";i:1;s:941:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 <style>
 </style>
 </head>
-<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='1' >
 test
 
 	<table > <tr>
@@ -98,13 +95,11 @@ test
 </table>
 
 
-ABridge
-
 </form>  
 
 
  </body> 
- </html>";i:2;s:939:"<!DOCTYPE html>
+ </html>";i:2;s:929:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -187,19 +182,16 @@ test
 
 
 
-ABridge
-
-
 
  </body> 
- </html>";i:3;s:1013:"<!DOCTYPE html>
+ </html>";i:3;s:1004:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 <style>
 </style>
 </head>
-<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='1' >
 test
 
 	<table > <tr>
@@ -263,20 +255,18 @@ test
 </table>
 
 
-ABridge
-
 </form>  
 
 
  </body> 
- </html>";i:4;s:881:"<!DOCTYPE html>
+ </html>";i:4;s:872:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 <style>
 </style>
 </head>
-<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='1' >
 test
 
 	<table > <tr>
@@ -340,20 +330,18 @@ test
 </table>
 
 
-ABridge
-
 </form>  
 
 
  </body> 
- </html>";i:5;s:1873:"<!DOCTYPE html>
+ </html>";i:5;s:1864:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
 <style>
 </style>
 </head>
-<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='1' >
 test
 
 	<table > <tr>
@@ -457,8 +445,6 @@ test
 
 
 
-
-ABridge
 
 </form>  
 

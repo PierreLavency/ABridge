@@ -65,11 +65,7 @@ function viewCases()
     $v = new View($handle);
     
     $v->setTopMenu(['/test']);
-/*
-    $v->setAttrList(['A1','A2'], CstView::V_S_REF);
-    $v->setLblList(['A1'=>'A1','A2'=>'A2']);
-    
-  */
+
     $n=1;
     $test[$n]=[$v,$path,CstMode::V_S_CREA,$n];
     $n++;

@@ -104,7 +104,10 @@ class Vew extends Comp
         if (is_null($specMod)) {
             return null;
         }
-        if ($viewState != CstView::V_S_REF and $viewState != CstView::V_S_CREF and isset($specMod['viewList'])) {
+        if (isset($specMod['viewListMenu'])) {
+            return $specMod['viewListMenu'];
+        }
+        if (isset($specMod['viewList'])) {
             $viewList=$specMod['viewList'];
             return array_keys($viewList);
         }

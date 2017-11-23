@@ -2,7 +2,7 @@ CMD
 h4669ghx
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'V_CREDIT' Src/* App/* Tests/*
+grep -ri 'checkType' Src/* App/* Tests/*
 
 BUGS	36
 B1 session with API.
@@ -48,6 +48,7 @@ DEV
 
 on DB branch:
 
+- remove exists mod on dml operations when safe
 - get metadata from DB
 - implement unique index.
 - changed class model independently of DB model.
@@ -56,19 +57,20 @@ on DB branch:
 
 on VIEW branch:
 
--parameterize topview lists.
 -improve test view
--hide/show some basic views
 -style tables
 -style photo galery
 -multiple "vertical" views 
--review menu management
+-review menu management and style
 -define standard ABridge style.
 -include svg bit in view.
 -view sort out persistence/2
 -multi language /2
  
 PERF
+gettype and getAttrHtml;
+Mtype::Basetype and check.
+order in substitude.
 initMod rather than restoreMod.
 
 APP
@@ -85,9 +87,10 @@ INT
 - set up a git server
 - set up jenkin
 
-
-
 DONE
+------------------//1
+parameterize toplists.
+hide/show some basic views
 ------------------//0.5
 clean up app directories (remove meta etc).
 ------------------// 1

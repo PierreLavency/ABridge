@@ -71,6 +71,16 @@ class Config extends AppComp
 				'NiveauDifficulte'=>'Niveau de Difficulte',
 			],
 		'Recette'=> [
+				'topList' => [
+						CstView::V_APPLBLLIST,
+						CstView::V_TOPMENU,
+						CstView::V_OBJLBLLIST,
+						CstView::V_VIEWLIST,
+						CstView::V_OBJACTIONMENU,
+						CstView::V_ERROR,
+						CstView::V_OBJVIEWLIST,
+						CstView::V_CREDITLIST,
+				],
 				'attrList' => [
 					CstView::V_S_REF		=> ['Nom'],
 					CstView::V_S_CREF		=> ['id','Photo'],
@@ -103,7 +113,10 @@ class Config extends AppComp
 						'Steps'=>'Etapes',
 						CstView::V_B_NEW=>'Ajouter',
 				],
-
+				'viewListMenu' => [
+						'Caracteristiques','Description','Photo' ,
+						
+				],
 				'viewList' => [
 	
 					'Caracteristiques'  => [								
@@ -186,7 +199,7 @@ class Config extends AppComp
 		'Ingredient'=> [
 		
 				'attrList' => [
-//					CstView::V_S_REF		=> ['Nom'],
+					CstView::V_S_REF		=> ['Nom'],
 					CstView::V_S_CREF		=> ['id','Nom','Quantite','UniteMesure'],
 				],
 				'attrHtml' => [
@@ -209,7 +222,6 @@ class Config extends AppComp
 				
 		],
 		'TypeRecette'=> [
-		
 				'attrList' => [
 						CstView::V_S_REF		=> ['Value'],
 				]

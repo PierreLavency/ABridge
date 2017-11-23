@@ -192,6 +192,10 @@ class View
 
     protected function getMenuObjAction($viewState)
     {
+        if ($this->handle->nullObj()) {
+            return [];
+        }
+        
         $nav=[
             CstMode::V_S_READ =>[
                     [CstView::V_TYPE=>CstView::V_OBJACTIONMENU,CstView::V_P_VAL=>CstMode::V_S_UPDT],
@@ -358,13 +362,17 @@ class View
     protected function getObjLblList($viewState)
     {
         $result = [];
+        if ($this->handle->nullObj()) {
+            return $result;
+        }
+
         $lblList = $this->vew->getViewPrm('objLblList');
         if (! $lblList) {
             $lblList=[CstView::V_OBJLBL];
         }
         foreach ($lblList as $lbl) {
             if ($lbl==CstView::V_OBJLBL) {
-                $name = $this->getModLbl($this->handle->getModName());
+                $name = $this->getModLbl($this->modName);
             }
             if ($lbl==CstView::V_OBJNME) {
                 $name='';
@@ -383,6 +391,31 @@ class View
         $res = [CstView::V_TYPE=> CstView::V_PLAIN,CstView::V_STRING=>$name,];
         return [$res];
     }
+    
+    protected function getCredit()
+    {
+        return [[CstView::V_TYPE=>CstView::V_PLAIN,CstView::V_STRING=>'ABridge']];
+    }
+    
+    protected function getTopLists($viewName)
+    {
+        if ($res=$this->vew->getSpec($this->modName, $viewName, 'topList')) {
+            if (isset($res)) {
+                return $res;
+            }
+        }
+        $argList=[
+        CstView::V_APPLBLLIST,
+        CstView::V_TOPMENU,
+        CstView::V_OBJLBLLIST,
+        CstView::V_VIEWLIST,
+        CstView::V_OBJACTIONMENU,
+        CstView::V_ERROR,
+        CstView::V_OBJVIEWLIST,
+        ];
+        return $argList;
+    }
+    
     
     protected function element($spec, $viewState)
     {
@@ -656,7 +689,6 @@ class View
         return [CstHTML::H_TYPE=>CstHTML::H_T_TABELBL, CstHTML::H_ARG=>$lblList];
     }
     
-
      
     protected function menuObjView($spec, $viewState)
     {
@@ -900,34 +932,7 @@ class View
         $specL=[];
         $specS=[];
         $arg = [];
-        
-        $appName=$this->getAppLblList($viewState);
-        $topMenu= $this->getTopMenu($viewState);
-        $credit = [[CstView::V_TYPE=>CstView::V_PLAIN,CstView::V_STRING=>'ABridge']];
-               
-        $argList=[
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_APPLBLLIST,CstView::V_ARG=>$appName],
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_TOPMENU,CstView::V_ARG=>$topMenu],
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJLBLLIST,CstView::V_ARG=>[]],
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_VIEWLIST,CstView::V_ARG=>[]],
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJACTIONMENU,CstView::V_ARG=>[]],
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_ERROR,CstView::V_ARG=>null],
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJVIEWLIST,CstView::V_ARG=>[]],
-            [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_CREDITLIST,CstView::V_ARG=>$credit],
-        ];
-        
-        if (is_null($this->handle) or $this->handle->nullObj()) {
-            $speci = [CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_TOPLIST,CstView::V_ARG=>$argList];
-            return $this->subst($speci, $viewState);
-        }
-   
-        if (!$rec) {
-            $this->name=$this->handle->getPrm('View');
-        }
-        if (is_null($this->name)) {
-            $this->name=$this->vew->getDefViewName($this->modName, $viewState);
-        }
-        
+                
         if ($viewState == CstView::V_S_REF) {
             return $this->elemRefView($this->handle, CstView::V_S_REF);
         }
@@ -948,14 +953,49 @@ class View
             return $this->subst($spec, $viewState);
         }
         
-        $argList[2][CstView::V_ARG]=$this->getObjLblList($viewState);
-        $argList[3][CstView::V_ARG]=$this->getMenuObjView($viewState);
-        $argList[4][CstView::V_ARG]=$this->getMenuObjAction($viewState);
-        $argList[5][CstView::V_ARG]=$this->viewErr();
-        $argList[6][CstView::V_ARG]=$this->buildObjView($this->name, $viewState);
+        $this->name=$this->handle->getPrm('View');
+        if (is_null($this->name)) {
+            $this->name=$this->vew->getDefViewName($this->modName, $viewState);
+        }
         
-        $speci=$argList;
-        if ($viewState != CstMode::V_S_READ) {
+        $argList=$this->getTopLists($this->name);
+        $speci= [];
+        foreach ($argList as $listType) {
+            $specElem=[];
+            $specElem[CstView::V_TYPE]=CstView::V_LIST;
+            $specElem[CstView::V_LT]=$listType;
+            switch ($listType) {
+                case CstView::V_APPLBLLIST:
+                    $specElem[CstView::V_ARG]=$this->getAppLblList($viewState);
+                    break;
+                case CstView::V_TOPMENU:
+                    $specElem[CstView::V_ARG]=$this->getTopMenu($viewState);
+                    break;
+                case CstView::V_OBJLBLLIST:
+                    $specElem[CstView::V_ARG]=$this->getObjLblList($viewState);
+                    break;
+                case CstView::V_VIEWLIST:
+                    $specElem[CstView::V_ARG]=$this->getMenuObjView($viewState);
+                    break;
+                case CstView::V_OBJACTIONMENU:
+                    $specElem[CstView::V_ARG]=$this->getMenuObjAction($viewState);
+                    break;
+                case CstView::V_ERROR:
+                    $specElem[CstView::V_ARG]=$this->viewErr();
+                    break;
+                case CstView::V_OBJVIEWLIST:
+                    $specElem[CstView::V_ARG]=$this->buildObjView($this->name, $viewState);
+                    break;
+                case CstView::V_CREDITLIST:
+                    $specElem[CstView::V_ARG]=$this->getCredit();
+                    break;
+                default:
+                    echo'not found';
+            }
+            $speci[]=$specElem;
+        }
+
+        if ($viewState != CstMode::V_S_READ and ! $this->handle->nullObj()) {
             $speci = [[
                     CstView::V_TYPE=>CstView::V_FORM,
                     CstView::V_ARG=>$speci
@@ -975,6 +1015,9 @@ class View
     protected function buildObjView($viewName, $viewState)
     {
         $result = [];
+        if ($this->handle->nullObj()) {
+            return $result;
+        }
         $objListView=[CstView::V_TYPE=>CstView::V_LIST,CstView::V_LT=>CstView::V_OBJLISTVIEW,CstView::V_ARG=>[]];
         if ($viewState==CstMode::V_S_READ) {
             $viewList= $this->getRelViews($viewName, 'before');
@@ -1199,6 +1242,9 @@ class View
     
     protected function viewErr()
     {
+        if ($this->handle->nullObj()) {
+            return null;
+        }
         $log = $this->handle->getErrLog();
         $logSize=$log->logSize();
         if (!$logSize) {
