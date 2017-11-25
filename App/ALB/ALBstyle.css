@@ -8,7 +8,7 @@ body {
 }
 
 .albimg {
-	
+	display: inline-block;
 }
 
 .albimg img {

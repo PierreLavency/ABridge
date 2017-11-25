@@ -5,7 +5,6 @@ use ABridge\ABridge\Mod\Model;
 use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\UtilsC;
-use ABridge\ABridge\Handler;
 
 class Find_Test extends PHPUnit_Framework_TestCase
 {

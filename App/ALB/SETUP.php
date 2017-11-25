@@ -67,15 +67,22 @@ class Config extends AppComp
 				]	
 		],
 		'Photo'=> [		
-				'attrList' => [			
-					CstView::V_S_CREF	=> ['id','Photo'],					
+				'attrList' => [	
+					CstView::V_S_CREF	=> ['Photo'],					
 				],
+
 				'listHtmlClassElem' => [
 						CstView::V_S_CREF =>[CstHTML::H_DIV,'albimg'],
 				],
 				'attrHtml' => [
 					CstMode::V_S_READ => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 600,CstHTML::H_COLP=> 400]],
 					CstView::V_S_CREF => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 100,CstHTML::H_COLP=> 100]],
+					CstMode::V_S_SLCT => [
+								CstMode::V_S_SLCT =>[
+										CstView::V_SLICE=>36,
+										CstView::V_CVAL=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
+								]
+						]
 
 				],	
 				'lblList'  => [
@@ -131,6 +138,35 @@ class Config extends AppComp
 		
 
 	}
-
+	
+	public function initDelta()
+	{
+		$photos = new Model('Photo');
+		$dir = 'C:\xampp\htdocs\Photos\jogging\\';
+		$reldDir='/Photos/jogging/';
+		if (is_dir($dir)) {
+			if ($dh = opendir($dir)) {
+				while (($file = readdir($dh)) !== false) {
+					$fileName = $dir.$file;
+					if (is_dir($fileName)) {
+						echo "directory name: ".$file."<br>" ;
+					} else {
+						echo "file name: $file : filetype: " . mime_content_type($dir . $file) ."<br>";
+						$photoFile=$reldDir.$file;
+						$photos->setCriteria(['Photo'], [], [$photoFile], []);
+						$res=$photos->select();
+						if ($res!=[]) {
+							echo "found <br>";
+						} else {
+							$photo = new  Model('Photo');
+							$photo->setVal('Photo',$photoFile);
+							$photo->save();
+						}
+					}
+				}
+				closedir($dh);
+			}
+		}
+	}
 	
 }

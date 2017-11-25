@@ -688,8 +688,7 @@ class View
         }
         return [CstHTML::H_TYPE=>CstHTML::H_T_TABELBL, CstHTML::H_ARG=>$lblList];
     }
-    
-     
+        
     protected function menuObjView($spec, $viewState)
     {
         if ($viewState != CstMode::V_S_READ) {
