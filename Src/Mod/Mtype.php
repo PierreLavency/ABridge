@@ -63,17 +63,18 @@ class Mtype
         return (! Mtype::isStruct($type));
     }
     
-    public static function convertString($val, $typ)
+    public static function convertString($val, $type)
     {
         if (is_string($val)) {
-            $type = self::baseType($typ);
-            if ($type== self::M_INTP) {
-                $type=self::M_INT;
-            }
             if ($val=='') {
                 return null;
             }
             switch ($type) {
+                case self::M_ID:
+                case self::M_CODE:
+                case self::M_REF:
+                case self::M_CREF:
+                case self::M_INTP:
                 case self::M_INT:
                     if (ctype_digit($val)) {
                         $val = (int) $val;
@@ -151,6 +152,10 @@ class Mtype
                 }
                 return false;
                 break;
+            case self::M_ID:
+            case self::M_CODE:
+            case self::M_REF:
+            case self::M_CREF:
             case self::M_INTP:
                 if (is_int($val)) {
                     return ($val>0);

@@ -94,7 +94,7 @@ class FileBase extends Base
             throw new Exception(CstError::E_ERC025);
         }
         if (! $this->existsMod($model)) {
-            return false;
+            throw new Exception(CstError::E_ERC022.':'.$model);
         }
         $meta=$this->objects[$model][0];
         if (!$id) {
@@ -121,7 +121,7 @@ class FileBase extends Base
             throw new Exception(CstError::E_ERC025);
         }
         if (! $this->existsMod($model)) {
-            return false;
+            throw new Exception(CstError::E_ERC022.':'.$model);
         }
         if ($id == 0) {
             return false;
@@ -139,7 +139,7 @@ class FileBase extends Base
             throw new Exception(CstError::E_ERC025);
         }
         if (! $this->existsMod($model)) {
-            return false;
+            throw new Exception(CstError::E_ERC022.':'.$model);
         }
         if ($id == 0) {
             return false;
@@ -158,7 +158,7 @@ class FileBase extends Base
             throw new Exception(CstError::E_ERC025);
         }
         if (! $this->existsMod($model)) {
-            return false;
+            throw new Exception(CstError::E_ERC022.':'.$model);
         }
         if ($id == 0) {
             return true;

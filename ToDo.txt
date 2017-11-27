@@ -2,7 +2,7 @@ CMD
 h4669ghx
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'checkType' Src/* App/* Tests/*
+grep -ri 'CstView::V_CVAL' Src/* App/* Tests/*
 
 BUGS	36
 B1 session with API.
@@ -66,12 +66,8 @@ on VIEW branch:
 
 on PERF branch
 
-remove exists mod on dml operations when safe (SQLBase)
-gettype and getAttrHtml;
-Mtype::Basetype and check (Mtype).
-order in substitude (View)
 initMod rather than restoreMod.
-select on abstract class does no scale.
+select on abstract class does not scale.
 
 on APP branch
 - beef up test apps with relationships tables 
@@ -88,6 +84,13 @@ INT
 - set up jenkin
 
 DONE
+------------------//0.5
+remove exists mod on dml operations when safe (SQLBase)
+gettype and getAttrHtml;
+Mtype::Basetype and check (Mtype).
+order in substitude (View)
+------------------//0.5
+-improve style photo galery
 ------------------//1
 -style photo galery
 ------------------//1

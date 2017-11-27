@@ -84,7 +84,7 @@ class Config extends AppComp
 					CstView::V_S_CREF =>[CstHTML::H_DIV,'albimg'],
 				],
 				'attrHtml' => [
-					CstMode::V_S_READ => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 600,CstHTML::H_COLP=> 400]],
+					CstMode::V_S_READ => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 200,CstHTML::H_COLP=> 200]],
 					CstView::V_S_CREF => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 100,CstHTML::H_COLP=> 100]],
 					CstMode::V_S_SLCT => [
 								CstMode::V_S_SLCT =>[
@@ -143,8 +143,7 @@ class Config extends AppComp
 		$res = $obj->saveMod();
 		$r = $obj->getErrLog ();
 		$r->show();
-		echo "<br>".$Photo."<br>";
-		
+		echo "<br>".$Photo."<br>";		
 
 	}
 	

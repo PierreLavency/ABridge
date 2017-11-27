@@ -982,10 +982,9 @@ class Model
             $this->errLog->logLine(CstError::E_ERC013.':'.$attr);
             return false;
         }
-        $btype=Mtype::baseType($type);
-        $res=Mtype::checkType($val, $btype);
+        $res=Mtype::checkType($val, $type);
         if (! $res) {
-            $this->errLog->logLine(CstError::E_ERC005.':'.$attr.':'.$val.':'.$btype);
+            $this->errLog->logLine(CstError::E_ERC005.':'.$attr.':'.$val.':'.$type);
             return false;
         }
         // ref checking

@@ -216,11 +216,40 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $this->assertFalse($x->putObj(self::$CName, 0, 1, $this->test2));
         $this->assertFalse($x->putObj(self::$CName, 10000, 1, $this->test2));
         $this->assertFalse($x->putMod('NOTEXISTS', [], [], $this->meta));
-        $this->assertFalse($x->getObj('NOTEXISTS', $this->id2));
-        $this->assertFalse($x->newObj('NOTEXISTS', $this->id2));
-        $this->assertFalse($x->delObj('NOTEXISTS', $this->id2));
-        $this->assertFalse($x->putObj('NOTEXISTS', $this->id1, 1, $this->test2));
- //       $this->assertFalse($x->findObj('NOTEXISTS', 'CODE', '01'));
+        
+        $r = false;
+        try {
+            $x->getObj('NOTEXISTS', $this->id2);
+        } catch (Exception $e) {
+            $r=true;
+        }
+        $this->assertTrue($r);
+
+        $r = false;
+        try {
+            $x->newObj('NOTEXISTS', $this->id2);
+        } catch (Exception $e) {
+            $r=true;
+        }
+        $this->assertTrue($r);
+
+        $r = false;
+        try {
+            $x->delObj('NOTEXISTS', $this->id2);
+        } catch (Exception $e) {
+            $r=true;
+        }
+        $this->assertTrue($r);
+        
+        $r = false;
+        try {
+            $x->putObj('NOTEXISTS', $this->id1, 1, $this->test2);
+        } catch (Exception $e) {
+            $r=true;
+        }
+        $this->assertTrue($r);
+ 
+
         $r='';
         try {
             $x->findObj('NOTEXISTS', 'CODE', '01');

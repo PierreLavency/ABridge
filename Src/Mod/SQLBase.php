@@ -283,13 +283,13 @@ class SQLBase extends Base
     
     public function getObj($model, $id)
     {
-        if (! $this->existsMod($model)) {
-            return false;
-        };
         $sql = "SELECT * FROM $model where id= $id";
         $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
         $this->logger->logLine($sql, $linfo);
         $result = $this->mysqli->query($sql);
+        if (!$result) {
+            throw new Exception(CstError::E_ERC022.':'.$model);
+        }
         if ($result->num_rows ==1) {
             // output data of each row
             $row = $result->fetch_assoc();
@@ -306,9 +306,6 @@ class SQLBase extends Base
     
     public function putObj($model, $id, $vnum, $values)
     {
-        if (! $this->existsMod($model)) {
-            return false;
-        };
         if ($id == 0) {
             return false;
         }
@@ -340,9 +337,6 @@ class SQLBase extends Base
        
     public function delObj($model, $id)
     {
-        if (! $this->existsMod($model)) {
-            return false;
-        };
         $sql = "\n DELETE FROM $model WHERE id=$id \n";
         $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
         $this->logger->logLine($sql, $linfo);
@@ -360,9 +354,7 @@ class SQLBase extends Base
     
     public function newObjId($model, $values, $id)
     {
-        if (! $this->existsMod($model)) {
-            return false;
-        };
+
         $attrString = '(';
         $valueString = '(';
         ;
