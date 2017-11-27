@@ -85,9 +85,9 @@ class View
     }
     
     
-    protected function getHtmlClassList($listType)
+    protected function getHtmlClassList($viewName,$listType)
     {
-        $classList = $this->vew->getViewPrm('listHtmlClass');
+    	$classList = $this->vew->getSpec($this->modName, $viewName, 'listHtmlClass');
         if (isset($classList[$listType])) {
             return $classList[$listType];
         }
@@ -632,11 +632,11 @@ class View
                 $elmList[]=$handle->getVal($attr);
             }
             $refLbl=implode(' ', $elmList);
-            if (!ctype_space($refLbl)) {
+            if (!ctype_space($refLbl) and $refLbl!='') {
                 return $refLbl;
             }
         }
-        return $this->handle->getid();
+        return $handle->getid();
     }
     
     protected function elemCref($attr, $id, $viewState, $lbl)
@@ -850,7 +850,7 @@ class View
                     }
                 }
                 $result[CstHTML::H_ARG]=$arg;
-                $htmlClass = $this->getHtmlClassList($listTyp);
+                $htmlClass = $this->getHtmlClassList($this->name,$listTyp);
                 if ($htmlClass) {
                     $result[$htmlClass[0]]=$htmlClass[1];
                 }

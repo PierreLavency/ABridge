@@ -32,17 +32,17 @@ class Vew extends Comp
     }
     
     
-    public function getViewPrm($modName)
+    public function getViewPrm($prmName)
     {
-        if (isset($this->viewHandler[$modName])) {
-            return ($this->viewHandler[$modName]);
+        if (isset($this->viewHandler[$prmName])) {
+            return ($this->viewHandler[$prmName]);
         }
         return null;
     }
     
-    private function setViewPrm($modName, $spec)
+    private function setViewPrm($prmName, $spec)
     {
-        $this->viewHandler[$modName]=$spec;
+        $this->viewHandler[$prmName]=$spec;
         return true;
     }
     

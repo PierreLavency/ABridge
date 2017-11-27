@@ -42,6 +42,10 @@ class Config extends AppComp
 						'navList' => [
 							CstMode::V_S_READ => [],
 						],
+
+						'listHtmlClass' => [
+							CstView::V_CVAL =>[CstHTML::H_DIV,'albimg'],
+						],
 						'attrHtml' => [
 								CstMode::V_S_READ => [
 										'Photos'=>[
@@ -67,19 +71,24 @@ class Config extends AppComp
 				]	
 		],
 		'Photo'=> [		
-				'attrList' => [	
-					CstView::V_S_CREF	=> ['Photo'],					
+				'attrList' => [
+					CstView::V_S_REF	=> ['Nom'],			
+					CstView::V_S_CREF	=> ['Photo','id'],					
 				],
-
-				'listHtmlClassElem' => [
-						CstView::V_S_CREF =>[CstHTML::H_DIV,'albimg'],
+				'listHtml'=> [
+					CstView::V_S_CREF=> [
+							cstView::V_S_CREF=>[CstHTML::H_TYPE =>CstHTML::H_T_TABLE],
+					],
+				],
+				'listHtmlClass' => [
+					CstView::V_S_CREF =>[CstHTML::H_DIV,'albimg'],
 				],
 				'attrHtml' => [
 					CstMode::V_S_READ => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 600,CstHTML::H_COLP=> 400]],
 					CstView::V_S_CREF => ['Photo'=>[CstHTML::H_TYPE=>CstHTML::H_T_IMG,CstHTML::H_ROWP=> 100,CstHTML::H_COLP=> 100]],
 					CstMode::V_S_SLCT => [
 								CstMode::V_S_SLCT =>[
-										CstView::V_SLICE=>36,
+										CstView::V_SLICE=>33,
 										CstView::V_CVAL=>[CstHTML::H_TYPE =>CstHTML::H_T_LIST_BR]
 								]
 						]
