@@ -7,7 +7,6 @@ require_once 'vendor/autoload.php';
 
 use ABridge\ABridge\Controler;
 
-
 if (isset($conf['name'])) {
     $application= $conf['name'];
 } else {
