@@ -1,6 +1,5 @@
 <?php
 
-
 use ABridge\ABridge\Hdl\CstMode;
 use ABridge\ABridge\Hdl\Handle;
 use ABridge\ABridge\Log\Logger;
@@ -15,7 +14,7 @@ require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 require_once 'View_case_Xref.php';
 
 
-$testRun = false;
+$testRun = true;
 
 $log=new Logger();
 
@@ -31,7 +30,6 @@ Mod::get()->init($prm['application'], $prm['handlers']);
 
 $show = false;
 $test = viewCasesXref();
-
 
 
 for ($i=0; $i<count($test); $i++) {

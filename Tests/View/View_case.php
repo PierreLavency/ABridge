@@ -37,7 +37,7 @@ function viewCases()
     $config = [
             'test'=> [
                     'attrList' => [CstView::V_S_REF        => ['A1','A2'],
-                            'lblList'=>['A1'=>'A1','A2'=>'A2'],
+                     'lblList'=>['A1'=>'A1','A2'=>'A2'],
                     ],
             ]
             
@@ -60,8 +60,7 @@ function viewCases()
     $objs=[['test',$x]];
     $handle = new Handle($request, null, $objs, $x, null);
     
-
-    
+   
     $v = new View($handle);
     
     $v->setTopMenu(['/test']);

@@ -31,7 +31,7 @@ test
 <style>
 </style>
 </head>
-<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='1' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
 	<table > <tr>
@@ -191,7 +191,7 @@ test
 <style>
 </style>
 </head>
-<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='1' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
 	<table > <tr>
@@ -266,7 +266,7 @@ test
 <style>
 </style>
 </head>
-<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='1' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
 	<table > <tr>
@@ -341,7 +341,7 @@ test
 <style>
 </style>
 </head>
-<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='1' >
+<form method=POST action= "/ABridge.php/test/1" ><input type='hidden' name='vnum' value='0' >
 test
 
 	<table > <tr>

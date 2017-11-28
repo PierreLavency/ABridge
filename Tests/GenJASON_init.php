@@ -10,7 +10,7 @@ require_once("GenJASON_case.php");
 
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 
-$testRun = false;
+$testRun = true;
 
 $log=new Logger();
 

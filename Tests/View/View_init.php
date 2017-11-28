@@ -4,9 +4,7 @@ use ABridge\ABridge\Log\Logger;
 require_once 'C:/Users/pierr/ABridge/Src/ABridge_test.php';
 require_once 'View_case.php';
 
-
-$testRun = false;
-
+$testRun = true;
 $log=new Logger();
 
 
