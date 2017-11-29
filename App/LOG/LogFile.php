@@ -74,8 +74,8 @@ class LogFile extends CModel
 		$path = Log::get()->getPath();
 		$nameActual=$name.'_testRun';
 		$nameExpected=$name;
-		$fileActual=$path.'Logstore/'.$nameActual.'txt';
-		$fileExpected=$path.'Logstore/'.$nameExpected.'txt';
+		$fileActual=$path.'Logstore/'.$nameActual.'.txt';
+		$fileExpected=$path.'Logstore/'.$nameExpected.'.txt';
 
 		$id = $this->mod->saveN();
 		$lines='Lines';

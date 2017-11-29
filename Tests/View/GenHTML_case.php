@@ -57,6 +57,10 @@ function GenHTLMCases()
 
     $n++;
     $test[$n] = [[CstHTML::H_DIV=>'header', CstHTML::H_TYPE=>CstHTML::H_T_PLAIN,               CstHTML::H_DEFAULT=>"this is a text string in a div"],$n];
+    $n++;
+    $test[$n] = [[CstHTML::H_DIV_S=>'header', CstHTML::H_DIV_E=>'header',CstHTML::H_TYPE=>CstHTML::H_T_PLAIN, CstHTML::H_DEFAULT=>"this is a text string in a div S/E"],$n];
     
+    $n++;
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_IMG, CstHTML::H_DEFAULT=>"/pl.jpg",CstHTML::H_COLP=>100,CstHTML::H_ROWP=>100],$n];
     return $test;
 }
