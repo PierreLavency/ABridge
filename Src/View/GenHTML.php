@@ -224,7 +224,7 @@ class GenHTML
         $default="";
         $hidden=[];
         $separator="";
-        $disabled="";
+        $inputAttr="";
         $name="";
         $action="";
         $url="";
@@ -262,10 +262,8 @@ class GenHTML
                 case CstHTML::H_SEPARATOR:
                     $separator = $v;
                     break;
-                case CstHTML::H_DISABLED:
-                    if ($v) {
-                        $disabled = 'disabled';
-                    }
+                case CstHTML::H_INPUTATTR:
+                    $inputAttr = ' '.$v;
                     break;
                 case CstHTML::H_DEFAULT:
                     $default = $v;
@@ -360,7 +358,7 @@ class GenHTML
                 $result = self::genFormL($action, $url, $hidden, $arg, $level);
                 break;
             case CstHTML::H_T_TEXTAREA:
-                $result = $textareaS . $nameS . $disabled;
+                $result = $textareaS . $nameS . $inputAttr;
                 $result = $result . $colS . $col . '" ' ;
                 $result = $result . $rowS . $row . '" ' . $endS ;
                 if ($default) {
@@ -384,6 +382,7 @@ class GenHTML
                     $valueS = 'value = "' . $default .  '" ';
                 };
                 $result = $result . $valueS;
+                $result = $result . $inputAttr;
                 $result = $result . $endS;
                 $result = $tab.$result . $newLine;
                 break;

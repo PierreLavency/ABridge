@@ -68,6 +68,15 @@ class LogFile extends CModel
 		return $this->mod->getValN($attr);
 	}
 	
+	public function getValues($attr)
+	{
+		if ($attr == 'Load' or $attr=='Exec' or $attr=='Promote' or $attr=='Compare') {
+			return ['true','false'];
+		}
+		return $this->mod->getValuesN($attr);
+		
+	}
+	
 	public function save()
 	{
 		$name = $this->mod->getVal('Name');

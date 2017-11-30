@@ -89,8 +89,14 @@ class Config extends AppComp
 										CstView::V_COUNTF=>true,
 										CstView::V_CTYP=>CstView::V_C_TYPN,
 										CstView::V_B_NEW=>false,
-								]
+								],
 						],
+						CstMode::V_S_UPDT => [
+								'Load' => CstHTML::H_T_RADIO,
+								'Exec' => CstHTML::H_T_RADIO,
+								'Promote' => CstHTML::H_T_RADIO,
+								'Compare' => CstHTML::H_T_RADIO,
+						]
 				],
 				'viewList'=> [
 						'Summary' =>

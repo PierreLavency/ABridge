@@ -54,6 +54,7 @@ on DB branch:
 
 on VIEW branch:
 
+
 -improve test view
 -style tables
 -multiple "vertical" views 
@@ -84,6 +85,11 @@ INT
 - set up jenkin
 
 DONE
+------------------// 0.5 
+support boolean as checkbox
+ability to add uninterpreted element in HTML input
+------------------//1 day
+improve Vew tests
 ------------------//1 day
 improve Log app 
 ------------------//0.5

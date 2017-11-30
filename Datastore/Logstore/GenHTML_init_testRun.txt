@@ -1,4 +1,4 @@
-a:2:{i:0;a:24:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br/>
+a:2:{i:0;a:25:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checked  >a1<br/>
 <input type = "radio" name = "A"  value = "a2"  >a2<br/>
 ";i:1;s:48:"<input type = "text" name = "A" value = "a1"  >
 ";i:2;s:116:"<select name = "A"  >
@@ -8,7 +8,7 @@ a:2:{i:0;a:24:{i:0;s:123:"<input type = "radio" name = "A"  value = "a1"  checke
 ";i:3;s:38:"<input type="submit" value = Submit >
 ";i:4;s:68:"<input type="submit" value = Submit formaction=ABridge.php/code/1 >
 ";i:5;s:59:"<textarea name = "A"  cols="90"  rows="20"  >a1</textarea>
-";i:6;s:67:"<textarea name = "A" disabled cols="50"  rows="10"  >a1</textarea>
+";i:6;s:68:"<textarea name = "A"  disabled cols="50"  rows="10"  >a1</textarea>
 ";i:7;s:52:"<input type = "password" name = "A" value = "a1"  >
 ";i:8;s:22:"this is a text string
 ";i:9;s:28:"this is another text string
@@ -114,4 +114,5 @@ this is a text string in a div
 ";i:22;s:63:"<div class="header">
 this is a text string in a div S/E
 </div>
-";i:23;s:59:"<img src="/pl.jpg" alt="/pl.jpg" width="100" height="100" >";}i:1;a:24:{i:0;a:0:{}i:1;a:0:{}i:2;a:0:{}i:3;a:0:{}i:4;a:0:{}i:5;a:0:{}i:6;a:0:{}i:7;a:0:{}i:8;a:0:{}i:9;a:0:{}i:10;a:0:{}i:11;a:0:{}i:12;a:0:{}i:13;a:0:{}i:14;a:0:{}i:15;a:0:{}i:16;a:0:{}i:17;a:0:{}i:18;a:0:{}i:19;a:0:{}i:20;a:0:{}i:21;a:0:{}i:22;a:0:{}i:23;a:0:{}}}
+";i:23;s:59:"<img src="/pl.jpg" alt="/pl.jpg" width="100" height="100" >";i:24;s:57:"<input type = "text" name = "A" value = "a1"  size=100 >
+";}i:1;a:25:{i:0;a:0:{}i:1;a:0:{}i:2;a:0:{}i:3;a:0:{}i:4;a:0:{}i:5;a:0:{}i:6;a:0:{}i:7;a:0:{}i:8;a:0:{}i:9;a:0:{}i:10;a:0:{}i:11;a:0:{}i:12;a:0:{}i:13;a:0:{}i:14;a:0:{}i:15;a:0:{}i:16;a:0:{}i:17;a:0:{}i:18;a:0:{}i:19;a:0:{}i:20;a:0:{}i:21;a:0:{}i:22;a:0:{}i:23;a:0:{}i:24;a:0:{}}}

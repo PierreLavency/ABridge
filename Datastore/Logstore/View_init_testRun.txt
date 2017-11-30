@@ -99,7 +99,7 @@ test
 
 
  </body> 
- </html>";i:2;s:929:"<!DOCTYPE html>
+ </html>";i:2;s:930:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -174,7 +174,7 @@ test
 			A4
 		</td>
 		<td>
-			<textarea name = "" disabled cols="90"  rows="20"  >ceci est un texte</textarea>
+			<textarea name = ""  disabled cols="90"  rows="20"  >ceci est un texte</textarea>
 		</td>
 	</tr>
 </table>
@@ -259,7 +259,7 @@ test
 
 
  </body> 
- </html>";i:4;s:872:"<!DOCTYPE html>
+ </html>";i:4;s:873:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -324,7 +324,7 @@ test
 			A4
 		</td>
 		<td>
-			<textarea name = "" disabled cols="90"  rows="20"  >ceci est un texte</textarea>
+			<textarea name = ""  disabled cols="90"  rows="20"  >ceci est un texte</textarea>
 		</td>
 	</tr>
 </table>

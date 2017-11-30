@@ -42,5 +42,5 @@ class CstHTML
     const H_HIDDEN = "hidden";
     const H_HIDDEN2 = "hidden2";
     const H_SEPARATOR = "separator";
-    const H_DISABLED = "disabled";
+    const H_INPUTATTR = "inputAttr";
 }

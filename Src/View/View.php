@@ -463,14 +463,24 @@ class View
                 or $viewState == CstMode::V_S_SLCT)) {
                     $values[] = ["",""];
                 }
-                foreach ($vals as $v) {
-                    $m = $this->handle->getCode($attr, (int) $v);
-                    if (! is_null($m)) {
-                        $l = $this->getRefLbl($m);
+                if ($typ == Mtype::M_REF or $typ== Mtype::M_CODE) {
+                    foreach ($vals as $v) {
+                        $m = $this->handle->getCode($attr, (int) $v);
+                        if (! is_null($m)) {
+                            $l = $this->getRefLbl($m);
+                            $r = [$v,$l];
+                            $values[]=$r;
+                        }
+                    }
+                }
+                if ($typ==Mtype::M_BOOL) {
+                    foreach ($vals as $v) {
+                        $l = $this->getLbl($v);
                         $r = [$v,$l];
                         $values[]=$r;
                     }
                 }
+                
                 $res[CstHTML::H_VALUES]=$values;
             }
             return $res ;
@@ -517,7 +527,7 @@ class View
         }
  
         $res[CstHTML::H_DEFAULT]=$attrVal;
-        $res[CstHTML::H_DISABLED]=true;
+        $res[CstHTML::H_INPUTATTR]='disabled';
         
         if ($res[CstHTML::H_TYPE]==CstHTML::H_T_IMG) {
             $tres=$res;

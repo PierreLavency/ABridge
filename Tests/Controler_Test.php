@@ -42,7 +42,6 @@ class Controler_Test_config extends AppComp
 }
 
 
-
 class Controler_Test extends PHPUnit_Framework_TestCase
 {
     

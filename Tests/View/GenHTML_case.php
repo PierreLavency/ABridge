@@ -18,7 +18,7 @@ function GenHTLMCases()
     $n++;
     $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_TEXTAREA,CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1"],$n];
     $n++;
-    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_TEXTAREA,CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1",CstHTML::H_COL=>50,CstHTML::H_ROW=>10,CstHTML::H_DISABLED=>true],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_TEXTAREA,CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1",CstHTML::H_COL=>50,CstHTML::H_ROW=>10,CstHTML::H_INPUTATTR=>'disabled'],$n];
     $n++;
     $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_PASSWORD,CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1"],$n];
     $n++;
@@ -62,5 +62,9 @@ function GenHTLMCases()
     
     $n++;
     $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_IMG, CstHTML::H_DEFAULT=>"/pl.jpg",CstHTML::H_COLP=>100,CstHTML::H_ROWP=>100],$n];
+    
+    $n++;
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_TEXT,    CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1",CstHTML::H_INPUTATTR=>'size=100'],$n];
+    
     return $test;
 }
