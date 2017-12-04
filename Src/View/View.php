@@ -40,7 +40,8 @@ class View
 
     protected function getAttrList($viewName, $viewState)
     {
-        if ($res=$this->vew->getSpecState($this->modName, $viewName, $viewState, 'attrList')) {
+        $res=$this->vew->getSpecState($this->modName, $viewName, $viewState, 'attrList');
+        if (! is_null($res)) {
             return $res;
         }
         $dspec = [];
@@ -222,8 +223,8 @@ class View
                     [CstView::V_TYPE=>CstView::V_OBJACTIONMENU,CstView::V_P_VAL=>CstView::V_B_CANC],
             ]
         ];
-        
-        if ($res=$this->vew->getSpecState($this->modName, $this->name, $viewState, 'navList')) {
+        $res=$this->vew->getSpecState($this->modName, $this->name, $viewState, 'navList');
+        if (!is_null($res)) {
             $navList=[];
             foreach ($res as $navE) {
                 $navList[]= [CstView::V_TYPE=>CstView::V_OBJACTIONMENU,CstView::V_P_VAL=>$navE];
@@ -835,7 +836,6 @@ class View
                 } else {
                     $result= $this->getHtmlList($listTyp, $viewState);
                 }
-                $result[CstHTML::H_SEPARATOR]= ' ';
                 $arg=[];
                 $htmlClassElem = $this->getHtmlClassListElem($this->name, $listTyp);
                 foreach ($argSpecList as $elem) {

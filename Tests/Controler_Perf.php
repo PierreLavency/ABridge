@@ -302,7 +302,8 @@ class Controler_Perf
             'tfunction'=>'getObj',
             'tdisp'=>'1',
  //  		'tline'=>'443',
-
+ 
+    		'fpath'=>"C:\Users\pierr\ABridge\App\LOG\\",
     ];
       
     

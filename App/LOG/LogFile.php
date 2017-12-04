@@ -89,23 +89,6 @@ class LogFile extends CModel
 		$id = $this->mod->saveN();
 		$lines='Lines';
 		$logLine='LogLine';
-
-		if ($this->mod->getVal('Compare')) {
-			$logger = new Logger();
-			$logger->load($path, $nameExpected);
-			$loggerA= new Logger();
-			$loggerA->load($path, $nameActual);
-			$diff='Actual and expected results are the same';
-			$result='Ok';
-			$res = $logger->diff($loggerA);
-			if ($res) {
-				$result='Ko';
-				$diff = "Differences in line: $res";
-			}
-			$this->mod->setValN('Diff',$diff);
-			$this->mod->setValN('Result',$result);
-			$this->mod->saveN();
-		}
 		
 		if ($this->mod->getVal('Exec')) {
 			$file=$this->mod->getValN('ExecPath').$name.'.php';
@@ -130,7 +113,28 @@ class LogFile extends CModel
 				$LineObj->setVal('LogFile', $id);
 				$LineObj->save();
 			}
-		}		
+		}
+		
+		if ($this->mod->getVal('Compare')) {
+			$logger = new Logger();
+			$logger->load($path, $nameExpected);
+			$loggerA= new Logger();
+			$loggerA->load($path, $nameActual);
+			$diff='Actual and expected results are the same';
+			$result='Ok';
+			$res = $logger->diff($loggerA);
+			if ($res) {
+				$result='Ko';
+				$diff = "Differences in line: $res";
+				if($res<0) {
+					$diff = "Expected number of lines: $logger->logSize()  Actual:$logger->logSize()";
+				}
+			}
+			$this->mod->setValN('Diff',$diff);
+			$this->mod->setValN('Result',$result);
+			$this->mod->saveN();
+		}
+		
 		return $id;
 	}
 	

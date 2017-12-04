@@ -37,10 +37,11 @@ class Config extends AppComp
 	
 	
 	protected $config = [
-	'Default' =>
-			['base'=>'fileBase'],
-	'Apps'	=>
-			[
+	'Default' =>[
+					'base'=>'fileBase',
+					'cssName' => 'LOGstyle.css'
+			],
+	'Apps'	=>[
 					'AdmApp'=>[],
 					'Cdv'=>[
 							Cdv::CODE=>'Codes',
@@ -66,8 +67,7 @@ class Config extends AppComp
 	'View' => [
 		'Home' =>
 			['/',"/".Adm::ADMIN."/1"],
-		'MenuExcl' =>
-			[
+		'MenuExcl' =>[
 					"/".Adm::ADMIN,"/".Self::LOGLINE,"/".Self::EXPECTEDLINE,
 					
 			],
@@ -99,12 +99,9 @@ class Config extends AppComp
 						]
 				],
 				'viewList'=> [
-						'Summary' =>
-						[
-								'attrList' =>
-								[
-										CstMode::V_S_READ=>
-										[
+						'Summary' =>[
+								'attrList' =>[
+										CstMode::V_S_READ=>[
 												'id',
 												'Name',
 												'Result',
@@ -118,20 +115,44 @@ class Config extends AppComp
 										[
 												'Name',
 												'ExecPath',
-												'Exec',
-												'Load',
-												'Promote',
-												'Compare',
 										],
 								],
-								'navList' =>
-								[
+								'navList' =>[
 										CstMode::V_S_READ =>
 										[
 												CstMode::V_S_UPDT,
 												CstMode::V_S_DELT,
 												CstMode::V_S_SLCT,
 												
+										],
+								],
+						],
+						'Execute' => [
+								'attrList' => [
+										CstMode::V_S_READ=> [
+												'id',
+												'Name',
+												'ExecPath',
+												'Path',
+												'Result',
+										],
+										CstMode::V_S_UPDT=> [
+												'Name',
+												'Exec',
+												'Load',
+												'Promote',
+												'Compare',
+										],
+								],
+								'attrHtml' => [
+										CstMode::V_S_UPDT=> [
+												'Name'=> CstHTML::H_T_PLAIN,
+										]
+								],
+								'navList' =>[
+										CstMode::V_S_READ =>
+										[
+												CstMode::V_S_UPDT,							
 										],
 								],
 						],
@@ -170,18 +191,37 @@ class Config extends AppComp
 												
 										],
 								],
-						]
+						],
+						'ActualvsExpected' => [
+								'beforeViews'=>[
+										'Lines',
+										
+								],
+								'afterViews'=>[
+										'ExpectedLines',
+										
+								],
+								'listHtmlClass' => [
+										CstView::V_OBJLISTVIEW=>[CstHTML::H_DIV,'objlistview'],
+								],
+								'attrList' => [
+										CstMode::V_S_READ=>[],										
+								],
+								'navList' =>[
+										CstMode::V_S_READ =>[],
+								],
+						],
 				]
 			],
 		self::LOGLINE => [
 				'attrList' => [
-						CstView::V_S_CREF	=> ['id','Content'],
+						CstView::V_S_CREF	=> ['Content'],
 				],
 		],
 		self::EXPECTEDLINE => [
-					'attrList' => [
-							CstView::V_S_CREF	=> ['id','Content'],
-					],
+				'attrList' => [
+							CstView::V_S_CREF	=> ['Content'],
+				],
 		],
 		self::PRFLINE => [
 				'listHtml' => [

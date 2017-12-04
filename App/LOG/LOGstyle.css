@@ -1,0 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: "Arial", Times, serif;
+}
+
+.objlistview {
+	display:inline-block;
+	width: 50%;
+	float: left;
+}

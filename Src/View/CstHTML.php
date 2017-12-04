@@ -41,6 +41,5 @@ class CstHTML
     const H_URL = "url";
     const H_HIDDEN = "hidden";
     const H_HIDDEN2 = "hidden2";
-    const H_SEPARATOR = "separator";
     const H_INPUTATTR = "inputAttr";
 }

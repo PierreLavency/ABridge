@@ -15,6 +15,7 @@ class Config extends AppComp
 	'Handlers' =>[
 		'Album'		=> ['dataBase',],
 		'Photo' 	=> ['dataBase',],
+		'Album_Photo' 	=> ['dataBase',],
 		],
 	'Apps'	=>[
 					'AdmApp'=>[],
@@ -27,17 +28,19 @@ class Config extends AppComp
 			
 	'View' => [
 		'Home' => ['/',],
+
 		'Album'=> [
 
 				'attrList' => [
 					CstView::V_S_REF	=> ['Nom'],
-				],			
+				],
+
 				'lblList'  => [
 				],
 				'viewList' => [
 					'Photos'  => [
 						'attrList' => [
-							CstMode::V_S_READ=> ['Photos',],
+							CstMode::V_S_READ=> ['Nom','Photos',],
 						],
 						'navList' => [
 							CstMode::V_S_READ => [],
@@ -49,12 +52,12 @@ class Config extends AppComp
 						'attrHtml' => [
 								CstMode::V_S_READ => [
 										'Photos'=>[
-												CstView::V_SLICE=>4,
+												CstView::V_SLICE=>16,
 												CstView::V_COUNTF=>true,
 												CstView::V_CTYP=>CstView::V_C_TYPN,
 												CstView::V_CVAL=>[
 														CstHTML::H_TYPE=>CstHTML::H_T_NTABLE,
-														CstHTML::H_TABLEN=>4]
+														CstHTML::H_TABLEN=>16]
 												
 										]
 								],
@@ -70,6 +73,24 @@ class Config extends AppComp
 					],					
 				]	
 		],
+		
+		'Album_Photo' => [
+				'attrHtml' => [
+						CstMode::V_S_CREA => [
+								'Album'=>CstHTML::H_T_SELECT,
+								'Photo'=>CstHTML::H_T_SELECT,
+						],
+						CstMode::V_S_UPDT => [
+								'Album'=>CstHTML::H_T_SELECT,
+								'Photo'=>CstHTML::H_T_SELECT,
+						],
+						CstMode::V_S_SLCT => [
+								'Album'=>CstHTML::H_T_SELECT,
+								'Photo'=>CstHTML::H_T_SELECT,
+						],
+						CstView::V_S_CREF => ['Photo'=>'Reference'],
+				],
+			],
 		'Photo'=> [		
 				'attrList' => [
 					CstView::V_S_REF	=> ['Nom'],			
@@ -96,7 +117,33 @@ class Config extends AppComp
 				],	
 				'lblList'  => [
 				
-				],	
+				],
+				'viewList' => [
+						'Description' => [
+
+						],
+						'Albums' => [
+								'attrList' => [
+										CstMode::V_S_READ=> ['Albums'],
+								],
+								'navList' => [
+										CstMode::V_S_READ => [],
+								],
+								
+						],
+						'Reference' => [
+								'attrList' => [
+										CstMode::V_S_READ=> ['Photo'],
+								],
+								'attrProp' => [
+										CstMode::V_S_READ =>[CstView::V_P_VAL],
+								],
+								'navList' => [
+										CstMode::V_S_READ => [],
+								],
+								
+						]
+				]
 		],	
 
 		],
@@ -121,7 +168,7 @@ class Config extends AppComp
 		
 		$res = $obj->addAttr('Nom',Mtype::M_STRING);
 		$res = $obj->addAttr('Description',Mtype::M_TXT);
-		$res = $obj->addAttr($Photo.'s',Mtype::M_CREF,'/'.$Photo.'/'.'De');
+		$res = $obj->addAttr($Photo.'s', Mtype::M_CREF, '/'.$Album.'_'.$Photo.'/'.$Album);
 		$res = $obj->addAttr($User,Mtype::M_REF,'/'.$User);
 		
 		$res = $obj->saveMod();
@@ -138,16 +185,38 @@ class Config extends AppComp
 		$res = $obj->addAttr('Photo',Mtype::M_STRING);
 		$res = $obj->addAttr('Rowp',Mtype::M_INT);
 		$res = $obj->addAttr('Colp',Mtype::M_INT);
-		$res = $obj->addAttr('De',Mtype::M_REF,'/'.$Album);
+		$res = $obj->addAttr($Album.'s', Mtype::M_CREF, '/'.$Album.'_'.$Photo.'/'.$Photo);
 		
 		$res = $obj->saveMod();
 		$r = $obj->getErrLog ();
 		$r->show();
 		echo "<br>".$Photo."<br>";		
 
+		
+		$obj = new Model($Album.'_'.$Photo);
+		$res= $obj->deleteMod();
+		
+		$res = $obj->addAttr($Album, Mtype::M_REF, '/'.$Album);
+		$res = $obj->addAttr($Photo, Mtype::M_REF, '/'.$Photo);
+		$res=$obj->setProp($Album, Model::P_MDT);
+		$res=$obj->setProp($Photo, Model::P_MDT);
+		
+		$obj->setCkey([$Album,$Photo], true);
+		$obj->saveMod();
+		
+		$r = $obj->getErrLog ();
+		$r->show();
 	}
 	
 	public function initDelta()
+	{
+		$Album ='Album';
+		$Photo= 'Photo';
+		
+	}
+	
+	
+	protected function loadFile()
 	{
 		$photos = new Model('Photo');
 		$dir = 'C:\xampp\htdocs\Photos\jogging\\';

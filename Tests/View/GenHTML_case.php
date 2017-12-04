@@ -6,7 +6,7 @@ function GenHTLMCases()
         
     $test=[];
     $n=0;
-    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_RADIO,   CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1",CstHTML::H_VALUES=>[['a1','a1'],['a2','a2']], CstHTML::H_SEPARATOR => "<br/>" ],$n];
+    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_RADIO,   CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1",CstHTML::H_VALUES=>[['a1','a1'],['a2','a2']],],$n];
     $n++;
     $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_TEXT,    CstHTML::H_NAME=>'A',CstHTML::H_DEFAULT=>"a1"],$n];
     $n++;
@@ -36,8 +36,6 @@ function GenHTLMCases()
     $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_LIST  ,CstHTML::H_ARG=>[$test[0][0],$test[1][0]]],$n];
     $n++;
     $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_LIST_BR  ,CstHTML::H_ARG=>[$test[0][0],$test[1][0]]],$n];
-    $n++;
-    $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_CONCAT  ,CstHTML::H_ARG=>[$test[1][0],$test[1][0]]],$n];
     $n++;
     $test[$n] = [[CstHTML::H_TYPE=>CstHTML::H_T_LIST  ,CstHTML::H_ARG=>[[CstHTML::H_TYPE=>CstHTML::H_T_LIST,CstHTML::H_ARG=>[$test[7][0],$test[8][0]]]]],$n];
     $n++;

@@ -223,7 +223,6 @@ class GenHTML
         $type="";
         $default="";
         $hidden=[];
-        $separator="";
         $inputAttr="";
         $name="";
         $action="";
@@ -258,9 +257,6 @@ class GenHTML
                     break;
                 case CstHTML::H_LABEL:
                     $label = $v;
-                    break;
-                case CstHTML::H_SEPARATOR:
-                    $separator = $v;
                     break;
                 case CstHTML::H_INPUTATTR:
                     $inputAttr = ' '.$v;
@@ -342,18 +338,6 @@ class GenHTML
             case CstHTML::H_T_NTABLE:
                 $result = self::genNTableL($tablen, $arg, $level);
                 break;
-            case CstHTML::H_T_CONCAT:
-                $result = $tab;
-                $c = count($arg);
-                $i = 0;
-                foreach ($arg as $elem) {
-                    $result=$result.self::genFormElemL($elem, false, -1);
-                    $i++;
-                    if ($i < $c) {
-                        $result = $result . $separator;
-                    }
-                }
-                break;
             case CstHTML::H_T_FORM:
                 $result = self::genFormL($action, $url, $hidden, $arg, $level);
                 break;
@@ -398,7 +382,7 @@ class GenHTML
                     };
                     $result = $result.$tab . $inputS . $typeS . $nameS;
                     $result = $result. $valueS . $checkedS . $endS;
-                    $result = $result . $valuelbl. $separator;
+                    $result = $result . $valuelbl;
                     $result = $result. $newLine;
                 };
                 break;
