@@ -31,6 +31,7 @@ function viewCasesXref()
     $x->addAttr('FatherOf', Mtype::M_CREF, '/'.$dir.'/Father');
     $x->addAttr('Mother', Mtype::M_REF, '/'.$dir);
     $x->addAttr('MotherOf', Mtype::M_CREF, '/'.$dir.'/Mother');
+    $x->addAttr('Code', Mtype::M_CODE, '/'.$dir);
     $x->saveMod();
 
     $x=new Model($dir);
@@ -43,6 +44,7 @@ function viewCasesXref()
         $y->setVal('Name', $name);
         $y->setVal('Father', 1);
         $y->setVal('Mother', 1);
+        $y->setVal('Code', 1);
         $y->save();
     }
 
@@ -55,6 +57,7 @@ function viewCasesXref()
             $z->setVal('Name', $name);
             $z->setVal('Father', $i);
             $z->setVal('Mother', $i);
+            
             $z->save();
         }
     }

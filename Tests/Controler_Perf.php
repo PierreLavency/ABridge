@@ -262,7 +262,7 @@ function saveLog($LogName)
     
     $path = "App/LOG/SETUP.php";
     require_once $path;
-    $config = new Config(['name'=>'LOG']);
+    $config = new Config(['name'=>'LOG','fpath'=>"C:\Users\pierr\ABridge\App\LOG\\"]);
     $ctrl = new Controler($config);
     
     $_GET['Action']=CstMode::V_S_CREA;

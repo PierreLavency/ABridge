@@ -78,7 +78,7 @@ on APP branch
 	- union Ckey + multi surname + frere et soeur
 	- code postal
 
-INT
+on INT
 - integrate with drupal ?
 - integrate MongoDB
 - integrate Redhiss
@@ -88,6 +88,8 @@ INT
 - set up jenkin
 
 DONE
+------------------//0.1
+improve test view
 ------------------//0.5
 review menu management and improve test view
 ------------------//0.5

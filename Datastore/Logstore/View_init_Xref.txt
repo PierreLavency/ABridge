@@ -1,4 +1,4 @@
-a:2:{i:0;a:7:{i:0;s:1894:"<!DOCTYPE html>
+a:2:{i:0;a:7:{i:0;s:2914:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -80,6 +80,36 @@ View_Xref_Test_dataBase_Dir
 			</select>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			Code
+		</td>
+		<td>
+			<select name = "Code"  >
+				<option  value = ""  selected  ></option>
+				<option  value = "1"  >Name_1</option>
+				<option  value = "2"  >Name_2</option>
+				<option  value = "3"  >Name_3</option>
+				<option  value = "4"  >Name_4</option>
+				<option  value = "5"  >Name_5</option>
+				<option  value = "6"  >Name_6</option>
+				<option  value = "7"  >Name_7</option>
+				<option  value = "8"  >Name_8</option>
+				<option  value = "9"  >Name_9</option>
+				<option  value = "10"  >Name_21</option>
+				<option  value = "11"  >Name_22</option>
+				<option  value = "12"  >Name_23</option>
+				<option  value = "13"  >Name_24</option>
+				<option  value = "14"  >Name_25</option>
+				<option  value = "15"  >Name_26</option>
+				<option  value = "16"  >Name_27</option>
+				<option  value = "17"  >Name_28</option>
+				<option  value = "18"  >Name_29</option>
+				<option  value = "19"  >Name_30</option>
+				<option  value = "20"  >Name_31</option>
+			</select>
+		</td>
+	</tr>
 </table>
 
 
@@ -87,7 +117,7 @@ View_Xref_Test_dataBase_Dir
 
 
  </body> 
- </html>";i:1;s:4912:"<!DOCTYPE html>
+ </html>";i:1;s:5353:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -157,6 +187,14 @@ View_Xref_Test_dataBase_Dir
 			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			Code
+		</td>
+		<td>
+			Name_1
+		</td>
+	</tr>
 </table>
 
 <table > <tr>
@@ -191,6 +229,9 @@ View_Xref_Test_dataBase_Dir
 		<td>
 			Name_21
 		</td>
+		<td>
+			
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -198,6 +239,9 @@ View_Xref_Test_dataBase_Dir
 		</td>
 		<td>
 			Name_22
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 	<tr>
@@ -207,6 +251,9 @@ View_Xref_Test_dataBase_Dir
 		<td>
 			Name_23
 		</td>
+		<td>
+			
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -214,6 +261,9 @@ View_Xref_Test_dataBase_Dir
 		</td>
 		<td>
 			Name_24
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 	<tr>
@@ -223,6 +273,9 @@ View_Xref_Test_dataBase_Dir
 		<td>
 			Name_25
 		</td>
+		<td>
+			
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -230,6 +283,9 @@ View_Xref_Test_dataBase_Dir
 		</td>
 		<td>
 			Name_26
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 	<tr>
@@ -239,6 +295,9 @@ View_Xref_Test_dataBase_Dir
 		<td>
 			Name_27
 		</td>
+		<td>
+			
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -246,6 +305,9 @@ View_Xref_Test_dataBase_Dir
 		</td>
 		<td>
 			Name_28
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 	<tr>
@@ -255,6 +317,9 @@ View_Xref_Test_dataBase_Dir
 		<td>
 			Name_29
 		</td>
+		<td>
+			
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -262,6 +327,9 @@ View_Xref_Test_dataBase_Dir
 		</td>
 		<td>
 			Name_30
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 </table>
@@ -299,6 +367,9 @@ View_Xref_Test_dataBase_Dir
 		<td>
 			Name_21
 		</td>
+		<td>
+			
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -306,6 +377,9 @@ View_Xref_Test_dataBase_Dir
 		</td>
 		<td>
 			Name_22
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 	<tr>
@@ -315,6 +389,9 @@ View_Xref_Test_dataBase_Dir
 		<td>
 			Name_23
 		</td>
+		<td>
+			
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -322,6 +399,9 @@ View_Xref_Test_dataBase_Dir
 		</td>
 		<td>
 			Name_24
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 	<tr>
@@ -331,6 +411,9 @@ View_Xref_Test_dataBase_Dir
 		<td>
 			Name_25
 		</td>
+		<td>
+			
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -338,6 +421,9 @@ View_Xref_Test_dataBase_Dir
 		</td>
 		<td>
 			Name_26
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 	<tr>
@@ -347,6 +433,9 @@ View_Xref_Test_dataBase_Dir
 		<td>
 			Name_27
 		</td>
+		<td>
+			
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -354,6 +443,9 @@ View_Xref_Test_dataBase_Dir
 		</td>
 		<td>
 			Name_28
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 	<tr>
@@ -363,6 +455,9 @@ View_Xref_Test_dataBase_Dir
 		<td>
 			Name_29
 		</td>
+		<td>
+			
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -370,6 +465,9 @@ View_Xref_Test_dataBase_Dir
 		</td>
 		<td>
 			Name_30
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 </table>
@@ -380,7 +478,7 @@ View_Xref_Test_dataBase_Dir
 
 
  </body> 
- </html>";i:2;s:1007:"<!DOCTYPE html>
+ </html>";i:2;s:2027:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -440,6 +538,36 @@ View_Xref_Test_dataBase_Dir
 			<input type = "text" name = "Mother" value = "1"  >
 		</td>
 	</tr>
+	<tr>
+		<td>
+			Code
+		</td>
+		<td>
+			<select name = "Code"  >
+				<option  value = ""  ></option>
+				<option  value = "1"  selected  >Name_1</option>
+				<option  value = "2"  >Name_2</option>
+				<option  value = "3"  >Name_3</option>
+				<option  value = "4"  >Name_4</option>
+				<option  value = "5"  >Name_5</option>
+				<option  value = "6"  >Name_6</option>
+				<option  value = "7"  >Name_7</option>
+				<option  value = "8"  >Name_8</option>
+				<option  value = "9"  >Name_9</option>
+				<option  value = "10"  >Name_21</option>
+				<option  value = "11"  >Name_22</option>
+				<option  value = "12"  >Name_23</option>
+				<option  value = "13"  >Name_24</option>
+				<option  value = "14"  >Name_25</option>
+				<option  value = "15"  >Name_26</option>
+				<option  value = "16"  >Name_27</option>
+				<option  value = "17"  >Name_28</option>
+				<option  value = "18"  >Name_29</option>
+				<option  value = "19"  >Name_30</option>
+				<option  value = "20"  >Name_31</option>
+			</select>
+		</td>
+	</tr>
 </table>
 
 
@@ -447,7 +575,7 @@ View_Xref_Test_dataBase_Dir
 
 
  </body> 
- </html>";i:3;s:985:"<!DOCTYPE html>
+ </html>";i:3;s:1046:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -507,6 +635,14 @@ View_Xref_Test_dataBase_Dir
 			<a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			Code
+		</td>
+		<td>
+			Name_1
+		</td>
+	</tr>
 </table>
 
 
@@ -514,7 +650,7 @@ View_Xref_Test_dataBase_Dir
 
 
  </body> 
- </html>";i:4;s:2055:"<!DOCTYPE html>
+ </html>";i:4;s:3182:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -609,6 +745,41 @@ View_Xref_Test_dataBase_Dir
 			<input type = "text" name = "Mother"  >
 		</td>
 	</tr>
+	<tr>
+		<td>
+			Code
+		</td>
+		<td>
+			<select name = "Code_OP"  >
+				<option  value = "="  selected  >=</option>
+			</select>
+		</td>
+		<td>
+			<select name = "Code"  >
+				<option  value = ""  selected  ></option>
+				<option  value = "1"  >Name_1</option>
+				<option  value = "2"  >Name_2</option>
+				<option  value = "3"  >Name_3</option>
+				<option  value = "4"  >Name_4</option>
+				<option  value = "5"  >Name_5</option>
+				<option  value = "6"  >Name_6</option>
+				<option  value = "7"  >Name_7</option>
+				<option  value = "8"  >Name_8</option>
+				<option  value = "9"  >Name_9</option>
+				<option  value = "10"  >Name_21</option>
+				<option  value = "11"  >Name_22</option>
+				<option  value = "12"  >Name_23</option>
+				<option  value = "13"  >Name_24</option>
+				<option  value = "14"  >Name_25</option>
+				<option  value = "15"  >Name_26</option>
+				<option  value = "16"  >Name_27</option>
+				<option  value = "17"  >Name_28</option>
+				<option  value = "18"  >Name_29</option>
+				<option  value = "19"  >Name_30</option>
+				<option  value = "20"  >Name_31</option>
+			</select>
+		</td>
+	</tr>
 </table>
 
 <table > <tr>
@@ -640,7 +811,7 @@ View_Xref_Test_dataBase_Dir
 <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/2" >Name_2</a>
 
  </body> 
- </html>";i:6;s:303:"<!DOCTYPE html>
+ </html>";i:6;s:311:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -654,6 +825,8 @@ Name_2
 <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
 
 <a href="/ABridge.php/View_Xref_Test_dataBase_Dir/1" >Name_1</a>
+
+Name_1
 
 
  </body> 
