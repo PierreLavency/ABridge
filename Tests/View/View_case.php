@@ -5,6 +5,7 @@ use ABridge\ABridge\Hdl\Handle;
 use ABridge\ABridge\Hdl\CstMode;
 
 use ABridge\ABridge\Mod\Model;
+use ABridge\ABridge\Mod\Mod;
 use ABridge\ABridge\Mod\Mtype;
 
 use ABridge\ABridge\View\View;
@@ -13,6 +14,7 @@ use ABridge\ABridge\View\CstView;
 
 function viewCases()
 {
+    Mod::reset();
     $x=new Model('test');
     $x->deleteMod();
 
@@ -48,7 +50,6 @@ function viewCases()
     $handle = new Handle('/', CstMode::V_S_READ, null);
     $v = new View($handle);
 
-    $v->setTopMenu(['/test']);
 
     $path = '/';
     
@@ -63,7 +64,6 @@ function viewCases()
    
     $v = new View($handle);
     
-    $v->setTopMenu(['/test']);
 
     $n=1;
     $test[$n]=[$v,$path,CstMode::V_S_CREA,$n];

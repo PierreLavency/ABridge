@@ -60,7 +60,6 @@ for ($i=0; $i<count($test); $i++) {
     ];
     Vew::get()->init(['name'=>"test"], $config);
     $v = new View($handle);
-    $v->setTopMenu(['/dir']);
     $res = $v->show($s, false);
     $log->logLine($res);
     

@@ -68,7 +68,6 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
         Vew::get()->init(['name'=>"test"], $config);
         
         $v = new View($handle);
-        $v->setTopMenu(['/dir']);
         
         $this->expectOutputString(self::$log->getLine(0));
         $this->assertNotNull($v->show($s, true));
@@ -105,7 +104,6 @@ class View_Xref_Test extends PHPUnit_Framework_TestCase
         ];
         Vew::get()->init(['name'=>"test"], $config);
         $v = new View($handle);
-        $v->setTopMenu(['/dir']);
         $res = $v->show($s, false);
         
         $this->assertEquals(self::$log->getLine($expected), $res);

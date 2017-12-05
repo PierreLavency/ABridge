@@ -1,4 +1,4 @@
-a:2:{i:0;a:8:{i:0;s:263:"<!DOCTYPE html>
+a:2:{i:0;a:8:{i:0;s:196:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -9,9 +9,6 @@ test
 
 
 <table > <tr>
-	<td>
-		<a href="/ABridge.php/test?Action=Select" >test</a>
-	</td>
 </tr> </table>
 
 
@@ -24,7 +21,7 @@ test
 
 
  </body> 
- </html>";i:1;s:941:"<!DOCTYPE html>
+ </html>";i:1;s:871:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -35,9 +32,6 @@ test
 test
 
 	<table > <tr>
-		<td>
-			<a href="/ABridge.php/test?Action=Select" >test</a>
-		</td>
 	</tr> </table>
 test
 
@@ -99,7 +93,7 @@ test
 
 
  </body> 
- </html>";i:2;s:930:"<!DOCTYPE html>
+ </html>";i:2;s:863:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -110,9 +104,6 @@ test
 
 
 <table > <tr>
-	<td>
-		<a href="/ABridge.php/test?Action=Select" >test</a>
-	</td>
 </tr> </table>
 
 test
@@ -184,7 +175,7 @@ test
 
 
  </body> 
- </html>";i:3;s:1004:"<!DOCTYPE html>
+ </html>";i:3;s:934:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -195,9 +186,6 @@ test
 test
 
 	<table > <tr>
-		<td>
-			<a href="/ABridge.php/test?Action=Select" >test</a>
-		</td>
 	</tr> </table>
 test
 
@@ -259,7 +247,7 @@ test
 
 
  </body> 
- </html>";i:4;s:873:"<!DOCTYPE html>
+ </html>";i:4;s:803:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -270,9 +258,6 @@ test
 test
 
 	<table > <tr>
-		<td>
-			<a href="/ABridge.php/test?Action=Select" >test</a>
-		</td>
 	</tr> </table>
 test
 
@@ -334,7 +319,7 @@ test
 
 
  </body> 
- </html>";i:5;s:1864:"<!DOCTYPE html>
+ </html>";i:5;s:1794:"<!DOCTYPE html>
 <html>
 <head>
 <title>ABridge</title>
@@ -345,9 +330,6 @@ test
 test
 
 	<table > <tr>
-		<td>
-			<a href="/ABridge.php/test?Action=Select" >test</a>
-		</td>
 	</tr> </table>
 test
 

@@ -2,7 +2,7 @@ CMD
 h4669ghx
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'H_T_CONCAT' Src/* App/* Tests/*
+grep -ri 'setTopMenu' Src/* App/* Tests/*
 
 BUGS	36
 B1 session with API.
@@ -55,9 +55,10 @@ on DB branch:
 on VIEW branch:
 
 -improve test view
+-ablity to custumize view
 -style tables
 -multiple "vertical" views 
--review menu management and style
+-review menu style
 -define standard ABridge style.
 -include svg bit in view.
 -view sort out persistence/2
@@ -72,6 +73,7 @@ select on abstract class does not scale.
 
 on APP branch
 
+- extend code into cat/sub category
 - beef up test apps with relationships tables 
 	- union Ckey + multi surname + frere et soeur
 	- code postal
@@ -86,6 +88,8 @@ INT
 - set up jenkin
 
 DONE
+------------------//0.5
+review menu management and improve test view
 ------------------//0.5
 ability to add photos to albums 
 comparing view in LOG
