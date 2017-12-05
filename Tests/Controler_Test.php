@@ -14,6 +14,7 @@ use ABridge\ABridge\Mod\Mtype;
 use ABridge\ABridge\Usr\Usr;
 use ABridge\ABridge\UtilsC;
 use ABridge\ABridge\View\Vew;
+use ABridge\ABridge\View\CstView;
 
 use ABridge\ABridge\Usr\Role;
 use ABridge\ABridge\Usr\Session;
@@ -38,14 +39,29 @@ class Controler_Test_dataBase_Admin extends Admin
 
 class Controler_Test_config extends AppComp
 {
- 
+    public function initOwnMeta($prm)
+    {
+        $classes = ['Student'];
+        $baseTypes=['dataBase'];
+        
+        $prm=UtilsC::genPrm($classes, 'Controler_Test', $baseTypes);
+
+        $name = $prm['dataBase']['Student'];
+    
+        $x=new Model($name);
+        $x->deleteMod();
+        $x->addAttr('Name', Mtype::M_INT);
+        $x->addAttr('Ref', Mtype::M_REF, '/'.$name);
+        $x->addAttr('Cref', Mtype::M_CREF, '/'.$name.'/Ref');
+        $x->saveMod();
+        $x->getErrLog()->show();
+    }
 }
 
 
 class Controler_Test extends PHPUnit_Framework_TestCase
 {
     
-
     protected $show = false;
     
     protected function reset()
@@ -72,14 +88,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         Mod::get()->begin();
         
         $name = $prm['dataBase']['Student'];
-        
-        $x=new Model($name);
-        $x->deleteMod();
-        $x->addAttr('Name', Mtype::M_INT);
-        $x->addAttr('Ref', Mtype::M_REF, '/'.$name);
-        $x->addAttr('Cref', Mtype::M_CREF, '/'.$name.'/Ref');
-        $x->saveMod();
-        
+
         $classes = ['Session','User','Role',];
         
         $prm=UtilsC::genPrm($classes, get_called_class(), $baseTypes);
@@ -151,7 +160,10 @@ class Controler_Test extends PHPUnit_Framework_TestCase
     function testRoot($prm)
     {
         $this->reset();
+        
         $ctrl = new Controler($prm['config']);
+              
+        $ctrl->initMeta();
        
         $path = '/';
         $_COOKIE[$prm['cookieName']]=$prm['key'];
@@ -237,6 +249,7 @@ class Controler_Test extends PHPUnit_Framework_TestCase
         $_GET['Action']=CstMode::V_S_SLCT;
         $_POST['Name']=0;
         $_POST['Name_OP']='=';
+        $_POST[CstView::V_P_SRT]='Name';
         
         $reso = $ctrl->run($this->show);
         $this->assertEquals(1, count($reso->select()));

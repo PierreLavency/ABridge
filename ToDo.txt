@@ -88,6 +88,8 @@ on INT
 - set up jenkin
 
 DONE
+------------------//0.2
+improve test controler
 ------------------//0.1
 improve test view
 ------------------//0.5
