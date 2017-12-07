@@ -88,6 +88,8 @@ on INT
 - set up jenkin
 
 DONE
+------------------//0.5
+- set up a git server (ABridge/ABridge on desktop)
 ------------------//0.2
 improve test controler
 ------------------//0.1
