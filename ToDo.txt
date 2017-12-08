@@ -84,12 +84,12 @@ on INT
 - integrate Redhiss
 - start up with python (CLI)
 - set up bug tracking
-- set up a git server
 - set up jenkin
 
 DONE
+- branching for DB
 ------------------//0.5
-- set up a git server (ABridge/ABridge on desktop)
+- set up a git server (ABridge/ABridge on desktop in AB)
 ------------------//0.2
 improve test controler
 ------------------//0.1
