@@ -11,10 +11,7 @@ class Config extends AppComp
 {
 			
 	protected $config = [
-	'Default'=> [
-			'cssName' => 'CSNstyle.css'
-	],
-			
+
 	'Handlers' =>
 		[
 		'Recette'		=> ['dataBase',],

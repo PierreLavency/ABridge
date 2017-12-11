@@ -39,7 +39,6 @@ class Config extends AppComp
 	protected $config = [
 	'Default' =>[
 					'base'=>'fileBase',
-					'cssName' => 'LOGstyle.css'
 			],
 	'Apps'	=>[
 					'AdmApp'=>[],

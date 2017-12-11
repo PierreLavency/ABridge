@@ -37,6 +37,7 @@ rm ~/ABridge/Bld/*.*
 rm -R ~/ABridge/Bld/Tmp/Src
 rm -R ~/ABridge/Bld/Tmp/DataStore
 rm -R ~/ABridge/Bld/Tmp/App
+rm -R ~/ABridge/Bld/Tmp/vendor
 
 cp -R ~/ABridge/Src ~/ABridge/Bld/Tmp
 cp ~/ABridge/Bld/Tmp/Src/config.ini ~/ABridge/Bld
@@ -52,7 +53,11 @@ rm ~/ABridge/Bld/Tmp/Src/ABridge_init.php
 
 cp -R ~/ABridge/Datastore ~/ABridge/Bld/Tmp
 cp -R ~/ABridge/App ~/ABridge/Bld/Tmp
-cp -R ~/ABridge/vendor ~/ABridge/Bld/Tmp
+mkdir ~/ABridge/Bld/Tmp/vendor
+cp -R ~/ABridge/vendor/composer ~/ABridge/Bld/Tmp/vendor/composer
+cp -R ~/ABridge/vendor/myclabs ~/ABridge/Bld/Tmp/vendor/myclabs
+cp ~/ABridge/vendor/autoload.php ~/ABridge/Bld/Tmp/vendor/autoload.php
+
 
 php ~/ABridge/Src/BuildPhar.php
 cp ~/ABridge/Bld/*.*  /C/xampp/htdocs
@@ -60,7 +65,7 @@ cp ~/ABridge/Bld/*.*  /C/xampp/htdocs
 if [ $Phase = "drop" ] 
 then
 	echo -e "\n dropping \n"
-	cp ~/ABridge/Bld/*.*  /C/Users/pierr/Drop
+	cp ~/ABridge/Bld/*.*  //DESKTOP-ES4KJA9/Users/Public/Documents
 fi
 
 

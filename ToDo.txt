@@ -79,6 +79,7 @@ on APP branch
 	- code postal
 
 on INT
+
 - integrate with drupal ?
 - integrate MongoDB
 - integrate Redhiss
@@ -87,6 +88,8 @@ on INT
 - set up jenkin
 
 DONE
+-include css in build 
+- remove release of dev tools in prod build.
 -------------------//0.5
 move delete foreign key from modbase to sqlbase 
 -------------------
