@@ -2,7 +2,7 @@ CMD
 h4669ghx
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'setTopMenu' Src/* App/* Tests/*
+grep -ri 'getAllMod' Src/* App/* Tests/*
 
 BUGS	36
 B1 session with API.
@@ -87,6 +87,9 @@ on INT
 - set up jenkin
 
 DONE
+-------------------//0.5
+move delete foreign key from modbase to sqlbase 
+-------------------
 - branching for DB
 ------------------//0.5
 - set up a git server (ABridge/ABridge on desktop in AB)

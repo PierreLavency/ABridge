@@ -78,6 +78,51 @@ class SQLBase extends Base
         return $this->close();
     }
 
+    public function allTables()
+    {
+        $sql= "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='$this->dbname'";
+        $res=[];
+        $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
+        $this->logger->logLine($sql, $linfo);
+        $result = $this->mysqli->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $res[]= $row['TABLE_NAME'];
+            }
+        }
+        return $res;
+    }
+    
+    public function allAttributes($table)
+    {
+        $sql= "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='$this->dbname' and TABLE_NAME='$table'";
+        $res=[];
+        $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
+        $this->logger->logLine($sql, $linfo);
+        $result = $this->mysqli->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $res[$row['COLUMN_NAME']]= $row['DATA_TYPE'];
+            }
+        }
+        return $res;
+    }
+    
+    protected function foreignKeys($table)
+    {
+        $sql= "SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA='$this->dbname' and TABLE_NAME='$table'";
+        $res=[];
+        $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
+        $this->logger->logLine($sql, $linfo);
+        $result = $this->mysqli->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $res[$row['COLUMN_NAME']]= 'XX';
+            }
+        }
+        return $res;
+    }
+    
     public static function exists($path, $id)
     {
         return parent::existsBase($path, 'sqlBase\\'.$id);
@@ -213,20 +258,18 @@ class SQLBase extends Base
         if (isset($delList['attr_typ'])) {
             $attrLst = $delList['attr_typ'];
         }
-        $attrFrg=[];
-        if (isset($delList['attr_frg'])) {
-            $attrFrg = $delList['attr_frg'];
-        }
         $listSize = count($attrLst);
         if (!$listSize) {
             return false;
         }
+        $attrFrg=$this->foreignKeys($model);
         $i=0;
         foreach ($attrLst as $attr => $typ) {
             if (isset($attrFrg[$attr])) {
                 $cName= $model.'_'.$attr;
                 $sql=$sql."\n DROP FOREIGN KEY $cName ,";
             }
+            
             $sql = $sql."\n DROP $attr " ;
             if ($i+1<$listSize) {
                 $sql=$sql.",";

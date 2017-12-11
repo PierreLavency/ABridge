@@ -44,6 +44,12 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $db->beginTrans();
         $modL=$db->getAllMod();
         $this->assertTrue(in_array(self::$CName, $modL));
+        
+        if ($db->getBaseType()=='dataBase') {
+            $res = $db->allTables();
+            $this->assertTrue(in_array(strtolower(self::$CName), $res));
+        }
+    
         $this->assertEquals($this->meta, $db->getMod(self::$CName));
         $this->assertEquals([], $db->getMod(self::$CName2));
         $this->assertTrue($db->putMod(self::$CName, [], [], $this->meta));

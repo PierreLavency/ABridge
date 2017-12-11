@@ -86,12 +86,6 @@ class ModBase
         $addList['attr_frg']=$foreignKeyList;
 
         $delList['attr_typ']= array_diff_assoc($ityp, $attrTypList);
-        $delList['attr_frg']=[];
-        foreach ($delList['attr_typ'] as $attr => $typ) {
-            if ($typ == Mtype::M_REF) {
-                $delList['attr_frg'][$attr] = 'XX';
-            }
-        }
       
         $changed = false;
         $addChange=count($addList['attr_typ']);
@@ -108,7 +102,6 @@ class ModBase
             $res= $this->base->putMod($modName, $newBaseMod, [], []);
             if ($changed) {
                 foreach ($this->getInhMod($modName) as $smod => $baseMod) {
-                    $baseMod['attr_frg']=$foreignKeyList;
                     $this->base->putMod($smod, $baseMod, $addList, $delList);
                 }
             }
