@@ -80,6 +80,7 @@ on APP branch
 
 on INT
 
+- phploc
 - integrate with drupal ?
 - integrate MongoDB
 - integrate Redhiss
@@ -88,7 +89,10 @@ on INT
 - set up jenkin
 
 DONE
--include css in build 
+--------------------//0.1
+- phploc install
+-------------------//0.5
+- include css in build 
 - remove release of dev tools in prod build.
 -------------------//0.5
 move delete foreign key from modbase to sqlbase 

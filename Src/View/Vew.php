@@ -393,9 +393,9 @@ class Vew extends Comp
             $cssName = $this->appPrm['cssName'];
             $fpath= $this->appPrm['fpath'];
             $cssfileName = $fpath . $cssName;
-            if (file_exists( $cssfileName)) {
-            	$file = file_get_contents($cssfileName, FILE_USE_INCLUDE_PATH);
-            	return $file;
+            if (file_exists($cssfileName)) {
+                $file = file_get_contents($cssfileName, FILE_USE_INCLUDE_PATH);
+                return $file;
             }
         }
         return null;
