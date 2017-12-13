@@ -110,7 +110,8 @@ class SQLBase extends Base
     
     protected function foreignKeys($table)
     {
-        $sql= "SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA='$this->dbname' and TABLE_NAME='$table'";
+        $sql= "SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE";
+        $sql=$sql."WHERE TABLE_SCHEMA='$this->dbname' and TABLE_NAME='$table'";
         $res=[];
         $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
         $this->logger->logLine($sql, $linfo);

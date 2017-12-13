@@ -67,6 +67,8 @@ phpmd Src/Apps/ html unusedcode,codesize,naming,design,cleancode,controversial -
 echo ""
 echo "phpunit"
 phpunit --coverage-html tmp/Testcoverage
+echo "phploc"
+phploc Src
 echo "performance Profiling"
 cp ~/ABridge/Tests/perf.ini ~/ABridge/Tests/perfTmp.ini
 cp ~/ABridge/Tests/perfProfiling.ini ~/ABridge/Tests/perf.ini
