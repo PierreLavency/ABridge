@@ -92,7 +92,6 @@ cp -R $HOMEDIR/vendor/composer $BUILDTMP/vendor/composer
 cp -R $HOMEDIR/vendor/symfony  $BUILDTMP/vendor/symfony
 cp -R $HOMEDIR/vendor/myclabs  $BUILDTMP/vendor/myclabs
 
-
 php ~/ABridge/Src/BuildPhar.php
 
 

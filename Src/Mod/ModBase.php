@@ -49,10 +49,7 @@ class ModBase
         $inhertFromMod  = $mod->getInhNme();
         $attrTypList  = $mod->getAllAttrStateTyp();
 
-        if ($inhertFromMod) { // could be done in Model but introduce test dependency on stateHandler
-            $metaInh=$this->base->getMod($inhertFromMod);
-            $ityp =$metaInh['attr_atyp'];
-            $attrTypList= array_merge($ityp, $attrTypList);
+        if ($inhertFromMod) {
             $foreignKeyList['id']=$inhertFromMod;
         }
 

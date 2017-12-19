@@ -290,7 +290,6 @@ class Config extends AppComp
 				'View_init_Xref',
 				'GenHTML_init',
 				'GenJason_init',
-				'GenJason_init_testRun',
 		];
 		
 		foreach ($logs as $log) {

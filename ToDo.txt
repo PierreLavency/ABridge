@@ -40,10 +40,10 @@ DEV
 - delete all object in class /2
 - introduction of name space in Tests /2
 
-- avoid loading abstractMod in Mod base  (? dependency in test)
+
 - revisit dot attributes (?)
 - unify get code with get reference. (????)
-- user Jason to save data rather than serilialisation (?).
+- user Jason to save data rather than serialization (?).
 
 on DB branch:
 
@@ -89,6 +89,9 @@ on INT
 - set up jenkin
 
 DONE
+
+--------------------//0.2
+- avoid loading abstractMod in Mod base  
 --------------------//0.5
 space missing in foreign keys 
 --------------------//0.1

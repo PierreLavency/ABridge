@@ -271,7 +271,7 @@ class SQLBase extends Base
                 $sql=$sql."\n DROP FOREIGN KEY $cName ,";
             }
             
-            $sql = $sql."\n DROP $attr " ;
+            $sql = $sql."\n DROP IF EXISTS $attr  " ;
             if ($i+1<$listSize) {
                 $sql=$sql.",";
             }

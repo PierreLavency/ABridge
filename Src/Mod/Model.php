@@ -597,7 +597,7 @@ class Model
     public function getAllAttrStateTyp()
     {
         $allStateTyp= [];
-        foreach ($this->getAllTyp() as $attribute => $type) {
+        foreach ($this->getAttrTypList() as $attribute => $type) {
             if ($this->isStateType($attribute)) {
                 $allStateTyp[$attribute]=$type;
             }
