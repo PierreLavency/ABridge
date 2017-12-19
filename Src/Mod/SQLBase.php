@@ -173,15 +173,11 @@ class SQLBase extends Base
         return (parent::close());
     }
  
-    public function newModId($model, $meta, $idF, $newList)
+    public function newModId($model, $meta, $idF, $newList, $attrFrg)
     {
         if ($this->existsMod($model)) {
             return false;
         };
-        $attrFrg=[];
-        if (isset($newList['attr_frg'])) {
-            $attrFrg = $newList['attr_frg'];
-        }
         $sql = "\n CREATE TABLE $model ( " ;
         if ($idF) {
             $sql=$sql. "\n id INT(11) UNSIGNED NOT NULL";
@@ -221,7 +217,7 @@ class SQLBase extends Base
         return $res;
     }
 
-    public function putMod($model, $meta, $addList, $delList)
+    public function putMod($model, $meta, $addList, $delList, $foreignKeyList)
     {
         if (! $this->existsMod($model)) {
             return false;
@@ -238,7 +234,7 @@ class SQLBase extends Base
             }
         }
         $sql = "\n ALTER TABLE $model ";
-        $sqlAdd = $this->addAttr($model, $addList);
+        $sqlAdd = $this->addAttr($model, $addList, $foreignKeyList);
         if ($sqlAdd) {
             $sqlAdd=$sql.$sqlAdd;
             $linfo=[Log::TCLASS=>__CLASS__,LOG::TFUNCT=>__FUNCTION__,LOG::TLINE=>__LINE__];
@@ -280,16 +276,12 @@ class SQLBase extends Base
         return $sql;
     }
     
-    protected function addAttr($model, $addList)
+    protected function addAttr($model, $addList, $attrFrg)
     {
         $sql = "";
         $attrLst=[];
         if (isset($addList['attr_typ'])) {
             $attrLst= $addList['attr_typ'];
-        }
-        $attrFrg=[];
-        if (isset($addList['attr_frg'])) {
-            $attrFrg = $addList['attr_frg'];
         }
         $listSize = count($attrLst);
         if (!$listSize) {

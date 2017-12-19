@@ -44,7 +44,7 @@ class FileBase extends Base
         return 'fileBase';
     }
     
-    public function putMod($model, $meta, $addList, $delList)
+    public function putMod($model, $meta, $addList, $delList, $attrFrg)
     {
         if (! $this->existsMod($model)) {
             return false;
@@ -75,7 +75,7 @@ class FileBase extends Base
         return $r;
     }
     
-    public function newModId($model, $meta, $idF, $newList)
+    public function newModId($model, $meta, $idF, $newList, $attrFrg)
     {
         $res=parent::newModelId($model, $meta, $idF);
         parent::commit(); // to align

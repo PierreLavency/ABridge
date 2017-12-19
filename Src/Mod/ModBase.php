@@ -49,15 +49,13 @@ class ModBase
         $inhertFromMod  = $mod->getInhNme();
         $attrTypList  = $mod->getAllAttrStateTyp();
 
-        if ($inhertFromMod) {
-            $foreignKeyList['id']=$inhertFromMod;
-        }
-
         $newBaseMod['attr_atyp']= $attrTypList;
         $newBaseMod['attr_inhnme']=$inhertFromMod;
         $newBaseMod['meta']=$mod->getMeta();
 
-        
+        if ($inhertFromMod) {
+            $foreignKeyList['id']=$inhertFromMod;
+        }
         foreach ($attrTypList as $attr => $typ) {
             if ($typ == Mtype::M_REF) {
                 $foreignKeyList[$attr] = $mod->getModRef($attr);
@@ -69,19 +67,16 @@ class ModBase
             if ($abstractMod) {
                 $newList['attr_typ'] = ['CName'=>Mtype::M_STRING,];
             }
-            $newList['attr_frg']=$foreignKeyList;
             if ($inhertFromMod) {
-                return ($this->base->newModId($modName, $newBaseMod, false, $newList));
+                return ($this->base->newModId($modName, $newBaseMod, false, $newList, $foreignKeyList));
             }
-            return ($this->base->newModId($modName, $newBaseMod, true, $newList));
+            return ($this->base->newModId($modName, $newBaseMod, true, $newList, $foreignKeyList));
         }
         
         $oldBaseMod = $this->base->getMod($modName);
         $ityp  = $oldBaseMod['attr_atyp'];
 
         $addList['attr_typ']= array_diff_assoc($attrTypList, $ityp);
-        $addList['attr_frg']=$foreignKeyList;
-
         $delList['attr_typ']= array_diff_assoc($ityp, $attrTypList);
       
         $changed = false;
@@ -96,15 +91,15 @@ class ModBase
         }
         
         if ($abstractMod) {
-            $res= $this->base->putMod($modName, $newBaseMod, [], []);
+            $res= $this->base->putMod($modName, $newBaseMod, [], [], []);
             if ($changed) {
                 foreach ($this->getInhMod($modName) as $smod => $baseMod) {
-                    $this->base->putMod($smod, $baseMod, $addList, $delList);
+                    $this->base->putMod($smod, $baseMod, $addList, $delList, $foreignKeyList);
                 }
             }
             return $res;
         }
-        return ($this->base->putMod($modName, $newBaseMod, $addList, $delList));
+        return ($this->base->putMod($modName, $newBaseMod, $addList, $delList, $foreignKeyList));
     }
     
     protected function getInhMod($modName)

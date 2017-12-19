@@ -89,7 +89,8 @@ on INT
 - set up jenkin
 
 DONE
-
+--------------------//0.2
+- do not save foreign keys in Meta.
 --------------------//0.2
 - avoid loading abstractMod in Mod base  
 --------------------//0.5

@@ -30,8 +30,8 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $db=self::$db;
         $this->assertEquals(self::$baseType, $db->getBaseType());
         $db->beginTrans();
-        $this->assertTrue($db->newModId(self::$CName, $this->meta, true, $this->meta));
-        $this->assertTrue($db->newModId(self::$CName2, [], true, []));
+        $this->assertTrue($db->newModId(self::$CName, $this->meta, true, $this->meta, []));
+        $this->assertTrue($db->newModId(self::$CName2, [], true, [], []));
         $db->commit();
     }
 
@@ -52,8 +52,8 @@ class Base_Case extends PHPUnit_Framework_TestCase
     
         $this->assertEquals($this->meta, $db->getMod(self::$CName));
         $this->assertEquals([], $db->getMod(self::$CName2));
-        $this->assertTrue($db->putMod(self::$CName, [], [], $this->meta));
-        $this->assertTrue($db->putMod(self::$CName2, $this->meta, $this->meta, []));
+        $this->assertTrue($db->putMod(self::$CName, [], [], $this->meta, []));
+        $this->assertTrue($db->putMod(self::$CName2, $this->meta, $this->meta, [], []));
         $db->commit();
     }
 
@@ -77,10 +77,10 @@ class Base_Case extends PHPUnit_Framework_TestCase
     {
         $db=self::$db;
         $db->beginTrans();
-        $this->assertTrue($db->putMod(self::$CName, $this->meta, $this->meta, []));
+        $this->assertTrue($db->putMod(self::$CName, $this->meta, $this->meta, [], []));
         $this->assertFalse($db->existsMod(self::$CName2));
-        $this->assertTrue($db->newModId(self::$CName2, [], false, []));
-        $this->assertTrue($db->putMod(self::$CName2, $this->meta, $this->meta, []));
+        $this->assertTrue($db->newModId(self::$CName2, [], false, [], []));
+        $this->assertTrue($db->putMod(self::$CName2, $this->meta, $this->meta, [], []));
         $this->assertEquals($this->id1, self::$db->newObj(self::$CName, $this->test1));
         $this->assertEquals($this->id2, self::$db->newObj(self::$CName, $this->test2));
         $this->assertEquals($this->id1, self::$db->newObjId(self::$CName2, $this->test1, $this->id1));
@@ -214,14 +214,14 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $x = self::$db;
         $x->beginTrans();
         
-        $this->assertFalse($x->newModId(self::$CName, $this->meta, true, $this->meta));
+        $this->assertFalse($x->newModId(self::$CName, $this->meta, true, $this->meta, []));
         $this->assertFalse($x->getObj(self::$CName, 0));
         $this->assertTrue($x->delObj(self::$CName, 0));
         $this->assertTrue($x->delObj(self::$CName, 10000));
         $this->assertFalse($x->getObj(self::$CName, 10000));
         $this->assertFalse($x->putObj(self::$CName, 0, 1, $this->test2));
         $this->assertFalse($x->putObj(self::$CName, 10000, 1, $this->test2));
-        $this->assertFalse($x->putMod('NOTEXISTS', [], [], $this->meta));
+        $this->assertFalse($x->putMod('NOTEXISTS', [], [], $this->meta, []));
         
         $r = false;
         try {
@@ -291,7 +291,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $x = self::$db;
         $x->beginTrans();
         
-        $this->assertTrue($x->putMod(self::$CName, [], [], $this->meta));
+        $this->assertTrue($x->putMod(self::$CName, [], [], $this->meta, []));
         $this->assertEquals([], $x->getMod(self::$CName));
         
         
@@ -356,7 +356,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $this->assertTrue($r);
         $r=false;
         try {
-            $x->newModId('notexists', [], true, []);
+            $x->newModId('notexists', [], true, [], []);
         } catch (Exception $e) {
             $r = true;
         }
@@ -370,7 +370,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
         $this->assertTrue($r);
         $r=false;
         try {
-            $x->putMod('notexists', [], [], []);
+            $x->putMod('notexists', [], [], [], []);
         } catch (Exception $e) {
             $r = true;
         }
@@ -433,7 +433,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
             $r=false;
             $x->delMod('test');
             try {
-                $x->newModId('test', $err, true, $err);
+                $x->newModId('test', $err, true, $err, []);
             } catch (Exception $e) {
                 $r = true;
             }
@@ -441,7 +441,7 @@ class Base_Case extends PHPUnit_Framework_TestCase
             
             $r=false;
             try {
-                $x->putMod(self::$CName, $this->meta, $err, []);
+                $x->putMod(self::$CName, $this->meta, $err, [], []);
             } catch (Exception $e) {
                 $r = true;
             }

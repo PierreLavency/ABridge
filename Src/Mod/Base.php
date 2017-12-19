@@ -192,9 +192,9 @@ abstract class Base
 
     abstract protected static function exists($path, $name);
    
-    abstract protected function newModId($model, $meta, $id, $newist);
+    abstract protected function newModId($model, $meta, $id, $newist, $foreignKeyList);
     
-    abstract protected function putMod($model, $meta, $addList, $delList);
+    abstract protected function putMod($model, $meta, $addList, $delList, $foreignKeyList);
     
     abstract protected function newObj($model, $values);
     
