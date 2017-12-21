@@ -13,15 +13,15 @@ class Base_Rmv_Test extends PHPUnit_Framework_TestCase
         $fpath = 'C:/Users/pierr/ABridge/Datastore/';
        
         $name = 'notexists';
-        $this->assertFalse(FileBase::exists($fpath, $name));
+        $this->assertFalse(FileBase::existsBase($fpath, $name));
         $x = new FileBase($fpath, $name);
         $this->assertNotNull($x);
         $x->commit();
-        $this->assertTrue(FileBase::exists($fpath, $name));
+        $this->assertTrue(FileBase::existsBase($fpath, $name));
  
         $res=$x->remove();
         $this->assertTrue($res);
-        $this->assertFalse(FileBase::exists($fpath, $name));
+        $this->assertFalse(FileBase::existsBase($fpath, $name));
     }
 
     public function testMem()
@@ -49,7 +49,7 @@ class Base_Rmv_Test extends PHPUnit_Framework_TestCase
 
         
         $name = 'notexists';
-        $this->assertFalse(SqlBase::exists($prm['path'], $name));
+        $this->assertFalse(SqlBase::existsBase($prm['path'], $name));
         $x = new SQLBase(
             $prm['path'],
             $prm['host'],
@@ -59,11 +59,11 @@ class Base_Rmv_Test extends PHPUnit_Framework_TestCase
         );
         $this->assertNotNull($x);
         $x->commit();
-        $this->assertTrue(SqlBase::exists($prm['path'], $name));
+        $this->assertTrue(SqlBase::existsBase($prm['path'], $name));
 
         $res=$x->remove();
         $this->assertTrue($res);
-        $this->assertFalse(SqlBase::exists($prm['path'], $name));
+        $this->assertFalse(SqlBase::existsBase($prm['path'], $name));
         
         $r=false;
         try {

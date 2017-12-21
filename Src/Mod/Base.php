@@ -7,11 +7,11 @@ use ABridge\ABridge\CstError;
 
 abstract class Base
 {
+    
     protected $objects=[];
     protected $preObjects=[];
     private $fileN;
     private $fileName;
-    protected $logLevl;
     protected $logger;
     protected $connected;
     protected $memBase;
@@ -20,7 +20,6 @@ abstract class Base
     
     protected function __construct($path, $id)
     {
-        $this->logLevl=0;
         $this->logger=Log::Get();
         $this->fileN = $path . $id;
         $this->memBase= true;
@@ -46,13 +45,12 @@ abstract class Base
         return true;
     }
 
-    protected static function existsBase($path, $id)
+    protected static function existBase($path, $id)
     {
         $fileName = $path . $id.'.txt';
         return file_exists($fileName);
     }
-    
-    
+      
     
     public function connect()
     {
@@ -69,7 +67,7 @@ abstract class Base
         return true;
     }
     
-    public function isConnected()
+    protected function isConnected()
     {
         return $this->connected;
     }
@@ -190,8 +188,8 @@ abstract class Base
  
     abstract protected function remove();
 
-    abstract protected static function exists($path, $name);
-   
+    abstract protected static function existsBase($path, $name);
+
     abstract protected function newModId($model, $meta, $id, $newist, $foreignKeyList);
     
     abstract protected function putMod($model, $meta, $addList, $delList, $foreignKeyList);

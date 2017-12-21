@@ -24,13 +24,11 @@ class FileBase_Test extends Base_Case
         self::$db = new FileBase($fpath, self::$DBName);
         self::$baseType='fileBase';
         
-        if (self::$db->existsMod(self::$CName)) {
-            self::$db ->delMod(self::$CName);
-        }
-        if (self::$db ->existsMod(self::$CName2)) {
-            self::$db ->delMod(self::$CName2);
-        }
-        
+
+        self::$db ->delMod(self::$CName);
+
+        self::$db ->delMod(self::$CName2);
+
         self::$db ->commit();
     }
 }

@@ -18,15 +18,17 @@ class SQLBase extends Base
     protected $psw;
     protected $dbname;
     protected $mysqli;
-
+    protected $logger;
+    
     public function __construct($path, $server, $usr, $psw, $dbname)
     {
+        $this->logger=Log::Get();
         $this->dbname =$dbname;
         $this->server= $server;
         $this->usr=$usr;
         $this->psw=$psw;
-        $this->connect();
         parent::__construct($path, 'sqlBase/'.$dbname);
+        $this->connect();
     }
 
     public function getBaseType()
@@ -124,9 +126,9 @@ class SQLBase extends Base
         return $res;
     }
     
-    public static function exists($path, $id)
+    public static function existsBase($path, $id)
     {
-        return parent::existsBase($path, 'sqlBase\\'.$id);
+        return parent::existBase($path, 'sqlBase\\'.$id);
     }
     
     public function beginTrans()

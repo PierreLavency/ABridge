@@ -2,7 +2,7 @@ CMD
 h4669ghx
 /* install phpdocumentor
 pear install phpdoc/PhpDocumentor-2.8.1
-grep -ri 'getAllMod' Src/* App/* Tests/*
+grep -ri 'checkFKey' Src/* App/* Tests/*
 
 BUGS	37
 B1 session with API.
@@ -39,7 +39,6 @@ DEV
 
 - delete all object in class /2
 - introduction of name space in Tests /2
-
 
 - revisit dot attributes (?)
 - unify get code with get reference. (????)
@@ -89,6 +88,8 @@ on INT
 - set up jenkin
 
 DONE
+--------------------//0.5
+- minor modif before base redesign
 --------------------//0.2
 - do not save foreign keys in Meta.
 --------------------//0.2

@@ -4,16 +4,19 @@ namespace ABridge\ABridge\Mod;
 use Exception;
 use ABridge\ABridge\Mod\Base;
 use ABridge\ABridge\CstError;
+use ABridge\ABridge\Log\Log;
 
 // memBase = FileBase with null file 
 
 
 class FileBase extends Base
 {
-
+    protected $logger;
+    
     public function __construct($path, $id)
     {
         $fileName = null;
+        $this->logger=Log::Get();
         if (! is_null($id)) {
             $fileName = 'fileBase/'.$id;
         }
@@ -31,9 +34,9 @@ class FileBase extends Base
         return $this->close();
     }
     
-    public static function exists($path, $id)
+    public static function existsBase($path, $id)
     {
-        return parent::existsBase($path, 'fileBase/'.$id);
+        return parent::existBase($path, 'fileBase/'.$id);
     }
     
     public function getBaseType()
@@ -90,9 +93,6 @@ class FileBase extends Base
 
     public function newObjId($model, $values, $id)
     {
-        if (! $this->isConnected()) {
-            throw new Exception(CstError::E_ERC025);
-        }
         if (! $this->existsMod($model)) {
             throw new Exception(CstError::E_ERC022.':'.$model);
         }
@@ -117,9 +117,6 @@ class FileBase extends Base
 
     public function getObj($model, $id)
     {
-        if (! $this->isConnected()) {
-            throw new Exception(CstError::E_ERC025);
-        }
         if (! $this->existsMod($model)) {
             throw new Exception(CstError::E_ERC022.':'.$model);
         }
@@ -135,9 +132,6 @@ class FileBase extends Base
 
     public function putObj($model, $id, $vnum, $values)
     {
-        if (! $this->isConnected()) {
-            throw new Exception(CstError::E_ERC025);
-        }
         if (! $this->existsMod($model)) {
             throw new Exception(CstError::E_ERC022.':'.$model);
         }
@@ -154,9 +148,6 @@ class FileBase extends Base
 
     public function delObj($model, $id)
     {
-        if (! $this->isConnected()) {
-            throw new Exception(CstError::E_ERC025);
-        }
         if (! $this->existsMod($model)) {
             throw new Exception(CstError::E_ERC022.':'.$model);
         }
@@ -174,9 +165,6 @@ class FileBase extends Base
 
     public function findObj($model, $attr, $val)
     {
-        if (! $this->isConnected()) {
-            throw new Exception(CstError::E_ERC025);
-        }
         if (! $this->existsMod($model)) {
             throw new Exception(CstError::E_ERC022.':'.$model);
         };

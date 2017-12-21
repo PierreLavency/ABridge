@@ -24,12 +24,12 @@ class MemBase_Test extends Base_Case
         self::$db = new FileBase($fpath, null);
         self::$baseType='memBase';
 
-        if (self::$db->existsMod(self::$CName)) {
-            self::$db ->delMod(self::$CName);
-        }
-        if (self::$db ->existsMod(self::$CName2)) {
-            self::$db ->delMod(self::$CName2);
-        }
+
+        self::$db ->delMod(self::$CName);
+
+
+        self::$db ->delMod(self::$CName2);
+
         
         self::$db ->commit();
     }
